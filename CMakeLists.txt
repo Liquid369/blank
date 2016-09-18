@@ -439,7 +439,7 @@ set(UTIL_SOURCES
         ./src/utilstrencodings.cpp
         ./src/utilmoneystr.cpp
         ./src/utiltime.cpp
-        ./src/support/pagelocker.cpp
+        ./src/support/lockedpool.cpp
         ./src/support/cleanse.cpp
         )
 add_library(UTIL_A STATIC ${BitcoinHeaders} ${UTIL_SOURCES})

@@ -11,6 +11,7 @@
 #define BITCOIN_UTILSTRENCODINGS_H
 
 #include "support/allocators/secure.h"
+#include <algorithm>
 #include <stdint.h>
 #include <string>
 #include <vector>
