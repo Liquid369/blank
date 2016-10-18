@@ -11,11 +11,12 @@ bench_bench_pivx_SOURCES = \
   bench/bench_pivx.cpp \
   bench/bench.cpp \
   bench/bench.h \
-  bench/checkblock.cpp \
   bench/Examples.cpp \
   bench/base58.cpp \
+  bench/checkblock.cpp \
   bench/checkqueue.cpp \
   bench/crypto_hash.cpp \
+  bench/lockedpool.cpp \
   bench/perf.cpp \
   bench/perf.h \
   bench/prevector.cpp
