@@ -155,6 +155,7 @@ CClientUIInterface uiInterface;  // Declared but not defined in guiinterface.h
 //
 
 volatile bool fRequestShutdown = false;
+std::atomic<bool> fDumpMempoolLater(false);
 
 void StartShutdown()
 {
@@ -245,7 +246,8 @@ void PrepareShutdown()
     DumpBudgets(g_budgetman);
     DumpMasternodePayments();
     UnregisterNodeSignals(GetNodeSignals());
-    DumpMempool();
+    if (fDumpMempoolLater)
+        DumpMempool();
 
     // After everything has been shut down, but before things get flushed, stop the
     // CScheduler/checkqueue threadGroup
@@ -703,6 +705,7 @@ void ThreadImport(std::vector<fs::path> vImportFiles)
     }
 
     LoadMempool();
+    fDumpMempoolLater = !fRequestShutdown;
 }
 
 /** Sanity checks
