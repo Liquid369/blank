@@ -891,7 +891,7 @@ DBErrors CWalletDB::ZapWalletTx(CWallet* pwallet, std::vector<CWalletTx>& vWtx)
     return DB_LOAD_OK;
 }
 
-void MaybeFlushWalletDB()
+void MaybeCompactWalletDB()
 {
     static std::atomic<bool> fOneThread;
     if (fOneThread.exchange(true)) {
