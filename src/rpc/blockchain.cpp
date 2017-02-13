@@ -704,16 +704,16 @@ static void ApplyStats(CCoinsStats &stats, CHashWriter& ss, const uint256& hash,
     assert(!outputs.empty());
     ss << hash;
     const Coin& coin = outputs.begin()->second;
-    ss << VARINT(coin.nHeight * 4 + (coin.fCoinBase ? 2 : 0) + (coin.fCoinStake ? 1 : 0));
+    ss << VARINT(coin.nHeight * 4 + (coin.fCoinBase ? 2 : 0) + (coin.fCoinStake ? 1 : 0), VarIntMode::NONNEGATIVE_SIGNED);
     stats.nTransactions++;
     for (const auto& output : outputs) {
         ss << VARINT(output.first + 1);
         ss << output.second.out.scriptPubKey;
-        ss << VARINT(output.second.out.nValue);
+        ss << VARINT(output.second.out.nValue, VarIntMode::NONNEGATIVE_SIGNED);
         stats.nTransactionOutputs++;
         stats.nTotalAmount += output.second.out.nValue;
     }
-    ss << VARINT(0);
+    ss << VARINT(0u);
 }
 
 //! Calculate statistics about the unspent transaction output set

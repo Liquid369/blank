@@ -548,7 +548,7 @@ public:
     {
         unsigned int nCode = 0;
         // version
-        int nVersionDummy;
+        unsigned int nVersionDummy;
         ::Unserialize(s, VARINT(nVersionDummy));
         // header code
         ::Unserialize(s, VARINT(nCode));
@@ -576,7 +576,7 @@ public:
                 ::Unserialize(s, CTxOutCompressor(vout[i]));
         }
         // coinbase height
-        ::Unserialize(s, VARINT(nHeight));
+        ::Unserialize(s, VARINT(nHeight, VarIntMode::NONNEGATIVE_SIGNED));
     }
 };
 

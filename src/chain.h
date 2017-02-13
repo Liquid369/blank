@@ -87,9 +87,8 @@ struct CDiskBlockPos {
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action)
-    {
-        READWRITE(VARINT(nFile));
+    inline void SerializationOp(Stream& s, Operation ser_action) {
+        READWRITE(VARINT(nFile, VarIntMode::NONNEGATIVE_SIGNED));
         READWRITE(VARINT(nPos));
     }
 
@@ -315,13 +314,13 @@ public:
     {
         int nSerVersion = s.GetVersion();
         if (!(s.GetType() & SER_GETHASH))
-            READWRITE(VARINT(nSerVersion));
+            READWRITE(VARINT(nSerVersion, VarIntMode::NONNEGATIVE_SIGNED));
 
-        READWRITE(VARINT(nHeight));
+        READWRITE(VARINT(nHeight, VarIntMode::NONNEGATIVE_SIGNED));
         READWRITE(VARINT(nStatus));
         READWRITE(VARINT(nTx));
         if (nStatus & (BLOCK_HAVE_DATA | BLOCK_HAVE_UNDO))
-            READWRITE(VARINT(nFile));
+            READWRITE(VARINT(nFile, VarIntMode::NONNEGATIVE_SIGNED));
         if (nStatus & BLOCK_HAVE_DATA)
             READWRITE(VARINT(nDataPos));
         if (nStatus & BLOCK_HAVE_UNDO)
@@ -455,7 +454,7 @@ public:
     {
         int nSerVersion = s.GetVersion();
         if (!(s.GetType() & SER_GETHASH))
-            READWRITE(VARINT(nSerVersion));
+            READWRITE(VARINT(nSerVersion, VarIntMode::NONNEGATIVE_SIGNED));
 
         if (nSerVersion >= DBI_SER_VERSION_NO_ZC) {
             // no extra serialized field
@@ -467,11 +466,11 @@ public:
             return;
         }
 
-        READWRITE(VARINT(nHeight));
+        READWRITE(VARINT(nHeight, VarIntMode::NONNEGATIVE_SIGNED));
         READWRITE(VARINT(nStatus));
         READWRITE(VARINT(nTx));
         if (nStatus & (BLOCK_HAVE_DATA | BLOCK_HAVE_UNDO))
-            READWRITE(VARINT(nFile));
+            READWRITE(VARINT(nFile, VarIntMode::NONNEGATIVE_SIGNED));
         if (nStatus & BLOCK_HAVE_DATA)
             READWRITE(VARINT(nDataPos));
         if (nStatus & BLOCK_HAVE_UNDO)
