@@ -934,9 +934,7 @@ bool BackupWallet(const CWallet& wallet, const fs::path& strDest, bool fEnableCu
 {
     fs::path pathCustom;
     fs::path pathWithFile;
-    if (!wallet.fFileBacked) {
-        return false;
-    } else if(fEnableCustom) {
+    if(fEnableCustom) {
         pathWithFile = gArgs.GetArg("-backuppath", "");
         if(!pathWithFile.empty()) {
             if(!pathWithFile.has_extension()) {

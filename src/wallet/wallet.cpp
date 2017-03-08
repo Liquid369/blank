@@ -209,8 +209,6 @@ bool CWallet::AddKeyPubKey(const CKey& secret, const CPubKey& pubkey)
         RemoveWatchOnly(script);
     }
 
-    if (!fFileBacked)
-        return true;
     if (!IsCrypted()) {
         return CWalletDB(*dbw).WriteKey(
                 pubkey,
@@ -225,8 +223,6 @@ bool CWallet::AddCryptedKey(const CPubKey& vchPubKey,
 {
     if (!CCryptoKeyStore::AddCryptedKey(vchPubKey, vchCryptedSecret))
         return false;
-    if (!fFileBacked)
-        return true;
     {
         LOCK(cs_wallet);
         if (pwalletdbEncryption)
@@ -258,8 +254,6 @@ bool CWallet::AddCScript(const CScript& redeemScript)
 {
     if (!CCryptoKeyStore::AddCScript(redeemScript))
         return false;
-    if (!fFileBacked)
-        return true;
     return CWalletDB(*dbw).WriteCScript(Hash160(redeemScript), redeemScript);
 }
 
@@ -284,8 +278,6 @@ bool CWallet::AddWatchOnly(const CScript& dest)
         return false;
     nTimeFirstKey = 1; // No birthday information for watch-only keys.
     NotifyWatchonlyChanged(true);
-    if (!fFileBacked)
-        return true;
     return CWalletDB(*dbw).WriteWatchOnly(dest);
 }
 
@@ -296,9 +288,8 @@ bool CWallet::RemoveWatchOnly(const CScript& dest)
         return false;
     if (!HaveWatchOnly())
         NotifyWatchonlyChanged(false);
-    if (fFileBacked)
-        if (!CWalletDB(*dbw).EraseWatchOnly(dest))
-            return false;
+    if (!CWalletDB(*dbw).EraseWatchOnly(dest))
+        return false;
 
     return true;
 }
@@ -549,7 +540,7 @@ bool CWallet::SetMinVersion(enum WalletFeature nVersion, CWalletDB* pwalletdbIn,
     if (nVersion > nWalletMaxVersion)
         nWalletMaxVersion = nVersion;
 
-    if (fFileBacked) {
+    {
         CWalletDB* pwalletdb = pwalletdbIn ? pwalletdbIn : new CWalletDB(*dbw);
         if (nWalletVersion > 40000)
             pwalletdb->WriteMinVersion(nWalletVersion);
@@ -836,22 +827,19 @@ bool CWallet::EncryptWallet(const SecureString& strWalletPassphrase)
     {
         LOCK(cs_wallet);
         mapMasterKeys[++nMasterKeyMaxID] = kMasterKey;
-        if (fFileBacked) {
-            assert(!pwalletdbEncryption);
-            pwalletdbEncryption = new CWalletDB(*dbw);
-            if (!pwalletdbEncryption->TxnBegin()) {
-                delete pwalletdbEncryption;
-                pwalletdbEncryption = NULL;
-                return false;
-            }
-            pwalletdbEncryption->WriteMasterKey(nMasterKeyMaxID, kMasterKey);
+        assert(!pwalletdbEncryption);
+        pwalletdbEncryption = new CWalletDB(*dbw);
+        if (!pwalletdbEncryption->TxnBegin()) {
+            delete pwalletdbEncryption;
+            pwalletdbEncryption = NULL;
+            return false;
         }
+        pwalletdbEncryption->WriteMasterKey(nMasterKeyMaxID, kMasterKey);
+
 
         if (!EncryptKeys(vMasterKey) || (m_sspk_man->IsEnabled() && !m_sspk_man->EncryptSaplingKeys(vMasterKey))) {
-            if (fFileBacked) {
-                pwalletdbEncryption->TxnAbort();
-                delete pwalletdbEncryption;
-            }
+            pwalletdbEncryption->TxnAbort();
+            delete pwalletdbEncryption;
             // We now probably have half of our keys encrypted in memory, and half not...
             // die and let the user reload their unencrypted wallet.
             assert(false);
@@ -860,17 +848,16 @@ bool CWallet::EncryptWallet(const SecureString& strWalletPassphrase)
         // Encryption was introduced in version 0.4.0
         SetMinVersion(FEATURE_WALLETCRYPT, pwalletdbEncryption, true);
 
-        if (fFileBacked) {
-            if (!pwalletdbEncryption->TxnCommit()) {
-                delete pwalletdbEncryption;
-                // We now have keys encrypted in memory, but not on disk...
-                // die to avoid confusion and let the user reload their unencrypted wallet.
-                assert(false);
-            }
-
+        if (!pwalletdbEncryption->TxnCommit()) {
             delete pwalletdbEncryption;
-            pwalletdbEncryption = NULL;
+            // We now have keys encrypted in memory, but not on disk...
+            // die to avoid confusion and let the user reload their unencrypted wallet.
+            assert(false);
         }
+
+        delete pwalletdbEncryption;
+        pwalletdbEncryption = NULL;
+
         Lock();
         Unlock(strWalletPassphrase);
         // if we are using HD, replace the HD seed with a new one
@@ -1277,8 +1264,6 @@ void CWallet::MarkAffectedTransactionsDirty(const CTransaction& tx)
 
 void CWallet::EraseFromWallet(const uint256& hash)
 {
-    if (!fFileBacked)
-        return;
     {
         LOCK(cs_wallet);
         if (mapWallet.erase(hash))
@@ -3156,9 +3141,6 @@ DBErrors CWallet::LoadWallet(bool& fFirstRunRet)
 {
     LOCK2(cs_main, cs_wallet);
 
-    if (!fFileBacked)
-        return DB_LOAD_OK;
-
     DBErrors nLoadWalletRet = CWalletDB(*dbw, "cr+").LoadWallet(this);
     if (nLoadWalletRet == DB_NEED_REWRITE) {
         if (dbw->Rewrite( "\x04pool")) {
@@ -3184,8 +3166,6 @@ DBErrors CWallet::LoadWallet(bool& fFirstRunRet)
 
 DBErrors CWallet::ZapWalletTx(std::vector<CWalletTx>& vWtx)
 {
-    if (!fFileBacked)
-        return DB_LOAD_OK;
     DBErrors nZapWalletTxRet = CWalletDB(*dbw, "cr+").ZapWalletTx(this, vWtx);
     if (nZapWalletTxRet == DB_NEED_REWRITE) {
         if (dbw->Rewrite("\x04pool")) {
@@ -3221,8 +3201,6 @@ bool CWallet::SetAddressBook(const CWDestination& address, const std::string& st
     }
     NotifyAddressBookChanged(this, address, strName, ::IsMine(*this, address) != ISMINE_NO,
             mapAddressBook.at(address).purpose, (fUpdated ? CT_UPDATED : CT_NEW));
-    if (!fFileBacked)
-        return false;
     std::string addressStr = ParseIntoAddress(address, mapAddressBook.at(address).purpose);
     if (!strPurpose.empty() && !CWalletDB(*dbw).WritePurpose(addressStr, strPurpose))
         return false;
@@ -3236,19 +3214,15 @@ bool CWallet::DelAddressBook(const CWDestination& address, const CChainParams::B
     {
         LOCK(cs_wallet); // mapAddressBook
 
-        if (fFileBacked) {
-            // Delete destdata tuples associated with address
-            for (const std::pair<std::string, std::string> & item : mapAddressBook[address].destdata) {
-                CWalletDB(*dbw).EraseDestData(strAddress, item.first);
-            }
+        // Delete destdata tuples associated with address
+        for (const std::pair<std::string, std::string> & item : mapAddressBook[address].destdata) {
+            CWalletDB(*dbw).EraseDestData(strAddress, item.first);
         }
         mapAddressBook.erase(address);
     }
 
     NotifyAddressBookChanged(this, address, "", ::IsMine(*this, address) != ISMINE_NO, purpose, CT_DELETED);
 
-    if (!fFileBacked)
-        return false;
     CWalletDB(*dbw).ErasePurpose(strAddress);
     return CWalletDB(*dbw).EraseName(strAddress);
 }
@@ -3677,8 +3651,6 @@ bool CWallet::AddDestData(const CTxDestination& dest, const std::string& key, co
         return false;
 
     mapAddressBook[dest].destdata.emplace(key, value);
-    if (!fFileBacked)
-        return true;
     return CWalletDB(*dbw).WriteDestData(EncodeDestination(dest), key, value);
 }
 
@@ -3686,8 +3658,6 @@ bool CWallet::EraseDestData(const CTxDestination& dest, const std::string& key)
 {
     if (!mapAddressBook[dest].destdata.erase(key))
         return false;
-    if (!fFileBacked)
-        return true;
     return CWalletDB(*dbw).EraseDestData(EncodeDestination(dest), key);
 }
 
@@ -4266,7 +4236,7 @@ std::string CWallet::GetUniqueWalletBackupName() const
     return strprintf("%s%s", (dbw ? dbw->GetName() : "null"), DateTimeStrFormat(".%Y-%m-%d-%H-%M", GetTime()));
 }
 
-CWallet::CWallet()
+CWallet::CWallet() : dbw(new CWalletDBWrapper())
 {
     SetNull();
 }
@@ -4275,7 +4245,6 @@ CWallet::CWallet(std::unique_ptr<CWalletDBWrapper> dbw_in)
         : dbw(std::move(dbw_in))
 {
     SetNull();
-    fFileBacked = true;
 }
 
 CWallet::~CWallet()
@@ -4288,7 +4257,6 @@ void CWallet::SetNull()
 {
     nWalletVersion = FEATURE_BASE;
     nWalletMaxVersion = FEATURE_BASE;
-    fFileBacked = false;
     nMasterKeyMaxID = 0;
     pwalletdbEncryption = NULL;
     nOrderPosNext = 0;

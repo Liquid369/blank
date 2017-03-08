@@ -890,7 +890,7 @@ libzcash::SaplingPaymentAddress SaplingScriptPubKeyMan::GenerateNewSaplingZKey()
     } while (wallet->HaveSaplingSpendingKey(xsk.ToXFVK()));
 
     // Update the chain model in the database
-    if (wallet->fFileBacked && !CWalletDB(wallet->GetDBHandle()).WriteHDChain(hdChain))
+    if (!CWalletDB(wallet->GetDBHandle()).WriteHDChain(hdChain))
         throw std::runtime_error(std::string(__func__) + ": Writing HD chain model failed");
 
     // Create new metadata
@@ -994,10 +994,6 @@ bool SaplingScriptPubKeyMan::AddSaplingZKey(
         return false;
     }
 
-    if (!wallet->fFileBacked) {
-        return true;
-    }
-
     if (!wallet->IsCrypted()) {
         auto ivk = sk.expsk.full_viewing_key().in_viewing_key();
         return CWalletDB(wallet->GetDBHandle()).WriteSaplingZKey(ivk, sk, mapSaplingZKeyMetadata[ivk]);
@@ -1046,10 +1042,6 @@ bool SaplingScriptPubKeyMan::AddSaplingIncomingViewingKey(
         return false;
     }
 
-    if (!wallet->fFileBacked) {
-        return true;
-    }
-
     if (!wallet->IsCrypted()) {
         return CWalletDB(wallet->GetDBHandle()).WriteSaplingPaymentAddress(addr, ivk);
     }
@@ -1084,8 +1076,6 @@ bool SaplingScriptPubKeyMan::AddCryptedSaplingSpendingKeyDB(const libzcash::Sapl
 {
     if (!wallet->AddCryptedSaplingSpendingKey(extfvk, vchCryptedSecret))
         return false;
-    if (!wallet->fFileBacked)
-        return true;
     {
         LOCK(wallet->cs_wallet);
         if (wallet->pwalletdbEncryption) {

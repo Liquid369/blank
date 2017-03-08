@@ -3747,13 +3747,10 @@ UniValue setstakesplitthreshold(const JSONRPCRequest& request)
     CWalletDB walletdb(pwalletMain->GetDBHandle());
     LOCK(pwalletMain->cs_wallet);
     {
-        bool fFileBacked = pwalletMain->fFileBacked;
-
         UniValue result(UniValue::VOBJ);
         pwalletMain->nStakeSplitThreshold = nStakeSplitThreshold;
         result.pushKV("threshold", ValueFromAmount(pwalletMain->nStakeSplitThreshold));
-        if (fFileBacked) {
-            walletdb.WriteStakeSplitThreshold(nStakeSplitThreshold);
+        if (walletdb.WriteStakeSplitThreshold(nStakeSplitThreshold)) {
             result.pushKV("saved", "true");
         } else
             result.pushKV("saved", "false");

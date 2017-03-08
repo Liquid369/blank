@@ -354,7 +354,10 @@ CDB::CDB(CWalletDBWrapper& dbw, const char* pszMode, bool fFlushOnCloseIn) : pdb
     int ret;
     fReadOnly = (!strchr(pszMode, '+') && !strchr(pszMode, 'w'));
     fFlushOnClose = fFlushOnCloseIn;
-    const std::string& strFilename = dbw.strFile;
+    if (dbw.IsDummy()) {
+        return;
+    }
+    const std::string &strFilename = dbw.strFile;
 
     bool fCreate = strchr(pszMode, 'c') != NULL;
     unsigned int nFlags = DB_THREAD;
@@ -464,7 +467,7 @@ bool CDBEnv::RemoveDb(const std::string& strFile)
 
 bool CDB::Rewrite(CWalletDBWrapper& dbw, const char* pszSkip)
 {
-    if (!dbw.env) {
+    if (dbw.IsDummy()) {
         return true;
     }
     const std::string& strFile = dbw.strFile;
@@ -592,6 +595,9 @@ void CDBEnv::Flush(bool fShutdown)
 
 bool CDB::PeriodicFlush(CWalletDBWrapper& dbw)
 {
+    if (dbw.IsDummy()) {
+        return true;
+    }
     bool ret = false;
     const std::string& strFile = dbw.strFile;
     TRY_LOCK(bitdb.cs_db,lockDb);
@@ -633,7 +639,7 @@ bool CWalletDBWrapper::Rewrite(const char* pszSkip)
 
 bool CWalletDBWrapper::Backup(const std::string& strDest)
 {
-    if (!env) {
+    if (IsDummy()) {
         return false;
     }
     while (true)

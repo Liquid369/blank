@@ -486,8 +486,7 @@ void OptionsModel::setStakeSplitThreshold(const CAmount nStakeSplitThreshold)
         LOCK(pwalletMain->cs_wallet);
         {
             pwalletMain->nStakeSplitThreshold = nStakeSplitThreshold;
-            if (pwalletMain->fFileBacked)
-                walletdb.WriteStakeSplitThreshold(nStakeSplitThreshold);
+            walletdb.WriteStakeSplitThreshold(nStakeSplitThreshold);
         }
     }
 }
@@ -517,8 +516,7 @@ void OptionsModel::setUseCustomFee(bool fUse)
         {
             LOCK(pwalletMain->cs_wallet);
             pwalletMain->fUseCustomFee = fUse;
-            if (pwalletMain->fFileBacked)
-                walletdb.WriteUseCustomFee(fUse);
+            walletdb.WriteUseCustomFee(fUse);
         }
     }
 }
@@ -530,8 +528,7 @@ void OptionsModel::setCustomFeeValue(const CAmount& value)
         {
             LOCK(pwalletMain->cs_wallet);
             pwalletMain->nCustomFee = value;
-            if (pwalletMain->fFileBacked)
-                walletdb.WriteCustomFeeValue(value);
+            walletdb.WriteCustomFeeValue(value);
         }
     }
 }

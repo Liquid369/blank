@@ -347,14 +347,10 @@ public:
 
     /*
      * Main wallet lock.
-     * This lock protects all the fields added by CWallet
-     *   except for:
-     *      fFileBacked (immutable after instantiation)
-     *      strWalletFile (immutable after instantiation)
+     * This lock protects all the fields added by CWallet.
      */
     mutable RecursiveMutex cs_wallet;
 
-    bool fFileBacked;
     bool fWalletUnlockStaking;
 
     CWalletDB* pwalletdbEncryption;
@@ -408,7 +404,9 @@ public:
         }
     }
 
+    // Create wallet with dummy database handle
     CWallet();
+    // Create wallet with passed-in database handle
     CWallet(std::unique_ptr<CWalletDBWrapper> dbw_in);
     ~CWallet();
     void SetNull();
