@@ -189,7 +189,7 @@ bool LoadGenesisBlock();
  * initializing state if we're running with -reindex. */
 bool LoadBlockIndex(std::string& strError);
 /** Update the chain tip based on database information. */
-void LoadChainTip(const CChainParams& chainparams);
+bool LoadChainTip(const CChainParams& chainparams);
 /** Unload database information */
 void UnloadBlockIndex();
 /** See whether the protocol update is enforced for connected nodes */

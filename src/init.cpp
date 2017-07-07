@@ -1636,7 +1636,17 @@ bool AppInitMain()
                     break;
                 }
                 pcoinsTip = new CCoinsViewCache(pcoinscatcher);
-                LoadChainTip(chainparams);
+
+                // !TODO: after enabling reindex-chainstate
+                // if (!fReindex && !fReindexChainState) {
+                if (!fReindex) {
+                    // LoadChainTip sets chainActive based on pcoinsTip's best block
+                    if (!LoadChainTip(chainparams)) {
+                        strLoadError = _("Error initializing block database");
+                        break;
+                    }
+                    assert(chainActive.Tip() != NULL);
+                }
 
                 // Populate list of invalid/fraudulent outpoints that are banned from the chain
                 invalid_out::LoadOutpoints();
