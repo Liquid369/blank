@@ -79,7 +79,7 @@ public:
         nHeight = code >> 2;
         fCoinBase = code & 2;
         fCoinStake = code & 1;
-        ::Unserialize(s, REF(CTxOutCompressor(out)));
+        ::Unserialize(s, CTxOutCompressor(out));
     }
 
     bool IsSpent() const {
