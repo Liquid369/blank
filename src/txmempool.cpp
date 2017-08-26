@@ -40,13 +40,7 @@ CTxMemPoolEntry::CTxMemPoolEntry(const CTransactionRef& _tx, const CAmount& _nFe
     feeDelta = 0;
 }
 
-CTxMemPoolEntry::CTxMemPoolEntry(const CTxMemPoolEntry& other)
-{
-    *this = other;
-}
-
-double
-CTxMemPoolEntry::GetPriority(unsigned int currentHeight) const
+double CTxMemPoolEntry::GetPriority(unsigned int currentHeight) const
 {
     double deltaPriority = ((double)(currentHeight - entryHeight) * inChainInputValue) / nModSize;
     double dResult = entryPriority + deltaPriority;

@@ -92,7 +92,6 @@ public:
             int64_t _nTime, double _entryPriority, unsigned int _entryHeight,
             bool poolHasNoInputsOf, CAmount _inChainInputValue, bool _spendsCoinbaseOrCoinstake,
             unsigned int nSigOps);
-    CTxMemPoolEntry(const CTxMemPoolEntry& other);
 
     const CTransaction& GetTx() const { return *this->tx; }
     std::shared_ptr<const CTransaction> GetSharedTx() const { return this->tx; }
