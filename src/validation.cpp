@@ -2276,6 +2276,12 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
         }
         // When we reach this point, we switched to a new tip (stored in pindexNewTip).
 
+        // We check shutdown only after giving ActivateBestChainStep a chance to run once so that we
+        // never shutdown before connecting the genesis block during LoadChainTip(). Previously this
+        // caused an assert() failure during shutdown in such cases as the UTXO DB flushing checks
+        // that the best block hash is non-null.
+        if (ShutdownRequested())
+            break;
     } while (pindexMostWork != chainActive.Tip());
 
     CheckBlockIndex();
