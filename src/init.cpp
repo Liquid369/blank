@@ -672,6 +672,7 @@ struct CImportingNow {
 void ThreadImport(std::vector<fs::path> vImportFiles)
 {
     util::ThreadRename("pivx-loadblk");
+    ScheduleBatchPriority();
 
     // -reindex
     if (fReindex) {
