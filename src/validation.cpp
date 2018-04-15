@@ -2264,16 +2264,17 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
                 assert(trace.pblock && trace.pindex);
                 GetMainSignals().BlockConnected(trace.pblock, trace.pindex, trace.conflictedTxs);
             }
-        }
 
-        // Notify external listeners about the new tip.
-        GetMainSignals().UpdatedBlockTip(pindexNewTip, pindexFork, fInitialDownload);
+            // Notify external listeners about the new tip.
+            // Enqueue while holding cs_main to ensure that UpdatedBlockTip is called in the order in which blocks are connected
+            GetMainSignals().UpdatedBlockTip(pindexNewTip, pindexFork, fInitialDownload);
 
-        // Always notify the UI if a new block tip was connected
-        if (pindexFork != pindexNewTip) {
-            // Notify the UI
-            uiInterface.NotifyBlockTip(fInitialDownload, pindexNewTip);
+            // Always notify the UI if a new block tip was connected
+            if (pindexFork != pindexNewTip) {
+                uiInterface.NotifyBlockTip(fInitialDownload, pindexNewTip);
+            }
         }
+        // When we reach this point, we switched to a new tip (stored in pindexNewTip).
 
     } while (pindexMostWork != chainActive.Tip());
 
