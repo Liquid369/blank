@@ -216,11 +216,14 @@ int BCLog::Logger::LogPrintStr(const std::string &str)
             // reopen the log file, if requested
             if (m_reopen_file) {
                 m_reopen_file = false;
-                if (fsbridge::freopen(m_file_path,"a",m_fileout) != NULL)
-                    setbuf(m_fileout, NULL); // unbuffered
+                FILE* new_fileout = fsbridge::fopen(m_file_path, "a");
+                if (new_fileout) {
+                    setbuf(new_fileout, nullptr); // unbuffered
+                    fclose(m_fileout);
+                    m_fileout = new_fileout;
+                }
             }
-
-            ret = FileWriteStr(strTimestamped, m_fileout);
+            FileWriteStr(strTimestamped, m_fileout);
         }
     }
 
