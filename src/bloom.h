@@ -53,10 +53,6 @@ private:
 
     unsigned int Hash(unsigned int nHashNum, const std::vector<unsigned char>& vDataToHash) const;
 
-    // Private constructor for CRollingBloomFilter, no restrictions on size
-    CBloomFilter(unsigned int nElements, double nFPRate, unsigned int nTweak);
-    friend class CRollingBloomFilter;
-
 public:
     /**
      * Creates a new bloom filter which will provide the given fp rate when filled with the given number of elements
