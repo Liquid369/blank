@@ -171,6 +171,7 @@ EXTENDED_SCRIPTS = [
     #'p2p_timeouts.py',
     # vv Tests less than 60s vv
     #'p2p_feefilter.py',
+    'feature_abortnode.py',
     'rpc_bind.py',
     # vv Tests less than 30s vv
     #'example_test.py',
