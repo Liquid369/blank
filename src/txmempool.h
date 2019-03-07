@@ -419,6 +419,8 @@ private:
     std::map<uint256, CTransactionRef> mapSaplingNullifiers;
     void checkNullifiers() const;
 
+    bool m_is_loaded GUARDED_BY(cs){false};
+
 public:
 
     static const int ROLLING_FEE_HALFLIFE = 60 * 60 * 12; // public only for testing
@@ -618,7 +620,13 @@ public:
     /** Expire all transaction (and their dependencies) in the mempool older than time. Return the number of removed transactions. */
     int Expire(int64_t time);
 
-    unsigned long size()
+    /** @returns true if the mempool is fully loaded */
+    bool IsLoaded() const;
+
+    /** Sets the current loaded state */
+    void SetIsLoaded(bool loaded);
+
+    unsigned long size() const
     {
         LOCK(cs);
         return mapTx.size();

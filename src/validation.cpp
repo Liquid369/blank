@@ -110,7 +110,6 @@ int64_t nMaxTipAge = DEFAULT_MAX_TIP_AGE;
 CFeeRate minRelayTxFee = CFeeRate(10000);
 
 CTxMemPool mempool(::minRelayTxFee);
-std::atomic_bool g_is_mempool_loaded{false};
 
 std::map<uint256, int64_t> mapRejectedBlocks;
 
@@ -4066,7 +4065,7 @@ std::string CBlockFileInfo::ToString() const
 
 static const uint64_t MEMPOOL_DUMP_VERSION = 1;
 
-bool LoadMempool(void)
+bool LoadMempool(CTxMemPool& pool)
 {
     int64_t nExpiryTimeout = gArgs.GetArg("-mempoolexpiry", DEFAULT_MEMPOOL_EXPIRY) * 60 * 60;
     FILE* filestr = fopen((GetDataDir() / "mempool.dat").string().c_str(), "r");
@@ -4100,12 +4099,12 @@ bool LoadMempool(void)
 
             CAmount amountdelta = nFeeDelta;
             if (amountdelta) {
-                mempool.PrioritiseTransaction(tx->GetHash(), tx->GetHash().ToString(), prioritydummy, amountdelta);
+                pool.PrioritiseTransaction(tx->GetHash(), tx->GetHash().ToString(), prioritydummy, amountdelta);
             }
             CValidationState state;
             if (nTime + nExpiryTimeout > nNow) {
                 LOCK(cs_main);
-                AcceptToMemoryPoolWithTime(mempool, state, tx, true, NULL, nTime);
+                AcceptToMemoryPoolWithTime(pool, state, tx, true, NULL, nTime);
                 if (state.IsValid()) {
                     ++count;
                 } else {
@@ -4121,7 +4120,7 @@ bool LoadMempool(void)
         file >> mapDeltas;
 
         for (const auto& i : mapDeltas) {
-            mempool.PrioritiseTransaction(i.first, i.first.ToString(), prioritydummy, i.second);
+            pool.PrioritiseTransaction(i.first, i.first.ToString(), prioritydummy, i.second);
         }
     } catch (const std::exception& e) {
         LogPrintf("Failed to deserialize mempool data on disk: %s. Continuing anyway.\n", e.what());
@@ -4132,19 +4131,22 @@ bool LoadMempool(void)
     return true;
 }
 
-void DumpMempool(void)
+bool DumpMempool(const CTxMemPool& pool)
 {
     int64_t start = GetTimeMicros();
 
     std::map<uint256, CAmount> mapDeltas;
     std::vector<TxMempoolInfo> vinfo;
 
+    static Mutex dump_mutex;
+    LOCK(dump_mutex);
+
     {
-        LOCK(mempool.cs);
-        for (const auto &i : mempool.mapDeltas) {
+        LOCK(pool.cs);
+        for (const auto &i : pool.mapDeltas) {
             mapDeltas[i.first] = i.second.second;
         }
-        vinfo = mempool.infoAll();
+        vinfo = pool.infoAll();
     }
 
     int64_t mid = GetTimeMicros();
@@ -4152,7 +4154,7 @@ void DumpMempool(void)
     try {
         FILE* filestr = fopen((GetDataDir() / "mempool.dat.new").string().c_str(), "w");
         if (!filestr) {
-            return;
+            return false;
         }
 
         CAutoFile file(filestr, SER_DISK, CLIENT_VERSION);
@@ -4178,7 +4180,9 @@ void DumpMempool(void)
         LogPrintf("Dumped mempool: %gs to copy, %gs to dump\n", (mid-start)*0.000001, (last-mid)*0.000001);
     } catch (const std::exception& e) {
         LogPrintf("Failed to dump mempool: %s. Continuing anyway.\n", e.what());
+        return false;
     }
+    return true;
 }
 
 class CMainCleanup
@@ -4194,3 +4198,4 @@ public:
         mapBlockIndex.clear();
     }
 } instance_of_cmaincleanup;
+
