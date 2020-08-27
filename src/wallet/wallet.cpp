@@ -2035,6 +2035,17 @@ CAmount CWallet::GetLegacyBalance(const isminefilter& filter, int minDepth) cons
     return balance;
 }
 
+// Sapling
+CAmount CWallet::GetAvailableShieldedBalance(bool fUseCache) const
+{
+    return GetAvailableBalance(ISMINE_SPENDABLE_SHIELDED, fUseCache);;
+};
+
+CAmount CWallet::GetUnconfirmedShieldedBalance() const
+{
+    return GetUnconfirmedBalance(ISMINE_SPENDABLE_SHIELDED);
+};
+
 void CWallet::GetAvailableP2CSCoins(std::vector<COutput>& vCoins) const {
     vCoins.clear();
     {
