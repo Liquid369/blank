@@ -13,6 +13,7 @@ namespace KeyIO {
 
     std::string EncodePaymentAddress(const libzcash::PaymentAddress& zaddr);
     libzcash::PaymentAddress DecodePaymentAddress(const std::string& str);
+    Optional<libzcash::SaplingPaymentAddress> DecodeSaplingPaymentAddress(const std::string& str);
     bool IsValidPaymentAddressString(const std::string& str);
 
     std::string EncodeViewingKey(const libzcash::ViewingKey& vk);
