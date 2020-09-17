@@ -248,9 +248,6 @@ struct CRecipient
     {}
 };
 
-// Regular + shielded addresses variant.
-typedef boost::variant<CTxDestination, libzcash::SaplingPaymentAddress> CWDestination;
-
 class CAddressBookIterator
 {
 public:
@@ -520,7 +517,7 @@ public:
     bool FindNotesDataAndAddMissingIVKToKeystore(const CTransaction& tx, Optional<mapSaplingNoteData_t>& saplingNoteData);
 
     //! Generates new Sapling key
-    libzcash::SaplingPaymentAddress GenerateNewSaplingZKey();
+    libzcash::SaplingPaymentAddress GenerateNewSaplingZKey(std::string label = "");
 
     //! pindex is the new tip being connected.
     void IncrementNoteWitnesses(const CBlockIndex* pindex,
