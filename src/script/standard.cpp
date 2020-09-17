@@ -6,6 +6,7 @@
 
 #include "script/standard.h"
 
+#include "base58.h"
 #include "pubkey.h"
 #include "sapling/key_io_sapling.h"
 #include "script/script.h"
@@ -348,5 +349,16 @@ namespace Standard {
         }
         return EncodeDestination(*dest, addrType);
     };
+
+    CWDestination DecodeDestination(const std::string& strAddress)
+    {
+        CWDestination dest;
+        CTxDestination regDest = ::DecodeDestination(strAddress);
+        if (!IsValidDestination(regDest)) {
+            return KeyIO::DecodeSaplingPaymentAddress(strAddress);
+        }
+        return regDest;
+
+    }
 
 } // End Standard namespace
