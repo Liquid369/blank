@@ -391,3 +391,36 @@ OperationResult GetMemoFromString(const std::string& s, std::array<unsigned char
     }
     return OperationResult(true);
 }
+
+OperationResult CheckTransactionSize(std::vector<SendManyRecipient>& recipients, bool fromTaddr)
+{
+    CMutableTransaction mtx;
+    mtx.nVersion = CTransaction::TxVersion::SAPLING;
+    unsigned int max_tx_size = MAX_TX_SIZE_AFTER_SAPLING;
+
+    // As a sanity check, estimate and verify that the size of the transaction will be valid.
+    // Depending on the input notes, the actual tx size may turn out to be larger and perhaps invalid.
+    size_t nTransparentOuts = 0;
+    for (const auto& t : recipients) {
+        if (t.IsTransparent()) {
+            nTransparentOuts++;
+            continue;
+        }
+        if (IsValidPaymentAddress(t.shieldedRecipient->address)) {
+            mtx.sapData->vShieldedOutput.emplace_back();
+        } else {
+            return errorOut(strprintf("invalid recipient shielded address %s",
+                    KeyIO::EncodePaymentAddress(t.shieldedRecipient->address)));
+        }
+    }
+    CTransaction tx(mtx);
+    size_t txsize = GetSerializeSize(tx, SER_NETWORK, tx.nVersion) + CTXOUT_REGULAR_SIZE * nTransparentOuts;
+    if (fromTaddr) {
+        txsize += CTXIN_SPEND_DUST_SIZE;
+        txsize += CTXOUT_REGULAR_SIZE;      // There will probably be taddr change
+    }
+    if (txsize > max_tx_size) {
+        return errorOut(strprintf("Too many outputs, size of raw transaction would be larger than limit of %d bytes", max_tx_size));
+    }
+    return OperationResult(true);
+}
