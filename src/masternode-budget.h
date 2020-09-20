@@ -22,30 +22,5 @@
 #include <atomic>
 #include <univalue.h>
 
-void DumpBudgets(CBudgetManager& budgetman);
-
-/** Save Budget Manager (budget.dat)
- */
-class CBudgetDB
-{
-private:
-    fs::path pathDB;
-    std::string strMagicMessage;
-
-public:
-    enum ReadResult {
-        Ok,
-        FileError,
-        HashReadError,
-        IncorrectHash,
-        IncorrectMagicMessage,
-        IncorrectMagicNumber,
-        IncorrectFormat
-    };
-
-    CBudgetDB();
-    bool Write(const CBudgetManager& objToSave);
-    ReadResult Read(CBudgetManager& objToLoad, bool fDryRun = false);
-};
 
 #endif
