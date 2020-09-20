@@ -7,7 +7,6 @@
 
 #include "net.h"
 
-
 CFinalizedBudgetVote::CFinalizedBudgetVote() :
         CSignedMessage(),
         fValid(true),
