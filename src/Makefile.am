@@ -205,6 +205,8 @@ BITCOIN_CORE_H = \
   logging.h \
   legacy/validation_zerocoin_legacy.h \
   sapling/sapling_validation.h \
+  budget/budgetvote.h \
+  budget/finalizedbudgetvote.h \
   memusage.h \
   masternode.h \
   masternode-payments.h \
@@ -374,6 +376,8 @@ libbitcoin_wallet_a_SOURCES = \
   addressbook.cpp \
   crypter.cpp \
   key_io.cpp \
+  budget/budgetvote.cpp \
+  budget/finalizedbudgetvote.cpp \
   masternode.cpp \
   masternode-budget.cpp \
   masternode-payments.cpp \

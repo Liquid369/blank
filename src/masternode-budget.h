@@ -7,6 +7,8 @@
 #define MASTERNODE_BUDGET_H
 
 #include "base58.h"
+#include "budget/budgetvote.h"
+#include "budget/finalizedbudgetvote.h"
 #include "init.h"
 #include "key.h"
 #include "masternode.h"
@@ -37,136 +39,6 @@ static std::map<uint256, std::pair<uint256,int> > mapPayment_History;   // propo
 
 extern CBudgetManager g_budgetman;
 void DumpBudgets(CBudgetManager& budgetman);
-
-//
-// CBudgetVote - Allow a masternode node to vote and broadcast throughout the network
-//
-
-class CBudgetVote : public CSignedMessage
-{
-public:
-    enum VoteDirection {
-        VOTE_ABSTAIN = 0,
-        VOTE_YES = 1,
-        VOTE_NO = 2
-    };
-
-private:
-    bool fValid;  //if the vote is currently valid / counted
-    bool fSynced; //if we've sent this to our peers
-    uint256 nProposalHash;
-    VoteDirection nVote;
-    int64_t nTime;
-    CTxIn vin;
-
-public:
-    CBudgetVote();
-    CBudgetVote(const CTxIn& vin, const uint256& nProposalHash, VoteDirection nVoteIn);
-
-    void Relay() const;
-
-    std::string GetVoteString() const
-    {
-        std::string ret = "ABSTAIN";
-        if (nVote == VOTE_YES) ret = "YES";
-        if (nVote == VOTE_NO) ret = "NO";
-        return ret;
-    }
-
-    uint256 GetHash() const;
-
-    // override CSignedMessage functions
-    uint256 GetSignatureHash() const override { return GetHash(); }
-    std::string GetStrMessage() const override;
-    const CTxIn GetVin() const override { return vin; };
-
-    UniValue ToJSON() const;
-
-    VoteDirection GetDirection() const { return nVote; }
-    uint256 GetProposalHash() const { return nProposalHash; }
-    int64_t GetTime() const { return nTime; }
-    bool IsSynced() const { return fSynced; }
-    bool IsValid() const { return fValid; }
-
-    void SetSynced(bool _fSynced) { fSynced = _fSynced; }
-    void SetTime(const int64_t& _nTime) { nTime = _nTime; }
-    void SetValid(bool _fValid) { fValid = _fValid; }
-
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action)
-    {
-        READWRITE(vin);
-        READWRITE(nProposalHash);
-        int nVoteInt = (int) nVote;
-        READWRITE(nVoteInt);
-        if (ser_action.ForRead())
-            nVote = (VoteDirection) nVoteInt;
-        READWRITE(nTime);
-        READWRITE(vchSig);
-        try
-        {
-            READWRITE(nMessVersion);
-        } catch (...) {
-            nMessVersion = MessageVersion::MESS_VER_STRMESS;
-        }
-    }
-};
-
-//
-// CFinalizedBudgetVote - Allow a masternode node to vote and broadcast throughout the network
-//
-
-class CFinalizedBudgetVote : public CSignedMessage
-{
-private:
-    bool fValid;  //if the vote is currently valid / counted
-    bool fSynced; //if we've sent this to our peers
-    CTxIn vin;
-    uint256 nBudgetHash;
-    int64_t nTime;
-
-public:
-    CFinalizedBudgetVote();
-    CFinalizedBudgetVote(const CTxIn& vinIn, const uint256& nBudgetHashIn);
-
-    void Relay() const;
-    uint256 GetHash() const;
-
-    // override CSignedMessage functions
-    uint256 GetSignatureHash() const override { return GetHash(); }
-    std::string GetStrMessage() const override;
-    const CTxIn GetVin() const override { return vin; };
-
-    UniValue ToJSON() const;
-
-    uint256 GetBudgetHash() const { return nBudgetHash; }
-    int64_t GetTime() const { return nTime; }
-    bool IsSynced() const { return fSynced; }
-    bool IsValid() const { return fValid; }
-
-    void SetSynced(bool _fSynced) { fSynced = _fSynced; }
-    void SetTime(const int64_t& _nTime) { nTime = _nTime; }
-    void SetValid(bool _fValid) { fValid = _fValid; }
-
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action)
-    {
-        READWRITE(vin);
-        READWRITE(nBudgetHash);
-        READWRITE(nTime);
-        READWRITE(vchSig);
-        try
-        {
-            READWRITE(nMessVersion);
-        } catch (...) {
-            nMessVersion = MessageVersion::MESS_VER_STRMESS;
-        }
-    }
-};
 
 /** Save Budget Manager (budget.dat)
  */

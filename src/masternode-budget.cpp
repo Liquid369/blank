@@ -1785,59 +1785,6 @@ void CBudgetProposal::Relay()
     g_connman->RelayInv(inv);
 }
 
-CBudgetVote::CBudgetVote() :
-        CSignedMessage(),
-        fValid(true),
-        fSynced(false),
-        nProposalHash(UINT256_ZERO),
-        nVote(VOTE_ABSTAIN),
-        nTime(0),
-        vin()
-{ }
-
-CBudgetVote::CBudgetVote(const CTxIn& vinIn, const uint256& nProposalHashIn, VoteDirection nVoteIn) :
-        CSignedMessage(),
-        fValid(true),
-        fSynced(false),
-        nProposalHash(nProposalHashIn),
-        nVote(nVoteIn),
-        vin(vinIn)
-{
-    nTime = GetAdjustedTime();
-}
-
-void CBudgetVote::Relay() const
-{
-    CInv inv(MSG_BUDGET_VOTE, GetHash());
-    g_connman->RelayInv(inv);
-}
-
-uint256 CBudgetVote::GetHash() const
-{
-    CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
-    ss << vin;
-    ss << nProposalHash;
-    ss << (int) nVote;
-    ss << nTime;
-    return ss.GetHash();
-}
-
-std::string CBudgetVote::GetStrMessage() const
-{
-    return vin.prevout.ToStringShort() + nProposalHash.ToString() +
-            std::to_string(nVote) + std::to_string(nTime);
-}
-
-UniValue CBudgetVote::ToJSON() const
-{
-    UniValue bObj(UniValue::VOBJ);
-    bObj.pushKV("mnId", vin.prevout.hash.ToString());
-    bObj.pushKV("nHash", vin.prevout.GetHash().ToString());
-    bObj.pushKV("Vote", GetVoteString());
-    bObj.pushKV("nTime", nTime);
-    bObj.pushKV("fValid", fValid);
-    return bObj;
-}
 
 CFinalizedBudget::CFinalizedBudget() :
         fAutoChecked(false),
@@ -2267,53 +2214,6 @@ void CFinalizedBudget::Relay()
     g_connman->RelayInv(inv);
 }
 
-CFinalizedBudgetVote::CFinalizedBudgetVote() :
-        CSignedMessage(),
-        fValid(true),
-        fSynced(false),
-        vin(),
-        nBudgetHash(),
-        nTime(0)
-{ }
-
-CFinalizedBudgetVote::CFinalizedBudgetVote(const CTxIn& vinIn, const uint256& nBudgetHashIn) :
-        CSignedMessage(),
-        fValid(true),
-        fSynced(false),
-        vin(vinIn),
-        nBudgetHash(nBudgetHashIn)
-{
-    nTime = GetAdjustedTime();
-}
-
-void CFinalizedBudgetVote::Relay() const
-{
-    CInv inv(MSG_BUDGET_FINALIZED_VOTE, GetHash());
-    g_connman->RelayInv(inv);
-}
-
-uint256 CFinalizedBudgetVote::GetHash() const
-{
-    CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
-    ss << vin;
-    ss << nBudgetHash;
-    ss << nTime;
-    return ss.GetHash();
-}
-
-UniValue CFinalizedBudgetVote::ToJSON() const
-{
-    UniValue bObj(UniValue::VOBJ);
-    bObj.pushKV("nHash", vin.prevout.GetHash().ToString());
-    bObj.pushKV("nTime", (int64_t) nTime);
-    bObj.pushKV("fValid", fValid);
-    return bObj;
-}
-
-std::string CFinalizedBudgetVote::GetStrMessage() const
-{
-    return vin.prevout.ToStringShort() + nBudgetHash.ToString() + std::to_string(nTime);
-}
 
 std::string CBudgetManager::ToString() const
 {
