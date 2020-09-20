@@ -257,6 +257,7 @@ set(WALLET_SOURCES
         ./src/wallet/db.cpp
         ./src/addressbook.cpp
         ./src/crypter.cpp
+        ./src/budget/budgetmanager.cpp
         ./src/budget/budgetproposal.cpp
         ./src/budget/budgetvote.cpp
         ./src/budget/finalizedbudget.cpp

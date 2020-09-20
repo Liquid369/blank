@@ -205,6 +205,7 @@ BITCOIN_CORE_H = \
   logging.h \
   legacy/validation_zerocoin_legacy.h \
   sapling/sapling_validation.h \
+  budget/budgetmanager.h \
   budget/budgetproposal.h \
   budget/budgetvote.h \
   budget/finalizedbudget.h \
@@ -378,6 +379,7 @@ libbitcoin_wallet_a_SOURCES = \
   addressbook.cpp \
   crypter.cpp \
   key_io.cpp \
+  budget/budgetmanager.cpp \
   budget/budgetproposal.cpp \
   budget/budgetvote.cpp \
   budget/finalizedbudget.cpp \
