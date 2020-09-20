@@ -43,7 +43,9 @@ public:
 
     ~SaplingOperation() { delete tkeyChange; }
 
+    OperationResult build();
     OperationResult send(std::string& retTxHash);
+    OperationResult buildAndSend(std::string& retTxHash);
 
     void setFromAddress(const CTxDestination&);
     void setFromAddress(const libzcash::SaplingPaymentAddress&);

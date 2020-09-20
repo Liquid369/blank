@@ -35,7 +35,7 @@ OperationResult SaplingOperation::checkTxValues(TxValues& txValues, bool isFromt
     return OperationResult(true);
 }
 
-OperationResult SaplingOperation::send(std::string& retTxHash)
+OperationResult SaplingOperation::build()
 {
 
     bool isFromtAddress = fromAddress.isFromTAddress();
@@ -139,7 +139,11 @@ OperationResult SaplingOperation::send(std::string& retTxHash)
     // Build the transaction
     txBuilder.SetFee(fee);
     finalTx = txBuilder.Build().GetTxOrThrow();
+    return OperationResult(true);
+}
 
+OperationResult SaplingOperation::send(std::string& retTxHash)
+{
     if (!testMode) {
         CWalletTx wtx(pwalletMain, finalTx);
         const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, tkeyChange, g_connman.get());
@@ -150,6 +154,12 @@ OperationResult SaplingOperation::send(std::string& retTxHash)
 
     retTxHash = finalTx.GetHash().ToString();
     return OperationResult(true);
+}
+
+OperationResult SaplingOperation::buildAndSend(std::string& retTxHash)
+{
+    OperationResult res = build();
+    return (res) ? send(retTxHash) : res;
 }
 
 void SaplingOperation::setFromAddress(const CTxDestination& _dest)
