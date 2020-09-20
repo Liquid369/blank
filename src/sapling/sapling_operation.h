@@ -41,6 +41,8 @@ public:
     explicit SaplingOperation(const Consensus::Params& consensusParams, int chainHeight) : txBuilder(consensusParams, chainHeight) {};
     explicit SaplingOperation(TransactionBuilder& _builder) : txBuilder(_builder) {};
 
+    ~SaplingOperation() { delete tkeyChange; }
+
     OperationResult send(std::string& retTxHash);
 
     void setFromAddress(const CTxDestination&);
@@ -50,6 +52,7 @@ public:
     SaplingOperation* setFee(CAmount _fee) { fee = _fee; return this; }
     SaplingOperation* setMinDepth(int _mindepth) { assert(_mindepth >= 0); mindepth = _mindepth; return this; }
     SaplingOperation* setTxBuilder(TransactionBuilder& builder) { txBuilder = builder; return this; }
+    SaplingOperation* setTransparentKeyChange(CReserveKey* reserveKey) { tkeyChange = reserveKey; return this; }
 
     CTransaction getFinalTx() { return finalTx; }
 
@@ -66,7 +69,10 @@ private:
     std::vector<COutput> transInputs;
     std::vector<SaplingNoteEntry> shieldedInputs;
     int mindepth{5}; // Min default depth 5.
-    CAmount fee{0};
+    CAmount fee{DEFAULT_SAPLING_FEE}; // Hardcoded fee for now.
+
+    // transparent change
+    CReserveKey* tkeyChange{nullptr};
 
     // Builder
     TransactionBuilder txBuilder;
