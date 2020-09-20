@@ -640,7 +640,8 @@ public:
         // converts CommitResult in human-readable format
         std::string ToString() const;
     };
-    CWallet::CommitResult CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CConnman* connman);
+    CWallet::CommitResult CommitTransaction(CWalletTx& wtxNew, CReserveKey& opReservekey, CConnman* connman);
+    CWallet::CommitResult CommitTransaction(CWalletTx& wtxNew, CReserveKey* reservekey, CConnman* connman);
     bool CreateCoinStake(const CKeyStore& keystore,
                          const CBlockIndex* pindexPrev,
                          unsigned int nBits,
