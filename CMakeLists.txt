@@ -264,7 +264,6 @@ set(WALLET_SOURCES
         ./src/budget/finalizedbudget.cpp
         ./src/budget/finalizedbudgetvote.cpp
         ./src/masternode.cpp
-        ./src/masternode-budget.cpp
         ./src/masternode-payments.cpp
         ./src/masternode-sync.cpp
         ./src/tiertwo_networksync.cpp

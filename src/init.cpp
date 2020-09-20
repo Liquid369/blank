@@ -18,6 +18,7 @@
 #include "addrman.h"
 #include "amount.h"
 #include "budget/budgetdb.h"
+#include "budget/budgetmanager.h"
 #include "checkpoints.h"
 #include "compat/sanity.h"
 #include "consensus/upgrades.h"
