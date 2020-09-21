@@ -14,6 +14,7 @@
 #include "interface/wallet.h"
 
 #include "allocators.h" /* for SecureString */
+#include "operationresult.h"
 #include "wallet/wallet.h"
 #include "pairresult.h"
 
@@ -203,6 +204,9 @@ public:
 
     // Send coins to a list of recipients
     SendCoinsReturn sendCoins(WalletModelTransaction& transaction);
+
+    // Prepare shielded transaction.
+    OperationResult PrepareShieldedTransaction(WalletModelTransaction& modelTransaction);
 
     // Wallet encryption
     bool setWalletEncrypted(bool encrypted, const SecureString& passphrase);

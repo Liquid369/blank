@@ -16,6 +16,7 @@
 #include "db.h"
 #include "keystore.h"
 #include "sapling/key_io_sapling.h"
+#include "sapling/sapling_operation.h"
 #include "spork.h"
 #include "sync.h"
 #include "guiinterface.h"
@@ -511,6 +512,48 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
     emitBalanceChanged(); // update balance immediately, otherwise there could be a short noticeable delay until pollBalanceChanged hits
 
     return SendCoinsReturn(OK);
+}
+
+OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction& modelTransaction)
+{
+    // Basic checks first
+
+    // Check network status
+    int nextBlockHeight = cachedNumBlocks + 1;
+    if (!Params().GetConsensus().NetworkUpgradeActive(nextBlockHeight, Consensus::UPGRADE_V5_DUMMY)) {
+        return errorOut("Error, cannot send transaction. Sapling is not activated");
+    }
+
+    // Load shieldedAddrRecipients.
+    std::vector<SendManyRecipient> recipients;
+    for (const auto& recipient : modelTransaction.getRecipients()) {
+        if (recipient.isShieldedAddr) {
+            auto pa = KeyIO::DecodeSaplingPaymentAddress(recipient.address.toStdString());
+            if (!pa) return errorOut("Error, invalid shielded address");
+            recipients.emplace_back(*pa, recipient.amount, "");
+        } else {
+            auto dest = DecodeDestination(recipient.address.toStdString());
+            if (!IsValidDestination(dest)) return errorOut("Error, invalid transparent address");
+            recipients.emplace_back(dest, recipient.amount);
+        }
+    }
+
+    // Now check the transaction size
+    auto opResult = CheckTransactionSize(recipients, true);
+    if (!opResult) return opResult;
+
+    // Create the operation
+    TransactionBuilder txBuilder = TransactionBuilder(Params().GetConsensus(), nextBlockHeight, wallet);
+    SaplingOperation operation(txBuilder);
+    auto operationResult = operation.setRecipients(recipients)->build();
+
+    // load the transaction and key change (if needed)
+    CWalletTx* newTx = modelTransaction.getTransaction();
+    newTx = new CWalletTx(wallet, operation.getFinalTx());
+    Optional<CReserveKey>& optKeyChange = operation.GetTransparentKeyChange();
+    CReserveKey* tKeyChange = modelTransaction.getPossibleKeyChange();
+    if (optKeyChange) tKeyChange = optKeyChange.get_ptr();
+    return opResult;
 }
 
 const CWalletTx* WalletModel::getTx(uint256 id)
