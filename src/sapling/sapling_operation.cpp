@@ -138,7 +138,15 @@ OperationResult SaplingOperation::build()
 
     // Build the transaction
     txBuilder.SetFee(fee);
-    finalTx = txBuilder.Build().GetTxOrThrow();
+    TransactionBuilderResult txResult = txBuilder.Build();
+    auto opTx = txResult.GetTx();
+
+    // Check existent tx
+    if (!opTx) {
+        return errorOut("Failed to build transaction: " + txResult.GetError());
+    }
+
+    finalTx = *opTx;
     return OperationResult(true);
 }
 
