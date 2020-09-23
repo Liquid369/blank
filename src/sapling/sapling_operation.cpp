@@ -38,7 +38,7 @@ OperationResult SaplingOperation::checkTxValues(TxValues& txValues, bool isFromt
 OperationResult SaplingOperation::build()
 {
 
-    bool isFromtAddress = fromAddress.isFromTAddress();
+    bool isFromtAddress = fromAddress.isFromTAddress() || selectFromtaddrs;
     bool isFromShielded = fromAddress.isFromSapAddress();
 
     // It needs to have a from (for now at least)
@@ -175,7 +175,7 @@ void SaplingOperation::setFromAddress(const libzcash::SaplingPaymentAddress& _pa
 OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
 {
     std::set<CTxDestination> destinations;
-    destinations.insert(fromAddress.fromTaddr);
+    if (fromAddress.isFromTAddress()) destinations.insert(fromAddress.fromTaddr);
     if (!pwalletMain->AvailableCoins(
             &transInputs,
             nullptr,
