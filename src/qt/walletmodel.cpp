@@ -545,15 +545,18 @@ OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction& 
     // Create the operation
     TransactionBuilder txBuilder = TransactionBuilder(Params().GetConsensus(), nextBlockHeight, wallet);
     SaplingOperation operation(txBuilder);
-    auto operationResult = operation.setRecipients(recipients)->build();
+    auto operationResult = operation.setRecipients(recipients)
+             ->setTransparentKeyChange(modelTransaction.getPossibleKeyChange())
+             ->setSelectTransparentCoins(true)
+             ->build();
+
+    if (!operationResult) {
+        return operationResult;
+    }
 
     // load the transaction and key change (if needed)
-    CWalletTx* newTx = modelTransaction.getTransaction();
-    newTx = new CWalletTx(wallet, operation.getFinalTx());
-    Optional<CReserveKey>& optKeyChange = operation.GetTransparentKeyChange();
-    CReserveKey* tKeyChange = modelTransaction.getPossibleKeyChange();
-    if (optKeyChange) tKeyChange = optKeyChange.get_ptr();
-    return opResult;
+    modelTransaction.setTransaction(new CWalletTx(wallet, operation.getFinalTx()));
+    return operationResult;
 }
 
 const CWalletTx* WalletModel::getTx(uint256 id)
