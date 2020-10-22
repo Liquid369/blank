@@ -303,7 +303,7 @@ void FillBlockPayee(CMutableTransaction& txNew, const int nHeight, bool fProofOf
 
     if (!sporkManager.IsSporkActive(SPORK_13_ENABLE_SUPERBLOCKS) ||  // if superblocks are not enabled
             !g_budgetman.IsBudgetPaymentBlock(nHeight) || // or this is not a superblock
-            !g_budgetman.FillBlockPayee(txNew, fProofOfStake) ) {         // or there's no budget with enough votes
+            !g_budgetman.FillBlockPayee(txNew, nHeight, fProofOfStake) ) {    // or there's no budget with enough votes
         // pay a masternode
         masternodePayments.FillBlockPayee(txNew, nHeight, fProofOfStake);
     }
