@@ -7,6 +7,7 @@
 #include "db.h"
 
 #include "addrman.h"
+#include "guiinterfaceutil.h"
 #include "hash.h"
 #include "protocol.h"
 #include "util.h"
@@ -144,7 +145,7 @@ void CDBEnv::MakeMock()
     fMockDb = true;
 }
 
-CDBEnv::VerifyResult CDBEnv::Verify(const std::string& strFile, bool (*recoverFunc)(CDBEnv& dbenv, const std::string& strFile))
+CDBEnv::VerifyResult CDBEnv::Verify(const std::string& strFile, bool (*recoverFunc)(const std::string& strFile))
 {
     LOCK(cs_db);
     assert(mapFileUseCount.count(strFile) == 0);
@@ -157,8 +158,121 @@ CDBEnv::VerifyResult CDBEnv::Verify(const std::string& strFile, bool (*recoverFu
         return RECOVER_FAIL;
 
     // Try to recover:
-    bool fRecovered = (*recoverFunc)(*this, strFile);
+    bool fRecovered = (*recoverFunc)(strFile);
     return (fRecovered ? RECOVER_OK : RECOVER_FAIL);
+}
+
+bool CDB::Recover(const std::string& filename, void *callbackDataIn, bool (*recoverKVcallback)(void* callbackData, CDataStream ssKey, CDataStream ssValue))
+{
+    // Recovery procedure:
+    // move wallet file to wallet.timestamp.bak
+    // Call Salvage with fAggressive=true to
+    // get as much data as possible.
+    // Rewrite salvaged data to fresh wallet file
+    // Set -rescan so any missing transactions will be
+    // found.
+    int64_t now = GetTime();
+    std::string newFilename = strprintf("wallet.%d.bak", now);
+
+    int result = bitdb.dbenv->dbrename(NULL, filename.c_str(), NULL,
+                                       newFilename.c_str(), DB_AUTO_COMMIT);
+    if (result == 0) {
+        LogPrintf("Renamed %s to %s\n", filename, newFilename);
+    } else {
+        LogPrintf("Failed to rename %s to %s\n", filename, newFilename);
+        return false;
+    }
+
+    std::vector<CDBEnv::KeyValPair> salvagedData;
+    bool fSuccess = bitdb.Salvage(newFilename, true, salvagedData);
+    if (salvagedData.empty()) {
+        LogPrintf("Salvage(aggressive) found no records in %s.\n", newFilename);
+        return false;
+    }
+    LogPrintf("Salvage(aggressive) found %u records\n", salvagedData.size());
+
+    std::unique_ptr<Db> pdbCopy(new Db(bitdb.dbenv, 0));
+    int ret = pdbCopy->open(NULL,               // Txn pointer
+                            filename.c_str(),   // Filename
+                            "main",             // Logical db name
+                            DB_BTREE,           // Database type
+                            DB_CREATE,          // Flags
+                            0);
+    if (ret > 0) {
+        LogPrintf("Cannot create database file %s\n", filename);
+        return false;
+    }
+
+    DbTxn* ptxn = bitdb.TxnBegin();
+    for (CDBEnv::KeyValPair& row : salvagedData) {
+        if (recoverKVcallback) {
+            CDataStream ssKey(row.first, SER_DISK, CLIENT_VERSION);
+            CDataStream ssValue(row.second, SER_DISK, CLIENT_VERSION);
+            std::string strType, strErr;
+            if (!(*recoverKVcallback)(callbackDataIn, ssKey, ssValue))
+                continue;
+        }
+        Dbt datKey(&row.first[0], row.first.size());
+        Dbt datValue(&row.second[0], row.second.size());
+        int ret2 = pdbCopy->put(ptxn, &datKey, &datValue, DB_NOOVERWRITE);
+        if (ret2 > 0)
+            fSuccess = false;
+    }
+    ptxn->commit(0);
+    pdbCopy->close(0);
+
+    return fSuccess;
+}
+
+bool CDB::VerifyEnvironment(const std::string& walletFile, const fs::path& dataDir, std::string& errorStr)
+{
+    LogPrintf("Using BerkeleyDB version %s\n", DbEnv::version(0, 0, 0));
+    LogPrintf("Using wallet %s\n", walletFile);
+
+    // Wallet file must be a plain filename without a directory
+    fs::path wallet_file_path(walletFile);
+    if (walletFile != wallet_file_path.filename().string())
+        return UIError(strprintf(("Wallet %s resides outside data directory %s"), walletFile, dataDir.string()));
+
+    if (!bitdb.Open(dataDir)) {
+        // try moving the database env out of the way
+        fs::path pathDatabase = dataDir / "database";
+        fs::path pathDatabaseBak = dataDir / strprintf("database.%d.bak", GetTime());
+        try {
+            fs::rename(pathDatabase, pathDatabaseBak);
+            LogPrintf("Moved old %s to %s. Retrying.\n", pathDatabase.string(), pathDatabaseBak.string());
+        } catch (const fs::filesystem_error&) {
+            // failure is ok (well, not really, but it's not worse than what we started with)
+        }
+
+        // try again
+        if (!bitdb.Open(dataDir)) {
+            // if it still fails, it probably means we can't even create the database env
+            errorStr = strprintf(("Error initializing wallet database environment %s!"), GetDataDir());
+            return false;
+        }
+    }
+    return true;
+}
+
+bool CDB::VerifyDatabaseFile(const std::string& walletFile, const fs::path& dataDir, std::string& warningStr, std::string& errorStr, bool (*recoverFunc)(const std::string& strFile))
+{
+    if (fs::exists(dataDir / walletFile)) {
+        CDBEnv::VerifyResult r = bitdb.Verify(walletFile, recoverFunc);
+        if (r == CDBEnv::RECOVER_OK) {
+            warningStr = strprintf(("Warning: Wallet file corrupt, data salvaged!"
+                                     " Original %s saved as %s in %s; if"
+                                     " your balance or transactions are incorrect you should"
+                                     " restore from a backup."),
+                                   walletFile, "wallet.{timestamp}.bak", dataDir);
+        }
+        if (r == CDBEnv::RECOVER_FAIL) {
+            errorStr = strprintf(("%s corrupt, salvage failed"), walletFile);
+            return false;
+        }
+    }
+    // also return true if files does not exists
+    return true;
 }
 
 /* End of headers, beginning of key/value data */
