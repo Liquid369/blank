@@ -23,7 +23,6 @@
 #include <fstream>
 #include <string>
 
-#include <boost/scoped_ptr.hpp>
 #include <boost/thread.hpp>
 
 static std::atomic<unsigned int> nWalletDBUpdateCounter;
@@ -1110,7 +1109,7 @@ bool CWalletDB::Recover(CDBEnv& dbenv, const std::string& filename, bool fOnlyKe
     LogPrintf("Salvage(aggressive) found %u records\n", salvagedData.size());
 
     bool fSuccess = allOK;
-    boost::scoped_ptr<Db> pdbCopy(new Db(dbenv.dbenv, 0));
+    std::unique_ptr<Db> pdbCopy(new Db(dbenv.dbenv, 0));
     int ret = pdbCopy->open(NULL,               // Txn pointer
         filename.c_str(),   // Filename
         "main",             // Logical db name
