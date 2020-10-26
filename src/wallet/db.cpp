@@ -587,3 +587,38 @@ void CDBEnv::Flush(bool fShutdown)
         }
     }
 }
+
+bool CDB::PeriodicFlush(const std::string& strFile)
+{
+    bool ret = false;
+    TRY_LOCK(bitdb.cs_db, lockDb);
+    if (lockDb) {
+        // Don't do this if any databases are in use
+        int nRefCount = 0;
+        std::map<std::string, int>::iterator mi = bitdb.mapFileUseCount.begin();
+        while (mi != bitdb.mapFileUseCount.end()) {
+            nRefCount += (*mi).second;
+            mi++;
+        }
+
+        if (nRefCount == 0) {
+            boost::this_thread::interruption_point();
+            std::map<std::string, int>::iterator _mi = bitdb.mapFileUseCount.find(strFile);
+            if (_mi != bitdb.mapFileUseCount.end()) {
+                LogPrint(BCLog::DB, "Flushing %s\n", strFile);
+                int64_t nStart = GetTimeMillis();
+
+                // Flush wallet file so it's self contained
+                bitdb.CloseDb(strFile);
+                bitdb.CheckpointLSN(strFile);
+
+                bitdb.mapFileUseCount.erase(_mi++);
+                LogPrint(BCLog::DB, "Flushed %s %dms\n", strFile, GetTimeMillis() - nStart);
+                ret = true;
+            }
+        }
+    }
+
+    return ret;
+}
+

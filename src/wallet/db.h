@@ -110,8 +110,7 @@ public:
 
     /* flush the wallet passively (TRY_LOCK)
        ideal to be called periodically */
-    // TODO: Back port Periodic flush..
-    //static bool PeriodicFlush(std::string strFile);
+    static bool PeriodicFlush(const std::string& strFile);
     /* verifies the database environment */
     static bool VerifyEnvironment(const std::string& walletFile, const fs::path& dataDir, std::string& errorStr);
     /* verifies the database file */
