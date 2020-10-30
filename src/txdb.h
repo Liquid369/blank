@@ -18,8 +18,6 @@
 #include <utility>
 #include <vector>
 
-#include <boost/function.hpp>
-
 class CCoinsViewDBCursor;
 class uint256;
 
@@ -143,7 +141,7 @@ public:
     bool ReadFlag(const std::string& name, bool& fValue);
     bool WriteInt(const std::string& name, int nValue);
     bool ReadInt(const std::string& name, int& nValue);
-    bool LoadBlockIndexGuts(boost::function<CBlockIndex*(const uint256&)> insertBlockIndex);
+    bool LoadBlockIndexGuts(std::function<CBlockIndex*(const uint256&)> insertBlockIndex);
     bool ReadLegacyBlockIndex(const uint256& blockHash, CLegacyBlockIndex& biRet);
 };
 
