@@ -1,14 +1,15 @@
 // Copyright (c) 2012-2016 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
-#include <boost/test/unit_test.hpp>
+
 #include "cuckoocache.h"
 #include "script/sigcache.h"
 #include "test/test_pivx.h"
 #include "random.h"
-#include <thread>
-#include <boost/thread.hpp>
 
+#include <thread>
+
+#include <boost/test/unit_test.hpp>
 
 /** Test Suite for CuckooCache
  *
