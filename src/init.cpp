@@ -198,6 +198,7 @@ void Interrupt()
     InterruptRPC();
     InterruptREST();
     InterruptTorControl();
+    InterruptMapPort();
     if (g_connman)
         g_connman->Interrupt();
 }
@@ -228,7 +229,7 @@ void PrepareShutdown()
         bitdb.Flush(false);
     GenerateBitcoins(false, NULL, 0);
 #endif
-    MapPort(false);
+    StopMapPort();
 
     UnregisterValidationInterface(peerLogic.get());
     peerLogic.reset();
@@ -1871,7 +1872,9 @@ bool AppInit2()
     Discover(threadGroup);
 
     // Map ports with UPnP
-    MapPort(gArgs.GetBoolArg("-upnp", DEFAULT_UPNP));
+    if (gArgs.GetBoolArg("-upnp", DEFAULT_UPNP)) {
+        StartMapPort();
+    }
 
     std::string strNodeError;
     CConnman::Options connOptions;
