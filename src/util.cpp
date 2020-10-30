@@ -22,9 +22,6 @@
 #include <stdarg.h>
 #include <thread>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-
-
 #ifndef WIN32
 // for posix_fallocate
 #ifdef __linux__
@@ -75,10 +72,8 @@
 #include <sys/prctl.h>
 #endif
 
-#include <boost/algorithm/string/join.hpp>
 #include <boost/program_options/detail/config_file.hpp>
 #include <boost/program_options/parsers.hpp>
-#include <boost/thread.hpp>
 #include <openssl/conf.h>
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
