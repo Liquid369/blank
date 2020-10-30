@@ -234,6 +234,8 @@ void PrepareShutdown()
     peerLogic.reset();
     g_connman.reset();
 
+    StopTorControl();
+
     DumpMasternodes();
     DumpBudgets(g_budgetman);
     DumpMasternodePayments();
@@ -315,8 +317,6 @@ void Shutdown()
     if (!fRestartRequested) {
         PrepareShutdown();
     }
-    // Shutdown part 2: Stop TOR thread and delete wallet instance
-    StopTorControl();
 #ifdef ENABLE_WALLET
     delete pwalletMain;
     pwalletMain = NULL;
@@ -1865,7 +1865,7 @@ bool AppInit2()
 #endif
 
     if (gArgs.GetBoolArg("-listenonion", DEFAULT_LISTEN_ONION))
-        StartTorControl(threadGroup);
+        StartTorControl();
 
     Discover(threadGroup);
 
