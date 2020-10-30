@@ -603,7 +603,8 @@ static void BlockSizeNotifyCallback(int size, const uint256& hashNewTip)
 
     boost::replace_all(strCmd, "%s", hashNewTip.GetHex());
     boost::replace_all(strCmd, "%d", std::to_string(size));
-    boost::thread t(runCommand, strCmd); // thread runs free
+    std::thread t(runCommand, strCmd);
+    t.detach(); // thread runs free
 }
 
 ////////////////////////////////////////////////////
