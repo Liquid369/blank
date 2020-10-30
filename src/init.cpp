@@ -1869,7 +1869,7 @@ bool AppInit2()
     if (gArgs.GetBoolArg("-listenonion", DEFAULT_LISTEN_ONION))
         StartTorControl();
 
-    Discover(threadGroup);
+    Discover();
 
     // Map ports with UPnP
     if (gArgs.GetBoolArg("-upnp", DEFAULT_UPNP)) {
