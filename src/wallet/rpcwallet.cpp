@@ -1195,7 +1195,7 @@ UniValue rawdelegatestake(const JSONRPCRequest& request)
 }
 
 
-CAmount getBalanceShieldedAddr(const libzcash::PaymentAddress& filterAddress, int minDepth = 1, bool ignoreUnspendable=true) {
+CAmount getBalanceShieldedAddr(Optional<libzcash::SaplingPaymentAddress>& filterAddress, int minDepth = 1, bool ignoreUnspendable=true) {
     CAmount balance = 0;
     std::vector<SaplingNoteEntry> saplingEntries;
     LOCK2(cs_main, pwalletMain->cs_wallet);
@@ -1237,12 +1237,12 @@ UniValue getshieldedbalance(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    libzcash::PaymentAddress address{libzcash::InvalidEncoding()};
+    Optional<libzcash::SaplingPaymentAddress> address;
     if (request.params.size() > 0) {
         std::string addressStr = request.params[0].get_str();
         if (addressStr.empty() || addressStr != "*") {
-            address = KeyIO::DecodePaymentAddress(addressStr);
-            if (!IsValidPaymentAddress(address)) {
+            address = KeyIO::DecodeSaplingPaymentAddress(addressStr);
+            if (!address) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid shielded address");
             }
         }
@@ -2309,11 +2309,11 @@ UniValue listreceivedbyshieldedaddress(const JSONRPCRequest& request)
     // Check that the from address is valid.
     auto fromaddress = request.params[0].get_str();
 
-    auto zaddr = KeyIO::DecodePaymentAddress(fromaddress);
-    if (!IsValidPaymentAddress(zaddr)) {
+    auto zaddr = KeyIO::DecodeSaplingPaymentAddress(fromaddress);
+    if (!zaddr) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid addr.");
     }
-    libzcash::SaplingPaymentAddress shieldedAddr = *boost::get<libzcash::SaplingPaymentAddress>(&zaddr);
+    libzcash::SaplingPaymentAddress shieldedAddr = *zaddr;
 
     auto sspkm = pwalletMain->GetSaplingScriptPubKeyMan();
     // Visitor to support Sapling addrs
@@ -2328,7 +2328,7 @@ UniValue listreceivedbyshieldedaddress(const JSONRPCRequest& request)
     std::set<std::pair<libzcash::PaymentAddress, uint256>> nullifierSet;
     bool hasSpendingKey = pwalletMain->HaveSpendingKeyForPaymentAddress(shieldedAddr);
     if (hasSpendingKey) {
-        nullifierSet = sspkm->GetNullifiersForAddresses({zaddr});
+        nullifierSet = sspkm->GetNullifiersForAddresses({*zaddr});
     }
 
     for (const SaplingNoteEntry& entry : saplingEntries) {

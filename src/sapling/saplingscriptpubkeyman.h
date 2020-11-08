@@ -235,7 +235,7 @@ public:
 
     /* Find notes filtered by payment address, min depth, ability to spend */
     void GetFilteredNotes(std::vector<SaplingNoteEntry>& saplingEntries,
-                          const libzcash::PaymentAddress& address,
+                          Optional<libzcash::SaplingPaymentAddress>& address,
                           int minDepth=1,
                           bool ignoreSpent=true,
                           bool requireSpendingKey=true);

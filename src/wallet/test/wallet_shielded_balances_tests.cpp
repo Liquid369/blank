@@ -350,9 +350,9 @@ BOOST_AUTO_TEST_CASE(GetShieldedAvailableCredit)
 
     // 3) Now can spend one output and recalculate the shielded credit.
     std::vector<SaplingNoteEntry> saplingEntries;
-    libzcash::PaymentAddress paymentAddress(pa);
+    Optional<libzcash::SaplingPaymentAddress> opPa(pa);
     wallet.GetSaplingScriptPubKeyMan()->GetFilteredNotes(saplingEntries,
-                                                         paymentAddress,
+                                                         opPa,
                                                          0);
 
     std::vector<SaplingOutPoint> ops = {saplingEntries[0].op};
