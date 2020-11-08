@@ -530,17 +530,20 @@ Optional<std::pair<
     std::set<uint256> ovks;
     ovks.emplace(getCommonOVKFromSeed());
     if (!tx.sapData->vShieldedSpend.empty()) {
-        const SaplingOutPoint& prevOut = mapSaplingNullifiersToNotes[tx.sapData->vShieldedSpend[0].nullifier];
-        const CWalletTx* txPrev = wallet->GetWalletTx(prevOut.hash);
-        if (!txPrev) return nullopt;
-        const auto& it = txPrev->mapSaplingNoteData.find(prevOut);
-        if (it != txPrev->mapSaplingNoteData.end()) {
-            const SaplingNoteData &noteData = it->second;
-            libzcash::SaplingExtendedSpendingKey extsk;
-            libzcash::SaplingExtendedFullViewingKey extfvk;
-            if (wallet->GetSaplingFullViewingKey(noteData.ivk, extfvk) &&
-                wallet->GetSaplingSpendingKey(extfvk, extsk)) {
-                ovks.emplace(extsk.expsk.ovk);
+        const auto& it = mapSaplingNullifiersToNotes.find(tx.sapData->vShieldedSpend[0].nullifier);
+        if (it != mapSaplingNullifiersToNotes.end()) {
+            const SaplingOutPoint& prevOut = it->second;
+            const CWalletTx* txPrev = wallet->GetWalletTx(prevOut.hash);
+            if (!txPrev) return nullopt;
+            const auto& itPrev = txPrev->mapSaplingNoteData.find(prevOut);
+            if (itPrev != txPrev->mapSaplingNoteData.end()) {
+                const SaplingNoteData& noteData = itPrev->second;
+                libzcash::SaplingExtendedSpendingKey extsk;
+                libzcash::SaplingExtendedFullViewingKey extfvk;
+                if (wallet->GetSaplingFullViewingKey(noteData.ivk, extfvk) &&
+                    wallet->GetSaplingSpendingKey(extfvk, extsk)) {
+                    ovks.emplace(extsk.expsk.ovk);
+                }
             }
         }
     }
