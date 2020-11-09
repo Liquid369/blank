@@ -536,6 +536,31 @@ void CTxMemPool::removeForReorg(const CCoinsViewCache *pcoins, unsigned int nMem
     }
 }
 
+void CTxMemPool::removeWithAnchor(const uint256& invalidRoot)
+{
+
+    // If a block is disconnected from the tip, and the root changed,
+    // we must invalidate transactions from the mempool which spend
+    // from that root -- almost as though they were spending coinbases
+    // which are no longer valid to spend due to coinbase maturity.
+    LOCK(cs);
+    std::list<CTransaction> transactionsToRemove;
+    for (indexed_transaction_set::const_iterator it = mapTx.begin(); it != mapTx.end(); it++) {
+        const CTransaction& tx = it->GetTx();
+        if (!tx.IsShieldedTx()) continue;
+        for (const auto& sd : tx.sapData->vShieldedSpend) {
+            if (sd.anchor == invalidRoot) {
+                transactionsToRemove.push_back(tx);
+                break;
+            }
+        }
+    }
+    for (const CTransaction& tx : transactionsToRemove) {
+        std::list<CTransactionRef> removed;
+        remove(tx, removed, true);
+    }
+}
+
 void CTxMemPool::removeConflicts(const CTransaction& tx, std::list<CTransactionRef>& removed)
 {
     // Remove transactions which depend on inputs of tx, recursively

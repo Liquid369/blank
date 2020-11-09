@@ -479,6 +479,7 @@ public:
     bool addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry, setEntries &setAncestors, bool fCurrentEstimate = true);
     void remove(const CTransaction& tx, std::list<CTransactionRef>& removed, bool fRecursive = false);
     void removeForReorg(const CCoinsViewCache* pcoins, unsigned int nMemPoolHeight, int flags);
+    void removeWithAnchor(const uint256& invalidRoot);
     void removeConflicts(const CTransaction& tx, std::list<CTransactionRef>& removed);
     void removeForBlock(const std::vector<CTransactionRef>& vtx, unsigned int nBlockHeight, std::list<CTransactionRef>& conflicts, bool fCurrentEstimate = true);
     void clear();

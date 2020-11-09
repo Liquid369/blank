@@ -1959,6 +1959,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     if (!ReadBlockFromDisk(block, pindexDelete))
         return AbortNode(state, "Failed to read block");
     // Apply the block atomically to the chain state.
+    const uint256& saplingAnchorBeforeDisconnect = pcoinsTip->GetBestAnchor();
     int64_t nStart = GetTimeMicros();
     {
         CCoinsViewCache view(pcoinsTip);
@@ -1967,6 +1968,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
         assert(view.Flush());
     }
     LogPrint(BCLog::BENCH, "- Disconnect block: %.2fms\n", (GetTimeMicros() - nStart) * 0.001);
+    const uint256& saplingAnchorAfterDisconnect = pcoinsTip->GetBestAnchor();
     // Write the chain state to disk, if necessary.
     if (!FlushStateToDisk(state, FLUSH_STATE_ALWAYS))
         return false;
@@ -1995,6 +1997,12 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
         mnodeman.CacheBlockHash(chainActive[pindexDelete->nHeight - CACHED_BLOCK_HASHES]);
     } else {
         mnodeman.UncacheBlockHash(pindexDelete);
+    }
+    // Evict from mempool if the anchor changes
+    if (saplingAnchorBeforeDisconnect != saplingAnchorAfterDisconnect) {
+        // The anchor may not change between block disconnects,
+        // in which case we don't want to evict from the mempool yet!
+        mempool.removeWithAnchor(saplingAnchorBeforeDisconnect);
     }
     // Update chainActive and related variables.
     UpdateTip(pindexDelete->pprev);
