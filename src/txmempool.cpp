@@ -898,6 +898,11 @@ bool CCoinsViewMemPool::HaveCoin(const COutPoint& outpoint) const
     return mempool.exists(outpoint) || base->HaveCoin(outpoint);
 }
 
+bool CCoinsViewMemPool::GetNullifier(const uint256& nullifier) const
+{
+    return mempool.nullifierExists(nullifier) || base->GetNullifier(nullifier);
+}
+
 size_t CTxMemPool::DynamicMemoryUsage() const
 {
     LOCK(cs);
