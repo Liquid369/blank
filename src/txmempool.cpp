@@ -550,6 +550,18 @@ void CTxMemPool::removeConflicts(const CTransaction& tx, std::list<CTransactionR
             }
         }
     }
+    // Remove txes with conflicting nullifier
+    if (tx.IsShieldedTx()) {
+        for (const SpendDescription& sd : tx.sapData->vShieldedSpend) {
+            const auto& it = mapSaplingNullifiers.find(sd.nullifier);
+            if (it != mapSaplingNullifiers.end()) {
+                const CTransaction& txConflict = *it->second;
+                if (txConflict != tx) {
+                    remove(txConflict, removed, true);
+                }
+            }
+        }
+    }
 }
 
 /**
