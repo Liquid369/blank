@@ -339,7 +339,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     if (!IsStandardTx(tx, nextBlockHeight, reason))
         return state.DoS(0, false, REJECT_NONSTANDARD, reason);
     // is it already in the memory pool?
-    uint256 hash = tx.GetHash();
+    const uint256& hash = tx.GetHash();
     if (pool.exists(hash)) {
         return state.Invalid(false, REJECT_ALREADY_KNOWN, "txn-already-in-mempool");
     }
@@ -358,7 +358,13 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         }
     }
 
-    // TODO check sapling nullifiers
+    // Check sapling nullifiers
+    if (tx.IsShieldedTx()) {
+        for (const auto& sd : tx.sapData->vShieldedSpend) {
+            if (pool.nullifierExists(sd.nullifier))
+                return state.Invalid(false, REJECT_INVALID, "bad-txns-nullifier-double-spent");
+        }
+    }
 
     {
         CCoinsView dummy;
