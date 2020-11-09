@@ -818,6 +818,12 @@ void CTxMemPool::ClearPrioritisation(const uint256 hash)
     mapDeltas.erase(hash);
 }
 
+bool CTxMemPool::nullifierExists(const uint256& nullifier) const
+{
+    LOCK(cs);
+    return mapSaplingNullifiers.count(nullifier);
+}
+
 bool CTxMemPool::HasNoInputsOf(const CTransaction &tx) const
 {
     if (tx.HasZerocoinSpendInputs())
@@ -856,8 +862,14 @@ bool CCoinsViewMemPool::HaveCoin(const COutPoint& outpoint) const
 size_t CTxMemPool::DynamicMemoryUsage() const
 {
     LOCK(cs);
-    // Estimate the overhead of mapTx to be 12 pointers + an allocation, as no exact formula for boost::multi_index_contained is implemented.
-    return memusage::MallocUsage(sizeof(CTxMemPoolEntry) + 12 * sizeof(void*)) * mapTx.size() + memusage::DynamicUsage(mapNextTx) + memusage::DynamicUsage(mapDeltas) + memusage::DynamicUsage(mapLinks) + cachedInnerUsage;
+    // Estimate the overhead of mapTx to be 12 pointers + an allocation, as no exact formula for
+    // boost::multi_index_contained is implemented.
+    return memusage::MallocUsage(sizeof(CTxMemPoolEntry) + 12 * sizeof(void*)) * mapTx.size() +
+            memusage::DynamicUsage(mapNextTx) +
+            memusage::DynamicUsage(mapDeltas) +
+            memusage::DynamicUsage(mapLinks) +
+            cachedInnerUsage +
+            memusage::DynamicUsage(mapSaplingNullifiers);
 }
 
 void CTxMemPool::RemoveStaged(setEntries &stage)

@@ -363,6 +363,9 @@ private:
 
     void trackPackageRemoved(const CFeeRate& rate);
 
+    // Shielded txes
+    std::map<uint256, const CTransaction*> mapSaplingNullifiers;
+
 public:
 
     static const int ROLLING_FEE_HALFLIFE = 60 * 60 * 12; // public only for testing
@@ -494,6 +497,8 @@ public:
     void PrioritiseTransaction(const uint256 hash, const std::string strHash, double dPriorityDelta, const CAmount& nFeeDelta);
     void ApplyDeltas(const uint256 hash, double& dPriorityDelta, CAmount& nFeeDelta) const;
     void ClearPrioritisation(const uint256 hash);
+
+    bool nullifierExists(const uint256& nullifier) const;
 
     /** Remove a set of transactions from the mempool.
      *  If a transaction is in this set, then all in-mempool descendants must
