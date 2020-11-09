@@ -365,6 +365,7 @@ private:
 
     // Shielded txes
     std::map<uint256, const CTransaction*> mapSaplingNullifiers;
+    void checkNullifiers() const;
 
 public:
 
@@ -469,7 +470,6 @@ public:
      */
     void check(const CCoinsViewCache *pcoins) const;
     void setSanityCheck(double dFrequency = 1.0) { nCheckFrequency = dFrequency * 4294967295.0; }
-    void checkNullifiers() const;
 
     // addUnchecked must updated state for all ancestors of a given transaction,
     // to track size/count of descendant transactions.  First version of
