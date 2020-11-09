@@ -404,6 +404,13 @@ bool CTxMemPool::addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry,
         }
     }
 
+    // Save spent nullifiers
+    if (tx.IsShieldedTx()) {
+        for (const SpendDescription& sd : tx.sapData->vShieldedSpend) {
+            mapSaplingNullifiers[sd.nullifier] = &tx;
+        }
+    }
+
     nTransactionsUpdated++;
     totalTxSize += entry.GetTxSize();
     minerPolicyEstimator->processTransaction(entry, fCurrentEstimate);
@@ -413,17 +420,23 @@ bool CTxMemPool::addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry,
 
 void CTxMemPool::removeUnchecked(txiter it)
 {
-    const uint256 hash = it->GetTx().GetHash();
-    for (const CTxIn& txin : it->GetTx().vin)
+    AssertLockHeld(cs);
+    const CTransaction& tx = it->GetTx();
+    for (const CTxIn& txin : tx.vin)
         mapNextTx.erase(txin.prevout);
-
+    // Remove spent nullifiers
+    if (tx.IsShieldedTx()) {
+        for (const SpendDescription& sd : tx.sapData->vShieldedSpend) {
+            mapSaplingNullifiers.erase(sd.nullifier);
+        }
+    }
     totalTxSize -= it->GetTxSize();
     cachedInnerUsage -= it->DynamicMemoryUsage();
     cachedInnerUsage -= memusage::DynamicUsage(mapLinks[it].parents) + memusage::DynamicUsage(mapLinks[it].children);
     mapLinks.erase(it);
     mapTx.erase(it);
     nTransactionsUpdated++;
-    minerPolicyEstimator->removeTx(hash);
+    minerPolicyEstimator->removeTx(tx.GetHash());
 }
 
 // Calculates descendants of entry that are not already in setDescendants, and adds to
