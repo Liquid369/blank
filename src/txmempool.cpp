@@ -662,6 +662,14 @@ void CTxMemPool::check(const CCoinsViewCache* pcoins) const
             }
             i++;
         }
+        // sapling txes
+        if (tx.IsShieldedTx()) {
+            for (const SpendDescription& sd : tx.sapData->vShieldedSpend) {
+                SaplingMerkleTree tree;
+                assert(pcoins->GetSaplingAnchorAt(sd.anchor, tree));
+                assert(!pcoins->GetNullifier(sd.nullifier));
+            }
+        }
         assert(setParentCheck == GetMemPoolParents(it));
         // Check children against mapNextTx
         if (!fHasZerocoinSpends) {
@@ -718,7 +726,7 @@ void CTxMemPool::check(const CCoinsViewCache* pcoins) const
         }
     }
     for (std::map<COutPoint, CInPoint>::const_iterator it = mapNextTx.begin(); it != mapNextTx.end(); it++) {
-        uint256 hash = it->second.ptx->GetHash();
+        const uint256& hash = it->second.ptx->GetHash();
         indexed_transaction_set::const_iterator it2 = mapTx.find(hash);
         const CTransaction& tx = it2->GetTx();
         assert(it2 != mapTx.end());
