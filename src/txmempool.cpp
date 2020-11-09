@@ -727,8 +727,22 @@ void CTxMemPool::check(const CCoinsViewCache* pcoins) const
         assert(it->first == it->second.ptx->vin[it->second.n].prevout);
     }
 
+    // Consistency check for sapling nullifiers
+    checkNullifiers();
+
     assert(totalTxSize == checkTotal);
     assert(innerUsage == cachedInnerUsage);
+}
+
+void CTxMemPool::checkNullifiers() const
+{
+    for (const auto& it : mapSaplingNullifiers) {
+        const uint256& hash = it.second->GetHash();
+        const auto& findTx = mapTx.find(hash);
+        assert(findTx != mapTx.end());
+        const CTransaction& tx = findTx->GetTx();
+        assert(&tx == it.second);
+    }
 }
 
 void CTxMemPool::queryHashes(std::vector<uint256>& vtxid)
