@@ -364,7 +364,7 @@ private:
     void trackPackageRemoved(const CFeeRate& rate);
 
     // Shielded txes
-    std::map<uint256, const CTransaction*> mapSaplingNullifiers;
+    std::map<uint256, CTransactionRef> mapSaplingNullifiers;
     void checkNullifiers() const;
 
 public:

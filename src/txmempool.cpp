@@ -407,7 +407,7 @@ bool CTxMemPool::addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry,
     // Save spent nullifiers
     if (tx.IsShieldedTx()) {
         for (const SpendDescription& sd : tx.sapData->vShieldedSpend) {
-            mapSaplingNullifiers[sd.nullifier] = &tx;
+            mapSaplingNullifiers[sd.nullifier] = newit->GetSharedTx();
         }
     }
 
@@ -550,7 +550,7 @@ void CTxMemPool::removeWithAnchor(const uint256& invalidRoot)
         if (!tx.IsShieldedTx()) continue;
         for (const auto& sd : tx.sapData->vShieldedSpend) {
             if (sd.anchor == invalidRoot) {
-                transactionsToRemove.push_back(tx);
+                transactionsToRemove.emplace_back(tx);
                 break;
             }
         }
@@ -773,8 +773,8 @@ void CTxMemPool::checkNullifiers() const
         const uint256& hash = it.second->GetHash();
         const auto& findTx = mapTx.find(hash);
         assert(findTx != mapTx.end());
-        const CTransaction& tx = findTx->GetTx();
-        assert(&tx == it.second);
+        const CTransactionRef& tx = findTx->GetSharedTx();
+        assert(*tx == *it.second);
     }
 }
 
