@@ -465,6 +465,16 @@ BOOST_AUTO_TEST_CASE(rpc_shielded_sendmany_taddr_to_sapling)
                         ->setMinDepth(0)
                         ->buildAndSend(txFinalHash));
 
+    // try from auto-selected transparent address
+    std::string txFinalHash2;
+    std::vector<SendManyRecipient> recipients2 = { SendManyRecipient(zaddr1, 1 * COIN, "ABCD") };
+    SaplingOperation operation2(builder);
+    operation2.testMode = true; // To not commit the transaction
+    BOOST_CHECK(operation2.setSelectTransparentCoins(true)
+                        ->setShieldedRecipients(recipients2)
+                        ->setMinDepth(0)
+                        ->buildAndSend(txFinalHash));
+
     // Get the transaction
     // Test mode does not send the transaction to the network.
     auto hexTx = EncodeHexTx(operation.getFinalTx());
