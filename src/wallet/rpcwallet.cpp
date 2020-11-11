@@ -1427,27 +1427,43 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
 static UniValue CreateShieldedTransaction(const JSONRPCRequest& request)
 {
     EnsureWalletIsUnlocked();
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    int nextBlockHeight = chainActive.Height() + 1;
+    TransactionBuilder txBuilder = TransactionBuilder(Params().GetConsensus(), nextBlockHeight, pwalletMain);
+    SaplingOperation operation(txBuilder);
 
-    // Check that the from address is valid.
-    auto fromaddress = request.params[0].get_str();
-    // Whether is from a shielded addr or a transparent addr
-    CTxDestination fromTAddressDest = DecodeDestination(fromaddress);
-    bool fromSapling = !IsValidDestination(fromTAddressDest);
-    libzcash::SaplingPaymentAddress fromShieldedAddress;
-    if (fromSapling) {
-        auto res = KeyIO::DecodePaymentAddress(fromaddress);
-        if (!IsValidPaymentAddress(res)) {
-            // invalid
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid from address, should be a taddr or shielded addr.");
-        }
-
-        fromShieldedAddress = *boost::get<libzcash::SaplingPaymentAddress>(&res);
-        // Check that we have the spending key
-        if (!pwalletMain->HaveSpendingKeyForPaymentAddress(fromShieldedAddress)) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "From address does not belong to this node, shielded addr spending key not found.");
+    // Param 0: source of funds. Can either be a valid address, sapling address,
+    // or the string "from_transparent"|"from_shielded"
+    bool fromSapling  = false;
+    std::string sendFromStr = request.params[0].get_str();
+    if (sendFromStr == "from_transparent") {
+        // send from any transparent address
+        operation.setSelectTransparentCoins(true);
+    } else if (sendFromStr == "from_shielded") {
+        // send from any shielded address
+        operation.setSelectShieldedCoins(true);
+        fromSapling = true;
+    } else {
+        CTxDestination fromTAddressDest = DecodeDestination(sendFromStr);
+        if (!IsValidDestination(fromTAddressDest)) {
+            auto res = KeyIO::DecodePaymentAddress(sendFromStr);
+            if (!IsValidPaymentAddress(res)) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid from address, should be a taddr or shielded addr.");
+            }
+            libzcash::SaplingPaymentAddress fromShieldedAddress = *boost::get<libzcash::SaplingPaymentAddress>(&res);
+            if (!pwalletMain->HaveSpendingKeyForPaymentAddress(fromShieldedAddress)) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "From address does not belong to this node, shielded addr spending key not found.");
+            }
+            // send from user-supplied shielded address
+            operation.setFromAddress(fromShieldedAddress);
+            fromSapling = true;
+        } else {
+            // send from user-supplied transparent address
+            operation.setFromAddress(fromTAddressDest);
         }
     }
 
+    // Param 1: array of outputs
     UniValue outputs = request.params[1].get_array();
     if (outputs.empty())
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, amounts array is empty.");
@@ -1517,8 +1533,6 @@ static UniValue CreateShieldedTransaction(const JSONRPCRequest& request)
     }
 
     // Check network status
-    LOCK2(cs_main, pwalletMain->cs_wallet);
-    int nextBlockHeight = chainActive.Height() + 1;
     if (!Params().GetConsensus().NetworkUpgradeActive(nextBlockHeight, Consensus::UPGRADE_V5_DUMMY)) {
         // If Sapling is not active, do not allow sending from or sending to Sapling addresses.
         if (fromSapling || containsSaplingOutput) {
@@ -1553,13 +1567,13 @@ static UniValue CreateShieldedTransaction(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Too many outputs, size of raw transaction would be larger than limit of %d bytes", max_tx_size ));
     }
 
-    // Minimum confirmations
+    // Param 2: Minimum confirmations
     int nMinDepth = request.params.size() > 2 ? request.params[2].get_int() : 1;
     if (nMinDepth < 0) {
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Minimum number of confirmations cannot be less than 0");
     }
 
-    // Fee
+    // Param 3: Fee
     CAmount nFee        = DEFAULT_SAPLING_FEE; // Default fee hardcoded for now to 10000 sats. Change it in a future focused PR.
     CAmount nDefaultFee = nFee;
     if (request.params.size() > 3) {
@@ -1596,16 +1610,7 @@ static UniValue CreateShieldedTransaction(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Minconf cannot be negative");
     }
 
-    // Create the operation and process it
-    TransactionBuilder txBuilder = TransactionBuilder(Params().GetConsensus(), nextBlockHeight, pwalletMain);
-    SaplingOperation operation(txBuilder);
-
-    if (!fromSapling) {
-        operation.setFromAddress(fromTAddressDest);
-    } else {
-        operation.setFromAddress(fromShieldedAddress);
-    }
-
+    // Process the send operation
     std::string txHash;
     OperationResult res = operation.setFee(nFee)
             ->setMinDepth(nMinDepth)
@@ -1627,6 +1632,8 @@ UniValue shielded_sendmany(const JSONRPCRequest& request)
                 + HelpRequiringPassphrase() + "\n"
                 "\nArguments:\n"
                 "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
+                "                             It can also be the string \"from_transparent\"|\"from_shielded\" to send the funds\n"
+                "                             from any transparent|shielded address available.\n"
                 "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
                 "    [{\n"
                 "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
