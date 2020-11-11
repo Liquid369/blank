@@ -64,9 +64,6 @@ public:
     // Public only for unit test coverage
     bool getMemoFromHexString(const std::string& s, std::array<unsigned char, ZC_MEMO_SIZE> memoRet, std::string& error);
 
-    // Test only
-    bool testMode{false};
-
 private:
     FromAddress fromAddress;
     // In case of no addressFrom filter selected, it will accept any utxo in the wallet as input.

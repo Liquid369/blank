@@ -456,24 +456,20 @@ BOOST_AUTO_TEST_CASE(rpc_shielded_sendmany_taddr_to_sapling)
     // Context that shielded_sendmany requires
     auto builder = TransactionBuilder(consensusParams, nextBlockHeight, pwalletMain);
 
-    std::string txFinalHash;
     std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1, 1 * COIN, "ABCD") };
     SaplingOperation operation(builder);
     operation.setFromAddress(taddr);
-    operation.testMode = true; // To not commit the transaction
     BOOST_CHECK(operation.setShieldedRecipients(recipients)
-                        ->setMinDepth(0)
-                        ->buildAndSend(txFinalHash));
+                         ->setMinDepth(0)
+                         ->build());
 
     // try from auto-selected transparent address
-    std::string txFinalHash2;
     std::vector<SendManyRecipient> recipients2 = { SendManyRecipient(zaddr1, 1 * COIN, "ABCD") };
     SaplingOperation operation2(builder);
-    operation2.testMode = true; // To not commit the transaction
     BOOST_CHECK(operation2.setSelectTransparentCoins(true)
-                        ->setShieldedRecipients(recipients2)
-                        ->setMinDepth(0)
-                        ->buildAndSend(txFinalHash));
+                          ->setShieldedRecipients(recipients2)
+                          ->setMinDepth(0)
+                          ->build());
 
     // Get the transaction
     // Test mode does not send the transaction to the network.
