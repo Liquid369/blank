@@ -2580,7 +2580,7 @@ bool CWallet::CreateBudgetFeeTX(CWalletTx& tx, const uint256& hash, CReserveKey&
 
     CCoinControl* coinControl = nullptr;
     int nChangePosInOut = -1;
-    bool success = CreateTransaction(vecSend, tx, keyChange, nFeeRet, nChangePosInOut, strFail, coinControl, ALL_COINS, true, (CAmount)0);
+    bool success = CreateTransaction(vecSend, &tx, keyChange, nFeeRet, nChangePosInOut, strFail, coinControl, ALL_COINS, true, (CAmount)0);
     if (!success) {
         LogPrintf("%s: Error - %s\n", __func__, strFail);
         return false;
@@ -2611,7 +2611,7 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool ov
 
     CReserveKey reservekey(this);
     CWalletTx wtx;
-    if (!CreateTransaction(vecSend, wtx, reservekey, nFeeRet, nChangePosInOut, strFailReason, &coinControl, ALL_COINS, false))
+    if (!CreateTransaction(vecSend, &wtx, reservekey, nFeeRet, nChangePosInOut, strFailReason, &coinControl, ALL_COINS, false))
         return false;
 
     if (nChangePosInOut != -1)
@@ -2633,7 +2633,7 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool ov
 }
 
 bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
-    CWalletTx& wtxNew,
+    CWalletTx* wtxNew,
     CReserveKey& reservekey,
     CAmount& nFeeRet,
     int& nChangePosInOut,
@@ -2659,8 +2659,8 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
         return false;
     }
 
-    wtxNew.fTimeReceivedIsTxTime = true;
-    wtxNew.BindWallet(this);
+    wtxNew->fTimeReceivedIsTxTime = true;
+    wtxNew->BindWallet(this);
     CMutableTransaction txNew;
     CScript scriptChange;
 
@@ -2680,7 +2680,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                 nChangePosInOut = nChangePosRequest;
                 txNew.vin.clear();
                 txNew.vout.clear();
-                wtxNew.fFromMe = true;
+                wtxNew->fFromMe = true;
 
                 CAmount nTotalValue = nValue + nFeeRet;
 
@@ -2728,7 +2728,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
 
                 for (std::pair<const CWalletTx*, unsigned int> pcoin : setCoins) {
                     if(pcoin.first->vout[pcoin.second].scriptPubKey.IsPayToColdStaking())
-                        wtxNew.fStakeDelegationVoided = true;
+                        wtxNew->fStakeDelegationVoided = true;
                     //The coin age after the next block (depth+1) is used instead of the current,
                     //reflecting an assumption the user would accept a bit more delay for
                     //a chance at a free transaction.
@@ -2850,7 +2850,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                 }
 
                 // Embed the constructed transaction data in wtxNew.
-                *static_cast<CTransaction*>(&wtxNew) = CTransaction(txNew);
+                *static_cast<CTransaction*>(wtxNew) = CTransaction(txNew);
 
                 // Limit size
                 if (nBytes >= MAX_STANDARD_TX_SIZE) {
@@ -2890,7 +2890,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
     return true;
 }
 
-bool CWallet::CreateTransaction(CScript scriptPubKey, const CAmount& nValue, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl* coinControl, AvailableCoinsType coin_type, CAmount nFeePay, bool fIncludeDelegated)
+bool CWallet::CreateTransaction(CScript scriptPubKey, const CAmount& nValue, CWalletTx* wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl* coinControl, AvailableCoinsType coin_type, CAmount nFeePay, bool fIncludeDelegated)
 {
     std::vector<CRecipient> vecSend;
     vecSend.emplace_back(scriptPubKey, nValue, false);
@@ -3771,7 +3771,7 @@ void CWallet::AutoCombineDust(CConnman* connman)
         // 10% safety margin to avoid "Insufficient funds" errors
         vecSend[0].nAmount = nTotalRewardsValue - (nTotalRewardsValue / 10);
 
-        if (!CreateTransaction(vecSend, wtx, keyChange, nFeeRet, nChangePosInOut, strErr, coinControl, ALL_COINS, true, false, CAmount(0))) {
+        if (!CreateTransaction(vecSend, &wtx, keyChange, nFeeRet, nChangePosInOut, strErr, coinControl, ALL_COINS, true, false, CAmount(0))) {
             LogPrintf("AutoCombineDust createtransaction failed, reason: %s\n", strErr);
             continue;
         }
