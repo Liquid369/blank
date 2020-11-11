@@ -1634,7 +1634,7 @@ UniValue shielded_sendmany(const JSONRPCRequest& request)
                 "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
                 "    }, ... ]\n"
                 "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
-                "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(COIN)) +
+                "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(DEFAULT_SAPLING_FEE)) +
                 ") The fee amount to attach to this transaction.\n"
                 "\nResult:\n"
                 "\"id\"          (string) transaction hash in the network\n"
