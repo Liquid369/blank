@@ -59,38 +59,30 @@ class WalletSaplingTest(PivxTestFramework):
         # shield more funds automatically selecting the transparent inputs
         mytxid2 = self.nodes[0].shielded_sendmany("from_transparent", recipients, 1, fee)
 
+        # shield more funds creating and then sending a raw transaction
+        tx_json = self.nodes[0].raw_shielded_sendmany("from_transparent", recipients, 1, fee)
+        mytxid3 = self.nodes[0].sendrawtransaction(tx_json["hex"])
+
         # Verify priority of tx is INF_PRIORITY, defined as 1E+25 (10000000000000000000000000)
         self.sync_all()
         mempool = self.nodes[0].getrawmempool(True)
         self.check_tx_priority(mempool, mytxid1)
         self.check_tx_priority(mempool, mytxid2)
+        self.check_tx_priority(mempool, mytxid3)
 
         self.nodes[2].generate(1)
         self.sync_all()
 
         # Verify balance
-        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('20'))
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('30'))
         assert_equal(self.nodes[1].getshieldedbalance(saplingAddr1), Decimal('0'))
         assert_equal(self.nodes[1].getreceivedbyaddress(taddr1), Decimal('0'))
 
         # Node 0 sends some shielded funds to node 1
         # Sapling -> Sapling
         #         -> Sapling (change)
-        recipients3 = [{"address": saplingAddr1, "amount": Decimal('10')}]
-        mytxid3 = self.nodes[0].shielded_sendmany(saplingAddr0, recipients3, 1, fee)
-
-        self.sync_all()
-
-        # Verify priority of tx is MAX_PRIORITY, defined as 1E+25 (10000000000000000000000000)
-        mempool = self.nodes[0].getrawmempool(True)
-        self.check_tx_priority(mempool, mytxid3)
-
-        self.nodes[2].generate(1)
-        self.sync_all()
-
-        # Send more shielded funds (this time with automatic selection of the source)
-        recipients4 = [{"address": saplingAddr1, "amount": Decimal('5')}]
-        mytxid4 = self.nodes[0].shielded_sendmany("from_shielded", recipients4, 1, fee)
+        recipients4 = [{"address": saplingAddr1, "amount": Decimal('10')}]
+        mytxid4 = self.nodes[0].shielded_sendmany(saplingAddr0, recipients4, 1, fee)
 
         self.sync_all()
 
@@ -101,36 +93,62 @@ class WalletSaplingTest(PivxTestFramework):
         self.nodes[2].generate(1)
         self.sync_all()
 
+        # Send more shielded funds (this time with automatic selection of the source)
+        recipients5 = [{"address": saplingAddr1, "amount": Decimal('5')}]
+        mytxid5 = self.nodes[0].shielded_sendmany("from_shielded", recipients5, 1, fee)
+
+        self.sync_all()
+
+        # Verify priority of tx is MAX_PRIORITY, defined as 1E+25 (10000000000000000000000000)
+        mempool = self.nodes[0].getrawmempool(True)
+        self.check_tx_priority(mempool, mytxid5)
+
+        self.nodes[2].generate(1)
+        self.sync_all()
+
+        # Send more shielded funds (with create + send raw transaction)
+        tx_json = self.nodes[0].raw_shielded_sendmany("from_shielded", recipients5, 1, fee)
+        mytxid6 = self.nodes[0].sendrawtransaction(tx_json["hex"])
+
+        self.sync_all()
+
+        # Verify priority of tx is MAX_PRIORITY, defined as 1E+25 (10000000000000000000000000)
+        mempool = self.nodes[0].getrawmempool(True)
+        self.check_tx_priority(mempool, mytxid6)
+
+        self.nodes[2].generate(1)
+        self.sync_all()
+
         # Verify balance
-        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('3'))   # 20 received - (15 sent + 2 fee)
-        assert_equal(self.nodes[1].getshieldedbalance(saplingAddr1), Decimal('15'))  # 15 received
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('7'))   # 30 received - (20 sent + 3 fee)
+        assert_equal(self.nodes[1].getshieldedbalance(saplingAddr1), Decimal('20'))  # 20 received
         assert_equal(self.nodes[1].getreceivedbyaddress(taddr1), Decimal('0'))
 
         # Node 1 sends some shielded funds to node 0, as well as unshielding
         # Sapling -> Sapling
         #         -> taddr
         #         -> Sapling (change)
-        recipients5 = [{"address": saplingAddr0, "amount": Decimal('6')}]
-        recipients5.append({"address": taddr1, "amount": Decimal('6')})
-        mytxid5 = self.nodes[1].shielded_sendmany(saplingAddr1, recipients5, 1, fee)
+        recipients7 = [{"address": saplingAddr0, "amount": Decimal('8')}]
+        recipients7.append({"address": taddr1, "amount": Decimal('10')})
+        mytxid7 = self.nodes[1].shielded_sendmany(saplingAddr1, recipients7, 1, fee)
         self.sync_all()
 
         # Verify priority of tx is MAX_PRIORITY, defined as 1E+25 (10000000000000000000000000)
         mempool = self.nodes[1].getrawmempool(True)
-        self.check_tx_priority(mempool, mytxid5)
+        self.check_tx_priority(mempool, mytxid7)
 
         self.nodes[2].generate(1)
         self.sync_all()
 
         # Verify balance
-        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('9'))  # 3 prev balance + 6 received
-        assert_equal(self.nodes[1].getshieldedbalance(saplingAddr1), Decimal('2'))  # 15 prev balance - (12 sent + 1 fee)
-        assert_equal(self.nodes[1].getreceivedbyaddress(taddr1), Decimal('6'))
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('15'))  # 7 prev balance + 8 received
+        assert_equal(self.nodes[1].getshieldedbalance(saplingAddr1), Decimal('1'))   # 20 prev balance - (18 sent + 1 fee)
+        assert_equal(self.nodes[1].getreceivedbyaddress(taddr1), Decimal('10'))
 
         # Verify existence of Sapling related JSON fields
-        resp = self.nodes[0].getrawtransaction(mytxid5, 1)
-        assert_equal(Decimal(resp['valueBalance']), Decimal('7.00')) # 15 shielded input - 6 shielded spend - 2 change
-        assert_equal(len(resp['vShieldedSpend']), 2)
+        resp = self.nodes[0].getrawtransaction(mytxid7, 1)
+        assert_equal(Decimal(resp['valueBalance']), Decimal('11.00'))    # 20 shielded input - 8 shielded spend - 1 change
+        assert_equal(len(resp['vShieldedSpend']), 3)
         assert_equal(len(resp['vShieldedOutput']), 2)
         assert('bindingSig' in resp)
         shieldedSpend = resp['vShieldedSpend'][0]
@@ -152,21 +170,21 @@ class WalletSaplingTest(PivxTestFramework):
         sk0 = self.nodes[0].exportsaplingkey(saplingAddr0)
         saplingAddrInfo0 = self.nodes[2].importsaplingkey(sk0, "yes")
         assert_equal(saplingAddrInfo0["address"], saplingAddr0)
-        assert_equal(self.nodes[2].getshieldedbalance(saplingAddrInfo0["address"]), Decimal('9'))
+        assert_equal(self.nodes[2].getshieldedbalance(saplingAddrInfo0["address"]), Decimal('15'))
         sk1 = self.nodes[1].exportsaplingkey(saplingAddr1)
         saplingAddrInfo1 = self.nodes[2].importsaplingkey(sk1, "yes")
         assert_equal(saplingAddrInfo1["address"], saplingAddr1)
-        assert_equal(self.nodes[2].getshieldedbalance(saplingAddrInfo1["address"]), Decimal('2'))
+        assert_equal(self.nodes[2].getshieldedbalance(saplingAddrInfo1["address"]), Decimal('1'))
 
         # Verify importing a viewing key will update the nullifiers and witnesses correctly
         extfvk0 = self.nodes[0].exportsaplingviewingkey(saplingAddr0)
         saplingAddrInfo0 = self.nodes[3].importsaplingviewingkey(extfvk0, "yes")
         assert_equal(saplingAddrInfo0["address"], saplingAddr0)
-        assert_equal(Decimal(self.nodes[3].getshieldedbalance(saplingAddrInfo0["address"], 1, True)), Decimal('9'))
+        assert_equal(Decimal(self.nodes[3].getshieldedbalance(saplingAddrInfo0["address"], 1, True)), Decimal('15'))
         extfvk1 = self.nodes[1].exportsaplingviewingkey(saplingAddr1)
         saplingAddrInfo1 = self.nodes[3].importsaplingviewingkey(extfvk1, "yes")
         assert_equal(saplingAddrInfo1["address"], saplingAddr1)
-        assert_equal(self.nodes[3].getshieldedbalance(saplingAddrInfo1["address"], 1, True), Decimal('2'))
+        assert_equal(self.nodes[3].getshieldedbalance(saplingAddrInfo1["address"], 1, True), Decimal('1'))
 
         # Verify that getshieldedbalance only includes watch-only addresses when requested
         shieldedBalance = self.nodes[3].getshieldedbalance()
@@ -175,7 +193,7 @@ class WalletSaplingTest(PivxTestFramework):
 
         shieldedBalance = self.nodes[3].getshieldedbalance("*", 1, True)
         # watch only balance
-        assert_equal(shieldedBalance, Decimal('11.00'))
+        assert_equal(shieldedBalance, Decimal('16.00'))
 
 if __name__ == '__main__':
     WalletSaplingTest().main()
