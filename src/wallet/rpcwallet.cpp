@@ -1424,33 +1424,8 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
 #define CTXIN_SPEND_DUST_SIZE   148
 #define CTXOUT_REGULAR_SIZE     34
 
-UniValue shielded_sendmany(const JSONRPCRequest& request) {
-    if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
-        throw std::runtime_error(
-                "shielded_sendmany \"fromaddress\" [{\"address\":... ,\"amount\":...},...] ( minconf ) ( fee )\n"
-                "\nSend multiple times. Amounts are decimal numbers with at most 8 digits of precision."
-                "\nChange generated from a transparent addr flows to a new  transparent addr address, while change generated from a shielded addr returns to itself."
-                "\nWhen sending coinbase UTXOs to a shielded addr, change is not allowed. The entire value of the UTXO(s) must be consumed."
-                + HelpRequiringPassphrase() + "\n"
-                "\nArguments:\n"
-                "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
-                "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
-                "    [{\n"
-                "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
-                "      \"amount\":amount    (numeric, required) The numeric amount in " + "PIV" + " is the value\n"
-                "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
-                "    }, ... ]\n"
-                "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
-                "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(COIN)) +
-                ") The fee amount to attach to this transaction.\n"
-                "\nResult:\n"
-                "\"id\"          (string) transaction hash in the network\n"
-                "\nExamples:\n"
-                + HelpExampleCli("shielded_sendmany",
-                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\" '[{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]'")
-                + HelpExampleRpc("shielded_sendmany",
-                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", [{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]")
-        );
+static UniValue CreateShieldedTransaction(const JSONRPCRequest& request)
+{
     EnsureWalletIsUnlocked();
 
     // Check that the from address is valid.
@@ -1639,6 +1614,38 @@ UniValue shielded_sendmany(const JSONRPCRequest& request) {
             ->buildAndSend(txHash);
     if (!res) throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
     return txHash;
+}
+
+UniValue shielded_sendmany(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
+        throw std::runtime_error(
+                "shielded_sendmany \"fromaddress\" [{\"address\":... ,\"amount\":...},...] ( minconf ) ( fee )\n"
+                "\nSend multiple times. Amounts are decimal numbers with at most 8 digits of precision."
+                "\nChange generated from a transparent addr flows to a new  transparent addr address, while change generated from a shielded addr returns to itself."
+                "\nWhen sending coinbase UTXOs to a shielded addr, change is not allowed. The entire value of the UTXO(s) must be consumed."
+                + HelpRequiringPassphrase() + "\n"
+                "\nArguments:\n"
+                "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
+                "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
+                "    [{\n"
+                "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
+                "      \"amount\":amount    (numeric, required) The numeric amount in " + "PIV" + " is the value\n"
+                "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
+                "    }, ... ]\n"
+                "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
+                "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(COIN)) +
+                ") The fee amount to attach to this transaction.\n"
+                "\nResult:\n"
+                "\"id\"          (string) transaction hash in the network\n"
+                "\nExamples:\n"
+                + HelpExampleCli("shielded_sendmany",
+                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\" '[{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]'")
+                + HelpExampleRpc("shielded_sendmany",
+                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", [{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]")
+        );
+
+    return CreateShieldedTransaction(request);
 }
 
 UniValue listaddressgroupings(const JSONRPCRequest& request)
