@@ -1424,7 +1424,7 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
 #define CTXIN_SPEND_DUST_SIZE   148
 #define CTXOUT_REGULAR_SIZE     34
 
-static UniValue CreateShieldedTransaction(const JSONRPCRequest& request)
+static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
 {
     EnsureWalletIsUnlocked();
     LOCK2(cs_main, pwalletMain->cs_wallet);
@@ -1610,15 +1610,14 @@ static UniValue CreateShieldedTransaction(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Minconf cannot be negative");
     }
 
-    // Process the send operation
-    std::string txHash;
+    // Build the send operation
     OperationResult res = operation.setFee(nFee)
             ->setMinDepth(nMinDepth)
             ->setShieldedRecipients(shieldAddrRecipients)
             ->setTransparentRecipients(taddrRecipients)
-            ->buildAndSend(txHash);
+            ->build();
     if (!res) throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
-    return txHash;
+    return operation;
 }
 
 UniValue shielded_sendmany(const JSONRPCRequest& request)
@@ -1626,7 +1625,7 @@ UniValue shielded_sendmany(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
         throw std::runtime_error(
                 "shielded_sendmany \"fromaddress\" [{\"address\":... ,\"amount\":...},...] ( minconf ) ( fee )\n"
-                "\nSend multiple times. Amounts are decimal numbers with at most 8 digits of precision."
+                "\nSend to many recipients. Amounts are decimal numbers with at most 8 digits of precision."
                 "\nChange generated from a transparent addr flows to a new  transparent addr address, while change generated from a shielded addr returns to itself."
                 "\nWhen sending coinbase UTXOs to a shielded addr, change is not allowed. The entire value of the UTXO(s) must be consumed."
                 + HelpRequiringPassphrase() + "\n"
@@ -1652,7 +1651,50 @@ UniValue shielded_sendmany(const JSONRPCRequest& request)
                                  "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", [{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]")
         );
 
-    return CreateShieldedTransaction(request);
+    SaplingOperation operation = CreateShieldedTransaction(request);
+    std::string txHash;
+    auto res = operation.send(txHash);
+    if (!res)
+        throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
+    return txHash;
+}
+
+UniValue raw_shielded_sendmany(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
+        throw std::runtime_error(
+                "raw_shielded_sendmany \"fromaddress\" [{\"address\":... ,\"amount\":...},...] ( minconf ) ( fee )\n"
+                "\nCreates a transaction sending to many recipients (without committing it), and returns the hex string."
+                "\nAmounts are decimal numbers with at most 8 digits of precision."
+                "\nChange generated from a transparent addr flows to a new  transparent addr address, while change generated from a shielded addr returns to itself."
+                "\nWhen sending coinbase UTXOs to a shielded addr, change is not allowed. The entire value of the UTXO(s) must be consumed."
+                + HelpRequiringPassphrase() + "\n"
+                "\nArguments:\n"
+                "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
+                "                             It can also be the string \"from_transparent\"|\"from_shielded\" to send the funds\n"
+                "                             from any transparent|shielded address available.\n"
+                "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
+                "    [{\n"
+                "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
+                "      \"amount\":amount    (numeric, required) The numeric amount in " + "PIV" + " is the value\n"
+                "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
+                "    }, ... ]\n"
+                "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
+                "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(DEFAULT_SAPLING_FEE)) +
+                ") The fee amount to attach to this transaction.\n"
+                "\nResult:\n"
+                "{tx_json}                (json object) decoded transaction\n"
+                "\nExamples:\n"
+                + HelpExampleCli("raw_shielded_sendmany",
+                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\" '[{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]'")
+                + HelpExampleRpc("raw_shielded_sendmany",
+                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", [{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]")
+        );
+
+    CTransaction tx = CreateShieldedTransaction(request).getFinalTx();
+    UniValue tx_json(UniValue::VOBJ);
+    TxToUniv(tx, UINT256_ZERO, tx_json);
+    return tx_json;
 }
 
 UniValue listaddressgroupings(const JSONRPCRequest& request)
@@ -4009,6 +4051,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "exportsaplingviewingkey",  &exportsaplingviewingkey,  true  },
     { "wallet",             "getshieldedbalance",       &getshieldedbalance,       false },
     { "wallet",             "listshieldedunspent",      &listshieldedunspent,      false },
+    { "wallet",             "raw_shielded_sendmany",    &raw_shielded_sendmany,    false },
     { "wallet",             "shielded_sendmany",        &shielded_sendmany,        false },
     { "wallet",             "listreceivedbyshieldedaddress", &listreceivedbyshieldedaddress,  false },
     { "wallet",             "viewshieldedtransaction",       &viewshieldedtransaction,        false },
