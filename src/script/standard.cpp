@@ -6,9 +6,7 @@
 
 #include "script/standard.h"
 
-#include "base58.h"
 #include "pubkey.h"
-#include "sapling/key_io_sapling.h"
 #include "script/script.h"
 
 typedef std::vector<unsigned char> valtype;
@@ -340,52 +338,3 @@ bool IsValidDestination(const CTxDestination& dest) {
     return dest.which() != 0;
 }
 
-namespace Standard {
-
-    std::string EncodeDestination(const CWDestination &address, const CChainParams::Base58Type addrType) {
-        const CTxDestination *dest = boost::get<CTxDestination>(&address);
-        if (!dest) {
-            return KeyIO::EncodePaymentAddress(*boost::get<libzcash::SaplingPaymentAddress>(&address));
-        }
-        return EncodeDestination(*dest, addrType);
-    };
-
-    CWDestination DecodeDestination(const std::string& strAddress)
-    {
-        bool isStaking = false;
-        return DecodeDestination(strAddress, isStaking);
-    }
-
-    CWDestination DecodeDestination(const std::string& strAddress, bool& isStaking)
-    {
-        bool isShielded = false;
-        return DecodeDestination(strAddress, isStaking, isShielded);
-    }
-
-    // agregar isShielded
-    CWDestination DecodeDestination(const std::string& strAddress, bool& isStaking, bool& isShielded)
-    {
-        CWDestination dest;
-        CTxDestination regDest = ::DecodeDestination(strAddress, isStaking);
-        if (!IsValidDestination(regDest)) {
-            const auto sapDest = KeyIO::DecodeSaplingPaymentAddress(strAddress);
-            if (sapDest) {
-                isShielded = true;
-                return *sapDest;
-            }
-        }
-        return regDest;
-
-    }
-
-    bool IsValidDestination(const CWDestination& address)
-    {
-        // Only regular base58 addresses and shielded addresses accepted here for now
-        const libzcash::SaplingPaymentAddress *dest1 = boost::get<libzcash::SaplingPaymentAddress>(&address);
-        if (dest1) return true;
-
-        const CTxDestination *dest = boost::get<CTxDestination>(&address);
-        return dest && ::IsValidDestination(*dest);
-    }
-
-} // End Standard namespace
