@@ -1162,6 +1162,7 @@ UniValue rawdelegatestake(const JSONRPCRequest& request)
             "{\n"
             "  \"txid\" : \"id\",        (string) The transaction id (same as provided)\n"
             "  \"version\" : n,          (numeric) The version\n"
+            "  \"type\" : n,             (numeric) The type\n"
             "  \"size\" : n,             (numeric) The serialized transaction size\n"
             "  \"locktime\" : ttt,       (numeric) The lock time\n"
             "  \"vin\" : [               (array of json objects)\n"
