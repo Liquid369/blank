@@ -378,6 +378,7 @@ set(COMMON_SOURCES
         ./src/coins.cpp
         ./src/key_io.cpp
         ./src/compressor.cpp
+        ./src/tiertwo/specialtx_validation.cpp
         ./src/consensus/merkle.cpp
         ./src/consensus/tx_verify.cpp
         ./src/consensus/zerocoin_verify.cpp
