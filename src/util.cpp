@@ -22,9 +22,6 @@
 #include <stdarg.h>
 #include <thread>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-
-
 #ifndef WIN32
 // for posix_fallocate
 #ifdef __linux__
@@ -65,6 +62,7 @@
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
+#include <codecvt>
 
 #include <io.h> /* for _commit */
 #include <shlobj.h>
@@ -74,10 +72,8 @@
 #include <sys/prctl.h>
 #endif
 
-#include <boost/algorithm/string/join.hpp>
 #include <boost/program_options/detail/config_file.hpp>
 #include <boost/program_options/parsers.hpp>
-#include <boost/thread.hpp>
 #include <openssl/conf.h>
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
@@ -747,7 +743,12 @@ double double_safe_multiplication(double fValue, double fmultiplicator)
 
 void runCommand(std::string strCommand)
 {
+    if (strCommand.empty()) return;
+#ifndef WIN32
     int nErr = ::system(strCommand.c_str());
+#else
+    int nErr = ::_wsystem(std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>,wchar_t>().from_bytes(strCommand).c_str());
+#endif
     if (nErr)
         LogPrintf("runCommand error: system(%s) returned %d\n", strCommand, nErr);
 }
@@ -768,7 +769,11 @@ void SetupEnvironment()
     // A dummy locale is used to extract the internal default locale, used by
     // fs::path, which is then used to explicitly imbue the path.
     std::locale loc = fs::path::imbue(std::locale::classic());
+#ifndef WIN32
     fs::path::imbue(loc);
+#else
+    fs::path::imbue(std::locale(loc, new std::codecvt_utf8_utf16<wchar_t>()));
+#endif
 }
 
 bool SetupNetworking()

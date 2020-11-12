@@ -5,11 +5,7 @@
 #include "streams.h"
 #include "test/test_pivx.h"
 
-#include <boost/assign/std/vector.hpp> // for 'operator+=()'
-#include <boost/assert.hpp>
 #include <boost/test/unit_test.hpp>
-
-using namespace boost::assign; // bring 'operator+=()' into scope
 
 BOOST_FIXTURE_TEST_SUITE(streams_tests, BasicTestingSetup)
 

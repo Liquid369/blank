@@ -7,9 +7,10 @@
 
 #include "sapling/prf.h"
 #include "sapling/sapling_util.h"
-#include <boost/static_assert.hpp>
+
 #include <librustzcash.h>
 #include <sodium.h>
+
 #include <stdexcept>
 
 #define NOTEENCRYPTION_CIPHER_KEYSIZE 32
@@ -299,9 +300,9 @@ NoteEncryption<MLEN>::NoteEncryption(uint256 hSig) : nonce(0), hSig(hSig) {
     // All of this code assumes crypto_scalarmult_BYTES is 32
     // There's no reason that will _ever_ change, but for
     // completeness purposes, let's check anyway.
-    BOOST_STATIC_ASSERT(32 == crypto_scalarmult_BYTES);
-    BOOST_STATIC_ASSERT(32 == crypto_scalarmult_SCALARBYTES);
-    BOOST_STATIC_ASSERT(NOTEENCRYPTION_AUTH_BYTES == crypto_aead_chacha20poly1305_ABYTES);
+    static_assert(32 == crypto_scalarmult_BYTES, "invalid crypto_scalarmult_BYTES");
+    static_assert(32 == crypto_scalarmult_SCALARBYTES, "invalid crypto_scalarmult_SCALARBYTES");
+    static_assert(NOTEENCRYPTION_AUTH_BYTES == crypto_aead_chacha20poly1305_ABYTES, "noteencryp_auth_bytes !=  crypto_aead_chacha20poly1305_ABYTES");
 
     // Create the ephemeral keypair
     esk = random_uint256();

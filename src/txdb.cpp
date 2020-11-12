@@ -250,7 +250,7 @@ bool CBlockTreeDB::ReadInt(const std::string& name, int& nValue)
     return Read(std::make_pair('I', name), nValue);
 }
 
-bool CBlockTreeDB::LoadBlockIndexGuts(boost::function<CBlockIndex*(const uint256&)> insertBlockIndex)
+bool CBlockTreeDB::LoadBlockIndexGuts(std::function<CBlockIndex*(const uint256&)> insertBlockIndex)
 {
     boost::scoped_ptr<CDBIterator> pcursor(NewIterator());
 

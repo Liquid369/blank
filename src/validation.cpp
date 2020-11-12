@@ -820,7 +820,7 @@ bool fLargeWorkForkFound = false;
 bool fLargeWorkInvalidChainFound = false;
 CBlockIndex *pindexBestForkTip = NULL, *pindexBestForkBase = NULL;
 
-static void AlertNotify(const std::string& strMessage, bool fThread)
+static void AlertNotify(const std::string& strMessage)
 {
     uiInterface.NotifyAlertChanged();
     std::string strCmd = gArgs.GetArg("-alertnotify", "");
@@ -834,10 +834,8 @@ static void AlertNotify(const std::string& strMessage, bool fThread)
     safeStatus = singleQuote+safeStatus+singleQuote;
     boost::replace_all(strCmd, "%s", safeStatus);
 
-    if (fThread)
-        boost::thread t(runCommand, strCmd); // thread runs free
-    else
-        runCommand(strCmd);
+    std::thread t(runCommand, strCmd);
+    t.detach(); // thread runs free
 }
 
 void CheckForkWarningConditions()
@@ -862,7 +860,7 @@ void CheckForkWarningConditions()
             if (pindexBestForkBase->phashBlock) {
                 std::string warning = std::string("'Warning: Large-work fork detected, forking after block ") +
                                       pindexBestForkBase->phashBlock->ToString() + std::string("'");
-                AlertNotify(warning, true);
+                AlertNotify(warning);
             }
         }
         if (pindexBestForkTip && pindexBestForkBase) {
@@ -1942,7 +1940,7 @@ void static UpdateTip(CBlockIndex* pindexNew)
         if (nUpgraded > 100 / 2) {
             // strMiscWarning is read by GetWarnings(), called by Qt and the JSON-RPC code to warn the user:
             strMiscWarning = _("Warning: This version is obsolete, upgrade required!");
-            AlertNotify(strMiscWarning, true);
+            AlertNotify(strMiscWarning);
             fWarned = true;
         }
     }

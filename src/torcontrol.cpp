@@ -20,7 +20,6 @@
 
 #include <boost/bind.hpp>
 #include <boost/signals2/signal.hpp>
-#include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/replace.hpp>
@@ -734,7 +733,7 @@ void TorController::reconnect_cb(evutil_socket_t fd, short what, void *arg)
 
 /****** Thread ********/
 static struct event_base *gBase;
-static boost::thread torControlThread;
+static std::thread torControlThread;
 
 static void TorControlThread()
 {
@@ -743,7 +742,7 @@ static void TorControlThread()
     event_base_dispatch(gBase);
 }
 
-void StartTorControl(boost::thread_group& threadGroup/*, CScheduler& scheduler*/)
+void StartTorControl()
 {
     assert(!gBase);
 #ifdef WIN32
@@ -757,7 +756,7 @@ void StartTorControl(boost::thread_group& threadGroup/*, CScheduler& scheduler*/
         return;
     }
 
-    torControlThread = boost::thread(boost::bind(&TraceThread<void (*)()>, "torcontrol", &TorControlThread));
+    torControlThread = std::thread(std::bind(&TraceThread<void (*)()>, "torcontrol", &TorControlThread));
 }
 
 void InterruptTorControl()
@@ -770,11 +769,9 @@ void InterruptTorControl()
 
 void StopTorControl()
 {
-    // try_join_for() avoids the wallet not closing during a repair-restart. For a 'normal' wallet exit
-    // it behaves for our cases exactly like the normal join()
     if (gBase) {
-        torControlThread.try_join_for(boost::chrono::seconds(1));
+        torControlThread.join();
         event_base_free(gBase);
-        gBase = 0;
+        gBase = nullptr;
     }
 }

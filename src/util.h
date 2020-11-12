@@ -32,7 +32,6 @@
 #include <unordered_set>
 #include <vector>
 
-#include <boost/thread/exceptions.hpp>
 #include <boost/thread/condition_variable.hpp> // for boost::thread_interrupted
 
 extern const char * const PIVX_CONF_FILENAME;

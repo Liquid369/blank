@@ -17,9 +17,6 @@
 #include "httprpc.h"
 #include "validation.h"
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/thread.hpp>
-
 #include <stdio.h>
 
 /* Introduction text for doxygen: */
@@ -106,16 +103,14 @@ bool AppInit(int argc, char* argv[])
             return false;
         }
 
-        // Command-line RPC
-        bool fCommandLine = false;
-        for (int i = 1; i < argc; i++)
-            if (!IsSwitchChar(argv[i][0]) && !boost::algorithm::istarts_with(argv[i], "pivx:"))
-                fCommandLine = true;
-
-        if (fCommandLine) {
-            fprintf(stderr, "Error: There is no RPC client functionality in pivxd anymore. Use the pivx-cli utility instead.\n");
-            exit(1);
+        // Error out when loose non-argument tokens are encountered on command line
+        for (int i = 1; i < argc; i++) {
+            if (!IsSwitchChar(argv[i][0])) {
+                fprintf(stderr, "Error: Command line contains unexpected token '%s', see bitcoind -h for a list of options.\n", argv[i]);
+                exit(EXIT_FAILURE);
+            }
         }
+
 #ifndef WIN32
         fDaemon = gArgs.GetBoolArg("-daemon", false);
         if (fDaemon) {

@@ -3,6 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
+#include "fs.h"
+
 #include "wallet/test/wallet_test_fixture.h"
 #include "test/librust/utiltest.h"
 
@@ -19,10 +21,7 @@
 
 #include <unordered_set>
 
-#include <boost/algorithm/string.hpp>
 #include <boost/test/unit_test.hpp>
-#include <boost/format.hpp>
-#include <boost/filesystem.hpp>
 
 #include <univalue.h>
 
@@ -37,15 +36,15 @@ namespace {
     class PushCurrentDirectory {
     public:
         PushCurrentDirectory(const std::string &new_cwd)
-                : old_cwd(boost::filesystem::current_path()) {
-            boost::filesystem::current_path(new_cwd);
+                : old_cwd(fs::current_path()) {
+            fs::current_path(new_cwd);
         }
 
         ~PushCurrentDirectory() {
-            boost::filesystem::current_path(old_cwd);
+            fs::current_path(old_cwd);
         }
     private:
-        boost::filesystem::path old_cwd;
+        fs::path old_cwd;
     };
 
 }
