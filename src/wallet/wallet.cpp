@@ -3068,10 +3068,15 @@ std::string CWallet::CommitResult::ToString() const
     return strErrRet;
 }
 
+CWallet::CommitResult CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& opReservekey, CConnman* connman)
+{
+    return CommitTransaction(wtxNew, &opReservekey, connman);
+}
+
 /**
  * Call after CreateTransaction unless you want to abort
  */
-CWallet::CommitResult CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, CConnman* connman)
+CWallet::CommitResult CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey* opReservekey, CConnman* connman)
 {
     CommitResult res;
     {
@@ -3079,7 +3084,7 @@ CWallet::CommitResult CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey&
         LogPrintf("%s:\n%s", __func__, wtxNew.ToString());
         {
             // Take key pair from key pool so it won't be used again
-            reservekey.KeepKey();
+            if (opReservekey) opReservekey->KeepKey();
 
             // Add tx to wallet, because if it has change it's also ours,
             // otherwise just for transaction history.
@@ -3110,7 +3115,7 @@ CWallet::CommitResult CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey&
             if (AbandonTransaction(res.hashTx)) {
                 res.status = CWallet::CommitStatus::Abandoned;
                 // Return the change key
-                reservekey.ReturnKey();
+                if (opReservekey) opReservekey->ReturnKey();
             }
 
             LogPrintf("%s: ERROR: %s\n", __func__, res.ToString());

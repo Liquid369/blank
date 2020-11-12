@@ -35,15 +35,56 @@ OperationResult SaplingOperation::checkTxValues(TxValues& txValues, bool isFromt
     return OperationResult(true);
 }
 
-OperationResult SaplingOperation::send(std::string& retTxHash)
+OperationResult loadKeysFromShieldedFrom(const libzcash::SaplingPaymentAddress &addr,
+                                         libzcash::SaplingExpandedSpendingKey& expskOut,
+                                         uint256& ovkOut)
+{
+    // Get spending key for address
+    libzcash::SaplingExtendedSpendingKey sk;
+    if (!pwalletMain->GetSaplingExtendedSpendingKey(addr, sk)) {
+        return errorOut("Spending key not in the wallet");
+    }
+    expskOut = sk.expsk;
+    ovkOut = expskOut.full_viewing_key().ovk;
+    return OperationResult(true);
+}
+
+TxValues calculateTarget(std::vector<SendManyRecipient>& taddrRecipients,
+                         std::vector<SendManyRecipient>& shieldedAddrRecipients,
+                         CAmount fee)
+{
+    TxValues txValues;
+    for (SendManyRecipient &t : taddrRecipients) {
+        txValues.transOutTotal += t.amount;
+    }
+
+    // Add shielded outputs
+    for (const SendManyRecipient &t : shieldedAddrRecipients) {
+        txValues.shieldedOutTotal += t.amount;
+    }
+    txValues.target = txValues.shieldedOutTotal + txValues.transOutTotal + fee;
+    return txValues;
+}
+
+OperationResult SaplingOperation::build()
 {
 
     bool isFromtAddress = fromAddress.isFromTAddress();
     bool isFromShielded = fromAddress.isFromSapAddress();
 
-    // It needs to have a from (for now at least)
     if (!isFromtAddress && !isFromShielded) {
-        return errorOut("From address parameter missing");
+        isFromtAddress = selectFromtaddrs;
+        isFromShielded = selectFromShield;
+
+        // It needs to have a from.
+        if (!isFromtAddress && !isFromShielded) {
+            return errorOut("From address parameter missing");
+        }
+
+        // Cannot be from both
+        if (isFromtAddress && isFromShielded) {
+            return errorOut("From address type cannot be shielded and transparent");
+        }
     }
 
     if (taddrRecipients.empty() && shieldedAddrRecipients.empty()) {
@@ -54,17 +95,25 @@ OperationResult SaplingOperation::send(std::string& retTxHash)
         return errorOut("Minconf cannot be zero when sending from shielded address");
     }
 
-    // Get necessary keys
+    // First calculate target values
+    TxValues txValues = calculateTarget(taddrRecipients, shieldedAddrRecipients, fee);
+    OperationResult result(false);
+    // Necessary keys
     libzcash::SaplingExpandedSpendingKey expsk;
     uint256 ovk;
     if (isFromShielded) {
-        // Get spending key for address
-        libzcash::SaplingExtendedSpendingKey sk;
-        if (!pwalletMain->GetSaplingExtendedSpendingKey(fromAddress.fromSapAddr.get(), sk)) {
-            return errorOut("Spending key not in the wallet");
+        // Try to get the sk and ovk if we know the address from, if we don't know it then this will be loaded in loadUnspentNotes
+        // using the sk of the first note input of the transaction.
+        if (fromAddress.isFromSapAddress()) {
+            // Get spending key for address
+            auto loadKeyRes = loadKeysFromShieldedFrom(fromAddress.fromSapAddr.get(), expsk, ovk);
+            if (!loadKeyRes) return loadKeyRes;
         }
-        expsk = sk.expsk;
-        ovk = expsk.full_viewing_key().ovk;
+
+        // Load and select notes to spend
+        if (!(result = loadUnspentNotes(txValues, expsk, ovk))) {
+            return result;
+        }
     } else {
         // Sending from a t-address, which we don't have an ovk for. Instead,
         // generate a common one from the HD seed. This ensures the data is
@@ -73,17 +122,13 @@ OperationResult SaplingOperation::send(std::string& retTxHash)
         ovk = pwalletMain->GetSaplingScriptPubKeyMan()->getCommonOVKFromSeed();
     }
 
-    // Results
-    TxValues txValues;
     // Add transparent outputs
     for (SendManyRecipient &t : taddrRecipients) {
-        txValues.transOutTotal += t.amount;
         txBuilder.AddTransparentOutput(DecodeDestination(t.address), t.amount);
     }
 
     // Add shielded outputs
     for (const SendManyRecipient &t : shieldedAddrRecipients) {
-        txValues.shieldedOutTotal += t.amount;
         auto addr = KeyIO::DecodePaymentAddress(t.address);
         assert(IsValidPaymentAddress(addr));
         auto to = boost::get<libzcash::SaplingPaymentAddress>(addr);
@@ -94,23 +139,11 @@ OperationResult SaplingOperation::send(std::string& retTxHash)
         txBuilder.AddSaplingOutput(ovk, to, t.amount, memo);
     }
 
-    // Load total
-    txValues.target = txValues.shieldedOutTotal + txValues.transOutTotal + fee;
-    OperationResult result(false);
-
     // If from address is a taddr, select UTXOs to spend
     // note: when spending coinbase utxos, you can only specify a single shielded addr as the change must go somewhere
     // and if there are multiple shielded addrs, we don't know where to send it.
     if (isFromtAddress && !(result = loadUtxos(txValues))) {
         return result;
-    }
-
-    // If from a shielded addr, select notes to spend
-    if (isFromShielded) {
-        // Load notes
-        if (!(result = loadUnspentNotes(txValues, expsk))) {
-            return result;
-        }
     }
 
     const auto& retCalc = checkTxValues(txValues, isFromtAddress, isFromShielded);
@@ -124,25 +157,37 @@ OperationResult SaplingOperation::send(std::string& retTxHash)
     LogPrint(BCLog::SAPLING, "%s: fee: %s\n", __func__ , FormatMoney(fee));
 
     // Set change address if we are using transparent funds
-    CReserveKey keyChange(pwalletMain);
     if (isFromtAddress) {
+        if (!tkeyChange) {
+            tkeyChange = new CReserveKey(pwalletMain);
+        }
         CPubKey vchPubKey;
-        if (!keyChange.GetReservedKey(vchPubKey, true)) {
-            // should never fail, as we just unlocked
+        if (!tkeyChange->GetReservedKey(vchPubKey, true)) {
             return errorOut("Could not generate a taddr to use as a change address");
         }
-
         CTxDestination changeAddr = vchPubKey.GetID();
         txBuilder.SendChangeTo(changeAddr);
     }
 
     // Build the transaction
     txBuilder.SetFee(fee);
-    finalTx = txBuilder.Build().GetTxOrThrow();
+    TransactionBuilderResult txResult = txBuilder.Build();
+    auto opTx = txResult.GetTx();
 
+    // Check existent tx
+    if (!opTx) {
+        return errorOut("Failed to build transaction: " + txResult.GetError());
+    }
+
+    finalTx = *opTx;
+    return OperationResult(true);
+}
+
+OperationResult SaplingOperation::send(std::string& retTxHash)
+{
     if (!testMode) {
         CWalletTx wtx(pwalletMain, finalTx);
-        const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, keyChange, g_connman.get());
+        const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, tkeyChange, g_connman.get());
         if (res.status != CWallet::CommitStatus::OK) {
             return errorOut(res.ToString());
         }
@@ -150,6 +195,12 @@ OperationResult SaplingOperation::send(std::string& retTxHash)
 
     retTxHash = finalTx.GetHash().ToString();
     return OperationResult(true);
+}
+
+OperationResult SaplingOperation::buildAndSend(std::string& retTxHash)
+{
+    OperationResult res = build();
+    return (res) ? send(retTxHash) : res;
 }
 
 void SaplingOperation::setFromAddress(const CTxDestination& _dest)
@@ -165,7 +216,7 @@ void SaplingOperation::setFromAddress(const libzcash::SaplingPaymentAddress& _pa
 OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
 {
     std::set<CTxDestination> destinations;
-    destinations.insert(fromAddress.fromTaddr);
+    if (fromAddress.isFromTAddress()) destinations.insert(fromAddress.fromTaddr);
     if (!pwalletMain->AvailableCoins(
             &transInputs,
             nullptr,
@@ -227,11 +278,12 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
     return OperationResult(true);
 }
 
-OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, const libzcash::SaplingExpandedSpendingKey& expsk)
+OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues,
+                                                   libzcash::SaplingExpandedSpendingKey& expsk,
+                                                   uint256& ovk)
 {
     std::vector<SaplingNoteEntry> saplingEntries;
-    libzcash::PaymentAddress paymentAddress(fromAddress.fromSapAddr.get());
-    pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(saplingEntries, paymentAddress, mindepth);
+    pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(saplingEntries, fromAddress.fromSapAddr, mindepth);
 
     for (const auto& entry : saplingEntries) {
         shieldedInputs.emplace_back(entry);
@@ -259,6 +311,11 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, const lib
     std::vector<libzcash::SaplingNote> notes;
     CAmount sum = 0;
     for (const auto& t : shieldedInputs) {
+        // if null, load the first input sk
+        if (expsk.IsNull()) {
+            auto resLoadKeys = loadKeysFromShieldedFrom(t.address, expsk, ovk);
+            if (!resLoadKeys) return resLoadKeys;
+        }
         ops.emplace_back(t.op);
         notes.emplace_back(t.note);
         sum += t.note.value();

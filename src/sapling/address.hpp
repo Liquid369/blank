@@ -193,6 +193,7 @@ public:
     }
 
     SaplingFullViewingKey full_viewing_key() const;
+    bool IsNull() { return ask.IsNull() && nsk.IsNull() && ovk.IsNull(); }
 
     friend inline bool operator==(const SaplingExpandedSpendingKey& a, const SaplingExpandedSpendingKey& b) {
         return a.ask == b.ask && a.nsk == b.nsk && a.ovk == b.ovk;

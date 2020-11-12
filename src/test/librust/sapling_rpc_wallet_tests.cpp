@@ -336,7 +336,7 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
         std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1,100.0, "DEADBEEF") };
         SaplingOperation operation(consensusParams, 1);
         operation.setFromAddress(DecodeDestination(taddr1));
-        auto res = operation.setShieldedRecipients(recipients)->send(ret);
+        auto res = operation.setShieldedRecipients(recipients)->buildAndSend(ret);
         BOOST_CHECK(!res);
         BOOST_CHECK(res.getError().find("Insufficient funds, no available UTXO to spend") != std::string::npos);
     }
@@ -346,7 +346,7 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
         std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1,100.0, "DEADBEEF") };
         SaplingOperation operation(consensusParams, 1);
         operation.setFromAddress(pa);
-        auto res = operation.setShieldedRecipients(recipients)->setMinDepth(0)->send(ret);
+        auto res = operation.setShieldedRecipients(recipients)->setMinDepth(0)->buildAndSend(ret);
         BOOST_CHECK(!res);
         BOOST_CHECK(res.getError().find("Minconf cannot be zero when sending from shielded address") != std::string::npos);
     }
@@ -356,7 +356,7 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
         std::vector<SendManyRecipient> recipients = { SendManyRecipient(taddr1,100.0, "DEADBEEF") };
         SaplingOperation operation(consensusParams, 1);
         operation.setFromAddress(pa);
-        auto res = operation.setTransparentRecipients(recipients)->send(ret);
+        auto res = operation.setTransparentRecipients(recipients)->buildAndSend(ret);
         BOOST_CHECK(!res);
         BOOST_CHECK(res.getError().find("Insufficient funds, no available notes to spend") != std::string::npos);
     }
@@ -464,7 +464,7 @@ BOOST_AUTO_TEST_CASE(rpc_shielded_sendmany_taddr_to_sapling)
     operation.testMode = true; // To not commit the transaction
     BOOST_CHECK(operation.setShieldedRecipients(recipients)
                         ->setMinDepth(0)
-                        ->send(txFinalHash));
+                        ->buildAndSend(txFinalHash));
 
     // Get the transaction
     // Test mode does not send the transaction to the network.

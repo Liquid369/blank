@@ -41,15 +41,23 @@ public:
     explicit SaplingOperation(const Consensus::Params& consensusParams, int chainHeight) : txBuilder(consensusParams, chainHeight) {};
     explicit SaplingOperation(TransactionBuilder& _builder) : txBuilder(_builder) {};
 
+    ~SaplingOperation() { delete tkeyChange; }
+
+    OperationResult build();
     OperationResult send(std::string& retTxHash);
+    OperationResult buildAndSend(std::string& retTxHash);
 
     void setFromAddress(const CTxDestination&);
     void setFromAddress(const libzcash::SaplingPaymentAddress&);
+    // In case of no addressFrom filter selected, it will accept any utxo in the wallet as input.
+    SaplingOperation* setSelectTransparentCoins(const bool select) { selectFromtaddrs = select; return this; };
+    SaplingOperation* setSelectShieldedCoins(const bool select) { selectFromShield = select; return this; };
     SaplingOperation* setTransparentRecipients(std::vector<SendManyRecipient>& vec) { taddrRecipients = std::move(vec); return this; };
     SaplingOperation* setShieldedRecipients(std::vector<SendManyRecipient>& vec) { shieldedAddrRecipients = std::move(vec); return this; } ;
     SaplingOperation* setFee(CAmount _fee) { fee = _fee; return this; }
     SaplingOperation* setMinDepth(int _mindepth) { assert(_mindepth >= 0); mindepth = _mindepth; return this; }
     SaplingOperation* setTxBuilder(TransactionBuilder& builder) { txBuilder = builder; return this; }
+    SaplingOperation* setTransparentKeyChange(CReserveKey* reserveKey) { tkeyChange = reserveKey; return this; }
 
     CTransaction getFinalTx() { return finalTx; }
 
@@ -61,19 +69,27 @@ public:
 
 private:
     FromAddress fromAddress;
+    // In case of no addressFrom filter selected, it will accept any utxo in the wallet as input.
+    bool selectFromtaddrs{false};
+    bool selectFromShield{false};
     std::vector<SendManyRecipient> taddrRecipients;
     std::vector<SendManyRecipient> shieldedAddrRecipients;
     std::vector<COutput> transInputs;
     std::vector<SaplingNoteEntry> shieldedInputs;
     int mindepth{5}; // Min default depth 5.
-    CAmount fee{0};
+    CAmount fee{DEFAULT_SAPLING_FEE}; // Hardcoded fee for now.
+
+    // transparent change
+    CReserveKey* tkeyChange{nullptr};
 
     // Builder
     TransactionBuilder txBuilder;
     CTransaction finalTx;
 
     OperationResult loadUtxos(TxValues& values);
-    OperationResult loadUnspentNotes(TxValues& txValues, const libzcash::SaplingExpandedSpendingKey& expsk);
+    OperationResult loadUnspentNotes(TxValues& txValues,
+                                     libzcash::SaplingExpandedSpendingKey& expsk,
+                                     uint256& ovk);
     OperationResult checkTxValues(TxValues& txValues, bool isFromtAddress, bool isFromShielded);
 };
 

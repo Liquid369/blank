@@ -146,6 +146,13 @@ namespace KeyIO {
         return libzcash::InvalidEncoding();
     }
 
+    Optional<libzcash::SaplingPaymentAddress> DecodeSaplingPaymentAddress(const std::string& strAddress)
+    {
+        libzcash::PaymentAddress addr = KeyIO::DecodePaymentAddress(strAddress);
+        const auto dest = boost::get<libzcash::SaplingPaymentAddress>(&addr);
+        return (dest) ? Optional<libzcash::SaplingPaymentAddress>(*dest) : nullopt;
+    }
+
     bool IsValidPaymentAddressString(const std::string& str) {
         return IsValidPaymentAddress(DecodePaymentAddress(str));
     }
