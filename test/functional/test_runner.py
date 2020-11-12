@@ -58,6 +58,8 @@ BASE_SCRIPTS= [
     # Longest test should go first, to favor running tests in parallel
     'wallet_basic.py',                          # ~ 498 sec
     'wallet_backup.py',                         # ~ 477 sec
+    'sapling_key_import_export.py',             # ~ 356 sec
+    'sapling_wallet_anchorfork.py',             # ~ 345 sec
 
     # vv Tests less than 5m vv
     'wallet_zapwallettxes.py',                  # ~ 300 sec
@@ -68,19 +70,17 @@ BASE_SCRIPTS= [
     'wallet_abandonconflict.py',                # ~ 212 sec
     'wallet_hd.py',                             # ~ 210 sec
     'wallet_zerocoin_publicspends.py',          # ~ 202 sec
+    'sapling_wallet_nullifiers.py',             # ~ 201 sec
     'feature_logging.py',                       # ~ 200 sec
     'rpc_rawtransaction.py',                    # ~ 193 sec
     'wallet_keypool_topup.py',                  # ~ 174 sec
+    'sapling_wallet_listreceived.py',           # ~ 169
     'sapling_wallet.py',                        # ~ 164 sec
-    'sapling_changeaddresses.py',
-    'sapling_wallet_anchorfork.py',
-    'sapling_wallet_nullifiers.py',
-    'sapling_key_import_export.py',
-    'sapling_wallet_listreceived.py',
     'wallet_txn_doublespend.py --mineblock',    # ~ 157 sec
     'wallet_txn_clone.py --mineblock',          # ~ 157 sec
     'rpc_spork.py',                             # ~ 156 sec
     'interface_rest.py',                        # ~ 154 sec
+    'sapling_changeaddresses.py',               # ~ 151 sec
     'feature_proxy.py',                         # ~ 143 sec
     'feature_uacomment.py',                     # ~ 130 sec
     'wallet_upgrade.py',                        # ~ 124 sec
@@ -93,6 +93,7 @@ BASE_SCRIPTS= [
     'feature_reindex.py',                       # ~ 110 sec
     'interface_http.py',                        # ~ 105 sec
     'feature_blockhashcache.py',                # ~ 100 sec
+    'sapling_mempool.py',                       # ~ 98 sec
     'wallet_listtransactions.py',               # ~ 97 sec
     'mempool_reorg.py',                         # ~ 92 sec
     'sapling_wallet_persistence.py',            # ~ 90 sec
@@ -200,6 +201,7 @@ LEGACY_SKIP_TESTS = [
     'sapling_wallet_anchorfork.py',
     'sapling_wallet_listreceived.py',
     'sapling_wallet_nullifiers.py',
+    'sapling_mempool.py',
 ]
 
 # Place EXTENDED_SCRIPTS first since it has the 3 longest running tests
