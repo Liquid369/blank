@@ -363,6 +363,10 @@ private:
 
     void trackPackageRemoved(const CFeeRate& rate);
 
+    // Shielded txes
+    std::map<uint256, CTransactionRef> mapSaplingNullifiers;
+    void checkNullifiers() const;
+
 public:
 
     static const int ROLLING_FEE_HALFLIFE = 60 * 60 * 12; // public only for testing
@@ -475,6 +479,7 @@ public:
     bool addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry, setEntries &setAncestors, bool fCurrentEstimate = true);
     void remove(const CTransaction& tx, std::list<CTransactionRef>& removed, bool fRecursive = false);
     void removeForReorg(const CCoinsViewCache* pcoins, unsigned int nMemPoolHeight, int flags);
+    void removeWithAnchor(const uint256& invalidRoot);
     void removeConflicts(const CTransaction& tx, std::list<CTransactionRef>& removed);
     void removeForBlock(const std::vector<CTransactionRef>& vtx, unsigned int nBlockHeight, std::list<CTransactionRef>& conflicts, bool fCurrentEstimate = true);
     void clear();
@@ -494,6 +499,8 @@ public:
     void PrioritiseTransaction(const uint256 hash, const std::string strHash, double dPriorityDelta, const CAmount& nFeeDelta);
     void ApplyDeltas(const uint256 hash, double& dPriorityDelta, CAmount& nFeeDelta) const;
     void ClearPrioritisation(const uint256 hash);
+
+    bool nullifierExists(const uint256& nullifier) const;
 
     /** Remove a set of transactions from the mempool.
      *  If a transaction is in this set, then all in-mempool descendants must
@@ -646,6 +653,7 @@ public:
     CCoinsViewMemPool(CCoinsView* baseIn, CTxMemPool& mempoolIn);
     bool GetCoin(const COutPoint& outpoint, Coin& coin) const;
     bool HaveCoin(const COutPoint& outpoint) const;
+    bool GetNullifier(const uint256& nullifier) const;
 };
 
 // We want to sort transactions by coin age priority

@@ -404,6 +404,13 @@ bool CTxMemPool::addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry,
         }
     }
 
+    // Save spent nullifiers
+    if (tx.IsShieldedTx()) {
+        for (const SpendDescription& sd : tx.sapData->vShieldedSpend) {
+            mapSaplingNullifiers[sd.nullifier] = newit->GetSharedTx();
+        }
+    }
+
     nTransactionsUpdated++;
     totalTxSize += entry.GetTxSize();
     minerPolicyEstimator->processTransaction(entry, fCurrentEstimate);
@@ -413,17 +420,23 @@ bool CTxMemPool::addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry,
 
 void CTxMemPool::removeUnchecked(txiter it)
 {
-    const uint256 hash = it->GetTx().GetHash();
-    for (const CTxIn& txin : it->GetTx().vin)
+    AssertLockHeld(cs);
+    const CTransaction& tx = it->GetTx();
+    for (const CTxIn& txin : tx.vin)
         mapNextTx.erase(txin.prevout);
-
+    // Remove spent nullifiers
+    if (tx.IsShieldedTx()) {
+        for (const SpendDescription& sd : tx.sapData->vShieldedSpend) {
+            mapSaplingNullifiers.erase(sd.nullifier);
+        }
+    }
     totalTxSize -= it->GetTxSize();
     cachedInnerUsage -= it->DynamicMemoryUsage();
     cachedInnerUsage -= memusage::DynamicUsage(mapLinks[it].parents) + memusage::DynamicUsage(mapLinks[it].children);
     mapLinks.erase(it);
     mapTx.erase(it);
     nTransactionsUpdated++;
-    minerPolicyEstimator->removeTx(hash);
+    minerPolicyEstimator->removeTx(tx.GetHash());
 }
 
 // Calculates descendants of entry that are not already in setDescendants, and adds to
@@ -523,6 +536,31 @@ void CTxMemPool::removeForReorg(const CCoinsViewCache *pcoins, unsigned int nMem
     }
 }
 
+void CTxMemPool::removeWithAnchor(const uint256& invalidRoot)
+{
+
+    // If a block is disconnected from the tip, and the root changed,
+    // we must invalidate transactions from the mempool which spend
+    // from that root -- almost as though they were spending coinbases
+    // which are no longer valid to spend due to coinbase maturity.
+    LOCK(cs);
+    std::list<CTransaction> transactionsToRemove;
+    for (indexed_transaction_set::const_iterator it = mapTx.begin(); it != mapTx.end(); it++) {
+        const CTransaction& tx = it->GetTx();
+        if (!tx.IsShieldedTx()) continue;
+        for (const auto& sd : tx.sapData->vShieldedSpend) {
+            if (sd.anchor == invalidRoot) {
+                transactionsToRemove.emplace_back(tx);
+                break;
+            }
+        }
+    }
+    for (const CTransaction& tx : transactionsToRemove) {
+        std::list<CTransactionRef> removed;
+        remove(tx, removed, true);
+    }
+}
+
 void CTxMemPool::removeConflicts(const CTransaction& tx, std::list<CTransactionRef>& removed)
 {
     // Remove transactions which depend on inputs of tx, recursively
@@ -534,6 +572,18 @@ void CTxMemPool::removeConflicts(const CTransaction& tx, std::list<CTransactionR
             const CTransaction& txConflict = *it->second.ptx;
             if (txConflict != tx) {
                 remove(txConflict, removed, true);
+            }
+        }
+    }
+    // Remove txes with conflicting nullifier
+    if (tx.IsShieldedTx()) {
+        for (const SpendDescription& sd : tx.sapData->vShieldedSpend) {
+            const auto& it = mapSaplingNullifiers.find(sd.nullifier);
+            if (it != mapSaplingNullifiers.end()) {
+                const CTransaction& txConflict = *it->second;
+                if (txConflict != tx) {
+                    remove(txConflict, removed, true);
+                }
             }
         }
     }
@@ -637,6 +687,14 @@ void CTxMemPool::check(const CCoinsViewCache* pcoins) const
             }
             i++;
         }
+        // sapling txes
+        if (tx.IsShieldedTx()) {
+            for (const SpendDescription& sd : tx.sapData->vShieldedSpend) {
+                SaplingMerkleTree tree;
+                assert(pcoins->GetSaplingAnchorAt(sd.anchor, tree));
+                assert(!pcoins->GetNullifier(sd.nullifier));
+            }
+        }
         assert(setParentCheck == GetMemPoolParents(it));
         // Check children against mapNextTx
         if (!fHasZerocoinSpends) {
@@ -693,7 +751,7 @@ void CTxMemPool::check(const CCoinsViewCache* pcoins) const
         }
     }
     for (std::map<COutPoint, CInPoint>::const_iterator it = mapNextTx.begin(); it != mapNextTx.end(); it++) {
-        uint256 hash = it->second.ptx->GetHash();
+        const uint256& hash = it->second.ptx->GetHash();
         indexed_transaction_set::const_iterator it2 = mapTx.find(hash);
         const CTransaction& tx = it2->GetTx();
         assert(it2 != mapTx.end());
@@ -702,8 +760,22 @@ void CTxMemPool::check(const CCoinsViewCache* pcoins) const
         assert(it->first == it->second.ptx->vin[it->second.n].prevout);
     }
 
+    // Consistency check for sapling nullifiers
+    checkNullifiers();
+
     assert(totalTxSize == checkTotal);
     assert(innerUsage == cachedInnerUsage);
+}
+
+void CTxMemPool::checkNullifiers() const
+{
+    for (const auto& it : mapSaplingNullifiers) {
+        const uint256& hash = it.second->GetHash();
+        const auto& findTx = mapTx.find(hash);
+        assert(findTx != mapTx.end());
+        const CTransactionRef& tx = findTx->GetSharedTx();
+        assert(*tx == *it.second);
+    }
 }
 
 void CTxMemPool::queryHashes(std::vector<uint256>& vtxid)
@@ -818,6 +890,12 @@ void CTxMemPool::ClearPrioritisation(const uint256 hash)
     mapDeltas.erase(hash);
 }
 
+bool CTxMemPool::nullifierExists(const uint256& nullifier) const
+{
+    LOCK(cs);
+    return mapSaplingNullifiers.count(nullifier);
+}
+
 bool CTxMemPool::HasNoInputsOf(const CTransaction &tx) const
 {
     if (tx.HasZerocoinSpendInputs())
@@ -853,11 +931,22 @@ bool CCoinsViewMemPool::HaveCoin(const COutPoint& outpoint) const
     return mempool.exists(outpoint) || base->HaveCoin(outpoint);
 }
 
+bool CCoinsViewMemPool::GetNullifier(const uint256& nullifier) const
+{
+    return mempool.nullifierExists(nullifier) || base->GetNullifier(nullifier);
+}
+
 size_t CTxMemPool::DynamicMemoryUsage() const
 {
     LOCK(cs);
-    // Estimate the overhead of mapTx to be 12 pointers + an allocation, as no exact formula for boost::multi_index_contained is implemented.
-    return memusage::MallocUsage(sizeof(CTxMemPoolEntry) + 12 * sizeof(void*)) * mapTx.size() + memusage::DynamicUsage(mapNextTx) + memusage::DynamicUsage(mapDeltas) + memusage::DynamicUsage(mapLinks) + cachedInnerUsage;
+    // Estimate the overhead of mapTx to be 12 pointers + an allocation, as no exact formula for
+    // boost::multi_index_contained is implemented.
+    return memusage::MallocUsage(sizeof(CTxMemPoolEntry) + 12 * sizeof(void*)) * mapTx.size() +
+            memusage::DynamicUsage(mapNextTx) +
+            memusage::DynamicUsage(mapDeltas) +
+            memusage::DynamicUsage(mapLinks) +
+            cachedInnerUsage +
+            memusage::DynamicUsage(mapSaplingNullifiers);
 }
 
 void CTxMemPool::RemoveStaged(setEntries &stage)
