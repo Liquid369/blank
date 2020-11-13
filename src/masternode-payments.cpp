@@ -297,15 +297,15 @@ bool IsBlockPayeeValid(const CBlock& block, int nBlockHeight)
 }
 
 
-void FillBlockPayee(CMutableTransaction& txNew, const CBlockIndex* pindexPrev, bool fProofOfStake)
+void FillBlockPayee(CMutableTransaction& txNew, const int nHeight, bool fProofOfStake)
 {
-    if (!pindexPrev) return;
+    if (nHeight == 0) return;
 
-    if (!sporkManager.IsSporkActive(SPORK_13_ENABLE_SUPERBLOCKS) ||       // if superblocks are not enabled
-            !g_budgetman.IsBudgetPaymentBlock(pindexPrev->nHeight + 1) || // or this is not a superblock
-            !g_budgetman.FillBlockPayee(txNew, fProofOfStake) ) {         // or there's no budget with enough votes
+    if (!sporkManager.IsSporkActive(SPORK_13_ENABLE_SUPERBLOCKS) ||  // if superblocks are not enabled
+            !g_budgetman.IsBudgetPaymentBlock(nHeight) || // or this is not a superblock
+            !g_budgetman.FillBlockPayee(txNew, nHeight, fProofOfStake) ) {    // or there's no budget with enough votes
         // pay a masternode
-        masternodePayments.FillBlockPayee(txNew, pindexPrev, fProofOfStake);
+        masternodePayments.FillBlockPayee(txNew, nHeight, fProofOfStake);
     }
 }
 
@@ -318,15 +318,15 @@ std::string GetRequiredPaymentsString(int nBlockHeight)
     }
 }
 
-void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const CBlockIndex* pindexPrev, bool fProofOfStake)
+void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int nHeight, bool fProofOfStake)
 {
-    if (!pindexPrev) return;
+    if (nHeight == 0) return;
 
     bool hasPayment = true;
     CScript payee;
 
     //spork
-    if (!masternodePayments.GetBlockPayee(pindexPrev->nHeight + 1, payee)) {
+    if (!masternodePayments.GetBlockPayee(nHeight, payee)) {
         //no masternode detected
         CMasternode* winningNode = mnodeman.GetCurrentMasterNode(1);
         if (winningNode) {
@@ -371,7 +371,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const CBloc
             txNew.vout.resize(2);
             txNew.vout[1].scriptPubKey = payee;
             txNew.vout[1].nValue = masternodePayment;
-            txNew.vout[0].nValue = GetBlockValue(pindexPrev->nHeight + 1) - masternodePayment;
+            txNew.vout[0].nValue = GetBlockValue(nHeight) - masternodePayment;
         }
 
         CTxDestination address1;

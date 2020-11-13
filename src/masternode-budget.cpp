@@ -657,18 +657,17 @@ bool CBudgetManager::GetPayeeAndAmount(int chainHeight, CScript& payeeRet, CAmou
     return pfb->GetPayeeAndAmount(chainHeight, payeeRet, nAmountRet);
 }
 
-bool CBudgetManager::FillBlockPayee(CMutableTransaction& txNew, bool fProofOfStake) const
+bool CBudgetManager::FillBlockPayee(CMutableTransaction& txNew, const int nHeight, bool fProofOfStake) const
 {
-    int chainHeight = GetBestHeight();
-    if (chainHeight <= 0) return false;
+    if (nHeight <= 0) return false;
 
     CScript payee;
     CAmount nAmount = 0;
 
-    if (!GetPayeeAndAmount(chainHeight + 1, payee, nAmount))
+    if (!GetPayeeAndAmount(nHeight, payee, nAmount))
         return false;
 
-    CAmount blockValue = GetBlockValue(chainHeight + 1);
+    CAmount blockValue = GetBlockValue(nHeight);
 
     if (fProofOfStake) {
         unsigned int i = txNew.vout.size();
