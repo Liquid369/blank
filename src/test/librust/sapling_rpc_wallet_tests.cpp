@@ -325,16 +325,16 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
 
     // add keys manually
     BOOST_CHECK_NO_THROW(retValue = CallRPC("getnewaddress"));
-    std::string taddr1 = retValue.get_str();
-    auto pa = pwalletMain->GenerateNewSaplingZKey();
-    std::string zaddr1 = KeyIO::EncodePaymentAddress(pa);
+    const std::string& taddrStr = retValue.get_str();
+    const CTxDestination& taddr1 = DecodeDestination(taddrStr);
+    const auto& zaddr1 = pwalletMain->GenerateNewSaplingZKey();
     std::string ret;
 
     // there are no utxos to spend
     {
-        std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1,100.0, "DEADBEEF") };
+        std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1, COIN, "DEADBEEF") };
         SaplingOperation operation(consensusParams, 1);
-        operation.setFromAddress(DecodeDestination(taddr1));
+        operation.setFromAddress(taddr1);
         auto res = operation.setShieldedRecipients(recipients)->buildAndSend(ret);
         BOOST_CHECK(!res);
         BOOST_CHECK(res.getError().find("Insufficient funds, no available UTXO to spend") != std::string::npos);
@@ -342,9 +342,9 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
 
     // minconf cannot be zero when sending from zaddr
     {
-        std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1,100.0, "DEADBEEF") };
+        std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1, COIN, "DEADBEEF") };
         SaplingOperation operation(consensusParams, 1);
-        operation.setFromAddress(pa);
+        operation.setFromAddress(zaddr1);
         auto res = operation.setShieldedRecipients(recipients)->setMinDepth(0)->buildAndSend(ret);
         BOOST_CHECK(!res);
         BOOST_CHECK(res.getError().find("Minconf cannot be zero when sending from shielded address") != std::string::npos);
@@ -352,9 +352,9 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
 
     // there are no unspent notes to spend
     {
-        std::vector<SendManyRecipient> recipients = { SendManyRecipient(taddr1,100.0, "DEADBEEF") };
+        std::vector<SendManyRecipient> recipients = { SendManyRecipient(taddr1, COIN) };
         SaplingOperation operation(consensusParams, 1);
-        operation.setFromAddress(pa);
+        operation.setFromAddress(zaddr1);
         auto res = operation.setTransparentRecipients(recipients)->buildAndSend(ret);
         BOOST_CHECK(!res);
         BOOST_CHECK(res.getError().find("Insufficient funds, no available notes to spend") != std::string::npos);
@@ -362,9 +362,9 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
 
     // get_memo_from_hex_string())
     {
-        std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1,100.0, "DEADBEEF") };
+        std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1, COIN, "DEADBEEF") };
         SaplingOperation operation(consensusParams, 1);
-        operation.setFromAddress(pa);
+        operation.setFromAddress(zaddr1);
         operation.setShieldedRecipients(recipients);
 
         std::string memo = "DEADBEEF";
@@ -424,8 +424,7 @@ BOOST_AUTO_TEST_CASE(rpc_shielded_sendmany_taddr_to_sapling)
     CTxDestination taddr;
     pwalletMain->getNewAddress(taddr, "");
     std::string taddr1 = EncodeDestination(taddr);
-    auto pa = pwalletMain->GenerateNewSaplingZKey();
-    std::string zaddr1 = KeyIO::EncodePaymentAddress(pa);
+    auto zaddr1 = pwalletMain->GenerateNewSaplingZKey();
 
     auto consensusParams = Params().GetConsensus();
     retValue = CallRPC("getblockcount");

@@ -1487,14 +1487,14 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
         }
 
         std::string address = find_value(o, "address").get_str();
-        bool isShieldAddr = false;
         CTxDestination taddr = DecodeDestination(address);
+        Optional<libzcash::SaplingPaymentAddress> saddr;
 
         if (!IsValidDestination(taddr)) {
-            auto res = KeyIO::DecodePaymentAddress(address);
-            if (IsValidPaymentAddress(res)) {
-                isShieldAddr = true;
-                containsSaplingOutput |= isShieldAddr;
+            const auto& addr = KeyIO::DecodePaymentAddress(address);
+            if (IsValidPaymentAddress(addr)) {
+                saddr = *(boost::get<libzcash::SaplingPaymentAddress>(&addr));
+                containsSaplingOutput = true;
             } else {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, unknown address format: ")+address );
             }
@@ -1508,7 +1508,7 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
         std::string memo;
         if (!memoValue.isNull()) {
             memo = memoValue.get_str();
-            if (!isShieldAddr) {
+            if (!saddr) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "Memo cannot be used with a taddr. It can only be used with a shielded addr.");
             } else if (!IsHex(memo)) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected memo data in hexadecimal format.");
@@ -1523,10 +1523,10 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
         if (nAmount < 0)
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, amount must be positive");
 
-        if (isShieldAddr) {
-            shieldAddrRecipients.emplace_back(address, nAmount, memo);
+        if (saddr) {
+            shieldAddrRecipients.emplace_back(*saddr, nAmount, memo);
         } else {
-            taddrRecipients.emplace_back(address, nAmount, memo);
+            taddrRecipients.emplace_back(taddr, nAmount);
         }
 
         nTotalOut += nAmount;
@@ -1548,12 +1548,12 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
     // As a sanity check, estimate and verify that the size of the transaction will be valid.
     // Depending on the input notes, the actual tx size may turn out to be larger and perhaps invalid.
     size_t txsize = 0;
-    for (const auto& shieldAddrRecipient : shieldAddrRecipients) {
-        auto res = KeyIO::DecodePaymentAddress(shieldAddrRecipient.address);
-        if (IsValidPaymentAddress(res)) {
+    for (const auto& t : shieldAddrRecipients) {
+        if (IsValidPaymentAddress(t.shieldedRecipient->address)) {
             mtx.sapData->vShieldedOutput.emplace_back();
         } else {
-            throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("invalid recipient shielded address %s", shieldAddrRecipient.address));
+            throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("invalid recipient shielded address %s",
+                    KeyIO::EncodePaymentAddress(t.shieldedRecipient->address)));
         }
     }
     CTransaction tx(mtx);

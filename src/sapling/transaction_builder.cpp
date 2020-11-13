@@ -154,7 +154,7 @@ void TransactionBuilder::AddSaplingOutput(
     mtx.sapData->valueBalance -= value;
 }
 
-void TransactionBuilder::AddTransparentInput(COutPoint utxo, CScript scriptPubKey, CAmount value)
+void TransactionBuilder::AddTransparentInput(const COutPoint& utxo, const CScript& scriptPubKey, const CAmount& value)
 {
     if (keystore == nullptr) {
         throw std::runtime_error("Cannot add transparent inputs to a TransactionBuilder without a keystore");
@@ -164,15 +164,18 @@ void TransactionBuilder::AddTransparentInput(COutPoint utxo, CScript scriptPubKe
     tIns.emplace_back(scriptPubKey, value);
 }
 
-void TransactionBuilder::AddTransparentOutput(const CTxDestination& to, CAmount value)
+void TransactionBuilder::AddTransparentOutput(const CTxOut& out)
 {
-    if (!IsValidDestination(to)) {
-        throw std::runtime_error("Invalid output address, not a valid taddr.");
-    }
-
-    CScript scriptPubKey = GetScriptForDestination(to);
-    CTxOut out(value, scriptPubKey);
+    std::vector<std::vector<unsigned char> > vSolutions;
+    txnouttype whichType;
+    if (!Solver(out.scriptPubKey, whichType, vSolutions))
+        throw std::runtime_error("Transaction builder: invalid script for transparent output");
     mtx.vout.push_back(out);
+}
+
+void TransactionBuilder::AddTransparentOutput(const CTxDestination& dest, const CAmount& value)
+{
+    AddTransparentOutput(CTxOut(value, GetScriptForDestination(dest)));
 }
 
 void TransactionBuilder::SetFee(CAmount _fee)
@@ -226,7 +229,7 @@ TransactionBuilderResult TransactionBuilder::Build()
             AddSaplingOutput(saplingChangeAddr->first, saplingChangeAddr->second, change);
         } else if (tChangeAddr) {
             // tChangeAddr has already been validated.
-            AddTransparentOutput(tChangeAddr.value(), change);
+            AddTransparentOutput(*tChangeAddr, change);
         } else if (!spends.empty()) {
             auto fvk = spends[0].expsk.full_viewing_key();
             auto note = spends[0].note;

@@ -13,14 +13,45 @@
 
 struct TxValues;
 
-class SendManyRecipient {
-public:
-    const std::string address;
+struct ShieldedRecipient
+{
+    const libzcash::SaplingPaymentAddress address;
     const CAmount amount;
     const std::string memo;
+    ShieldedRecipient(const libzcash::SaplingPaymentAddress& _address, const CAmount& _amount, const std::string& _memo) :
+        address(_address),
+        amount(_amount),
+        memo(_memo)
+    {}
+};
 
-    SendManyRecipient(const std::string& address_, CAmount amount_, std::string memo_) :
-            address(address_), amount(amount_), memo(memo_) {}
+struct SendManyRecipient
+{
+    const Optional<ShieldedRecipient> shieldedRecipient;
+    const Optional<CTxOut> transparentRecipient;
+
+    bool IsTransparent() const { return transparentRecipient != nullopt; }
+    bool IsShielded() const { return !IsTransparent(); }
+
+    // Prevent default empty initialization
+    SendManyRecipient() = delete;
+
+    // Shielded recipient
+    SendManyRecipient(const libzcash::SaplingPaymentAddress& address, const CAmount& amount, const std::string& memo):
+        shieldedRecipient(ShieldedRecipient(address, amount, memo))
+    { }
+
+    // Transparent recipient: P2PKH
+    SendManyRecipient(const CTxDestination& dest, const CAmount& amount):
+        transparentRecipient(CTxOut(amount, GetScriptForDestination(dest)))
+    {}
+
+    // Transparent recipient: P2CS
+    SendManyRecipient(const CKeyID& ownerKey, const CKeyID& stakerKey, const CAmount& amount):
+        transparentRecipient(CTxOut(amount, GetScriptForStakeDelegation(stakerKey, ownerKey)))
+    {}
+
+    // !TODO: Transparent recipient: multisig and OP_RETURN
 };
 
 class FromAddress {
