@@ -31,7 +31,6 @@ struct SendManyRecipient
     const Optional<CTxOut> transparentRecipient;
 
     bool IsTransparent() const { return transparentRecipient != nullopt; }
-    bool IsShielded() const { return !IsTransparent(); }
 
     // Prevent default empty initialization
     SendManyRecipient() = delete;
@@ -39,7 +38,7 @@ struct SendManyRecipient
     // Shielded recipient
     SendManyRecipient(const libzcash::SaplingPaymentAddress& address, const CAmount& amount, const std::string& memo):
         shieldedRecipient(ShieldedRecipient(address, amount, memo))
-    { }
+    {}
 
     // Transparent recipient: P2PKH
     SendManyRecipient(const CTxDestination& dest, const CAmount& amount):
@@ -51,7 +50,15 @@ struct SendManyRecipient
         transparentRecipient(CTxOut(amount, GetScriptForStakeDelegation(stakerKey, ownerKey)))
     {}
 
-    // !TODO: Transparent recipient: multisig and OP_RETURN
+    // Transparent recipient: multisig
+    SendManyRecipient(int nRequired, const std::vector<CPubKey>& keys, const CAmount& amount):
+        transparentRecipient(CTxOut(amount, GetScriptForMultisig(nRequired, keys)))
+    {}
+
+    // Transparent recipient: OP_RETURN
+    SendManyRecipient(const uint256& message):
+        transparentRecipient(CTxOut(0, GetScriptForOpReturn(message)))
+    {}
 };
 
 class FromAddress {
