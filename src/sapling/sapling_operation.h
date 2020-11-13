@@ -83,8 +83,7 @@ public:
     // In case of no addressFrom filter selected, it will accept any utxo in the wallet as input.
     SaplingOperation* setSelectTransparentCoins(const bool select) { selectFromtaddrs = select; return this; };
     SaplingOperation* setSelectShieldedCoins(const bool select) { selectFromShield = select; return this; };
-    SaplingOperation* setTransparentRecipients(std::vector<SendManyRecipient>& vec) { taddrRecipients = std::move(vec); return this; };
-    SaplingOperation* setShieldedRecipients(std::vector<SendManyRecipient>& vec) { shieldedAddrRecipients = std::move(vec); return this; } ;
+    SaplingOperation* setRecipients(std::vector<SendManyRecipient>& vec) { recipients = std::move(vec); return this; };
     SaplingOperation* setFee(CAmount _fee) { fee = _fee; return this; }
     SaplingOperation* setMinDepth(int _mindepth) { assert(_mindepth >= 0); mindepth = _mindepth; return this; }
     SaplingOperation* setTxBuilder(TransactionBuilder& builder) { txBuilder = builder; return this; }
@@ -100,8 +99,7 @@ private:
     // In case of no addressFrom filter selected, it will accept any utxo in the wallet as input.
     bool selectFromtaddrs{false};
     bool selectFromShield{false};
-    std::vector<SendManyRecipient> taddrRecipients;
-    std::vector<SendManyRecipient> shieldedAddrRecipients;
+    std::vector<SendManyRecipient> recipients;
     std::vector<COutput> transInputs;
     std::vector<SaplingNoteEntry> shieldedInputs;
     int mindepth{5}; // Min default depth 5.

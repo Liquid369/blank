@@ -1471,8 +1471,7 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
     // Keep track of addresses to spot duplicates
     std::set<std::string> setAddress;
     // Recipients
-    std::vector<SendManyRecipient> taddrRecipients;
-    std::vector<SendManyRecipient> shieldAddrRecipients;
+    std::vector<SendManyRecipient> recipients;
     CAmount nTotalOut = 0;
     bool containsSaplingOutput = false;
 
@@ -1524,9 +1523,9 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, amount must be positive");
 
         if (saddr) {
-            shieldAddrRecipients.emplace_back(*saddr, nAmount, memo);
+            recipients.emplace_back(*saddr, nAmount, memo);
         } else {
-            taddrRecipients.emplace_back(taddr, nAmount);
+            recipients.emplace_back(taddr, nAmount);
         }
 
         nTotalOut += nAmount;
@@ -1547,8 +1546,12 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
 
     // As a sanity check, estimate and verify that the size of the transaction will be valid.
     // Depending on the input notes, the actual tx size may turn out to be larger and perhaps invalid.
-    size_t txsize = 0;
-    for (const auto& t : shieldAddrRecipients) {
+    size_t nTransparentOuts = 0;
+    for (const auto& t : recipients) {
+        if (t.IsTransparent()) {
+            nTransparentOuts++;
+            continue;
+        }
         if (IsValidPaymentAddress(t.shieldedRecipient->address)) {
             mtx.sapData->vShieldedOutput.emplace_back();
         } else {
@@ -1557,12 +1560,11 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
         }
     }
     CTransaction tx(mtx);
-    txsize += GetSerializeSize(tx, SER_NETWORK, tx.nVersion);
+    size_t txsize = GetSerializeSize(tx, SER_NETWORK, tx.nVersion) + CTXOUT_REGULAR_SIZE * nTransparentOuts;
     if (!fromSapling) {
         txsize += CTXIN_SPEND_DUST_SIZE;
         txsize += CTXOUT_REGULAR_SIZE;      // There will probably be taddr change
     }
-    txsize += CTXOUT_REGULAR_SIZE * taddrRecipients.size();
     if (txsize > max_tx_size) {
         throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Too many outputs, size of raw transaction would be larger than limit of %d bytes", max_tx_size ));
     }
@@ -1613,8 +1615,7 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
     // Build the send operation
     OperationResult res = operation.setFee(nFee)
             ->setMinDepth(nMinDepth)
-            ->setShieldedRecipients(shieldAddrRecipients)
-            ->setTransparentRecipients(taddrRecipients)
+            ->setRecipients(recipients)
             ->build();
     if (!res) throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
     return operation;

@@ -335,7 +335,7 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
         std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1, COIN, "DEADBEEF") };
         SaplingOperation operation(consensusParams, 1);
         operation.setFromAddress(taddr1);
-        auto res = operation.setShieldedRecipients(recipients)->buildAndSend(ret);
+        auto res = operation.setRecipients(recipients)->buildAndSend(ret);
         BOOST_CHECK(!res);
         BOOST_CHECK(res.getError().find("Insufficient funds, no available UTXO to spend") != std::string::npos);
     }
@@ -345,7 +345,7 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
         std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1, COIN, "DEADBEEF") };
         SaplingOperation operation(consensusParams, 1);
         operation.setFromAddress(zaddr1);
-        auto res = operation.setShieldedRecipients(recipients)->setMinDepth(0)->buildAndSend(ret);
+        auto res = operation.setRecipients(recipients)->setMinDepth(0)->buildAndSend(ret);
         BOOST_CHECK(!res);
         BOOST_CHECK(res.getError().find("Minconf cannot be zero when sending from shielded address") != std::string::npos);
     }
@@ -355,7 +355,7 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
         std::vector<SendManyRecipient> recipients = { SendManyRecipient(taddr1, COIN) };
         SaplingOperation operation(consensusParams, 1);
         operation.setFromAddress(zaddr1);
-        auto res = operation.setTransparentRecipients(recipients)->buildAndSend(ret);
+        auto res = operation.setRecipients(recipients)->buildAndSend(ret);
         BOOST_CHECK(!res);
         BOOST_CHECK(res.getError().find("Insufficient funds, no available notes to spend") != std::string::npos);
     }
@@ -365,7 +365,7 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
         std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1, COIN, "DEADBEEF") };
         SaplingOperation operation(consensusParams, 1);
         operation.setFromAddress(zaddr1);
-        operation.setShieldedRecipients(recipients);
+        operation.setRecipients(recipients);
 
         std::string memo = "DEADBEEF";
         std::array<unsigned char, ZC_MEMO_SIZE> array;
@@ -458,7 +458,7 @@ BOOST_AUTO_TEST_CASE(rpc_shielded_sendmany_taddr_to_sapling)
     std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1, 1 * COIN, "ABCD") };
     SaplingOperation operation(builder);
     operation.setFromAddress(taddr);
-    BOOST_CHECK(operation.setShieldedRecipients(recipients)
+    BOOST_CHECK(operation.setRecipients(recipients)
                          ->setMinDepth(0)
                          ->build());
 
@@ -466,7 +466,7 @@ BOOST_AUTO_TEST_CASE(rpc_shielded_sendmany_taddr_to_sapling)
     std::vector<SendManyRecipient> recipients2 = { SendManyRecipient(zaddr1, 1 * COIN, "ABCD") };
     SaplingOperation operation2(builder);
     BOOST_CHECK(operation2.setSelectTransparentCoins(true)
-                          ->setShieldedRecipients(recipients2)
+                          ->setRecipients(recipients2)
                           ->setMinDepth(0)
                           ->build());
 
