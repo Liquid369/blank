@@ -329,6 +329,13 @@ CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys)
     return script;
 }
 
+CScript GetScriptForOpReturn(const uint256& message)
+{
+    CScript script;
+    script << OP_RETURN << ToByteVector(message);
+    return script;
+}
+
 bool IsValidDestination(const CTxDestination& dest) {
     return dest.which() != 0;
 }
