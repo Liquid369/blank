@@ -677,7 +677,6 @@ int CMasternodeMan::ProcessMNPing(CNode* pfrom, CMasternodePing& mnp)
 {
     const uint256& mnpHash = mnp.GetHash();
     if (mapSeenMasternodePing.count(mnpHash)) return 0; //seen
-    mapSeenMasternodePing.emplace(mnpHash, mnp);
 
     int nDoS = 0;
     if (mnp.CheckAndUpdate(nDoS)) return 0;
