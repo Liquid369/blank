@@ -476,10 +476,6 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
         return false;
     }
 
-    // incorrect ping or its sigTime
-    if(lastPing.IsNull() || !lastPing.CheckAndUpdate(nDos, false, true))
-    return false;
-
     if (protocolVersion < ActiveProtocol()) {
         LogPrint(BCLog::MASTERNODE,"mnb - ignoring outdated Masternode %s protocol version %d\n", vin.prevout.hash.ToString(), protocolVersion);
         return false;
@@ -520,6 +516,11 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
         if (addr.GetPort() != 51472) return false;
     } else if (addr.GetPort() == 51472)
         return false;
+
+    // incorrect ping or its sigTime
+    if(lastPing.IsNull() || !lastPing.CheckAndUpdate(nDos, false, true)) {
+        return false;
+    }
 
     //search existing Masternode list, this is where we update existing Masternodes with new mnb broadcasts
     CMasternode* pmn = mnodeman.Find(vin);
