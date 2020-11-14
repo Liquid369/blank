@@ -241,4 +241,11 @@ constexpr unsigned char ToUpper(unsigned char c)
  */
 std::string Capitalize(std::string str);
 
+/**
+ * Checks for valid 4-byte UTF-8 encoding in a string
+ * @param[in] str   the string to check.
+ * @return          boolean. true for valid UTF-8 encoding.
+ */
+bool IsValidUTF8(const std::string& str);
+
 #endif // BITCOIN_UTILSTRENCODINGS_H
