@@ -41,6 +41,10 @@ namespace AddressBook {
         return purpose == AddressBookPurpose::RECEIVE;
     }
 
+    bool CAddressBookData::isShieldedReceivePurpose() const {
+        return purpose == AddressBookPurpose::SHIELDED_RECEIVE;
+    }
+
     bool CAddressBookData::isShielded() const {
         return IsShieldedPurpose(purpose);
     }

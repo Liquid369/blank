@@ -149,9 +149,8 @@ public:
                 bool fMine = IsMine(*wallet, dest);
                 QString addressStr = QString::fromStdString(Standard::EncodeDestination(dest, addrType));
                 uint creationTime = 0;
-                if (addrBookData.isReceivePurpose()) {
-                    const auto& address = *boost::get<CTxDestination>(&dest);
-                    creationTime = static_cast<uint>(wallet->GetKeyCreationTime(address));
+                if (addrBookData.isReceivePurpose() || addrBookData.isShieldedReceivePurpose()) {
+                    creationTime = static_cast<uint>(wallet->GetKeyCreationTime(dest));
                 }
 
                 AddressTableEntry::Type addressType = translateTransactionType(
@@ -217,8 +216,10 @@ public:
             uint creationTime = 0;
 
             std::string stdPurpose = purpose.toStdString();
-            if (stdPurpose == AddressBook::AddressBookPurpose::RECEIVE)
-                creationTime = static_cast<uint>(wallet->GetKeyCreationTime(DecodeDestination(address.toStdString())));
+            if (stdPurpose == AddressBook::AddressBookPurpose::RECEIVE ||
+                stdPurpose == AddressBook::AddressBookPurpose::SHIELDED_RECEIVE) {
+                creationTime = static_cast<uint>(wallet->GetKeyCreationTime(Standard::DecodeDestination(address.toStdString())));
+            }
 
             updatePurposeCachedCounted(stdPurpose, true);
 

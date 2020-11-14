@@ -42,6 +42,7 @@ namespace AddressBook {
         bool isSendColdStakingPurpose() const;
         bool isSendPurpose() const;
         bool isReceivePurpose() const;
+        bool isShieldedReceivePurpose() const;
         bool isShielded() const;
     };
 
