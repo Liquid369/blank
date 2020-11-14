@@ -20,6 +20,10 @@ namespace Standard {
 
     bool IsValidDestination(const CWDestination& dest);
 
+    // boost::get wrapper
+    const libzcash::SaplingPaymentAddress* GetShieldedDestination(const CWDestination& dest);
+    const CTxDestination * GetTransparentDestination(const CWDestination& dest);
+
 } // End Standard namespace
 
 #endif //DESTINATION_IO_H

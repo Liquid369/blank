@@ -54,5 +54,15 @@ namespace Standard {
         return dest && ::IsValidDestination(*dest);
     }
 
+    const libzcash::SaplingPaymentAddress* GetShieldedDestination(const CWDestination& dest)
+    {
+        return boost::get<libzcash::SaplingPaymentAddress>(&dest);
+    }
+
+    const CTxDestination* GetTransparentDestination(const CWDestination& dest)
+    {
+        return boost::get<CTxDestination>(&dest);
+    }
+
 } // End Standard namespace
 

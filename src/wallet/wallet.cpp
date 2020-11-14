@@ -150,6 +150,13 @@ PairResult CWallet::getNewAddress(CTxDestination& ret, const std::string address
     return PairResult(true);
 }
 
+int64_t CWallet::GetKeyCreationTime(const CWDestination& dest)
+{
+    auto shieldDest = Standard::GetShieldedDestination(dest);
+    auto transpDest = Standard::GetTransparentDestination(dest);
+    return shieldDest ? GetKeyCreationTime(*shieldDest) : transpDest ? GetKeyCreationTime(*transpDest) : 0;
+}
+
 int64_t CWallet::GetKeyCreationTime(CPubKey pubkey)
 {
     return mapKeyMetadata[pubkey.GetID()].nCreateTime;
