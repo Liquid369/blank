@@ -58,8 +58,6 @@ BASE_SCRIPTS= [
     # Longest test should go first, to favor running tests in parallel
     'wallet_basic.py',                          # ~ 498 sec
     'wallet_backup.py',                         # ~ 477 sec
-    'sapling_key_import_export.py',             # ~ 356 sec
-    'sapling_wallet_anchorfork.py',             # ~ 345 sec
 
     # vv Tests less than 5m vv
     'wallet_zapwallettxes.py',                  # ~ 300 sec
@@ -70,17 +68,13 @@ BASE_SCRIPTS= [
     'wallet_abandonconflict.py',                # ~ 212 sec
     'wallet_hd.py',                             # ~ 210 sec
     'wallet_zerocoin_publicspends.py',          # ~ 202 sec
-    'sapling_wallet_nullifiers.py',             # ~ 201 sec
     'feature_logging.py',                       # ~ 200 sec
     'rpc_rawtransaction.py',                    # ~ 193 sec
     'wallet_keypool_topup.py',                  # ~ 174 sec
-    'sapling_wallet_listreceived.py',           # ~ 169
-    'sapling_wallet.py',                        # ~ 164 sec
     'wallet_txn_doublespend.py --mineblock',    # ~ 157 sec
     'wallet_txn_clone.py --mineblock',          # ~ 157 sec
     'rpc_spork.py',                             # ~ 156 sec
     'interface_rest.py',                        # ~ 154 sec
-    'sapling_changeaddresses.py',               # ~ 151 sec
     'feature_proxy.py',                         # ~ 143 sec
     'feature_uacomment.py',                     # ~ 130 sec
     'wallet_upgrade.py',                        # ~ 124 sec
@@ -93,10 +87,8 @@ BASE_SCRIPTS= [
     'feature_reindex.py',                       # ~ 110 sec
     'interface_http.py',                        # ~ 105 sec
     'feature_blockhashcache.py',                # ~ 100 sec
-    'sapling_mempool.py',                       # ~ 98 sec
     'wallet_listtransactions.py',               # ~ 97 sec
     'mempool_reorg.py',                         # ~ 92 sec
-    'sapling_wallet_persistence.py',            # ~ 90 sec
     'wallet_encryption.py',                     # ~ 89 sec
     'wallet_keypool.py',                        # ~ 88 sec
     'wallet_dump.py',                           # ~ 83 sec
@@ -152,6 +144,18 @@ TIERTWO_SCRIPTS = [
     'tiertwo_masternode_ping.py',
 ]
 
+SAPLING_SCRIPTS = [
+    # Longest test should go first, to favor running tests in parallel
+    'sapling_key_import_export.py',             # ~ 356 sec
+    'sapling_wallet_anchorfork.py',             # ~ 345 sec
+    'sapling_wallet_nullifiers.py',             # ~ 201 sec
+    'sapling_wallet_listreceived.py',           # ~ 169 sec
+    'sapling_wallet.py',                        # ~ 164 sec
+    'sapling_changeaddresses.py',               # ~ 151 sec
+    'sapling_mempool.py',                       # ~ 98 sec
+    'sapling_wallet_persistence.py',            # ~ 90 sec
+]
+
 EXTENDED_SCRIPTS = [
     # These tests are not run by the travis build process.
     # Longest test should go first, to favor running tests in parallel
@@ -205,7 +209,7 @@ LEGACY_SKIP_TESTS = [
 ]
 
 # Place EXTENDED_SCRIPTS first since it has the 3 longest running tests
-ALL_SCRIPTS = EXTENDED_SCRIPTS + BASE_SCRIPTS
+ALL_SCRIPTS = EXTENDED_SCRIPTS + BASE_SCRIPTS + TIERTWO_SCRIPTS + SAPLING_SCRIPTS
 
 NON_SCRIPTS = [
     # These are python files that live in the functional tests directory, but are not test scripts.
@@ -230,9 +234,11 @@ def main():
     parser.add_argument('--help', '-h', '-?', action='store_true', help='print help text and exit')
     parser.add_argument('--jobs', '-j', type=int, default=4, help='how many test scripts to run in parallel. Default=4.')
     parser.add_argument('--keepcache', '-k', action='store_true', help='the default behavior is to flush the cache directory on startup. --keepcache retains the cache from the previous testrun.')
+    parser.add_argument('--skipcache', '-s', action='store_true', help='do NOT create a cache with the test run (tests that make use of the cache will fail). Takes precedence over --keepcache')
     parser.add_argument('--quiet', '-q', action='store_true', help='only print dots, results summary and failure logs')
     parser.add_argument('--legacywallet', '-w', action='store_true', help='create pre-HD wallets only')
     parser.add_argument('--tiertwo', '-m', action='store_true', help='run tier two tests only')
+    parser.add_argument('--sapling', '-z', action='store_true', help='run sapling tests only')
     parser.add_argument('--tmpdirprefix', '-t', default=tempfile.gettempdir(), help="Root directory for datadirs")
     args, unknown_args = parser.parse_known_args()
 
@@ -250,6 +256,8 @@ def main():
         passon_args.append("--legacywallet")
     if args.tiertwo:
         passon_args.append("--tiertwo")
+    if args.sapling:
+        passon_args.append("--sapling")
 
     # Set up logging
     logging_level = logging.INFO if args.quiet else logging.DEBUG
@@ -288,11 +296,13 @@ def main():
             else:
                 print("{}WARNING!{} Test '{}' not found in full test list.".format(BOLD[1], BOLD[0], t))
     else:
+        test_list = []
         if args.tiertwo:
-            # If --tiertwo, only run the tier two tests
-            test_list = TIERTWO_SCRIPTS
-        else:
-            # No individual tests have been specified.
+            test_list += TIERTWO_SCRIPTS
+        if args.sapling:
+            test_list += SAPLING_SCRIPTS
+        if len(test_list) == 0:
+            # No individual tests (or sub-list) have been specified.
             # Run all base tests, and optionally run extended tests.
             test_list = BASE_SCRIPTS
             if args.extended:
@@ -337,8 +347,7 @@ def main():
               tmpdir,
               args.jobs, args.coverage,
               passon_args, args.combinedlogslen,
-              # Skip cache creation when running with --tiertwo
-              "skip" if args.tiertwo else ("keep" if args.keepcache else "rewrite"))
+              "skip" if args.skipcache else ("keep" if args.keepcache else "rewrite"))
 
 # keep_cache can either be
 # - "rewrite" : (default) Delete cache directory and recreate it.
