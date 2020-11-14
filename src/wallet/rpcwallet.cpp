@@ -1424,55 +1424,46 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
 #define CTXIN_SPEND_DUST_SIZE   148
 #define CTXOUT_REGULAR_SIZE     34
 
-UniValue shielded_sendmany(const JSONRPCRequest& request) {
-    if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
-        throw std::runtime_error(
-                "shielded_sendmany \"fromaddress\" [{\"address\":... ,\"amount\":...},...] ( minconf ) ( fee )\n"
-                "\nSend multiple times. Amounts are decimal numbers with at most 8 digits of precision."
-                "\nChange generated from a transparent addr flows to a new  transparent addr address, while change generated from a shielded addr returns to itself."
-                "\nWhen sending coinbase UTXOs to a shielded addr, change is not allowed. The entire value of the UTXO(s) must be consumed."
-                + HelpRequiringPassphrase() + "\n"
-                "\nArguments:\n"
-                "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
-                "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
-                "    [{\n"
-                "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
-                "      \"amount\":amount    (numeric, required) The numeric amount in " + "PIV" + " is the value\n"
-                "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
-                "    }, ... ]\n"
-                "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
-                "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(COIN)) +
-                ") The fee amount to attach to this transaction.\n"
-                "\nResult:\n"
-                "\"id\"          (string) transaction hash in the network\n"
-                "\nExamples:\n"
-                + HelpExampleCli("shielded_sendmany",
-                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\" '[{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]'")
-                + HelpExampleRpc("shielded_sendmany",
-                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", [{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]")
-        );
+static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
+{
     EnsureWalletIsUnlocked();
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+    int nextBlockHeight = chainActive.Height() + 1;
+    TransactionBuilder txBuilder = TransactionBuilder(Params().GetConsensus(), nextBlockHeight, pwalletMain);
+    SaplingOperation operation(txBuilder);
 
-    // Check that the from address is valid.
-    auto fromaddress = request.params[0].get_str();
-    // Whether is from a shielded addr or a transparent addr
-    CTxDestination fromTAddressDest = DecodeDestination(fromaddress);
-    bool fromSapling = !IsValidDestination(fromTAddressDest);
-    libzcash::SaplingPaymentAddress fromShieldedAddress;
-    if (fromSapling) {
-        auto res = KeyIO::DecodePaymentAddress(fromaddress);
-        if (!IsValidPaymentAddress(res)) {
-            // invalid
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid from address, should be a taddr or shielded addr.");
-        }
-
-        fromShieldedAddress = *boost::get<libzcash::SaplingPaymentAddress>(&res);
-        // Check that we have the spending key
-        if (!pwalletMain->HaveSpendingKeyForPaymentAddress(fromShieldedAddress)) {
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "From address does not belong to this node, shielded addr spending key not found.");
+    // Param 0: source of funds. Can either be a valid address, sapling address,
+    // or the string "from_transparent"|"from_shielded"
+    bool fromSapling  = false;
+    std::string sendFromStr = request.params[0].get_str();
+    if (sendFromStr == "from_transparent") {
+        // send from any transparent address
+        operation.setSelectTransparentCoins(true);
+    } else if (sendFromStr == "from_shielded") {
+        // send from any shielded address
+        operation.setSelectShieldedCoins(true);
+        fromSapling = true;
+    } else {
+        CTxDestination fromTAddressDest = DecodeDestination(sendFromStr);
+        if (!IsValidDestination(fromTAddressDest)) {
+            auto res = KeyIO::DecodePaymentAddress(sendFromStr);
+            if (!IsValidPaymentAddress(res)) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid from address, should be a taddr or shielded addr.");
+            }
+            libzcash::SaplingPaymentAddress fromShieldedAddress = *boost::get<libzcash::SaplingPaymentAddress>(&res);
+            if (!pwalletMain->HaveSpendingKeyForPaymentAddress(fromShieldedAddress)) {
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "From address does not belong to this node, shielded addr spending key not found.");
+            }
+            // send from user-supplied shielded address
+            operation.setFromAddress(fromShieldedAddress);
+            fromSapling = true;
+        } else {
+            // send from user-supplied transparent address
+            operation.setFromAddress(fromTAddressDest);
         }
     }
 
+    // Param 1: array of outputs
     UniValue outputs = request.params[1].get_array();
     if (outputs.empty())
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, amounts array is empty.");
@@ -1542,8 +1533,6 @@ UniValue shielded_sendmany(const JSONRPCRequest& request) {
     }
 
     // Check network status
-    LOCK2(cs_main, pwalletMain->cs_wallet);
-    int nextBlockHeight = chainActive.Height() + 1;
     if (!Params().GetConsensus().NetworkUpgradeActive(nextBlockHeight, Consensus::UPGRADE_V5_DUMMY)) {
         // If Sapling is not active, do not allow sending from or sending to Sapling addresses.
         if (fromSapling || containsSaplingOutput) {
@@ -1578,13 +1567,13 @@ UniValue shielded_sendmany(const JSONRPCRequest& request) {
         throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Too many outputs, size of raw transaction would be larger than limit of %d bytes", max_tx_size ));
     }
 
-    // Minimum confirmations
+    // Param 2: Minimum confirmations
     int nMinDepth = request.params.size() > 2 ? request.params[2].get_int() : 1;
     if (nMinDepth < 0) {
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Minimum number of confirmations cannot be less than 0");
     }
 
-    // Fee
+    // Param 3: Fee
     CAmount nFee        = DEFAULT_SAPLING_FEE; // Default fee hardcoded for now to 10000 sats. Change it in a future focused PR.
     CAmount nDefaultFee = nFee;
     if (request.params.size() > 3) {
@@ -1621,24 +1610,91 @@ UniValue shielded_sendmany(const JSONRPCRequest& request) {
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Minconf cannot be negative");
     }
 
-    // Create the operation and process it
-    TransactionBuilder txBuilder = TransactionBuilder(Params().GetConsensus(), nextBlockHeight, pwalletMain);
-    SaplingOperation operation(txBuilder);
-
-    if (!fromSapling) {
-        operation.setFromAddress(fromTAddressDest);
-    } else {
-        operation.setFromAddress(fromShieldedAddress);
-    }
-
-    std::string txHash;
+    // Build the send operation
     OperationResult res = operation.setFee(nFee)
             ->setMinDepth(nMinDepth)
             ->setShieldedRecipients(shieldAddrRecipients)
             ->setTransparentRecipients(taddrRecipients)
-            ->buildAndSend(txHash);
+            ->build();
     if (!res) throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
+    return operation;
+}
+
+UniValue shielded_sendmany(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
+        throw std::runtime_error(
+                "shielded_sendmany \"fromaddress\" [{\"address\":... ,\"amount\":...},...] ( minconf ) ( fee )\n"
+                "\nSend to many recipients. Amounts are decimal numbers with at most 8 digits of precision."
+                "\nChange generated from a transparent addr flows to a new  transparent addr address, while change generated from a shielded addr returns to itself."
+                "\nWhen sending coinbase UTXOs to a shielded addr, change is not allowed. The entire value of the UTXO(s) must be consumed."
+                + HelpRequiringPassphrase() + "\n"
+                "\nArguments:\n"
+                "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
+                "                             It can also be the string \"from_transparent\"|\"from_shielded\" to send the funds\n"
+                "                             from any transparent|shielded address available.\n"
+                "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
+                "    [{\n"
+                "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
+                "      \"amount\":amount    (numeric, required) The numeric amount in " + "PIV" + " is the value\n"
+                "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
+                "    }, ... ]\n"
+                "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
+                "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(DEFAULT_SAPLING_FEE)) +
+                ") The fee amount to attach to this transaction.\n"
+                "\nResult:\n"
+                "\"id\"          (string) transaction hash in the network\n"
+                "\nExamples:\n"
+                + HelpExampleCli("shielded_sendmany",
+                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\" '[{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]'")
+                + HelpExampleRpc("shielded_sendmany",
+                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", [{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]")
+        );
+
+    SaplingOperation operation = CreateShieldedTransaction(request);
+    std::string txHash;
+    auto res = operation.send(txHash);
+    if (!res)
+        throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
     return txHash;
+}
+
+UniValue raw_shielded_sendmany(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 4)
+        throw std::runtime_error(
+                "raw_shielded_sendmany \"fromaddress\" [{\"address\":... ,\"amount\":...},...] ( minconf ) ( fee )\n"
+                "\nCreates a transaction sending to many recipients (without committing it), and returns the hex string."
+                "\nAmounts are decimal numbers with at most 8 digits of precision."
+                "\nChange generated from a transparent addr flows to a new  transparent addr address, while change generated from a shielded addr returns to itself."
+                "\nWhen sending coinbase UTXOs to a shielded addr, change is not allowed. The entire value of the UTXO(s) must be consumed."
+                + HelpRequiringPassphrase() + "\n"
+                "\nArguments:\n"
+                "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
+                "                             It can also be the string \"from_transparent\"|\"from_shielded\" to send the funds\n"
+                "                             from any transparent|shielded address available.\n"
+                "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
+                "    [{\n"
+                "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
+                "      \"amount\":amount    (numeric, required) The numeric amount in " + "PIV" + " is the value\n"
+                "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
+                "    }, ... ]\n"
+                "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
+                "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(DEFAULT_SAPLING_FEE)) +
+                ") The fee amount to attach to this transaction.\n"
+                "\nResult:\n"
+                "{tx_json}                (json object) decoded transaction\n"
+                "\nExamples:\n"
+                + HelpExampleCli("raw_shielded_sendmany",
+                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\" '[{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]'")
+                + HelpExampleRpc("raw_shielded_sendmany",
+                                 "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", [{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]")
+        );
+
+    CTransaction tx = CreateShieldedTransaction(request).getFinalTx();
+    UniValue tx_json(UniValue::VOBJ);
+    TxToUniv(tx, UINT256_ZERO, tx_json);
+    return tx_json;
 }
 
 UniValue listaddressgroupings(const JSONRPCRequest& request)
@@ -3995,6 +4051,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "exportsaplingviewingkey",  &exportsaplingviewingkey,  true  },
     { "wallet",             "getshieldedbalance",       &getshieldedbalance,       false },
     { "wallet",             "listshieldedunspent",      &listshieldedunspent,      false },
+    { "wallet",             "raw_shielded_sendmany",    &raw_shielded_sendmany,    false },
     { "wallet",             "shielded_sendmany",        &shielded_sendmany,        false },
     { "wallet",             "listreceivedbyshieldedaddress", &listreceivedbyshieldedaddress,  false },
     { "wallet",             "viewshieldedtransaction",       &viewshieldedtransaction,        false },
