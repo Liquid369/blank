@@ -78,9 +78,9 @@ TxDetailDialog::TxDetailDialog(QWidget *parent, bool _isConfirmDialog, const QSt
     connect(ui->pushOutputs, &QPushButton::clicked, this, &TxDetailDialog::onOutputsClicked);
 }
 
-void TxDetailDialog::setData(WalletModel *model, const QModelIndex &index)
+void TxDetailDialog::setData(WalletModel *_model, const QModelIndex &index)
 {
-    this->model = model;
+    this->model = _model;
     TransactionRecord *rec = static_cast<TransactionRecord*>(index.internalPointer());
     QDateTime date = index.data(TransactionTableModel::DateRole).toDateTime();
     QString address = index.data(Qt::DisplayRole).toString();
@@ -88,20 +88,21 @@ void TxDetailDialog::setData(WalletModel *model, const QModelIndex &index)
     QString amountText = BitcoinUnits::formatWithUnit(nDisplayUnit, amount, true, BitcoinUnits::separatorAlways);
     ui->textAmount->setText(amountText);
 
-    const CWalletTx* tx = model->getTx(rec->hash);
-    if (tx) {
+    const CWalletTx* _tx = model->getTx(rec->hash);
+    if (_tx) {
         this->txHash = rec->hash;
-        QString hash = QString::fromStdString(tx->GetHash().GetHex());
+        QString hash = QString::fromStdString(_tx->GetHash().GetHex());
         ui->textId->setText(hash.left(20) + "..." + hash.right(20));
         ui->textId->setTextInteractionFlags(Qt::TextSelectableByMouse);
-        if (tx->vout.size() == 1) {
+        if (_tx->vout.size() == 1) {
             ui->textSendLabel->setText((address.size() < 40) ? address : address.left(20) + "..." + address.right(20));
         } else {
-            ui->textSendLabel->setText(QString::number(tx->vout.size()) + " recipients");
+            ui->textSendLabel->setText(QString::number(_tx->vout.size() +
+                (_tx->sapData ? _tx->sapData->vShieldedOutput.size() : 0)) + " recipients");
         }
         ui->textSend->setVisible(false);
 
-        ui->textInputs->setText(QString::number(tx->vin.size()));
+        ui->textInputs->setText(QString::number(_tx->vin.size()));
         ui->textConfirmations->setText(QString::number(rec->status.depth));
         ui->textDate->setText(GUIUtil::dateTimeStrWithSeconds(date));
         ui->textStatus->setText(QString::fromStdString(rec->statusToString()));
@@ -129,9 +130,9 @@ QString formatAdressToShow(const QString& address)
     return addressToShow;
 }
 
-void TxDetailDialog::setData(WalletModel *model, WalletModelTransaction* _tx)
+void TxDetailDialog::setData(WalletModel *_model, WalletModelTransaction* _tx)
 {
-    this->model = model;
+    this->model = _model;
     this->tx = _tx;
     CAmount txFee = tx->getTransactionFee();
     CAmount totalAmount = tx->getTotalTransactionAmount() + txFee;
@@ -179,11 +180,11 @@ void TxDetailDialog::onInputsClicked()
         ui->gridInputs->setVisible(true);
         if (!inputsLoaded) {
             inputsLoaded = true;
-            const CWalletTx* tx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
-            if (tx) {
-                ui->gridInputs->setMinimumHeight(50 + (50 * tx->vin.size()));
+            const CWalletTx* walletTx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
+            if (walletTx) {
+                ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->vin.size()));
                 int i = 1;
-                for (const CTxIn &in : tx->vin) {
+                for (const CTxIn &in : walletTx->vin) {
                     QString hash = QString::fromStdString(in.prevout.hash.GetHex());
                     QLabel *label_txid = new QLabel(hash.left(18) + "..." + hash.right(18));
                     QLabel *label_txidn = new QLabel(QString::number(in.prevout.n));
@@ -199,6 +200,16 @@ void TxDetailDialog::onInputsClicked()
     }
 }
 
+void appendOutput(QGridLayout* layoutGrid, int gridPosition, QString labelRes, CAmount nValue, int nDisplayUnit)
+{
+    QLabel *label_address = new QLabel(labelRes);
+    QLabel *label_value = new QLabel(BitcoinUnits::formatWithUnit(nDisplayUnit, nValue, false, BitcoinUnits::separatorAlways));
+    label_value->setAlignment(Qt::AlignCenter | Qt::AlignRight);
+    setCssProperty({label_address, label_value}, "text-body2-dialog");
+    layoutGrid->addWidget(label_address, gridPosition, 0);
+    layoutGrid->addWidget(label_value, gridPosition, 0);
+}
+
 void TxDetailDialog::onOutputsClicked()
 {
     if (ui->outputsScrollArea->isVisible()) {
@@ -207,14 +218,14 @@ void TxDetailDialog::onOutputsClicked()
         ui->outputsScrollArea->setVisible(true);
         if (!outputsLoaded) {
             outputsLoaded = true;
-            QGridLayout* layoutGrid = new QGridLayout();
+            QGridLayout* layoutGrid = new QGridLayout(this);
             layoutGrid->setContentsMargins(0,0,12,0);
             ui->container_outputs_base->setLayout(layoutGrid);
 
-            const CWalletTx* tx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
-            if (tx) {
+            const CWalletTx* walletTx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
+            if (walletTx) {
                 int i = 0;
-                for (const CTxOut &out : tx->vout) {
+                for (const CTxOut &out : walletTx->vout) {
                     QString labelRes;
                     CTxDestination dest;
                     bool isCsAddress = out.scriptPubKey.IsPayToColdStaking();
@@ -225,13 +236,28 @@ void TxDetailDialog::onOutputsClicked()
                     } else {
                         labelRes = tr("Unknown");
                     }
-                    QLabel *label_address = new QLabel(labelRes);
-                    QLabel *label_value = new QLabel(BitcoinUnits::formatWithUnit(nDisplayUnit, out.nValue, false, BitcoinUnits::separatorAlways));
-                    label_value->setAlignment(Qt::AlignCenter | Qt::AlignRight);
-                    setCssProperty({label_address, label_value}, "text-body2-dialog");
-                    layoutGrid->addWidget(label_address,i,0);
-                    layoutGrid->addWidget(label_value,i,0);
+                    appendOutput(layoutGrid, i, labelRes, out.nValue, nDisplayUnit);
                     i++;
+                }
+
+                // shielded recipients
+                if (walletTx->sapData) {
+                    for (int j = 0; j < (int) walletTx->sapData->vShieldedOutput.size(); ++j) {
+                        const SaplingOutPoint op(walletTx->GetHash(), j);
+                        if (walletTx->mapSaplingNoteData.find(op) == walletTx->mapSaplingNoteData.end()) {
+                            continue;
+                        }
+                        // Obtain the noteData to get the cached amount value
+                        SaplingNoteData noteData = walletTx->mapSaplingNoteData.at(op);
+                        Optional<libzcash::SaplingPaymentAddress> opAddr =
+                                pwalletMain->GetSaplingScriptPubKeyMan()->GetShieldedAddressFrom(*walletTx, op);
+
+                        QString labelRes = QString::fromStdString(Standard::EncodeDestination(*opAddr));
+                        labelRes = labelRes.left(18) + "..." + labelRes.right(18);
+                        appendOutput(layoutGrid, i, labelRes, *noteData.amount, nDisplayUnit);
+
+                        i++;
+                    }
                 }
             }
         }
