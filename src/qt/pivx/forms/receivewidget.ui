@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
+    <width>819</width>
     <height>629</height>
    </rect>
   </property>
@@ -154,7 +154,7 @@
                    <enum>Qt::NoFocus</enum>
                   </property>
                   <property name="text">
-                   <string>Public</string>
+                   <string>Transparent</string>
                   </property>
                   <property name="checkable">
                    <bool>true</bool>
@@ -198,10 +198,10 @@
                </layout>
               </widget>
              </item>
-             <item alignment="Qt::AlignTop">
+             <item alignment="Qt::AlignHCenter|Qt::AlignTop">
               <widget class="QLabel" name="labelSubtitle2">
                <property name="text">
-                <string>Accept public PIV or shielded PIV</string>
+                <string>Accept transparent or shielded PIV</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
