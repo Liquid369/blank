@@ -128,9 +128,8 @@ OperationResult SaplingOperation::build()
             const std::string& memo = t.shieldedRecipient->memo;
             assert(IsValidPaymentAddress(address));
             std::array<unsigned char, ZC_MEMO_SIZE> vMemo = {};
-            std::string error;
-            if (!getMemoFromHexString(memo, vMemo, error))
-                return errorOut(error);
+            if (!(result = GetMemoFromString(memo, vMemo)))
+                return result;
             txBuilder.AddSaplingOutput(ovk, address, amount, vMemo);
         }
     }
@@ -335,30 +334,23 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues,
     return OperationResult(true);
 }
 
-bool SaplingOperation::getMemoFromHexString(const std::string& s, std::array<unsigned char, ZC_MEMO_SIZE> memoRet, std::string& error) {
-    // initialize to default memo (no_memo), see section 5.5 of the protocol spec
-    std::array<unsigned char, ZC_MEMO_SIZE> memo = {{0xF6}};
-
-    std::vector<unsigned char> rawMemo = ParseHex(s.c_str());
-
-    // If ParseHex comes across a non-hex char, it will stop but still return results so far.
-    size_t slen = s.length();
-    if (slen % 2 !=0 || (slen>0 && rawMemo.size()!=slen/2)) {
-        error = "Memo must be in hexadecimal format";
-        return false;
+OperationResult GetMemoFromString(const std::string& s, std::array<unsigned char, ZC_MEMO_SIZE>& memoRet)
+{
+    memoRet.fill(0x00);
+    // default memo (no_memo), see section 5.5 of the protocol spec
+    if (s.empty()) {
+        memoRet[0] = 0xF6;
+        return OperationResult(true);
     }
-
-    if (rawMemo.size() > ZC_MEMO_SIZE) {
-        error = strprintf("Memo size of %d is too big, maximum allowed is %d", rawMemo.size(), ZC_MEMO_SIZE);
-        return false;
+    // non-empty memo
+    std::vector<unsigned char> rawMemo(s.begin(), s.end());
+    const size_t sizeMemo = rawMemo.size();
+    if (sizeMemo > ZC_MEMO_SIZE) {
+        return errorOut(strprintf("Memo size of %d is too big, maximum allowed is %d", sizeMemo, ZC_MEMO_SIZE));
     }
-
     // copy vector into array
-    int lenMemo = rawMemo.size();
-    for (int i = 0; i < ZC_MEMO_SIZE && i < lenMemo; i++) {
-        memo[i] = rawMemo[i];
+    for (unsigned int i = 0; i < sizeMemo; i++) {
+        memoRet[i] = rawMemo[i];
     }
-
-    memoRet = memo;
-    return true;
+    return OperationResult(true);
 }

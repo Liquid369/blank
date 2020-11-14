@@ -1509,8 +1509,6 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
             memo = memoValue.get_str();
             if (!saddr) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "Memo cannot be used with a taddr. It can only be used with a shielded addr.");
-            } else if (!IsHex(memo)) {
-                throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected memo data in hexadecimal format.");
             }
             if (memo.length() > ZC_MEMO_SIZE*2) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER,  strprintf("Invalid parameter, size of memo is larger than maximum allowed %d", ZC_MEMO_SIZE ));
@@ -1638,7 +1636,7 @@ UniValue shielded_sendmany(const JSONRPCRequest& request)
                 "    [{\n"
                 "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
                 "      \"amount\":amount    (numeric, required) The numeric amount in " + "PIV" + " is the value\n"
-                "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
+                "      \"memo\":memo        (string, optional) If the address is a shielded addr, message string of max 512 bytes\n"
                 "    }, ... ]\n"
                 "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
                 "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(DEFAULT_SAPLING_FEE)) +
