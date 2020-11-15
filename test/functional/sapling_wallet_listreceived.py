@@ -53,47 +53,24 @@ class ListReceivedTest (PivxTestFramework):
         assert_equal(len(pt['spends']), 0)
         assert_equal(len(pt['outputs']), 2)
 
-        # Output orders can be randomized, so we check the output
-        # positions and contents separately
-        outputs = []
-
-        if pt['outputs'][0]['address'] == shield_addr1:
-            assert_equal(pt['outputs'][0]['outgoing'], False)
-            assert_equal(pt['outputs'][0]['memoStr'], my_memo_str)
-        else:
-            assert_equal(pt['outputs'][0]['outgoing'], True)
-        outputs.append({
-            'address': pt['outputs'][0]['address'],
-            'value': pt['outputs'][0]['value'],
-            'valueSat': pt['outputs'][0]['valueSat'],
-            'memo': pt['outputs'][0]['memo'],
-        })
-
-        if pt['outputs'][1]['address'] == shield_addr1:
-            assert_equal(pt['outputs'][1]['outgoing'], False)
-            assert_equal(pt['outputs'][1]['memoStr'], my_memo_str)
-        else:
-            assert_equal(pt['outputs'][1]['outgoing'], True)
-        outputs.append({
-            'address': pt['outputs'][1]['address'],
-            'value': pt['outputs'][1]['value'],
-            'valueSat': pt['outputs'][1]['valueSat'],
-            'memo': pt['outputs'][1]['memo'],
-        })
-
-        assert({
-                   'address': shield_addr1,
-                   'value': Decimal('2'),
-                   'valueSat': 200000000,
-                   'memo': my_memo_hex,
-               } in outputs)
-
-        assert({
-                   'address': shield_addrExt,
-                   'value': Decimal('3'),
-                   'valueSat': 300000000,
-                   'memo': no_memo,
-               } in outputs)
+        found = [False, False]
+        for out in pt['outputs']:
+            assert_equal(pt['outputs'].index(out), out['output'])
+            if out['address'] == shield_addr1:
+                assert_equal(out['outgoing'], False)
+                assert_equal(out['memo'], my_memo_hex)
+                assert_equal(out['memoStr'], my_memo_str)
+                assert_equal(out['value'], Decimal('2'))
+                assert_equal(out['valueSat'], 200000000)
+                found[0] = True
+            else:
+                assert_equal(out['address'], shield_addrExt)
+                assert_equal(out['outgoing'], True)
+                assert_equal(out['memo'], no_memo)
+                assert_equal(out['value'], Decimal('3'))
+                assert_equal(out['valueSat'], 300000000)
+                found[1] = True
+        assert_equal(found, [True] * 2)
 
         r = self.nodes[1].listreceivedbyshieldedaddress(shield_addr1)
         assert_true(0 == len(r), "Should have received no confirmed note")
@@ -154,40 +131,23 @@ class ListReceivedTest (PivxTestFramework):
         assert_equal(pt['spends'][0]['value'], Decimal('2.0'))
         assert_equal(pt['spends'][0]['valueSat'], 200000000)
 
-        # Output orders can be randomized, so we check the output
-        # positions and contents separately
-        outputs = []
-
-        assert_equal(pt['outputs'][0]['output'], 0)
-        assert_equal(pt['outputs'][0]['outgoing'], False)
-        outputs.append({
-            'address': pt['outputs'][0]['address'],
-            'value': pt['outputs'][0]['value'],
-            'valueSat': pt['outputs'][0]['valueSat'],
-            'memo': pt['outputs'][0]['memo'],
-        })
-
-        assert_equal(pt['outputs'][1]['output'], 1)
-        assert_equal(pt['outputs'][1]['outgoing'], False)
-        outputs.append({
-            'address': pt['outputs'][1]['address'],
-            'value': pt['outputs'][1]['value'],
-            'valueSat': pt['outputs'][1]['valueSat'],
-            'memo': pt['outputs'][1]['memo'],
-        })
-
-        assert({
-                   'address': shield_addr2,
-                   'value': Decimal('0.6'),
-                   'valueSat': 60000000,
-                   'memo': no_memo,
-               } in outputs)
-        assert({
-                   'address': shield_addr1,
-                   'value': Decimal('1.3999'),
-                   'valueSat': 139990000,
-                   'memo': no_memo,
-               } in outputs)
+        found = [False, False]
+        for out in pt['outputs']:
+            assert_equal(pt['outputs'].index(out), out['output'])
+            if out['address'] == shield_addr2:
+                assert_equal(out['outgoing'], False)
+                assert_equal(out['memo'], no_memo)
+                assert_equal(out['value'], Decimal('0.6'))
+                assert_equal(out['valueSat'], 60000000)
+                found[0] = True
+            else:
+                assert_equal(out['address'], shield_addr1)
+                assert_equal(out['outgoing'], False)
+                assert_equal(out['memo'], no_memo)
+                assert_equal(out['value'], Decimal('1.3999'))
+                assert_equal(out['valueSat'], 139990000)
+                found[1] = True
+        assert_equal(found, [True] * 2)
 
         # shield_addr1 should have a note with change
         r = self.nodes[1].listreceivedbyshieldedaddress(shield_addr1, 0)
