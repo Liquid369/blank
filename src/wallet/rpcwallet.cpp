@@ -1322,7 +1322,6 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
 
     auto addMemo = [](UniValue &entry, std::array<unsigned char, ZC_MEMO_SIZE> &memo) {
         entry.pushKV("memo", HexStr(memo));
-        /*
         // If the leading byte is 0xF4 or lower, the memo field should be interpreted as a
         // UTF-8-encoded text string.
         if (memo[0] <= 0xf4) {
@@ -1332,11 +1331,10 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
                     memo.rend(),
                     [](unsigned char v) { return v != 0; });
             std::string memoStr(memo.begin(), end.base());
-            if (utf8::is_valid(memoStr)) { // todo: Add utf8 validation.
-                entry.pushKV("memoStr", memoStr));
+            if (IsValidUTF8(memoStr)) {
+                entry.pushKV("memoStr", memoStr);
             }
         }
-         */
     };
 
     auto sspkm = pwalletMain->GetSaplingScriptPubKeyMan();
