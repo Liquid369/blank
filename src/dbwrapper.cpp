@@ -6,8 +6,6 @@
 
 #include "util.h"
 
-#include <boost/scoped_ptr.hpp>
-
 #include <leveldb/cache.h>
 #include <leveldb/env.h>
 #include <leveldb/filter_policy.h>
@@ -78,7 +76,7 @@ bool CDBWrapper::WriteBatch(CDBBatch& batch, bool fSync)
 
 bool CDBWrapper::IsEmpty()
 {
-    boost::scoped_ptr<CDBIterator> it(NewIterator());
+    std::unique_ptr<CDBIterator> it(NewIterator());
     it->SeekToFirst();
     return !(it->Valid());
 }

@@ -187,7 +187,7 @@ public:
 
 static CCoinsViewDB* pcoinsdbview = NULL;
 static CCoinsViewErrorCatcher* pcoinscatcher = NULL;
-static boost::scoped_ptr<ECCVerifyHandle> globalVerifyHandle;
+static std::unique_ptr<ECCVerifyHandle> globalVerifyHandle;
 
 static boost::thread_group threadGroup;
 static CScheduler scheduler;

@@ -252,7 +252,7 @@ bool CBlockTreeDB::ReadInt(const std::string& name, int& nValue)
 
 bool CBlockTreeDB::LoadBlockIndexGuts(std::function<CBlockIndex*(const uint256&)> insertBlockIndex)
 {
-    boost::scoped_ptr<CDBIterator> pcursor(NewIterator());
+    std::unique_ptr<CDBIterator> pcursor(NewIterator());
 
     pcursor->Seek(std::make_pair(DB_BLOCK_INDEX, UINT256_ZERO));
 
@@ -391,7 +391,7 @@ bool CZerocoinDB::WipeCoins(std::string strType)
     if (strType != "spends" && strType != "mints")
         return error("%s: did not recognize type %s", __func__, strType);
 
-    boost::scoped_ptr<CDBIterator> pcursor(NewIterator());
+    std::unique_ptr<CDBIterator> pcursor(NewIterator());
 
     char type = (strType == "spends" ? 's' : 'm');
     pcursor->Seek(std::make_pair(type, UINT256_ZERO));
@@ -453,7 +453,7 @@ bool CZerocoinDB::EraseAccChecksum(const uint32_t& nChecksum, const libzerocoin:
 
 bool CZerocoinDB::WipeAccChecksums()
 {
-    boost::scoped_ptr<CDBIterator> pcursor(NewIterator());
+    std::unique_ptr<CDBIterator> pcursor(NewIterator());
     pcursor->Seek(std::make_pair(LZC_ACCUMCS, (uint32_t) 0));
     std::set<uint32_t> setDelete;
     while (pcursor->Valid()) {
