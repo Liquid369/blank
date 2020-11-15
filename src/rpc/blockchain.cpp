@@ -207,6 +207,22 @@ UniValue getbestblockhash(const JSONRPCRequest& request)
     return chainActive.Tip()->GetBlockHash().GetHex();
 }
 
+UniValue getbestsaplinganchor(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 0)
+        throw std::runtime_error(
+            "getbestsaplinganchor\n"
+            "\nReturns the most recent SaplingMerkleTree root.\n"
+
+            "\nResult\n"
+            "\"hex\"      (string) the sapling anchor hex encoded\n"
+
+            "\nExamples\n" +
+            HelpExampleCli("getbestsaplinganchor", "") + HelpExampleRpc("getbestsaplinganchor", ""));
+
+    return pcoinsTip->GetBestAnchor().ToString();
+}
+
 void RPCNotifyBlockChange(bool fInitialDownload, const CBlockIndex* pindex)
 {
     if(pindex) {
@@ -1621,6 +1637,7 @@ static const CRPCCommand commands[] =
     { "blockchain",         "getblockindexstats",     &getblockindexstats,     true  },
     { "blockchain",         "getblockchaininfo",      &getblockchaininfo,      true  },
     { "blockchain",         "getbestblockhash",       &getbestblockhash,       true  },
+    { "blockchain",         "getbestsaplinganchor",   &getbestsaplinganchor,   true  },
     { "blockchain",         "getblockcount",          &getblockcount,          true  },
     { "blockchain",         "getblock",               &getblock,               true  },
     { "blockchain",         "getblockhash",           &getblockhash,           true  },
