@@ -621,7 +621,7 @@ bool SaplingScriptPubKeyMan::IsNoteSaplingChange(const std::set<std::pair<libzca
     // also spent Notes in the same transaction. This will catch,
     // for instance:
     // - Change created by spending fractions of Notes (because
-    //   shielded_sendmany sends change to the originating shielded address).
+    //   shieldedsendmany sends change to the originating shielded address).
     // - Notes sent from one address to itself.
     const auto& tx = wallet->mapWallet[op.hash];
     if (tx.sapData) {

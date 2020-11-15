@@ -31,7 +31,7 @@ class WalletNullifiersTest (PivxTestFramework):
         recipients = []
         recipients.append({"address":myzaddr0, "amount":Decimal('10.0') - Decimal('1')}) # utxo amount less fee
 
-        txid = self.nodes[0].shielded_sendmany(mytaddr, recipients)
+        txid = self.nodes[0].shieldedsendmany(mytaddr, recipients)
 
         self.sync_all()
         self.nodes[0].generate(1)
@@ -58,7 +58,7 @@ class WalletNullifiersTest (PivxTestFramework):
         recipients = []
         recipients.append({"address":myzaddr, "amount":7.0})
 
-        txid = self.nodes[0].shielded_sendmany(myzaddr0, recipients)
+        txid = self.nodes[0].shieldedsendmany(myzaddr0, recipients)
 
         self.sync_all()
         self.nodes[0].generate(1)
@@ -76,7 +76,7 @@ class WalletNullifiersTest (PivxTestFramework):
         recipients = []
         recipients.append({"address":myzaddr3, "amount":2.0})
 
-        txid = self.nodes[2].shielded_sendmany(myzaddr, recipients)
+        txid = self.nodes[2].shieldedsendmany(myzaddr, recipients)
 
         self.sync_all()
         self.nodes[2].generate(1)
@@ -98,7 +98,7 @@ class WalletNullifiersTest (PivxTestFramework):
         recipients = []
         recipients.append({"address":mytaddr1, "amount":1.0})
 
-        txid = self.nodes[1].shielded_sendmany(myzaddr, recipients)
+        txid = self.nodes[1].shieldedsendmany(myzaddr, recipients)
 
         self.sync_all()
         self.nodes[1].generate(1)

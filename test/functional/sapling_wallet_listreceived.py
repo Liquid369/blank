@@ -46,11 +46,11 @@ class ListReceivedTest (PivxTestFramework):
 
         # Try to send with an oversized memo
         assert_raises_rpc_error(-4, "Memo size of 513 is too big, maximum allowed is 512",
-                                self.nodes[1].shielded_sendmany, taddr,
+                                self.nodes[1].shieldedsendmany, taddr,
                                 [{'address': shield_addr1, 'amount': 2, 'memo': too_big_memo_str}])
 
         # Send 1 PIV to shield addr1
-        txid = self.nodes[1].shielded_sendmany(taddr, [ # node_1 with 6 PIV sending them all (fee is 0.0001 PIV)
+        txid = self.nodes[1].shieldedsendmany(taddr, [ # node_1 with 6 PIV sending them all (fee is 0.0001 PIV)
             {'address': shield_addr1, 'amount': 2, 'memo': my_memo_str},
             {'address': shield_addrExt, 'amount': 3},
         ])
@@ -122,7 +122,7 @@ class ListReceivedTest (PivxTestFramework):
         # Generate some change by sending part of shield_addr1 to shield_addr2
         txidPrev = txid
         shield_addr2 = self.nodes[1].getnewshieldedaddress()
-        txid = self.nodes[1].shielded_sendmany(shield_addr1, # shield_addr1 has 2 PIV, send 0.6 PIV + 0.0001 PIV fee
+        txid = self.nodes[1].shieldedsendmany(shield_addr1, # shield_addr1 has 2 PIV, send 0.6 PIV + 0.0001 PIV fee
                                         [{'address': shield_addr2, 'amount': 0.6, "memo": non_ascii_memo_str}]) # change 1.3999
         self.sync_all()
         self.generate_and_sync(height+4)

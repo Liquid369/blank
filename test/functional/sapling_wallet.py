@@ -57,15 +57,15 @@ class WalletSaplingTest(PivxTestFramework):
         # taddr -> Sapling
         self.log.info("TX 1: shield funds from specified transparent address.")
         recipients = [{"address": saplingAddr0, "amount": Decimal('10')}]
-        mytxid1 = self.nodes[0].shielded_sendmany(get_coinstake_address(self.nodes[0]), recipients, 1, fee)
+        mytxid1 = self.nodes[0].shieldedsendmany(get_coinstake_address(self.nodes[0]), recipients, 1, fee)
 
         # shield more funds automatically selecting the transparent inputs
         self.log.info("TX 2: shield funds from any transparent address.")
-        mytxid2 = self.nodes[0].shielded_sendmany("from_transparent", recipients, 1, fee)
+        mytxid2 = self.nodes[0].shieldedsendmany("from_transparent", recipients, 1, fee)
 
         # shield more funds creating and then sending a raw transaction
         self.log.info("TX 3: shield funds creating and sending raw transaction.")
-        tx_json = self.nodes[0].raw_shielded_sendmany("from_transparent", recipients, 1, fee)
+        tx_json = self.nodes[0].rawshieldedsendmany("from_transparent", recipients, 1, fee)
         mytxid3 = self.nodes[0].sendrawtransaction(tx_json["hex"])
 
         # Verify priority of tx is INF_PRIORITY, defined as 1E+25 (10000000000000000000000000)
@@ -86,7 +86,7 @@ class WalletSaplingTest(PivxTestFramework):
         #         -> Sapling (change)
         self.log.info("TX 4: shielded transaction from specified sapling address.")
         recipients4 = [{"address": saplingAddr1, "amount": Decimal('10')}]
-        mytxid4 = self.nodes[0].shielded_sendmany(saplingAddr0, recipients4, 1, fee)
+        mytxid4 = self.nodes[0].shieldedsendmany(saplingAddr0, recipients4, 1, fee)
         self.check_tx_priority([mytxid4])
 
         self.nodes[2].generate(1)
@@ -95,7 +95,7 @@ class WalletSaplingTest(PivxTestFramework):
         # Send more shielded funds (this time with automatic selection of the source)
         self.log.info("TX 5: shielded transaction from any sapling address.")
         recipients5 = [{"address": saplingAddr1, "amount": Decimal('5')}]
-        mytxid5 = self.nodes[0].shielded_sendmany("from_shielded", recipients5, 1, fee)
+        mytxid5 = self.nodes[0].shieldedsendmany("from_shielded", recipients5, 1, fee)
         self.check_tx_priority([mytxid5])
 
         self.nodes[2].generate(1)
@@ -103,7 +103,7 @@ class WalletSaplingTest(PivxTestFramework):
 
         # Send more shielded funds (with create + send raw transaction)
         self.log.info("TX 6: shielded raw transaction.")
-        tx_json = self.nodes[0].raw_shielded_sendmany("from_shielded", recipients5, 1, fee)
+        tx_json = self.nodes[0].rawshieldedsendmany("from_shielded", recipients5, 1, fee)
         mytxid6 = self.nodes[0].sendrawtransaction(tx_json["hex"])
         self.check_tx_priority([mytxid6])
 
@@ -123,7 +123,7 @@ class WalletSaplingTest(PivxTestFramework):
         self.log.info("TX 7: deshield funds from specified sapling address.")
         recipients7 = [{"address": saplingAddr0, "amount": Decimal('8')}]
         recipients7.append({"address": taddr1, "amount": Decimal('10')})
-        mytxid7 = self.nodes[1].shielded_sendmany(saplingAddr1, recipients7, 1, fee)
+        mytxid7 = self.nodes[1].shieldedsendmany(saplingAddr1, recipients7, 1, fee)
         self.check_tx_priority([mytxid7])
 
         self.nodes[2].generate(1)
