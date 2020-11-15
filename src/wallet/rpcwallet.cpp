@@ -33,8 +33,6 @@
 #include "spork.h"
 #include "zpiv/deterministicmint.h"
 
-#include <boost/assign/list_of.hpp>
-
 #include <univalue.h>
 #include <iostream>
 
@@ -583,7 +581,7 @@ UniValue listshieldunspent(const JSONRPCRequest& request)
 
     EnsureWallet();
 
-    RPCTypeCheck(request.params, boost::assign::list_of(UniValue::VNUM)(UniValue::VNUM)(UniValue::VBOOL)(UniValue::VARR));
+    RPCTypeCheck(request.params, {UniValue::VNUM, UniValue::VNUM, UniValue::VBOOL, UniValue::VARR});
 
     int nMinDepth = request.params.size() > 0 ? request.params[0].get_int() : 1;
     if (nMinDepth < 0) {
@@ -3313,7 +3311,7 @@ UniValue listunspent(const JSONRPCRequest& request)
                 "\nExamples\n" +
                 HelpExampleCli("listunspent", "") + HelpExampleCli("listunspent", "6 9999999 \"[\\\"1PGFqEzfmQch1gKD3ra4k18PNj3tTUUSqg\\\",\\\"1LtvqCaApEdUGFkpKMM4MstjcaL4dKg8SP\\\"]\"") + HelpExampleRpc("listunspent", "6, 9999999 \"[\\\"1PGFqEzfmQch1gKD3ra4k18PNj3tTUUSqg\\\",\\\"1LtvqCaApEdUGFkpKMM4MstjcaL4dKg8SP\\\"]\""));
 
-    RPCTypeCheck(request.params, boost::assign::list_of(UniValue::VNUM)(UniValue::VNUM)(UniValue::VARR)(UniValue::VNUM));
+    RPCTypeCheck(request.params, {UniValue::VNUM, UniValue::VNUM, UniValue::VARR, UniValue::VNUM});
 
     int nMinDepth = 1;
     if (request.params.size() > 0)
@@ -3442,9 +3440,9 @@ UniValue lockunspent(const JSONRPCRequest& request)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     if (request.params.size() == 1)
-        RPCTypeCheck(request.params, boost::assign::list_of(UniValue::VBOOL));
+        RPCTypeCheck(request.params, {UniValue::VBOOL});
     else
-        RPCTypeCheck(request.params, boost::assign::list_of(UniValue::VBOOL)(UniValue::VARR));
+        RPCTypeCheck(request.params, {UniValue::VBOOL, UniValue::VARR});
 
     bool fUnlock = request.params[0].get_bool();
 
@@ -3466,7 +3464,11 @@ UniValue lockunspent(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected object");
         const UniValue& o = output.get_obj();
 
-        RPCTypeCheckObj(o, boost::assign::map_list_of("txid", UniValue::VSTR)("vout", UniValue::VNUM));
+        RPCTypeCheckObj(o,
+            {
+                {"txid", UniValueType(UniValue::VSTR)},
+                {"vout", UniValueType(UniValue::VNUM)},
+            });
 
         const std::string& txid = find_value(o, "txid").get_str();
         if (!IsHex(txid)) {

@@ -25,8 +25,6 @@
 
 #include <stdint.h>
 
-#include <boost/assign/list_of.hpp>
-
 #include <univalue.h>
 
 extern std::vector<CSporkDef> sporkDefs;
@@ -613,7 +611,7 @@ UniValue setmocktime(const JSONRPCRequest& request)
 
     LOCK(cs_main);
 
-    RPCTypeCheck(request.params, boost::assign::list_of(UniValue::VNUM));
+    RPCTypeCheck(request.params, {UniValue::VNUM});
     SetMockTime(request.params[0].get_int64());
 
     uint64_t t = GetTime();
