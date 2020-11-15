@@ -11,7 +11,12 @@ from decimal import Decimal
 my_memo_str = "What, so everyone’s supposed to sleep every single night now?\n"\
               "You realize that nighttime makes up half of all time?"
 my_memo_hex = bytes_to_hex_str(my_memo_str.encode('utf-8'))
-no_memo = 'f6'
+
+non_ascii_memo_str = "零知识证明"
+non_ascii_memo_hex = bytes_to_hex_str(non_ascii_memo_str.encode('utf-8'))
+
+too_big_memo_str = "This is not an email......." * 19
+no_memo = "f6"
 
 fee = Decimal('0.0001')
 
@@ -38,6 +43,11 @@ class ListReceivedTest (PivxTestFramework):
 
         self.nodes[0].sendtoaddress(taddr, 6.0) # node_1 in taddr with 6 PIV.
         self.generate_and_sync(height+2)
+
+        # Try to send with an oversized memo
+        assert_raises_rpc_error(-4, "Memo size of 513 is too big, maximum allowed is 512",
+                                self.nodes[1].shielded_sendmany, taddr,
+                                [{'address': shield_addr1, 'amount': 2, 'memo': too_big_memo_str}])
 
         # Send 1 PIV to shield addr1
         txid = self.nodes[1].shielded_sendmany(taddr, [ # node_1 with 6 PIV sending them all (fee is 0.0001 PIV)
@@ -113,7 +123,7 @@ class ListReceivedTest (PivxTestFramework):
         txidPrev = txid
         shield_addr2 = self.nodes[1].getnewshieldedaddress()
         txid = self.nodes[1].shielded_sendmany(shield_addr1, # shield_addr1 has 2 PIV, send 0.6 PIV + 0.0001 PIV fee
-                                        [{'address': shield_addr2, 'amount': 0.6}]) # change 1.3999
+                                        [{'address': shield_addr2, 'amount': 0.6, "memo": non_ascii_memo_str}]) # change 1.3999
         self.sync_all()
         self.generate_and_sync(height+4)
 
@@ -135,7 +145,8 @@ class ListReceivedTest (PivxTestFramework):
             assert_equal(pt['outputs'].index(out), out['output'])
             if out['address'] == shield_addr2:
                 assert_equal(out['outgoing'], False)
-                assert_equal(out['memo'], no_memo)
+                assert_equal(out['memo'], non_ascii_memo_hex)
+                assert_equal(out['memoStr'], non_ascii_memo_str)
                 assert_equal(out['value'], Decimal('0.6'))
                 assert_equal(out['valueSat'], 60000000)
                 found[0] = True
@@ -170,7 +181,7 @@ class ListReceivedTest (PivxTestFramework):
         assert_equal(txid, r[0]['txid'])
         assert_equal(Decimal('0.6'), r[0]['amount'])
         assert_false(r[0]['change'], "Note valued at 0.6 should not be change")
-        assert_equal(no_memo, r[0]['memo'])
+        assert_equal(non_ascii_memo_hex, r[0]['memo'])
 
         c = self.nodes[1].getsaplingnotescount(0)
         assert_true(3 == c, "Count of unconfirmed notes should be 3(2 in shield_addr1 + 1 in shield_addr2)")

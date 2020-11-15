@@ -1670,7 +1670,7 @@ UniValue raw_shielded_sendmany(const JSONRPCRequest& request)
                 "    [{\n"
                 "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
                 "      \"amount\":amount    (numeric, required) The numeric amount in " + "PIV" + " is the value\n"
-                "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
+                "      \"memo\":memo        (string, optional) If the address is a shielded addr, message string of max 512 bytes\n"
                 "    }, ... ]\n"
                 "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
                 "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(DEFAULT_SAPLING_FEE)) +

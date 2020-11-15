@@ -173,7 +173,7 @@ jobs:
         BUILD_TIMEOUT=800
 
     - stage: test
-      name: 'x86_64 Linux  [GOAL: install]  [bionic]  [no GUI, no unit tests - only tier two functional tests]'
+      name: 'x86_64 Linux  [GOAL: install]  [bionic]  [no GUI, no unit tests - only tiertwo/sapling functional tests]'
       env: >-
         HOST=x86_64-unknown-linux-gnu
         PACKAGES="python3-zmq protobuf-compiler libdbus-1-dev libharfbuzz-dev libprotobuf-dev"
