@@ -11,8 +11,7 @@ from decimal import Decimal
 my_memo_str = "What, so everyone’s supposed to sleep every single night now?\n"\
               "You realize that nighttime makes up half of all time?"
 my_memo_hex = bytes_to_hex_str(my_memo_str.encode('utf-8'))
-my_memo_hex += '0' * (1024-len(my_memo_hex))
-no_memo = 'f6' + ('0'*1022)
+no_memo = 'f6'
 
 fee = Decimal('0.0001')
 

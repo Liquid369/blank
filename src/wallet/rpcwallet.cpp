@@ -634,7 +634,7 @@ UniValue listshieldedunspent(const JSONRPCRequest& request)
             obj.pushKV("spendable", hasSaplingSpendingKey);
             obj.pushKV("address", KeyIO::EncodePaymentAddress(entry.address));
             obj.pushKV("amount", ValueFromAmount(CAmount(entry.note.value()))); // note.value() is equivalent to plaintext.value()
-            obj.pushKV("memo", HexStr(entry.memo));
+            obj.pushKV("memo", HexStrTrimmed(entry.memo));
             if (hasSaplingSpendingKey) {
                 obj.pushKV("change", pwalletMain->GetSaplingScriptPubKeyMan()->IsNoteSaplingChange(nullifierSet, entry.address, entry.op));
             }
@@ -1321,15 +1321,11 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
     UniValue outputs(UniValue::VARR);
 
     auto addMemo = [](UniValue &entry, std::array<unsigned char, ZC_MEMO_SIZE> &memo) {
-        entry.pushKV("memo", HexStr(memo));
+        auto end = FindFirstNonZero(memo.rbegin(), memo.rend());
+        entry.pushKV("memo", HexStr(memo.begin(), end.base()));
         // If the leading byte is 0xF4 or lower, the memo field should be interpreted as a
         // UTF-8-encoded text string.
         if (memo[0] <= 0xf4) {
-            // Trim off trailing zeroes
-            auto end = std::find_if(
-                    memo.rbegin(),
-                    memo.rend(),
-                    [](unsigned char v) { return v != 0; });
             std::string memoStr(memo.begin(), end.base());
             if (IsValidUTF8(memoStr)) {
                 entry.pushKV("memoStr", memoStr);
@@ -2388,7 +2384,7 @@ UniValue listreceivedbyshieldedaddress(const JSONRPCRequest& request)
         UniValue obj(UniValue::VOBJ);
         obj.pushKV("txid", entry.op.hash.ToString());
         obj.pushKV("amount", ValueFromAmount(CAmount(entry.note.value())));
-        obj.pushKV("memo", HexStr(entry.memo));
+        obj.pushKV("memo", HexStrTrimmed(entry.memo));
         obj.pushKV("outindex", (int)entry.op.n);
         obj.pushKV("confirmations", entry.confirmations);
 

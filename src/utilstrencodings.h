@@ -99,6 +99,13 @@ bool ParseInt64(const std::string& str, int64_t *out);
  */
 bool ParseDouble(const std::string& str, double *out);
 
+/* Return iterator to first non zero element, or itend */
+template <typename T>
+T FindFirstNonZero(T itbegin, T itend)
+{
+    return std::find_if(itbegin, itend, [](unsigned char v) { return v != 0; });
+}
+
 template <typename T>
 std::string HexStr(const T itbegin, const T itend, bool fSpaces = false)
 {
@@ -121,6 +128,12 @@ template <typename T>
 inline std::string HexStr(const T& vch, bool fSpaces = false)
 {
     return HexStr(vch.begin(), vch.end(), fSpaces);
+}
+
+template <typename T>
+inline std::string HexStrTrimmed(const T& vch, bool fSpaces = false)
+{
+    return HexStr(vch.begin(), FindFirstNonZero(vch.rbegin(), vch.rend()).base(), fSpaces);
 }
 
 /** Reverse the endianess of a string */
