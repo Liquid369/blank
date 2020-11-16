@@ -7,11 +7,13 @@
 from test_framework.test_framework import PivxTestFramework
 from test_framework.util import (
     assert_equal,
+    assert_raises_rpc_error,
     sync_mempools,
     get_coinstake_address
 )
 
 from decimal import Decimal
+from time import sleep
 
 # Test wallet behaviour with Sapling addresses
 class WalletSaplingTest(PivxTestFramework):
@@ -21,6 +23,7 @@ class WalletSaplingTest(PivxTestFramework):
         self.setup_clean_chain = True
         saplingUpgrade = ['-nuparams=v5_dummy:1']
         self.extra_args = [saplingUpgrade, saplingUpgrade, saplingUpgrade, saplingUpgrade]
+        self.extra_args[0].append('-sporkkey=932HEevBSujW2ud7RfB1YF91AFygbBRQj3de3LyaCRqNzKKgWXi')
 
     def check_tx_priority(self, txids):
         sync_mempools(self.nodes)
@@ -66,7 +69,25 @@ class WalletSaplingTest(PivxTestFramework):
         # shield more funds creating and then sending a raw transaction
         self.log.info("TX 3: shield funds creating and sending raw transaction.")
         tx_json = self.nodes[0].rawshieldedsendmany("from_transparent", recipients, 1, fee)
+
+        # Check SPORK_20 for sapling maintenance mode
+        self.activate_spork(0, "SPORK_20_SAPLING_MAINTENANCE")
+        sleep(2)
+        assert_equal(True, self.is_spork_active(1, "SPORK_20_SAPLING_MAINTENANCE"))
+        assert_raises_rpc_error(-26, "bad-tx-sapling-maintenance",
+                                self.nodes[0].sendrawtransaction, tx_json["hex"])
+        self.log.info("Good. Not accepted when SPORK_20 is active.")
+
+        # Try with RPC...
+        assert_raises_rpc_error(-8, "Invalid parameter, Sapling not active yet",
+                                self.nodes[0].shieldedsendmany, "from_transparent", recipients, 1, fee)
+
+        # Disable SPORK_20 and retry
+        self.deactivate_spork(0, "SPORK_20_SAPLING_MAINTENANCE")
+        sleep(2)
+        assert_equal(False, self.is_spork_active(1, "SPORK_20_SAPLING_MAINTENANCE"))
         mytxid3 = self.nodes[0].sendrawtransaction(tx_json["hex"])
+        self.log.info("Good. Accepted when SPORK_20 is not active.")
 
         # Verify priority of tx is INF_PRIORITY, defined as 1E+25 (10000000000000000000000000)
         self.check_tx_priority([mytxid1, mytxid2, mytxid3])
