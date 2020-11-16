@@ -362,6 +362,7 @@ class CTransaction():
             self.nVersion = 1
             self.vin = []
             self.vout = []
+            self.sapData = b""
             self.nLockTime = 0
             self.sha256 = None
             self.hash = None
@@ -369,6 +370,7 @@ class CTransaction():
             self.nVersion = tx.nVersion
             self.vin = copy.deepcopy(tx.vin)
             self.vout = copy.deepcopy(tx.vout)
+            self.sapData = tx.sapData
             self.nLockTime = tx.nLockTime
             self.sha256 = tx.sha256
             self.hash = tx.hash
@@ -376,16 +378,9 @@ class CTransaction():
     def deserialize(self, f):
         self.nVersion = struct.unpack("<i", f.read(4))[0]
         self.vin = deser_vector(f, CTxIn)
-        flags = 0
-        if len(self.vin) == 0:
-            flags = struct.unpack("<B", f.read(1))[0]
-            # Not sure why flags can't be zero, but this
-            # matches the implementation in bitcoind
-            if (flags != 0):
-                self.vin = deser_vector(f, CTxIn)
-                self.vout = deser_vector(f, CTxOut)
-        else:
-            self.vout = deser_vector(f, CTxOut)
+        self.vout = deser_vector(f, CTxOut)
+        if self.nVersion >= 2:
+            self.sapData = deser_string(f)
         self.nLockTime = struct.unpack("<I", f.read(4))[0]
         self.sha256 = None
         self.hash = None
@@ -395,6 +390,8 @@ class CTransaction():
         r += struct.pack("<i", self.nVersion)
         r += ser_vector(self.vin)
         r += ser_vector(self.vout)
+        if self.nVersion >= 2:
+            r += ser_string(self.sapData)
         r += struct.pack("<I", self.nLockTime)
         return r
 
@@ -460,6 +457,7 @@ class CBlockHeader():
             self.nTime = header.nTime
             self.nBits = header.nBits
             self.nNonce = header.nNonce
+            self.hashFinalSaplingRoot = header.hashFinalSaplingRoot
             self.sha256 = header.sha256
             self.hash = header.hash
             self.calc_sha256()
@@ -471,6 +469,7 @@ class CBlockHeader():
         self.nTime = 0
         self.nBits = 0
         self.nNonce = 0
+        self.hashFinalSaplingRoot = 0
         self.sha256 = None
         self.hash = None
 
@@ -481,6 +480,8 @@ class CBlockHeader():
         self.nTime = struct.unpack("<I", f.read(4))[0]
         self.nBits = struct.unpack("<I", f.read(4))[0]
         self.nNonce = struct.unpack("<I", f.read(4))[0]
+        if self.nVersion >= 8:
+            self.hashFinalSaplingRoot = deser_uint256(f)
         self.sha256 = None
         self.hash = None
 
@@ -492,6 +493,8 @@ class CBlockHeader():
         r += struct.pack("<I", self.nTime)
         r += struct.pack("<I", self.nBits)
         r += struct.pack("<I", self.nNonce)
+        if self.nVersion >= 8:
+            r += ser_uint256(self.hashFinalSaplingRoot)
         return r
 
     def calc_sha256(self):
@@ -503,6 +506,8 @@ class CBlockHeader():
             r += struct.pack("<I", self.nTime)
             r += struct.pack("<I", self.nBits)
             r += struct.pack("<I", self.nNonce)
+            if self.nVersion >= 8:
+                r += ser_uint256(self.hashFinalSaplingRoot)
             self.sha256 = uint256_from_str(hash256(r))
             self.hash = encode(hash256(r)[::-1], 'hex_codec').decode('ascii')
 
@@ -619,6 +624,8 @@ class CBlock(CBlockHeader):
         data += struct.pack("<I", self.nTime)
         data += struct.pack("<I", self.nBits)
         data += struct.pack("<I", self.nNonce)
+        if self.nVersion >= 8:
+            data += ser_uint256(self.hashFinalSaplingRoot)
         sha256NoSig = hash256(data)
         self.vchBlockSig = key.sign(sha256NoSig, low_s=low_s)
         self.sig_key = key
