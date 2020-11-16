@@ -13,14 +13,52 @@
 
 struct TxValues;
 
-class SendManyRecipient {
-public:
-    const std::string address;
+struct ShieldedRecipient
+{
+    const libzcash::SaplingPaymentAddress address;
     const CAmount amount;
     const std::string memo;
+    ShieldedRecipient(const libzcash::SaplingPaymentAddress& _address, const CAmount& _amount, const std::string& _memo) :
+        address(_address),
+        amount(_amount),
+        memo(_memo)
+    {}
+};
 
-    SendManyRecipient(const std::string& address_, CAmount amount_, std::string memo_) :
-            address(address_), amount(amount_), memo(memo_) {}
+struct SendManyRecipient
+{
+    const Optional<ShieldedRecipient> shieldedRecipient{nullopt};
+    const Optional<CTxOut> transparentRecipient{nullopt};
+
+    bool IsTransparent() const { return transparentRecipient != nullopt; }
+
+    // Prevent default empty initialization
+    SendManyRecipient() = delete;
+
+    // Shielded recipient
+    SendManyRecipient(const libzcash::SaplingPaymentAddress& address, const CAmount& amount, const std::string& memo):
+        shieldedRecipient(ShieldedRecipient(address, amount, memo))
+    {}
+
+    // Transparent recipient: P2PKH
+    SendManyRecipient(const CTxDestination& dest, const CAmount& amount):
+        transparentRecipient(CTxOut(amount, GetScriptForDestination(dest)))
+    {}
+
+    // Transparent recipient: P2CS
+    SendManyRecipient(const CKeyID& ownerKey, const CKeyID& stakerKey, const CAmount& amount):
+        transparentRecipient(CTxOut(amount, GetScriptForStakeDelegation(stakerKey, ownerKey)))
+    {}
+
+    // Transparent recipient: multisig
+    SendManyRecipient(int nRequired, const std::vector<CPubKey>& keys, const CAmount& amount):
+        transparentRecipient(CTxOut(amount, GetScriptForMultisig(nRequired, keys)))
+    {}
+
+    // Transparent recipient: OP_RETURN
+    SendManyRecipient(const uint256& message):
+        transparentRecipient(CTxOut(0, GetScriptForOpReturn(message)))
+    {}
 };
 
 class FromAddress {
@@ -52,8 +90,7 @@ public:
     // In case of no addressFrom filter selected, it will accept any utxo in the wallet as input.
     SaplingOperation* setSelectTransparentCoins(const bool select) { selectFromtaddrs = select; return this; };
     SaplingOperation* setSelectShieldedCoins(const bool select) { selectFromShield = select; return this; };
-    SaplingOperation* setTransparentRecipients(std::vector<SendManyRecipient>& vec) { taddrRecipients = std::move(vec); return this; };
-    SaplingOperation* setShieldedRecipients(std::vector<SendManyRecipient>& vec) { shieldedAddrRecipients = std::move(vec); return this; } ;
+    SaplingOperation* setRecipients(std::vector<SendManyRecipient>& vec) { recipients = std::move(vec); return this; };
     SaplingOperation* setFee(CAmount _fee) { fee = _fee; return this; }
     SaplingOperation* setMinDepth(int _mindepth) { assert(_mindepth >= 0); mindepth = _mindepth; return this; }
     SaplingOperation* setTxBuilder(TransactionBuilder& builder) { txBuilder = builder; return this; }
@@ -69,8 +106,7 @@ private:
     // In case of no addressFrom filter selected, it will accept any utxo in the wallet as input.
     bool selectFromtaddrs{false};
     bool selectFromShield{false};
-    std::vector<SendManyRecipient> taddrRecipients;
-    std::vector<SendManyRecipient> shieldedAddrRecipients;
+    std::vector<SendManyRecipient> recipients;
     std::vector<COutput> transInputs;
     std::vector<SaplingNoteEntry> shieldedInputs;
     int mindepth{5}; // Min default depth 5.

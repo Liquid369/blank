@@ -49,18 +49,14 @@ OperationResult loadKeysFromShieldedFrom(const libzcash::SaplingPaymentAddress &
     return OperationResult(true);
 }
 
-TxValues calculateTarget(std::vector<SendManyRecipient>& taddrRecipients,
-                         std::vector<SendManyRecipient>& shieldedAddrRecipients,
-                         CAmount fee)
+TxValues calculateTarget(const std::vector<SendManyRecipient>& recipients, const CAmount& fee)
 {
     TxValues txValues;
-    for (SendManyRecipient &t : taddrRecipients) {
-        txValues.transOutTotal += t.amount;
-    }
-
-    // Add shielded outputs
-    for (const SendManyRecipient &t : shieldedAddrRecipients) {
-        txValues.shieldedOutTotal += t.amount;
+    for (const SendManyRecipient &t : recipients) {
+        if (t.IsTransparent())
+            txValues.transOutTotal += t.transparentRecipient->nValue;
+        else
+            txValues.shieldedOutTotal += t.shieldedRecipient->amount;
     }
     txValues.target = txValues.shieldedOutTotal + txValues.transOutTotal + fee;
     return txValues;
@@ -87,7 +83,7 @@ OperationResult SaplingOperation::build()
         }
     }
 
-    if (taddrRecipients.empty() && shieldedAddrRecipients.empty()) {
+    if (recipients.empty()) {
         return errorOut("No recipients");
     }
 
@@ -96,7 +92,7 @@ OperationResult SaplingOperation::build()
     }
 
     // First calculate target values
-    TxValues txValues = calculateTarget(taddrRecipients, shieldedAddrRecipients, fee);
+    TxValues txValues = calculateTarget(recipients, fee);
     OperationResult result(false);
     // Necessary keys
     libzcash::SaplingExpandedSpendingKey expsk;
@@ -122,21 +118,21 @@ OperationResult SaplingOperation::build()
         ovk = pwalletMain->GetSaplingScriptPubKeyMan()->getCommonOVKFromSeed();
     }
 
-    // Add transparent outputs
-    for (SendManyRecipient &t : taddrRecipients) {
-        txBuilder.AddTransparentOutput(DecodeDestination(t.address), t.amount);
-    }
-
-    // Add shielded outputs
-    for (const SendManyRecipient &t : shieldedAddrRecipients) {
-        auto addr = KeyIO::DecodePaymentAddress(t.address);
-        assert(IsValidPaymentAddress(addr));
-        auto to = boost::get<libzcash::SaplingPaymentAddress>(addr);
-        std::array<unsigned char, ZC_MEMO_SIZE> memo = {};
-        std::string error;
-        if (!getMemoFromHexString(t.memo, memo, error))
-            return errorOut(error);
-        txBuilder.AddSaplingOutput(ovk, to, t.amount, memo);
+    // Add outputs
+    for (const SendManyRecipient &t : recipients) {
+        if (t.IsTransparent()) {
+            txBuilder.AddTransparentOutput(*t.transparentRecipient);
+        } else {
+            const auto& address = t.shieldedRecipient->address;
+            const CAmount& amount = t.shieldedRecipient->amount;
+            const std::string& memo = t.shieldedRecipient->memo;
+            assert(IsValidPaymentAddress(address));
+            std::array<unsigned char, ZC_MEMO_SIZE> vMemo = {};
+            std::string error;
+            if (!getMemoFromHexString(memo, vMemo, error))
+                return errorOut(error);
+            txBuilder.AddSaplingOutput(ovk, address, amount, vMemo);
+        }
     }
 
     // If from address is a taddr, select UTXOs to spend

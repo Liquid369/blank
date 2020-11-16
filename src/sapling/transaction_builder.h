@@ -111,9 +111,10 @@ public:
         std::array<unsigned char, ZC_MEMO_SIZE> memo = {{0xF6}});
 
     // Assumes that the value correctly corresponds to the provided UTXO.
-    void AddTransparentInput(COutPoint utxo, CScript scriptPubKey, CAmount value);
+    void AddTransparentInput(const COutPoint& utxo, const CScript& scriptPubKey, const CAmount& value);
 
-    void AddTransparentOutput(const CTxDestination& to, CAmount value);
+    void AddTransparentOutput(const CTxOut& out);
+    void AddTransparentOutput(const CTxDestination& dest, const CAmount& value);
 
     void SendChangeTo(libzcash::SaplingPaymentAddress changeAddr, uint256 ovk);
 
