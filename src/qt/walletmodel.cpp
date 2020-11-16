@@ -65,7 +65,7 @@ bool WalletModel::isRegTestNetwork() const
 
 bool WalletModel::isColdStakingNetworkelyEnabled() const
 {
-    return sporkManager.IsSporkActive(SPORK_17_COLDSTAKING_ENFORCEMENT);
+    return !sporkManager.IsSporkActive(SPORK_19_COLDSTAKING_MAINTENANCE);
 }
 
 bool WalletModel::isStakingStatusActive() const
@@ -439,7 +439,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
         return StakingOnlyUnlocked;
     }
 
-    bool fColdStakingActive = sporkManager.IsSporkActive(SPORK_17_COLDSTAKING_ENFORCEMENT);
+    bool fColdStakingActive = isColdStakingNetworkelyEnabled();
 
     // Double check tx before do anything
     CValidationState state; // TODO: Add sapling network active flag check

@@ -988,8 +988,8 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CWalletTx& wtxNew, CR
     if (params.size() > 6 && !params[6].isNull())
         fForceNotEnabled = params[6].get_bool();
 
-    if (!sporkManager.IsSporkActive(SPORK_17_COLDSTAKING_ENFORCEMENT) && !fForceNotEnabled) {
-        std::string errMsg = "Cold Staking disabled with SPORK 17.\n"
+    if (sporkManager.IsSporkActive(SPORK_19_COLDSTAKING_MAINTENANCE) && !fForceNotEnabled) {
+        std::string errMsg = "Cold Staking temporarily disabled with SPORK 19.\n"
                 "You may force the stake delegation setting fForceNotEnabled to true.\n"
                 "WARNING: If relayed before activation, this tx will be rejected resulting in a ban.\n";
         throw JSONRPCError(RPC_WALLET_ERROR, errMsg);
