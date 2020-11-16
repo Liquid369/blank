@@ -27,8 +27,8 @@ struct ShieldedRecipient
 
 struct SendManyRecipient
 {
-    const Optional<ShieldedRecipient> shieldedRecipient;
-    const Optional<CTxOut> transparentRecipient;
+    const Optional<ShieldedRecipient> shieldedRecipient{nullopt};
+    const Optional<CTxOut> transparentRecipient{nullopt};
 
     bool IsTransparent() const { return transparentRecipient != nullopt; }
 
