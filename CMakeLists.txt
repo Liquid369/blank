@@ -257,8 +257,13 @@ set(WALLET_SOURCES
         ./src/wallet/db.cpp
         ./src/addressbook.cpp
         ./src/crypter.cpp
+        ./src/budget/budgetdb.cpp
+        ./src/budget/budgetmanager.cpp
+        ./src/budget/budgetproposal.cpp
+        ./src/budget/budgetvote.cpp
+        ./src/budget/finalizedbudget.cpp
+        ./src/budget/finalizedbudgetvote.cpp
         ./src/masternode.cpp
-        ./src/masternode-budget.cpp
         ./src/masternode-payments.cpp
         ./src/masternode-sync.cpp
         ./src/tiertwo_networksync.cpp

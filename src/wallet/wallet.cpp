@@ -7,10 +7,10 @@
 
 #include "wallet/wallet.h"
 
+#include "budget/budgetmanager.h"
 #include "coincontrol.h"
 #include "init.h"
 #include "guiinterfaceutil.h"
-#include "masternode-budget.h"
 #include "masternode-payments.h"
 #include "policy/policy.h"
 #include "script/sign.h"

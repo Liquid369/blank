@@ -7,7 +7,7 @@
 #include "chainparams.h"
 #include "db.h"
 #include "init.h"
-#include "masternode-budget.h"
+#include "budget/budgetmanager.h"
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "masternodeconfig.h"
