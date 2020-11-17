@@ -279,6 +279,15 @@ CAmount GetMinRelayFee(const CTransaction& tx, const CTxMemPool& pool, unsigned 
     return nMinFee;
 }
 
+CAmount GetShieldedTxMinFee(const CTransaction& tx)
+{
+    assert (tx.IsShieldedTx());
+    CAmount nMinFee = ::minRelayTxFee.GetFee(tx.GetTotalSize()) * 1000;
+    if (!Params().GetConsensus().MoneyRange(nMinFee))
+        nMinFee = Params().GetConsensus().nMaxMoneyOut;
+    return nMinFee;
+}
+
 /** Convert CValidationState to a human-readable message for logging */
 std::string FormatStateMessage(const CValidationState &state)
 {

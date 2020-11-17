@@ -226,6 +226,10 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState& state, const CTransa
 std::string FormatStateMessage(const CValidationState &state);
 
 CAmount GetMinRelayFee(const CTransaction& tx, const CTxMemPool& pool, unsigned int nBytes, bool fAllowFree);
+/**
+ * Return the minimum fee for a shielded tx.
+ */
+CAmount GetShieldedTxMinFee(const CTransaction& tx);
 
 /**
  * Check transaction inputs, and make sure any

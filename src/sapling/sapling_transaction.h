@@ -17,10 +17,14 @@
 
 #include <boost/variant.hpp>
 
+// transaction.h comment: spending taddr output requires CTxIn >= 148 bytes and typical taddr txout is 34 bytes
+#define CTXIN_SPEND_DUST_SIZE   148
+#define CTXOUT_REGULAR_SIZE     34
+
 // These constants are defined in the protocol § 7.1:
 // https://zips.z.cash/protocol/protocol.pdf#txnencoding
-#define OUTPUTDESCRIPTION_SIZE 948
-#define SPENDDESCRIPTION_SIZE 384
+#define OUTPUTDESCRIPTION_SIZE  948
+#define SPENDDESCRIPTION_SIZE   384
 
 namespace libzcash {
     static constexpr size_t GROTH_PROOF_SIZE = (
