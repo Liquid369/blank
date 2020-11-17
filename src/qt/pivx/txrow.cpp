@@ -98,6 +98,7 @@ void TxRow::setType(bool isLightTheme, int type, bool isConfirmed)
             css = "text-list-amount-send";
             break;
         case TransactionRecord::SendToSelf:
+        case TransactionRecord::SendToSelfShieldToShieldChangeAddress:
             path = "://ic-transaction-mint";
             css = "text-list-amount-send";
             break;
@@ -123,9 +124,8 @@ void TxRow::setType(bool isLightTheme, int type, bool isConfirmed)
             path = "://ic-transaction-cs-contract";
             css = "text-list-amount-send";
             break;
-
-        // TODO: Complete me..
         case TransactionRecord::SendToSelfShieldedAddress:
+        case TransactionRecord::SendToSelfShieldToTransparent:
             path = "://ic-transaction-mint";
             css = "text-list-amount-unconfirmed";
             cssAmountBottom = "text-list-amount-send-small";

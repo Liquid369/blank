@@ -247,10 +247,32 @@ bool TransactionRecord::decomposeSendToSelfTransaction(const CWalletTx& wtx, con
             sub.address = EncodeDestination(address);
         }
     } else {
-        // shielded send to self.
-        sub.type = TransactionRecord::SendToSelfShieldedAddress;
-        nChange += wtx.GetShieldedChange();
-        sub.shieldedCredit = wtx.GetShieldedAvailableCredit();
+        // we know that all of the inputs and outputs are mine and that have shielded data.
+        // Let's see if only have transparent inputs, so we know that this is a
+        // transparent -> shield transaction
+        if (wtx.sapData->vShieldedSpend.empty()) {
+            sub.type = TransactionRecord::SendToSelfShieldedAddress;
+            sub.shieldedCredit = wtx.GetShieldedAvailableCredit();
+            nChange += wtx.GetShieldedChange();
+        } else {
+            // we know that the inputs are shielded now, let's see if
+            // if we have transparent outputs. if we have then we are converting back coins,
+            // from shield to transparent
+            if (!wtx.vout.empty()) {
+                sub.type = TransactionRecord::SendToSelfShieldToTransparent;
+                // Label for payment to self
+                CTxDestination address;
+                if (ExtractDestination(wtx.vout[0].scriptPubKey, address)) {
+                    sub.address = EncodeDestination(address);
+                }
+                // little hack to show the correct amount
+                sub.shieldedCredit = wtx.GetCredit(ISMINE_SPENDABLE_TRANSPARENT);
+            } else {
+                // we know that the outputs are only shield, this is purely a change address tx.
+                // show only the fee.
+                sub.type = TransactionRecord::SendToSelfShieldToShieldChangeAddress;
+            }
+        }
     }
 
     sub.debit = -(nDebit - nChange);

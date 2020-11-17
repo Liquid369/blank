@@ -467,7 +467,11 @@ QString TransactionTableModel::formatTxType(const TransactionRecord* wtx) const
     case TransactionRecord::SendToSelf:
         return tr("Payment to yourself");
     case TransactionRecord::SendToSelfShieldedAddress:
-        return tr("Shielded send to yourself");
+        return tr("Shielded coins to yourself");
+    case TransactionRecord::SendToSelfShieldToTransparent:
+        return tr("Unshielded coins to yourself");
+    case TransactionRecord::SendToSelfShieldToShieldChangeAddress:
+        return tr("Shielded change, transfer between own shielded addresses");
     case TransactionRecord::StakeMint:
         return tr("%1 Stake").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::StakeZPIV:
@@ -567,6 +571,8 @@ QString TransactionTableModel::formatTxToAddress(const TransactionRecord* wtx, b
         return label.isEmpty() ? "" : label;
     }
     case TransactionRecord::SendToSelfShieldedAddress:
+    case TransactionRecord::SendToSelfShieldToTransparent:
+    case TransactionRecord::SendToSelfShieldToShieldChangeAddress:
         // Do not show the send to self address. todo: add addressbook for shielded addr
         return "";
     default: {

@@ -95,7 +95,9 @@ public:
         P2CSUnlockStaker, // Staker watching the owner spent the delegated utxo
         SendToShielded, // Shielded send
         RecvWithShieldedAddress, // Shielded receive
-        SendToSelfShieldedAddress // Shielded send to self
+        SendToSelfShieldedAddress, // Shielded send to self
+        SendToSelfShieldToTransparent, // Unshield coins to self
+        SendToSelfShieldToShieldChangeAddress // Changing coins from one shielded address to another inside the wallet.
     };
 
     /** Number of confirmation recommended for accepting a transaction */
