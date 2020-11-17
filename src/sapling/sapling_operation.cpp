@@ -91,8 +91,11 @@ OperationResult SaplingOperation::build()
         return errorOut("Minconf cannot be zero when sending from shielded address");
     }
 
+    CAmount nFeeRet = fee > 0 ? fee : DEFAULT_SAPLING_FEE;
+    int tries = 0;
+    while (true) {
     // First calculate target values
-    TxValues txValues = calculateTarget(recipients, fee);
+    TxValues txValues = calculateTarget(recipients, nFeeRet);
     OperationResult result(false);
     // Necessary keys
     libzcash::SaplingExpandedSpendingKey expsk;
@@ -144,13 +147,6 @@ OperationResult SaplingOperation::build()
     const auto& retCalc = checkTxValues(txValues, isFromtAddress, isFromShielded);
     if (!retCalc) return retCalc;
 
-    LogPrint(BCLog::SAPLING, "%s: spending %s to send %s with fee %s\n", __func__ , FormatMoney(txValues.target), FormatMoney(txValues.shieldedOutTotal + txValues.transOutTotal), FormatMoney(fee));
-    LogPrint(BCLog::SAPLING, "%s: transparent input: %s (to choose from)\n", __func__ , FormatMoney(txValues.transInTotal));
-    LogPrint(BCLog::SAPLING, "%s: private input: %s (to choose from)\n", __func__ , FormatMoney(txValues.shieldedInTotal));
-    LogPrint(BCLog::SAPLING, "%s: transparent output: %s\n", __func__ , FormatMoney(txValues.transOutTotal));
-    LogPrint(BCLog::SAPLING, "%s: private output: %s\n", __func__ , FormatMoney(txValues.shieldedOutTotal));
-    LogPrint(BCLog::SAPLING, "%s: fee: %s\n", __func__ , FormatMoney(fee));
-
     // Set change address if we are using transparent funds
     if (isFromtAddress) {
         if (!tkeyChange) {
@@ -165,7 +161,7 @@ OperationResult SaplingOperation::build()
     }
 
     // Build the transaction
-    txBuilder.SetFee(fee);
+    txBuilder.SetFee(nFeeRet);
     TransactionBuilderResult txResult = txBuilder.Build();
     auto opTx = txResult.GetTx();
 
@@ -173,8 +169,38 @@ OperationResult SaplingOperation::build()
     if (!opTx) {
         return errorOut("Failed to build transaction: " + txResult.GetError());
     }
-
     finalTx = *opTx;
+
+        // Now check fee (todo: fix transparent fee...)
+        const CAmount& nFeeNeeded = finalTx.IsShieldedTx() ? GetShieldedTxMinFee(finalTx) : ::minRelayTxFee.GetFee(finalTx.GetTotalSize());
+        if (nFeeNeeded <= nFeeRet) {  // Done, enough fee included
+            // Check that the fee is not too high.
+            if (nFeeRet > 100 * nFeeNeeded) {
+                return errorOut(strprintf("The transaction fee is too high: %s > %s", FormatMoney(nFeeRet), FormatMoney(100 * nFeeNeeded)));
+            }
+            LogPrint(BCLog::SAPLING, "%s: spending %s to send %s with fee %s (min required %s)\n", __func__ , FormatMoney(txValues.target),
+                    FormatMoney(txValues.shieldedOutTotal + txValues.transOutTotal), FormatMoney(nFeeRet), FormatMoney(nFeeNeeded));
+            LogPrint(BCLog::SAPLING, "%s: transparent input: %s (to choose from)\n", __func__ , FormatMoney(txValues.transInTotal));
+            LogPrint(BCLog::SAPLING, "%s: private input: %s (to choose from)\n", __func__ , FormatMoney(txValues.shieldedInTotal));
+            LogPrint(BCLog::SAPLING, "%s: transparent output: %s\n", __func__ , FormatMoney(txValues.transOutTotal));
+            LogPrint(BCLog::SAPLING, "%s: private output: %s\n", __func__ , FormatMoney(txValues.shieldedOutTotal));
+            break;
+        }
+        if (fee > 0 && nFeeNeeded > fee) {
+            // User selected fee is not enough
+            return errorOut(strprintf("Fee set (%s) too low. Must be at least %s", FormatMoney(fee), FormatMoney(nFeeNeeded)));
+        }
+        // If we can't get the optimal fee after 100 tries, give up.
+        if (++tries > 100) {
+            return errorOut("Unable to compute optimal fee. Set manually.");
+        }
+        // include more fee and try again
+        LogPrint(BCLog::SAPLING, "%s: incrementing fee: %s --> %s\n", __func__ , FormatMoney(nFeeRet), FormatMoney(nFeeNeeded));
+        clearTx();
+        nFeeRet = nFeeNeeded;
+    }
+    // Done
+    fee = nFeeRet;
     return OperationResult(true);
 }
 

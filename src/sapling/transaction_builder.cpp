@@ -11,8 +11,8 @@
 
 #include <librustzcash.h>
 
-// Hardcoded for now.
-CAmount DEFAULT_SAPLING_FEE = 10000;
+// Initial fee used when searching for the optimal (GetShieldedTxMinFee)
+CAmount DEFAULT_SAPLING_FEE = 1000000;
 
 SpendDescriptionInfo::SpendDescriptionInfo(
     libzcash::SaplingExpandedSpendingKey expsk,
@@ -115,7 +115,18 @@ TransactionBuilder::TransactionBuilder(
     nHeight(_nHeight),
     keystore(_keystore)
 {
+    Clear();
+}
+
+void TransactionBuilder::Clear()
+{
     mtx = CreateNewContextualCMutableTransaction(consensusParams, nHeight);
+    spends.clear();
+    outputs.clear();
+    tIns.clear();
+    saplingChangeAddr = nullopt;
+    tChangeAddr = nullopt;
+    fee = -1;   // Verified in Build(). Must be set before.
 }
 
 void TransactionBuilder::AddSaplingSpend(
@@ -204,6 +215,10 @@ TransactionBuilderResult TransactionBuilder::Build()
     //
     // Consistency checks
     //
+    // Valid fee
+    if (fee < 0) {
+        return TransactionBuilderResult("Fee cannot be negative");
+    }
 
     // Valid change
     CAmount change = mtx.sapData->valueBalance - fee;

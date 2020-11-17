@@ -79,7 +79,7 @@ private:
     int nHeight;
     const CKeyStore* keystore;
     CMutableTransaction mtx;
-    CAmount fee = DEFAULT_SAPLING_FEE;
+    CAmount fee = -1;   // Verified in Build(). Must be set before.
 
     std::vector<SpendDescriptionInfo> spends;
     std::vector<OutputDescriptionInfo> outputs;
@@ -93,6 +93,8 @@ public:
         const Consensus::Params& consensusParams,
         int nHeight,
         CKeyStore* keyStore = nullptr);
+
+    void Clear();
 
     void SetFee(CAmount _fee);
 
