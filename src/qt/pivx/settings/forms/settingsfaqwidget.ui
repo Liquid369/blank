@@ -78,7 +78,7 @@
         <item>
          <widget class="QPushButton" name="pushButtonExit">
           <property name="text">
-           <string>Exit</string>
+           <string>Close FAQ</string>
           </property>
          </widget>
         </item>
