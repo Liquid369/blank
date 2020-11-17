@@ -94,82 +94,82 @@ OperationResult SaplingOperation::build()
     CAmount nFeeRet = fee > 0 ? fee : DEFAULT_SAPLING_FEE;
     int tries = 0;
     while (true) {
-    // First calculate target values
-    TxValues txValues = calculateTarget(recipients, nFeeRet);
-    OperationResult result(false);
-    // Necessary keys
-    libzcash::SaplingExpandedSpendingKey expsk;
-    uint256 ovk;
-    if (isFromShielded) {
-        // Try to get the sk and ovk if we know the address from, if we don't know it then this will be loaded in loadUnspentNotes
-        // using the sk of the first note input of the transaction.
-        if (fromAddress.isFromSapAddress()) {
-            // Get spending key for address
-            auto loadKeyRes = loadKeysFromShieldedFrom(fromAddress.fromSapAddr.get(), expsk, ovk);
-            if (!loadKeyRes) return loadKeyRes;
+        // First calculate target values
+        TxValues txValues = calculateTarget(recipients, nFeeRet);
+        OperationResult result(false);
+        // Necessary keys
+        libzcash::SaplingExpandedSpendingKey expsk;
+        uint256 ovk;
+        if (isFromShielded) {
+            // Try to get the sk and ovk if we know the address from, if we don't know it then this will be loaded in loadUnspentNotes
+            // using the sk of the first note input of the transaction.
+            if (fromAddress.isFromSapAddress()) {
+                // Get spending key for address
+                auto loadKeyRes = loadKeysFromShieldedFrom(fromAddress.fromSapAddr.get(), expsk, ovk);
+                if (!loadKeyRes) return loadKeyRes;
+            }
+
+            // Load and select notes to spend
+            if (!(result = loadUnspentNotes(txValues, expsk, ovk))) {
+                return result;
+            }
+        } else {
+            // Sending from a t-address, which we don't have an ovk for. Instead,
+            // generate a common one from the HD seed. This ensures the data is
+            // recoverable, while keeping it logically separate from the ZIP 32
+            // Sapling key hierarchy, which the user might not be using.
+            ovk = pwalletMain->GetSaplingScriptPubKeyMan()->getCommonOVKFromSeed();
         }
 
-        // Load and select notes to spend
-        if (!(result = loadUnspentNotes(txValues, expsk, ovk))) {
+        // Add outputs
+        for (const SendManyRecipient &t : recipients) {
+            if (t.IsTransparent()) {
+                txBuilder.AddTransparentOutput(*t.transparentRecipient);
+            } else {
+                const auto& address = t.shieldedRecipient->address;
+                const CAmount& amount = t.shieldedRecipient->amount;
+                const std::string& memo = t.shieldedRecipient->memo;
+                assert(IsValidPaymentAddress(address));
+                std::array<unsigned char, ZC_MEMO_SIZE> vMemo = {};
+                if (!(result = GetMemoFromString(memo, vMemo)))
+                    return result;
+                txBuilder.AddSaplingOutput(ovk, address, amount, vMemo);
+            }
+        }
+
+        // If from address is a taddr, select UTXOs to spend
+        // note: when spending coinbase utxos, you can only specify a single shielded addr as the change must go somewhere
+        // and if there are multiple shielded addrs, we don't know where to send it.
+        if (isFromtAddress && !(result = loadUtxos(txValues))) {
             return result;
         }
-    } else {
-        // Sending from a t-address, which we don't have an ovk for. Instead,
-        // generate a common one from the HD seed. This ensures the data is
-        // recoverable, while keeping it logically separate from the ZIP 32
-        // Sapling key hierarchy, which the user might not be using.
-        ovk = pwalletMain->GetSaplingScriptPubKeyMan()->getCommonOVKFromSeed();
-    }
 
-    // Add outputs
-    for (const SendManyRecipient &t : recipients) {
-        if (t.IsTransparent()) {
-            txBuilder.AddTransparentOutput(*t.transparentRecipient);
-        } else {
-            const auto& address = t.shieldedRecipient->address;
-            const CAmount& amount = t.shieldedRecipient->amount;
-            const std::string& memo = t.shieldedRecipient->memo;
-            assert(IsValidPaymentAddress(address));
-            std::array<unsigned char, ZC_MEMO_SIZE> vMemo = {};
-            if (!(result = GetMemoFromString(memo, vMemo)))
-                return result;
-            txBuilder.AddSaplingOutput(ovk, address, amount, vMemo);
+        const auto& retCalc = checkTxValues(txValues, isFromtAddress, isFromShielded);
+        if (!retCalc) return retCalc;
+
+        // Set change address if we are using transparent funds
+        if (isFromtAddress) {
+            if (!tkeyChange) {
+                tkeyChange = new CReserveKey(pwalletMain);
+            }
+            CPubKey vchPubKey;
+            if (!tkeyChange->GetReservedKey(vchPubKey, true)) {
+                return errorOut("Could not generate a taddr to use as a change address");
+            }
+            CTxDestination changeAddr = vchPubKey.GetID();
+            txBuilder.SendChangeTo(changeAddr);
         }
-    }
 
-    // If from address is a taddr, select UTXOs to spend
-    // note: when spending coinbase utxos, you can only specify a single shielded addr as the change must go somewhere
-    // and if there are multiple shielded addrs, we don't know where to send it.
-    if (isFromtAddress && !(result = loadUtxos(txValues))) {
-        return result;
-    }
+        // Build the transaction
+        txBuilder.SetFee(nFeeRet);
+        TransactionBuilderResult txResult = txBuilder.Build();
+        auto opTx = txResult.GetTx();
 
-    const auto& retCalc = checkTxValues(txValues, isFromtAddress, isFromShielded);
-    if (!retCalc) return retCalc;
-
-    // Set change address if we are using transparent funds
-    if (isFromtAddress) {
-        if (!tkeyChange) {
-            tkeyChange = new CReserveKey(pwalletMain);
+        // Check existent tx
+        if (!opTx) {
+            return errorOut("Failed to build transaction: " + txResult.GetError());
         }
-        CPubKey vchPubKey;
-        if (!tkeyChange->GetReservedKey(vchPubKey, true)) {
-            return errorOut("Could not generate a taddr to use as a change address");
-        }
-        CTxDestination changeAddr = vchPubKey.GetID();
-        txBuilder.SendChangeTo(changeAddr);
-    }
-
-    // Build the transaction
-    txBuilder.SetFee(nFeeRet);
-    TransactionBuilderResult txResult = txBuilder.Build();
-    auto opTx = txResult.GetTx();
-
-    // Check existent tx
-    if (!opTx) {
-        return errorOut("Failed to build transaction: " + txResult.GetError());
-    }
-    finalTx = *opTx;
+        finalTx = *opTx;
 
         // Now check fee (todo: fix transparent fee...)
         const CAmount& nFeeNeeded = finalTx.IsShieldedTx() ? GetShieldedTxMinFee(finalTx) : ::minRelayTxFee.GetFee(finalTx.GetTotalSize());
@@ -184,6 +184,7 @@ OperationResult SaplingOperation::build()
             LogPrint(BCLog::SAPLING, "%s: private input: %s (to choose from)\n", __func__ , FormatMoney(txValues.shieldedInTotal));
             LogPrint(BCLog::SAPLING, "%s: transparent output: %s\n", __func__ , FormatMoney(txValues.transOutTotal));
             LogPrint(BCLog::SAPLING, "%s: private output: %s\n", __func__ , FormatMoney(txValues.shieldedOutTotal));
+            LogPrint(BCLog::SAPLING, "%s: fee: %s\n", __func__ , FormatMoney(fee));
             break;
         }
         if (fee > 0 && nFeeNeeded > fee) {
