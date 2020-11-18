@@ -306,11 +306,10 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues,
                                                    libzcash::SaplingExpandedSpendingKey& expsk,
                                                    uint256& ovk)
 {
-    std::vector<SaplingNoteEntry> saplingEntries;
-    pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(saplingEntries, fromAddress.fromSapAddr, mindepth);
+    shieldedInputs.clear();
+    pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(shieldedInputs, fromAddress.fromSapAddr, mindepth);
 
-    for (const auto& entry : saplingEntries) {
-        shieldedInputs.emplace_back(entry);
+    for (const auto& entry : shieldedInputs) {
         std::string data(entry.memo.begin(), entry.memo.end());
         LogPrint(BCLog::SAPLING,"%s: found unspent Sapling note (txid=%s, vShieldedSpend=%d, amount=%s, memo=%s)\n",
                  __func__ ,
@@ -333,7 +332,7 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues,
     // Now select the notes that we are going to use.
     std::vector<SaplingOutPoint> ops;
     std::vector<libzcash::SaplingNote> notes;
-    CAmount sum = 0;
+    txValues.shieldedInTotal = 0;
     for (const auto& t : shieldedInputs) {
         // if null, load the first input sk
         if (expsk.IsNull()) {
@@ -342,11 +341,16 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues,
         }
         ops.emplace_back(t.op);
         notes.emplace_back(t.note);
-        sum += t.note.value();
         txValues.shieldedInTotal += t.note.value();
-        if (sum >= txValues.target) {
+        if (txValues.shieldedInTotal >= txValues.target) {
             break;
         }
+    }
+
+    // Not enough funds
+    if (txValues.shieldedInTotal < txValues.target) {
+                return errorOut(strprintf("Insufficient shielded funds, have %s, need %s",
+                                  FormatMoney(txValues.shieldedInTotal), FormatMoney(txValues.target)));
     }
 
     // Fetch Sapling anchor and witnesses
