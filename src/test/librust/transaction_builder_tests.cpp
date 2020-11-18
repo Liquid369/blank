@@ -33,17 +33,18 @@ BOOST_AUTO_TEST_CASE(TransparentToSapling)
     auto pk = *ivk.address(d);
 
     // Create a shielding transaction from transparent to Sapling
-    // 0.0005 t-PIV in, 0.0004 shielded-PIV out, 0.0001 t-PIV fee
+    // 0.5 t-PIV in, 0.4 shielded-PIV out, 0.1 t-PIV fee
     auto builder = TransactionBuilder(consensusParams, 1, &keystore);
-    builder.AddTransparentInput(COutPoint(uint256S("1234"), 0), scriptPubKey, 50000);
-    builder.AddSaplingOutput(fvk_from.ovk, pk, 40000, {});
+    builder.AddTransparentInput(COutPoint(uint256S("1234"), 0), scriptPubKey, 50000000);
+    builder.AddSaplingOutput(fvk_from.ovk, pk, 40000000, {});
+    builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
     BOOST_CHECK_EQUAL(tx.vin.size(), 1);
     BOOST_CHECK_EQUAL(tx.vout.size(), 0);
     BOOST_CHECK_EQUAL(tx.sapData->vShieldedSpend.size(), 0);
     BOOST_CHECK_EQUAL(tx.sapData->vShieldedOutput.size(), 1);
-    BOOST_CHECK_EQUAL(tx.sapData->valueBalance, -40000);
+    BOOST_CHECK_EQUAL(tx.sapData->valueBalance, -40000000);
 
     CValidationState state;
     BOOST_CHECK(SaplingValidation::ContextualCheckTransaction(tx, state, Params(), 2, true, false));
@@ -61,25 +62,26 @@ BOOST_AUTO_TEST_CASE(SaplingToSapling) {
     auto fvk = sk.full_viewing_key();
     auto pa = sk.default_address();
 
-    auto testNote = GetTestSaplingNote(pa, 40000);
+    auto testNote = GetTestSaplingNote(pa, 40000000);
 
     // Create a Sapling-only transaction
-    // 0.0004 shielded-PIV in, 0.00025 shielded-PIV out, 0.0001 t-PIV fee, 0.00005 shielded-PIV change
+    // 0.4 shielded-PIV in, 0.25 shielded-PIV out, 0.1 t-PIV fee, 0.05 shielded-PIV change
     auto builder = TransactionBuilder(consensusParams, 2);
     builder.AddSaplingSpend(expsk, testNote.note, testNote.tree.root(), testNote.tree.witness());
+    builder.SetFee(10000000);
 
     // Check that trying to add a different anchor fails
     // TODO: the following check can be split out in to another test
     BOOST_CHECK_THROW(builder.AddSaplingSpend(expsk, testNote.note, uint256(), testNote.tree.witness()), std::runtime_error);
 
-    builder.AddSaplingOutput(fvk.ovk, pa, 25000, {});
+    builder.AddSaplingOutput(fvk.ovk, pa, 25000000, {});
     auto tx = builder.Build().GetTxOrThrow();
 
     BOOST_CHECK_EQUAL(tx.vin.size(), 0);
     BOOST_CHECK_EQUAL(tx.vout.size(), 0);
     BOOST_CHECK_EQUAL(tx.sapData->vShieldedSpend.size(), 1);
     BOOST_CHECK_EQUAL(tx.sapData->vShieldedOutput.size(), 2);
-    BOOST_CHECK_EQUAL(tx.sapData->valueBalance, 10000);
+    BOOST_CHECK_EQUAL(tx.sapData->valueBalance, 10000000);
 
     CValidationState state;
     BOOST_CHECK(SaplingValidation::ContextualCheckTransaction(tx, state, Params(), 3, true, false));
@@ -137,27 +139,30 @@ BOOST_AUTO_TEST_CASE(FailsWithNegativeChange)
     auto scriptPubKey = GetScriptForDestination(tkeyid);
     CTxDestination taddr = tkeyid;
 
-    auto testNote = GetTestSaplingNote(pa, 59999);
+    // Generate a 0.5 PIV note
+    auto testNote = GetTestSaplingNote(pa, 59990000);
 
     // Fail if there is only a Sapling output
-    // 0.0005 shielded-PIV out, 0.0001 t-PIV fee
+    // 0.5 shielded-PIV out, 0.1 t-PIV fee
     auto builder = TransactionBuilder(consensusParams, 1);
-    builder.AddSaplingOutput(fvk.ovk, pa, 50000, {});
+    builder.AddSaplingOutput(fvk.ovk, pa, 50000000, {});
+    builder.SetFee(10000000);
     BOOST_CHECK_EQUAL("Change cannot be negative", builder.Build().GetError());
 
     // Fail if there is only a transparent output
-    // 0.0005 t-PIV out, 0.0001 t-PIV fee
+    // 0.5 t-PIV out, 0.1 t-PIV fee
     builder = TransactionBuilder(consensusParams, 1, &keystore);
-    builder.AddTransparentOutput(taddr, 50000);
+    builder.AddTransparentOutput(taddr, 50000000);
+    builder.SetFee(10000000);
     BOOST_CHECK_EQUAL("Change cannot be negative", builder.Build().GetError());
 
     // Fails if there is insufficient input
-    // 0.0005 t-PIV out, 0.0001 t-PIV fee, 0.00059999 shielded-PIV in
+    // 0.5 t-PIV out, 0.1 t-PIV fee, 0.59999 shielded-PIV in
     builder.AddSaplingSpend(expsk, testNote.note, testNote.tree.root(), testNote.tree.witness());
     BOOST_CHECK_EQUAL("Change cannot be negative", builder.Build().GetError());
 
     // Succeeds if there is sufficient input
-    builder.AddTransparentInput(COutPoint(), scriptPubKey, 1);
+    builder.AddTransparentInput(COutPoint(), scriptPubKey, 10000);
     BOOST_CHECK(builder.Build().IsTx());
 
     // Revert to default
@@ -173,7 +178,7 @@ BOOST_AUTO_TEST_CASE(ChangeOutput)
     auto expsk = sk.expanded_spending_key();
     auto pa = sk.default_address();
 
-    auto testNote = GetTestSaplingNote(pa, 25000);
+    auto testNote = GetTestSaplingNote(pa, 25000000);
 
     // Generate change Sapling address
     auto sk2 = libzcash::SaplingSpendingKey::random();
@@ -190,14 +195,16 @@ BOOST_AUTO_TEST_CASE(ChangeOutput)
     // No change address and no Sapling spends
     {
         auto builder = TransactionBuilder(consensusParams, 1, &keystore);
-        builder.AddTransparentInput(COutPoint(), scriptPubKey, 25000);
+        builder.SetFee(10000000);
+        builder.AddTransparentInput(COutPoint(), scriptPubKey, 25000000);
         BOOST_CHECK_EQUAL("Could not determine change address", builder.Build().GetError());
     }
 
     // Change to the same address as the first Sapling spend
     {
         auto builder = TransactionBuilder(consensusParams, 1, &keystore);
-        builder.AddTransparentInput(COutPoint(), scriptPubKey, 25000);
+        builder.SetFee(10000000);
+        builder.AddTransparentInput(COutPoint(), scriptPubKey, 25000000);
         builder.AddSaplingSpend(expsk, testNote.note, testNote.tree.root(), testNote.tree.witness());
         auto tx = builder.Build().GetTxOrThrow();
 
@@ -205,13 +212,14 @@ BOOST_AUTO_TEST_CASE(ChangeOutput)
         BOOST_CHECK_EQUAL(tx.vout.size(), 0);
         BOOST_CHECK_EQUAL(tx.sapData->vShieldedSpend.size(), 1);
         BOOST_CHECK_EQUAL(tx.sapData->vShieldedOutput.size(), 1);
-        BOOST_CHECK_EQUAL(tx.sapData->valueBalance, -15000);
+        BOOST_CHECK_EQUAL(tx.sapData->valueBalance, -15000000);
     }
 
     // Change to a Sapling address
     {
         auto builder = TransactionBuilder(consensusParams, 1, &keystore);
-        builder.AddTransparentInput(COutPoint(), scriptPubKey, 25000);
+        builder.SetFee(10000000);
+        builder.AddTransparentInput(COutPoint(), scriptPubKey, 25000000);
         builder.SendChangeTo(zChangeAddr, fvkOut.ovk);
         auto tx = builder.Build().GetTxOrThrow();
 
@@ -219,13 +227,14 @@ BOOST_AUTO_TEST_CASE(ChangeOutput)
         BOOST_CHECK_EQUAL(tx.vout.size(), 0);
         BOOST_CHECK_EQUAL(tx.sapData->vShieldedSpend.size(), 0);
         BOOST_CHECK_EQUAL(tx.sapData->vShieldedOutput.size(), 1);
-        BOOST_CHECK_EQUAL(tx.sapData->valueBalance, -15000);
+        BOOST_CHECK_EQUAL(tx.sapData->valueBalance, -15000000);
     }
 
     // Change to a transparent address
     {
         auto builder = TransactionBuilder(consensusParams, 1, &keystore);
-        builder.AddTransparentInput(COutPoint(), scriptPubKey, 25000);
+        builder.SetFee(10000000);
+        builder.AddTransparentInput(COutPoint(), scriptPubKey, 25000000);
         builder.SendChangeTo(taddr);
         auto tx = builder.Build().GetTxOrThrow();
 
@@ -234,7 +243,7 @@ BOOST_AUTO_TEST_CASE(ChangeOutput)
         BOOST_CHECK_EQUAL(tx.sapData->vShieldedSpend.size(), 0);
         BOOST_CHECK_EQUAL(tx.sapData->vShieldedOutput.size(), 0);
         BOOST_CHECK_EQUAL(tx.sapData->valueBalance, 0);
-        BOOST_CHECK_EQUAL(tx.vout[0].nValue, 15000);
+        BOOST_CHECK_EQUAL(tx.vout[0].nValue, 15000000);
     }
 
     // Revert to default
@@ -251,35 +260,22 @@ BOOST_AUTO_TEST_CASE(SetFee)
     auto fvk = sk.full_viewing_key();
     auto pa = sk.default_address();
 
-    auto testNote = GetTestSaplingNote(pa, 50000);
+    auto testNote = GetTestSaplingNote(pa, 5 * COIN);
 
-    // Default fee
+    // Configured fee (auto with SaplingOperation)
     {
         auto builder = TransactionBuilder(consensusParams, 1);
         builder.AddSaplingSpend(expsk, testNote.note, testNote.tree.root(), testNote.tree.witness());
-        builder.AddSaplingOutput(fvk.ovk, pa, 25000, {});
+        builder.AddSaplingOutput(fvk.ovk, pa, 3 * COIN, {});
+
+        builder.SetFee(COIN);
         auto tx = builder.Build().GetTxOrThrow();
 
         BOOST_CHECK_EQUAL(tx.vin.size(), 0);
         BOOST_CHECK_EQUAL(tx.vout.size(), 0);
         BOOST_CHECK_EQUAL(tx.sapData->vShieldedSpend.size(), 1);
         BOOST_CHECK_EQUAL(tx.sapData->vShieldedOutput.size(), 2);
-        BOOST_CHECK_EQUAL(tx.sapData->valueBalance, 10000);
-    }
-
-    // Configured fee
-    {
-        auto builder = TransactionBuilder(consensusParams, 1);
-        builder.AddSaplingSpend(expsk, testNote.note, testNote.tree.root(), testNote.tree.witness());
-        builder.AddSaplingOutput(fvk.ovk, pa, 25000, {});
-        builder.SetFee(20000);
-        auto tx = builder.Build().GetTxOrThrow();
-
-        BOOST_CHECK_EQUAL(tx.vin.size(), 0);
-        BOOST_CHECK_EQUAL(tx.vout.size(), 0);
-        BOOST_CHECK_EQUAL(tx.sapData->vShieldedSpend.size(), 1);
-        BOOST_CHECK_EQUAL(tx.sapData->vShieldedOutput.size(), 2);
-        BOOST_CHECK_EQUAL(tx.sapData->valueBalance, 20000);
+        BOOST_CHECK_EQUAL(tx.sapData->valueBalance, COIN);
     }
 
     // Revert to default
@@ -297,6 +293,7 @@ BOOST_AUTO_TEST_CASE(CheckSaplingTxVersion)
 
     // Cannot add Sapling outputs to a non-Sapling transaction
     auto builder = TransactionBuilder(consensusParams, 1);
+    builder.SetFee(10000000);
     try {
         builder.AddSaplingOutput(uint256(), pk, 12345, {});
     } catch (std::runtime_error const & err) {
