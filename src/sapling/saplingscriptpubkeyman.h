@@ -54,6 +54,12 @@ public:
     Optional<CAmount> amount{nullopt};
 
     /**
+     * Cached shielded address
+     * It will be loaded the first time that the note is decrypted
+     */
+     Optional<libzcash::SaplingPaymentAddress> address{nullopt};
+
+    /**
      * Block height corresponding to the most current witness.
      *
      * When we first create a SaplingNoteData in SaplingScriptPubKeyMan::FindMySaplingNotes, this is set to

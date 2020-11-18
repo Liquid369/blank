@@ -342,6 +342,7 @@ std::pair<mapSaplingNoteData_t, SaplingIncomingViewingKeyMap> SaplingScriptPubKe
             SaplingNoteData nd;
             nd.ivk = ivk;
             nd.amount = result->value();
+            nd.address = address;
             noteData.insert(std::make_pair(op, nd));
             break;
         }
@@ -505,6 +506,12 @@ std::set<std::pair<libzcash::PaymentAddress, uint256>> SaplingScriptPubKeyMan::G
 
 Optional<libzcash::SaplingPaymentAddress> SaplingScriptPubKeyMan::GetShieldedAddressFrom(const CWalletTx& tx, const SaplingOutPoint& op)
 {
+    // Try first using the cached data if available
+    const auto& it = tx.mapSaplingNoteData.find(op);
+    if (it != tx.mapSaplingNoteData.end() && it->second.address) {
+        return it->second.address;
+    }
+
     // Try to decrypt it using the note data ivk (if exists)
     auto noteAndAddress = tx.DecryptSaplingNote(op);
     if (noteAndAddress) {
