@@ -36,22 +36,28 @@ uint256 CCoinsViewDB::GetBestAnchor() const {
 
 void BatchWriteNullifiers(CDBBatch& batch, CNullifiersMap& mapToUse, const char& dbChar)
 {
+    size_t count = 0;
+    size_t changed = 0;
     for (CNullifiersMap::iterator it = mapToUse.begin(); it != mapToUse.end();) {
         if (it->second.flags & CNullifiersCacheEntry::DIRTY) {
             if (!it->second.entered)
                 batch.Erase(std::make_pair(dbChar, it->first));
             else
                 batch.Write(std::make_pair(dbChar, it->first), true);
-            // TODO: changed++? ... See comment in CCoinsViewDB::BatchWrite. If this is needed we could return an int
+            changed++;
         }
+        count++;
         CNullifiersMap::iterator itOld = it++;
         mapToUse.erase(itOld);
     }
+    LogPrint(BCLog::COINDB, "Committed %u changed nullifiers (out of %u) to coin database...\n", (unsigned int)changed, (unsigned int)count);
 }
 
 template<typename Map, typename MapIterator, typename MapEntry, typename Tree>
 void BatchWriteAnchors(CDBBatch& batch, Map& mapToUse, const char& dbChar)
 {
+    size_t count = 0;
+    size_t changed = 0;
     for (MapIterator it = mapToUse.begin(); it != mapToUse.end();) {
         if (it->second.flags & MapEntry::DIRTY) {
             if (!it->second.entered)
@@ -61,11 +67,13 @@ void BatchWriteAnchors(CDBBatch& batch, Map& mapToUse, const char& dbChar)
                     batch.Write(std::make_pair(dbChar, it->first), it->second.tree);
                 }
             }
-            // TODO: changed++?
+            changed++;
         }
+        count++;
         MapIterator itOld = it++;
         mapToUse.erase(itOld);
     }
+    LogPrint(BCLog::COINDB, "Committed %u changed sapling anchors (out of %u) to coin database...\n", (unsigned int)changed, (unsigned int)count);
 }
 
 bool CCoinsViewDB::BatchWriteSapling(const uint256& hashSaplingAnchor,
