@@ -303,7 +303,9 @@ public:
         int nDepth;
     };
 
+    void listCoins(std::map<ListCoinsKey, std::vector<ListCoinsValue>>& mapCoins, bool fSelectTransparent) const;
     void listCoins(std::map<ListCoinsKey, std::vector<ListCoinsValue>>& mapCoins) const;
+    void listAvailableNotes(std::map<ListCoinsKey, std::vector<ListCoinsValue>>& mapCoins) const;
 
     bool isLockedCoin(uint256 hash, unsigned int n) const;
     void lockCoin(COutPoint& output);

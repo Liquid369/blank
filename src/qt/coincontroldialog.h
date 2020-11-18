@@ -53,6 +53,7 @@ public:
     void refreshDialog();
     void clearPayAmounts();
     void addPayAmount(const CAmount& amount);
+    void setSelectionType(bool isTransparent) { fSelectTransparent = isTransparent; }
 
     CCoinControl* coinControl;
 
@@ -65,6 +66,9 @@ private:
     bool forDelegation;
     QList<CAmount> payAmounts{};
     unsigned int nSelectableInputs{0};
+
+    // whether should show available utxo or notes.
+    bool fSelectTransparent{true};
 
     QMenu* contextMenu;
     QTreeWidgetItem* contextMenuItem;

@@ -482,6 +482,10 @@ void CoinControlDialog::updateLabels()
     if (!model)
         return;
 
+    ui->labelTitle->setText(fSelectTransparent ?
+            "Select PIV Outputs to Spend" :
+            "Select Shielded PIV to Spend");
+
     // nPayAmount
     CAmount nPayAmount = 0;
     bool fDust = false;
@@ -727,7 +731,7 @@ void CoinControlDialog::updateView()
     int nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
     nSelectableInputs = 0;
     std::map<WalletModel::ListCoinsKey, std::vector<WalletModel::ListCoinsValue>> mapCoins;
-    model->listCoins(mapCoins);
+    model->listCoins(mapCoins, fSelectTransparent);
 
     for (const auto& coins : mapCoins) {
         CCoinControlWidgetItem* itemWalletAddress = new CCoinControlWidgetItem();

@@ -942,6 +942,33 @@ bool WalletModel::isSpent(const COutPoint& outpoint) const
     return wallet->IsSpent(outpoint.hash, outpoint.n);
 }
 
+void WalletModel::listCoins(std::map<ListCoinsKey, std::vector<ListCoinsValue>>& mapCoins, bool fTransparent) const
+{
+    if (fTransparent) {
+        listCoins(mapCoins);
+    } else {
+        listAvailableNotes(mapCoins);
+    }
+}
+
+void WalletModel::listAvailableNotes(std::map<ListCoinsKey, std::vector<ListCoinsValue>>& mapCoins) const
+{
+    std::vector<SaplingNoteEntry> notes;
+    Optional<libzcash::SaplingPaymentAddress> dummy = nullopt;
+    wallet->GetSaplingScriptPubKeyMan()->GetFilteredNotes(notes, dummy);
+    for (const auto& note : notes) {
+        ListCoinsKey key{QString::fromStdString(KeyIO::EncodePaymentAddress(note.address)), false, nullopt};
+        ListCoinsValue value{
+            note.op.GetHash(),
+            (int)note.op.n,
+            (CAmount)note.note.value(),
+            0,
+            note.confirmations
+        };
+        mapCoins[key].emplace_back(value);
+    }
+}
+
 // AvailableCoins + LockedCoins grouped by wallet address (put change in one group with wallet address)
 void WalletModel::listCoins(std::map<ListCoinsKey, std::vector<ListCoinsValue>>& mapCoins) const
 {

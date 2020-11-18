@@ -611,8 +611,8 @@ void SendWidget::onChangeCustomFeeClicked()
 
 void SendWidget::onCoinControlClicked()
 {
-    // TODO: Implement unspent notes coin control
     if (walletModel->getBalance() > 0) {
+        coinControlDialog->setSelectionType(isTransparent);
         coinControlDialog->refreshDialog();
         setCoinControlPayAmounts();
         coinControlDialog->exec();
