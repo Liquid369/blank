@@ -203,9 +203,9 @@ CoinControlDialog::~CoinControlDialog()
     delete coinControl;
 }
 
-void CoinControlDialog::setModel(WalletModel* model)
+void CoinControlDialog::setModel(WalletModel* _model)
 {
-    this->model = model;
+    this->model = _model;
 
     if (model && model->getOptionsModel() && model->getAddressTableModel()) {
         updateView();
@@ -234,6 +234,7 @@ void CoinControlDialog::buttonSelectAllClicked()
 // Toggle lock state
 void CoinControlDialog::buttonToggleLockClicked()
 {
+    if (!fSelectTransparent) return; // todo: implement locked notes
     QTreeWidgetItem* item;
     // Works in list-mode only
     if (ui->radioListMode->isChecked()) {
@@ -276,8 +277,7 @@ void CoinControlDialog::showMenu(const QPoint& point)
         contextMenuItem = item;
 
         // disable some items (like Copy Transaction ID, lock, unlock) for tree roots in context menu
-        if (item->text(COLUMN_TXHASH).length() == 64) // transaction hash is 64 characters (this means its a child node, so its not a parent node in tree mode)
-        {
+        if (item->text(COLUMN_TXHASH).length() == 64) { // transaction hash is 64 characters (this means its a child node, so its not a parent node in tree mode)
             copyTransactionHashAction->setEnabled(true);
             if (model->isLockedCoin(uint256(item->text(COLUMN_TXHASH).toStdString()), item->text(COLUMN_VOUT_INDEX).toUInt())) {
                 lockAction->setEnabled(false);
@@ -286,8 +286,7 @@ void CoinControlDialog::showMenu(const QPoint& point)
                 lockAction->setEnabled(true);
                 unlockAction->setEnabled(false);
             }
-        } else // this means click on parent node in tree mode -> disable all
-        {
+        } else { // this means click on parent node in tree mode -> disable all
             copyTransactionHashAction->setEnabled(false);
             lockAction->setEnabled(false);
             unlockAction->setEnabled(false);
@@ -331,6 +330,7 @@ void CoinControlDialog::copyTransactionHash()
 // context menu action: lock coin
 void CoinControlDialog::lockCoin()
 {
+    if (!fSelectTransparent) return; // todo: implement locked notes
     if (contextMenuItem->checkState(COLUMN_CHECKBOX) == Qt::Checked)
         contextMenuItem->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
 
@@ -344,6 +344,7 @@ void CoinControlDialog::lockCoin()
 // context menu action: unlock coin
 void CoinControlDialog::unlockCoin()
 {
+    if (!fSelectTransparent) return; // todo: implement locked notes
     COutPoint outpt(uint256(contextMenuItem->text(COLUMN_TXHASH).toStdString()), contextMenuItem->text(COLUMN_VOUT_INDEX).toUInt());
     model->unlockCoin(outpt);
     contextMenuItem->setDisabled(false);
@@ -416,8 +417,7 @@ void CoinControlDialog::sortView(int column, Qt::SortOrder order)
 // treeview: clicked on header
 void CoinControlDialog::headerSectionClicked(int logicalIndex)
 {
-    if (logicalIndex == COLUMN_CHECKBOX) // click on most left column -> do nothing
-    {
+    if (logicalIndex == COLUMN_CHECKBOX) { // click on most left column -> do nothing
         ui->treeWidget->header()->setSortIndicator(sortColumn, sortOrder);
     } else {
         if (sortColumn == logicalIndex)
@@ -448,10 +448,10 @@ void CoinControlDialog::radioListMode(bool checked)
 // checkbox clicked by user
 void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
 {
-    if (column == COLUMN_CHECKBOX && item->text(COLUMN_TXHASH).length() == 64) // transaction hash is 64 characters (this means its a child node, so its not a parent node in tree mode)
-    {
-        COutPoint outpt(uint256(item->text(COLUMN_TXHASH).toStdString()), item->text(COLUMN_VOUT_INDEX).toUInt());
-
+    if (column == COLUMN_CHECKBOX && item->text(COLUMN_TXHASH).length() == 64) { // transaction hash is 64 characters (this means its a child node, so its not a parent node in tree mode)
+        BaseOutPoint outpt(uint256(item->text(COLUMN_TXHASH).toStdString()),
+                           item->text(COLUMN_VOUT_INDEX).toUInt(),
+                           fSelectTransparent);
         if (item->checkState(COLUMN_CHECKBOX) == Qt::Unchecked)
             coinControl->UnSelect(outpt);
         else if (item->isDisabled()) // locked (this happens if "check all" through parent node)
@@ -460,7 +460,7 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
             coinControl->Select(outpt);
 
         // selection changed -> update labels
-        if (ui->treeWidget->isEnabled()){ // do not update on every click for (un)select all
+        if (ui->treeWidget->isEnabled()) { // do not update on every click for (un)select all
             updateLabels();
         }
     }
@@ -469,12 +469,16 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
 // shows count of locked unspent outputs
 void CoinControlDialog::updateLabelLocked()
 {
-    std::set<COutPoint> vOutpts = model->listLockedCoins();
-    if (!vOutpts.empty()) {
-        ui->labelLocked->setText(tr("(%1 locked)").arg(vOutpts.size()));
-        ui->labelLocked->setVisible(true);
-    } else
-        ui->labelLocked->setVisible(false);
+    if (fSelectTransparent) {
+        std::set<COutPoint> vOutpts = model->listLockedCoins();
+        if (!vOutpts.empty()) {
+            ui->labelLocked->setText(tr("(%1 locked)").arg(vOutpts.size()));
+            ui->labelLocked->setVisible(true);
+        } else
+            ui->labelLocked->setVisible(false);
+    } else {
+        // TODO: implement locked notes functionality inside the wallet..
+    }
 }
 
 void CoinControlDialog::updateLabels()
@@ -498,6 +502,11 @@ void CoinControlDialog::updateLabels()
         }
     }
 
+    // TODO: Connect labels calculation in the future..
+    if (!fSelectTransparent) {
+        return;
+    }
+
     CAmount nAmount = 0;
     CAmount nPayFee = 0;
     CAmount nAfterFee = 0;
@@ -506,7 +515,7 @@ void CoinControlDialog::updateLabels()
     unsigned int nBytesInputs = 0;
     unsigned int nQuantity = 0;
 
-    std::vector<COutPoint> vCoinControl;
+    std::vector<BaseOutPoint> vCoinControl;
     std::vector<COutput> vOutputs;
     coinControl->ListSelected(vCoinControl);
     model->getOutputs(vCoinControl, vOutputs);

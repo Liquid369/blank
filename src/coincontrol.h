@@ -52,17 +52,17 @@ public:
         return (!setSelected.empty());
     }
 
-    bool IsSelected(const COutPoint& output) const
+    bool IsSelected(const BaseOutPoint& output) const
     {
         return (setSelected.count(output) > 0);
     }
 
-    void Select(const COutPoint& output)
+    void Select(const BaseOutPoint& output)
     {
         setSelected.insert(output);
     }
 
-    void UnSelect(const COutPoint& output)
+    void UnSelect(const BaseOutPoint& output)
     {
         setSelected.erase(output);
     }
@@ -72,7 +72,7 @@ public:
         setSelected.clear();
     }
 
-    void ListSelected(std::vector<COutPoint>& vOutpoints) const
+    void ListSelected(std::vector<BaseOutPoint>& vOutpoints) const
     {
         vOutpoints.assign(setSelected.begin(), setSelected.end());
     }
@@ -82,14 +82,14 @@ public:
         return setSelected.size();
     }
 
-    void SetSelection(std::set<COutPoint> setSelected)
+    void SetSelection(std::set<BaseOutPoint>& _setSelected)
     {
         this->setSelected.clear();
-        this->setSelected = setSelected;
+        this->setSelected = _setSelected;
     }
 
 private:
-    std::set<COutPoint> setSelected;
+    std::set<BaseOutPoint> setSelected;
 };
 
 #endif // BITCOIN_COINCONTROL_H

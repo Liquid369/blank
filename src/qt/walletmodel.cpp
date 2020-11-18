@@ -905,10 +905,10 @@ std::string WalletModel::getLabelForAddress(const CTxDestination& address)
 }
 
 // returns a list of COutputs from COutPoints
-void WalletModel::getOutputs(const std::vector<COutPoint>& vOutpoints, std::vector<COutput>& vOutputs)
+void WalletModel::getOutputs(const std::vector<BaseOutPoint>& vOutpoints, std::vector<COutput>& vOutputs)
 {
     LOCK2(cs_main, wallet->cs_wallet);
-    for (const COutPoint& outpoint : vOutpoints) {
+    for (const auto& outpoint : vOutpoints) {
         const auto* tx = wallet->GetWalletTx(outpoint.hash);
         if (!tx) continue;
         bool fConflicted;
