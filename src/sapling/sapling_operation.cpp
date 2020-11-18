@@ -278,10 +278,16 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
         }
     }
 
+    // Not enough funds
+    if (selectedUTXOAmount < txValues.target) {
+                return errorOut(strprintf("Insufficient transparent funds, have %s, need %s",
+                                  FormatMoney(selectedUTXOAmount), FormatMoney(txValues.target)));
+    }
+
     // If there is transparent change, is it valid or is it dust?
     if (dustChange < dustThreshold && dustChange != 0) {
         return errorOut(strprintf("Insufficient transparent funds, have %s, need %s more to avoid creating invalid change output %s (dust threshold is %s)",
-                                  FormatMoney(txValues.transInTotal), FormatMoney(dustThreshold - dustChange), FormatMoney(dustChange), FormatMoney(dustThreshold)));
+                                  FormatMoney(selectedUTXOAmount), FormatMoney(dustThreshold - dustChange), FormatMoney(dustChange), FormatMoney(dustThreshold)));
     }
 
     transInputs = selectedTInputs;
