@@ -263,6 +263,11 @@ CAmount GetMinRelayFee(const CTransaction& tx, const CTxMemPool& pool, unsigned 
     if (dPriorityDelta > 0 || nFeeDelta > 0)
         return 0;
 
+    return GetMinRelayFee(nBytes, fAllowFree);
+}
+
+CAmount GetMinRelayFee(unsigned int nBytes, bool fAllowFree)
+{
     CAmount nMinFee = ::minRelayTxFee.GetFee(nBytes);
 
     if (fAllowFree) {
