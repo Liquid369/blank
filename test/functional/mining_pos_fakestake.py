@@ -219,7 +219,7 @@ class FakeStakeTest(PivxTestFramework):
                 block_txes = self.make_txes(1, spending_prevouts, self.DUMMY_KEY.get_pubkey())
 
             # Stake the spam block
-            block = self.stake_block(1, nHeight, prevBlockHash, prevModifier, stakeInputs,
+            block = self.stake_block(1, 7, nHeight, prevBlockHash, prevModifier, "0", stakeInputs,
                                      nTime, "", block_txes, fDoubleSpend)
             # Log stake input
             prevout = COutPoint()

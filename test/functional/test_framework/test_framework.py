@@ -827,20 +827,25 @@ class PivxTestFramework():
 
         return block_txes
 
-    def stake_block(self, node_id,
+    def stake_block(self,
+            node_id,
+            nVersion,
             nHeight,
-            prevHhash,
+            prevHash,
             prevModifier,
+            finalsaplingroot,
             stakeableUtxos,
-            startTime=None,
-            privKeyWIF=None,
-            vtx=[],
-            fDoubleSpend=False):
+            startTime,
+            privKeyWIF,
+            vtx,
+            fDoubleSpend):
         """ manually stakes a block selecting the coinstake input from a list of candidates
         :param   node_id:           (int) index of the CTestNode used as rpc connection. Must own stakeableUtxos.
+                 nVersion:          (int) version of the block being produced (7 or 8)
                  nHeight:           (int) height of the block being produced
                  prevHash:          (string) hex string of the previous block hash
                  prevModifier       (string) hex string of the previous block stake modifier
+                 finalsaplingroot   (string) hex string of the previous block sapling root (blocks V8)
                  stakeableUtxos:    ({bytes --> (int, bytes, int)} dictionary)
                                     maps CStake "uniqueness" (i.e. serialized COutPoint -or hash stake, for zpiv-)
                                     to (amount, prevScript, timeBlockFrom).
@@ -863,7 +868,8 @@ class PivxTestFramework():
         # Create empty block with coinbase
         nTime = int(startTime) & 0xfffffff0
         coinbaseTx = create_coinbase_pos(nHeight)
-        block = create_block(int(prevHhash, 16), coinbaseTx, nTime)
+        block = create_block(int(prevHash, 16), coinbaseTx, nTime, nVersion, int(finalsaplingroot, 16))
+        block.nVersion = nVersion
 
         # Find valid kernel hash - iterates stakeableUtxos, then block.nTime
         block.solve_stake(stakeableUtxos, int(prevModifier, 16))
@@ -938,13 +944,19 @@ class PivxTestFramework():
             fDoubleSpend=False):
         """ Calls stake_block appending to the current tip"""
         assert_greater_than(len(self.nodes), node_id)
+        saplingActive = self.nodes[node_id].getblockchaininfo()['upgrades']['v5 dummy']['status'] == 'active'
+        blockVersion = 8 if saplingActive else 7
         nHeight = self.nodes[node_id].getblockcount()
         prevHhash = self.nodes[node_id].getblockhash(nHeight)
-        prevModifier = self.nodes[node_id].getblock(prevHhash)['stakeModifier']
+        prevBlock = self.nodes[node_id].getblock(prevHhash, True)
+        prevModifier = prevBlock['stakeModifier']
+        saplingRoot = prevBlock['finalsaplingroot'] # !TODO: update this if the block contains sapling txes
         return self.stake_block(node_id,
+                                blockVersion,
                                 nHeight+1,
                                 prevHhash,
                                 prevModifier,
+                                saplingRoot,
                                 stakeableUtxos,
                                 btime,
                                 privKeyWIF,
