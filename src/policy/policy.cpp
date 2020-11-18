@@ -120,7 +120,7 @@ bool IsStandardTx(const CTransaction& tx, int nBlockHeight, std::string& reason)
     // computing signature hashes is O(ninputs*txsize). Limiting transactions
     // to MAX_STANDARD_TX_SIZE mitigates CPU exhaustion attacks.
     unsigned int sz = tx.GetTotalSize();
-    unsigned int nMaxSize = tx.IsShieldedTx() ? MAX_STANDARD_SHIELDED_TX_SIZE :
+    unsigned int nMaxSize = tx.IsShieldedTx() ? MAX_TX_SIZE_AFTER_SAPLING :
             tx.ContainsZerocoins() ? MAX_ZEROCOIN_TX_SIZE : MAX_STANDARD_TX_SIZE;
     if (sz >= nMaxSize) {
         reason = "tx-size";
