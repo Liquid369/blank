@@ -634,7 +634,7 @@ UniValue listshieldedunspent(const JSONRPCRequest& request)
             obj.pushKV("spendable", hasSaplingSpendingKey);
             obj.pushKV("address", KeyIO::EncodePaymentAddress(entry.address));
             obj.pushKV("amount", ValueFromAmount(CAmount(entry.note.value()))); // note.value() is equivalent to plaintext.value()
-            obj.pushKV("memo", HexStr(entry.memo));
+            obj.pushKV("memo", HexStrTrimmed(entry.memo));
             if (hasSaplingSpendingKey) {
                 obj.pushKV("change", pwalletMain->GetSaplingScriptPubKeyMan()->IsNoteSaplingChange(nullifierSet, entry.address, entry.op));
             }
@@ -1321,22 +1321,16 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
     UniValue outputs(UniValue::VARR);
 
     auto addMemo = [](UniValue &entry, std::array<unsigned char, ZC_MEMO_SIZE> &memo) {
-        entry.pushKV("memo", HexStr(memo));
-        /*
+        auto end = FindFirstNonZero(memo.rbegin(), memo.rend());
+        entry.pushKV("memo", HexStr(memo.begin(), end.base()));
         // If the leading byte is 0xF4 or lower, the memo field should be interpreted as a
         // UTF-8-encoded text string.
         if (memo[0] <= 0xf4) {
-            // Trim off trailing zeroes
-            auto end = std::find_if(
-                    memo.rbegin(),
-                    memo.rend(),
-                    [](unsigned char v) { return v != 0; });
             std::string memoStr(memo.begin(), end.base());
-            if (utf8::is_valid(memoStr)) { // todo: Add utf8 validation.
-                entry.pushKV("memoStr", memoStr));
+            if (IsValidUTF8(memoStr)) {
+                entry.pushKV("memoStr", memoStr);
             }
         }
-         */
     };
 
     auto sspkm = pwalletMain->GetSaplingScriptPubKeyMan();
@@ -1509,8 +1503,6 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
             memo = memoValue.get_str();
             if (!saddr) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER, "Memo cannot be used with a taddr. It can only be used with a shielded addr.");
-            } else if (!IsHex(memo)) {
-                throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, expected memo data in hexadecimal format.");
             }
             if (memo.length() > ZC_MEMO_SIZE*2) {
                 throw JSONRPCError(RPC_INVALID_PARAMETER,  strprintf("Invalid parameter, size of memo is larger than maximum allowed %d", ZC_MEMO_SIZE ));
@@ -1638,7 +1630,7 @@ UniValue shielded_sendmany(const JSONRPCRequest& request)
                 "    [{\n"
                 "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
                 "      \"amount\":amount    (numeric, required) The numeric amount in " + "PIV" + " is the value\n"
-                "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
+                "      \"memo\":memo        (string, optional) If the address is a shielded addr, message string of max 512 bytes\n"
                 "    }, ... ]\n"
                 "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
                 "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(DEFAULT_SAPLING_FEE)) +
@@ -1678,7 +1670,7 @@ UniValue raw_shielded_sendmany(const JSONRPCRequest& request)
                 "    [{\n"
                 "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
                 "      \"amount\":amount    (numeric, required) The numeric amount in " + "PIV" + " is the value\n"
-                "      \"memo\":memo        (string, optional) If the address is a shielded addr, raw data represented in hexadecimal string format\n"
+                "      \"memo\":memo        (string, optional) If the address is a shielded addr, message string of max 512 bytes\n"
                 "    }, ... ]\n"
                 "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
                 "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(DEFAULT_SAPLING_FEE)) +
@@ -2392,7 +2384,7 @@ UniValue listreceivedbyshieldedaddress(const JSONRPCRequest& request)
         UniValue obj(UniValue::VOBJ);
         obj.pushKV("txid", entry.op.hash.ToString());
         obj.pushKV("amount", ValueFromAmount(CAmount(entry.note.value())));
-        obj.pushKV("memo", HexStr(entry.memo));
+        obj.pushKV("memo", HexStrTrimmed(entry.memo));
         obj.pushKV("outindex", (int)entry.op.n);
         obj.pushKV("confirmations", entry.confirmations);
 

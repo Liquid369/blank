@@ -360,51 +360,33 @@ BOOST_AUTO_TEST_CASE(saplingOperationTests) {
         BOOST_CHECK(res.getError().find("Insufficient funds, no available notes to spend") != std::string::npos);
     }
 
-    // get_memo_from_hex_string())
+    // GetMemoFromString
     {
-        std::vector<SendManyRecipient> recipients = { SendManyRecipient(zaddr1, COIN, "DEADBEEF") };
-        SaplingOperation operation(consensusParams, 1);
-        operation.setFromAddress(zaddr1);
-        operation.setRecipients(recipients);
+        std::string memoStr = "Sapling memo!";
+        std::array<unsigned char, ZC_MEMO_SIZE> memo;
 
-        std::string memo = "DEADBEEF";
-        std::array<unsigned char, ZC_MEMO_SIZE> array;
-
-        std::string error;
-        /* todo: test failing, fix it.
-        BOOST_CHECK(operation.getMemoFromHexString(memo, array, error));
-        BOOST_CHECK_EQUAL(array[0], 0xDE);
-        BOOST_CHECK_EQUAL(array[1], 0xAD);
-        BOOST_CHECK_EQUAL(array[2], 0xBE);
-        BOOST_CHECK_EQUAL(array[3], 0xEF);
-        for (int i=4; i<ZC_MEMO_SIZE; i++) {
-            BOOST_CHECK_EQUAL(array[i], 0x00);  // zero padding
+        BOOST_CHECK(GetMemoFromString(memoStr, memo));
+        BOOST_CHECK_EQUAL(memo[0], 0x53);   // S
+        BOOST_CHECK_EQUAL(memo[1], 0x61);   // a
+        BOOST_CHECK_EQUAL(memo[2], 0x70);   // p
+        BOOST_CHECK_EQUAL(memo[3], 0x6C);   // l
+        BOOST_CHECK_EQUAL(memo[4], 0x69);   // i
+        BOOST_CHECK_EQUAL(memo[5], 0x6E);   // n
+        BOOST_CHECK_EQUAL(memo[6], 0x67);   // g
+        BOOST_CHECK_EQUAL(memo[12], 0x21);  // !
+        for (int i = 13; i < ZC_MEMO_SIZE; i++) {
+            BOOST_CHECK_EQUAL(memo[i], 0x00);  // zero padding
         }
-         */
 
         // memo is longer than allowed
         std::vector<char> v (2 * (ZC_MEMO_SIZE+1));
         std::fill(v.begin(),v.end(), 'A');
         std::string bigmemo(v.begin(), v.end());
 
-        BOOST_CHECK(!operation.getMemoFromHexString(bigmemo, array, error));
-        BOOST_CHECK(error.find("too big") != std::string::npos);
-
-        // invalid hexadecimal string
-        std::fill(v.begin(),v.end(), '@'); // not a hex character
-        std::string badmemo(v.begin(), v.end());
-
-        BOOST_CHECK(!operation.getMemoFromHexString(badmemo, array, error));
-        BOOST_CHECK(error.find("hexadecimal format") != std::string::npos);
-
-        // odd length hexadecimal string
-        std::fill(v.begin(),v.end(), 'A');
-        v.resize(v.size() - 1);
-        assert(v.size() %2 == 1); // odd length
-        std::string oddmemo(v.begin(), v.end());
-
-        BOOST_CHECK(!operation.getMemoFromHexString(oddmemo, array, error));
-        BOOST_CHECK(error.find("hexadecimal format") != std::string::npos);
+        OperationResult res = GetMemoFromString(bigmemo, memo);
+        BOOST_CHECK(!res);
+        const std::string& errStr = res.getError();
+        BOOST_CHECK(errStr.find("too big") != std::string::npos);
     }
     RegtestDeactivateSapling();
 }

@@ -8,11 +8,15 @@ from test_framework.test_framework import PivxTestFramework
 from test_framework.util import *
 from decimal import Decimal
 
-my_memo_str = 'c0ffee' # stay awake
-my_memo = '633066666565'
-my_memo = my_memo + '0'*(1024-len(my_memo))
+my_memo_str = "What, so everyone’s supposed to sleep every single night now?\n"\
+              "You realize that nighttime makes up half of all time?"
+my_memo_hex = bytes_to_hex_str(my_memo_str.encode('utf-8'))
 
-no_memo = 'f6' + ('0'*1022) # see section 5.5 of the protocol spec
+non_ascii_memo_str = "零知识证明"
+non_ascii_memo_hex = bytes_to_hex_str(non_ascii_memo_str.encode('utf-8'))
+
+too_big_memo_str = "This is not an email......." * 19
+no_memo = "f6"
 
 fee = Decimal('0.0001')
 
@@ -40,9 +44,14 @@ class ListReceivedTest (PivxTestFramework):
         self.nodes[0].sendtoaddress(taddr, 6.0) # node_1 in taddr with 6 PIV.
         self.generate_and_sync(height+2)
 
+        # Try to send with an oversized memo
+        assert_raises_rpc_error(-4, "Memo size of 513 is too big, maximum allowed is 512",
+                                self.nodes[1].shielded_sendmany, taddr,
+                                [{'address': shield_addr1, 'amount': 2, 'memo': too_big_memo_str}])
+
         # Send 1 PIV to shield addr1
         txid = self.nodes[1].shielded_sendmany(taddr, [ # node_1 with 6 PIV sending them all (fee is 0.0001 PIV)
-            {'address': shield_addr1, 'amount': 2, 'memo': my_memo},
+            {'address': shield_addr1, 'amount': 2, 'memo': my_memo_str},
             {'address': shield_addrExt, 'amount': 3},
         ])
         self.sync_all()
@@ -53,47 +62,24 @@ class ListReceivedTest (PivxTestFramework):
         assert_equal(len(pt['spends']), 0)
         assert_equal(len(pt['outputs']), 2)
 
-        # Output orders can be randomized, so we check the output
-        # positions and contents separately
-        outputs = []
-
-        if pt['outputs'][0]['address'] == shield_addr1:
-            assert_equal(pt['outputs'][0]['outgoing'], False)
-            #assert_equal(pt['outputs'][0]['memoStr'], my_memo_str) TODO FIX ME
-        else:
-            assert_equal(pt['outputs'][0]['outgoing'], True)
-        outputs.append({
-            'address': pt['outputs'][0]['address'],
-            'value': pt['outputs'][0]['value'],
-            'valueSat': pt['outputs'][0]['valueSat'],
-            #'memo': pt['outputs'][0]['memo'],
-        })
-
-        if pt['outputs'][1]['address'] == shield_addr1:
-            assert_equal(pt['outputs'][1]['outgoing'], False)
-            #assert_equal(pt['outputs'][1]['memoStr'], my_memo_str) TODO FIX ME
-        else:
-            assert_equal(pt['outputs'][1]['outgoing'], True)
-        outputs.append({
-            'address': pt['outputs'][1]['address'],
-            'value': pt['outputs'][1]['value'],
-            'valueSat': pt['outputs'][1]['valueSat'],
-            #'memo': pt['outputs'][1]['memo'], TODO FIX ME
-        })
-
-        assert({
-                   'address': shield_addr1,
-                   'value': Decimal('2'),
-                   'valueSat': 200000000,
-                   #'memo': my_memo, TODO FIX ME
-               } in outputs)
-
-        assert({
-                   'address': shield_addrExt,
-                   'value': Decimal('3'),
-                   'valueSat': 300000000,
-                   #'memo': no_memo,
-               } in outputs)
+        found = [False, False]
+        for out in pt['outputs']:
+            assert_equal(pt['outputs'].index(out), out['output'])
+            if out['address'] == shield_addr1:
+                assert_equal(out['outgoing'], False)
+                assert_equal(out['memo'], my_memo_hex)
+                assert_equal(out['memoStr'], my_memo_str)
+                assert_equal(out['value'], Decimal('2'))
+                assert_equal(out['valueSat'], 200000000)
+                found[0] = True
+            else:
+                assert_equal(out['address'], shield_addrExt)
+                assert_equal(out['outgoing'], True)
+                assert_equal(out['memo'], no_memo)
+                assert_equal(out['value'], Decimal('3'))
+                assert_equal(out['valueSat'], 300000000)
+                found[1] = True
+        assert_equal(found, [True] * 2)
 
         r = self.nodes[1].listreceivedbyshieldedaddress(shield_addr1)
         assert_true(0 == len(r), "Should have received no confirmed note")
@@ -106,7 +92,7 @@ class ListReceivedTest (PivxTestFramework):
         assert_equal(txid, r[0]['txid'])
         assert_equal(2, r[0]['amount'])
         assert_false(r[0]['change'], "Note should not be change")
-        #assert_equal(my_memo, r[0]['memo'])
+        assert_equal(my_memo_hex, r[0]['memo'])
         assert_equal(0, r[0]['confirmations'])
         assert_equal(-1, r[0]['blockindex'])
         assert_equal(0, r[0]['blockheight'])
@@ -137,7 +123,7 @@ class ListReceivedTest (PivxTestFramework):
         txidPrev = txid
         shield_addr2 = self.nodes[1].getnewshieldedaddress()
         txid = self.nodes[1].shielded_sendmany(shield_addr1, # shield_addr1 has 2 PIV, send 0.6 PIV + 0.0001 PIV fee
-                                        [{'address': shield_addr2, 'amount': 0.6}]) # change 1.3999
+                                        [{'address': shield_addr2, 'amount': 0.6, "memo": non_ascii_memo_str}]) # change 1.3999
         self.sync_all()
         self.generate_and_sync(height+4)
 
@@ -154,40 +140,24 @@ class ListReceivedTest (PivxTestFramework):
         assert_equal(pt['spends'][0]['value'], Decimal('2.0'))
         assert_equal(pt['spends'][0]['valueSat'], 200000000)
 
-        # Output orders can be randomized, so we check the output
-        # positions and contents separately
-        outputs = []
-
-        assert_equal(pt['outputs'][0]['output'], 0)
-        assert_equal(pt['outputs'][0]['outgoing'], False)
-        outputs.append({
-            'address': pt['outputs'][0]['address'],
-            'value': pt['outputs'][0]['value'],
-            'valueSat': pt['outputs'][0]['valueSat'],
-            #'memo': pt['outputs'][0]['memo'],
-        })
-
-        assert_equal(pt['outputs'][1]['output'], 1)
-        assert_equal(pt['outputs'][1]['outgoing'], False)
-        outputs.append({
-            'address': pt['outputs'][1]['address'],
-            'value': pt['outputs'][1]['value'],
-            'valueSat': pt['outputs'][1]['valueSat'],
-            #'memo': pt['outputs'][1]['memo'],
-        })
-
-        assert({
-                   'address': shield_addr2,
-                   'value': Decimal('0.6'),
-                   'valueSat': 60000000,
-                   #'memo': no_memo,
-               } in outputs)
-        assert({
-                   'address': shield_addr1,
-                   'value': Decimal('1.3999'),
-                   'valueSat': 139990000,
-                   #'memo': no_memo,
-               } in outputs)
+        found = [False, False]
+        for out in pt['outputs']:
+            assert_equal(pt['outputs'].index(out), out['output'])
+            if out['address'] == shield_addr2:
+                assert_equal(out['outgoing'], False)
+                assert_equal(out['memo'], non_ascii_memo_hex)
+                assert_equal(out['memoStr'], non_ascii_memo_str)
+                assert_equal(out['value'], Decimal('0.6'))
+                assert_equal(out['valueSat'], 60000000)
+                found[0] = True
+            else:
+                assert_equal(out['address'], shield_addr1)
+                assert_equal(out['outgoing'], False)
+                assert_equal(out['memo'], no_memo)
+                assert_equal(out['value'], Decimal('1.3999'))
+                assert_equal(out['valueSat'], 139990000)
+                found[1] = True
+        assert_equal(found, [True] * 2)
 
         # shield_addr1 should have a note with change
         r = self.nodes[1].listreceivedbyshieldedaddress(shield_addr1, 0)
@@ -197,12 +167,12 @@ class ListReceivedTest (PivxTestFramework):
         assert_equal(txid, r[0]['txid'])
         assert_equal(Decimal('1.4')-fee, r[0]['amount'])
         assert_true(r[0]['change'], "Note valued at (1.4-fee) should be change")
-        #assert_equal(no_memo, r[0]['memo'])
+        assert_equal(no_memo, r[0]['memo'])
 
         # The old note still exists (it's immutable), even though it is spent
         assert_equal(Decimal('2.0'), r[1]['amount'])
         assert_false(r[1]['change'], "Note valued at 1.0 should not be change")
-        #assert_equal(my_memo, r[1]['memo'])
+        assert_equal(my_memo_hex, r[1]['memo'])
 
         # shield_addr2 should not have change
         r = self.nodes[1].listreceivedbyshieldedaddress(shield_addr2, 0)
@@ -211,7 +181,7 @@ class ListReceivedTest (PivxTestFramework):
         assert_equal(txid, r[0]['txid'])
         assert_equal(Decimal('0.6'), r[0]['amount'])
         assert_false(r[0]['change'], "Note valued at 0.6 should not be change")
-        #assert_equal(no_memo, r[0]['memo'])
+        assert_equal(non_ascii_memo_hex, r[0]['memo'])
 
         c = self.nodes[1].getsaplingnotescount(0)
         assert_true(3 == c, "Count of unconfirmed notes should be 3(2 in shield_addr1 + 1 in shield_addr2)")

@@ -99,6 +99,13 @@ bool ParseInt64(const std::string& str, int64_t *out);
  */
 bool ParseDouble(const std::string& str, double *out);
 
+/* Return iterator to first non zero element, or itend */
+template <typename T>
+T FindFirstNonZero(T itbegin, T itend)
+{
+    return std::find_if(itbegin, itend, [](unsigned char v) { return v != 0; });
+}
+
 template <typename T>
 std::string HexStr(const T itbegin, const T itend, bool fSpaces = false)
 {
@@ -121,6 +128,12 @@ template <typename T>
 inline std::string HexStr(const T& vch, bool fSpaces = false)
 {
     return HexStr(vch.begin(), vch.end(), fSpaces);
+}
+
+template <typename T>
+inline std::string HexStrTrimmed(const T& vch, bool fSpaces = false)
+{
+    return HexStr(vch.begin(), FindFirstNonZero(vch.rbegin(), vch.rend()).base(), fSpaces);
 }
 
 /** Reverse the endianess of a string */
@@ -240,5 +253,12 @@ constexpr unsigned char ToUpper(unsigned char c)
  * @return          string with the first letter capitalized.
  */
 std::string Capitalize(std::string str);
+
+/**
+ * Checks for valid 4-byte UTF-8 encoding in a string
+ * @param[in] str   the string to check.
+ * @return          boolean. true for valid UTF-8 encoding.
+ */
+bool IsValidUTF8(const std::string& str);
 
 #endif // BITCOIN_UTILSTRENCODINGS_H
