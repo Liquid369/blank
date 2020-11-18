@@ -1075,13 +1075,11 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CWalletTx& wtxNew, CR
         if (!consensus.NetworkUpgradeActive(nextBlockHeight, Consensus::UPGRADE_V5_DUMMY)) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, Sapling not active yet");
         }
-        CAmount nFee = DEFAULT_SAPLING_FEE;
         std::vector<SendManyRecipient> recipients = {SendManyRecipient(ownerKey, *stakeKey, nValue)};
         TransactionBuilder txBuilder = TransactionBuilder(consensus, nextBlockHeight, pwalletMain);
         SaplingOperation operation(txBuilder);
         OperationResult res = operation.setSelectShieldedCoins(true)
                                        ->setRecipients(recipients)
-                                       ->setFee(nFee)
                                        ->build();
         if (!res) throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
         wtxNew = CWalletTx(pwalletMain, operation.getFinalTx());

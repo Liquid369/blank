@@ -124,7 +124,7 @@ class PIVX_ColdStakingTest(PivxTestFramework):
         # create shielded balance for node 0
         self.log.info("Shielding some coins for node0...")
         self.nodes[0].shieldedsendmany("from_transparent", [{"address": self.nodes[0].getnewshieldedaddress(),
-                                                             "amount": Decimal('250.00')}], 1, 1)
+                                                             "amount": Decimal('250.00')}], 1)
         self.sync_all()
         for i in range(6):
             self.mocktime = self.generate_pow(0, self.mocktime)
@@ -191,6 +191,7 @@ class PIVX_ColdStakingTest(PivxTestFramework):
         assert (res != None and res["txid"] != None and res["txid"] != "")
         assert_equal(res["owner_address"], owner_address)
         assert_equal(res["staker_address"], staker_address)
+        fee = self.nodes[0].viewshieldedtransaction(res["txid"])['fee']
         # sync and mine 2 blocks
         sync_mempools(self.nodes)
         self.mocktime = self.generate_pos(2, self.mocktime)
@@ -200,8 +201,8 @@ class PIVX_ColdStakingTest(PivxTestFramework):
         self.expected_balance = NUM_OF_INPUTS * INPUT_VALUE
         self.expected_immature_balance = 0
         self.checkBalances()
-        # also shielded balance of node 0 (250 - 249 - minimum fee 0.0001)
-        assert_equal(self.nodes[0].getshieldedbalance(), Decimal('0.9999'))
+        # also shielded balance of node 0 (250 - 249 - fee)
+        assert_equal(self.nodes[0].getshieldedbalance(), round(Decimal(1)-Decimal(fee), 8))
 
         # 6) check that the owner (nodes[0]) can spend the coins.
         # -------------------------------------------------------
