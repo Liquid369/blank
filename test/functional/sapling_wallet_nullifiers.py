@@ -84,8 +84,8 @@ class WalletNullifiersTest (PivxTestFramework):
 
         # check shielded addr balance
         zsendmany2notevalue = Decimal('2.0')
-        zsendmanyfee = Decimal('0.0001')
-        zaddrremaining = zsendmanynotevalue - zsendmany2notevalue - zsendmanyfee # 7 - 3 = 4 shielded PIV
+        zsendmanyfee = Decimal(self.nodes[2].viewshieldedtransaction(txid)['fee'])
+        zaddrremaining = zsendmanynotevalue - zsendmany2notevalue - zsendmanyfee
         assert_equal(self.nodes[3].getshieldedbalance(myzaddr3), zsendmany2notevalue)
         assert_equal(self.nodes[2].getshieldedbalance(myzaddr), zaddrremaining)
         assert_equal(self.nodes[1].getshieldedbalance(myzaddr), zaddrremaining)
@@ -109,6 +109,7 @@ class WalletNullifiersTest (PivxTestFramework):
         # have been cached and spent notes can be detected. Thus the two wallets
         # are in agreement once more.
         zsendmany3notevalue = Decimal('1.0')
+        zsendmanyfee = Decimal(self.nodes[1].viewshieldedtransaction(txid)['fee'])
         zaddrremaining2 = zaddrremaining - zsendmany3notevalue - zsendmanyfee
         assert_equal(self.nodes[1].getshieldedbalance(myzaddr), zaddrremaining2)
         assert_equal(self.nodes[2].getshieldedbalance(myzaddr), zaddrremaining2)

@@ -39,13 +39,12 @@ class WalletChangeAddressesTest(PivxTestFramework):
 
         def check_change_taddr_reuse(target, isTargetShielded):
             recipients = [{"address": target, "amount": Decimal('1')}]
-            fee = 1.0 if isTargetShielded else 0.001 # hardcoded for now
 
             # Send funds to recipient address twice
-            txid1 = self.nodes[0].shieldedsendmany(taddrSource, recipients, 1, fee)
+            txid1 = self.nodes[0].shieldedsendmany(taddrSource, recipients, 1)
             self.nodes[1].generate(1)
             self.sync_all()
-            txid2 = self.nodes[0].shieldedsendmany(taddrSource, recipients, 1, fee)
+            txid2 = self.nodes[0].shieldedsendmany(taddrSource, recipients, 1)
             self.nodes[1].generate(1)
             self.sync_all()
 
