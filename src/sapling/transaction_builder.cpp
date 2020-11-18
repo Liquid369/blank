@@ -11,9 +11,6 @@
 
 #include <librustzcash.h>
 
-// Initial fee used when searching for the optimal (GetShieldedTxMinFee)
-CAmount DEFAULT_SAPLING_FEE = 1000000;
-
 SpendDescriptionInfo::SpendDescriptionInfo(
     libzcash::SaplingExpandedSpendingKey expsk,
     libzcash::SaplingNote note,

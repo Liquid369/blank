@@ -256,6 +256,9 @@ void LimitMempoolSize(CTxMemPool& pool, size_t limit, unsigned long age) {
 
 CAmount GetMinRelayFee(const CTransaction& tx, const CTxMemPool& pool, unsigned int nBytes, bool fAllowFree)
 {
+    if (tx.IsShieldedTx()) {
+        return GetShieldedTxMinFee(tx);
+    }
     uint256 hash = tx.GetHash();
     double dPriorityDelta = 0;
     CAmount nFeeDelta = 0;
@@ -488,7 +491,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
 
         // Don't accept it if it can't get into a block
         if (!ignoreFees) {
-            CAmount txMinFee = GetMinRelayFee(tx, pool, nSize, true);
+            const CAmount txMinFee = GetMinRelayFee(tx, pool, nSize, false);
             if (fLimitFree && nFees < txMinFee && !hasZcSpendInputs)
                 return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "insufficient fee", false,
                     strprintf("%d < %d", nFees, txMinFee));
@@ -521,20 +524,12 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
             }
         }
 
-        if (!tx.IsShieldedTx()) { // Sapling fee could be higher. Review it properly
-            if (fRejectAbsurdFee && nFees > ::minRelayTxFee.GetFee(nSize) * 10000) {
-                return state.Invalid(false,
-                                     REJECT_HIGHFEE, "absurdly-high-fee",
-                                     strprintf("%d > %d", nFees, ::minRelayTxFee.GetFee(nSize) * 10000));
-            }
-        } else {
-            // Accept a tx if it contains sapling and has at least the default fee specified (0.0001 PIV).
-            // todo: this is a initial step, we can definitely be more accurate with the fee calculation and use the regular fee flow.
-            if (nFees < 10000) {
-                return state.Invalid(false,
-                                     REJECT_HIGHFEE, "sapling-invalid-fee",
-                                     strprintf("sapling fee: %d < %d", nFees, 10000));
-            }
+        if (fRejectAbsurdFee) {
+            const CAmount nMaxFee = tx.IsShieldedTx() ? GetShieldedTxMinFee(tx) * 100 :
+                                                        GetMinRelayFee(nSize, false) * 10000;
+            if (nFees > nMaxFee)
+                return state.Invalid(false, REJECT_HIGHFEE, "absurdly-high-fee",
+                                     strprintf("%d > %d", nFees, nMaxFee));
         }
 
         // As zero fee transactions are not going to be accepted in the near future (4.0) and the code will be fully refactored soon.

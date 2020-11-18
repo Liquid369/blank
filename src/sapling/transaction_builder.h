@@ -19,8 +19,6 @@
 #include "sapling/note.hpp"
 #include "sapling/noteencryption.hpp"
 
-extern CAmount DEFAULT_SAPLING_FEE;
-
 struct SpendDescriptionInfo {
     libzcash::SaplingExpandedSpendingKey expsk;
     libzcash::SaplingNote note;

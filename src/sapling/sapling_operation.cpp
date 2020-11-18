@@ -91,7 +91,7 @@ OperationResult SaplingOperation::build()
         return errorOut("Minconf cannot be zero when sending from shielded address");
     }
 
-    CAmount nFeeRet = fee > 0 ? fee : DEFAULT_SAPLING_FEE;
+    CAmount nFeeRet = (fee > 0 ? fee : minRelayTxFee.GetFeePerK());
     int tries = 0;
     while (true) {
         // First calculate target values
@@ -171,20 +171,23 @@ OperationResult SaplingOperation::build()
         }
         finalTx = *opTx;
 
-        // Now check fee (todo: fix transparent fee...)
-        const CAmount& nFeeNeeded = finalTx.IsShieldedTx() ? GetShieldedTxMinFee(finalTx) : ::minRelayTxFee.GetFee(finalTx.GetTotalSize());
-        if (nFeeNeeded <= nFeeRet) {  // Done, enough fee included
+        // Now check fee
+        bool isShielded = finalTx.IsShieldedTx();
+        const CAmount& nFeeNeeded = isShielded ? GetShieldedTxMinFee(finalTx) :
+                                                 GetMinRelayFee(finalTx.GetTotalSize(), false);
+        if (nFeeNeeded <= nFeeRet) {
             // Check that the fee is not too high.
-            if (nFeeRet > 100 * nFeeNeeded) {
+            CAmount nMaxFee = nFeeNeeded * (isShielded ? 100 : 10000);
+            if (nFeeRet > nMaxFee) {
                 return errorOut(strprintf("The transaction fee is too high: %s > %s", FormatMoney(nFeeRet), FormatMoney(100 * nFeeNeeded)));
             }
+            // Done, enough fee included
             LogPrint(BCLog::SAPLING, "%s: spending %s to send %s with fee %s (min required %s)\n", __func__ , FormatMoney(txValues.target),
                     FormatMoney(txValues.shieldedOutTotal + txValues.transOutTotal), FormatMoney(nFeeRet), FormatMoney(nFeeNeeded));
             LogPrint(BCLog::SAPLING, "%s: transparent input: %s (to choose from)\n", __func__ , FormatMoney(txValues.transInTotal));
             LogPrint(BCLog::SAPLING, "%s: private input: %s (to choose from)\n", __func__ , FormatMoney(txValues.shieldedInTotal));
             LogPrint(BCLog::SAPLING, "%s: transparent output: %s\n", __func__ , FormatMoney(txValues.transOutTotal));
             LogPrint(BCLog::SAPLING, "%s: private output: %s\n", __func__ , FormatMoney(txValues.shieldedOutTotal));
-            LogPrint(BCLog::SAPLING, "%s: fee: %s\n", __func__ , FormatMoney(fee));
             break;
         }
         if (fee > 0 && nFeeNeeded > fee) {
