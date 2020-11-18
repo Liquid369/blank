@@ -1292,6 +1292,7 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
                 "\nResult:\n"
                 "{\n"
                 "  \"txid\" : \"transactionid\",   (string) The transaction id\n"
+                "  \"fee\"  : x.xxx,               (numeric) The transaction fee in " + CURRENCY_UNIT + "\n"
                 "  \"spends\" : [\n"
                 "    {\n"
                 "      \"spend\" : n,                    (numeric, sapling) the index of the spend within vShieldedSpend\n"
@@ -1430,6 +1431,7 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
         outputs.push_back(entry_);
     }
 
+    entry.pushKV("fee", FormatMoney(pcoinsTip->GetValueIn(wtx) - wtx.GetValueOut()));
     entry.pushKV("spends", spends);
     entry.pushKV("outputs", outputs);
 
