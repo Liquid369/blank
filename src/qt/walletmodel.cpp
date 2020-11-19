@@ -513,7 +513,9 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
     return SendCoinsReturn(OK);
 }
 
-OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* modelTransaction, bool fromTransparent)
+OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* modelTransaction,
+                                                                     bool fromTransparent,
+                                                                     const CCoinControl* coinControl)
 {
     // Basic checks first
 
@@ -548,6 +550,7 @@ OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* 
              ->setTransparentKeyChange(modelTransaction->getPossibleKeyChange())
              ->setSelectTransparentCoins(fromTransparent)
              ->setSelectShieldedCoins(!fromTransparent)
+             ->setCoinControl(coinControl)
              ->build();
 
     if (!operationResult) {

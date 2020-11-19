@@ -410,7 +410,10 @@ void SendWidget::onSendClicked()
 
 OperationResult SendWidget::prepareShielded(WalletModelTransaction* currentTransaction, bool fromTransparent)
 {
-    auto result = walletModel->PrepareShieldedTransaction(currentTransaction, fromTransparent);
+    bool hasCoinsOrNotesSelected = coinControlDialog && coinControlDialog->coinControl && coinControlDialog->coinControl->HasSelected();
+    auto result = walletModel->PrepareShieldedTransaction(currentTransaction,
+                                                          fromTransparent,
+                                                          hasCoinsOrNotesSelected ? coinControlDialog->coinControl : nullptr);
     if (!result) {
         return errorOut(result.m_error.toStdString());
     }

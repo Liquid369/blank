@@ -207,7 +207,9 @@ public:
     SendCoinsReturn sendCoins(WalletModelTransaction& transaction);
 
     // Prepare shielded transaction.
-    OperationResult PrepareShieldedTransaction(WalletModelTransaction* modelTransaction, bool fromTransparent);
+    OperationResult PrepareShieldedTransaction(WalletModelTransaction* modelTransaction,
+                                                            bool fromTransparent,
+                                                            const CCoinControl* coinControl = nullptr);
 
     // Wallet encryption
     bool setWalletEncrypted(bool encrypted, const SecureString& passphrase);
