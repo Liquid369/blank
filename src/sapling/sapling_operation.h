@@ -15,6 +15,7 @@
 #define CTXIN_SPEND_DUST_SIZE   148
 #define CTXOUT_REGULAR_SIZE     34
 
+class CCoinControl;
 struct TxValues;
 
 struct ShieldedRecipient
@@ -100,6 +101,7 @@ public:
     SaplingOperation* setMinDepth(int _mindepth) { assert(_mindepth >= 0); mindepth = _mindepth; return this; }
     SaplingOperation* setTxBuilder(TransactionBuilder& builder) { txBuilder = builder; return this; }
     SaplingOperation* setTransparentKeyChange(CReserveKey* reserveKey) { tkeyChange = reserveKey; return this; }
+    SaplingOperation* setCoinControl(const CCoinControl* _coinControl) { coinControl = _coinControl; return this; }
 
     CTransaction getFinalTx() { return finalTx; }
 
@@ -108,6 +110,7 @@ private:
     // In case of no addressFrom filter selected, it will accept any utxo in the wallet as input.
     bool selectFromtaddrs{false};
     bool selectFromShield{false};
+    const CCoinControl* coinControl{nullptr};
     std::vector<SendManyRecipient> recipients;
     std::vector<COutput> transInputs;
     std::vector<SaplingNoteEntry> shieldedInputs;
@@ -122,6 +125,7 @@ private:
     CTransaction finalTx;
 
     OperationResult loadUtxos(TxValues& values);
+    OperationResult loadUtxos(TxValues& txValues, const std::vector<COutput>& selectedUTXO, const CAmount selectedUTXOAmount);
     OperationResult loadUnspentNotes(TxValues& txValues, uint256& ovk);
     OperationResult checkTxValues(TxValues& txValues, bool isFromtAddress, bool isFromShielded);
 };

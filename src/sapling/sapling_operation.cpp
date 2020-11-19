@@ -4,6 +4,7 @@
 
 #include "sapling/sapling_operation.h"
 
+#include "coincontrol.h"
 #include "net.h" // for g_connman
 #include "policy/policy.h" // for GetDustThreshold
 #include "sapling/key_io_sapling.h"
@@ -64,23 +65,41 @@ TxValues calculateTarget(const std::vector<SendManyRecipient>& recipients, const
 
 OperationResult SaplingOperation::build()
 {
+    bool isFromtAddress = false;
+    bool isFromShielded = false;
 
-    bool isFromtAddress = fromAddress.isFromTAddress();
-    bool isFromShielded = fromAddress.isFromSapAddress();
+    if (coinControl) {
+        // if coin control was selected it overrides any other defined configuration
+        std::vector<OutPointWrapper> coins;
+        coinControl->ListSelected(coins);
+        // first check that every selected input is from the same type, cannot be mixed for clear privacy reasons.
+        // error is thrown below if it happens, not here.
+        for (const auto& coin : coins) {
+            if (coin.outPoint.isTransparent) {
+                isFromtAddress = true;
+            } else {
+                isFromShielded = true;
+            }
+        }
+    } else {
+        // Regular flow
+        isFromtAddress = fromAddress.isFromTAddress();
+        isFromShielded = fromAddress.isFromSapAddress();
 
-    if (!isFromtAddress && !isFromShielded) {
-        isFromtAddress = selectFromtaddrs;
-        isFromShielded = selectFromShield;
-
-        // It needs to have a from.
         if (!isFromtAddress && !isFromShielded) {
-            return errorOut("From address parameter missing");
+            isFromtAddress = selectFromtaddrs;
+            isFromShielded = selectFromShield;
         }
+    }
 
-        // Cannot be from both
-        if (isFromtAddress && isFromShielded) {
-            return errorOut("From address type cannot be shielded and transparent");
-        }
+    // It needs to have a from.
+    if (!isFromtAddress && !isFromShielded) {
+        return errorOut("From address parameter missing");
+    }
+
+    // Cannot be from both
+    if (isFromtAddress && isFromShielded) {
+        return errorOut("From address type cannot be shielded and transparent");
     }
 
     if (recipients.empty()) {
@@ -228,6 +247,25 @@ void SaplingOperation::setFromAddress(const libzcash::SaplingPaymentAddress& _pa
 
 OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
 {
+    // If the user has selected coins to spend then, directly load them.
+    // The spendability, depth and other checks should have been done on the user selection side,
+    // no need to do them again.
+    if (coinControl && coinControl->HasSelected()) {
+        std::vector<OutPointWrapper> vCoins;
+        coinControl->ListSelected(vCoins);
+
+        std::vector<COutput> selectedUTXOInputs;
+        CAmount nSelectedValue = 0;
+        for (const auto& outpoint : vCoins) {
+            const auto* tx = pwalletMain->GetWalletTx(outpoint.outPoint.hash);
+            if (!tx) continue;
+            nSelectedValue += tx->vout[outpoint.outPoint.n].nValue;
+            selectedUTXOInputs.emplace_back(tx, outpoint.outPoint.n, 0, true, true);
+        }
+        return loadUtxos(txValues, selectedUTXOInputs, nSelectedValue);
+    }
+
+    // No coin control selected, let's find the utxo by our own.
     std::set<CTxDestination> destinations;
     if (fromAddress.isFromTAddress()) destinations.insert(fromAddress.fromTaddr);
     CWallet::AvailableCoinsFilter coinsFilter(false,
@@ -279,7 +317,12 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
                                   FormatMoney(selectedUTXOAmount), FormatMoney(dustThreshold - dustChange), FormatMoney(dustChange), FormatMoney(dustThreshold)));
     }
 
-    transInputs = selectedTInputs;
+    return loadUtxos(txValues, selectedTInputs, selectedUTXOAmount);
+}
+
+OperationResult SaplingOperation::loadUtxos(TxValues& txValues, const std::vector<COutput>& selectedUTXO, const CAmount selectedUTXOAmount)
+{
+    transInputs = selectedUTXO;
     txValues.transInTotal = selectedUTXOAmount;
 
     // update the transaction with these inputs
@@ -287,12 +330,16 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
         const auto& outPoint = t.tx->vout[t.i];
         txBuilder.AddTransparentInput(COutPoint(t.tx->GetHash(), t.i), outPoint.scriptPubKey, outPoint.nValue);
     }
-
     return OperationResult(true);
 }
 
 OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& ovk)
 {
+    // if we already have selected the notes, let's directly set them.
+    if (coinControl && coinControl->HasSelected()) {
+        // todo: add notes selection.
+    }
+
     shieldedInputs.clear();
     pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(shieldedInputs, fromAddress.fromSapAddr, mindepth);
 
