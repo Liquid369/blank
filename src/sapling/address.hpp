@@ -22,15 +22,6 @@ const size_t SerializedSaplingFullViewingKeySize = 96;
 const size_t SerializedSaplingExpandedSpendingKeySize = 96;
 const size_t SerializedSaplingSpendingKeySize = 32;
 
-
-class ReceivingKey : public uint256 {
-public:
-    ReceivingKey() { }
-    ReceivingKey(uint256 sk_enc) : uint256(sk_enc) { }
-
-    uint256 pk_enc() const;
-};
-
 //! Sapling functions.
 class SaplingPaymentAddress {
 public:

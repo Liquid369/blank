@@ -13,10 +13,6 @@ const unsigned char ZCASH_SAPLING_FVFP_PERSONALIZATION[crypto_generichash_blake2
 
 namespace libzcash {
 
-uint256 ReceivingKey::pk_enc() const {
-    return ZCNoteEncryption::generate_pubkey(*this);
-}
-
 
 //! Sapling
 uint256 SaplingPaymentAddress::GetHash() const {
