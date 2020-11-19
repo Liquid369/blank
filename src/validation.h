@@ -112,6 +112,8 @@ static const unsigned int AVG_ADDRESS_BROADCAST_INTERVAL = 30;
 /** Average delay between trickled inventory broadcasts in seconds.
  *  Blocks, whitelisted receivers, and a random 25% of transactions bypass this. */
 static const unsigned int AVG_INVENTORY_BROADCAST_INTERVAL = 5;
+/** Default multiplier used in the computation for shielded txes min fee */
+static const unsigned int DEFAULT_SHIELDEDTXFEE_K = 1000;
 
 /** Enable bloom filter */
  static const bool DEFAULT_PEERBLOOMFILTERS = true;
