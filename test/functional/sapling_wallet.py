@@ -42,8 +42,6 @@ class WalletSaplingTest(PivxTestFramework):
         # Verify addresses
         assert(saplingAddr0 in self.nodes[0].listshieldedaddresses())
         assert(saplingAddr1 in self.nodes[1].listshieldedaddresses())
-        assert_equal(self.nodes[0].validateaddress(saplingAddr0)['type'], 'sapling')
-        assert_equal(self.nodes[0].validateaddress(saplingAddr1)['type'], 'sapling')
 
         # Verify balance
         assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('0'))
