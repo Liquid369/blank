@@ -374,6 +374,37 @@ std::vector<libzcash::SaplingPaymentAddress> SaplingScriptPubKeyMan::FindMySapli
     return ret;
 }
 
+void SaplingScriptPubKeyMan::GetNotes(const std::vector<SaplingOutPoint>& saplingOutpoints,
+                                      std::vector<SaplingNoteEntry>& saplingEntriesRet)
+{
+    for (const auto& outpoint : saplingOutpoints) {
+        const auto* wtx = wallet->GetWalletTx(outpoint.hash);
+        if (!wtx) throw std::runtime_error("No transaction available for hash " + outpoint.hash.GetHex());
+        const auto& it = wtx->mapSaplingNoteData.find(outpoint);
+        if (it != wtx->mapSaplingNoteData.end()) {
+
+            const SaplingOutPoint& op = it->first;
+            const SaplingNoteData& nd = it->second;
+
+            const OutputDescription& outDesc = wtx->sapData->vShieldedOutput[op.n];
+            auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
+                    outDesc.encCiphertext,
+                    nd.ivk,
+                    outDesc.ephemeralKey,
+                    outDesc.cmu);
+            assert(static_cast<bool>(maybe_pt));
+            auto notePt = maybe_pt.get();
+
+            auto maybe_pa = nd.ivk.address(notePt.d);
+            assert(static_cast<bool>(maybe_pa));
+            auto pa = maybe_pa.get();
+
+            auto note = notePt.note(nd.ivk).get();
+            saplingEntriesRet.emplace_back(op, pa, note, notePt.memo(), wtx->GetDepthInMainChain());
+        }
+    }
+}
+
 /**
  * Find notes in the wallet filtered by payment address, min depth and ability to spend.
  * These notes are decrypted and added to the output parameter vector, saplingEntries.

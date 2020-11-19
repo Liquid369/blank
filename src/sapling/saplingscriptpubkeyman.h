@@ -242,6 +242,10 @@ public:
     //! Find all of the addresses in the given tx that have been sent to a SaplingPaymentAddress in this wallet.
     std::vector<libzcash::SaplingPaymentAddress> FindMySaplingAddresses(const CTransaction& tx) const;
 
+    //! Find notes for the outpoints
+    void GetNotes(const std::vector<SaplingOutPoint>& saplingOutpoints,
+                  std::vector<SaplingNoteEntry>& saplingEntriesRet);
+
     /* Find notes filtered by payment address, min depth, ability to spend */
     void GetFilteredNotes(std::vector<SaplingNoteEntry>& saplingEntries,
                           Optional<libzcash::SaplingPaymentAddress>& address,
