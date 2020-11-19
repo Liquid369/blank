@@ -266,6 +266,7 @@ public:
     class ListCoinsKey {
     public:
         QString address;
+        bool isChange;
         Optional<QString> stakerAddress; // used only for P2CS utxo
 
         bool operator==(const ListCoinsKey& key2) const {

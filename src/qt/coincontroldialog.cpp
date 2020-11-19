@@ -642,7 +642,8 @@ void CoinControlDialog::loadAvailableCoin(bool treeMode,
                                           const uint32_t outIndex,
                                           const CAmount nValue,
                                           const int64_t nTime,
-                                          const int nDepth)
+                                          const int nDepth,
+                                          const bool isChange)
 {
     CCoinControlWidgetItem* itemOutput;
     if (treeMode)
@@ -660,7 +661,11 @@ void CoinControlDialog::loadAvailableCoin(bool treeMode,
     }
 
     // label
-    if (!treeMode) {
+    if (isChange) {
+        // tooltip stating where the change is being stored.
+        itemOutput->setToolTip(COLUMN_LABEL, tr("change in %1").arg(sWalletAddress));
+        itemOutput->setText(COLUMN_LABEL, tr("(change)"));
+    } else if (!treeMode) {
         itemOutput->setText(COLUMN_LABEL, sWalletLabel);
     }
 
@@ -729,7 +734,7 @@ void CoinControlDialog::updateView()
         itemWalletAddress->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
         const WalletModel::ListCoinsKey& keys = coins.first;
         const QString& sWalletAddress = keys.address;
-        const Optional<QString>& stakerAddress = keys.stakerAddres;
+        const Optional<QString>& stakerAddress = keys.stakerAddress;
         QString sWalletLabel = model->getAddressTableModel()->labelForAddress(sWalletAddress);
         if (sWalletLabel.isEmpty())
             sWalletLabel = tr("(no label)");
@@ -758,8 +763,9 @@ void CoinControlDialog::updateView()
             nChildren++;
 
             loadAvailableCoin(treeMode, itemWalletAddress, flgCheckbox, flgTristate,
-                            nDisplayUnit, sWalletAddress, stakerAddress, sWalletLabel,
-                              out.txhash, out.outIndex, out.nValue, out.nTime, out.nDepth);
+                              nDisplayUnit, sWalletAddress, stakerAddress, sWalletLabel,
+                              out.txhash, out.outIndex, out.nValue, out.nTime, out.nDepth,
+                              keys.isChange);
         }
 
         // amount

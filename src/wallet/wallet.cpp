@@ -1310,11 +1310,16 @@ bool CWallet::IsChange(const CTxOut& txout) const
         if (!ExtractDestination(txout.scriptPubKey, address))
             return true;
 
-        LOCK(cs_wallet);
-        if (!HasAddressBook(address))
-            return true;
+        return IsChange(address);
     }
     return false;
+}
+
+bool CWallet::IsChange(const CTxDestination& address) const
+{
+    // Read the current assumptions in IsChange(const CTxOut&)
+    // this can definitely be different in the short future.
+    return WITH_LOCK(cs_wallet, return !HasAddressBook(address));
 }
 
 int64_t CWalletTx::GetTxTime() const

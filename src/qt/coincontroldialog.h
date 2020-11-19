@@ -89,7 +89,8 @@ private:
                            const uint32_t outIndex,
                            const CAmount nValue,
                            const int64_t nTime,
-                           const int nDepth);
+                           const int nDepth,
+                           const bool isChange);
 
     enum {
         COLUMN_CHECKBOX,

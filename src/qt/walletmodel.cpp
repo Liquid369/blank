@@ -885,7 +885,7 @@ void WalletModel::listCoins(std::map<ListCoinsKey, std::vector<ListCoinsValue>>&
             Optional<QString>(QString::fromStdString(EncodeDestination(outputAddressStaker, CChainParams::STAKING_ADDRESS))) :
             nullopt;
 
-        ListCoinsKey key{address, stakerAddr};
+        ListCoinsKey key{address, wallet->IsChange(outputAddress), stakerAddr};
         ListCoinsValue value{
                 out.tx->GetHash(),
                 out.i,
