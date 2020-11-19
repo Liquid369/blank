@@ -144,7 +144,13 @@ void SendWidget::refreshAmounts()
     CAmount totalAmount = 0;
     if (coinControlDialog->coinControl->HasSelected()) {
         // Set remaining balance to the sum of the coinControl selected inputs
-        totalAmount = walletModel->getBalance(coinControlDialog->coinControl) - total;
+        std::vector<OutPointWrapper> coins;
+        coinControlDialog->coinControl->ListSelected(coins);
+        CAmount selectedBalance = 0;
+        for (const auto& coin : coins) {
+            selectedBalance += coin.value;
+        }
+        totalAmount = selectedBalance - total;
         ui->labelTitleTotalRemaining->setText(tr("Total remaining from the selected UTXO"));
     } else {
         // Wallet's unlocked balance.

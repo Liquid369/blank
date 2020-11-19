@@ -10,6 +10,7 @@
 #include "policy/feerate.h"
 #include "primitives/transaction.h"
 #include "script/standard.h"
+#include <unordered_set>
 
 class OutPointWrapper {
 public:
@@ -96,14 +97,15 @@ public:
         return setSelected.size();
     }
 
-    void SetSelection(std::set<OutPointWrapper>& _setSelected)
-    {
-        this->setSelected.clear();
-        this->setSelected = _setSelected;
-    }
-
 private:
-    std::set<OutPointWrapper> setSelected;
+
+    struct SimpleOutpointHash {
+        size_t operator() (const OutPointWrapper& obj) const {
+            return (UintToArith256(obj.outPoint.hash) + obj.outPoint.n).GetCheapHash();
+        }
+    };
+
+    std::unordered_set<OutPointWrapper, SimpleOutpointHash> setSelected;
 };
 
 #endif // BITCOIN_COINCONTROL_H

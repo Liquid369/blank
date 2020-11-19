@@ -452,13 +452,15 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
         BaseOutPoint outpt(uint256(item->text(COLUMN_TXHASH).toStdString()),
                            item->text(COLUMN_VOUT_INDEX).toUInt(),
                            fSelectTransparent);
-        CAmount value = item->text(COLUMN_AMOUNT).toLong();
         if (item->checkState(COLUMN_CHECKBOX) == Qt::Unchecked)
             coinControl->UnSelect(outpt);
         else if (item->isDisabled()) // locked (this happens if "check all" through parent node)
             item->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
-        else
+        else {
+            CAmount value = 0;
+            ParseFixedPoint(item->text(COLUMN_AMOUNT).toStdString(), 8, &value);
             coinControl->Select(outpt, value);
+        }
 
         // selection changed -> update labels
         if (ui->treeWidget->isEnabled()) { // do not update on every click for (un)select all
@@ -771,7 +773,7 @@ void CoinControlDialog::updateView()
 
         CAmount nSum = 0;
         int nChildren = 0;
-        for (const WalletModel::ListCoinsValue& out: coins.second) {
+        for (const WalletModel::ListCoinsValue& out : coins.second) {
             ++nSelectableInputs;
             nSum += out.nValue;
             nChildren++;

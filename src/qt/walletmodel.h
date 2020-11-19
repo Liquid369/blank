@@ -297,7 +297,7 @@ public:
 
     class ListCoinsValue {
     public:
-        const uint256& txhash;
+        uint256 txhash;
         int outIndex;
         CAmount nValue;
         int64_t nTime;
