@@ -13,6 +13,7 @@
 #include "transactiontablemodel.h"
 
 #include "base58.h"
+#include "coincontrol.h"
 #include "db.h"
 #include "keystore.h"
 #include "sapling/key_io_sapling.h"
@@ -905,16 +906,16 @@ std::string WalletModel::getLabelForAddress(const CTxDestination& address)
 }
 
 // returns a list of COutputs from COutPoints
-void WalletModel::getOutputs(const std::vector<BaseOutPoint>& vOutpoints, std::vector<COutput>& vOutputs)
+void WalletModel::getOutputs(const std::vector<OutPointWrapper>& vOutpoints, std::vector<COutput>& vOutputs)
 {
     LOCK2(cs_main, wallet->cs_wallet);
     for (const auto& outpoint : vOutpoints) {
-        const auto* tx = wallet->GetWalletTx(outpoint.hash);
+        const auto* tx = wallet->GetWalletTx(outpoint.outPoint.hash);
         if (!tx) continue;
         bool fConflicted;
         const int nDepth = tx->GetDepthAndMempool(fConflicted);
         if (nDepth < 0 || fConflicted) continue;
-        vOutputs.emplace_back(tx, outpoint.n, nDepth, true, true);
+        vOutputs.emplace_back(tx, outpoint.outPoint.n, nDepth, true, true);
     }
 }
 

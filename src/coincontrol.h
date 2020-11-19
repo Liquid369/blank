@@ -11,6 +11,20 @@
 #include "primitives/transaction.h"
 #include "script/standard.h"
 
+class OutPointWrapper {
+public:
+    BaseOutPoint outPoint;
+    CAmount value;
+
+    bool operator<(const OutPointWrapper& obj2) const {
+        return this->outPoint < obj2.outPoint;
+    }
+
+    bool operator==(const OutPointWrapper& obj2) const {
+        return this->outPoint == obj2.outPoint;
+    }
+};
+
 /** Coin Control Features. */
 class CCoinControl
 {
@@ -54,17 +68,17 @@ public:
 
     bool IsSelected(const BaseOutPoint& output) const
     {
-        return (setSelected.count(output) > 0);
+        return (setSelected.count(OutPointWrapper{output, 0}) > 0);
     }
 
-    void Select(const BaseOutPoint& output)
+    void Select(const BaseOutPoint& output, CAmount value = 0)
     {
-        setSelected.insert(output);
+        setSelected.insert(OutPointWrapper{output, value});
     }
 
     void UnSelect(const BaseOutPoint& output)
     {
-        setSelected.erase(output);
+        setSelected.erase(OutPointWrapper{output, 0});
     }
 
     void UnSelectAll()
@@ -72,7 +86,7 @@ public:
         setSelected.clear();
     }
 
-    void ListSelected(std::vector<BaseOutPoint>& vOutpoints) const
+    void ListSelected(std::vector<OutPointWrapper>& vOutpoints) const
     {
         vOutpoints.assign(setSelected.begin(), setSelected.end());
     }
@@ -82,14 +96,14 @@ public:
         return setSelected.size();
     }
 
-    void SetSelection(std::set<BaseOutPoint>& _setSelected)
+    void SetSelection(std::set<OutPointWrapper>& _setSelected)
     {
         this->setSelected.clear();
         this->setSelected = _setSelected;
     }
 
 private:
-    std::set<BaseOutPoint> setSelected;
+    std::set<OutPointWrapper> setSelected;
 };
 
 #endif // BITCOIN_COINCONTROL_H

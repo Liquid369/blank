@@ -2537,18 +2537,18 @@ bool CWallet::SelectCoinsToSpend(const std::vector<COutput>& vAvailableCoins, co
     std::set<std::pair<const CWalletTx*, uint32_t> > setPresetCoins;
     CAmount nValueFromPresetInputs = 0;
 
-    std::vector<BaseOutPoint> vPresetInputs;
+    std::vector<OutPointWrapper> vPresetInputs;
     if (coinControl)
         coinControl->ListSelected(vPresetInputs);
     for (const auto& outpoint : vPresetInputs) {
-        std::map<uint256, CWalletTx>::const_iterator it = mapWallet.find(outpoint.hash);
+        std::map<uint256, CWalletTx>::const_iterator it = mapWallet.find(outpoint.outPoint.hash);
         if (it != mapWallet.end()) {
             const CWalletTx* pcoin = &it->second;
             // Clearly invalid input, fail
-            if (pcoin->vout.size() <= outpoint.n)
+            if (pcoin->vout.size() <= outpoint.outPoint.n)
                 return false;
-            nValueFromPresetInputs += pcoin->vout[outpoint.n].nValue;
-            setPresetCoins.emplace(pcoin, outpoint.n);
+            nValueFromPresetInputs += pcoin->vout[outpoint.outPoint.n].nValue;
+            setPresetCoins.emplace(pcoin, outpoint.outPoint.n);
         } else
             return false; // TODO: Allow non-wallet inputs
     }
