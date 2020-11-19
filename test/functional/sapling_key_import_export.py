@@ -27,7 +27,7 @@ class SaplingkeyImportExportTest (PivxTestFramework):
 
         # the sender loses 'amount' plus fee; to_addr receives exactly 'amount'
         def shielded_send(from_node, from_addr, to_addr, amount):
-            from_node.shielded_sendmany(from_addr,
+            from_node.shieldedsendmany(from_addr,
                                         [{"address": to_addr, "amount": Decimal(amount)}], 1)
             self.sync_all()
             miner.generate(1)

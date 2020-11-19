@@ -42,7 +42,7 @@ class WalletAnchorForkTest(PivxTestFramework):
         myzaddr0 = self.nodes[0].getnewshieldedaddress()
         recipients = []
         recipients.append({"address":myzaddr0, "amount": Decimal('10.0') - Decimal('0.0001')})
-        txid = self.nodes[0].shielded_sendmany(mytaddr0, recipients)
+        txid = self.nodes[0].shieldedsendmany(mytaddr0, recipients)
 
         # Sync up mempools and mine the transaction.  All nodes have the same anchor.
         self.sync_all()
@@ -72,7 +72,7 @@ class WalletAnchorForkTest(PivxTestFramework):
         # Partition A, node 0 creates a shielded transaction
         recipients = []
         recipients.append({"address":myzaddr0, "amount": Decimal('10.0') - Decimal('0.0001')})
-        txid = self.nodes[0].shielded_sendmany(mytaddr0, recipients)
+        txid = self.nodes[0].shieldedsendmany(mytaddr0, recipients)
         rawhex = self.nodes[0].getrawtransaction(txid)
 
         # Partition A, node 0 mines a block with the transaction

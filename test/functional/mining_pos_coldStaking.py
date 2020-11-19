@@ -117,7 +117,7 @@ class PIVX_ColdStakingTest(PivxTestFramework):
         assert_equal(self.nodes[1].getstakingstatus()["stakeablecoins"], 0)
         # create shielded balance for node 0
         self.log.info("Shielding some coins for node0...")
-        self.nodes[0].shielded_sendmany("from_transparent", [{"address": self.nodes[0].getnewshieldedaddress(),
+        self.nodes[0].shieldedsendmany("from_transparent", [{"address": self.nodes[0].getnewshieldedaddress(),
                                                              "amount": Decimal('250.00')}], 1, 1)
         self.sync_all()
         for i in range(6):

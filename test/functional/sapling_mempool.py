@@ -36,7 +36,7 @@ class SaplingMempoolTest(PivxTestFramework):
         # miner sends a 10 PIV note to Alice
         self.log.info("Shielding some coins for Alice...")
         alice_zaddr = alice.getnewshieldedaddress()
-        miner.shielded_sendmany("from_transparent", [{"address": alice_zaddr, "amount": Decimal('10.00')}], 1, fee)
+        miner.shieldedsendmany("from_transparent", [{"address": alice_zaddr, "amount": Decimal('10.00')}], 1, fee)
         miner.generate(1)
         self.sync_all()
         assert_equal(alice.getshieldedbalance(alice_zaddr), Decimal('10.00'))
@@ -44,12 +44,12 @@ class SaplingMempoolTest(PivxTestFramework):
         # Alice creates (but doesn't send) tx_A to transparent address tadd_A
         self.log.info("Alice creating tx_A...")
         tadd_A = alice.getnewaddress()
-        rawTx = alice.raw_shielded_sendmany(alice_zaddr, [{"address": tadd_A, "amount": Decimal('9.00')}], 1, fee)
+        rawTx = alice.rawshieldedsendmany(alice_zaddr, [{"address": tadd_A, "amount": Decimal('9.00')}], 1, fee)
 
         # Alice creates and sends tx_B, unshielding the same note to tadd_B
         self.log.info("Alice creating and sending tx_B...")
         tadd_B = alice.getnewaddress()
-        txid_B = alice.shielded_sendmany(alice_zaddr, [{"address": tadd_B, "amount": Decimal('9.00')}], 1, fee)
+        txid_B = alice.shieldedsendmany(alice_zaddr, [{"address": tadd_B, "amount": Decimal('9.00')}], 1, fee)
 
         # Miner receives tx_B and accepts it in the mempool
         assert (txid_B in alice.getrawmempool())
@@ -74,7 +74,7 @@ class SaplingMempoolTest(PivxTestFramework):
 
         # miner sends another 10 PIV note to Alice
         self.log.info("Shielding some more coins for Alice...")
-        miner.shielded_sendmany("from_transparent", [{"address": alice_zaddr, "amount": Decimal('10.00')}], 1, fee)
+        miner.shieldedsendmany("from_transparent", [{"address": alice_zaddr, "amount": Decimal('10.00')}], 1, fee)
         miner.generate(1)
         self.sync_all()
         assert_equal(alice.getshieldedbalance(alice_zaddr), Decimal('10.00'))
@@ -82,7 +82,7 @@ class SaplingMempoolTest(PivxTestFramework):
         # Alice creates and sends tx_C, unshielding the note to tadd_C
         self.log.info("Alice creating and sending tx_C...")
         tadd_C = alice.getnewaddress()
-        txC_json = alice.raw_shielded_sendmany(alice_zaddr, [{"address": tadd_C, "amount": Decimal('9.00')}], 1, fee)
+        txC_json = alice.rawshieldedsendmany(alice_zaddr, [{"address": tadd_C, "amount": Decimal('9.00')}], 1, fee)
         txid_C = alice.sendrawtransaction(txC_json['hex'])
 
         # Miner receives tx_C and accepts it in the mempool

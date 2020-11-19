@@ -24,7 +24,7 @@ class WalletChangeAddressesTest(PivxTestFramework):
         # Obtain some transparent funds
         midAddr = self.nodes[0].getnewshieldedaddress()
         # Shield almost all the balance
-        txid = self.nodes[0].shielded_sendmany(get_coinstake_address(self.nodes[0]), [{"address": midAddr, "amount": Decimal(2400)}])
+        txid = self.nodes[0].shieldedsendmany(get_coinstake_address(self.nodes[0]), [{"address": midAddr, "amount": Decimal(2400)}])
 
         self.sync_all()
         self.nodes[1].generate(1)
@@ -32,7 +32,7 @@ class WalletChangeAddressesTest(PivxTestFramework):
         taddrSource = self.nodes[0].getnewaddress()
         for _ in range(6):
             recipients = [{"address": taddrSource, "amount": Decimal('3')}]
-            txid = self.nodes[0].shielded_sendmany(midAddr, recipients, 1)
+            txid = self.nodes[0].shieldedsendmany(midAddr, recipients, 1)
             self.sync_all()
             self.nodes[1].generate(1)
             self.sync_all()
@@ -42,10 +42,10 @@ class WalletChangeAddressesTest(PivxTestFramework):
             fee = 1.0 if isTargetShielded else 0.001 # hardcoded for now
 
             # Send funds to recipient address twice
-            txid1 = self.nodes[0].shielded_sendmany(taddrSource, recipients, 1, fee)
+            txid1 = self.nodes[0].shieldedsendmany(taddrSource, recipients, 1, fee)
             self.nodes[1].generate(1)
             self.sync_all()
-            txid2 = self.nodes[0].shielded_sendmany(taddrSource, recipients, 1, fee)
+            txid2 = self.nodes[0].shieldedsendmany(taddrSource, recipients, 1, fee)
             self.nodes[1].generate(1)
             self.sync_all()
 
@@ -67,10 +67,10 @@ class WalletChangeAddressesTest(PivxTestFramework):
         saplingAddr = self.nodes[0].getnewshieldedaddress()
 
         print()
-        print('Checking shielded_sendmany(taddr->Sapling)')
+        print('Checking shieldedsendmany(taddr->Sapling)')
         check_change_taddr_reuse(saplingAddr, True)
         print()
-        print('Checking shielded_sendmany(taddr->taddr)')
+        print('Checking shieldedsendmany(taddr->taddr)')
         check_change_taddr_reuse(taddr, False)
 
 if __name__ == '__main__':
