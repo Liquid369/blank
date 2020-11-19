@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(special_tx_validation_test)
     mtx.nType = 0;
     mtx.nVersion = CTransaction::TxVersion::SAPLING;
     BOOST_CHECK(!CheckSpecialTx(CTransaction(mtx), state, true));
-    BOOST_CHECK(state.GetRejectReason().find("desn't support extra payload"));
+    BOOST_CHECK(state.GetRejectReason().find("doesn't support extra payload"));
 
     // version >= Sapling, type = 0, payload == null --> pass
     mtx.extraPayload = nullopt;

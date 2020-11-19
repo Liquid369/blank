@@ -31,7 +31,7 @@ bool CheckSpecialTx(const CTransaction& tx, CValidationState& state, bool fIsSap
     if (tx.nType == CTransaction::TxType::NORMAL) {
         // Type-0 txes don't have extra payload
         if (hasExtraPayload) {
-            return state.DoS(100, error("%s: Type 0 desn't support extra payload", __func__),
+            return state.DoS(100, error("%s: Type 0 doesn't support extra payload", __func__),
                              REJECT_INVALID, "bad-txns-type-payload");
         }
         // Normal transaction. Nothing to check
