@@ -115,6 +115,7 @@ private:
     void updateEntryLabels(QList<SendCoinsRecipient> recipients);
     void setCustomFeeSelected(bool isSelected, const CAmount& customFee = DEFAULT_TRANSACTION_FEE);
     void setCoinControlPayAmounts();
+    void resetCoinControl();
 };
 
 #endif // SEND_H

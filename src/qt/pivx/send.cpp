@@ -231,13 +231,18 @@ void SendWidget::onResetSettings()
 
 void SendWidget::onResetCustomOptions(bool fRefreshAmounts)
 {
-    coinControlDialog->coinControl->SetNull();
     ui->btnChangeAddress->setActive(false);
-    ui->btnCoinControl->setActive(false);
     if (ui->checkBoxDelegations->isChecked()) ui->checkBoxDelegations->setChecked(false);
+    resetCoinControl();
     if (fRefreshAmounts) {
         refreshAmounts();
     }
+}
+
+void SendWidget::resetCoinControl()
+{
+    coinControlDialog->coinControl->SetNull();
+    ui->btnCoinControl->setActive(false);
 }
 
 void SendWidget::clearEntries()
@@ -656,6 +661,7 @@ void SendWidget::onCheckBoxChanged()
 void SendWidget::onPIVSelected(bool _isTransparent)
 {
     isTransparent = _isTransparent;
+    resetCoinControl();
     refreshAmounts();
     updateStyle(coinIcon);
 }
