@@ -137,6 +137,16 @@ void TxDetailDialog::setData(WalletModel *_model, WalletModelTransaction* _tx)
     CAmount txFee = tx->getTransactionFee();
     CAmount totalAmount = tx->getTotalTransactionAmount() + txFee;
 
+    // inputs label
+    CWalletTx* walletTx = tx->getTransaction();
+    if (walletTx->sapData && walletTx->sapData->vShieldedSpend.empty()) {
+        ui->labelTitlePrevTx->setText(tr("Previous Transaction"));
+        ui->labelOutputIndex->setText(tr("Output Index"));
+    } else {
+        ui->labelTitlePrevTx->setText(tr("Note From Address"));
+        ui->labelOutputIndex->setText(tr("Note Amount"));
+    }
+
     ui->textAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, totalAmount, false, BitcoinUnits::separatorAlways) + " (Fee included)");
     int nRecipients = tx->getRecipients().size();
     if (nRecipients == 1) {
@@ -172,6 +182,17 @@ void TxDetailDialog::accept()
     QDialog::accept();
 }
 
+void loadInputs(const QString& leftLabel, const QString& rightLabel, QGridLayout *gridLayoutInput, int pos)
+{
+    QLabel *label_txid = new QLabel(leftLabel);
+    QLabel *label_txidn = new QLabel(rightLabel);
+    label_txidn->setAlignment(Qt::AlignCenter | Qt::AlignRight);
+    setCssProperty({label_txid, label_txidn}, "text-body2-dialog");
+
+    gridLayoutInput->addWidget(label_txid, pos, 0);
+    gridLayoutInput->addWidget(label_txidn, pos, 1);
+}
+
 void TxDetailDialog::onInputsClicked()
 {
     if (ui->gridInputs->isVisible()) {
@@ -182,18 +203,25 @@ void TxDetailDialog::onInputsClicked()
             inputsLoaded = true;
             const CWalletTx* walletTx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
             if (walletTx) {
-                ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->vin.size()));
-                int i = 1;
-                for (const CTxIn &in : walletTx->vin) {
-                    QString hash = QString::fromStdString(in.prevout.hash.GetHex());
-                    QLabel *label_txid = new QLabel(hash.left(18) + "..." + hash.right(18));
-                    QLabel *label_txidn = new QLabel(QString::number(in.prevout.n));
-                    label_txidn->setAlignment(Qt::AlignCenter | Qt::AlignRight);
-                    setCssProperty({label_txid, label_txidn}, "text-body2-dialog");
-
-                    ui->gridLayoutInput->addWidget(label_txid,i,0);
-                    ui->gridLayoutInput->addWidget(label_txidn,i,1);
-                    i++;
+                if (walletTx->sapData && walletTx->sapData->vShieldedSpend.empty()) {
+                    // transparent inputs
+                    ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->vin.size()));
+                    int i = 1;
+                    for (const CTxIn& in : walletTx->vin) {
+                        QString hash = QString::fromStdString(in.prevout.hash.GetHex());
+                        loadInputs(hash.left(18) + "..." + hash.right(18),
+                                   QString::number(in.prevout.n),
+                                   ui->gridLayoutInput, i);
+                        i++;
+                    }
+                } else {
+                    // TODO: load shielded spends.
+                    // note: the spends could be or not in the wallet, remember that this dialog is called
+                    // from the dashboard as a tx detail dialog and from the send screen as a confirmation dialog.
+                    // In case of the dashboard call, we need to know whether the tx is from me or not,
+                    // if it's not from this wallet then we don't have any information about the inputs and should do nothing here.
+                    // but well.. for now, just hide everything until gets implemented.
+                    ui->gridInputs->setVisible(false);
                 }
             }
         }
