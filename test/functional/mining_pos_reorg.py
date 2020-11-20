@@ -51,16 +51,11 @@ class ReorgStakeTest(PivxTestFramework):
         wi = self.nodes[nodeid].getwalletinfo()
         return wi['balance'] + wi['immature_balance']
 
-    def check_money_supply(self, expected_piv, expected_zpiv):
-        # verify that nodes have the expected PIV and zPIV supply
+    def check_money_supply(self, expected_piv):
+        # verify that nodes have the expected PIV supply
         piv_supply = [self.nodes[i].getsupplyinfo(True)['supply']
                       for i in range(self.num_nodes)]
         assert_equal(piv_supply, [DecimalAmt(expected_piv)] * self.num_nodes)
-        zpiv_supply = [self.nodes[i].getinfo()['zPIVsupply']
-                       for i in range(self.num_nodes)]
-        for s in zpiv_supply:
-            for denom in s:
-                assert_equal(s[denom], DecimalAmt(expected_zpiv[denom]))
 
 
     def run_test(self):
@@ -71,23 +66,9 @@ class ReorgStakeTest(PivxTestFramework):
                     return True, x
             return False, None
 
-        # Check PIV and zPIV supply at the beginning
-        # ------------------------------------------
-        # zPIV supply: 2 coins for each denomination
-        expected_zpiv_supply = {
-            "1": 2,
-            "5": 10,
-            "10": 20,
-            "50": 100,
-            "100": 200,
-            "500": 1000,
-            "1000": 2000,
-            "5000": 10000,
-            "total": 13332,
-        }
         # PIV supply: block rewards minus burned fees for minting minus mint values
         expected_money_supply = 250.0 * 330 - 16 * 0.01 - 2 * 6666
-        self.check_money_supply(expected_money_supply, expected_zpiv_supply)
+        self.check_money_supply(expected_money_supply)
 
         # Stake with node 0 and node 1 up to public spend activation (400)
         # 70 blocks: 5 blocks each (x7)
@@ -112,19 +93,7 @@ class ReorgStakeTest(PivxTestFramework):
         assert_equal(self.nodes[2].getzerocoinbalance()['Total'], DecimalAmt(6666))
         self.log.info("Balances ok.")
 
-        # create the raw zerocoin spend txes
-        addy = self.nodes[2].getnewaddress()
-        self.log.info("Creating the raw zerocoin public spends...")
-        mints = self.nodes[2].listmintedzerocoins(True, True)
-        tx_A0 = self.nodes[2].createrawzerocoinspend(mints[0]["serial hash"], addy)
-        tx_A1 = self.nodes[2].createrawzerocoinspend(mints[1]["serial hash"], addy)
-        # Spending same coins to different recipients to get different txids
-        new_addy = "yAVWM5urwaTyhiuFQHP2aP47rdZsLUG5PH"
-        tx_B0 = self.nodes[2].createrawzerocoinspend(mints[0]["serial hash"], new_addy)
-        tx_B1 = self.nodes[2].createrawzerocoinspend(mints[1]["serial hash"], new_addy)
-
         # Disconnect nodes
-        minted_amount = mints[0]["denomination"] + mints[1]["denomination"]
         self.disconnect_all()
 
         # Stake one block with node-0 and save the stake input
@@ -148,10 +117,6 @@ class ReorgStakeTest(PivxTestFramework):
         self.log.info("Coinstake input %s...%s-%d is no longer spendable." % (
             stakeinput["txid"][:9], stakeinput["txid"][-4:], stakeinput["vout"]))
 
-        # Relay zerocoin spends
-        txid_A0  = self.nodes[0].sendrawtransaction(tx_A0)
-        txid_A1 = self.nodes[0].sendrawtransaction(tx_A1)
-
         # Stake 10 more blocks with node-0 and check balances
         self.log.info("Staking 10 more blocks with node 0...")
         for i in range(10):
@@ -160,21 +125,10 @@ class ReorgStakeTest(PivxTestFramework):
         assert_equal(self.get_tot_balance(0), expected_balance_0)
         self.log.info("Balance for node 0 checks out.")
 
-        # Connect with node 2, sync and check zerocoin balance
+        # Connect with node 2 and sync
         self.log.info("Reconnecting node 0 and node 2")
         connect_nodes(self.nodes[0], 2)
         sync_blocks([self.nodes[i] for i in [0, 2]])
-        self.log.info("Resetting zerocoin mints on node 2")
-        self.nodes[2].resetmintzerocoin(True)
-        assert_equal(self.get_tot_balance(2), initial_balance[2] + DecimalAmt(minted_amount))
-        assert_equal(self.nodes[2].getzerocoinbalance()['Total'], DecimalAmt(6666-minted_amount))
-        self.log.info("Balance for node 2 checks out.")
-
-        # Double spending txes not possible
-        assert_raises_rpc_error(-26, "bad-zc-spend-contextcheck",
-                                self.nodes[0].sendrawtransaction, tx_B0)
-        assert_raises_rpc_error(-26, "bad-zc-spend-contextcheck",
-                                self.nodes[0].sendrawtransaction, tx_B1)
 
         # verify that the stakeinput can't be spent
         stakeinput_tx_json = self.nodes[0].getrawtransaction(stakeinput["txid"], True)
@@ -195,10 +149,6 @@ class ReorgStakeTest(PivxTestFramework):
         except Exception as e:
             raise AssertionError("Unexpected exception raised: " + type(e).__name__)
         self.log.info("GOOD: v2 spend was not possible.")
-
-        # Spend tx_B0 and tx_B1 on the other chain
-        self.nodes[1].sendrawtransaction(tx_B0)
-        self.nodes[1].sendrawtransaction(tx_B1)
 
         # Stake 12 blocks with node-1
         set_node_times(self.nodes, block_time_1)
@@ -233,16 +183,10 @@ class ReorgStakeTest(PivxTestFramework):
         res, utxo = findUtxoInList(stakeinput["txid"], stakeinput["vout"], self.nodes[0].listunspent())
         assert (not res or not utxo["spendable"])
 
-        # Verify that PIV and zPIV supplies were properly updated after the spends and reorgs
-        self.log.info("Check PIV and zPIV supply...")
+        # Verify that PIV supply was properly updated after the reorgs
+        self.log.info("Check PIV supply...")
         expected_money_supply += 250.0 * (self.nodes[1].getblockcount() - 330)
-        spent_coin_0 = mints[0]["denomination"]
-        spent_coin_1 = mints[1]["denomination"]
-        expected_zpiv_supply[str(spent_coin_0)] -= spent_coin_0
-        expected_zpiv_supply[str(spent_coin_1)] -= spent_coin_1
-        expected_zpiv_supply["total"] -= minted_amount
-        expected_money_supply += minted_amount
-        self.check_money_supply(expected_money_supply, expected_zpiv_supply)
+        self.check_money_supply(expected_money_supply)
         self.log.info("Supply checks out.")
 
 

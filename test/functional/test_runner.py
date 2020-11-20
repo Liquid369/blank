@@ -67,7 +67,6 @@ BASE_SCRIPTS= [
     'mining_pos_reorg.py',                      # ~ 212 sec
     'wallet_abandonconflict.py',                # ~ 212 sec
     'wallet_hd.py',                             # ~ 210 sec
-    'wallet_zerocoin_publicspends.py',          # ~ 202 sec
     'feature_logging.py',                       # ~ 200 sec
     'rpc_rawtransaction.py',                    # ~ 193 sec
     'wallet_keypool_topup.py',                  # ~ 174 sec
