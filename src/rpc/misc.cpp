@@ -68,9 +68,10 @@ UniValue getinfo(const JSONRPCRequest& request)
             "  \"proxy\": \"host:port\",       (string, optional) the proxy used by the server\n"
             "  \"difficulty\": xxxxxx,         (numeric) the current difficulty\n"
             "  \"testnet\": true|false,        (boolean) if the server is using testnet or not\n"
-            "  \"moneysupply\" : \"supply\"    (numeric) The sum of the value of all unspent outputs when the chainstate was\n"
+            "  \"transparentsupply\" : n       (numeric) The sum of the value of all unspent outputs when the chainstate was\n"
             "                                            last flushed to disk (use getsupplyinfo to know the update-height, or\n"
             "                                            to trigger the money supply update/recalculation)"
+            "  \"shieldedsupply\": n           (numeric) Chain tip shielded pool value\n"
             "  \"zPIVsupply\" :\n"
             "  {\n"
             "     \"1\" : n,            (numeric) supply of 1 zPIV denomination\n"
@@ -143,7 +144,8 @@ UniValue getinfo(const JSONRPCRequest& request)
 
     // Add (cached) money supply via getsupplyinfo RPC
     UniValue supply_info = getsupplyinfo(JSONRPCRequest());
-    obj.pushKV("moneysupply", supply_info["supply"]);
+    obj.pushKV("transparentsupply", supply_info["transparentsupply"]);
+    obj.pushKV("shieldedsupply", supply_info["shieldedsupply"]);
 
     UniValue zpivObj(UniValue::VOBJ);
     for (auto denom : libzerocoin::zerocoinDenomList) {
