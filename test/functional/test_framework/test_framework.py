@@ -23,7 +23,6 @@ from .blocktools import (
     create_block,
     create_coinbase_pos,
     create_transaction_from_outpoint,
-    is_zerocoin,
 )
 from .key import CECKey
 from .messages import (
@@ -594,40 +593,30 @@ class PivxTestFramework():
         self.DUMMY_KEY = CECKey()
         self.DUMMY_KEY.set_secretbytes(hash256(pack('<I', 0xffff)))
 
-    def get_prevouts(self, node_id, utxo_list, zpos=False, nHeight=-1):
+    def get_prevouts(self, node_id, utxo_list):
         """ get prevouts (map) for each utxo in a list
-        :param   node_id:                   (int) index of the CTestNode used as rpc connection. Must own the utxos.
-                 utxo_list: <if zpos=False> (JSON list) utxos returned from listunspent used as input
-                            <if zpos=True>  (JSON list) mints returned from listmintedzerocoins used as input
-                 zpos:                      (bool) type of utxo_list
-                 nHeight:                   (int) height of the previous block. used only if zpos=True for
-                                            stake checksum. Optional, if not provided rpc_conn's height is used.
+        :param   node_id:          (int) index of the CTestNode used as rpc connection. Must own the utxos.
+                 utxo_list:        (JSON list) utxos returned from listunspent used as input
         :return: prevouts:         ({bytes --> (int, bytes, int)} dictionary)
-                                   maps CStake "uniqueness" (i.e. serialized COutPoint -or hash stake, for zpiv-)
+                                   maps CStake "uniqueness" (i.e. serialized COutPoint)
                                    to (amount, prevScript, timeBlockFrom).
-                                   For zpiv prevScript is replaced with serialHash hex string.
         """
         assert_greater_than(len(self.nodes), node_id)
         rpc_conn = self.nodes[node_id]
         prevouts = {}
 
         for utxo in utxo_list:
-            if not zpos:
-                outPoint = COutPoint(int(utxo['txid'], 16), utxo['vout'])
-                outValue = int(utxo['amount']) * COIN
-                prevtx_json = rpc_conn.getrawtransaction(utxo['txid'], 1)
-                prevTx = CTransaction()
-                prevTx.deserialize(BytesIO(hex_str_to_bytes(prevtx_json['hex'])))
-                if (prevTx.is_coinbase() or prevTx.is_coinstake()) and utxo['confirmations'] < 100:
-                    # skip immature coins
-                    continue
-                prevScript = prevtx_json['vout'][utxo['vout']]['scriptPubKey']['hex']
-                prevTime = prevtx_json['blocktime']
-                prevouts[outPoint.serialize_uniqueness()] = (outValue, prevScript, prevTime)
-
-            else:
-                uniqueness = bytes.fromhex(utxo['hash stake'])[::-1]
-                prevouts[uniqueness] = (int(utxo["denomination"]) * COIN, utxo["serial hash"], 0)
+            outPoint = COutPoint(int(utxo['txid'], 16), utxo['vout'])
+            outValue = int(utxo['amount']) * COIN
+            prevtx_json = rpc_conn.getrawtransaction(utxo['txid'], 1)
+            prevTx = CTransaction()
+            prevTx.deserialize(BytesIO(hex_str_to_bytes(prevtx_json['hex'])))
+            if (prevTx.is_coinbase() or prevTx.is_coinstake()) and utxo['confirmations'] < 100:
+                # skip immature coins
+                continue
+            prevScript = prevtx_json['vout'][utxo['vout']]['scriptPubKey']['hex']
+            prevTime = prevtx_json['blocktime']
+            prevouts[outPoint.serialize_uniqueness()] = (outValue, prevScript, prevTime)
 
         return prevouts
 
@@ -636,9 +625,8 @@ class PivxTestFramework():
         """ makes a list of CTransactions each spending an input from spending PrevOuts to an output to_pubKey
         :param   node_id:            (int) index of the CTestNode used as rpc connection. Must own spendingPrevOuts.
                  spendingPrevouts:   ({bytes --> (int, bytes, int)} dictionary)
-                                     maps CStake "uniqueness" (i.e. serialized COutPoint -or hash stake, for zpiv-)
+                                     maps CStake "uniqueness" (i.e. serialized COutPoint)
                                      to (amount, prevScript, timeBlockFrom).
-                                     For zpiv prevScript is replaced with serialHash hex string.
                  to_pubKey           (bytes) recipient public key
         :return: block_txes:         ([CTransaction] list)
         """
@@ -646,19 +634,13 @@ class PivxTestFramework():
         rpc_conn = self.nodes[node_id]
         block_txes = []
         for uniqueness in spendingPrevOuts:
-            if is_zerocoin(uniqueness):
-                # spend zPIV
-                _, serialHash, _ = spendingPrevOuts[uniqueness]
-                raw_spend = rpc_conn.createrawzerocoinspend(serialHash, "", False)
-            else:
-                # spend PIV
-                value_out = int(spendingPrevOuts[uniqueness][0] - DEFAULT_FEE * COIN)
-                scriptPubKey = CScript([to_pubKey, OP_CHECKSIG])
-                prevout = COutPoint()
-                prevout.deserialize_uniqueness(BytesIO(uniqueness))
-                tx = create_transaction_from_outpoint(prevout, b"", value_out, scriptPubKey)
-                # sign tx
-                raw_spend = rpc_conn.signrawtransaction(bytes_to_hex_str(tx.serialize()))['hex']
+            value_out = int(spendingPrevOuts[uniqueness][0] - DEFAULT_FEE * COIN)
+            scriptPubKey = CScript([to_pubKey, OP_CHECKSIG])
+            prevout = COutPoint()
+            prevout.deserialize_uniqueness(BytesIO(uniqueness))
+            tx = create_transaction_from_outpoint(prevout, b"", value_out, scriptPubKey)
+            # sign tx
+            raw_spend = rpc_conn.signrawtransaction(bytes_to_hex_str(tx.serialize()))['hex']
             # add signed tx to the list
             signed_tx = CTransaction()
             signed_tx.from_hex(raw_spend)
@@ -686,9 +668,8 @@ class PivxTestFramework():
                  prevModifier       (string) hex string of the previous block stake modifier
                  finalsaplingroot   (string) hex string of the previous block sapling root (blocks V8)
                  stakeableUtxos:    ({bytes --> (int, bytes, int)} dictionary)
-                                    maps CStake "uniqueness" (i.e. serialized COutPoint -or hash stake, for zpiv-)
+                                    maps CStake "uniqueness" (i.e. serialized COutPoint)
                                     to (amount, prevScript, timeBlockFrom).
-                                    For zpiv prevScript is replaced with serialHash hex string.
                  startTime:         (int) epoch time to be used as blocktime (iterated in solve_stake)
                  privKeyWIF:        (string) private key to be used for staking/signing
                                     If empty string, it will be used the pk from the stake input
@@ -713,43 +694,37 @@ class PivxTestFramework():
         # Find valid kernel hash - iterates stakeableUtxos, then block.nTime
         block.solve_stake(stakeableUtxos, int(prevModifier, 16))
 
-        # Check if this is a zPoS block or regular/cold stake - sign stake tx
         block_sig_key = CECKey()
-        isZPoS = is_zerocoin(block.prevoutStake)
-        if isZPoS:
-            # !TODO: remove me
-            raise Exception("zPOS tests discontinued")
 
+        coinstakeTx_unsigned = CTransaction()
+        prevout = COutPoint()
+        prevout.deserialize_uniqueness(BytesIO(block.prevoutStake))
+        coinstakeTx_unsigned.vin.append(CTxIn(prevout, b"", 0xffffffff))
+        coinstakeTx_unsigned.vout.append(CTxOut())
+        amount, prevScript, _ = stakeableUtxos[block.prevoutStake]
+        outNValue = int(amount + 250 * COIN)
+        coinstakeTx_unsigned.vout.append(CTxOut(outNValue, hex_str_to_bytes(prevScript)))
+        if privKeyWIF == "":
+            # Use dummy key
+            if not hasattr(self, 'DUMMY_KEY'):
+                self.init_dummy_key()
+            block_sig_key = self.DUMMY_KEY
+            # replace coinstake output script
+            coinstakeTx_unsigned.vout[1].scriptPubKey = CScript([block_sig_key.get_pubkey(), OP_CHECKSIG])
         else:
-            coinstakeTx_unsigned = CTransaction()
-            prevout = COutPoint()
-            prevout.deserialize_uniqueness(BytesIO(block.prevoutStake))
-            coinstakeTx_unsigned.vin.append(CTxIn(prevout, b"", 0xffffffff))
-            coinstakeTx_unsigned.vout.append(CTxOut())
-            amount, prevScript, _ = stakeableUtxos[block.prevoutStake]
-            outNValue = int(amount + 250 * COIN)
-            coinstakeTx_unsigned.vout.append(CTxOut(outNValue, hex_str_to_bytes(prevScript)))
-            if privKeyWIF == "":
-                # Use dummy key
-                if not hasattr(self, 'DUMMY_KEY'):
-                    self.init_dummy_key()
-                block_sig_key = self.DUMMY_KEY
-                # replace coinstake output script
-                coinstakeTx_unsigned.vout[1].scriptPubKey = CScript([block_sig_key.get_pubkey(), OP_CHECKSIG])
-            else:
-                if privKeyWIF == None:
-                    # Use pk of the input. Ask sk from rpc_conn
-                    rawtx = rpc_conn.getrawtransaction('{:064x}'.format(prevout.hash), True)
-                    privKeyWIF = rpc_conn.dumpprivkey(rawtx["vout"][prevout.n]["scriptPubKey"]["addresses"][0])
-                # Use the provided privKeyWIF (cold staking).
-                # export the corresponding private key to sign block
-                privKey, compressed = wif_to_privkey(privKeyWIF)
-                block_sig_key.set_compressed(compressed)
-                block_sig_key.set_secretbytes(bytes.fromhex(privKey))
+            if privKeyWIF == None:
+                # Use pk of the input. Ask sk from rpc_conn
+                rawtx = rpc_conn.getrawtransaction('{:064x}'.format(prevout.hash), True)
+                privKeyWIF = rpc_conn.dumpprivkey(rawtx["vout"][prevout.n]["scriptPubKey"]["addresses"][0])
+            # Use the provided privKeyWIF (cold staking).
+            # export the corresponding private key to sign block
+            privKey, compressed = wif_to_privkey(privKeyWIF)
+            block_sig_key.set_compressed(compressed)
+            block_sig_key.set_secretbytes(bytes.fromhex(privKey))
 
-            # Sign coinstake TX and add it to the block
-            stake_tx_signed_raw_hex = rpc_conn.signrawtransaction(
-                bytes_to_hex_str(coinstakeTx_unsigned.serialize()))['hex']
+        # Sign coinstake TX and add it to the block
+        stake_tx_signed_raw_hex = rpc_conn.signrawtransaction(
+            bytes_to_hex_str(coinstakeTx_unsigned.serialize()))['hex']
 
         # Add coinstake to the block
         coinstakeTx = CTransaction()
@@ -759,11 +734,8 @@ class PivxTestFramework():
         # Add provided transactions to the block.
         # Don't add tx doublespending the coinstake input, unless fDoubleSpend=True
         for tx in vtx:
-            if not fDoubleSpend:
-                # assume txes don't double spend zPIV inputs when fDoubleSpend is false. It needs to
-                # be checked outside until a convenient tx.spends(zerocoin) is added to the framework.
-                if not isZPoS and tx.spends(prevout):
-                    continue
+            if not fDoubleSpend and tx.spends(prevout):
+                continue
             block.vtx.append(tx)
 
         # Get correct MerkleRoot and rehash block

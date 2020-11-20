@@ -66,7 +66,7 @@ class ReorgStakeTest(PivxTestFramework):
                     return True, x
             return False, None
 
-        # PIV supply: block rewards minus burned fees for minting minus mint values
+        # PIV supply: block rewards
         expected_money_supply = 250.0 * 200
         self.check_money_supply(expected_money_supply)
         block_time_0 = block_time_1 = self.mocktime
