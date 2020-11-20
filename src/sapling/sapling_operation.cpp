@@ -335,26 +335,42 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues, const std::vecto
 
 OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& ovk)
 {
-    // if we already have selected the notes, let's directly set them.
-    if (coinControl && coinControl->HasSelected()) {
-        // todo: add notes selection.
-    }
-
     shieldedInputs.clear();
-    pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(shieldedInputs, fromAddress.fromSapAddr, mindepth);
+    // if we already have selected the notes, let's directly set them.
+    bool hasCoinControl = coinControl && coinControl->HasSelected();
+    if (hasCoinControl) {
+        std::vector<OutPointWrapper> vCoins;
+        coinControl->ListSelected(vCoins);
 
-    for (const auto& entry : shieldedInputs) {
-        std::string data(entry.memo.begin(), entry.memo.end());
-        LogPrint(BCLog::SAPLING,"%s: found unspent Sapling note (txid=%s, vShieldedSpend=%d, amount=%s, memo=%s)\n",
-                 __func__ ,
-                 entry.op.hash.ToString().substr(0, 10),
-                 entry.op.n,
-                 FormatMoney(entry.note.value()),
-                 HexStr(data).substr(0, 10));
-    }
+        // Converting outpoint wrapper to sapling outpoints
+        std::vector<SaplingOutPoint> vSaplingOutpoints;
+        for (const auto& outpoint : vCoins) {
+            vSaplingOutpoints.emplace_back(outpoint.outPoint.hash, outpoint.outPoint.n);
+        }
 
-    if (shieldedInputs.empty()) {
-        return errorOut("Insufficient funds, no available notes to spend");
+        pwalletMain->GetSaplingScriptPubKeyMan()->GetNotes(vSaplingOutpoints, shieldedInputs);
+
+        if (shieldedInputs.empty()) {
+            return errorOut("Insufficient funds, no available notes to spend");
+        }
+    } else {
+        // If we don't have coinControl then let's find the notes
+        pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(shieldedInputs, fromAddress.fromSapAddr, mindepth);
+
+        for (const auto& entry : shieldedInputs) {
+            std::string data(entry.memo.begin(), entry.memo.end());
+            LogPrint(BCLog::SAPLING,
+                     "%s: found unspent Sapling note (txid=%s, vShieldedSpend=%d, amount=%s, memo=%s)\n",
+                     __func__,
+                     entry.op.hash.ToString().substr(0, 10),
+                     entry.op.n,
+                     FormatMoney(entry.note.value()),
+                     HexStr(data).substr(0, 10));
+        }
+
+        if (shieldedInputs.empty()) {
+            return errorOut("Insufficient funds, no available notes to spend");
+        }
     }
 
     // sort in descending order, so big notes appear first
@@ -387,7 +403,8 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& 
         ops.emplace_back(t.op);
         notes.emplace_back(t.note);
         txValues.shieldedInTotal += t.note.value();
-        if (txValues.shieldedInTotal >= txValues.target) {
+        if (!hasCoinControl && txValues.shieldedInTotal >= txValues.target) {
+            // coin control selection by pass this check, uses all the selected notes.
             // Select another note if there is change less than the dust threshold.
             dustChange = txValues.shieldedInTotal - txValues.target;
             if (dustChange == 0 || dustChange >= dustThreshold) {
