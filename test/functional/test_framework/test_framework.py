@@ -426,7 +426,7 @@ class PivxTestFramework():
             rpc_handler.setLevel(logging.DEBUG)
             rpc_logger.addHandler(rpc_handler)
 
-    def _initialize_chain(self, toPosPhase=False):
+    def _initialize_chain(self):
         """Initialize a pre-mined blockchain for use by the test."""
 
         def create_cachedir(cachedir):
@@ -481,9 +481,9 @@ class PivxTestFramework():
                     powcachedir = os.path.join(self.options.cachedir, "pow")
                     self.log.info("Found old cachedir. Migrating to %s" % str(powcachedir))
                     copy_cachedir(self.options.cachedir, powcachedir)
-                # remove everything except pow and pos subdirs
+                # remove everything except pow subdir
                 for entry in os.listdir(self.options.cachedir):
-                    if entry not in ['pow', 'pos']:
+                    if entry != 'pow':
                         entry_path = os.path.join(self.options.cachedir, entry)
                         if os.path.isfile(entry_path):
                             os.remove(entry_path)
@@ -565,115 +565,17 @@ class PivxTestFramework():
         clean_cache_dir()
         powcachedir = os.path.join(self.options.cachedir, "pow")
         is_powcache_valid = cachedir_valid(powcachedir)
-        poscachedir = os.path.join(self.options.cachedir, "pos")
-        is_poscache_valid = cachedir_valid(poscachedir)
 
-        if not toPosPhase and not is_powcache_valid:
+        if not is_powcache_valid:
             self.log.info("PoW-CACHE NOT FOUND or INVALID.")
             self.log.info("Creating new cached blockchain data.")
             generate_pow_cache()
-
-        elif toPosPhase and not is_poscache_valid:
-            self.log.info("PoS-CACHE NOT FOUND or INVALID.")
-            self.log.info("Creating new cached blockchain data.")
-
-            # check if first 200 blocks (pow cache) is present. if not generate it.
-            if not is_powcache_valid:
-                self.log.info("PoW-CACHE NOT FOUND or INVALID. Generating it first.")
-                generate_pow_cache()
-
-            self.enable_mocktime()
-            block_time = self.mocktime - (131 * 60)
-
-            ### POS Cache ###
-            # Create a 330-block-long chain
-            # First 200 PoW blocks are copied from PoW chain.
-            # The next 48 PoW blocks are mined in 12-blocks bursts by the first 4 nodes.
-            # The last 2 PoW blocks are then mined by the last node (Node 3).
-            # Then 80 PoS blocks are generated in 20-blocks bursts by the first 4 nodes.
-            #
-            # - Node 0 and node 1 get 62 mature blocks (pow) + 20 immmature (pos)
-            #   42 rewards spendable (62 mature blocks - 20 spent rewards)
-            # - Node 2 gets 56 mature blocks (pow) + 26 immmature (6 pow + 20 pos)
-            #   35 rewards spendable (55 mature blocks - 20 spent rewards)
-            # - Node 3 gets 50 mature blocks (pow) + 34 immmature (14 pow + 20 pos)
-            #   30 rewards spendable (50 mature blocks - 20 spent rewards)
-            # - Nodes 2 and 3 mint one zerocoin for each denom (tot 6666 PIV) on block 301/302
-            #   8 mature zc + 8/3 rewards spendable (35/30 - 27 spent) + change 83.92
-            #
-            # Block 331-336 will mature last 6 pow blocks mined by node 2.
-            # Then 337-350 will mature last 14 pow blocks mined by node 3.
-            # Then staked blocks start maturing at height 351.
-
-            # Create cache directories, run pivxds:
-            create_cachedir(poscachedir)
-            self.log.info("Creating 'PoS-chain': 330 blocks")
-            self.log.info("Copying 200 initial blocks from pow cache")
-            copy_cachedir(powcachedir, poscachedir)
-            # Change datadir and restart the nodes (only 4 of them)
-            start_nodes_from_dir(poscachedir, 4)
-
-            # Mine 50 more blocks to reach PoS start.
-            self.log.info("Mining 50 more blocks to reach PoS phase")
-            for peer in range(4):
-                for j in range(12):
-                    set_node_times(self.nodes, block_time)
-                    self.nodes[peer].generate(1)
-                    block_time += 60
-                # Must sync before next peer starts generating blocks
-                if peer < 3:
-                    sync_blocks(self.nodes)
-            set_node_times(self.nodes, block_time)
-            self.nodes[3].generate(2)
-            block_time += 60
-            sync_blocks(self.nodes)
-
-            # Then stake 80 blocks.
-            self.log.info("Staking 80 blocks...")
-            nBlocks = 250
-            res = []    # used to save the two txids for change outputs of mints (locked)
-            for peer in range(4):
-                for j in range(20):
-                    # Stake block
-                    block_time = self.generate_pos(peer, block_time)
-                    nBlocks += 1
-                    # Mint zerocoins with node-2 at block 301 and with node-3 at block 302
-                    if nBlocks == 301 or nBlocks == 302:
-                        # mints 7 zerocoins, one for each denom (tot 6666 PIV), fee = 0.01 * 8
-                        # consumes 27 utxos (tot 6750 PIV), change = 6750 - 6666 - fee
-                        res.append(self.nodes[nBlocks-299].mintzerocoin(6666))
-                        self.sync_all()
-                        # lock the change output (so it's not used as stake input in generate_pos)
-                        assert (self.nodes[nBlocks-299].lockunspent(False, [{"txid": res[-1]['txid'], "vout": 8}]))
-                # Must sync before next peer starts generating blocks
-                sync_blocks(self.nodes)
-                time.sleep(1)
-
-            self.log.info("80 blocks staked")
-
-            # Unlock previously locked change outputs
-            for i in [2, 3]:
-                assert (self.nodes[i].lockunspent(True, [{"txid": res[i-2]['txid'], "vout": 8}]))
-
-            # Verify height and balances
-            self.test_PoS_chain_balances()
-
-            # Shut nodes down, and clean up cache directories:
-            self.log.info("Stopping nodes")
-            stop_and_clean_cache_dir(poscachedir)
-            self.log.info("--> pos cache created")
-            self.disable_mocktime()
-
         else:
             self.log.info("CACHE FOUND.")
 
         # Copy requested cache to tempdir
-        if toPosPhase:
-            self.log.info("Copying datadir from %s to %s" % (poscachedir, self.options.tmpdir))
-            copy_cachedir(poscachedir, self.options.tmpdir, self.num_nodes)
-        else:
-            self.log.info("Copying datadir from %s to %s" % (powcachedir, self.options.tmpdir))
-            copy_cachedir(powcachedir, self.options.tmpdir, self.num_nodes)
+        self.log.info("Copying datadir from %s to %s" % (powcachedir, self.options.tmpdir))
+        copy_cachedir(powcachedir, self.options.tmpdir, self.num_nodes)
 
 
 
@@ -691,69 +593,6 @@ class PivxTestFramework():
     def init_dummy_key(self):
         self.DUMMY_KEY = CECKey()
         self.DUMMY_KEY.set_secretbytes(hash256(pack('<I', 0xffff)))
-
-    def test_PoS_chain_balances(self):
-        from .util import DecimalAmt
-        # 330 blocks
-        # - Nodes 0 and 1 get 82 blocks:
-        # 62 pow + 20 pos (20 immature)
-        # - Nodes 2 gets 82 blocks:
-        # 62 pow + 20 pos (26 immature)
-        # - Nodes 3 gets 84 blocks:
-        # 64 pow + 20 pos (34 immature)
-        # - Nodes 2 and 3 have 6666 PIV worth of zerocoins
-        zc_tot = sum(vZC_DENOMS)
-        zc_fee = len(vZC_DENOMS) * 0.01
-        used_utxos = (zc_tot // 250) + 1
-        zc_change = 250 * used_utxos - zc_tot - zc_fee
-
-        # check at least 1 node and at most 5
-        num_nodes = min(5, len(self.nodes))
-        assert_greater_than(num_nodes, 0)
-
-        # each node has the same height and tip
-        best_block = self.nodes[0].getbestblockhash()
-        for i in range(num_nodes):
-            assert_equal(self.nodes[i].getblockcount(), 330)
-            if i > 0:
-                assert_equal(self.nodes[i].getbestblockhash(), best_block)
-
-        # balance is mature pow blocks rewards minus stake inputs (spent)
-        w_info = [self.nodes[i].getwalletinfo() for i in range(num_nodes)]
-        assert_equal(w_info[0]["balance"], DecimalAmt(250.0 * (62 - 20)))
-        assert_equal(w_info[1]["balance"], DecimalAmt(250.0 * (62 - 20)))
-        assert_equal(w_info[2]["balance"], DecimalAmt(250.0 * (56 - 20) - (used_utxos * 250) + zc_change))
-        assert_equal(w_info[3]["balance"], DecimalAmt(250.0 * (50 - 20) - (used_utxos * 250) + zc_change))
-        for i in range(4, num_nodes):
-            # only first 4 nodes have mined/staked
-            assert_equal(w_info[i]["balance"], DecimalAmt(0))
-
-        # immature balance is immature pow blocks rewards plus
-        # immature stakes (outputs=inputs+rewards)
-        assert_equal(w_info[0]["immature_balance"], DecimalAmt(500.0 * 20))
-        assert_equal(w_info[1]["immature_balance"], DecimalAmt(500.0 * 20))
-        assert_equal(w_info[2]["immature_balance"], DecimalAmt((250.0 * 6) + (500.0 * 20)))
-        assert_equal(w_info[3]["immature_balance"], DecimalAmt((250.0 * 14) + (500.0 * 20)))
-        for i in range(4, num_nodes):
-            # only first 4 nodes have mined/staked
-            assert_equal(w_info[i]["immature_balance"], DecimalAmt(0))
-
-        # check zerocoin balances / mints
-        for peer in [2, 3]:
-            if num_nodes > peer:
-                zcBalance = self.nodes[peer].getzerocoinbalance()
-                zclist = self.nodes[peer].listmintedzerocoins(True)
-                zclist_spendable = self.nodes[peer].listmintedzerocoins(True, True)
-                assert_equal(len(zclist), len(vZC_DENOMS))
-                assert_equal(zcBalance['Total'], 6666)
-                assert_equal(zcBalance['Immature'], 0)
-                if peer == 2:
-                    assert_equal(len(zclist), len(zclist_spendable))
-                assert_equal(set([x['denomination'] for x in zclist]), set(vZC_DENOMS))
-                assert_equal([x['confirmations'] for x in zclist], [30-peer] * len(vZC_DENOMS))
-
-        self.log.info("Balances of first %d nodes check out" % num_nodes)
-
 
     def get_prevouts(self, node_id, utxo_list, zpos=False, nHeight=-1):
         """ get prevouts (map) for each utxo in a list

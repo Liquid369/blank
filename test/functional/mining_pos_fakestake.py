@@ -64,6 +64,7 @@ class FakeStakeTest(PivxTestFramework):
 
     def setup_chain(self):
         # Start with PoW cache: 200 blocks
+        self.log.info("Initializing test directory " + self.options.tmpdir)
         self._initialize_chain()
         self.enable_mocktime()
 

@@ -20,6 +20,7 @@ class PIVX_RPCSporkTest(PivxTestFramework):
 
     def setup_chain(self):
         # Start with clean chain
+        self.log.info("Initializing test directory " + self.options.tmpdir)
         self._initialize_chain_clean()
         self.enable_mocktime()
 

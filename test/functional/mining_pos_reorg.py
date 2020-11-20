@@ -23,6 +23,7 @@ class ReorgStakeTest(PivxTestFramework):
         self.extra_args = [['-nuparams=PoS:201', '-nuparams=PoS_v2:201']] * self.num_nodes
 
     def setup_chain(self):
+        self.log.info("Initializing test directory " + self.options.tmpdir)
         self._initialize_chain()
         self.enable_mocktime()
 
