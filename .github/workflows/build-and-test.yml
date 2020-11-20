@@ -431,7 +431,7 @@ jobs:
 
           if [ "${{ matrix.config.unit_tests }}" = "true" ] || [ "${{ matrix.config.functional_tests }}" = "true" ]; then
             echo ::group::Params
-            util/fetch-params.sh $PARAMS_DIR
+            ./params/install-params.sh $PARAMS_DIR
             echo ::endgroup::
           fi
 

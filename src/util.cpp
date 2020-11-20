@@ -72,6 +72,10 @@
 #include <sys/prctl.h>
 #endif
 
+#ifdef MAC_OSX
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 #include <boost/program_options/detail/config_file.hpp>
 #include <boost/program_options/parsers.hpp>
 #include <openssl/conf.h>
@@ -441,11 +445,41 @@ void initZKSNARKS()
     fs::path sapling_spend = path / "sapling-spend.params";
     fs::path sapling_output = path / "sapling-output.params";
 
-    if (!(fs::exists(sapling_spend) &&
-          fs::exists(sapling_output)
-    )) {
-        throw std::runtime_error("Sapling params don't exist");
+    bool fParamsFound = false;
+    if (fs::exists(sapling_spend) && fs::exists(sapling_output)) {
+        fParamsFound = true;
+    } else {
+#ifdef MAC_OSX
+        // macOS fallback path for params located within the app bundle
+        // This is a somewhat convoluted series of CoreFoundation calls
+        // that will result in the full path to the app bundle's "Resources"
+        // directory, which will contain the sapling params.
+        LogPrintf("Attempting to find params in app bundle...\n");
+        CFBundleRef mainBundle = CFBundleGetMainBundle();
+        CFURLRef bundleURL = CFBundleCopyBundleURL(mainBundle);
+
+        CFStringRef strBundlePath = CFURLCopyFileSystemPath(bundleURL, kCFURLPOSIXPathStyle);
+        const char* pathBundle = CFStringGetCStringPtr(strBundlePath, CFStringGetSystemEncoding());
+
+        fs::path bundle_path = fs::path(pathBundle);
+        LogPrintf("App bundle Resources path: %s\n", bundle_path);
+        sapling_spend = bundle_path / "Contents/Resources/sapling-spend.params";
+        sapling_output = bundle_path / "Contents/Resources/sapling-output.params";
+
+        // Release the CF objects
+        CFRelease(strBundlePath);
+        CFRelease(bundleURL);
+        CFRelease(mainBundle);
+#else
+        // Linux fallback path for debuild/ppa based installs
+        sapling_spend = "/usr/local/share/sapling-spend.params";
+        sapling_output = "/usr/local/share/sapling-output.params";
+#endif
+        if (fs::exists(sapling_spend) && fs::exists(sapling_output))
+            fParamsFound = true;
     }
+    if (!fParamsFound)
+        throw std::runtime_error("Sapling params don't exist");
 
     static_assert(
         sizeof(fs::path::value_type) == sizeof(codeunit),

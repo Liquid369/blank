@@ -16,6 +16,8 @@ Unpack the files into a directory and run:
 - `bin/pivx-qt` (GUI) or
 - `bin/pivxd` (headless)
 
+If this is the first time running PIVX Core (since v5.0.0), you'll need to install the sapling params by running the included `install-params.sh` script, which copies the two params files to `$HOME/.pivx-params`
+
 ### Windows
 
 Unpack the files into a directory, and then run pivx-qt.exe.
