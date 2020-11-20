@@ -20,11 +20,10 @@ class ReorgStakeTest(PivxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 3
-        # node 0 and 1 stake the blocks, node 2 makes the zerocoin spends
+        self.extra_args = [['-nuparams=PoS:201', '-nuparams=PoS_v2:201']] * self.num_nodes
 
     def setup_chain(self):
-        # Start with PoS cache: 330 blocks
-        self._initialize_chain(toPosPhase=True)
+        self._initialize_chain()
         self.enable_mocktime()
 
     def setup_network(self):
@@ -67,30 +66,15 @@ class ReorgStakeTest(PivxTestFramework):
             return False, None
 
         # PIV supply: block rewards minus burned fees for minting minus mint values
-        expected_money_supply = 250.0 * 330 - 16 * 0.01 - 2 * 6666
+        expected_money_supply = 250.0 * 200
         self.check_money_supply(expected_money_supply)
-
-        # Stake with node 0 and node 1 up to public spend activation (400)
-        # 70 blocks: 5 blocks each (x7)
-        self.log.info("Staking 70 blocks to reach public spends activation...")
-        set_node_times(self.nodes, self.mocktime)
-        for i in range(7):
-            for peer in range(2):
-                for nblock in range(5):
-                    self.mocktime = self.generate_pos(peer, self.mocktime)
-                sync_blocks(self.nodes)
         block_time_0 = block_time_1 = self.mocktime
-        self.log.info("Blocks staked.")
 
         # Check balances
         self.log.info("Checking balances...")
         initial_balance = [self.get_tot_balance(i) for i in range(self.num_nodes)]
-        # --nodes 0, 1: 62 pow blocks + 55 pos blocks
-        assert_equal(initial_balance[0], DecimalAmt(250.0 * (62 + 55)))
-        assert_equal(initial_balance[1], DecimalAmt(250.0 * (62 + 55)))
-        # --node 2: 62 pow blocks + 20 pos blocks - zc minted - zcfee
-        assert_equal(initial_balance[2], DecimalAmt(250.0 * (62 + 20) - 6666 - 0.08))
-        assert_equal(self.nodes[2].getzerocoinbalance()['Total'], DecimalAmt(6666))
+        # -- 50 pow blocks each
+        assert_equal(initial_balance, [DecimalAmt(250.0 * 50)] * self.num_nodes)
         self.log.info("Balances ok.")
 
         # Disconnect nodes
@@ -103,7 +87,7 @@ class ReorgStakeTest(PivxTestFramework):
         block_time_0 += 60
         set_node_times(self.nodes, block_time_0)
         last_block = self.nodes[0].getblock(self.nodes[0].getbestblockhash())
-        assert(len(last_block["tx"]) > 1)                                       # a PoS block has at least two txes
+        assert(len(last_block["tx"]) > 1)   # a PoS block has at least two txes
         coinstake_txid = last_block["tx"][1]
         coinstake_tx = self.nodes[0].getrawtransaction(coinstake_txid, True)
         assert (coinstake_tx["vout"][0]["scriptPubKey"]["hex"] == "")  # first output of coinstake is empty
@@ -185,7 +169,7 @@ class ReorgStakeTest(PivxTestFramework):
 
         # Verify that PIV supply was properly updated after the reorgs
         self.log.info("Check PIV supply...")
-        expected_money_supply += 250.0 * (self.nodes[1].getblockcount() - 330)
+        expected_money_supply += 250.0 * (self.nodes[1].getblockcount() - 200)
         self.check_money_supply(expected_money_supply)
         self.log.info("Supply checks out.")
 
