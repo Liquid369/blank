@@ -262,14 +262,38 @@ public:
     void getOutputs(const std::vector<COutPoint>& vOutpoints, std::vector<COutput>& vOutputs);
     bool getMNCollateralCandidate(COutPoint& outPoint);
     bool isSpent(const COutPoint& outpoint) const;
-    void listCoins(std::map<QString, std::vector<COutput> >& mapCoins) const;
+
+    class ListCoinsKey {
+    public:
+        QString address;
+        bool isChange;
+        Optional<QString> stakerAddress; // used only for P2CS utxo
+
+        bool operator==(const ListCoinsKey& key2) const {
+            return address == key2.address && stakerAddress == key2.stakerAddress;
+        }
+
+        bool operator<(const ListCoinsKey& key2) const {
+            return this->address < key2.address;
+        }
+    };
+
+    class ListCoinsValue {
+    public:
+        const uint256& txhash;
+        int outIndex;
+        CAmount nValue;
+        int64_t nTime;
+        int nDepth;
+    };
+
+    void listCoins(std::map<ListCoinsKey, std::vector<ListCoinsValue>>& mapCoins) const;
 
     bool isLockedCoin(uint256 hash, unsigned int n) const;
     void lockCoin(COutPoint& output);
     void unlockCoin(COutPoint& output);
-    void listLockedCoins(std::vector<COutPoint>& vOutpts);
+    std::set<COutPoint> listLockedCoins();
 
-    std::string GetUniqueWalletBackupName();
     void loadReceiveRequests(std::vector<std::string>& vReceiveRequests);
     bool saveReceiveRequest(const std::string& sAddress, const int64_t nId, const std::string& sRequest);
 

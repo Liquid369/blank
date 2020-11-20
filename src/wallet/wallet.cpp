@@ -30,7 +30,6 @@ CFeeRate payTxFee(DEFAULT_TRANSACTION_FEE);
 CAmount maxTxFee = DEFAULT_TRANSACTION_MAXFEE;
 unsigned int nTxConfirmTarget = 1;
 bool bdisableSystemnotifications = false; // Those bubbles can be annoying and slow down the UI when you get lots of trx
-bool fSendFreeTransactions = false;
 bool fPayAtLeastCustomFee = true;
 bool bSpendZeroConfChange = DEFAULT_SPEND_ZEROCONF_CHANGE;
 
@@ -678,7 +677,6 @@ bool CWallet::ParameterInteraction()
     nTxConfirmTarget = gArgs.GetArg("-txconfirmtarget", 1);
     bSpendZeroConfChange = gArgs.GetBoolArg("-spendzeroconfchange", DEFAULT_SPEND_ZEROCONF_CHANGE);
     bdisableSystemnotifications = gArgs.GetBoolArg("-disablesystemnotifications", false);
-    fSendFreeTransactions = gArgs.GetBoolArg("-sendfreetransactions", DEFAULT_SEND_FREE_TRANSACTIONS);
 
     return true;
 }
@@ -1312,11 +1310,16 @@ bool CWallet::IsChange(const CTxOut& txout) const
         if (!ExtractDestination(txout.scriptPubKey, address))
             return true;
 
-        LOCK(cs_wallet);
-        if (!HasAddressBook(address))
-            return true;
+        return IsChange(address);
     }
     return false;
+}
+
+bool CWallet::IsChange(const CTxDestination& address) const
+{
+    // Read the current assumptions in IsChange(const CTxOut&)
+    // this can definitely be different in the short future.
+    return WITH_LOCK(cs_wallet, return !HasAddressBook(address));
 }
 
 int64_t CWalletTx::GetTxTime() const
@@ -2168,7 +2171,8 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
         const CCoinControl* coinControl,
         const bool fCoinsSelected,
         const bool fIncludeColdStaking,
-        const bool fIncludeDelegated) const
+        const bool fIncludeDelegated,
+        const bool fIncludeLocked) const
 {
     OutputAvailabilityResult res;
 
@@ -2190,7 +2194,7 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
     if (mine == ISMINE_WATCH_ONLY && coinControl && !coinControl->fAllowWatchOnly) return res;
 
     // Skip locked utxo
-    if (IsLockedCoin(wtxid, outIndex) && nCoinType != ONLY_10000) return res;
+    if (!fIncludeLocked && IsLockedCoin(wtxid, outIndex) && nCoinType != ONLY_10000) return res;
 
     // Check if we should include zero value utxo
     if (output.nValue <= 0) return res;
@@ -2219,20 +2223,13 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
  */
 bool CWallet::AvailableCoins(std::vector<COutput>* pCoins,      // --> populates when != nullptr
                              const CCoinControl* coinControl,   // Default: nullptr
-                             bool fIncludeDelegated,            // Default: true
-                             bool fIncludeColdStaking,          // Default: false
-                             AvailableCoinsType nCoinType,      // Default: ALL_COINS
-                             bool fOnlyConfirmed,               // Default: true
-                             bool fOnlySpendable,               // Default: false
-                             std::set<CTxDestination>* onlyFilteredDest,  // Default: nullptr
-                             int minDepth                       // Default: 0
-                             ) const
+                             AvailableCoinsFilter coinsFilter) const
 {
     if (pCoins) pCoins->clear();
     const bool fCoinsSelected = (coinControl != nullptr) && coinControl->HasSelected();
     // include delegated coins when coinControl is active
-    if (!fIncludeDelegated && fCoinsSelected)
-        fIncludeDelegated = true;
+    if (!coinsFilter.fIncludeDelegated && fCoinsSelected)
+        coinsFilter.fIncludeDelegated = true;
 
     {
         LOCK2(cs_main, cs_wallet);
@@ -2242,22 +2239,22 @@ bool CWallet::AvailableCoins(std::vector<COutput>* pCoins,      // --> populates
 
             // Check if the tx is selectable
             int nDepth;
-            if (!CheckTXAvailability(pcoin, fOnlyConfirmed, nDepth))
+            if (!CheckTXAvailability(pcoin, coinsFilter.fOnlyConfirmed, nDepth))
                 continue;
 
             // Check min depth requirement for stake inputs
-            if (nCoinType == STAKEABLE_COINS && nDepth < Params().GetConsensus().nStakeMinDepth) continue;
+            if (coinsFilter.nCoinType == STAKEABLE_COINS && nDepth < Params().GetConsensus().nStakeMinDepth) continue;
 
             // Check min depth filtering requirements
-            if (nDepth < minDepth) continue;
+            if (nDepth < coinsFilter.minDepth) continue;
 
             for (unsigned int i = 0; i < pcoin->vout.size(); i++) {
                 const auto& output = pcoin->vout[i];
 
                 // Filter by specific destinations if needed
-                if (onlyFilteredDest && !onlyFilteredDest->empty()) {
+                if (coinsFilter.onlyFilteredDest && !coinsFilter.onlyFilteredDest->empty()) {
                     CTxDestination address;
-                    if (!ExtractDestination(output.scriptPubKey, address) || !onlyFilteredDest->count(address)) {
+                    if (!ExtractDestination(output.scriptPubKey, address) || !coinsFilter.onlyFilteredDest->count(address)) {
                         continue;
                     }
                 }
@@ -2267,14 +2264,15 @@ bool CWallet::AvailableCoins(std::vector<COutput>* pCoins,      // --> populates
                         output,
                         i,
                         wtxid,
-                        nCoinType,
+                        coinsFilter.nCoinType,
                         coinControl,
                         fCoinsSelected,
-                        fIncludeColdStaking,
-                        fIncludeDelegated);
+                        coinsFilter.fIncludeColdStaking,
+                        coinsFilter.fIncludeDelegated,
+                        coinsFilter.fIncludeLocked);
 
                 if (!res.available) continue;
-                if (fOnlySpendable && !res.spendable) continue;
+                if (coinsFilter.fOnlySpendable && !res.spendable) continue;
 
                 // found valid coin
                 if (!pCoins) return true;
@@ -2287,14 +2285,12 @@ bool CWallet::AvailableCoins(std::vector<COutput>* pCoins,      // --> populates
 
 std::map<CTxDestination , std::vector<COutput> > CWallet::AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue)
 {
+    CWallet::AvailableCoinsFilter coinFilter;
+    coinFilter.fIncludeColdStaking = true;
+    coinFilter.fOnlyConfirmed = fConfirmed;
     std::vector<COutput> vCoins;
     // include cold
-    AvailableCoins(&vCoins,
-            nullptr,            // coin control
-            true,               // fIncludeDelegated
-            true,               // fIncludeColdStaking
-            ALL_COINS,          // coin type
-            fConfirmed);        // only confirmed
+    AvailableCoins(&vCoins, nullptr, coinFilter);
 
     std::map<CTxDestination, std::vector<COutput> > mapCoins;
     for (COutput& out : vCoins) {
@@ -2385,7 +2381,8 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
                     nullptr, // coin control
                     false,   // fIncludeDelegated
                     fIncludeColdStaking,
-                    false);
+                    false,
+                    false);   // fIncludeLocked
 
             if (!res.available) continue;
 
@@ -2638,16 +2635,15 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
     CMutableTransaction txNew;
     CScript scriptChange;
 
+    CWallet::AvailableCoinsFilter coinFilter;
+    coinFilter.fIncludeDelegated = fIncludeDelegated;
+    coinFilter.nCoinType = coin_type;
+
     {
         LOCK2(cs_main, cs_wallet);
         {
             std::vector<COutput> vAvailableCoins;
-            AvailableCoins(&vAvailableCoins,
-                coinControl,
-                fIncludeDelegated,
-                false,                  // fIncludeColdStaking
-                coin_type,
-                true);                  // fOnlyConfirmed
+            AvailableCoins(&vAvailableCoins, coinControl, coinFilter);
 
             nFeeRet = 0;
             if (nFeePay > 0) nFeeRet = nFeePay;
@@ -2658,7 +2654,6 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                 wtxNew.fFromMe = true;
 
                 CAmount nTotalValue = nValue + nFeeRet;
-                double dPriority = 0;
 
                 // vouts to the payees
                 if (coinControl && !coinControl->fSplitBlock) {
@@ -2705,7 +2700,6 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                 for (std::pair<const CWalletTx*, unsigned int> pcoin : setCoins) {
                     if(pcoin.first->vout[pcoin.second].scriptPubKey.IsPayToColdStaking())
                         wtxNew.fStakeDelegationVoided = true;
-                    CAmount nCredit = pcoin.first->vout[pcoin.second].nValue;
                     //The coin age after the next block (depth+1) is used instead of the current,
                     //reflecting an assumption the user would accept a bit more delay for
                     //a chance at a free transaction.
@@ -2714,7 +2708,6 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                     assert(age >= 0);
                     if (age != 0)
                         age += 1;
-                    dPriority += (double)nCredit * age;
                 }
 
                 CAmount nChange = nValueIn - nValue - nFeeRet;
@@ -2834,17 +2827,6 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                 if (nBytes >= MAX_STANDARD_TX_SIZE) {
                     strFailReason = _("Transaction too large");
                     return false;
-                }
-
-                dPriority = wtxNew.ComputePriority(dPriority, nBytes);
-
-                // Can we complete this as a free transaction?
-                if (fSendFreeTransactions && nBytes <= MAX_FREE_TRANSACTION_CREATE_SIZE) {
-                    // Not enough fee: enough priority?
-                    double dPriorityNeeded = mempool.estimateSmartPriority(nTxConfirmTarget);
-                    // Require at least hard-coded AllowFree.
-                    if (dPriority >= dPriorityNeeded && AllowFree(dPriority))
-                        break;
                 }
 
                 CAmount nFeeNeeded = std::max(nFeePay, GetMinimumFee(nBytes, nTxConfirmTarget, mempool));
@@ -3543,14 +3525,10 @@ bool CWallet::IsLockedCoin(const uint256& hash, unsigned int n) const
     return (setLockedCoins.count(outpt) > 0);
 }
 
-void CWallet::ListLockedCoins(std::vector<COutPoint>& vOutpts)
+std::set<COutPoint> CWallet::ListLockedCoins()
 {
-    AssertLockHeld(cs_wallet); // setLockedCoins
-    for (std::set<COutPoint>::iterator it = setLockedCoins.begin();
-         it != setLockedCoins.end(); it++) {
-        COutPoint outpt = (*it);
-        vOutpts.push_back(outpt);
-    }
+    AssertLockHeld(cs_wallet);
+    return setLockedCoins;
 }
 
 /** @} */ // end of Actions
@@ -3921,7 +3899,6 @@ std::string CWallet::GetWalletHelpString(bool showDebug)
     strUsage += HelpMessageOpt("-paytxfee=<amt>", strprintf(_("Fee (in %s/kB) to add to transactions you send (default: %s)"), CURRENCY_UNIT, FormatMoney(payTxFee.GetFeePerK())));
     strUsage += HelpMessageOpt("-rescan", _("Rescan the block chain for missing wallet transactions") + " " + _("on startup"));
     strUsage += HelpMessageOpt("-salvagewallet", _("Attempt to recover private keys from a corrupt wallet file") + " " + _("on startup"));
-    strUsage += HelpMessageOpt("-sendfreetransactions", strprintf(_("Send transactions as zero-fee transactions if possible (default: %u)"), DEFAULT_SEND_FREE_TRANSACTIONS));
     strUsage += HelpMessageOpt("-spendzeroconfchange", strprintf(_("Spend unconfirmed change when sending transactions (default: %u)"), DEFAULT_SPEND_ZEROCONF_CHANGE));
     strUsage += HelpMessageOpt("-txconfirmtarget=<n>", strprintf(_("If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)"), 1));
     strUsage += HelpMessageOpt("-upgradewallet", _("Upgrade wallet to latest format") + " " + _("on startup"));

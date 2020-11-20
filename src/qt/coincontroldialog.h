@@ -8,6 +8,8 @@
 
 #include "amount.h"
 #include "qt/pivx/snackbar.h"
+#include "optional.h"
+#include "uint256.h"
 
 #include <QAbstractButton>
 #include <QAction>
@@ -19,8 +21,6 @@
 #include <QTreeWidgetItem>
 
 class WalletModel;
-
-class MultisigDialog;
 class CCoinControl;
 class CTxMemPool;
 
@@ -36,7 +36,7 @@ public:
     explicit CCoinControlWidgetItem(int type = Type) : QTreeWidgetItem(type) {}
     explicit CCoinControlWidgetItem(QTreeWidgetItem *parent, int type = Type) : QTreeWidgetItem(parent, type) {}
 
-    bool operator<(const QTreeWidgetItem &other) const;
+    bool operator<(const QTreeWidgetItem &other) const override;
 };
 
 class CoinControlDialog : public QDialog
@@ -45,17 +45,14 @@ class CoinControlDialog : public QDialog
 
 public:
     explicit CoinControlDialog(QWidget* parent = nullptr, bool _forDelegation = false);
-    ~CoinControlDialog();
+    ~CoinControlDialog() override;
 
     void setModel(WalletModel* model);
-    void updateDialogLabels();
     void updateLabels();
     void updateView();
     void refreshDialog();
     void clearPayAmounts();
     void addPayAmount(const CAmount& amount);
-
-    static QString getPriorityLabel(double dPriority, double mempoolEstimatePriority);
 
     CCoinControl* coinControl;
 
@@ -78,6 +75,22 @@ private:
     void updatePushButtonSelectAll(bool checked);
     void sortView(int, Qt::SortOrder);
     void inform(const QString& text);
+
+    // Load a row with coin's data
+    void loadAvailableCoin(bool treeMode,
+                           CCoinControlWidgetItem* itemWalletAddress,
+                           QFlags<Qt::ItemFlag> flgCheckbox,
+                           QFlags<Qt::ItemFlag> flgTristate,
+                           int nDisplayUnit,
+                           const QString& sWalletAddress,
+                           const Optional<QString>& stakerAddress,
+                           const QString& sWalletLabel,
+                           const uint256& txhash,
+                           const uint32_t outIndex,
+                           const CAmount nValue,
+                           const int64_t nTime,
+                           const int nDepth,
+                           const bool isChange);
 
     enum {
         COLUMN_CHECKBOX,

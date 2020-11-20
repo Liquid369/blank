@@ -58,7 +58,6 @@ extern CAmount maxTxFee;
 extern unsigned int nTxConfirmTarget;
 extern bool bSpendZeroConfChange;
 extern bool bdisableSystemnotifications;
-extern bool fSendFreeTransactions;
 extern bool fPayAtLeastCustomFee;
 
 //! -paytxfee default
@@ -340,7 +339,8 @@ private:
                                                      const CCoinControl* coinControl,
                                                      const bool fCoinsSelected,
                                                      const bool fIncludeColdStaking,
-                                                     const bool fIncludeDelegated) const;
+                                                     const bool fIncludeDelegated,
+                                                     const bool fIncludeLocked) const;
 
     // Zerocoin wallet
     CzPIVWallet* zwallet{nullptr};
@@ -441,16 +441,40 @@ public:
     //! check whether we are allowed to upgrade (or already support) to the named feature
     bool CanSupportFeature(enum WalletFeature wf);
 
+    struct AvailableCoinsFilter {
+        public:
+        AvailableCoinsFilter() {}
+        AvailableCoinsFilter(bool _fIncludeDelegated,
+                             bool _fIncludeColdStaking,
+                             AvailableCoinsType _nCoinType,
+                             bool _fOnlyConfirmed,
+                             bool _fOnlySpendable,
+                             std::set<CTxDestination>* _onlyFilteredDest,
+                             int _minDepth,
+                             bool _fIncludeLocked = false) :
+                fIncludeDelegated(_fIncludeDelegated),
+                fIncludeColdStaking(_fIncludeColdStaking),
+                nCoinType(_nCoinType),
+                fOnlyConfirmed(_fOnlyConfirmed),
+                fOnlySpendable(_fOnlySpendable),
+                onlyFilteredDest(_onlyFilteredDest),
+                minDepth(_minDepth),
+                fIncludeLocked(_fIncludeLocked) {}
+
+        bool fIncludeDelegated{true};
+        bool fIncludeColdStaking{false};
+        AvailableCoinsType nCoinType{ALL_COINS};
+        bool fOnlyConfirmed{true};
+        bool fOnlySpendable{false};
+        std::set<CTxDestination>* onlyFilteredDest{nullptr};
+        int minDepth{0};
+        bool fIncludeLocked{false};
+    };
+
     //! >> Available coins (generic)
     bool AvailableCoins(std::vector<COutput>* pCoins,   // --> populates when != nullptr
                         const CCoinControl* coinControl = nullptr,
-                        bool fIncludeDelegated          = true,
-                        bool fIncludeColdStaking        = false,
-                        AvailableCoinsType nCoinType    = ALL_COINS,
-                        bool fOnlyConfirmed             = true,
-                        bool fOnlySpendable             = false,
-                        std::set<CTxDestination>*       = nullptr,
-                        int minDepth                    = 0
+                        AvailableCoinsFilter coinsFilter = AvailableCoinsFilter()
                         ) const;
     //! >> Available coins (spending)
     bool SelectCoinsToSpend(const std::vector<COutput>& vAvailableCoins, const CAmount& nTargetValue, std::set<std::pair<const CWalletTx*, unsigned int> >& setCoinsRet, CAmount& nValueRet, const CCoinControl* coinControl = nullptr) const;
@@ -475,7 +499,7 @@ public:
     void LockCoin(const COutPoint& output);
     void UnlockCoin(const COutPoint& output);
     void UnlockAllCoins();
-    void ListLockedCoins(std::vector<COutPoint>& vOutpts);
+    std::set<COutPoint> ListLockedCoins();
 
     //  keystore implementation
     PairResult getNewAddress(CTxDestination& ret, const std::string addressLabel, const std::string purpose,
@@ -685,6 +709,7 @@ public:
     isminetype IsMine(const CTxOut& txout) const;
     CAmount GetCredit(const CTxOut& txout, const isminefilter& filter) const;
     bool IsChange(const CTxOut& txout) const;
+    bool IsChange(const CTxDestination& address) const;
     CAmount GetChange(const CTxOut& txout) const;
     bool IsMine(const CTransaction& tx) const;
     /** should probably be renamed to IsRelevantToMe */
