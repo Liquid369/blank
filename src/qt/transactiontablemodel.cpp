@@ -467,9 +467,9 @@ QString TransactionTableModel::formatTxType(const TransactionRecord* wtx) const
     case TransactionRecord::SendToSelf:
         return tr("Payment to yourself");
     case TransactionRecord::SendToSelfShieldedAddress:
-        return tr("Shielded coins to yourself");
+        return tr("Shielding coins to yourself");
     case TransactionRecord::SendToSelfShieldToTransparent:
-        return tr("Unshielded coins to yourself");
+        return tr("Unshielding coins to yourself");
     case TransactionRecord::SendToSelfShieldToShieldChangeAddress:
         return tr("Shielded change, transfer between own shielded addresses");
     case TransactionRecord::StakeMint:
