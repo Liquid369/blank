@@ -76,10 +76,15 @@ SendWidget::SendWidget(PIVXGUI* parent) :
     ui->btnUri->setTitleClassAndText("btn-title-grey", tr("Open URI"));
     ui->btnUri->setSubTitleClassAndText("text-subtitle", tr("Parse a payment request"));
 
+    // Shield coins
+    ui->btnShieldCoins->setTitleClassAndText("btn-title-grey", tr("Shield Coins"));
+    ui->btnShieldCoins->setSubTitleClassAndText("text-subtitle", tr("Convert all transparent coins into shielded coins"));
+
     connect(ui->pushButtonFee, &QPushButton::clicked, this, &SendWidget::onChangeCustomFeeClicked);
     connect(ui->btnCoinControl, &OptionButton::clicked, this, &SendWidget::onCoinControlClicked);
     connect(ui->btnChangeAddress, &OptionButton::clicked, this, &SendWidget::onChangeAddressClicked);
     connect(ui->btnUri, &OptionButton::clicked, this, &SendWidget::onOpenUriClicked);
+    connect(ui->btnShieldCoins, &OptionButton::clicked, this, &SendWidget::onShieldCoinsClicked);
     connect(ui->pushButtonReset, &QPushButton::clicked, [this](){ onResetCustomOptions(true); });
     connect(ui->checkBoxDelegations, &QCheckBox::stateChanged, this, &SendWidget::onCheckBoxChanged);
 
@@ -367,6 +372,11 @@ void SendWidget::onSendClicked()
         return;
     }
 
+    ProcessSend(recipients, hasShieldedOutput);
+}
+
+void SendWidget::ProcessSend(const QList<SendCoinsRecipient>& recipients, bool hasShieldedOutput)
+{
     auto ptrUnlockedContext = MakeUnique<WalletModel::UnlockContext>(walletModel->requestUnlock());
     if (!ptrUnlockedContext->isValid()) {
         // Unlock wallet was cancelled
@@ -411,13 +421,9 @@ void SendWidget::onSendClicked()
 OperationResult SendWidget::prepareShielded(WalletModelTransaction* currentTransaction, bool fromTransparent)
 {
     bool hasCoinsOrNotesSelected = coinControlDialog && coinControlDialog->coinControl && coinControlDialog->coinControl->HasSelected();
-    auto result = walletModel->PrepareShieldedTransaction(currentTransaction,
-                                                          fromTransparent,
-                                                          hasCoinsOrNotesSelected ? coinControlDialog->coinControl : nullptr);
-    if (!result) {
-        return errorOut(result.m_error.toStdString());
-    }
-    return OperationResult(true);
+    return walletModel->PrepareShieldedTransaction(currentTransaction,
+                                                   fromTransparent,
+                                                   hasCoinsOrNotesSelected ? coinControlDialog->coinControl : nullptr);
 }
 
 OperationResult SendWidget::prepareTransparent(WalletModelTransaction* currentTransaction)
@@ -502,7 +508,7 @@ void SendWidget::run(int type)
                 processingResult = true;
             } else {
                 processingResult = false;
-                processingResultError = QString::fromStdString(result.getError());
+                processingResultError = tr(result.getError().c_str());
             }
             isProcessing = false;
         }
@@ -634,6 +640,42 @@ void SendWidget::onCoinControlClicked()
         refreshAmounts();
     } else {
         inform(tr("You don't have any %1 to select.").arg(CURRENCY_UNIT.c_str()));
+    }
+}
+
+void SendWidget::onShieldCoinsClicked()
+{
+    auto balances = walletModel->GetWalletBalances();
+    CAmount availableBalance = balances.balance - balances.shielded_balance;
+    if (walletModel && availableBalance > 0) {
+
+        if (!ask(tr("Shield Coins"),
+             tr("You are just about to anonymize all of your balance!\nAvailable %1\n\n"
+                "Meaning that you will be able to perform completely\nanonymous transactions"
+                "\n\nDo you want to continue?\n").arg(GUIUtil::formatBalanceWithoutHtml(availableBalance, nDisplayUnit, false)))) {
+            return;
+        }
+
+        // First get a new address
+        QString strAddress;
+        auto res = walletModel->getNewShieldedAddress(strAddress, "");
+        // Check for generation errors
+        if (!res.result) {
+            inform(tr("Error generating address to shield PIVs"));
+            return;
+        }
+
+        // load recipient and process sending..
+        QList<SendCoinsRecipient> recipients;
+        CAmount saplingTxFee = 10000 * 100; // DEFAULT_SAPLING_FEE.
+        SendCoinsRecipient recipient;
+        recipient.address = strAddress;
+        recipient.amount = availableBalance - saplingTxFee;
+        recipient.isShieldedAddr = true;
+        recipients.append(recipient);
+        ProcessSend(recipients, true);
+    } else {
+        inform(tr("You don't have any transparent PIVs to shield."));
     }
 }
 

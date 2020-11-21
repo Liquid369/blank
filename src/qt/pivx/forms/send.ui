@@ -762,6 +762,16 @@ padding-top:2px;
          </widget>
         </item>
         <item>
+         <widget class="OptionButton" name="btnShieldCoins" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>50</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="verticalSpacer_5">
           <property name="orientation">
            <enum>Qt::Vertical</enum>

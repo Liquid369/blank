@@ -53,6 +53,7 @@ public Q_SLOTS:
     void onChangeCustomFeeClicked();
     void onCoinControlClicked();
     void onOpenUriClicked();
+    void onShieldCoinsClicked();
     void onValueChanged();
     void refreshAmounts();
     void changeTheme(bool isLightTheme, QString &theme) override;
@@ -107,6 +108,7 @@ private:
     void resizeMenu();
     QString recipientsToString(QList<SendCoinsRecipient> recipients);
     SendMultiRow* createEntry();
+    void ProcessSend(const QList<SendCoinsRecipient>& recipients, bool hasShieldedOutput);
     OperationResult prepareShielded(WalletModelTransaction* tx, bool fromTransparent);
     OperationResult prepareTransparent(WalletModelTransaction* tx);
     bool sendFinalStep();

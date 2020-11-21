@@ -514,8 +514,8 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
 }
 
 OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* modelTransaction,
-                                                                     bool fromTransparent,
-                                                                     const CCoinControl* coinControl)
+                                                        bool fromTransparent,
+                                                        const CCoinControl* coinControl)
 {
     // Basic checks first
 
