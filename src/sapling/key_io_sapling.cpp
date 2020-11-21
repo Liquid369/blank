@@ -25,12 +25,6 @@ private:
 public:
     PaymentAddressEncoder(const CChainParams& params) : m_params(params) {}
 
-    std::string operator()(const libzcash::SproutPaymentAddress& zaddr) const
-    {
-        // Not implemented. Clean Sprout code.
-        return "";
-    }
-
     std::string operator()(const libzcash::SaplingPaymentAddress& zaddr) const
     {
         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
@@ -54,12 +48,6 @@ private:
 
 public:
     ViewingKeyEncoder(const CChainParams& params) : m_params(params) {}
-
-    std::string operator()(const libzcash::SproutViewingKey& vk) const
-    {
-        // Not implemented. Clean Sprout code.
-        return "";
-    }
 
     std::string operator()(const libzcash::SaplingExtendedFullViewingKey& extfvk) const
     {
@@ -87,12 +75,6 @@ private:
 
 public:
     SpendingKeyEncoder(const CChainParams& params) : m_params(params) {}
-
-    std::string operator()(const libzcash::SproutSpendingKey& zkey) const
-    {
-        // Not implemented. Clean Sprout code.
-        return "";
-    }
 
     std::string operator()(const libzcash::SaplingExtendedSpendingKey& zkey) const
     {

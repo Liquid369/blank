@@ -348,6 +348,8 @@ BOOST_AUTO_TEST_CASE(SaplingApi_test)
     ));
 }
 
+//// BEGIN REMOVE
+
 BOOST_AUTO_TEST_CASE(api_test)
 {
     uint256 sk_enc = ZCNoteEncryption::generate_privkey(uint252(uint256S("21035d60bc1983e37950ce4803418a8fb33ea68d5b937ca382ecbae7564d6a07")));
@@ -479,6 +481,8 @@ BOOST_AUTO_TEST_CASE(PrfNf_test)
         );
     }
 }
+
+//// END REMOVE
 
 BOOST_AUTO_TEST_CASE(uint252_test)
 {

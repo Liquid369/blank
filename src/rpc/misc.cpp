@@ -349,18 +349,14 @@ UniValue spork(const JSONRPCRequest& request)
         HelpExampleCli("spork", "show") + HelpExampleRpc("spork", "show"));
 }
 
-// Every possibly address (todo: clean sprout address)
-typedef boost::variant<libzcash::InvalidEncoding, libzcash::SproutPaymentAddress, libzcash::SaplingPaymentAddress, CTxDestination> PPaymentAddress;
+// Every possibly address
+typedef boost::variant<libzcash::InvalidEncoding, libzcash::SaplingPaymentAddress, CTxDestination> PPaymentAddress;
 
 class DescribePaymentAddressVisitor : public boost::static_visitor<UniValue>
 {
 public:
     explicit DescribePaymentAddressVisitor(bool _isStaking) : isStaking(_isStaking) {}
     UniValue operator()(const libzcash::InvalidEncoding &zaddr) const { return UniValue(UniValue::VOBJ); }
-
-    UniValue operator()(const libzcash::SproutPaymentAddress &zaddr) const {
-        return UniValue(UniValue::VOBJ); // todo: Clean Sprout code.
-    }
 
     UniValue operator()(const libzcash::SaplingPaymentAddress &zaddr) const {
         UniValue obj(UniValue::VOBJ);

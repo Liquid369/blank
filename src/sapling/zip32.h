@@ -134,8 +134,8 @@ struct SaplingExtendedSpendingKey {
     }
 };
 
-typedef boost::variant<InvalidEncoding, SproutSpendingKey, SaplingExtendedSpendingKey> SpendingKey;
-typedef boost::variant<InvalidEncoding, SproutViewingKey, SaplingExtendedFullViewingKey> ViewingKey;
+typedef boost::variant<InvalidEncoding, SaplingExtendedSpendingKey> SpendingKey;
+typedef boost::variant<InvalidEncoding, SaplingExtendedFullViewingKey> ViewingKey;
 
 }
 
