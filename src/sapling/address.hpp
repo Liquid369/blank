@@ -2,7 +2,6 @@
 #define ZC_ADDRESS_H_
 
 #include "uint256.h"
-#include "sapling/uint252.h"
 #include "serialize.h"
 #include "sapling/sapling.h"
 

@@ -12,7 +12,6 @@
 #define ZC_PRF_H_
 
 #include "uint256.h"
-#include "sapling/uint252.h"
 
 #include <array>
 

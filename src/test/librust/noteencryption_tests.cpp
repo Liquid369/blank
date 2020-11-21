@@ -12,7 +12,6 @@
 #include "sapling/note.hpp"
 #include "sapling/noteencryption.hpp"
 #include "sapling/prf.h"
-#include "sapling/uint252.h"
 #include "sapling/sapling_util.h"
 #include "crypto/sha256.h"
 
@@ -337,11 +336,6 @@ BOOST_AUTO_TEST_CASE(SaplingApi_test)
             uint256(),
             epk_2
     ));
-}
-
-BOOST_AUTO_TEST_CASE(uint252_test)
-{
-    BOOST_CHECK_THROW(uint252(uint256S("f6da8716682d600f74fc16bd0187faad6a26b4aa4c24d5c055b216d94516847e")), std::domain_error);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

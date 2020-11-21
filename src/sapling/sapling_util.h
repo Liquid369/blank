@@ -7,7 +7,6 @@
 #define ZC_UTIL_H_
 
 #include "fs.h"
-#include "sapling/uint252.h"
 #include "uint256.h"
 
 #include <sodium.h>
@@ -20,6 +19,5 @@ uint64_t convertVectorToInt(const std::vector<bool>& v);
 
 // random number generator using sodium.
 uint256 random_uint256();
-uint252 random_uint252();
 
 #endif // ZC_UTIL_H_

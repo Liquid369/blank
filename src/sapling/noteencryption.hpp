@@ -12,7 +12,6 @@ https://github.com/zcash/zips/blob/master/protocol/protocol.pdf
 #define ZC_NOTE_ENCRYPTION_H_
 
 #include "uint256.h"
-#include "sapling/uint252.h"
 
 #include "sapling/sapling.h"
 #include "sapling/address.hpp"
