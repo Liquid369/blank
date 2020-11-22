@@ -34,9 +34,6 @@
 #include "spork.h"
 #include "invalid.h"
 #include "policy/policy.h"
-#include "zpivchain.h"
-#include "zpiv/zpivmodule.h"
-
 
 #include <boost/thread.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -101,52 +98,6 @@ void UpdateTime(CBlockHeader* pblock, const CBlockIndex* pindexPrev)
     // Updating time can change work required on testnet:
     if (Params().GetConsensus().fPowAllowMinDifficultyBlocks)
         pblock->nBits = GetNextWorkRequired(pindexPrev, pblock);
-}
-
-bool CheckForDuplicatedSerials(const CTransaction& tx, const Consensus::Params& consensus,
-                               std::vector<CBigNum>& vBlockSerials)
-{
-    // double check that there are no double spent zPIV spends in this block or tx
-    if (tx.HasZerocoinSpendInputs()) {
-        int nHeightTx = 0;
-        if (IsTransactionInChain(tx.GetHash(), nHeightTx)) {
-            return false;
-        }
-
-        bool fDoubleSerial = false;
-        for (const CTxIn& txIn : tx.vin) {
-            bool isPublicSpend = txIn.IsZerocoinPublicSpend();
-            if (txIn.IsZerocoinSpend() || isPublicSpend) {
-                libzerocoin::CoinSpend* spend;
-                if (isPublicSpend) {
-                    libzerocoin::ZerocoinParams* params = consensus.Zerocoin_Params(false);
-                    PublicCoinSpend publicSpend(params);
-                    CValidationState state;
-                    if (!ZPIVModule::ParseZerocoinPublicSpend(txIn, tx, state, publicSpend)){
-                        throw std::runtime_error("Invalid public spend parse");
-                    }
-                    spend = &publicSpend;
-                } else {
-                    libzerocoin::CoinSpend spendObj = TxInToZerocoinSpend(txIn);
-                    spend = &spendObj;
-                }
-
-                bool fUseV1Params = spend->getCoinVersion() < libzerocoin::PrivateCoin::PUBKEY_VERSION;
-                if (!spend->HasValidSerial(consensus.Zerocoin_Params(fUseV1Params)))
-                    fDoubleSerial = true;
-                if (std::count(vBlockSerials.begin(), vBlockSerials.end(), spend->getCoinSerialNumber()))
-                    fDoubleSerial = true;
-                if (fDoubleSerial)
-                    break;
-                vBlockSerials.emplace_back(spend->getCoinSerialNumber());
-            }
-        }
-        //This zPIV serial has already been included in the block, do not add this tx.
-        if (fDoubleSerial) {
-            return false;
-        }
-    }
-    return true;
 }
 
 bool CreateCoinbaseTx(CBlock* pblock, const CScript& scriptPubKeyIn, CBlockIndex* pindexPrev)
@@ -261,13 +212,13 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
         // This vector will be sorted into a priority queue:
         std::vector<TxPriority> vecPriority;
         vecPriority.reserve(mempool.mapTx.size());
-        for (CTxMemPool::indexed_transaction_set::iterator mi = mempool.mapTx.begin();
-             mi != mempool.mapTx.end(); ++mi) {
+        for (auto mi = mempool.mapTx.begin(); mi != mempool.mapTx.end(); ++mi) {
             const CTransaction& tx = mi->GetTx();
+
+            // Legacy zerocoin transactions are disabled
+            assert(!tx.ContainsZerocoins());
+
             if (tx.IsCoinBase() || tx.IsCoinStake() || !IsFinalTx(tx, nHeight)){
-                continue;
-            }
-            if(sporkManager.IsSporkActive(SPORK_16_ZEROCOIN_MAINTENANCE_MODE) && tx.ContainsZerocoins()){
                 continue;
             }
             if(sporkManager.IsSporkActive(SPORK_20_SAPLING_MAINTENANCE) && tx.IsShieldedTx()){
@@ -279,44 +230,40 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
             CAmount nTotalIn = 0;
             bool fMissingInputs = false;
 
-            if (tx.HasZerocoinSpendInputs()) {
-                nTotalIn = tx.GetZerocoinSpent();
-            } else {
-                for (const CTxIn& txin : tx.vin) {
-                    // Read prev transaction
-                    if (!view.HaveCoin(txin.prevout)) {
-                        // This should never happen; all transactions in the memory
-                        // pool should connect to either transactions in the chain
-                        // or other transactions in the memory pool.
-                        if (!mempool.mapTx.count(txin.prevout.hash)) {
-                            LogPrintf("ERROR: mempool transaction missing input\n");
-                            fMissingInputs = true;
-                            if (porphan)
-                                vOrphan.pop_back();
-                            break;
-                        }
-
-                        // Has to wait for dependencies
-                        if (!porphan) {
-                            // Use list for automatic deletion
-                            vOrphan.push_back(COrphan(&tx));
-                            porphan = &vOrphan.back();
-                        }
-                        mapDependers[txin.prevout.hash].push_back(porphan);
-                        porphan->setDependsOn.insert(txin.prevout.hash);
-                        nTotalIn += mempool.mapTx.find(txin.prevout.hash)->GetTx().vout[txin.prevout.n].nValue;
-                        continue;
+            for (const CTxIn& txin : tx.vin) {
+                // Read prev transaction
+                if (!view.HaveCoin(txin.prevout)) {
+                    // This should never happen; all transactions in the memory
+                    // pool should connect to either transactions in the chain
+                    // or other transactions in the memory pool.
+                    if (!mempool.mapTx.count(txin.prevout.hash)) {
+                        LogPrintf("ERROR: mempool transaction missing input\n");
+                        fMissingInputs = true;
+                        if (porphan)
+                            vOrphan.pop_back();
+                        break;
                     }
 
-                    const Coin& coin = view.AccessCoin(txin.prevout);
-                    assert(!coin.IsSpent());
-
-                    CAmount nValueIn = coin.out.nValue;
-                    nTotalIn += nValueIn;
-
-                    int nConf = nHeight - coin.nHeight;
-                    dPriority = double_safe_addition(dPriority, ((double)nValueIn * nConf));
+                    // Has to wait for dependencies
+                    if (!porphan) {
+                        // Use list for automatic deletion
+                        vOrphan.push_back(COrphan(&tx));
+                        porphan = &vOrphan.back();
+                    }
+                    mapDependers[txin.prevout.hash].push_back(porphan);
+                    porphan->setDependsOn.insert(txin.prevout.hash);
+                    nTotalIn += mempool.mapTx.find(txin.prevout.hash)->GetTx().vout[txin.prevout.n].nValue;
+                    continue;
                 }
+
+                const Coin& coin = view.AccessCoin(txin.prevout);
+                assert(!coin.IsSpent());
+
+                CAmount nValueIn = coin.out.nValue;
+                nTotalIn += nValueIn;
+
+                int nConf = nHeight - coin.nHeight;
+                dPriority = double_safe_addition(dPriority, ((double)nValueIn * nConf));
             }
             if (fMissingInputs) continue;
 
@@ -371,7 +318,7 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
             double dPriorityDelta = 0;
             CAmount nFeeDelta = 0;
             mempool.ApplyDeltas(hash, dPriorityDelta, nFeeDelta);
-            if (!tx.HasZerocoinSpendInputs() && fSortedByFee && (dPriorityDelta <= 0) && (nFeeDelta <= 0) && (feeRate < ::minRelayTxFee) && (nBlockSize + nTxSize >= nBlockMinSize))
+            if (fSortedByFee && (dPriorityDelta <= 0) && (nFeeDelta <= 0) && (feeRate < ::minRelayTxFee) && (nBlockSize + nTxSize >= nBlockMinSize))
                 continue;
 
             // Prioritise by fee once past the priority size or we run out of high-priority
@@ -385,11 +332,6 @@ CBlockTemplate* CreateNewBlock(const CScript& scriptPubKeyIn, CWallet* pwallet, 
 
             if (!view.HaveInputs(tx))
                 continue;
-
-            // zPIV check to not include duplicated serials in the same block.
-            if (!CheckForDuplicatedSerials(tx, consensus, vBlockSerials)) {
-                continue;
-            }
 
             CAmount nTxFees = view.GetValueIn(tx) - tx.GetValueOut();
 
