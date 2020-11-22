@@ -399,7 +399,6 @@ libbitcoin_wallet_a_SOURCES = \
   wallet/db.cpp \
   wallet/rpcdump.cpp \
   wallet/rpcwallet.cpp \
-  wallet/rpczpiv.cpp \
   wallet/hdchain.cpp \
   wallet/scriptpubkeyman.cpp \
   destination_io.cpp \

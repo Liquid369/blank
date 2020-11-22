@@ -277,7 +277,6 @@ set(WALLET_SOURCES
         ./src/zpiv/zerocoin.cpp
         ./src/wallet/scriptpubkeyman.cpp
         ./src/wallet/rpcwallet.cpp
-        ./src/wallet/rpczpiv.cpp
         ./src/kernel.cpp
         ./src/legacy/stakemodifier.cpp
         ./src/wallet/wallet.cpp

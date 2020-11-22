@@ -1249,40 +1249,6 @@ UniValue reconsiderblock(const JSONRPCRequest& request)
     return NullUniValue;
 }
 
-UniValue findserial(const JSONRPCRequest& request)
-{
-    if(request.fHelp || request.params.size() != 1)
-        throw std::runtime_error(
-            "findserial \"serial\"\n"
-            "\nSearches the zerocoin database for a zerocoin spend transaction that contains the specified serial\n"
-
-            "\nArguments:\n"
-            "1. serial   (string, required) the serial of a zerocoin spend to search for.\n"
-
-            "\nResult:\n"
-            "{\n"
-            "  \"success\": true|false        (boolean) Whether the serial was found\n"
-            "  \"txid\": \"xxx\"              (string) The transaction that contains the spent serial\n"
-            "}\n"
-
-            "\nExamples:\n" +
-            HelpExampleCli("findserial", "\"serial\"") + HelpExampleRpc("findserial", "\"serial\""));
-
-    std::string strSerial = request.params[0].get_str();
-    CBigNum bnSerial = 0;
-    bnSerial.SetHex(strSerial);
-    if (!bnSerial)
-    throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid serial");
-
-    uint256 txid;
-    bool fSuccess = zerocoinDB->ReadCoinSpend(bnSerial, txid);
-
-    UniValue ret(UniValue::VOBJ);
-    ret.pushKV("success", fSuccess);
-    ret.pushKV("txid", txid.GetHex());
-    return ret;
-}
-
 void validaterange(const UniValue& params, int& heightStart, int& heightEnd, int minHeightStart = 1)
 {
     if (params.size() < 2) {
@@ -1316,124 +1282,6 @@ void validaterange(const UniValue& params, int& heightStart, int& heightEnd, int
     }
 }
 
-UniValue getserials(const JSONRPCRequest& request) {
-    if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
-        throw std::runtime_error(
-            "getserials height range ( fVerbose )\n"
-            "\nLook the inputs of any tx in a range of blocks and returns the serial numbers for any coinspend.\n"
-
-            "\nArguments:\n"
-            "1. starting_height   (numeric, required) the height of the first block to check\n"
-            "2. range             (numeric, required) the amount of blocks to check\n"
-            "3. fVerbose          (boolean, optional, default=False) return verbose output\n"
-
-            "\nExamples:\n" +
-            HelpExampleCli("getserials", "1254000 1000") +
-            HelpExampleRpc("getserials", "1254000, 1000"));
-
-    int heightStart, heightEnd;
-    const int heightMax = Params().GetConsensus().vUpgrades[Consensus::UPGRADE_ZC].nActivationHeight;
-    validaterange(request.params, heightStart, heightEnd, heightMax);
-
-    bool fVerbose = false;
-    if (request.params.size() > 2) {
-        fVerbose = request.params[2].get_bool();
-    }
-
-    CBlockIndex* pblockindex = nullptr;
-    {
-        LOCK(cs_main);
-        pblockindex = chainActive[heightStart];
-    }
-
-    if (!pblockindex)
-        throw JSONRPCError(RPC_INVALID_PARAMETER, "invalid block height");
-
-    UniValue serialsObj(UniValue::VOBJ);    // for fVerbose
-    UniValue serialsArr(UniValue::VARR);
-
-    while (true) {
-        CBlock block;
-        if (!ReadBlockFromDisk(block, pblockindex))
-                throw JSONRPCError(RPC_INTERNAL_ERROR, "Can't read block from disk");
-
-        // loop through each tx in the block
-        for (const auto& txIn : block.vtx) {
-            const CTransaction& tx = *txIn;
-            std::string txid = tx.GetHash().GetHex();
-            // collect the destination (first output) if fVerbose
-            std::string spentTo = "";
-            if (fVerbose) {
-                if (tx.vout[0].IsZerocoinMint()) {
-                    spentTo = "Zerocoin Mint";
-                } else if (tx.vout[0].IsEmpty()) {
-                    spentTo = "Zerocoin Stake";
-                } else {
-                    txnouttype type;
-                    std::vector<CTxDestination> addresses;
-                    int nRequired;
-                    if (!ExtractDestinations(tx.vout[0].scriptPubKey, type, addresses, nRequired)) {
-                        spentTo = strprintf("type: %d", GetTxnOutputType(type));
-                    } else {
-                        spentTo = EncodeDestination(addresses[0]);
-                    }
-                }
-            }
-            // loop through each input
-            for (const CTxIn& txin : tx.vin) {
-                bool isPublicSpend =  txin.IsZerocoinPublicSpend();
-                if (txin.IsZerocoinSpend() || isPublicSpend) {
-                    std::string serial_str;
-                    int denom;
-                    if (isPublicSpend) {
-                        CTxOut prevOut;
-                        CValidationState state;
-                        if(!GetOutput(txin.prevout.hash, txin.prevout.n, state, prevOut)){
-                            throw JSONRPCError(RPC_INTERNAL_ERROR, "public zerocoin spend prev output not found");
-                        }
-                        libzerocoin::ZerocoinParams *params = Params().GetConsensus().Zerocoin_Params(false);
-                        PublicCoinSpend publicSpend(params);
-                        if (!ZPIVModule::parseCoinSpend(txin, tx, prevOut, publicSpend)) {
-                            throw JSONRPCError(RPC_INTERNAL_ERROR, "public zerocoin spend parse failed");
-                        }
-                        serial_str = publicSpend.getCoinSerialNumber().ToString(16);
-                        denom = libzerocoin::ZerocoinDenominationToInt(publicSpend.getDenomination());
-                    } else {
-                        libzerocoin::CoinSpend spend = TxInToZerocoinSpend(txin);
-                        serial_str = spend.getCoinSerialNumber().ToString(16);
-                        denom = libzerocoin::ZerocoinDenominationToInt(spend.getDenomination());
-                    }
-                    if (!fVerbose) {
-                        serialsArr.push_back(serial_str);
-                    } else {
-                        UniValue s(UniValue::VOBJ);
-                        s.pushKV("serial", serial_str);
-                        s.pushKV("denom", denom);
-                        s.pushKV("bitsize", (int)serial_str.size()*4);
-                        s.pushKV("spentTo", spentTo);
-                        s.pushKV("txid", txid);
-                        s.pushKV("blocknum", pblockindex->nHeight);
-                        s.pushKV("blocktime", block.GetBlockTime());
-                        serialsArr.push_back(s);
-                    }
-                }
-
-            } // end for vin in tx
-        } // end for tx in block
-
-        if (pblockindex->nHeight < heightEnd) {
-            LOCK(cs_main);
-            pblockindex = chainActive.Next(pblockindex);
-        } else {
-            break;
-        }
-
-    } // end for blocks
-
-    return serialsArr;
-
-}
-
 UniValue getblockindexstats(const JSONRPCRequest& request) {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
         throw std::runtime_error(
@@ -1462,9 +1310,9 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
                 "        \"denom_5\": xxxx           (numeric) number of PUBLIC spends of denom_5 occurred over the block range\n"
                 "         ...                    ... number of PUBLIC spends of other denominations: ..., 10, 50, 100, 500, 1000, 5000\n"
                 "  }\n"
-                "  \"txbytes\": xxxxx                (numeric) Sum of the size of all txes (zPIV excluded) over block range\n"
-                "  \"ttlfee\": xxxxx                 (numeric) Sum of the fee amount of all txes (zPIV mints excluded) over block range\n"
-                "  \"ttlfee_all\": xxxxx             (numeric) Sum of the fee amount of all txes (zPIV mints included) over block range\n"
+                "  \"txbytes\": xxxxx                (numeric) Sum of the size of all txes over block range\n"
+                "  \"ttlfee\": xxxxx                 (numeric) Sum of the fee amount of all txes over block range\n"
+                "  \"ttlfee_all\": xxxxx             (numeric) Sum of the fee amount of all txes over block range\n"
                 "  \"feeperkb\": xxxxx               (numeric) Average fee per kb (excluding zc txes)\n"
                 "}\n"
 
@@ -1665,11 +1513,6 @@ static const CRPCCommand commands[] =
     { "hidden",             "waitfornewblock",        &waitfornewblock,        true  },
     { "hidden",             "waitforblock",           &waitforblock,           true  },
     { "hidden",             "waitforblockheight",     &waitforblockheight,     true  },
-
-    // TODO: Remove these two RPC commands after 5.0 is locked in
-    /* Zerocoin functions to be removed post-5.0 */
-    { "zerocoin",           "findserial",             &findserial,             true  },
-    { "zerocoin",           "getserials",             &getserials,             true  },
 
 
 };
