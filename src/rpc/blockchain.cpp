@@ -1285,14 +1285,13 @@ void validaterange(const UniValue& params, int& heightStart, int& heightEnd, int
 UniValue getblockindexstats(const JSONRPCRequest& request) {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 3)
         throw std::runtime_error(
-                "getblockindexstats height range ( fFeeOnly )\n"
+                "getblockindexstats height range\n"
                 "\nReturns aggregated BlockIndex data for blocks "
                 "\n[height, height+1, height+2, ..., height+range-1]\n"
 
                 "\nArguments:\n"
                 "1. height             (numeric, required) block height where the search starts.\n"
                 "2. range              (numeric, required) number of blocks to include.\n"
-                "3. fFeeOnly           (boolean, optional, default=False) return only fee info.\n"
 
                 "\nResult:\n"
                 "{\n"
@@ -1300,16 +1299,6 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
                 "  \"last_block\": \"x\"             (integer) Last counted block\n"
                 "  \"txcount\": xxxxx                (numeric) tx count (excluding coinbase/coinstake)\n"
                 "  \"txcount_all\": xxxxx            (numeric) tx count (including coinbase/coinstake)\n"
-                "  \"spendcount\": {             [if fFeeOnly=False]\n"
-                "        \"denom_1\": xxxx           (numeric) number of spends of denom_1 occurred over the block range\n"
-                "        \"denom_5\": xxxx           (numeric) number of spends of denom_5 occurred over the block range\n"
-                "         ...                    ... number of spends of other denominations: ..., 10, 50, 100, 500, 1000, 5000\n"
-                "  }\n"
-                "  \"pubspendcount\": {             [if fFeeOnly=False]\n"
-                "        \"denom_1\": xxxx           (numeric) number of PUBLIC spends of denom_1 occurred over the block range\n"
-                "        \"denom_5\": xxxx           (numeric) number of PUBLIC spends of denom_5 occurred over the block range\n"
-                "         ...                    ... number of PUBLIC spends of other denominations: ..., 10, 50, 100, 500, 1000, 5000\n"
-                "  }\n"
                 "  \"txbytes\": xxxxx                (numeric) Sum of the size of all txes over block range\n"
                 "  \"ttlfee\": xxxxx                 (numeric) Sum of the fee amount of all txes over block range\n"
                 "  \"ttlfee_all\": xxxxx             (numeric) Sum of the fee amount of all txes over block range\n"
@@ -1327,23 +1316,11 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
     ret.pushKV("Starting block", heightStart);
     ret.pushKV("Ending block", heightEnd);
 
-    bool fFeeOnly = false;
-    if (request.params.size() > 2) {
-        fFeeOnly = request.params[2].get_bool();
-    }
-
     CAmount nFees = 0;
     CAmount nFees_all = 0;
     int64_t nBytes = 0;
     int64_t nTxCount = 0;
     int64_t nTxCount_all = 0;
-
-    std::map<libzerocoin::CoinDenomination, int64_t> mapSpendCount;
-    std::map<libzerocoin::CoinDenomination, int64_t> mapPublicSpendCount;
-    for (auto& denom : libzerocoin::zerocoinDenomList) {
-        mapSpendCount.emplace(denom, 0);
-        mapPublicSpendCount.emplace(denom, 0);
-    }
 
     CBlockIndex* pindex = nullptr;
     {
@@ -1374,17 +1351,9 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
 
             // fetch input value from prevouts and count spends
             for (unsigned int j = 0; j < tx.vin.size(); j++) {
-                if (tx.vin[j].IsZerocoinSpend()) {
-                    if (!fFeeOnly)
-                        mapSpendCount[libzerocoin::IntToZerocoinDenomination(tx.vin[j].nSequence)]++;
+                if (tx.vin[j].IsZerocoinSpend() || tx.vin[j].IsZerocoinPublicSpend()) {
                     continue;
                 }
-                if (tx.vin[j].IsZerocoinPublicSpend()) {
-                    if (!fFeeOnly)
-                        mapPublicSpendCount[libzerocoin::IntToZerocoinDenomination(tx.vin[j].nSequence)]++;
-                    continue;
-                }
-
                 COutPoint prevout = tx.vin[j].prevout;
                 CTransaction txPrev;
                 uint256 hashBlock;
@@ -1424,18 +1393,6 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
     // return UniValue object
     ret.pushKV("txcount", (int64_t)nTxCount);
     ret.pushKV("txcount_all", (int64_t)nTxCount_all);
-    if (!fFeeOnly) {
-        UniValue mint_obj(UniValue::VOBJ);
-        UniValue spend_obj(UniValue::VOBJ);
-        UniValue pubspend_obj(UniValue::VOBJ);
-        for (auto& denom : libzerocoin::zerocoinDenomList) {
-            spend_obj.pushKV(strprintf("denom_%d", ZerocoinDenominationToInt(denom)), mapSpendCount[denom]);
-            pubspend_obj.pushKV(strprintf("denom_%d", ZerocoinDenominationToInt(denom)), mapPublicSpendCount[denom]);
-        }
-        ret.pushKV("spendcount", spend_obj);
-        ret.pushKV("publicspendcount", pubspend_obj);
-
-    }
     ret.pushKV("txbytes", (int64_t)nBytes);
     ret.pushKV("ttlfee", FormatMoney(nFees));
     ret.pushKV("ttlfee_all", FormatMoney(nFees_all));
@@ -1480,7 +1437,6 @@ UniValue getfeeinfo(const JSONRPCRequest& request)
     UniValue newParams(UniValue::VARR);
     newParams.push_back(UniValue(nStartHeight));
     newParams.push_back(UniValue(nBlocks));
-    newParams.push_back(UniValue(true));    // fFeeOnly
     newRequest.params = newParams;
 
     return getblockindexstats(newRequest);

@@ -151,10 +151,6 @@ static const CRPCConvertParam vRPCConvertParams[] = {
     { "autocombinerewards", 1 },
     { "getblockindexstats", 0 },
     { "getblockindexstats", 1 },
-    { "getblockindexstats", 2 },
-    { "getserials", 0 },
-    { "getserials", 1 },
-    { "getserials", 2 },
     { "getfeeinfo", 0 },
     { "getsupplyinfo", 0 },
 };
