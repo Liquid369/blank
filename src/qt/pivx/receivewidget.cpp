@@ -141,23 +141,11 @@ void ReceiveWidget::refreshView(QString refreshAddress)
     try {
         QString latestAddress = (refreshAddress.isEmpty()) ? this->addressTableModel->getAddressToShow(shieldedMode) : refreshAddress;
 
-        if (latestAddress.isEmpty()) { // new default address
-            PairResult r(false);
-            if (!shieldedMode) {
-                Destination newAddress;
-                r = walletModel->getNewAddress(newAddress, "Default");
-                latestAddress = QString::fromStdString(newAddress.ToString());
-            } else {
-                // shielded
-                r = walletModel->getNewShieldedAddress(latestAddress, "default shielded");
-            }
-
+        if (latestAddress.isEmpty()) {
             // Check for generation errors
-            if (!r.result) {
-                ui->labelQrImg->setText(tr("No available address, try unlocking the wallet"));
-                inform(tr("Error generating address"));
-                return;
-            }
+            ui->labelQrImg->setText(tr("No available address, try unlocking the wallet"));
+            inform(tr("Error generating address"));
+            return;
         }
 
         QString addressToShow = latestAddress;
