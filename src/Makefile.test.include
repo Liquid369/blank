@@ -112,9 +112,6 @@ SAPLING_TESTS =\
     test/librust/merkletree_tests.cpp \
     test/librust/transaction_builder_tests.cpp
 
-ZEROCOIN_TESTS =\
-  test/zerocoin_bignum_tests.cpp
-
 if ENABLE_WALLET
 BITCOIN_TESTS += \
   wallet/test/wallet_tests.cpp \
@@ -126,7 +123,7 @@ SAPLING_TESTS +=\
   wallet/test/wallet_shielded_balances_tests.cpp
 endif
 
-test_test_pivx_SOURCES = $(BITCOIN_TEST_SUITE) $(BITCOIN_TESTS) $(SAPLING_TESTS) $(ZEROCOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
+test_test_pivx_SOURCES = $(BITCOIN_TEST_SUITE) $(BITCOIN_TESTS) $(SAPLING_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
 test_test_pivx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) -I$(builddir)/test/ $(TESTDEFS) $(EVENT_FLAGS)
 test_test_pivx_LDADD =
 
@@ -175,9 +172,7 @@ endif
 
 check-sapling: $(SAPLING_TESTS:.cpp=.cpp.test)
 
-check-zerocoin: $(ZEROCOIN_TESTS:.cpp=.cpp.test)
-
-check-local: check-sapling check-zerocoin check-standard
+check-local: check-sapling check-standard
 
 %.cpp.test: %.cpp
 	@echo Running tests: `cat $< | grep -E "(BOOST_FIXTURE_TEST_SUITE\\(|BOOST_AUTO_TEST_SUITE\\()" | cut -d '(' -f 2 | cut -d ',' -f 1 | cut -d ')' -f 1` from $<
