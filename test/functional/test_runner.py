@@ -64,10 +64,8 @@ BASE_SCRIPTS= [
     'p2p_time_offset.py',                       # ~ 267 sec
     'rpc_fundrawtransaction.py',                # ~ 260 sec
     'mining_pos_coldStaking.py',                # ~ 215 sec
-    'mining_pos_reorg.py',                      # ~ 212 sec
     'wallet_abandonconflict.py',                # ~ 212 sec
     'wallet_hd.py',                             # ~ 210 sec
-    'wallet_zerocoin_publicspends.py',          # ~ 202 sec
     'feature_logging.py',                       # ~ 200 sec
     'rpc_rawtransaction.py',                    # ~ 193 sec
     'wallet_keypool_topup.py',                  # ~ 174 sec
@@ -77,6 +75,7 @@ BASE_SCRIPTS= [
     'interface_rest.py',                        # ~ 154 sec
     'feature_proxy.py',                         # ~ 143 sec
     'feature_uacomment.py',                     # ~ 130 sec
+    'mining_pos_reorg.py',                      # ~ 128 sec
     'wallet_upgrade.py',                        # ~ 124 sec
     'wallet_import_stakingaddress.py',          # ~ 123 sec
 
@@ -584,7 +583,7 @@ def check_script_prefixes():
     # convention don't immediately cause the tests to fail.
     LEEWAY = 10
 
-    good_prefixes_re = re.compile("(example|feature|interface|mempool|mining|p2p|rpc|wallet|zerocoin|sapling|tiertwo)_")
+    good_prefixes_re = re.compile("(example|feature|interface|mempool|mining|p2p|rpc|wallet|sapling|tiertwo)_")
     bad_script_names = [script for script in ALL_SCRIPTS if good_prefixes_re.match(script) is None]
 
     if len(bad_script_names) > 0:
