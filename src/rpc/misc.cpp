@@ -67,6 +67,7 @@ UniValue getinfo(const JSONRPCRequest& request)
             "  \"proxy\": \"host:port\",       (string, optional) the proxy used by the server\n"
             "  \"difficulty\": xxxxxx,         (numeric) the current difficulty\n"
             "  \"testnet\": true|false,        (boolean) if the server is using testnet or not\n"
+            "  \"moneysupply\": n              (numeric) The sum of transparentsupply and shieldedsupply\n"
             "  \"transparentsupply\" : n       (numeric) The sum of the value of all unspent outputs when the chainstate was\n"
             "                                            last flushed to disk (use getsupplyinfo to know the update-height, or\n"
             "                                            to trigger the money supply update/recalculation)"
@@ -130,6 +131,7 @@ UniValue getinfo(const JSONRPCRequest& request)
 
     // Add (cached) money supply via getsupplyinfo RPC
     UniValue supply_info = getsupplyinfo(JSONRPCRequest());
+    obj.pushKV("moneysupply", supply_info["totalsupply"]);
     obj.pushKV("transparentsupply", supply_info["transparentsupply"]);
     obj.pushKV("shieldedsupply", supply_info["shieldedsupply"]);
 
