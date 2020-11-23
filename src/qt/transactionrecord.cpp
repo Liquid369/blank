@@ -8,7 +8,6 @@
 
 #include "base58.h"
 #include "sapling/key_io_sapling.h"
-#include "timedata.h"
 #include "wallet/wallet.h"
 #include "zpivchain.h"
 
@@ -221,7 +220,7 @@ bool TransactionRecord::decomposeCreditTransaction(const CWallet* wallet, const 
 
                 sub.address = (opAddr) ? KeyIO::EncodePaymentAddress(*opAddr) : "";
                 sub.type = TransactionRecord::RecvWithShieldedAddress;
-                sub.credit = sspkm->GetCredit(wtx, out);
+                sub.credit = sspkm->GetOutPointValue(wtx, out);
                 sub.idx = i;
                 parts.append(sub);
             }
@@ -304,7 +303,7 @@ bool TransactionRecord::decomposeShieldedDebitTransaction(const CWallet* wallet,
         sub.involvesWatchAddress = involvesWatchAddress;
         sub.type = TransactionRecord::SendToShielded;
         sub.address = KeyIO::EncodePaymentAddress(*opAddr);
-        CAmount nValue = sspkm->GetDebit(wtx, out);
+        CAmount nValue = sspkm->GetOutPointValue(wtx, out);
         /* Add fee to first output */
         if (!feeAdded) { // future, move from the hardcoded fee.
             nValue += COIN;

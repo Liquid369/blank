@@ -287,10 +287,8 @@ public:
 
     //! Return true if the wallet can decrypt & spend the shielded output.
     isminetype IsMine(const CWalletTx& wtx, const SaplingOutPoint& op);
-    //! Return the shielded debit of an specific output description
-    CAmount GetDebit(const CWalletTx& tx, const SaplingOutPoint& op);
-    //! Return the shielded credit of an specific output description
-    CAmount GetCredit(const CWalletTx& tx, const SaplingOutPoint& op);
+    //! Return the shielded value of an specific output
+    CAmount GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op);
     //! Return the shielded credit of the tx
     CAmount GetCredit(const CWalletTx& tx, const isminefilter& filter, const bool fUnspent = false);
     //! Return the shielded debit of the tx.
