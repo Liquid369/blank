@@ -491,7 +491,7 @@ bool SendWidget::sendFinalStep()
     }
 
     dialog->deleteLater();
-    return true;
+    return false;
 }
 
 void SendWidget::run(int type)
