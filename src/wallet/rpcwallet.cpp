@@ -1909,10 +1909,15 @@ UniValue getbalance(const JSONRPCRequest& request)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     const int paramsSize = request.params.size();
-    const int nMinDepth = (paramsSize > 0 ? request.params[0].get_int() : 0);
-    isminefilter filter = ISMINE_SPENDABLE | (paramsSize > 1 && request.params[1].get_bool() ? ISMINE_WATCH_ONLY : ISMINE_NO);
-    filter |= (paramsSize <= 2 || request.params[2].get_bool() ? ISMINE_SPENDABLE_DELEGATED : ISMINE_NO);
-    filter |= (paramsSize <= 3 || request.params[3].get_bool() ? ISMINE_SPENDABLE_SHIELDED : ISMINE_NO);
+    const int nMinDepth = paramsSize > 0 ? request.params[0].get_int() : 0;
+    bool fIncludeWatchOnly = paramsSize > 1 && request.params[1].get_bool();
+    bool fIncludeDelegated = paramsSize <= 2 || request.params[2].get_bool();
+    bool fIncludeShielded = paramsSize <= 3 || request.params[3].get_bool();
+
+    isminefilter filter = ISMINE_SPENDABLE | (fIncludeWatchOnly ?
+                                              (fIncludeShielded ? ISMINE_WATCH_ONLY_SHIELDED : ISMINE_WATCH_ONLY) : ISMINE_NO);
+    filter |= fIncludeDelegated ? ISMINE_SPENDABLE_DELEGATED : ISMINE_NO;
+    filter |= fIncludeShielded ? ISMINE_SPENDABLE_SHIELDED : ISMINE_NO;
     return ValueFromAmount(pwalletMain->GetAvailableBalance(filter, true, nMinDepth));
 }
 
