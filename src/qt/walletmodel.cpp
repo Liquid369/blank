@@ -826,13 +826,7 @@ int64_t WalletModel::getKeyCreationTime(const CTxDestination& address)
 
 int64_t WalletModel::getKeyCreationTime(const std::string& address)
 {
-    CWDestination dest = Standard::DecodeDestination(address);
-    const CTxDestination* add = boost::get<CTxDestination>(&dest);
-    if (add && IsValidDestination(*add)) {
-        return getKeyCreationTime(*add);
-    } else {
-        return getKeyCreationTime(*boost::get<libzcash::SaplingPaymentAddress>(&dest));
-    }
+    return pwalletMain->GetKeyCreationTime(Standard::DecodeDestination(address));
 }
 
 int64_t WalletModel::getKeyCreationTime(const libzcash::SaplingPaymentAddress& address)
