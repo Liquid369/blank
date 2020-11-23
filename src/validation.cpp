@@ -1847,10 +1847,6 @@ bool static FlushStateToDisk(CValidationState& state, FlushStateMode mode)
                 if (!pblocktree->WriteBatchSync(vFiles, nLastBlockFile, vBlocks)) {
                     return AbortNode(state, "Files to write to block index database");
                 }
-                // Flush zerocoin supply
-                if (!mapZerocoinSupply.empty() && !zerocoinDB->WriteZCSupply(mapZerocoinSupply)) {
-                    return AbortNode(state, "Failed to write zerocoin supply to DB");
-                }
             }
             nLastWrite = nNow;
         }

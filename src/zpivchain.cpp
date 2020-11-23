@@ -15,8 +15,6 @@
 // For Script size (BIGNUM/Uint256 size)
 #define BIGNUM_SIZE   4
 
-std::map<libzerocoin::CoinDenomination, int64_t> mapZerocoinSupply;
-
 bool BlockToMintValueVector(const CBlock& block, const libzerocoin::CoinDenomination denom, std::vector<CBigNum>& vValues)
 {
     for (const auto& txIn : block.vtx) {
@@ -257,12 +255,6 @@ std::string ReindexZerocoinDB()
         return _("Failed to wipe zerocoinDB");
     }
 
-    uiInterface.ShowProgress(_("Reindexing zerocoin database..."), 0);
-
-    // initialize supply to 0
-    mapZerocoinSupply.clear();
-    for (auto& denom : libzerocoin::zerocoinDenomList) mapZerocoinSupply.emplace(denom, 0);
-
     const Consensus::Params& consensus = Params().GetConsensus();
     const int zc_start_height = consensus.vUpgrades[Consensus::UPGRADE_ZC].nActivationHeight;
     CBlockIndex* pindex = chainActive[zc_start_height];
@@ -401,19 +393,5 @@ std::list<libzerocoin::CoinDenomination> ZerocoinSpendListFromBlock(const CBlock
         }
     }
     return vSpends;
-}
-
-int64_t GetZerocoinSupply()
-{
-    AssertLockHeld(cs_main);
-
-    if (mapZerocoinSupply.empty())
-        return 0;
-
-    int64_t nTotal = 0;
-    for (auto& denom : libzerocoin::zerocoinDenomList) {
-        nTotal += libzerocoin::ZerocoinDenominationToAmount(denom) * mapZerocoinSupply.at(denom);
-    }
-    return nTotal;
 }
 

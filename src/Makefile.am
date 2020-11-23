@@ -184,7 +184,6 @@ BITCOIN_CORE_H = \
   cyclingvector.h \
   pairresult.h \
   addressbook.h \
-  denomination_functions.h \
   wallet/db.h \
   fs.h \
   hash.h \
@@ -373,7 +372,6 @@ libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_wallet_a_SOURCES = \
   activemasternode.cpp \
   bip38.cpp \
-  denomination_functions.cpp \
   interface/wallet.cpp \
   addressbook.cpp \
   crypter.cpp \

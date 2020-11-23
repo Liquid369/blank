@@ -38,10 +38,4 @@ libzerocoin::CoinSpend TxInToZerocoinSpend(const CTxIn& txin);
 bool TxOutToPublicCoin(const CTxOut& txout, libzerocoin::PublicCoin& pubCoin, CValidationState& state);
 std::list<libzerocoin::CoinDenomination> ZerocoinSpendListFromBlock(const CBlock& block, bool fFilterInvalid);
 
-/** Global variable for the zerocoin supply */
-extern std::map<libzerocoin::CoinDenomination, int64_t> mapZerocoinSupply;
-int64_t GetZerocoinSupply();
-bool UpdateZPIVSupplyConnect(const CBlock& block, CBlockIndex* pindex, bool fJustCheck);
-bool UpdateZPIVSupplyDisconnect(const CBlock& block, CBlockIndex* pindex);
-
 #endif //PIVX_ZPIVCHAIN_H

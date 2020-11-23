@@ -1580,27 +1580,6 @@ bool AppInit2()
                         pcoinsTip->PruneInvalidEntries();
                         pblocktree->Erase('M');
                     }
-
-                    // initialize zPIV supply to 0
-                    mapZerocoinSupply.clear();
-                    for (auto& denom : libzerocoin::zerocoinDenomList) mapZerocoinSupply.emplace(denom, 0);
-
-                    // Load zPIV supply from DB
-                    if (chainHeight >= 0) {
-                        const uint256& tipHash = chainActive[chainHeight]->GetBlockHash();
-                        CLegacyBlockIndex bi;
-
-                        // Load zPIV supply map
-                        if (!fReindexZerocoin && fZerocoinActive && !zerocoinDB->ReadZCSupply(mapZerocoinSupply)) {
-                            // try first reading legacy block index from DB
-                            if (pblocktree->ReadLegacyBlockIndex(tipHash, bi) && !bi.mapZerocoinSupply.empty()) {
-                                mapZerocoinSupply = bi.mapZerocoinSupply;
-                            } else {
-                                // reindex from disk
-                                fReindexZerocoin = true;
-                            }
-                        }
-                    }
                 }
 
                 // Drop all information from the zerocoinDB and repopulate
