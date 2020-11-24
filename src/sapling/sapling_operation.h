@@ -103,6 +103,7 @@ public:
     SaplingOperation* setTransparentKeyChange(CReserveKey* reserveKey) { tkeyChange = reserveKey; return this; }
     SaplingOperation* setCoinControl(const CCoinControl* _coinControl) { coinControl = _coinControl; return this; }
 
+    CAmount getFee() { return fee; }
     CTransaction getFinalTx() { return finalTx; }
 
 private:

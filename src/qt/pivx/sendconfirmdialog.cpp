@@ -123,7 +123,7 @@ QString formatAdressToShow(const QString& address)
 {
     QString addressToShow;
     if (address.size() > 60) {
-        addressToShow = address.left(60) + "\n" + address.mid(60);
+        addressToShow = address.left(57) + "\n" + address.mid(57);
     } else {
         addressToShow = address;
     }

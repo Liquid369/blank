@@ -551,6 +551,7 @@ OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* 
              ->setSelectTransparentCoins(fromTransparent)
              ->setSelectShieldedCoins(!fromTransparent)
              ->setCoinControl(coinControl)
+             ->setMinDepth(fromTransparent ? 1 : 5)
              ->build();
 
     if (!operationResult) {
@@ -559,6 +560,7 @@ OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* 
 
     // load the transaction and key change (if needed)
     modelTransaction->setTransaction(new CWalletTx(wallet, operation.getFinalTx()));
+    modelTransaction->setTransactionFee(operation.getFee()); // in the future, fee will be dynamically calculated.
     return operationResult;
 }
 
