@@ -476,10 +476,6 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
         return false;
     }
 
-    // incorrect ping or its sigTime
-    if(lastPing.IsNull() || !lastPing.CheckAndUpdate(nDos, false, true))
-    return false;
-
     if (protocolVersion < ActiveProtocol()) {
         LogPrint(BCLog::MASTERNODE,"mnb - ignoring outdated Masternode %s protocol version %d\n", vin.prevout.hash.ToString(), protocolVersion);
         return false;
@@ -520,6 +516,11 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
         if (addr.GetPort() != 51472) return false;
     } else if (addr.GetPort() == 51472)
         return false;
+
+    // incorrect ping or its sigTime
+    if(lastPing.IsNull() || !lastPing.CheckAndUpdate(nDos, false, true)) {
+        return false;
+    }
 
     //search existing Masternode list, this is where we update existing Masternodes with new mnb broadcasts
     CMasternode* pmn = mnodeman.Find(vin);
@@ -685,13 +686,13 @@ bool CMasternodePing::CheckAndUpdate(int& nDos, bool fRequireEnabled, bool fChec
 {
     if (sigTime > GetAdjustedTime() + 60 * 60) {
         LogPrint(BCLog::MNPING,"%s: Signature rejected, too far into the future %s\n", __func__, vin.prevout.hash.ToString());
-        nDos = 1;
+        nDos = 30;
         return false;
     }
 
     if (sigTime <= GetAdjustedTime() - 60 * 60) {
         LogPrint(BCLog::MNPING,"%s: Signature rejected, too far into the past %s - %d %d \n", __func__, vin.prevout.hash.ToString(), sigTime, GetAdjustedTime());
-        nDos = 1;
+        nDos = 30;
         return false;
     }
 
@@ -714,6 +715,7 @@ bool CMasternodePing::CheckAndUpdate(int& nDos, bool fRequireEnabled, bool fChec
 
         // Update ping only if the masternode is active/enabled
         if (fRequireEnabled && (!pmn->IsEnabled() && !pmn->IsPreEnabled())) {
+            nDos = 20;
             return false;
         }
 
@@ -729,8 +731,12 @@ bool CMasternodePing::CheckAndUpdate(int& nDos, bool fRequireEnabled, bool fChec
             if (!mnodeman.IsWithinDepth(blockHash, 2 * MNPING_DEPTH)) {
                 LogPrint(BCLog::MNPING,"%s: Masternode %s block hash %s is too old or has an invalid block hash\n",
                                                 __func__, vin.prevout.hash.ToString(), blockHash.ToString());
+                nDos = 33;
                 return false;
             }
+
+            // ping have passed the basic checks, can be updated now
+            mnodeman.mapSeenMasternodePing.emplace(GetHash(), *this);
 
             // SetLastPing locks masternode cs. Be careful with the lock ordering.
             pmn->SetLastPing(*this);

@@ -645,7 +645,6 @@ int CMasternodeMan::ProcessMNBroadcast(CNode* pfrom, CMasternodeBroadcast& mnb)
         masternodeSync.AddedMasternodeList(mnbHash);
         return 0;
     }
-    mapSeenMasternodeBroadcast.emplace(mnbHash, mnb);
 
     int nDoS = 0;
     if (!mnb.CheckAndUpdate(nDoS)) {
@@ -658,6 +657,9 @@ int CMasternodeMan::ProcessMNBroadcast(CNode* pfrom, CMasternodeBroadcast& mnb)
         LogPrintf("CMasternodeMan::ProcessMessage() : mnb - Got mismatched pubkey and vin\n");
         return 33;
     }
+
+    // now that did the basic mnb checks, can add it.
+    mapSeenMasternodeBroadcast.emplace(mnbHash, mnb);
 
     // make sure it's still unspent
     //  - this is checked later by .check() in many places and by ThreadCheckObfuScationPool()
@@ -677,7 +679,6 @@ int CMasternodeMan::ProcessMNPing(CNode* pfrom, CMasternodePing& mnp)
 {
     const uint256& mnpHash = mnp.GetHash();
     if (mapSeenMasternodePing.count(mnpHash)) return 0; //seen
-    mapSeenMasternodePing.emplace(mnpHash, mnp);
 
     int nDoS = 0;
     if (mnp.CheckAndUpdate(nDoS)) return 0;

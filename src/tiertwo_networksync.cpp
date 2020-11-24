@@ -7,6 +7,7 @@
 #include "spork.h"  // for sporkManager
 #include "masternodeman.h" // for mnodeman
 #include "netmessagemaker.h"
+#include "net_processing.h" // for Misbehaving
 #include "streams.h"  // for CDataStream
 
 
@@ -49,8 +50,11 @@ bool CMasternodeSync::MessageDispatcher(CNode* pfrom, std::string& strCommand, C
         // Get Masternode list or specific entry
         CTxIn vin;
         vRecv >> vin;
-        mnodeman.ProcessGetMNList(pfrom, vin);
-        // todo result ban score misbehaving..
+        int banScore = mnodeman.ProcessGetMNList(pfrom, vin);
+        if (banScore > 0) {
+            LOCK(cs_main);
+            Misbehaving(pfrom->GetId(), banScore);
+        }
         return true;
     }
 
@@ -62,8 +66,9 @@ bool CMasternodeSync::MessageDispatcher(CNode* pfrom, std::string& strCommand, C
         vRecv >> spork;
         int banScore = sporkManager.ProcessSporkMsg(spork);
         if (banScore > 0) {
-            // add misbehaving..
-            return error("Failed to process spork message");
+            LOCK(cs_main);
+            Misbehaving(pfrom->GetId(), banScore);
+            return true;
         }
         // All good, Update in-flight message status if needed
         if (!UpdatePeerSyncState(pfrom->GetId(), NetMsgType::GETSPORKS, MASTERNODE_SYNC_LIST)) {
