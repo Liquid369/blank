@@ -219,7 +219,7 @@ background:transparent;
               <x>0</x>
               <y>0</y>
               <width>586</width>
-              <height>644</height>
+              <height>631</height>
              </rect>
             </property>
             <property name="autoFillBackground">
@@ -596,7 +596,7 @@ background:transparent;
                   </layout>
                  </widget>
                 </item>
-                <item>
+                <item alignment="Qt::AlignTop">
                  <widget class="QFrame" name="gridInputs">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
