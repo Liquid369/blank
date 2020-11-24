@@ -34,9 +34,23 @@ CAmount GetDustThreshold(const CTxOut& txout, const CFeeRate& dustRelayFee)
     return 3 * dustRelayFee.GetFee(nSize);
 }
 
+CAmount GetDustThreshold(const CFeeRate& dustRelayFee)
+{
+    // return the dust threshold for a typical 34 bytes output
+    return 3 * dustRelayFee.GetFee(182);
+}
+
 bool IsDust(const CTxOut& txout, const CFeeRate& dustRelayFee)
 {
     return (txout.nValue < GetDustThreshold(txout, dustRelayFee));
+}
+
+CAmount GetShieldedDustThreshold(const CFeeRate& dustRelayFee)
+{
+    unsigned int K = DEFAULT_SHIELDEDTXFEE_K;   // Fixed (1000) for now
+    return 3 * K * dustRelayFee.GetFee(SPENDDESCRIPTION_SIZE +
+                                       CTXOUT_REGULAR_SIZE +
+                                       BINDINGSIG_SIZE);
 }
 
 /**

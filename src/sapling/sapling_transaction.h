@@ -25,6 +25,7 @@
 // https://zips.z.cash/protocol/protocol.pdf#txnencoding
 #define OUTPUTDESCRIPTION_SIZE  948
 #define SPENDDESCRIPTION_SIZE   384
+#define BINDINGSIG_SIZE          64
 
 namespace libzcash {
     static constexpr size_t GROTH_PROOF_SIZE = (
@@ -130,7 +131,7 @@ public:
 class SaplingTxData
 {
 public:
-    typedef std::array<unsigned char, 64> binding_sig_t;
+    typedef std::array<unsigned char, BINDINGSIG_SIZE> binding_sig_t;
 
     CAmount valueBalance{0};
     std::vector<SpendDescription> vShieldedSpend;

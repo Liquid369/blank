@@ -259,11 +259,7 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
     // Final step, append utxo to the transaction
 
     // Get dust threshold
-    CKey secret;
-    secret.MakeNewKey(true);
-    CScript scriptPubKey = GetScriptForDestination(secret.GetPubKey().GetID());
-    CTxOut out(CAmount(1), scriptPubKey);
-    CAmount dustThreshold = GetDustThreshold(out, minRelayTxFee);
+    CAmount dustThreshold = GetDustThreshold(minRelayTxFee);
     CAmount dustChange = -1;
 
     CAmount selectedUTXOAmount = 0;
@@ -336,6 +332,8 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues,
     std::vector<SaplingOutPoint> ops;
     std::vector<libzcash::SaplingNote> notes;
     txValues.shieldedInTotal = 0;
+    CAmount dustThreshold = GetShieldedDustThreshold(minRelayTxFee);
+    CAmount dustChange = -1;
     for (const auto& t : shieldedInputs) {
         // if null, load the first input sk
         if (expsk.IsNull()) {
@@ -346,7 +344,11 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues,
         notes.emplace_back(t.note);
         txValues.shieldedInTotal += t.note.value();
         if (txValues.shieldedInTotal >= txValues.target) {
-            break;
+            // Select another note if there is change less than the dust threshold.
+            dustChange = txValues.shieldedInTotal - txValues.target;
+            if (dustChange == 0 || dustChange >= dustThreshold) {
+                break;
+            }
         }
     }
 
