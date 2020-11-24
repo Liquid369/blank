@@ -60,7 +60,6 @@ UniValue getinfo(const JSONRPCRequest& request)
             "  \"protocolversion\": xxxxx,     (numeric) the protocol version\n"
             "  \"walletversion\": xxxxx,       (numeric) the wallet version\n"
             "  \"balance\": xxxxxxx,           (numeric) the total pivx balance of the wallet (excluding zerocoins)\n"
-            "  \"zerocoinbalance\": xxxxxxx,   (numeric) the total zerocoin balance of the wallet\n"
             "  \"staking status\": true|false, (boolean) if the wallet is staking or not\n"
             "  \"blocks\": xxxxxx,             (numeric) the current number of blocks processed in the server\n"
             "  \"timeoffset\": xxxxx,          (numeric) the time offset\n"
@@ -68,21 +67,11 @@ UniValue getinfo(const JSONRPCRequest& request)
             "  \"proxy\": \"host:port\",       (string, optional) the proxy used by the server\n"
             "  \"difficulty\": xxxxxx,         (numeric) the current difficulty\n"
             "  \"testnet\": true|false,        (boolean) if the server is using testnet or not\n"
-            "  \"moneysupply\" : \"supply\"    (numeric) The sum of the value of all unspent outputs when the chainstate was\n"
+            "  \"moneysupply\": n              (numeric) The sum of transparentsupply and shieldedsupply\n"
+            "  \"transparentsupply\" : n       (numeric) The sum of the value of all unspent outputs when the chainstate was\n"
             "                                            last flushed to disk (use getsupplyinfo to know the update-height, or\n"
             "                                            to trigger the money supply update/recalculation)"
-            "  \"zPIVsupply\" :\n"
-            "  {\n"
-            "     \"1\" : n,            (numeric) supply of 1 zPIV denomination\n"
-            "     \"5\" : n,            (numeric) supply of 5 zPIV denomination\n"
-            "     \"10\" : n,           (numeric) supply of 10 zPIV denomination\n"
-            "     \"50\" : n,           (numeric) supply of 50 zPIV denomination\n"
-            "     \"100\" : n,          (numeric) supply of 100 zPIV denomination\n"
-            "     \"500\" : n,          (numeric) supply of 500 zPIV denomination\n"
-            "     \"1000\" : n,         (numeric) supply of 1000 zPIV denomination\n"
-            "     \"5000\" : n,         (numeric) supply of 5000 zPIV denomination\n"
-            "     \"total\" : n,        (numeric) The total supply of all zPIV denominations\n"
-            "  }\n"
+            "  \"shieldedsupply\": n           (numeric) Chain tip shielded pool value\n"
             "  \"keypoololdest\": xxxxxx,      (numeric) the timestamp (seconds since GMT epoch) of the oldest pre-generated key in the key pool\n"
             "  \"keypoolsize\": xxxx,          (numeric) how many new keys are pre-generated\n"
             "  \"unlocked_until\": ttt,        (numeric) the timestamp in seconds since epoch (midnight Jan 1 1970 GMT) that the wallet is unlocked for transfers, or 0 if the wallet is locked\n"
@@ -129,7 +118,6 @@ UniValue getinfo(const JSONRPCRequest& request)
     if (pwalletMain) {
         obj.pushKV("walletversion", pwalletMain->GetVersion());
         obj.pushKV("balance", ValueFromAmount(pwalletMain->GetAvailableBalance()));
-        obj.pushKV("zerocoinbalance", ValueFromAmount(pwalletMain->GetZerocoinBalance()));
         obj.pushKV("staking status", (pwalletMain->pStakerStatus->IsActive() ? "Staking Active" : "Staking Not Active"));
     }
 #endif
@@ -143,17 +131,9 @@ UniValue getinfo(const JSONRPCRequest& request)
 
     // Add (cached) money supply via getsupplyinfo RPC
     UniValue supply_info = getsupplyinfo(JSONRPCRequest());
-    obj.pushKV("moneysupply", supply_info["supply"]);
-
-    UniValue zpivObj(UniValue::VOBJ);
-    for (auto denom : libzerocoin::zerocoinDenomList) {
-        if (mapZerocoinSupply.empty())
-            zpivObj.pushKV(std::to_string(denom), ValueFromAmount(0));
-        else
-            zpivObj.pushKV(std::to_string(denom), ValueFromAmount(mapZerocoinSupply.at(denom) * (denom*COIN)));
-    }
-    zpivObj.pushKV("total", ValueFromAmount(GetZerocoinSupply()));
-    obj.pushKV("zPIVsupply", zpivObj);
+    obj.pushKV("moneysupply", supply_info["totalsupply"]);
+    obj.pushKV("transparentsupply", supply_info["transparentsupply"]);
+    obj.pushKV("shieldedsupply", supply_info["shieldedsupply"]);
 
 #ifdef ENABLE_WALLET
     if (pwalletMain) {

@@ -53,7 +53,7 @@ class ReorgStakeTest(PivxTestFramework):
 
     def check_money_supply(self, expected_piv):
         # verify that nodes have the expected PIV supply
-        piv_supply = [self.nodes[i].getsupplyinfo(True)['supply']
+        piv_supply = [self.nodes[i].getsupplyinfo(True)['transparentsupply']
                       for i in range(self.num_nodes)]
         assert_equal(piv_supply, [DecimalAmt(expected_piv)] * self.num_nodes)
 
