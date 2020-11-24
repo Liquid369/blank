@@ -6,10 +6,13 @@
 
 from test_framework.test_framework import PivxTestFramework
 from test_framework.util import (
+    connect_nodes,
+    disconnect_nodes,
     assert_equal,
     assert_raises_rpc_error,
     sync_mempools,
-    get_coinstake_address
+    get_coinstake_address,
+    wait_until,
 )
 
 from decimal import Decimal
@@ -30,6 +33,11 @@ class WalletSaplingTest(PivxTestFramework):
         mempool = self.nodes[0].getrawmempool(True)
         for txid in txids:
             assert(Decimal(mempool[txid]['startingpriority']) == Decimal('1E+25'))
+
+    def wait_for_spork(self, fEnabled, spork_id):
+        sleep(2)
+        for i in range(self.num_nodes):
+            wait_until(lambda: self.is_spork_active(i, spork_id) == fEnabled, timeout=5)
 
     def run_test(self):
         self.log.info("Mining 120 blocks...")
@@ -66,14 +74,21 @@ class WalletSaplingTest(PivxTestFramework):
         self.log.info("TX 2: shield funds from any transparent address.")
         mytxid2 = self.nodes[0].shieldedsendmany("from_transparent", recipients, 1, fee)
 
+        # Verify priority of tx is INF_PRIORITY, defined as 1E+25 (10000000000000000000000000)
+        self.check_tx_priority([mytxid1, mytxid2])
+        self.log.info("Priority for tx1 and tx2 checks out")
+
+        self.nodes[2].generate(1)
+        self.sync_all()
+
         # shield more funds creating and then sending a raw transaction
         self.log.info("TX 3: shield funds creating and sending raw transaction.")
         tx_json = self.nodes[0].rawshieldedsendmany("from_transparent", recipients, 1, fee)
 
         # Check SPORK_20 for sapling maintenance mode
-        self.activate_spork(0, "SPORK_20_SAPLING_MAINTENANCE")
-        sleep(2)
-        assert_equal(True, self.is_spork_active(1, "SPORK_20_SAPLING_MAINTENANCE"))
+        SPORK_20 = "SPORK_20_SAPLING_MAINTENANCE"
+        self.activate_spork(0, SPORK_20)
+        self.wait_for_spork(True, SPORK_20)
         assert_raises_rpc_error(-26, "bad-tx-sapling-maintenance",
                                 self.nodes[0].sendrawtransaction, tx_json["hex"])
         self.log.info("Good. Not accepted when SPORK_20 is active.")
@@ -83,15 +98,15 @@ class WalletSaplingTest(PivxTestFramework):
                                 self.nodes[0].shieldedsendmany, "from_transparent", recipients, 1, fee)
 
         # Disable SPORK_20 and retry
-        self.deactivate_spork(0, "SPORK_20_SAPLING_MAINTENANCE")
-        sleep(2)
-        assert_equal(False, self.is_spork_active(1, "SPORK_20_SAPLING_MAINTENANCE"))
+        sleep(5)
+        self.deactivate_spork(0, SPORK_20)
+        self.wait_for_spork(False, SPORK_20)
         mytxid3 = self.nodes[0].sendrawtransaction(tx_json["hex"])
         self.log.info("Good. Accepted when SPORK_20 is not active.")
 
         # Verify priority of tx is INF_PRIORITY, defined as 1E+25 (10000000000000000000000000)
-        self.check_tx_priority([mytxid1, mytxid2, mytxid3])
-        self.log.info("Priority for tx1, tx2 and tx3 checks out")
+        self.check_tx_priority([mytxid3])
+        self.log.info("Priority for tx3 checks out")
 
         self.nodes[2].generate(1)
         self.sync_all()
@@ -101,6 +116,28 @@ class WalletSaplingTest(PivxTestFramework):
         assert_equal(self.nodes[1].getshieldedbalance(saplingAddr1), Decimal('0'))
         assert_equal(self.nodes[1].getreceivedbyaddress(taddr1), Decimal('0'))
         self.log.info("Balances check out")
+
+        # Now disconnect the block, activate SPORK_20, and try to reconnect it
+        disconnect_nodes(self.nodes[0], 1)
+        tip_hash = self.nodes[0].getbestblockhash()
+        self.nodes[0].invalidateblock(tip_hash)
+        assert tip_hash != self.nodes[0].getbestblockhash()
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('20'))
+        self.log.info("Now trying to connect block with shielded tx, when SPORK_20 is active")
+        self.activate_spork(0, SPORK_20)
+        self.nodes[0].reconsiderblock(tip_hash)
+        assert tip_hash != self.nodes[0].getbestblockhash()         # Block NOT connected
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('20'))
+        self.log.info("Good. Not possible.")
+
+        # Deactivate SPORK_20 and reconnect
+        sleep(1)
+        self.deactivate_spork(0, SPORK_20)
+        self.nodes[0].reconsiderblock(tip_hash)
+        assert_equal(tip_hash, self.nodes[0].getbestblockhash())    # Block connected
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('30'))
+        self.log.info("Reconnected after deactivation of SPORK_20. Balance restored.")
+        connect_nodes(self.nodes[0], 1)
 
         # Node 0 sends some shielded funds to node 1
         # Sapling -> Sapling
