@@ -139,6 +139,8 @@ void setFilterAddressBook(QComboBox* filter, SortEdit* lineEdit)
     filter->addItem(QObject::tr("Delegator"), AddressTableModel::Delegator);
     filter->addItem(QObject::tr("Delegable"), AddressTableModel::Delegable);
     filter->addItem(QObject::tr("Staking Contacts"), AddressTableModel::ColdStakingSend);
+    filter->addItem(QObject::tr("Shielded Recv"), AddressTableModel::ShieldedReceive);
+    filter->addItem(QObject::tr("Shielded Contact"), AddressTableModel::ShieldedSend);
 }
 
 void setSortTx(QComboBox* filter, SortEdit* lineEdit)
@@ -157,10 +159,12 @@ void setSortTxTypeFilter(QComboBox* filter, SortEdit* lineEditType)
     filter->addItem(QObject::tr("All"), TransactionFilterProxy::ALL_TYPES);
     filter->addItem(QObject::tr("Received"), TransactionFilterProxy::TYPE(TransactionRecord::RecvWithAddress) | TransactionFilterProxy::TYPE(TransactionRecord::RecvFromOther));
     filter->addItem(QObject::tr("Sent"), TransactionFilterProxy::TYPE(TransactionRecord::SendToAddress) | TransactionFilterProxy::TYPE(TransactionRecord::SendToOther));
+    filter->addItem(QObject::tr("Shielded"), TransactionFilterProxy::TYPE(TransactionRecord::RecvWithShieldedAddress | TransactionRecord::SendToShielded));
     filter->addItem(QObject::tr("Mined"), TransactionFilterProxy::TYPE(TransactionRecord::Generated));
     filter->addItem(QObject::tr("Minted"), TransactionFilterProxy::TYPE(TransactionRecord::StakeMint));
     filter->addItem(QObject::tr("MN reward"), TransactionFilterProxy::TYPE(TransactionRecord::MNReward));
-    filter->addItem(QObject::tr("To yourself"), TransactionFilterProxy::TYPE(TransactionRecord::SendToSelf));
+    filter->addItem(QObject::tr("To yourself"), TransactionFilterProxy::TYPE(TransactionRecord::SendToSelf |
+                TransactionRecord::SendToSelfShieldedAddress | TransactionRecord::SendToSelfShieldToShieldChangeAddress | TransactionRecord::SendToSelfShieldToTransparent));
     filter->addItem(QObject::tr("Cold stakes"), TransactionFilterProxy::TYPE(TransactionRecord::StakeDelegated));
     filter->addItem(QObject::tr("Hot stakes"), TransactionFilterProxy::TYPE(TransactionRecord::StakeHot));
     filter->addItem(QObject::tr("Delegated"), TransactionFilterProxy::TYPE(TransactionRecord::P2CSDelegationSent) | TransactionFilterProxy::TYPE(TransactionRecord::P2CSDelegationSentOwner));
