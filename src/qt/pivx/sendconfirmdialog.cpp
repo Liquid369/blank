@@ -250,10 +250,23 @@ void TxDetailDialog::onOutputsClicked()
             layoutGrid->setContentsMargins(0,0,12,0);
             ui->container_outputs_base->setLayout(layoutGrid);
 
-            const CWalletTx* walletTx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
-            if (walletTx) {
+            // If the there is a model tx, then this is a confirmation dialog
+            if (tx) {
+                const QList<SendCoinsRecipient>& recipients = tx->getRecipients();
+                for (int i = 0; i < recipients.size(); ++i) {
+                    const auto& recipient = recipients[i];
+                    int charsSize = recipient.isShieldedAddr ? 18 : 16;
+                    QString labelRes = recipient.address.left(charsSize) + "..." + recipient.address.right(charsSize);
+                    appendOutput(layoutGrid, i, labelRes, recipient.amount, nDisplayUnit);
+                }
+            } else {
+                // Tx detail dialog
+                const CWalletTx* walletTx = model->getTx(this->txHash);
+                if (!walletTx) return;
+
+                // transparent recipients
                 int i = 0;
-                for (const CTxOut &out : walletTx->vout) {
+                for (const CTxOut& out : walletTx->vout) {
                     QString labelRes;
                     CTxDestination dest;
                     bool isCsAddress = out.scriptPubKey.IsPayToColdStaking();
@@ -272,6 +285,7 @@ void TxDetailDialog::onOutputsClicked()
                 if (walletTx->sapData) {
                     for (int j = 0; j < (int) walletTx->sapData->vShieldedOutput.size(); ++j) {
                         const SaplingOutPoint op(walletTx->GetHash(), j);
+                        // TODO: This only works for txs that are stored, not for when this is a confirmation dialog..
                         if (walletTx->mapSaplingNoteData.find(op) == walletTx->mapSaplingNoteData.end()) {
                             continue;
                         }
@@ -287,6 +301,7 @@ void TxDetailDialog::onOutputsClicked()
                         i++;
                     }
                 }
+
             }
         }
     }
