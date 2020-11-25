@@ -959,7 +959,7 @@ void WalletModel::listAvailableNotes(std::map<ListCoinsKey, std::vector<ListCoin
     for (const auto& note : notes) {
         ListCoinsKey key{QString::fromStdString(KeyIO::EncodePaymentAddress(note.address)), false, nullopt};
         ListCoinsValue value{
-            note.op.GetHash(),
+            note.op.hash,
             (int)note.op.n,
             (CAmount)note.note.value(),
             0,
