@@ -3068,7 +3068,7 @@ CWallet::CommitResult CWallet::CommitTransaction(CWalletTx& wtxNew, CReserveKey*
 
         // Try ATMP. This must not fail. The transaction has already been signed and recorded.
         CValidationState state;
-        if (!AcceptToMemoryPool(mempool, state, MakeTransactionRef(std::move(wtxNew)), false, nullptr, false, true, false)) {
+        if (!AcceptToMemoryPool(mempool, state, MakeTransactionRef(std::move(wtxNew)), true, nullptr, false, true, false)) {
             res.state = state;
             // Abandon the transaction
             if (AbandonTransaction(res.hashTx)) {
