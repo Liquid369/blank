@@ -12,7 +12,6 @@
 #include "sapling/note.hpp"
 #include "sapling/noteencryption.hpp"
 #include "sapling/prf.h"
-#include "sapling/uint252.h"
 #include "sapling/sapling_util.h"
 #include "crypto/sha256.h"
 
@@ -21,15 +20,6 @@
 #include <sodium.h>
 
 BOOST_FIXTURE_TEST_SUITE(noteencryption_tests, BasicTestingSetup)
-
-class TestNoteDecryption : public ZCNoteDecryption {
-public:
-    TestNoteDecryption(uint256 sk_enc) : ZCNoteDecryption(sk_enc) {}
-
-    void change_pk_enc(uint256 to) {
-        pk_enc = to;
-    }
-};
 
 BOOST_AUTO_TEST_CASE(note_plain_text_test)
 {
@@ -346,143 +336,6 @@ BOOST_AUTO_TEST_CASE(SaplingApi_test)
             uint256(),
             epk_2
     ));
-}
-
-BOOST_AUTO_TEST_CASE(api_test)
-{
-    uint256 sk_enc = ZCNoteEncryption::generate_privkey(uint252(uint256S("21035d60bc1983e37950ce4803418a8fb33ea68d5b937ca382ecbae7564d6a07")));
-    uint256 pk_enc = ZCNoteEncryption::generate_pubkey(sk_enc);
-
-    ZCNoteEncryption b = ZCNoteEncryption(uint256());
-    for (size_t i = 0; i < 100; i++) {
-        ZCNoteEncryption c = ZCNoteEncryption(uint256());
-        BOOST_CHECK(b.get_epk() != c.get_epk());
-    }
-
-    std::array<unsigned char, ZC_NOTEPLAINTEXT_SIZE> message;
-    for (size_t i = 0; i < ZC_NOTEPLAINTEXT_SIZE; i++) {
-        // Fill the message with dummy data
-        message[i] = (unsigned char) i;
-    }
-
-    for (int i = 0; i < 255; i++) {
-        auto ciphertext = b.encrypt(pk_enc, message);
-
-        {
-            ZCNoteDecryption decrypter(sk_enc);
-
-            // Test decryption
-            auto plaintext = decrypter.decrypt(ciphertext, b.get_epk(), uint256(), i);
-            BOOST_CHECK(plaintext == message);
-
-            // Test wrong nonce
-            BOOST_CHECK_THROW(decrypter.decrypt(ciphertext, b.get_epk(), uint256(), (i == 0) ? 1 : (i - 1)),
-            libzcash::note_decryption_failed);
-
-            // Test wrong ephemeral key
-            {
-            ZCNoteEncryption c = ZCNoteEncryption(uint256());
-
-            BOOST_CHECK_THROW(decrypter.decrypt(ciphertext, c.get_epk(), uint256(), i),
-            libzcash::note_decryption_failed);
-            }
-
-            // Test wrong seed
-            BOOST_CHECK_THROW(decrypter.decrypt(ciphertext, b.get_epk(), uint256S("11035d60bc1983e37950ce4803418a8fb33ea68d5b937ca382ecbae7564d6a77"), i),
-            libzcash::note_decryption_failed);
-
-            // Test corrupted ciphertext
-            ciphertext[10] ^= 0xff;
-            BOOST_CHECK_THROW(decrypter.decrypt(ciphertext, b.get_epk(), uint256(), i),
-            libzcash::note_decryption_failed);
-            ciphertext[10] ^= 0xff;
-        }
-
-        {
-            // Test wrong private key
-            uint256 sk_enc_2 = ZCNoteEncryption::generate_privkey(uint252());
-            ZCNoteDecryption decrypter(sk_enc_2);
-
-            BOOST_CHECK_THROW(decrypter.decrypt(ciphertext, b.get_epk(), uint256(), i),
-            libzcash::note_decryption_failed);
-        }
-
-        {
-            TestNoteDecryption decrypter(sk_enc);
-
-            // Test decryption
-            auto plaintext = decrypter.decrypt(ciphertext, b.get_epk(), uint256(), i);
-            BOOST_CHECK(plaintext == message);
-
-            // Test wrong public key (test of KDF)
-            decrypter.change_pk_enc(uint256());
-            BOOST_CHECK_THROW(decrypter.decrypt(ciphertext, b.get_epk(), uint256(), i),
-            libzcash::note_decryption_failed);
-        }
-    }
-
-    // Nonce space should run out here
-    try {
-        b.encrypt(pk_enc, message);
-        BOOST_FAIL("Expected std::logic_error");
-    } catch(std::logic_error const & err) {
-        BOOST_CHECK(err.what() == std::string("no additional nonce space for KDF"));
-    } catch(...) {
-        BOOST_FAIL("Expected std::logic_error");
-    }
-}
-
-uint256 test_prf(
-        unsigned char distinguisher,
-        uint252 seed_x,
-        uint256 y
-) {
-    uint256 x = seed_x.inner();
-    *x.begin() &= 0x0f;
-    *x.begin() |= distinguisher;
-    CSHA256 hasher;
-    hasher.Write(x.begin(), 32);
-    hasher.Write(y.begin(), 32);
-
-    uint256 ret;
-    hasher.FinalizeNoPadding(ret.begin());
-    return ret;
-}
-
-BOOST_AUTO_TEST_CASE(PrfAddr_test)
-{
-    for (size_t i = 0; i < 100; i++) {
-        uint252 a_sk = random_uint252();
-        uint256 rest;
-        BOOST_CHECK(
-                test_prf(0xc0, a_sk, rest) == PRF_addr_a_pk(a_sk)
-        );
-    }
-
-    for (size_t i = 0; i < 100; i++) {
-        uint252 a_sk = random_uint252();
-        uint256 rest;
-        *rest.begin() = 0x01;
-        BOOST_CHECK(
-                test_prf(0xc0, a_sk, rest) == PRF_addr_sk_enc(a_sk)
-        );
-    }
-}
-
-BOOST_AUTO_TEST_CASE(PrfNf_test)
-{
-    for (size_t i = 0; i < 100; i++) {
-        uint252 a_sk = random_uint252();
-        uint256 rho = random_uint256();
-        BOOST_CHECK(
-                test_prf(0xe0, a_sk, rho) == PRF_nf(a_sk, rho)
-        );
-    }
-}
-
-BOOST_AUTO_TEST_CASE(uint252_test)
-{
-    BOOST_CHECK_THROW(uint252(uint256S("f6da8716682d600f74fc16bd0187faad6a26b4aa4c24d5c055b216d94516847e")), std::domain_error);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

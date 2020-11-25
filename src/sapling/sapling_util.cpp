@@ -59,10 +59,3 @@ uint256 random_uint256() {
 
     return ret;
 }
-
-uint252 random_uint252() {
-    uint256 rand = random_uint256();
-    (*rand.begin()) &= 0x0F;
-
-    return uint252(rand);
-}

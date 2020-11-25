@@ -80,7 +80,6 @@ BOOST_AUTO_TEST_CASE(rpc_wallet_sapling_validateaddress)
     resultObj = retValue.get_obj();
     b = find_value(resultObj, "isvalid").get_bool();
     BOOST_CHECK_EQUAL(b, true);
-    BOOST_CHECK_EQUAL(find_value(resultObj, "type").get_str(), "sapling");
     b = find_value(resultObj, "ismine").get_bool();
     BOOST_CHECK_EQUAL(b, false);
     BOOST_CHECK_EQUAL(find_value(resultObj, "diversifier").get_str(), "e1fd627f1b9a8e4c7e6657");
@@ -92,7 +91,6 @@ BOOST_AUTO_TEST_CASE(rpc_wallet_getbalance)
     SelectParams(CBaseChainParams::TESTNET);
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
-
 
     BOOST_CHECK_THROW(CallRPC("getshieldedbalance too many args"), std::runtime_error);
     BOOST_CHECK_THROW(CallRPC("getshieldedbalance invalidaddress"), std::runtime_error);
@@ -163,8 +161,8 @@ BOOST_AUTO_TEST_CASE(rpc_wallet_sapling_importexport)
     BOOST_CHECK_THROW(CallRPC("exportsaplingkey toomany args"), std::runtime_error);
 
     // error if invalid args
-    auto sk = libzcash::SproutSpendingKey::random();
-    std::string prefix = std::string("importsaplingkey ") + KeyIO::EncodeSpendingKey(sk) + " yes ";
+    auto m = GetTestMasterSaplingSpendingKey();
+    std::string prefix = std::string("importsaplingkey ") + KeyIO::EncodeSpendingKey(m) + " yes ";
     BOOST_CHECK_THROW(CallRPC(prefix + "-1"), std::runtime_error);
     BOOST_CHECK_THROW(CallRPC(prefix + "2147483647"), std::runtime_error); // allowed, but > height of active chain tip
     BOOST_CHECK_THROW(CallRPC(prefix + "2147483648"), std::runtime_error); // not allowed, > int32 used for nHeight
@@ -174,8 +172,6 @@ BOOST_AUTO_TEST_CASE(rpc_wallet_sapling_importexport)
     std::set<libzcash::SaplingPaymentAddress> saplingAddrs;
     pwalletMain->GetSaplingPaymentAddresses(saplingAddrs);
     BOOST_CHECK(saplingAddrs.empty());
-
-    auto m = GetTestMasterSaplingSpendingKey();
 
     // verify import and export key
     for (int i = 0; i < n1; i++) {
