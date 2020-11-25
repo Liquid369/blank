@@ -344,6 +344,7 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& 
 
         // Converting outpoint wrapper to sapling outpoints
         std::vector<SaplingOutPoint> vSaplingOutpoints;
+        vSaplingOutpoints.reserve(vCoins.size());
         for (const auto& outpoint : vCoins) {
             vSaplingOutpoints.emplace_back(outpoint.outPoint.hash, outpoint.outPoint.n);
         }
@@ -356,20 +357,13 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& 
     } else {
         // If we don't have coinControl then let's find the notes
         pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(shieldedInputs, fromAddress.fromSapAddr, mindepth);
-
-        for (const auto& entry : shieldedInputs) {
-            std::string data(entry.memo.begin(), entry.memo.end());
-            LogPrint(BCLog::SAPLING,
-                     "%s: found unspent Sapling note (txid=%s, vShieldedSpend=%d, amount=%s, memo=%s)\n",
-                     __func__,
-                     entry.op.hash.ToString().substr(0, 10),
-                     entry.op.n,
-                     FormatMoney(entry.note.value()),
-                     HexStr(data).substr(0, 10));
-        }
-
         if (shieldedInputs.empty()) {
-            return errorOut("Insufficient funds, no available notes to spend");
+            // Just to notify the user properly, check if the wallet has notes with less than the min depth
+            std::vector<SaplingNoteEntry> _shieldedInputs;
+            pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(_shieldedInputs, fromAddress.fromSapAddr, 0);
+            return errorOut(_shieldedInputs.empty() ?
+                    "Insufficient funds, no available notes to spend" :
+                    "Insufficient funds, shielded PIV need at least 5 confirmations");
         }
     }
 
