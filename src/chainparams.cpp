@@ -479,7 +479,7 @@ public:
         consensus.vUpgrades[Consensus::UPGRADE_V3_4].nActivationHeight          = 251;
         consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight          =
                 Consensus::NetworkUpgrade::ALWAYS_ACTIVE;
-        consensus.vUpgrades[Consensus::UPGRADE_V5_0].nActivationHeight       = 300;
+        consensus.vUpgrades[Consensus::UPGRADE_V5_0].nActivationHeight          = 300;
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
