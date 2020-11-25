@@ -42,7 +42,7 @@ jobs:
           echo "${{ github.event_name }}"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             contrib/devtools/lint-whitespace.sh
-            contrib/devtools/commit-script-check.sh $TRAVIS_COMMIT_RANGE
+            contrib/devtools/commit-script-check.sh ${{ github.base_ref }}..${{ github.head_ref }}
             test/lint/lint-qt.sh
           fi
 
