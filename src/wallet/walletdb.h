@@ -164,6 +164,10 @@ public:
                                  const std::vector<unsigned char>& vchCryptedSecret,
                                  const CKeyMetadata &keyMeta);
 
+    /// Common output viewing key, used when shielding transparent funds
+    bool WriteSaplingCommonOVK(const uint256& ovk);
+    bool ReadSaplingCommonOVK(uint256& ovkRet);
+
     bool WriteWitnessCacheSize(int64_t nWitnessCacheSize);
 
     /// Write destination data key,value tuple to database

@@ -149,6 +149,17 @@ bool CWalletDB::WriteCryptedSaplingZKey(
     return true;
 }
 
+bool CWalletDB::WriteSaplingCommonOVK(const uint256& ovk)
+{
+    nWalletDBUpdateCounter++;
+    return Write(std::string("commonovk"), ovk);
+}
+
+bool CWalletDB::ReadSaplingCommonOVK(uint256& ovkRet)
+{
+    return Read(std::string("commonovk"), ovkRet);
+}
+
 bool CWalletDB::WriteWitnessCacheSize(int64_t nWitnessCacheSize)
 {
     nWalletDBUpdateCounter++;
@@ -650,14 +661,16 @@ bool ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue, CW
             ssKey >> ivk;
             libzcash::SaplingExtendedSpendingKey key;
             ssValue >> key;
-
             if (!pwallet->LoadSaplingZKey(key)) {
                 strErr = "Error reading wallet database: LoadSaplingZKey failed";
                 return false;
             }
-
             //add checks for integrity
             wss.nZKeys++;
+        } else if (strType == "commonovk") {
+            uint256 ovk;
+            ssValue >> ovk;
+            // !TODO: cache ovk value in the wallet
         } else if (strType == "csapzkey") {
             libzcash::SaplingIncomingViewingKey ivk;
             ssKey >> ivk;
