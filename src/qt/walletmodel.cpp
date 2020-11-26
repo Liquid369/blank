@@ -1081,3 +1081,9 @@ bool WalletModel::isUsed(CTxDestination address)
 {
     return wallet->IsUsed(address);
 }
+
+Optional<QString> WalletModel::getShieldedAddressFromSpendDesc(const CWalletTx* wtx, int index)
+{
+    Optional<libzcash::SaplingPaymentAddress> opAddr = wallet->GetSaplingScriptPubKeyMan()->GetAddressFromInputIfPossible(wtx, index);
+    return opAddr ? Optional<QString>(QString::fromStdString(KeyIO::EncodePaymentAddress(*opAddr))) : nullopt;
+}

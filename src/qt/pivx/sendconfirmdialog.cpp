@@ -102,7 +102,8 @@ void TxDetailDialog::setData(WalletModel *_model, const QModelIndex &index)
         }
         ui->textSend->setVisible(false);
 
-        ui->textInputs->setText(QString::number(_tx->vin.size()));
+        int inputsSize = (_tx->sapData && !_tx->sapData->vShieldedSpend.empty()) ? _tx->sapData->vShieldedSpend.size() : _tx->vin.size();
+        ui->textInputs->setText(QString::number(inputsSize));
         ui->textConfirmations->setText(QString::number(rec->status.depth));
         ui->textDate->setText(GUIUtil::dateTimeStrWithSeconds(date));
         ui->textStatus->setText(QString::fromStdString(rec->statusToString()));
@@ -144,7 +145,7 @@ void TxDetailDialog::setData(WalletModel *_model, WalletModelTransaction* _tx)
         ui->labelOutputIndex->setText(tr("Output Index"));
     } else {
         ui->labelTitlePrevTx->setText(tr("Note From Address"));
-        ui->labelOutputIndex->setText(tr("Note Amount"));
+        ui->labelOutputIndex->setText(tr("Index"));
     }
 
     ui->textAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, totalAmount, false, BitcoinUnits::separatorAlways) + " (Fee included)");
@@ -169,7 +170,9 @@ void TxDetailDialog::setData(WalletModel *_model, WalletModelTransaction* _tx)
         ui->textSendLabel->setText(QString::number(nRecipients) + " recipients");
         ui->textSend->setVisible(false);
     }
-    ui->textInputs->setText(QString::number(tx->getTransaction()->vin.size()));
+
+    int inputsSize = (walletTx->sapData && !walletTx->sapData->vShieldedSpend.empty()) ? walletTx->sapData->vShieldedSpend.size() : walletTx->vin.size();
+    ui->textInputs->setText(QString::number(inputsSize));
     ui->textFee->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, txFee, false, BitcoinUnits::separatorAlways));
 }
 
@@ -198,7 +201,7 @@ void TxDetailDialog::onInputsClicked()
     if (ui->gridInputs->isVisible()) {
         ui->gridInputs->setVisible(false);
     } else {
-        ui->gridInputs->setVisible(true);
+        bool showGrid = true;
         if (!inputsLoaded) {
             inputsLoaded = true;
             const CWalletTx* walletTx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
@@ -215,16 +218,27 @@ void TxDetailDialog::onInputsClicked()
                         i++;
                     }
                 } else {
-                    // TODO: load shielded spends.
-                    // note: the spends could be or not in the wallet, remember that this dialog is called
-                    // from the dashboard as a tx detail dialog and from the send screen as a confirmation dialog.
-                    // In case of the dashboard call, we need to know whether the tx is from me or not,
-                    // if it's not from this wallet then we don't have any information about the inputs and should do nothing here.
-                    // but well.. for now, just hide everything until gets implemented.
-                    ui->gridInputs->setVisible(false);
+                    bool fInfoAvailable = false;
+                    for (int i = 0; i < (int) walletTx->sapData->vShieldedSpend.size(); ++i) {
+                        Optional<QString> opAddr = model->getShieldedAddressFromSpendDesc(walletTx, i);
+                        if (opAddr) {
+                            QString addr = *opAddr;
+                            loadInputs(addr.left(16) + "..." + addr.right(16),
+                                       QString::number(i),
+                                       ui->gridLayoutInput, i);
+                            fInfoAvailable = true;
+                        }
+                    }
+
+                    if (!fInfoAvailable) {
+                        // note: the spends are not from the wallet, let's not show anything here
+                        showGrid = false;
+                    }
+
                 }
             }
         }
+        ui->gridInputs->setVisible(showGrid);
     }
 }
 

@@ -182,6 +182,9 @@ public:
     // plus return isShielded = true if the parsed address is a valid shielded address.
     bool validateAddress(const QString& address, bool fStaking, bool& isShielded);
 
+    // Return the address from where the shielded spend is taking the funds from (if possible)
+    Optional<QString> getShieldedAddressFromSpendDesc(const CWalletTx* wtx, int index);
+
     // Return status record for SendCoins, contains error id + information
     struct SendCoinsReturn {
         SendCoinsReturn(StatusCode status = OK) : status(status) {}

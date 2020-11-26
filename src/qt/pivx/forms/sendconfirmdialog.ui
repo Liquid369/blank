@@ -18,7 +18,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>574</width>
+    <width>580</width>
     <height>500</height>
    </size>
   </property>
@@ -219,7 +219,7 @@ background:transparent;
               <x>0</x>
               <y>0</y>
               <width>586</width>
-              <height>631</height>
+              <height>581</height>
              </rect>
             </property>
             <property name="autoFillBackground">
@@ -607,7 +607,7 @@ background:transparent;
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>90</height>
+                    <height>40</height>
                    </size>
                   </property>
                   <property name="lineWidth">
