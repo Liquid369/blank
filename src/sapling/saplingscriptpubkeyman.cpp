@@ -1196,8 +1196,7 @@ uint256 SaplingScriptPubKeyMan::getCommonOVK()
     return *commonOVK;
 }
 
-
-uint256 SaplingScriptPubKeyMan::getCommonOVKFromSeed()
+uint256 SaplingScriptPubKeyMan::getCommonOVKFromSeed() const
 {
     // Sending from a t-address, which we don't have an ovk for. Instead,
     // generate a common one from the HD seed. This ensures the data is

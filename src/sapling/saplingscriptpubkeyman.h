@@ -180,9 +180,13 @@ public:
     void SetHDChain(CHDChain& chain, bool memonly);
     const CHDChain& GetHDChain() const { return hdChain; }
 
+    /* Get cached sapling commonOVK
+     * If nullopt, read it from the database, and save it.
+     * If not found in the database, create a new one from the HD seed (throw
+     * if the wallet is locked), write it to database, and save it.
+     */
     uint256 getCommonOVK();
     void setCommonOVK(const uint256& ovk) { commonOVK = ovk; }
-    uint256 getCommonOVKFromSeed();
 
     /* Encrypt Sapling keys */
     bool EncryptSaplingKeys(CKeyingMaterial& vMasterKeyIn);
@@ -380,6 +384,7 @@ private:
     CHDChain hdChain;
     /* cached common OVK for sapling spends from t addresses */
     Optional<uint256> commonOVK;
+    uint256 getCommonOVKFromSeed() const;
 
 
     /**
