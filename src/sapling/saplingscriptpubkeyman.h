@@ -45,8 +45,11 @@ public:
     SaplingNoteData(const libzcash::SaplingIncomingViewingKey& _ivk) : ivk {_ivk}, nullifier() { }
     SaplingNoteData(const libzcash::SaplingIncomingViewingKey& _ivk, const uint256& n) : ivk {_ivk}, nullifier(n) { }
 
+    /* witnesses/ivk: only for own (received) outputs */
     std::list<SaplingWitness> witnesses;
-    libzcash::SaplingIncomingViewingKey ivk;
+    Optional<libzcash::SaplingIncomingViewingKey> ivk {nullopt};
+    inline bool IsMyNote() const { return ivk != nullopt; }
+
     /**
      * Cached note amount.
      * It will be loaded the first time that the note is decrypted.

@@ -32,6 +32,7 @@ CWalletTx& SetWalletNotesData(CWallet* wallet, CWalletTx& wtx)
 {
     Optional<mapSaplingNoteData_t> saplingNoteData{nullopt};
     wallet->FindNotesDataAndAddMissingIVKToKeystore(wtx, saplingNoteData);
+    assert(static_cast<bool>(saplingNoteData));
     wtx.SetSaplingNoteData(*saplingNoteData);
     BOOST_CHECK(wallet->AddToWallet(wtx));
     // Updated tx
@@ -88,15 +89,17 @@ struct SaplingSpendValues {
 SaplingSpendValues UpdateWalletInternalNotesData(CWalletTx& wtx, SaplingOutPoint& sapPoint, CWallet& wallet)
 {
     // Get note
-    SaplingNoteData nd = wtx.mapSaplingNoteData[sapPoint];
+    SaplingNoteData nd = wtx.mapSaplingNoteData.at(sapPoint);
+    assert(nd.IsMyNote());
+    const auto& ivk = *(nd.ivk);
     auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
             wtx.sapData->vShieldedOutput[sapPoint.n].encCiphertext,
-            nd.ivk,
+            ivk,
             wtx.sapData->vShieldedOutput[sapPoint.n].ephemeralKey,
             wtx.sapData->vShieldedOutput[sapPoint.n].cmu);
     assert(static_cast<bool>(maybe_pt));
     boost::optional<libzcash::SaplingNotePlaintext> notePlainText = maybe_pt.get();
-    libzcash::SaplingNote note = notePlainText->note(nd.ivk).get();
+    libzcash::SaplingNote note = notePlainText->note(ivk).get();
 
     // Append note to the tree
     auto commitment = note.cmu().get();

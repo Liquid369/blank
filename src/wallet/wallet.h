@@ -518,6 +518,8 @@ public:
 
     // Search for notes and addresses from this wallet in the tx, and add the addresses --> IVK mapping to the keystore if missing.
     bool FindNotesDataAndAddMissingIVKToKeystore(const CTransaction& tx, Optional<mapSaplingNoteData_t>& saplingNoteData);
+    // Decrypt sapling output notes with the inputs ovk and updates saplingNoteDataMap
+    void AddExternalNotesDataToTx(CWalletTx& wtx) const;
 
     //! Generates new Sapling key
     libzcash::SaplingPaymentAddress GenerateNewSaplingZKey(std::string label = "");

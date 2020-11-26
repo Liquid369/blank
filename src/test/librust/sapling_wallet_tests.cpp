@@ -117,7 +117,8 @@ BOOST_AUTO_TEST_CASE(SetSaplingNoteAddrsInCWalletTx) {
     BOOST_CHECK(noteData == wtx.mapSaplingNoteData);
 
     // Test individual fields in case equality operator is defined/changed.
-    BOOST_CHECK(ivk == wtx.mapSaplingNoteData[op].ivk);
+    BOOST_CHECK(wtx.mapSaplingNoteData[op].IsMyNote());
+    BOOST_CHECK(ivk == *(wtx.mapSaplingNoteData[op].ivk));
     BOOST_CHECK(nullifier == wtx.mapSaplingNoteData[op].nullifier);
     BOOST_CHECK(nd.witnessHeight == wtx.mapSaplingNoteData[op].witnessHeight);
     BOOST_CHECK(witness == wtx.mapSaplingNoteData[op].witnesses.front());

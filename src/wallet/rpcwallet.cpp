@@ -1323,6 +1323,10 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
                 + HelpExampleRpc("viewshieldedtransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
         );
 
+    if (!pwalletMain->HasSaplingSPKM()) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Sapling wallet not initialized.");
+    }
+
     EnsureWalletIsUnlocked();
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -1374,48 +1378,54 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
         if (res == sspkm->mapSaplingNullifiersToNotes.end()) {
             continue;
         }
-        auto op = res->second;
-        auto wtxPrev = pwalletMain->mapWallet.at(op.hash);
-
-        auto decrypted = wtxPrev.DecryptSaplingNote(op).get();
-        auto notePt = decrypted.first;
-        auto pa = decrypted.second;
-
-        // Store the OutgoingViewingKey for recovering outputs
-        libzcash::SaplingExtendedFullViewingKey extfvk;
-        assert(pwalletMain->GetSaplingFullViewingKey(wtxPrev.mapSaplingNoteData.at(op).ivk, extfvk));
-        ovks.insert(extfvk.fvk.ovk);
+        const auto& op = res->second;
+        std::string addrStr = "unknown";
+        UniValue amountStr = UniValue("unknown");
+        CAmount amount = 0;
+        auto wtxPrevIt = pwalletMain->mapWallet.find(op.hash);
+        if (wtxPrevIt != pwalletMain->mapWallet.end()) {
+            const auto ndIt = wtxPrevIt->second.mapSaplingNoteData.find(op);
+            if (ndIt != wtxPrevIt->second.mapSaplingNoteData.end()) {
+                // get cached address and amount
+                if (ndIt->second.address) {
+                    addrStr = KeyIO::EncodePaymentAddress(*(ndIt->second.address));
+                }
+                if (ndIt->second.amount) {
+                    amount = *(ndIt->second.amount);
+                    amountStr = ValueFromAmount(amount);
+                }
+            }
+        }
 
         UniValue entry_(UniValue::VOBJ);
         entry_.pushKV("spend", (int)i);
         entry_.pushKV("txidPrev", op.hash.GetHex());
         entry_.pushKV("outputPrev", (int)op.n);
-        entry_.pushKV("address", KeyIO::EncodePaymentAddress(pa));
-        entry_.pushKV("value", ValueFromAmount(notePt.value()));
-        entry_.pushKV("valueSat", notePt.value());
+        entry_.pushKV("address", addrStr);
+        entry_.pushKV("value", amountStr);
+        entry_.pushKV("valueSat", amount);
         spends.push_back(entry_);
     }
 
     // Sapling outputs
     for (uint32_t i = 0; i < wtx.sapData->vShieldedOutput.size(); ++i) {
         auto op = SaplingOutPoint(hash, i);
-
+        if (!wtx.mapSaplingNoteData.count(op)) continue;
         libzcash::SaplingNotePlaintext notePt;
         libzcash::SaplingPaymentAddress pa;
-        bool isOutgoing;
 
-        auto decrypted = wtx.DecryptSaplingNote(op);
-        if (decrypted) {
+        const bool isOutgoing = !wtx.mapSaplingNoteData.at(op).IsMyNote();
+        if (!isOutgoing) {
+            auto decrypted = wtx.DecryptSaplingNote(op);
+            assert(decrypted);
             notePt = decrypted->first;
             pa = decrypted->second;
-            isOutgoing = false;
         } else {
-            // Try recovering the output
-            auto recovered = wtx.RecoverSaplingNote(op, ovks);
+            // Try recovering with the inputs ovk
+            auto recovered = sspkm->TryToRecoverNote(wtx, op);
             if (recovered) {
                 notePt = recovered->first;
                 pa = recovered->second;
-                isOutgoing = true;
             } else {
                 // Unreadable
                 continue;
@@ -3944,7 +3954,9 @@ UniValue getsaplingnotescount(const JSONRPCRequest& request)
     int count = 0;
     for (const auto& wtx : pwalletMain->mapWallet) {
         if (wtx.second.GetDepthInMainChain() >= nMinDepth) {
-            count += wtx.second.mapSaplingNoteData.size();
+            for (const auto& nd : wtx.second.mapSaplingNoteData) {
+                if (nd.second.IsMyNote()) count++;
+            }
         }
     }
     return count;

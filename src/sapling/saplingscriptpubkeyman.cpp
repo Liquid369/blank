@@ -53,23 +53,24 @@ void SaplingScriptPubKeyMan::UpdateSaplingNullifierNoteMapWithTx(CWalletTx& wtx)
         SaplingOutPoint op = item.first;
         SaplingNoteData nd = item.second;
 
-        if (nd.witnesses.empty()) {
+        if (nd.witnesses.empty() || !nd.IsMyNote()) {
             // If there are no witnesses, erase the nullifier and associated mapping.
             if (item.second.nullifier) {
                 mapSaplingNullifiersToNotes.erase(item.second.nullifier.get());
             }
             item.second.nullifier = boost::none;
         } else {
+            const libzcash::SaplingIncomingViewingKey& ivk = *(nd.ivk);
             uint64_t position = nd.witnesses.front().position();
-            auto extfvk = wallet->mapSaplingFullViewingKeys.at(nd.ivk);
+            auto extfvk = wallet->mapSaplingFullViewingKeys.at(ivk);
             OutputDescription output = wtx.sapData->vShieldedOutput[op.n];
-            auto optPlaintext = libzcash::SaplingNotePlaintext::decrypt(output.encCiphertext, nd.ivk, output.ephemeralKey, output.cmu);
+            auto optPlaintext = libzcash::SaplingNotePlaintext::decrypt(output.encCiphertext, ivk, output.ephemeralKey, output.cmu);
             if (!optPlaintext) {
                 // An item in mapSaplingNoteData must have already been successfully decrypted,
                 // otherwise the item would not exist in the first place.
                 assert(false);
             }
-            auto optNote = optPlaintext.get().note(nd.ivk);
+            auto optNote = optPlaintext.get().note(ivk);
             if (!optNote) {
                 assert(false);
             }
@@ -386,20 +387,24 @@ void SaplingScriptPubKeyMan::GetNotes(const std::vector<SaplingOutPoint>& saplin
             const SaplingOutPoint& op = it->first;
             const SaplingNoteData& nd = it->second;
 
+            // skip sent notes
+            if (!nd.IsMyNote()) continue;
+            const libzcash::SaplingIncomingViewingKey& ivk = *(nd.ivk);
+
             const OutputDescription& outDesc = wtx->sapData->vShieldedOutput[op.n];
             auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
                     outDesc.encCiphertext,
-                    nd.ivk,
+                    ivk,
                     outDesc.ephemeralKey,
                     outDesc.cmu);
             assert(static_cast<bool>(maybe_pt));
             auto notePt = maybe_pt.get();
 
-            auto maybe_pa = nd.ivk.address(notePt.d);
+            auto maybe_pa = ivk.address(notePt.d);
             assert(static_cast<bool>(maybe_pa));
             auto pa = maybe_pa.get();
 
-            auto note = notePt.note(nd.ivk).get();
+            auto note = notePt.note(ivk).get();
             saplingEntriesRet.emplace_back(op, pa, note, notePt.memo(), wtx->GetDepthInMainChain());
         }
     }
@@ -460,15 +465,19 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
             const SaplingOutPoint& op = it.first;
             const SaplingNoteData& nd = it.second;
 
+            // Skip sent notes
+            if (!nd.IsMyNote()) continue;
+            const libzcash::SaplingIncomingViewingKey& ivk = *(nd.ivk);
+
             auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
                     wtx.sapData->vShieldedOutput[op.n].encCiphertext,
-                    nd.ivk,
+                    ivk,
                     wtx.sapData->vShieldedOutput[op.n].ephemeralKey,
                     wtx.sapData->vShieldedOutput[op.n].cmu);
             assert(static_cast<bool>(maybe_pt));
             auto notePt = maybe_pt.get();
 
-            auto maybe_pa = nd.ivk.address(notePt.d);
+            auto maybe_pa = ivk.address(notePt.d);
             assert(static_cast<bool>(maybe_pa));
             auto pa = maybe_pa.get();
 
@@ -491,7 +500,7 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
             //    continue;
             //}
 
-            auto note = notePt.note(nd.ivk).get();
+            auto note = notePt.note(ivk).get();
             saplingEntries.emplace_back(op, pa, note, notePt.memo(), wtx.GetDepthInMainChain());
         }
     }
@@ -536,9 +545,13 @@ std::set<std::pair<libzcash::PaymentAddress, uint256>> SaplingScriptPubKeyMan::G
     }
     for (const auto& txPair : wallet->mapWallet) {
         for (const auto & noteDataPair : txPair.second.mapSaplingNoteData) {
-            auto & noteData = noteDataPair.second;
-            auto & nullifier = noteData.nullifier;
-            auto & ivk = noteData.ivk;
+            const auto& noteData = noteDataPair.second;
+
+            // Skip sent notes
+            if (!noteData.IsMyNote()) continue;
+            const libzcash::SaplingIncomingViewingKey& ivk = *(noteData.ivk);
+
+            const auto& nullifier = noteData.nullifier;
             if (nullifier && ivkMap.count(ivk)) {
                 for (const auto & addr : ivkMap[ivk]) {
                     nullifierSet.insert(std::make_pair(addr, nullifier.get()));
@@ -586,7 +599,7 @@ Optional<std::pair<
     // wallet is currently locked). As the ovk is created when the wallet is unlocked for sending a t->shield
     // tx for the first time, a failure to decode can happen only if this note was sent (from a t-addr)
     // using this wallet.dat on another computer (and never sent t->shield txes from this computer).
-    if (tx.vin.size() > 0) {
+    if (!tx.vin.empty()) {
         try {
             ovks.emplace(getCommonOVK());
         } catch (...) {
@@ -603,8 +616,9 @@ Optional<std::pair<
                 const auto& itPrev = txPrev->mapSaplingNoteData.find(prevOut);
                 if (itPrev != txPrev->mapSaplingNoteData.end()) {
                     const SaplingNoteData& noteData = itPrev->second;
+                    if (!noteData.IsMyNote()) continue;
                     libzcash::SaplingExtendedFullViewingKey extfvk;
-                    if (wallet->GetSaplingFullViewingKey(noteData.ivk, extfvk)) {
+                    if (wallet->GetSaplingFullViewingKey(*(noteData.ivk), extfvk)) {
                         ovks.emplace(extfvk.fvk.ovk);
                     }
                 }
@@ -616,22 +630,24 @@ Optional<std::pair<
 
 CAmount SaplingScriptPubKeyMan::TryToRecoverAndSetAmount(const CWalletTx& tx, const SaplingOutPoint& op)
 {
-    CAmount nCredit = 0;
+    CAmount noteValue = 0;
     // if amount was not set, let's try to decrypt the note and set it.
     auto noteAndAddress = tx.DecryptSaplingNote(op);
     if (noteAndAddress) {
         const libzcash::SaplingNotePlaintext &note = noteAndAddress->first;
-        nCredit = note.value();
-        // if it's not set, then set it.
-        wallet->mapWallet[tx.GetHash()].mapSaplingNoteData[op].amount = nCredit;
+        noteValue = note.value();
     } else {
         // if cannot be decrypted, use RecoverSaplingNote.
         auto optNotePlainAndAddress = TryToRecoverNote(tx, op);
         if (optNotePlainAndAddress) {
-            nCredit += optNotePlainAndAddress->first.value();
+            noteValue = optNotePlainAndAddress->first.value();
+        } else {
+            return 0;
         }
     }
-    return nCredit;
+    // if it's not set, then set it.
+    wallet->mapWallet[tx.GetHash()].mapSaplingNoteData[op].amount = noteValue;
+    return noteValue;
 }
 
 isminetype SaplingScriptPubKeyMan::IsMine(const CWalletTx& wtx, const SaplingOutPoint& op)
@@ -643,11 +659,10 @@ isminetype SaplingScriptPubKeyMan::IsMine(const CWalletTx& wtx, const SaplingOut
 CAmount SaplingScriptPubKeyMan::GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op)
 {
     const auto& it = tx.mapSaplingNoteData.find(op);
-    if (it == tx.mapSaplingNoteData.end()) {
-        return 0;
+    if (it != tx.mapSaplingNoteData.end() && it->second.amount) {
+        return *(it->second.amount);
     }
-    SaplingNoteData noteData = it->second;
-    return (noteData.amount) ? *noteData.amount : TryToRecoverAndSetAmount(tx, op);
+    return TryToRecoverAndSetAmount(tx, op);
 }
 
 CAmount SaplingScriptPubKeyMan::GetCredit(const CWalletTx& tx, const isminefilter& filter, const bool fUnspent)

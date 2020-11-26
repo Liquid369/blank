@@ -1037,6 +1037,25 @@ bool CWallet::FindNotesDataAndAddMissingIVKToKeystore(const CTransaction& tx, Op
     return true;
 }
 
+void CWallet::AddExternalNotesDataToTx(CWalletTx& wtx) const
+{
+    if (HasSaplingSPKM() && wtx.IsShieldedTx()) {
+        const uint256& txId = wtx.GetHash();
+        // Add the external outputs.
+        SaplingOutPoint op {txId, 0};
+        for (unsigned int i = 0; i < wtx.sapData->vShieldedOutput.size(); i++) {
+            op.n = i;
+            if (wtx.mapSaplingNoteData.count(op)) continue;     // internal output
+            auto recovered = GetSaplingScriptPubKeyMan()->TryToRecoverNote(wtx, op);
+            if (recovered) {
+                // Always true for 'IsFromMe' transactions
+                wtx.mapSaplingNoteData[op].address = recovered->second;
+                wtx.mapSaplingNoteData[op].amount = recovered->first.value();
+            }
+        }
+    }
+}
+
 /**
  * Add a transaction to the wallet, or update it.
  * pblock is optional, but should be provided if the transaction is known to be in a block.
@@ -1071,7 +1090,8 @@ bool CWallet::AddToWalletIfInvolvingMe(const CTransaction& tx, const uint256& bl
             }
         }
 
-        if (fExisted || IsMine(tx) || IsFromMe(tx) || (saplingNoteData && !saplingNoteData->empty())) {
+        bool isFromMe = IsFromMe(tx);
+        if (fExisted || IsMine(tx) || isFromMe || (saplingNoteData && !saplingNoteData->empty())) {
 
             /* Check if any keys in the wallet keypool that were supposed to be unused
              * have appeared in a new transaction. If so, remove those keys from the keypool.
@@ -1085,9 +1105,13 @@ bool CWallet::AddToWalletIfInvolvingMe(const CTransaction& tx, const uint256& bl
             }
 
             CWalletTx wtx(this, tx);
+            if (wtx.IsShieldedTx()) {
+                if (saplingNoteData && !saplingNoteData->empty()) {
+                    wtx.SetSaplingNoteData(*saplingNoteData);
+                }
 
-            if (saplingNoteData && !saplingNoteData->empty()) {
-                wtx.SetSaplingNoteData(*saplingNoteData);
+                // Add external notes info if we are sending
+                if (isFromMe) AddExternalNotesDataToTx(wtx);
             }
 
             // Get merkle branch if transaction was found in a block
@@ -4629,8 +4653,9 @@ Optional<std::pair<
         libzcash::SaplingNotePlaintext,
         libzcash::SaplingPaymentAddress>> CWalletTx::DecryptSaplingNote(SaplingOutPoint op) const
 {
-    // Check whether we can decrypt this SaplingOutPoint
-    if (this->mapSaplingNoteData.count(op) == 0) {
+    // Check whether we can decrypt this SaplingOutPoint with the ivk
+    auto it = this->mapSaplingNoteData.find(op);
+    if (it == this->mapSaplingNoteData.end() || !it->second.IsMyNote()) {
         return nullopt;
     }
 
@@ -4639,13 +4664,13 @@ Optional<std::pair<
 
     auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
             output.encCiphertext,
-            nd.ivk,
+            *(nd.ivk),
             output.ephemeralKey,
             output.cmu);
     assert(static_cast<bool>(maybe_pt));
     auto notePt = maybe_pt.get();
 
-    auto maybe_pa = nd.ivk.address(notePt.d);
+    auto maybe_pa = nd.ivk->address(notePt.d);
     assert(static_cast<bool>(maybe_pa));
     auto pa = maybe_pa.get();
 
