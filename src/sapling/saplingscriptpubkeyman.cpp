@@ -577,31 +577,36 @@ Optional<std::pair<
         libzcash::SaplingPaymentAddress>>
         SaplingScriptPubKeyMan::TryToRecoverNote(const CWalletTx& tx, const SaplingOutPoint& op)
 {
-    // Try to recover it with the ovks.
+    const uint256& txId = tx.GetHash();
+    assert(txId == op.hash);
+    // Try to recover it with the ovks (either the common one, if t->shield tx, or the ones from the spends)
     std::set<uint256> ovks;
     // Get the common OVK for recovering t->shield outputs.
     // If not already databased, a new one will be generated from the HD seed (this throws an error if the
     // wallet is currently locked). As the ovk is created when the wallet is unlocked for sending a t->shield
     // tx for the first time, a failure to decode can happen only if this note was sent (from a t-addr)
     // using this wallet.dat on another computer (and never sent t->shield txes from this computer).
-    try {
-        ovks.emplace(getCommonOVK());
-    } catch (...) {
-        LogPrintf("WARNING: No CommonOVK found. Some notes might not be correctly recovered. "
-                  "Unlock the wallet and call 'viewshieldedtransaction %s' to fix.\n", tx.GetHash().ToString());
-    }
-    for (const auto& spend : tx.sapData->vShieldedSpend) {
-        const auto& it = mapSaplingNullifiersToNotes.find(spend.nullifier);
-        if (it != mapSaplingNullifiersToNotes.end()) {
-            const SaplingOutPoint& prevOut = it->second;
-            const CWalletTx* txPrev = wallet->GetWalletTx(prevOut.hash);
-            if (!txPrev) continue;
-            const auto& itPrev = txPrev->mapSaplingNoteData.find(prevOut);
-            if (itPrev != txPrev->mapSaplingNoteData.end()) {
-                const SaplingNoteData& noteData = itPrev->second;
-                libzcash::SaplingExtendedFullViewingKey extfvk;
-                if (wallet->GetSaplingFullViewingKey(noteData.ivk, extfvk)) {
-                    ovks.emplace(extfvk.fvk.ovk);
+    if (tx.vin.size() > 0) {
+        try {
+            ovks.emplace(getCommonOVK());
+        } catch (...) {
+            LogPrintf("WARNING: No CommonOVK found. Some notes might not be correctly recovered. "
+                      "Unlock the wallet and call 'viewshieldedtransaction %s' to fix.\n", txId.ToString());
+        }
+    } else {
+        for (const auto& spend : tx.sapData->vShieldedSpend) {
+            const auto& it = mapSaplingNullifiersToNotes.find(spend.nullifier);
+            if (it != mapSaplingNullifiersToNotes.end()) {
+                const SaplingOutPoint& prevOut = it->second;
+                const CWalletTx* txPrev = wallet->GetWalletTx(prevOut.hash);
+                if (!txPrev) continue;
+                const auto& itPrev = txPrev->mapSaplingNoteData.find(prevOut);
+                if (itPrev != txPrev->mapSaplingNoteData.end()) {
+                    const SaplingNoteData& noteData = itPrev->second;
+                    libzcash::SaplingExtendedFullViewingKey extfvk;
+                    if (wallet->GetSaplingFullViewingKey(noteData.ivk, extfvk)) {
+                        ovks.emplace(extfvk.fvk.ovk);
+                    }
                 }
             }
         }
