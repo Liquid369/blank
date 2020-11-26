@@ -153,6 +153,7 @@ SAPLING_SCRIPTS = [
     'sapling_changeaddresses.py',               # ~ 151 sec
     'sapling_mempool.py',                       # ~ 98 sec
     'sapling_wallet_persistence.py',            # ~ 90 sec
+    'sapling_supply.py',                        # ~ 58 sec
 ]
 
 EXTENDED_SCRIPTS = [
