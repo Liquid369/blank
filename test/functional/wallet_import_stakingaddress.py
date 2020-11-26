@@ -23,7 +23,6 @@ class ImportStakingTest(PivxTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.extra_args = [[]] * self.num_nodes
-        self.extra_args[0].append('-sporkkey=932HEevBSujW2ud7RfB1YF91AFygbBRQj3de3LyaCRqNzKKgWXi')
 
     def log_title(self):
         title = "*** Starting %s ***" % self.__class__.__name__
@@ -34,8 +33,6 @@ class ImportStakingTest(PivxTestFramework):
     def run_test(self):
         NUM_OF_DELEGATIONS = 4  # Create 2*NUM_OF_DELEGATIONS staking addresses
         self.log_title()
-        self.log.info("Activating cold staking spork")
-        assert_equal("success", self.activate_spork(0, "SPORK_17_COLDSTAKING_ENFORCEMENT"))
 
         # Create cold staking addresses and delegations
         self.log.info("Creating new staking addresses and sending delegations")

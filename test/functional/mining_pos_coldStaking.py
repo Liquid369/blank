@@ -61,23 +61,23 @@ class PIVX_ColdStakingTest(PivxTestFramework):
             self.test_nodes[i].wait_for_verack()
 
     def setColdStakingEnforcement(self, fEnable=True):
-        sporkName = "SPORK_17_COLDSTAKING_ENFORCEMENT"
-        # update spork 17 with node[0]
+        sporkName = "SPORK_19_COLDSTAKING_MAINTENANCE"
+        # update spork 19 with node[0]
         if fEnable:
-            self.log.info("Enabling cold staking with SPORK 17...")
-            res = self.activate_spork(0, sporkName)
-        else:
-            self.log.info("Disabling cold staking with SPORK 17...")
+            self.log.info("Enabling cold staking with SPORK 19...")
             res = self.deactivate_spork(0, sporkName)
+        else:
+            self.log.info("Disabling cold staking with SPORK 19...")
+            res = self.activate_spork(0, sporkName)
         assert_equal(res, "success")
         sleep(1)
         # check that node[1] receives it
-        assert_equal(fEnable, self.is_spork_active(1, sporkName))
+        assert_equal(fEnable, not self.is_spork_active(1, sporkName))
         self.log.info("done")
 
     def isColdStakingEnforced(self):
         # verify from node[1]
-        return self.is_spork_active(1, "SPORK_17_COLDSTAKING_ENFORCEMENT")
+        return not self.is_spork_active(1, "SPORK_19_COLDSTAKING_MAINTENANCE")
 
 
 
@@ -89,6 +89,11 @@ class PIVX_ColdStakingTest(PivxTestFramework):
 
         # nodes[0] - coin-owner
         # nodes[1] - cold-staker
+
+        # First put cold-staking in maintenance mode
+        self.setColdStakingEnforcement(False)
+        # double check
+        assert (not self.isColdStakingEnforced())
 
         # 1) nodes[0] and nodes[2] mine 25 blocks each
         # --------------------------------------------
@@ -147,7 +152,7 @@ class PIVX_ColdStakingTest(PivxTestFramework):
                                 False, False, False, True)
         self.log.info("Good. Cold Staking NOT ACTIVE yet.")
 
-        # Enable SPORK
+        # Enable via SPORK
         self.setColdStakingEnforcement()
         # double check
         assert (self.isColdStakingEnforced())

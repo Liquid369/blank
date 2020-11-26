@@ -988,8 +988,8 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CWalletTx& wtxNew, CR
     if (params.size() > 6 && !params[6].isNull())
         fForceNotEnabled = params[6].get_bool();
 
-    if (!sporkManager.IsSporkActive(SPORK_17_COLDSTAKING_ENFORCEMENT) && !fForceNotEnabled) {
-        std::string errMsg = "Cold Staking disabled with SPORK 17.\n"
+    if (sporkManager.IsSporkActive(SPORK_19_COLDSTAKING_MAINTENANCE) && !fForceNotEnabled) {
+        std::string errMsg = "Cold Staking temporarily disabled with SPORK 19.\n"
                 "You may force the stake delegation setting fForceNotEnabled to true.\n"
                 "WARNING: If relayed before activation, this tx will be rejected resulting in a ban.\n";
         throw JSONRPCError(RPC_WALLET_ERROR, errMsg);
@@ -1546,7 +1546,8 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
     }
 
     // Check network status
-    if (!Params().GetConsensus().NetworkUpgradeActive(nextBlockHeight, Consensus::UPGRADE_V5_DUMMY)) {
+    if (!Params().GetConsensus().NetworkUpgradeActive(nextBlockHeight, Consensus::UPGRADE_V5_DUMMY) ||
+            sporkManager.IsSporkActive(SPORK_20_SAPLING_MAINTENANCE)) {
         // If Sapling is not active, do not allow sending from or sending to Sapling addresses.
         if (fromSapling || containsSaplingOutput) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, Sapling not active yet");
