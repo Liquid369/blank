@@ -1156,6 +1156,12 @@ void SaplingScriptPubKeyMan::SetHDSeed(const CKeyID& keyID, bool force, bool mem
     }
 
     SetHDChain(newHdChain, memonly);
+
+    // Update the commonOVK to recover t->shield notes
+    commonOVK = getCommonOVKFromSeed();
+    if (!memonly && !CWalletDB(wallet->strWalletFile).WriteSaplingCommonOVK(*commonOVK)) {
+        throw std::runtime_error(std::string(__func__) + ": writing sapling commonOVK failed");
+    }
 }
 
 void SaplingScriptPubKeyMan::SetHDChain(CHDChain& chain, bool memonly)
