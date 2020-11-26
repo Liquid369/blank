@@ -592,19 +592,19 @@ Optional<std::pair<
                   "Unlock the wallet and call 'viewshieldedtransaction %s' to fix.\n", tx.GetHash().ToString());
     }
     if (!tx.sapData->vShieldedSpend.empty()) {
-        const auto& it = mapSaplingNullifiersToNotes.find(tx.sapData->vShieldedSpend[0].nullifier);
+        const auto& spend = tx.sapData->vShieldedSpend[0];
+        const auto& it = mapSaplingNullifiersToNotes.find(spend.nullifier);
         if (it != mapSaplingNullifiersToNotes.end()) {
             const SaplingOutPoint& prevOut = it->second;
             const CWalletTx* txPrev = wallet->GetWalletTx(prevOut.hash);
             if (!txPrev) return nullopt;
+
             const auto& itPrev = txPrev->mapSaplingNoteData.find(prevOut);
             if (itPrev != txPrev->mapSaplingNoteData.end()) {
                 const SaplingNoteData& noteData = itPrev->second;
-                libzcash::SaplingExtendedSpendingKey extsk;
                 libzcash::SaplingExtendedFullViewingKey extfvk;
-                if (wallet->GetSaplingFullViewingKey(noteData.ivk, extfvk) &&
-                    wallet->GetSaplingSpendingKey(extfvk, extsk)) {
-                    ovks.emplace(extsk.expsk.ovk);
+                if (wallet->GetSaplingFullViewingKey(noteData.ivk, extfvk)) {
+                    ovks.emplace(extfvk.fvk.ovk);
                 }
             }
         }
