@@ -263,6 +263,10 @@ public:
                           bool requireSpendingKey=true,
                           bool ignoreLocked=true);
 
+
+    //! Return the address from where the shielded spend is taking the funds from (if possible)
+    Optional<libzcash::SaplingPaymentAddress> GetAddressFromInputIfPossible(const CWalletTx* wtx, int index);
+
     //! Whether the nullifier is from this wallet
     bool IsSaplingNullifierFromMe(const uint256& nullifier) const;
 

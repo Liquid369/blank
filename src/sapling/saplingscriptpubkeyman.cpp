@@ -497,6 +497,20 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
     }
 }
 
+Optional<libzcash::SaplingPaymentAddress>
+        SaplingScriptPubKeyMan::GetAddressFromInputIfPossible(const CWalletTx* wtx, int index)
+{
+    if (!wtx->sapData || wtx->sapData->vShieldedSpend.empty()) return nullopt;
+
+    SpendDescription spendDesc = wtx->sapData->vShieldedSpend.at(index);
+    if (!IsSaplingNullifierFromMe(spendDesc.nullifier)) return nullopt;
+
+    // Knowing that the spent note is from us, we can get the address from
+    const SaplingOutPoint& outPoint = mapSaplingNullifiersToNotes.at(spendDesc.nullifier);
+    const CWalletTx& txPrev = wallet->mapWallet.at(outPoint.hash);
+    return txPrev.mapSaplingNoteData.at(outPoint).address;
+}
+
 bool SaplingScriptPubKeyMan::IsSaplingNullifierFromMe(const uint256& nullifier) const
 {
     LOCK(wallet->cs_wallet);
