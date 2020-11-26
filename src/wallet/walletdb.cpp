@@ -670,7 +670,7 @@ bool ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue, CW
         } else if (strType == "commonovk") {
             uint256 ovk;
             ssValue >> ovk;
-            // !TODO: cache ovk value in the wallet
+            pwallet->GetSaplingScriptPubKeyMan()->setCommonOVK(ovk);
         } else if (strType == "csapzkey") {
             libzcash::SaplingIncomingViewingKey ivk;
             ssKey >> ivk;

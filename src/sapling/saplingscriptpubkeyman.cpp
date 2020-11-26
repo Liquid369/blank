@@ -580,7 +580,17 @@ Optional<std::pair<
     // Try to recover it with the ovks.
     // todo: should add all of the wallet's ovk as well.
     std::set<uint256> ovks;
-    ovks.emplace(getCommonOVKFromSeed());
+    // Get the common OVK for recovering t->shield outputs.
+    // If not already databased, a new one will be generated from the HD seed (this throws an error if the
+    // wallet is currently locked). As the ovk is created when the wallet is unlocked for sending a t->shield
+    // tx for the first time, a failure to decode can happen only if this note was sent (from a t-addr)
+    // using this wallet.dat on another computer (and never sent t->shield txes from this computer).
+    try {
+        ovks.emplace(getCommonOVK());
+    } catch (...) {
+        LogPrintf("WARNING: No CommonOVK found. Some notes might not be correctly recovered. "
+                  "Unlock the wallet and call 'viewshieldedtransaction %s' to fix.\n", tx.GetHash().ToString());
+    }
     if (!tx.sapData->vShieldedSpend.empty()) {
         const auto& it = mapSaplingNullifiersToNotes.find(tx.sapData->vShieldedSpend[0].nullifier);
         if (it != mapSaplingNullifiersToNotes.end()) {
@@ -1164,16 +1174,38 @@ void SaplingScriptPubKeyMan::SetHDChain(CHDChain& chain, bool memonly)
         throw std::runtime_error(std::string(__func__) + ": Not found sapling seed in wallet");
 }
 
+uint256 SaplingScriptPubKeyMan::getCommonOVK()
+{
+    // If already loaded, return it
+    if (commonOVK) return *commonOVK;
+
+    // Else, look for it in the database
+    uint256 ovk;
+    if (CWalletDB(wallet->strWalletFile).ReadSaplingCommonOVK(ovk)) {
+        commonOVK = std::move(ovk);
+        return *commonOVK;
+    }
+
+    // Otherwise create one. This throws if the wallet is encrypted.
+    // So we should always call this after unlocking the wallet during a spend
+    // from a transparent address, or when changing/setting the HD seed.
+    commonOVK = getCommonOVKFromSeed();
+    if (!CWalletDB(wallet->strWalletFile).WriteSaplingCommonOVK(*commonOVK)) {
+        throw std::runtime_error("Unable to write sapling Common OVK to database");
+    }
+    return *commonOVK;
+}
+
+
 uint256 SaplingScriptPubKeyMan::getCommonOVKFromSeed()
 {
     // Sending from a t-address, which we don't have an ovk for. Instead,
     // generate a common one from the HD seed. This ensures the data is
     // recoverable, while keeping it logically separate from the ZIP 32
     // Sapling key hierarchy, which the user might not be using.
-    const CKeyID seedID = GetHDChain().GetID();
     CKey key;
-    if (!wallet->GetKey(seedID, key)) {
-        throw std::runtime_error("Shielded spend, HD seed not found");
+    if (!wallet->GetKey(GetHDChain().GetID(), key)) {
+        throw std::runtime_error("HD seed not found, wallet must be un-locked");
     }
     HDSeed seed{key.GetPrivKey()};
     return ovkForShieldingFromTaddr(seed);

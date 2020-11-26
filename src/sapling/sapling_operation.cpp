@@ -123,11 +123,10 @@ OperationResult SaplingOperation::build()
                 return result;
             }
         } else {
-            // Sending from a t-address, which we don't have an ovk for. Instead,
-            // generate a common one from the HD seed. This ensures the data is
-            // recoverable, while keeping it logically separate from the ZIP 32
-            // Sapling key hierarchy, which the user might not be using.
-            ovk = pwalletMain->GetSaplingScriptPubKeyMan()->getCommonOVKFromSeed();
+            // Get the common OVK for recovering t->shield outputs.
+            // If not already databased, a new one will be generated from the HD seed.
+            // It is safe to do it here, as the wallet is unlocked.
+            ovk = pwalletMain->GetSaplingScriptPubKeyMan()->getCommonOVK();
         }
 
         // Add outputs

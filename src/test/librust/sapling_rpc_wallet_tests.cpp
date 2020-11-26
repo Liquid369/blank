@@ -466,7 +466,7 @@ BOOST_AUTO_TEST_CASE(rpc_shieldedsendmany_taddr_to_sapling)
 
     BOOST_CHECK(libzcash::AttemptSaplingOutDecryption(
             tx.sapData->vShieldedOutput[0].outCiphertext,
-            pwalletMain->GetSaplingScriptPubKeyMan()->getCommonOVKFromSeed(),
+            pwalletMain->GetSaplingScriptPubKeyMan()->getCommonOVK(),
             tx.sapData->vShieldedOutput[0].cv,
             tx.sapData->vShieldedOutput[0].cmu,
             tx.sapData->vShieldedOutput[0].ephemeralKey));

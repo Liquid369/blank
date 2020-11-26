@@ -180,6 +180,8 @@ public:
     void SetHDChain(CHDChain& chain, bool memonly);
     const CHDChain& GetHDChain() const { return hdChain; }
 
+    uint256 getCommonOVK();
+    void setCommonOVK(const uint256& ovk) { commonOVK = ovk; }
     uint256 getCommonOVKFromSeed();
 
     /* Encrypt Sapling keys */
@@ -376,6 +378,8 @@ private:
     CWallet* wallet{nullptr};
     /* the HD chain data model (external/internal chain counters) */
     CHDChain hdChain;
+    /* cached common OVK for sapling spends from t addresses */
+    Optional<uint256> commonOVK;
 
 
     /**

@@ -1360,8 +1360,10 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
 
     // Collect OutgoingViewingKeys for recovering output information
     std::set<uint256> ovks;
-    // Generate the common ovk for recovering t->shield outputs.
-    ovks.insert(sspkm->getCommonOVKFromSeed());
+    // Get the common OVK for recovering t->shield outputs.
+    // If not already databased, a new one will be generated from the HD seed.
+    // It is safe to do it here, as the wallet is unlocked.
+    ovks.insert(sspkm->getCommonOVK());
 
     // Sapling spends
     for (size_t i = 0; i < wtx.sapData->vShieldedSpend.size(); ++i) {
