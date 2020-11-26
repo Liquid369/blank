@@ -578,7 +578,6 @@ Optional<std::pair<
         SaplingScriptPubKeyMan::TryToRecoverNote(const CWalletTx& tx, const SaplingOutPoint& op)
 {
     // Try to recover it with the ovks.
-    // todo: should add all of the wallet's ovk as well.
     std::set<uint256> ovks;
     // Get the common OVK for recovering t->shield outputs.
     // If not already databased, a new one will be generated from the HD seed (this throws an error if the
@@ -591,14 +590,12 @@ Optional<std::pair<
         LogPrintf("WARNING: No CommonOVK found. Some notes might not be correctly recovered. "
                   "Unlock the wallet and call 'viewshieldedtransaction %s' to fix.\n", tx.GetHash().ToString());
     }
-    if (!tx.sapData->vShieldedSpend.empty()) {
-        const auto& spend = tx.sapData->vShieldedSpend[0];
+    for (const auto& spend : tx.sapData->vShieldedSpend) {
         const auto& it = mapSaplingNullifiersToNotes.find(spend.nullifier);
         if (it != mapSaplingNullifiersToNotes.end()) {
             const SaplingOutPoint& prevOut = it->second;
             const CWalletTx* txPrev = wallet->GetWalletTx(prevOut.hash);
-            if (!txPrev) return nullopt;
-
+            if (!txPrev) continue;
             const auto& itPrev = txPrev->mapSaplingNoteData.find(prevOut);
             if (itPrev != txPrev->mapSaplingNoteData.end()) {
                 const SaplingNoteData& noteData = itPrev->second;
