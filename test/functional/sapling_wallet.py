@@ -6,10 +6,10 @@
 
 from test_framework.test_framework import PivxTestFramework
 from test_framework.util import (
-    connect_nodes,
-    disconnect_nodes,
     assert_equal,
     assert_raises_rpc_error,
+    connect_nodes,
+    disconnect_nodes,
     sync_mempools,
     get_coinstake_address,
     wait_until,
@@ -23,8 +23,7 @@ class WalletSaplingTest(PivxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 4
-        self.setup_clean_chain = True
-        saplingUpgrade = ['-nuparams=v5_dummy:1']
+        saplingUpgrade = ['-nuparams=v5_dummy:201']
         self.extra_args = [saplingUpgrade, saplingUpgrade, saplingUpgrade, saplingUpgrade]
         self.extra_args[0].append('-sporkkey=932HEevBSujW2ud7RfB1YF91AFygbBRQj3de3LyaCRqNzKKgWXi')
 
@@ -40,12 +39,9 @@ class WalletSaplingTest(PivxTestFramework):
             wait_until(lambda: self.is_spork_active(i, spork_id) == fEnabled, timeout=5)
 
     def run_test(self):
-        self.log.info("Mining 120 blocks...")
-        self.nodes[0].generate(120)
+        self.nodes[0].generate(2)
         self.sync_all()
-        # Sanity-check the test harness
-        assert_equal([x.getblockcount() for x in self.nodes], [120] * self.num_nodes)
-
+        assert_equal(self.nodes[1].getblockcount(), 202)
         taddr1 = self.nodes[1].getnewaddress()
         saplingAddr0 = self.nodes[0].getnewshieldedaddress()
         saplingAddr1 = self.nodes[1].getnewshieldedaddress()
@@ -59,13 +55,38 @@ class WalletSaplingTest(PivxTestFramework):
         assert_equal(self.nodes[1].getshieldedbalance(saplingAddr1), Decimal('0'))
         assert_equal(self.nodes[1].getreceivedbyaddress(taddr1), Decimal('0'))
 
+        recipients = [{"address": saplingAddr0, "amount": Decimal('10')}]
+
+        # Try fee too low
+        fee_too_low = 0.001
+        self.log.info("Trying to send a transaction with fee too low...")
+        assert_raises_rpc_error(-4, "Fee set (%.3f) too low. Must be at least" % fee_too_low,
+                                self.nodes[0].rawshieldedsendmany,
+                                "from_transparent", recipients, 1, fee_too_low)
+
+        # Try fee too high.
+        fee_too_high = 20
+        self.log.info("Good. It was not possible. Now try a tx with fee too high...")
+        assert_raises_rpc_error(-4, "The transaction fee is too high: %.2f >" % fee_too_high,
+                                self.nodes[0].rawshieldedsendmany,
+                                "from_transparent", recipients, 1, fee_too_high)
+
+        # Trying to send a rawtx with low fee directly
+        self.log.info("Good. It was not possible. Now try with a raw tx...")
+        self.restart_node(0, extra_args=self.extra_args[0]+['-minrelaytxfee=0.0000001'])
+        rawtx = self.nodes[0].rawshieldedsendmany("from_transparent", recipients, 1)["hex"]
+        self.restart_node(0, extra_args=self.extra_args[0])
+        connect_nodes(self.nodes[0], 1)
+        assert_raises_rpc_error(-26, "insufficient fee",
+                                self.nodes[0].sendrawtransaction, rawtx)
+        self.log.info("Good. Not accepted in the mempool.")
+
         # Fixed fee
         fee = 1
 
         # Node 0 shields some funds
         # taddr -> Sapling
         self.log.info("TX 1: shield funds from specified transparent address.")
-        recipients = [{"address": saplingAddr0, "amount": Decimal('10')}]
         mytxid1 = self.nodes[0].shieldedsendmany(get_coinstake_address(self.nodes[0]), recipients, 1, fee)
 
         # shield more funds automatically selecting the transparent inputs

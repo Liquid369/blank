@@ -1075,13 +1075,11 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CWalletTx& wtxNew, CR
         if (!consensus.NetworkUpgradeActive(nextBlockHeight, Consensus::UPGRADE_V5_DUMMY)) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, Sapling not active yet");
         }
-        CAmount nFee = DEFAULT_SAPLING_FEE;
         std::vector<SendManyRecipient> recipients = {SendManyRecipient(ownerKey, *stakeKey, nValue)};
         TransactionBuilder txBuilder = TransactionBuilder(consensus, nextBlockHeight, pwalletMain);
         SaplingOperation operation(txBuilder);
         OperationResult res = operation.setSelectShieldedCoins(true)
                                        ->setRecipients(recipients)
-                                       ->setFee(nFee)
                                        ->build();
         if (!res) throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
         wtxNew = CWalletTx(pwalletMain, operation.getFinalTx());
@@ -1292,6 +1290,7 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
                 "\nResult:\n"
                 "{\n"
                 "  \"txid\" : \"transactionid\",   (string) The transaction id\n"
+                "  \"fee\"  : x.xxx,               (numeric) The transaction fee in " + CURRENCY_UNIT + "\n"
                 "  \"spends\" : [\n"
                 "    {\n"
                 "      \"spend\" : n,                    (numeric, sapling) the index of the spend within vShieldedSpend\n"
@@ -1430,15 +1429,12 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
         outputs.push_back(entry_);
     }
 
+    entry.pushKV("fee", FormatMoney(pcoinsTip->GetValueIn(wtx) - wtx.GetValueOut()));
     entry.pushKV("spends", spends);
     entry.pushKV("outputs", outputs);
 
     return entry;
 }
-
-// transaction.h comment: spending taddr output requires CTxIn >= 148 bytes and typical taddr txout is 34 bytes
-#define CTXIN_SPEND_DUST_SIZE   148
-#define CTXOUT_REGULAR_SIZE     34
 
 static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
 {
@@ -1591,32 +1587,14 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
     }
 
     // Param 3: Fee
-    CAmount nFee        = DEFAULT_SAPLING_FEE; // Default fee hardcoded for now to 10000 sats. Change it in a future focused PR.
-    CAmount nDefaultFee = nFee;
+    // If not set, SaplingOperation will set the minimum fee (based on minRelayFee and tx size)
     if (request.params.size() > 3) {
-        if (request.params[3].get_real() == 0.0) {
-            nFee = 0;
-        } else {
-            nFee = AmountFromValue(request.params[3]);
+        CAmount nFee = AmountFromValue(request.params[3]);
+        if (nFee <= 0) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid fee. Must be positive.");
         }
-
-        if (nFee <= nDefaultFee) {
-            throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Invalid fee, needs to be greater than %s", FormatMoney(nDefaultFee)));
-        }
-
-        // Check that the user specified fee is not absurd.
-        // This allows amount=0 (and all amount < nDefaultFee) transactions to use the default network fee
-        // or anything less than nDefaultFee instead of being forced to use a custom fee and leak metadata
-        if (nTotalOut < nDefaultFee) {
-            if (nFee > nDefaultFee) {
-                throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Small transaction amount %s has fee %s that is greater than the default fee %s", FormatMoney(nTotalOut), FormatMoney(nFee), FormatMoney(nDefaultFee)));
-            }
-        } else {
-            // Check that the user specified fee is not absurd.
-            if (nFee > nTotalOut) {
-                throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Fee %s is greater than the sum of outputs %s and also greater than the default fee", FormatMoney(nFee), FormatMoney(nTotalOut)));
-            }
-        }
+        // If the user-selected fee is not enough (or too much), the build operation will fail.
+        operation.setFee(nFee);
     }
 
     if (fromSapling && nMinDepth == 0) {
@@ -1628,8 +1606,7 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
     }
 
     // Build the send operation
-    OperationResult res = operation.setFee(nFee)
-            ->setMinDepth(nMinDepth)
+    OperationResult res = operation.setMinDepth(nMinDepth)
             ->setRecipients(recipients)
             ->build();
     if (!res) throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
@@ -1656,8 +1633,9 @@ UniValue shieldedsendmany(const JSONRPCRequest& request)
                 "      \"memo\":memo        (string, optional) If the address is a shielded addr, message string of max 512 bytes\n"
                 "    }, ... ]\n"
                 "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
-                "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(DEFAULT_SAPLING_FEE)) +
-                ") The fee amount to attach to this transaction.\n"
+                "4. fee                   (numeric, optional), The fee amount to attach to this transaction.\n"
+                "                            If not specified, the wallet will try to compute the minimum possible fee for a shielded TX,\n"
+                "                            based on the expected transaction size and the current value of -minRelayTxFee.\n"
                 "\nResult:\n"
                 "\"id\"          (string) transaction hash in the network\n"
                 "\nExamples:\n"
@@ -1696,8 +1674,9 @@ UniValue rawshieldedsendmany(const JSONRPCRequest& request)
                 "      \"memo\":memo        (string, optional) If the address is a shielded addr, message string of max 512 bytes\n"
                 "    }, ... ]\n"
                 "3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.\n"
-                "4. fee                   (numeric, optional, default=" + strprintf("%s", FormatMoney(DEFAULT_SAPLING_FEE)) +
-                ") The fee amount to attach to this transaction.\n"
+                "4. fee                   (numeric, optional), The fee amount to attach to this transaction.\n"
+                "                            If not specified, the wallet will try to compute the minimum possible fee for a shielded TX,\n"
+                "                            based on the expected transaction size and the current value of -minRelayTxFee.\n"
                 "\nResult:\n"
                 "{tx_json}                (json object) decoded transaction\n"
                 "\nExamples:\n"

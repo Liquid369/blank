@@ -145,11 +145,11 @@ TIERTWO_SCRIPTS = [
 
 SAPLING_SCRIPTS = [
     # Longest test should go first, to favor running tests in parallel
-    'sapling_key_import_export.py',             # ~ 356 sec
+    'sapling_key_import_export.py',             # ~ 378 sec
     'sapling_wallet_anchorfork.py',             # ~ 345 sec
-    'sapling_wallet_nullifiers.py',             # ~ 201 sec
-    'sapling_wallet_listreceived.py',           # ~ 169 sec
-    'sapling_wallet.py',                        # ~ 164 sec
+    'sapling_wallet.py',                        # ~ 274 sec
+    'sapling_wallet_nullifiers.py',             # ~ 190 sec
+    'sapling_wallet_listreceived.py',           # ~ 157 sec
     'sapling_changeaddresses.py',               # ~ 151 sec
     'sapling_mempool.py',                       # ~ 98 sec
     'sapling_wallet_persistence.py',            # ~ 90 sec

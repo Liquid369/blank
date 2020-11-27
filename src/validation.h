@@ -75,7 +75,6 @@ static const unsigned int DEFAULT_LIMITFREERELAY = 30;
 /** The maximum size for transactions we're willing to relay/mine */
 static const unsigned int MAX_STANDARD_TX_SIZE = 100000;
 static const unsigned int MAX_ZEROCOIN_TX_SIZE = 150000;
-static const unsigned int MAX_STANDARD_SHIELDED_TX_SIZE = MAX_TX_SIZE_AFTER_SAPLING;
 /** Default for -checkblocks */
 static const signed int DEFAULT_CHECKBLOCKS = 10;
 /** The maximum size of a blk?????.dat file (since 0.8) */
@@ -113,6 +112,8 @@ static const unsigned int AVG_ADDRESS_BROADCAST_INTERVAL = 30;
 /** Average delay between trickled inventory broadcasts in seconds.
  *  Blocks, whitelisted receivers, and a random 25% of transactions bypass this. */
 static const unsigned int AVG_INVENTORY_BROADCAST_INTERVAL = 5;
+/** Default multiplier used in the computation for shielded txes min fee */
+static const unsigned int DEFAULT_SHIELDEDTXFEE_K = 1000;
 
 /** Enable bloom filter */
  static const bool DEFAULT_PEERBLOOMFILTERS = true;
@@ -226,6 +227,11 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState& state, const CTransa
 std::string FormatStateMessage(const CValidationState &state);
 
 CAmount GetMinRelayFee(const CTransaction& tx, const CTxMemPool& pool, unsigned int nBytes, bool fAllowFree);
+CAmount GetMinRelayFee(unsigned int nBytes, bool fAllowFree);
+/**
+ * Return the minimum fee for a shielded tx.
+ */
+CAmount GetShieldedTxMinFee(const CTransaction& tx);
 
 /**
  * Check transaction inputs, and make sure any

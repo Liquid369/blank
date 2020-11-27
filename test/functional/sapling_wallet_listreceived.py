@@ -18,14 +18,12 @@ non_ascii_memo_hex = bytes_to_hex_str(non_ascii_memo_str.encode('utf-8'))
 too_big_memo_str = "This is not an email......." * 19
 no_memo = "f6"
 
-fee = Decimal('0.0001')
 
 class ListReceivedTest (PivxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 4
-        self.setup_clean_chain = True
-        saplingUpgrade = ['-nuparams=v5_dummy:1']
+        saplingUpgrade = ['-nuparams=v5_dummy:201']
         self.extra_args = [saplingUpgrade, saplingUpgrade, saplingUpgrade, saplingUpgrade]
 
     def generate_and_sync(self, new_height):
@@ -35,7 +33,8 @@ class ListReceivedTest (PivxTestFramework):
         self.sync_all()
         assert_equal(new_height, self.nodes[0].getblockcount())
 
-    def run_test_release(self, height): # starts in height 214
+    def run_test(self):
+        height = 214
         self.generate_and_sync(height+1)
         taddr = self.nodes[1].getnewaddress()
         shield_addr1 = self.nodes[1].getnewshieldedaddress()
@@ -48,12 +47,14 @@ class ListReceivedTest (PivxTestFramework):
         assert_raises_rpc_error(-4, "Memo size of 513 is too big, maximum allowed is 512",
                                 self.nodes[1].shieldedsendmany, taddr,
                                 [{'address': shield_addr1, 'amount': 2, 'memo': too_big_memo_str}])
+        # Fixed fee
+        fee = 0.5
 
         # Send 1 PIV to shield addr1
-        txid = self.nodes[1].shieldedsendmany(taddr, [ # node_1 with 6 PIV sending them all (fee is 0.0001 PIV)
+        txid = self.nodes[1].shieldedsendmany(taddr, [ # node_1 with 6 PIV sending them all (fee is 0.1 PIV)
             {'address': shield_addr1, 'amount': 2, 'memo': my_memo_str},
             {'address': shield_addrExt, 'amount': 3},
-        ])
+        ], 1, fee)
         self.sync_all()
 
         # Decrypted transaction details should be correct
@@ -122,8 +123,9 @@ class ListReceivedTest (PivxTestFramework):
         # Generate some change by sending part of shield_addr1 to shield_addr2
         txidPrev = txid
         shield_addr2 = self.nodes[1].getnewshieldedaddress()
-        txid = self.nodes[1].shieldedsendmany(shield_addr1, # shield_addr1 has 2 PIV, send 0.6 PIV + 0.0001 PIV fee
-                                        [{'address': shield_addr2, 'amount': 0.6, "memo": non_ascii_memo_str}]) # change 1.3999
+        txid = self.nodes[1].shieldedsendmany(shield_addr1, # shield_addr1 has 2 PIV, send 0.6 PIV + 0.5 PIV fee
+                                               [{'address': shield_addr2, 'amount': 0.6, "memo": non_ascii_memo_str}],
+                                               1, fee) # change 0.9
         self.sync_all()
         self.generate_and_sync(height+4)
 
@@ -154,8 +156,8 @@ class ListReceivedTest (PivxTestFramework):
                 assert_equal(out['address'], shield_addr1)
                 assert_equal(out['outgoing'], False)
                 assert_equal(out['memo'], no_memo)
-                assert_equal(out['value'], Decimal('1.3999'))
-                assert_equal(out['valueSat'], 139990000)
+                assert_equal(out['value'], Decimal('0.9'))
+                assert_equal(out['valueSat'], 90000000)
                 found[1] = True
         assert_equal(found, [True] * 2)
 
@@ -165,13 +167,13 @@ class ListReceivedTest (PivxTestFramework):
         assert_true(2 == len(r), "shield_addr1 Should have received 2 notes")
 
         assert_equal(txid, r[0]['txid'])
-        assert_equal(Decimal('1.4')-fee, r[0]['amount'])
+        assert_equal(Decimal('0.9'), r[0]['amount'])
         assert_true(r[0]['change'], "Note valued at (1.4-fee) should be change")
         assert_equal(no_memo, r[0]['memo'])
 
         # The old note still exists (it's immutable), even though it is spent
         assert_equal(Decimal('2.0'), r[1]['amount'])
-        assert_false(r[1]['change'], "Note valued at 1.0 should not be change")
+        assert_false(r[1]['change'], "Note valued at 2.0 should not be change")
         assert_equal(my_memo_hex, r[1]['memo'])
 
         # shield_addr2 should not have change
@@ -185,9 +187,6 @@ class ListReceivedTest (PivxTestFramework):
 
         c = self.nodes[1].getsaplingnotescount(0)
         assert_true(3 == c, "Count of unconfirmed notes should be 3(2 in shield_addr1 + 1 in shield_addr2)")
-
-    def run_test(self):
-        self.run_test_release(214)
 
 if __name__ == '__main__':
     ListReceivedTest().main()

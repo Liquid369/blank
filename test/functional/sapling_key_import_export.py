@@ -8,11 +8,6 @@ from decimal import Decimal
 from test_framework.test_framework import PivxTestFramework
 from test_framework.util import *
 from functools import reduce
-import logging
-
-#logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.INFO)
-
-fee = Decimal('0.0001') # constant (but can be changed within reason)
 
 class SaplingkeyImportExportTest (PivxTestFramework):
 
@@ -27,11 +22,12 @@ class SaplingkeyImportExportTest (PivxTestFramework):
 
         # the sender loses 'amount' plus fee; to_addr receives exactly 'amount'
         def shielded_send(from_node, from_addr, to_addr, amount):
-            from_node.shieldedsendmany(from_addr,
+            txid = from_node.shieldedsendmany(from_addr,
                                         [{"address": to_addr, "amount": Decimal(amount)}], 1)
             self.sync_all()
             miner.generate(1)
             self.sync_all()
+            return txid
 
         def verify_utxos(node, amts, shield_addr):
             amts.sort(reverse=True)
@@ -44,7 +40,7 @@ class SaplingkeyImportExportTest (PivxTestFramework):
                     # make sure outindex keys exist and have valid value
                     assert_equal("outindex" in tx, True)
             except AssertionError:
-                logging.error(
+                self.log.error(
                     'Expected amounts: %r; txs: %r',
                     amts, txs)
                 raise
@@ -58,7 +54,7 @@ class SaplingkeyImportExportTest (PivxTestFramework):
         miner.generate(100)
         self.sync_all()
         fromAddress = alice.listunspent()[0]['address']
-        amountTo = 10 * 250 - fee
+        amountTo = 10 * 250 - 1
         # Shield Alice's coinbase funds to her shield_addr
         alice_addr = alice.getnewshieldedaddress()
         txid = shielded_send(alice, fromAddress, alice_addr, amountTo)
@@ -77,21 +73,21 @@ class SaplingkeyImportExportTest (PivxTestFramework):
             Decimal(get_private_balance(alice)),
             reduce(Decimal.__add__, amounts))
 
-        logging.info("Sending pre-export txns...")
+        self.log.info("Sending pre-export txns...")
         for amount in amounts[0:2]:
             shielded_send(alice, alice_addr, bob_addr, amount)
 
-        logging.info("Exporting privkey from bob...")
+        self.log.info("Exporting privkey from bob...")
         bob_privkey = bob.exportsaplingkey(bob_addr)
 
-        logging.info("Sending post-export txns...")
+        self.log.info("Sending post-export txns...")
         for amount in amounts[2:4]:
             shielded_send(alice, alice_addr, bob_addr, amount)
 
         verify_utxos(bob, amounts[:4], bob_addr)
         # verify_utxos(charlie, [])
 
-        logging.info("Importing bob_privkey into charlie...")
+        self.log.info("Importing bob_privkey into charlie...")
         # importsaplingkey rescan defaults to "whenkeyisnew", so should rescan here
         ipk_addr = charlie.importsaplingkey(bob_privkey)
 
@@ -105,7 +101,7 @@ class SaplingkeyImportExportTest (PivxTestFramework):
         # amounts should be unchanged
         verify_utxos(charlie, amounts[:4], ipk_addr2["address"])
 
-        logging.info("Sending post-import txns...")
+        self.log.info("Sending post-import txns...")
         for amount in amounts[4:]:
             shielded_send(alice, alice_addr, bob_addr, amount)
 
@@ -120,8 +116,8 @@ class SaplingkeyImportExportTest (PivxTestFramework):
         # At generated shield_addr, receive PIV, and send PIV back out. bob -> alice
         for amount in amounts[:2]:
             print("Sending amount from bob to alice: ", amount)
-            shielded_send(bob, bob_addr, alice_addr, amount)
-            bob_fee += fee
+            txid = shielded_send(bob, bob_addr, alice_addr, amount)
+            bob_fee += Decimal(bob.viewshieldedtransaction(txid)['fee'])
 
         bob_balance = sum(amounts[2:]) - bob_fee
 

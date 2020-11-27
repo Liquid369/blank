@@ -299,7 +299,7 @@ jobs:
             unit_tests: false
             functional_tests: true
             goal: install
-            test_runner_extra: "--tiertwo --sapling --skipcache"
+            test_runner_extra: "--tiertwo --sapling"
             BITCOIN_CONFIG: "--enable-zmq --with-gui=no --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust"
 
           - name: x86_64 Linux  [GOAL:install]  [xenial]  [no depends only system libs]

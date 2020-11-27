@@ -8,11 +8,10 @@
 #include "script/sign.h"
 #include "utilmoneystr.h"
 #include "consensus/upgrades.h"
+#include "policy/policy.h"
+#include "validation.h"
 
 #include <librustzcash.h>
-
-// Hardcoded for now.
-CAmount DEFAULT_SAPLING_FEE = 10000;
 
 SpendDescriptionInfo::SpendDescriptionInfo(
     libzcash::SaplingExpandedSpendingKey expsk,
@@ -115,7 +114,18 @@ TransactionBuilder::TransactionBuilder(
     nHeight(_nHeight),
     keystore(_keystore)
 {
+    Clear();
+}
+
+void TransactionBuilder::Clear()
+{
     mtx = CreateNewContextualCMutableTransaction(consensusParams, nHeight);
+    spends.clear();
+    outputs.clear();
+    tIns.clear();
+    saplingChangeAddr = nullopt;
+    tChangeAddr = nullopt;
+    fee = -1;   // Verified in Build(). Must be set before.
 }
 
 void TransactionBuilder::AddSaplingSpend(
@@ -204,6 +214,10 @@ TransactionBuilderResult TransactionBuilder::Build()
     //
     // Consistency checks
     //
+    // Valid fee
+    if (fee < 0) {
+        return TransactionBuilderResult("Fee cannot be negative");
+    }
 
     // Valid change
     CAmount change = mtx.sapData->valueBalance - fee;
@@ -222,21 +236,30 @@ TransactionBuilderResult TransactionBuilder::Build()
     //
 
     if (change > 0) {
-        // Send change to the specified change address. If no change address
-        // was set, send change to the first Sapling address given as input
-        // (A t-address can only be used as the change address if explicitly set.)
-        if (saplingChangeAddr) {
-            AddSaplingOutput(saplingChangeAddr->first, saplingChangeAddr->second, change);
-        } else if (tChangeAddr) {
-            // tChangeAddr has already been validated.
-            AddTransparentOutput(*tChangeAddr, change);
-        } else if (!spends.empty()) {
-            auto fvk = spends[0].expsk.full_viewing_key();
-            auto note = spends[0].note;
-            libzcash::SaplingPaymentAddress changeAddr(note.d, note.pk_d);
-            AddSaplingOutput(fvk.ovk, changeAddr, change);
+        // If we get here and the change is dust, add it to the fee
+        CAmount dustThreshold = (spends.empty() && outputs.empty()) ? GetDustThreshold(minRelayTxFee) :
+                                GetShieldedDustThreshold(minRelayTxFee);
+        if (change > dustThreshold) {
+            // Send change to the specified change address. If no change address
+            // was set, send change to the first Sapling address given as input
+            // (A t-address can only be used as the change address if explicitly set.)
+            if (saplingChangeAddr) {
+                AddSaplingOutput(saplingChangeAddr->first, saplingChangeAddr->second, change);
+            } else if (tChangeAddr) {
+                // tChangeAddr has already been validated.
+                AddTransparentOutput(*tChangeAddr, change);
+            } else if (!spends.empty()) {
+                auto fvk = spends[0].expsk.full_viewing_key();
+                auto note = spends[0].note;
+                libzcash::SaplingPaymentAddress changeAddr(note.d, note.pk_d);
+                AddSaplingOutput(fvk.ovk, changeAddr, change);
+            } else {
+                return TransactionBuilderResult("Could not determine change address");
+            }
         } else {
-            return TransactionBuilderResult("Could not determine change address");
+            // Not used after, but update for consistency
+            fee += change;
+            change = 0;
         }
     }
 

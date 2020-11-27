@@ -87,6 +87,7 @@ public:
 
     void setFromAddress(const CTxDestination&);
     void setFromAddress(const libzcash::SaplingPaymentAddress&);
+    void clearTx() { txBuilder.Clear(); }
     // In case of no addressFrom filter selected, it will accept any utxo in the wallet as input.
     SaplingOperation* setSelectTransparentCoins(const bool select) { selectFromtaddrs = select; return this; };
     SaplingOperation* setSelectShieldedCoins(const bool select) { selectFromShield = select; return this; };
@@ -107,7 +108,7 @@ private:
     std::vector<COutput> transInputs;
     std::vector<SaplingNoteEntry> shieldedInputs;
     int mindepth{5}; // Min default depth 5.
-    CAmount fee{DEFAULT_SAPLING_FEE}; // Hardcoded fee for now.
+    CAmount fee{0};  // User selected fee.
 
     // transparent change
     CReserveKey* tkeyChange{nullptr};

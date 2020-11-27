@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(SetSaplingNoteAddrsInCWalletTx) {
     auto ivk = fvk.in_viewing_key();
     auto pk = sk.DefaultAddress();
 
-    libzcash::SaplingNote note(pk, 50000);
+    libzcash::SaplingNote note(pk, 50000000);
     auto cm = note.cmu().get();
     SaplingMerkleTree tree;
     tree.append(cm);
@@ -96,8 +96,8 @@ BOOST_AUTO_TEST_CASE(SetSaplingNoteAddrsInCWalletTx) {
 
     auto builder = TransactionBuilder(consensusParams, 1);
     builder.AddSaplingSpend(expsk, note, anchor, witness);
-    builder.AddSaplingOutput(fvk.ovk, pk, 50000, {});
-    builder.SetFee(0);
+    builder.AddSaplingOutput(fvk.ovk, pk, 40000000, {});
+    builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
     CWalletTx wtx {&wallet, tx};
@@ -152,12 +152,13 @@ BOOST_AUTO_TEST_CASE(FindMySaplingNotes) {
     auto extfvk = sk.ToXFVK();
     auto pa = sk.DefaultAddress();
 
-    auto testNote = GetTestSaplingNote(pa, 50000);
+    auto testNote = GetTestSaplingNote(pa, 50000000);
 
     // Generate transaction
     auto builder = TransactionBuilder(consensusParams, 1);
     builder.AddSaplingSpend(expsk, testNote.note, testNote.tree.root(), testNote.tree.witness());
-    builder.AddSaplingOutput(extfvk.fvk.ovk, pa, 25000, {});
+    builder.AddSaplingOutput(extfvk.fvk.ovk, pa, 25000000, {});
+    builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
     // No Sapling notes can be found in tx which does not belong to the wallet
@@ -195,7 +196,7 @@ BOOST_AUTO_TEST_CASE(GetConflictedSaplingNotes) {
     BOOST_CHECK(wallet.HaveSaplingSpendingKey(extfvk));
 
     // Generate note A
-    libzcash::SaplingNote note(pk, 50000);
+    libzcash::SaplingNote note(pk, 50000000);
     auto cm = note.cmu().get();
     SaplingMerkleTree saplingTree;
     saplingTree.append(cm);
@@ -205,7 +206,8 @@ BOOST_AUTO_TEST_CASE(GetConflictedSaplingNotes) {
     // Generate tx to create output note B
     auto builder = TransactionBuilder(consensusParams, 1);
     builder.AddSaplingSpend(expsk, note, anchor, witness);
-    builder.AddSaplingOutput(extfvk.fvk.ovk, pk, 35000, {});
+    builder.AddSaplingOutput(extfvk.fvk.ovk, pk, 35000000, {});
+    builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
     CWalletTx wtx {&wallet, tx};
 
@@ -258,14 +260,16 @@ BOOST_AUTO_TEST_CASE(GetConflictedSaplingNotes) {
 
     // Create transaction to spend note B
     auto builder2 = TransactionBuilder(consensusParams, 2);
+    builder2.SetFee(10000000);
     builder2.AddSaplingSpend(expsk, note2, anchor, spend_note_witness);
-    builder2.AddSaplingOutput(extfvk.fvk.ovk, pk, 20000, {});
+    builder2.AddSaplingOutput(extfvk.fvk.ovk, pk, 20000000, {});
     auto tx2 = builder2.Build().GetTxOrThrow();
 
     // Create conflicting transaction which also spends note B
     auto builder3 = TransactionBuilder(consensusParams, 2);
+    builder3.SetFee(10000000);
     builder3.AddSaplingSpend(expsk, note2, anchor, spend_note_witness);
-    builder3.AddSaplingOutput(extfvk.fvk.ovk, pk, 19999, {});
+    builder3.AddSaplingOutput(extfvk.fvk.ovk, pk, 19999000, {});
     auto tx3 = builder3.Build().GetTxOrThrow();
 
     CWalletTx wtx2 {&wallet, tx2};
@@ -309,12 +313,13 @@ BOOST_AUTO_TEST_CASE(SaplingNullifierIsSpent) {
     auto extfvk = sk.ToXFVK();
     auto pa = sk.DefaultAddress();
 
-    auto testNote = GetTestSaplingNote(pa, 50000);
+    auto testNote = GetTestSaplingNote(pa, 50000000);
 
     // Generate transaction
     auto builder = TransactionBuilder(consensusParams, 1);
     builder.AddSaplingSpend(expsk,  testNote.note, testNote.tree.root(), testNote.tree.witness());
-    builder.AddSaplingOutput(extfvk.fvk.ovk, pa, 25000, {});
+    builder.AddSaplingOutput(extfvk.fvk.ovk, pa, 2500000, {});
+    builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
     CWalletTx wtx {&wallet, tx};
@@ -370,12 +375,13 @@ BOOST_AUTO_TEST_CASE(NavigateFromSaplingNullifierToNote) {
     auto extfvk = sk.ToXFVK();
     auto pa = sk.DefaultAddress();
 
-    auto testNote = GetTestSaplingNote(pa, 50000);
+    auto testNote = GetTestSaplingNote(pa, 50000000);
 
     // Generate transaction
     auto builder = TransactionBuilder(consensusParams, 1);
     builder.AddSaplingSpend(expsk, testNote.note, testNote.tree.root(), testNote.tree.witness());
-    builder.AddSaplingOutput(extfvk.fvk.ovk, pa, 25000, {});
+    builder.AddSaplingOutput(extfvk.fvk.ovk, pa, 25000000, {});
+    builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
     CWalletTx wtx {&wallet, tx};
@@ -468,7 +474,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     auto pk = sk.DefaultAddress();
 
     // Generate Sapling note A
-    libzcash::SaplingNote note(pk, 50000);
+    libzcash::SaplingNote note(pk, 50000000);
     auto cm = note.cmu().get();
     SaplingMerkleTree saplingTree;
     saplingTree.append(cm);
@@ -478,7 +484,8 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     // Generate transaction, which sends funds to note B
     auto builder = TransactionBuilder(consensusParams, 1);
     builder.AddSaplingSpend(expsk, note, anchor, witness);
-    builder.AddSaplingOutput(extfvk.fvk.ovk, pk, 25000, {});
+    builder.AddSaplingOutput(extfvk.fvk.ovk, pk, 25000000, {});
+    builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
     CWalletTx wtx {&wallet, tx};
@@ -549,13 +556,14 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     // Create transaction to spend note B
     auto builder2 = TransactionBuilder(consensusParams, 2);
     builder2.AddSaplingSpend(expsk, note2, anchor, spend_note_witness);
-    builder2.AddSaplingOutput(extfvk.fvk.ovk, pk, 12500, {});
+    builder2.AddSaplingOutput(extfvk.fvk.ovk, pk, 12500000, {});
+    builder2.SetFee(10000000);
     auto tx2 = builder2.Build().GetTxOrThrow();
     BOOST_CHECK_EQUAL(tx2.vin.size(), 0);
     BOOST_CHECK_EQUAL(tx2.vout.size(), 0);
     BOOST_CHECK_EQUAL(tx2.sapData->vShieldedSpend.size(), 1);
-    BOOST_CHECK_EQUAL(tx2.sapData->vShieldedOutput.size(), 2);
-    BOOST_CHECK_EQUAL(tx2.sapData->valueBalance, 10000);
+    BOOST_CHECK_EQUAL(tx2.sapData->vShieldedOutput.size(), 1);   // 0.025 dust change added to the fee
+    BOOST_CHECK_EQUAL(tx2.sapData->valueBalance, 12500000);      // 0.025 dust change added to the fee
 
     CWalletTx wtx2 {&wallet, tx2};
 
@@ -924,12 +932,13 @@ BOOST_AUTO_TEST_CASE(UpdatedSaplingNoteData) {
     auto extfvk2 = sk2.ToXFVK();
     auto pa2 = sk2.DefaultAddress();
 
-    auto testNote = GetTestSaplingNote(pa, 50000);
+    auto testNote = GetTestSaplingNote(pa, 50000000);
 
     // Generate transaction
     auto builder = TransactionBuilder(consensusParams, 1);
     builder.AddSaplingSpend(expsk, testNote.note, testNote.tree.root(), testNote.tree.witness());
-    builder.AddSaplingOutput(extfvk.fvk.ovk, pa2, 25000, {});
+    builder.AddSaplingOutput(extfvk.fvk.ovk, pa2, 25000000, {});
+    builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
     // Wallet contains extfvk1 but not extfvk2
@@ -1038,17 +1047,18 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
     auto scriptPubKey = GetScriptForDestination(tsk.GetPubKey().GetID());
 
     // Generate shielding tx from transparent to Sapling
-    // 0.0005 t-PIV in, 0.0004 z-PIV out, 0.0001 t-PIV fee
+    // 0.5 t-PIV in, 0.4 z-PIV out, 0.1 t-PIV fee
     auto builder = TransactionBuilder(consensusParams, 1, &keystore);
-    builder.AddTransparentInput(COutPoint(), scriptPubKey, 50000);
-    builder.AddSaplingOutput(extfvk.fvk.ovk, pk, 40000, {});
+    builder.AddTransparentInput(COutPoint(), scriptPubKey, 50000000);
+    builder.AddSaplingOutput(extfvk.fvk.ovk, pk, 40000000, {});
+    builder.SetFee(10000000);
     auto tx1 = builder.Build().GetTxOrThrow();
 
     BOOST_CHECK_EQUAL(tx1.vin.size(), 1);
     BOOST_CHECK_EQUAL(tx1.vout.size(), 0);
     BOOST_CHECK_EQUAL(tx1.sapData->vShieldedSpend.size(), 0);
     BOOST_CHECK_EQUAL(tx1.sapData->vShieldedOutput.size(), 1);
-    BOOST_CHECK_EQUAL(tx1.sapData->valueBalance, -40000);
+    BOOST_CHECK_EQUAL(tx1.sapData->valueBalance, -40000000);
 
     CWalletTx wtx {&wallet, tx1};
 
@@ -1092,17 +1102,18 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
     auto witness = saplingTree.witness();
 
     // Create a Sapling-only transaction
-    // 0.0004 z-ZEC in, 0.00025 z-ZEC out, 0.0001 t-ZEC fee, 0.00005 z-ZEC change
+    // 0.4 z-PIV in, 0.25 z-PIV out, 0.1 t-PIV fee, 0.05 z-PIV change
     auto builder2 = TransactionBuilder(consensusParams, 2);
     builder2.AddSaplingSpend(expsk, note, anchor, witness);
-    builder2.AddSaplingOutput(extfvk.fvk.ovk, pk, 25000, {});
+    builder2.AddSaplingOutput(extfvk.fvk.ovk, pk, 25000000, {});
+    builder2.SetFee(10000000);
     auto tx2 = builder2.Build().GetTxOrThrow();
 
     BOOST_CHECK_EQUAL(tx2.vin.size(), 0);
     BOOST_CHECK_EQUAL(tx2.vout.size(), 0);
     BOOST_CHECK_EQUAL(tx2.sapData->vShieldedSpend.size(), 1);
-    BOOST_CHECK_EQUAL(tx2.sapData->vShieldedOutput.size(), 2);
-    BOOST_CHECK_EQUAL(tx2.sapData->valueBalance, 10000);
+    BOOST_CHECK_EQUAL(tx2.sapData->vShieldedOutput.size(), 1); // 0.05 dust change added to the fee
+    BOOST_CHECK_EQUAL(tx2.sapData->valueBalance, 15000000);    // 0.05 dust change added to the fee
 
     CWalletTx wtx2 {&wallet, tx2};
 
