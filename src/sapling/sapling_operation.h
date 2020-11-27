@@ -118,9 +118,7 @@ private:
     CTransaction finalTx;
 
     OperationResult loadUtxos(TxValues& values);
-    OperationResult loadUnspentNotes(TxValues& txValues,
-                                     libzcash::SaplingExpandedSpendingKey& expsk,
-                                     uint256& ovk);
+    OperationResult loadUnspentNotes(TxValues& txValues, uint256& ovk);
     OperationResult checkTxValues(TxValues& txValues, bool isFromtAddress, bool isFromShielded);
 };
 

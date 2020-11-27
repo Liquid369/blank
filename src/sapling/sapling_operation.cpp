@@ -97,20 +97,10 @@ OperationResult SaplingOperation::build()
         // First calculate target values
         TxValues txValues = calculateTarget(recipients, nFeeRet);
         OperationResult result(false);
-        // Necessary keys
-        libzcash::SaplingExpandedSpendingKey expsk;
         uint256 ovk;
         if (isFromShielded) {
-            // Try to get the sk and ovk if we know the address from, if we don't know it then this will be loaded in loadUnspentNotes
-            // using the sk of the first note input of the transaction.
-            if (fromAddress.isFromSapAddress()) {
-                // Get spending key for address
-                auto loadKeyRes = loadKeysFromShieldedFrom(fromAddress.fromSapAddr.get(), expsk, ovk);
-                if (!loadKeyRes) return loadKeyRes;
-            }
-
-            // Load and select notes to spend
-            if (!(result = loadUnspentNotes(txValues, expsk, ovk))) {
+            // Load and select notes to spend, then return the ovk of the first note input of the transaction
+            if (!(result = loadUnspentNotes(txValues, ovk))) {
                 return result;
             }
         } else {
@@ -301,9 +291,7 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
     return OperationResult(true);
 }
 
-OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues,
-                                                   libzcash::SaplingExpandedSpendingKey& expsk,
-                                                   uint256& ovk)
+OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& ovk)
 {
     shieldedInputs.clear();
     pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(shieldedInputs, fromAddress.fromSapAddr, mindepth);
@@ -331,15 +319,24 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues,
     // Now select the notes that we are going to use.
     std::vector<SaplingOutPoint> ops;
     std::vector<libzcash::SaplingNote> notes;
+    std::vector<libzcash::SaplingExpandedSpendingKey> spendingKeys;
     txValues.shieldedInTotal = 0;
     CAmount dustThreshold = GetShieldedDustThreshold(minRelayTxFee);
     CAmount dustChange = -1;
     for (const auto& t : shieldedInputs) {
-        // if null, load the first input sk
-        if (expsk.IsNull()) {
-            auto resLoadKeys = loadKeysFromShieldedFrom(t.address, expsk, ovk);
-            if (!resLoadKeys) return resLoadKeys;
+        // Get the spending key for the address.
+        libzcash::SaplingExpandedSpendingKey expsk;
+        uint256 ovkIn;
+        auto resLoadKeys = loadKeysFromShieldedFrom(t.address, expsk, ovkIn);
+        if (!resLoadKeys) return resLoadKeys;
+        spendingKeys.emplace_back(expsk);
+
+        // Return ovk to be used in the outputs
+        if (ovk.IsNull()) {
+            ovk = ovkIn;
         }
+
+        // Load data
         ops.emplace_back(t.op);
         notes.emplace_back(t.note);
         txValues.shieldedInTotal += t.note.value();
@@ -368,7 +365,7 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues,
         if (!witnesses[i]) {
             return errorOut("Missing witness for Sapling note");
         }
-        txBuilder.AddSaplingSpend(expsk, notes[i], anchor, witnesses[i].get());
+        txBuilder.AddSaplingSpend(spendingKeys[i], notes[i], anchor, witnesses[i].get());
     }
 
     return OperationResult(true);

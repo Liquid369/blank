@@ -187,17 +187,39 @@ class WalletSaplingTest(PivxTestFramework):
         self.nodes[2].generate(1)
         self.sync_all()
 
+        # Shield more funds to a different address to verify multi-source notes spending
+        saplingAddr2 = self.nodes[0].getnewshieldedaddress()
+        self.log.info("TX 7: shield funds to later verify multi source notes spending.")
+        recipients = [{"address": saplingAddr2, "amount": Decimal('10')}]
+        mytxid7 = self.nodes[0].shieldedsendmany(get_coinstake_address(self.nodes[0]), recipients, 1, fee)
+        self.check_tx_priority([mytxid7])
+
+        self.nodes[2].generate(5)
+        self.sync_all()
+
+        # Verify multi-source notes spending
+        tAddr0 = self.nodes[0].getnewaddress()
+        self.log.info("TX 8: verifying multi source notes spending.")
+        recipients = [{"address": tAddr0, "amount": Decimal('11')}]
+        mytxid8 = self.nodes[0].shieldedsendmany("from_shielded", recipients, 1, fee)
+        self.check_tx_priority([mytxid8])
+
+        self.nodes[2].generate(1)
+        self.sync_all()
+
         # Verify balance
-        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('7'))   # 30 received - (20 sent + 3 fee)
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('3'))   # 30 received - (20 sent + 3 fee) - 4 sent
         assert_equal(self.nodes[1].getshieldedbalance(saplingAddr1), Decimal('20'))  # 20 received
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr2), Decimal('2'))   # 10 received - 10 sent + 2 change
         assert_equal(self.nodes[1].getreceivedbyaddress(taddr1), Decimal('0'))
+        assert_equal(self.nodes[0].getshieldedbalance(), Decimal('5'))
         self.log.info("Balances check out")
 
         # Node 1 sends some shielded funds to node 0, as well as unshielding
         # Sapling -> Sapling
         #         -> taddr
         #         -> Sapling (change)
-        self.log.info("TX 7: deshield funds from specified sapling address.")
+        self.log.info("TX 10: deshield funds from specified sapling address.")
         recipients7 = [{"address": saplingAddr0, "amount": Decimal('8')}]
         recipients7.append({"address": taddr1, "amount": Decimal('10')})
         mytxid7 = self.nodes[1].shieldedsendmany(saplingAddr1, recipients7, 1, fee)
@@ -207,7 +229,7 @@ class WalletSaplingTest(PivxTestFramework):
         self.sync_all()
 
         # Verify balance
-        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('15'))  # 7 prev balance + 8 received
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('11'))  # 3 prev balance + 8 received
         assert_equal(self.nodes[1].getshieldedbalance(saplingAddr1), Decimal('1'))   # 20 prev balance - (18 sent + 1 fee)
         assert_equal(self.nodes[1].getreceivedbyaddress(taddr1), Decimal('10'))
         self.log.info("Balances check out")
@@ -239,7 +261,7 @@ class WalletSaplingTest(PivxTestFramework):
         sk0 = self.nodes[0].exportsaplingkey(saplingAddr0)
         saplingAddrInfo0 = self.nodes[2].importsaplingkey(sk0, "yes")
         assert_equal(saplingAddrInfo0["address"], saplingAddr0)
-        assert_equal(self.nodes[2].getshieldedbalance(saplingAddrInfo0["address"]), Decimal('15'))
+        assert_equal(self.nodes[2].getshieldedbalance(saplingAddrInfo0["address"]), Decimal('11'))
         sk1 = self.nodes[1].exportsaplingkey(saplingAddr1)
         saplingAddrInfo1 = self.nodes[2].importsaplingkey(sk1, "yes")
         assert_equal(saplingAddrInfo1["address"], saplingAddr1)
@@ -250,7 +272,7 @@ class WalletSaplingTest(PivxTestFramework):
         extfvk0 = self.nodes[0].exportsaplingviewingkey(saplingAddr0)
         saplingAddrInfo0 = self.nodes[3].importsaplingviewingkey(extfvk0, "yes")
         assert_equal(saplingAddrInfo0["address"], saplingAddr0)
-        assert_equal(Decimal(self.nodes[3].getshieldedbalance(saplingAddrInfo0["address"], 1, True)), Decimal('15'))
+        assert_equal(Decimal(self.nodes[3].getshieldedbalance(saplingAddrInfo0["address"], 1, True)), Decimal('11'))
         extfvk1 = self.nodes[1].exportsaplingviewingkey(saplingAddr1)
         saplingAddrInfo1 = self.nodes[3].importsaplingviewingkey(extfvk1, "yes")
         assert_equal(saplingAddrInfo1["address"], saplingAddr1)
@@ -258,7 +280,7 @@ class WalletSaplingTest(PivxTestFramework):
         # no balance in the wallet
         assert_equal(self.nodes[3].getshieldedbalance(), Decimal('0'))
         # watch only balance
-        assert_equal(self.nodes[3].getshieldedbalance("*", 1, True), Decimal('16.00'))
+        assert_equal(self.nodes[3].getshieldedbalance("*", 1, True), Decimal('12.00'))
 
         self.log.info("All good.")
 
