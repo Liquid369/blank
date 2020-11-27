@@ -1051,6 +1051,7 @@ void CWallet::AddExternalNotesDataToTx(CWalletTx& wtx) const
                 // Always true for 'IsFromMe' transactions
                 wtx.mapSaplingNoteData[op].address = recovered->second;
                 wtx.mapSaplingNoteData[op].amount = recovered->first.value();
+                wtx.mapSaplingNoteData[op].memo = recovered->first.memo();
             }
         }
     }

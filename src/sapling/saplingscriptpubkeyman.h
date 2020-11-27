@@ -52,15 +52,21 @@ public:
 
     /**
      * Cached note amount.
-     * It will be loaded the first time that the note is decrypted.
+     * It will be loaded the first time that the note is decrypted (when the tx is added to the wallet).
      */
     Optional<CAmount> amount{nullopt};
 
     /**
      * Cached shielded address
-     * It will be loaded the first time that the note is decrypted
+     * It will be loaded the first time that the note is decrypted (when the tx is added to the wallet)
      */
      Optional<libzcash::SaplingPaymentAddress> address{nullopt};
+
+     /**
+      * Cached note memo (only for non-empty memo)
+      * It will be loaded the first time that the note is decrypted (when the tx is added to the wallet)
+      */
+     Optional<std::array<unsigned char, ZC_MEMO_SIZE>> memo;
 
     /**
      * Block height corresponding to the most current witness.

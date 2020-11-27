@@ -344,6 +344,7 @@ std::pair<mapSaplingNoteData_t, SaplingIncomingViewingKeyMap> SaplingScriptPubKe
             nd.ivk = ivk;
             nd.amount = result->value();
             nd.address = address;
+            nd.memo = result->memo();
             noteData.insert(std::make_pair(op, nd));
             break;
         }
