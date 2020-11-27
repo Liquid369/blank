@@ -106,10 +106,18 @@ public:
         READWRITE(nullifier);
         READWRITE(witnesses);
         READWRITE(witnessHeight);
+        READWRITE(amount);
+        READWRITE(address);
+        READWRITE(memo);
     }
 
     friend bool operator==(const SaplingNoteData& a, const SaplingNoteData& b) {
-        return (a.ivk == b.ivk && a.nullifier == b.nullifier && a.witnessHeight == b.witnessHeight);
+        return (a.ivk == b.ivk &&
+                a.nullifier == b.nullifier &&
+                a.witnessHeight == b.witnessHeight &&
+                a.amount == b.amount &&
+                a.address == b.address &&
+                a.memo == b.memo);
     }
 
     friend bool operator!=(const SaplingNoteData& a, const SaplingNoteData& b) {
