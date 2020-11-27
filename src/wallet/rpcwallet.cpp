@@ -1347,7 +1347,7 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
     UniValue spends(UniValue::VARR);
     UniValue outputs(UniValue::VARR);
 
-    auto addMemo = [](UniValue &entry, std::array<unsigned char, ZC_MEMO_SIZE> &memo) {
+    auto addMemo = [](UniValue& entry, const std::array<unsigned char, ZC_MEMO_SIZE>& memo) {
         auto end = FindFirstNonZero(memo.rbegin(), memo.rend());
         entry.pushKV("memo", HexStr(memo.begin(), end.base()));
         // If the leading byte is 0xF4 or lower, the memo field should be interpreted as a
@@ -1411,35 +1411,31 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
     for (uint32_t i = 0; i < wtx.sapData->vShieldedOutput.size(); ++i) {
         auto op = SaplingOutPoint(hash, i);
         if (!wtx.mapSaplingNoteData.count(op)) continue;
-        libzcash::SaplingNotePlaintext notePt;
-        libzcash::SaplingPaymentAddress pa;
+        const auto& nd = wtx.mapSaplingNoteData.at(op);
 
-        const bool isOutgoing = !wtx.mapSaplingNoteData.at(op).IsMyNote();
-        if (!isOutgoing) {
-            auto decrypted = wtx.DecryptSaplingNote(op);
-            assert(decrypted);
-            notePt = decrypted->first;
-            pa = decrypted->second;
-        } else {
-            // Try recovering with the inputs ovk
-            auto recovered = sspkm->TryToRecoverNote(wtx, op);
-            if (recovered) {
-                notePt = recovered->first;
-                pa = recovered->second;
-            } else {
-                // Unreadable
-                continue;
-            }
+        const bool isOutgoing = !nd.IsMyNote();
+        std::string addrStr = "unknown";
+        UniValue amountStr = UniValue("unknown");
+        CAmount amount = 0;
+        if (nd.address) {
+            addrStr = KeyIO::EncodePaymentAddress(*(nd.address));
         }
-        auto memo = notePt.memo();
+        if (nd.amount) {
+            amount = *(nd.amount);
+            amountStr = ValueFromAmount(amount);
+        }
 
         UniValue entry_(UniValue::VOBJ);
         entry_.pushKV("output", (int)op.n);
         entry_.pushKV("outgoing", isOutgoing);
-        entry_.pushKV("address", KeyIO::EncodePaymentAddress(pa));
-        entry_.pushKV("value", ValueFromAmount(notePt.value()));
-        entry_.pushKV("valueSat", notePt.value());
-        addMemo(entry_, memo);
+        entry_.pushKV("address", addrStr);
+        entry_.pushKV("value", amountStr);
+        entry_.pushKV("valueSat", amount);
+
+        if (nd.memo) {
+            addMemo(entry_, *(nd.memo));
+        }
+
         outputs.push_back(entry_);
     }
 

@@ -211,7 +211,7 @@ bool TransactionRecord::decomposeCreditTransaction(const CWallet* wallet, const 
         auto sspkm = wallet->GetSaplingScriptPubKeyMan();
         for (int i = 0; i < (int) wtx.sapData->vShieldedOutput.size(); ++i) {
             SaplingOutPoint out(sub.hash, i);
-            auto opAddr = sspkm->GetShieldedAddressFrom(wtx, out);
+            auto opAddr = sspkm->GetOutPointAddress(wtx, out);
             if (opAddr) {
                 // skip it if change
                 if (sspkm->IsNoteSaplingChange(out, *opAddr)) {
@@ -294,7 +294,7 @@ bool TransactionRecord::decomposeShieldedDebitTransaction(const CWallet* wallet,
     bool feeAdded = false;
     for (int i = 0; i < (int) wtx.sapData->vShieldedOutput.size(); ++i) {
         SaplingOutPoint out(sub.hash, i);
-        auto opAddr = sspkm->GetShieldedAddressFrom(wtx, out);
+        auto opAddr = sspkm->GetOutPointAddress(wtx, out);
         // skip change
         if (!opAddr || sspkm->IsNoteSaplingChange(out, *opAddr)) {
             continue;

@@ -563,27 +563,20 @@ std::set<std::pair<libzcash::PaymentAddress, uint256>> SaplingScriptPubKeyMan::G
     return nullifierSet;
 }
 
-Optional<libzcash::SaplingPaymentAddress> SaplingScriptPubKeyMan::GetShieldedAddressFrom(const CWalletTx& tx, const SaplingOutPoint& op)
+Optional<libzcash::SaplingPaymentAddress> SaplingScriptPubKeyMan::GetOutPointAddress(const CWalletTx& tx, const SaplingOutPoint& op)
 {
-    // Try first using the cached data if available
-    const auto& it = tx.mapSaplingNoteData.find(op);
-    if (it != tx.mapSaplingNoteData.end() && it->second.address) {
-        return it->second.address;
+    if (!tx.mapSaplingNoteData.count(op)) {
+        return nullopt;
     }
+    return tx.mapSaplingNoteData.at(op).address;
+}
 
-    // Try to decrypt it using the note data ivk (if exists)
-    auto noteAndAddress = tx.DecryptSaplingNote(op);
-    if (noteAndAddress) {
-        return Optional<libzcash::SaplingPaymentAddress>(noteAndAddress->second);
+CAmount SaplingScriptPubKeyMan::GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op)
+{
+    if (!tx.mapSaplingNoteData.count(op)) {
+        return 0;
     }
-
-    // Try to recover it with the ovks
-    Optional<libzcash::SaplingPaymentAddress> optAddRet = nullopt;
-    auto optNotePlainAndAddress = TryToRecoverNote(tx, op);
-    if (optNotePlainAndAddress) {
-        optAddRet = optNotePlainAndAddress->second;
-    }
-    return optAddRet;
+    return tx.mapSaplingNoteData.at(op).amount ? *(tx.mapSaplingNoteData.at(op).amount) : 0;
 }
 
 Optional<std::pair<
@@ -629,41 +622,15 @@ Optional<std::pair<
     return tx.RecoverSaplingNote(op, ovks);
 }
 
-CAmount SaplingScriptPubKeyMan::TryToRecoverAndSetAmount(const CWalletTx& tx, const SaplingOutPoint& op)
-{
-    CAmount noteValue = 0;
-    // if amount was not set, let's try to decrypt the note and set it.
-    auto noteAndAddress = tx.DecryptSaplingNote(op);
-    if (noteAndAddress) {
-        const libzcash::SaplingNotePlaintext &note = noteAndAddress->first;
-        noteValue = note.value();
-    } else {
-        // if cannot be decrypted, use RecoverSaplingNote.
-        auto optNotePlainAndAddress = TryToRecoverNote(tx, op);
-        if (optNotePlainAndAddress) {
-            noteValue = optNotePlainAndAddress->first.value();
-        } else {
-            return 0;
-        }
-    }
-    // if it's not set, then set it.
-    wallet->mapWallet[tx.GetHash()].mapSaplingNoteData[op].amount = noteValue;
-    return noteValue;
-}
-
 isminetype SaplingScriptPubKeyMan::IsMine(const CWalletTx& wtx, const SaplingOutPoint& op)
 {
-    Optional<libzcash::SaplingPaymentAddress> pa = GetShieldedAddressFrom(wtx, op);
-    return pa ? ::IsMine(*wallet, *pa) : ISMINE_NO;
-}
-
-CAmount SaplingScriptPubKeyMan::GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op)
-{
-    const auto& it = tx.mapSaplingNoteData.find(op);
-    if (it != tx.mapSaplingNoteData.end() && it->second.amount) {
-        return *(it->second.amount);
+    auto ndIt = wtx.mapSaplingNoteData.find(op);
+    if (ndIt != wtx.mapSaplingNoteData.end() && ndIt->second.IsMyNote()) {
+        const auto addr = ndIt->second.address;
+        return (static_cast<bool>(addr) && HaveSpendingKeyForPaymentAddress(*addr)) ?
+               ISMINE_SPENDABLE_SHIELDED : ISMINE_WATCH_ONLY_SHIELDED;
     }
-    return TryToRecoverAndSetAmount(tx, op);
+    return ISMINE_NO;
 }
 
 CAmount SaplingScriptPubKeyMan::GetCredit(const CWalletTx& tx, const isminefilter& filter, const bool fUnspent)
@@ -684,8 +651,7 @@ CAmount SaplingScriptPubKeyMan::GetCredit(const CWalletTx& tx, const isminefilte
         }
         // todo: check if we can spend this note or not. (if not, then it's a watch only)
 
-        // Check whether the note value was already cached or needs to be loaded
-        nCredit += noteData.amount ? *noteData.amount : TryToRecoverAndSetAmount(tx, op);
+        nCredit += noteData.amount ? *noteData.amount : 0;
     }
     return nCredit;
 }
@@ -696,21 +662,16 @@ CAmount SaplingScriptPubKeyMan::GetDebit(const CTransaction& tx, const isminefil
     for (const SpendDescription& spend : tx.sapData->vShieldedSpend) {
         const auto &it = mapSaplingNullifiersToNotes.find(spend.nullifier);
         if (it != mapSaplingNullifiersToNotes.end()) {
-            // If we have the sapling output means that this input is mine.
-            SaplingOutPoint op = it->second;
-            const auto& itTx = wallet->mapWallet.find(op.hash);
-            if (itTx == wallet->mapWallet.end()) {
-                continue;
-            }
-
-            // Now try to decrypt the note (it should never fail if it reach to this point, mapSaplingNullifiersToNotes is loaded after the note decryption)
-            Optional<std::pair<
-                    libzcash::SaplingNotePlaintext,
-                    libzcash::SaplingPaymentAddress>> decryptedNote = itTx->second.DecryptSaplingNote(op);
-
-            // todo: Add watch only check.
-            CAmount value = decryptedNote->first.value();
-            nDebit += value;
+            // If we have the spend nullifier, it means that this input is ours.
+            // The transaction (and decrypted note data) has been added to the wallet.
+            const SaplingOutPoint& op = it->second;
+            assert(wallet->mapWallet.count(op.hash));
+            const auto& wtx = wallet->mapWallet.at(op.hash);
+            assert(wtx.mapSaplingNoteData.count(op));
+            const auto& nd = wtx.mapSaplingNoteData.at(op);
+            assert(nd.IsMyNote());        // todo: Add watch only check.
+            assert(static_cast<bool>(nd.amount));
+            nDebit += *(nd.amount);
             if (!Params().GetConsensus().MoneyRange(nDebit))
                 throw std::runtime_error("SaplingScriptPubKeyMan::GetDebit() : value out of range");
         }
@@ -725,19 +686,16 @@ CAmount SaplingScriptPubKeyMan::GetShieldedChange(const CWalletTx& wtx)
     }
     const uint256& txHash = wtx.GetHash();
     CAmount nChange = 0;
-    SaplingOutPoint sapOutPoint{txHash, 0};
+    SaplingOutPoint op{txHash, 0};
     for (uint32_t pos = 0; pos < (uint32_t) wtx.sapData->vShieldedOutput.size(); ++pos) {
-        sapOutPoint.n = pos;
-        const auto noteAndAddress = wtx.DecryptSaplingNote(sapOutPoint);
-        if (noteAndAddress) {
-            const libzcash::SaplingNotePlaintext& notePlaintext = noteAndAddress->first;
-            const libzcash::SaplingPaymentAddress& pa = noteAndAddress->second;
-
-            if (IsNoteSaplingChange(sapOutPoint, pa)) {
-                nChange += notePlaintext.value();
-                if (!Params().GetConsensus().MoneyRange(nChange))
-                    throw std::runtime_error("GetShieldedChange() : value out of range");
-            }
+        op.n = pos;
+        if (!wtx.mapSaplingNoteData.count(op)) continue;
+        const auto& nd = wtx.mapSaplingNoteData.at(op);
+        if (!nd.IsMyNote() || !static_cast<bool>(nd.address) || !static_cast<bool>(nd.amount)) continue;
+        if (IsNoteSaplingChange(op, *(nd.address))) {
+            nChange += *(nd.amount);
+            if (!Params().GetConsensus().MoneyRange(nChange))
+                throw std::runtime_error("GetShieldedChange() : value out of range");
         }
     }
     return nChange;

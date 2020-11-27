@@ -294,11 +294,6 @@ public:
     std::set<std::pair<libzcash::PaymentAddress, uint256>> GetNullifiersForAddresses(const std::set<libzcash::PaymentAddress> & addresses);
     bool IsNoteSaplingChange(const std::set<std::pair<libzcash::PaymentAddress, uint256>>& nullifierSet, const libzcash::PaymentAddress& address, const SaplingOutPoint& entry);
 
-    //! Decrypt the encrypted note and return the address if possible
-    Optional<libzcash::SaplingPaymentAddress> GetShieldedAddressFrom(const CWalletTx& tx, const SaplingOutPoint& op);
-
-    //! Try to decrypt the note and load the amount into the always available SaplingNoteData
-    CAmount TryToRecoverAndSetAmount(const CWalletTx& tx, const SaplingOutPoint& op);
     //! Try to recover the note using the wallet's ovks (mostly used when the outpoint is a debit)
     Optional<std::pair<
             libzcash::SaplingNotePlaintext,
@@ -306,7 +301,9 @@ public:
 
     //! Return true if the wallet can decrypt & spend the shielded output.
     isminetype IsMine(const CWalletTx& wtx, const SaplingOutPoint& op);
-    //! Return the shielded value of an specific output
+    //! Return the shielded address of a specific outpoint of wallet transaction
+    Optional<libzcash::SaplingPaymentAddress> GetOutPointAddress(const CWalletTx& tx, const SaplingOutPoint& op);
+    //! Return the shielded value of a specific outpoint of wallet transaction
     CAmount GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op);
     //! Return the shielded credit of the tx
     CAmount GetCredit(const CWalletTx& tx, const isminefilter& filter, const bool fUnspent = false);
