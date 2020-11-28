@@ -644,6 +644,9 @@ CAmount SaplingScriptPubKeyMan::GetCredit(const CWalletTx& tx, const isminefilte
         // Obtain the noteData and check if the nullifier has being spent or not
         SaplingNoteData noteData = tx.mapSaplingNoteData.at(op);
 
+        // Skip externally sent notes
+        if (!noteData.IsMyNote()) continue;
+
         // The nullifier could be null if the wallet was locked when the noteData was created.
         if (noteData.nullifier &&
             (fUnspent && IsSaplingSpent(*noteData.nullifier))) {
