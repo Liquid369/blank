@@ -145,7 +145,7 @@ public:
                                                       const CAmount& nDebit, bool involvesWatchAddress,
                                                       QList<TransactionRecord>& parts);
 
-    static bool decomposeShieldedDebitTransaction(const CWallet* wallet, const CWalletTx& wtx,
+    static bool decomposeShieldedDebitTransaction(const CWallet* wallet, const CWalletTx& wtx, CAmount nTxFee,
                                                   bool involvesWatchAddress, QList<TransactionRecord>& parts);
 
     static std::string getValueOrReturnEmpty(const std::map<std::string, std::string>& mapValue, const std::string& key);

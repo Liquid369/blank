@@ -281,7 +281,7 @@ bool TransactionRecord::decomposeSendToSelfTransaction(const CWalletTx& wtx, con
     return true;
 }
 
-bool TransactionRecord::decomposeShieldedDebitTransaction(const CWallet* wallet, const CWalletTx& wtx,
+bool TransactionRecord::decomposeShieldedDebitTransaction(const CWallet* wallet, const CWalletTx& wtx, CAmount nTxFee,
                                                           bool involvesWatchAddress, QList<TransactionRecord>& parts)
 {
     // Return early if there are no outputs.
@@ -291,7 +291,6 @@ bool TransactionRecord::decomposeShieldedDebitTransaction(const CWallet* wallet,
 
     TransactionRecord sub(wtx.GetHash(), wtx.GetTxTime(), wtx.GetTotalSize());
     auto sspkm = wallet->GetSaplingScriptPubKeyMan();
-    bool feeAdded = false;
     for (int i = 0; i < (int) wtx.sapData->vShieldedOutput.size(); ++i) {
         SaplingOutPoint out(sub.hash, i);
         auto opAddr = sspkm->GetOutPointAddress(wtx, out);
@@ -305,9 +304,9 @@ bool TransactionRecord::decomposeShieldedDebitTransaction(const CWallet* wallet,
         sub.address = KeyIO::EncodePaymentAddress(*opAddr);
         CAmount nValue = sspkm->GetOutPointValue(wtx, out);
         /* Add fee to first output */
-        if (!feeAdded) { // future, move from the hardcoded fee.
-            nValue += COIN;
-            feeAdded = true;
+        if (nTxFee > 0) {
+            nValue += nTxFee;
+            nTxFee = 0;
         }
         sub.debit = -nValue;
         parts.append(sub);
@@ -327,7 +326,9 @@ bool TransactionRecord::decomposeDebitTransaction(const CWallet* wallet, const C
         return false;
     }
 
-    CAmount nTxFee = nDebit - wtx.GetValueOut();
+    // GetValueOut is the sum of transparent outs and negative sapValueBalance (shielded outs minus shielded spends).
+    // Therefore to get the sum of the whole outputs of the tx, must re-add the shielded inputs spent to it
+    CAmount nTxFee = nDebit - (wtx.GetValueOut() + wtx.GetDebit(ISMINE_SPENDABLE_SHIELDED | ISMINE_WATCH_ONLY_SHIELDED));
     unsigned int txSize = wtx.GetTotalSize();
     const uint256& txHash = wtx.GetHash();
     const int64_t txTime = wtx.GetTxTime();
@@ -377,7 +378,7 @@ bool TransactionRecord::decomposeDebitTransaction(const CWallet* wallet, const C
     }
 
     // Decompose shielded debit
-    return decomposeShieldedDebitTransaction(wallet, wtx, involvesWatchAddress, parts);
+    return decomposeShieldedDebitTransaction(wallet, wtx, nTxFee, involvesWatchAddress, parts);
 }
 
 // Check whether all the shielded inputs and outputs are from and send to this wallet
