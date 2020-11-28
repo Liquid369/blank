@@ -909,20 +909,6 @@ std::string WalletModel::getLabelForAddress(const CTxDestination& address)
     return label;
 }
 
-// returns a list of COutputs from COutPoints
-void WalletModel::getOutputs(const std::vector<OutPointWrapper>& vOutpoints, std::vector<COutput>& vOutputs)
-{
-    LOCK2(cs_main, wallet->cs_wallet);
-    for (const auto& outpoint : vOutpoints) {
-        const auto* tx = wallet->GetWalletTx(outpoint.outPoint.hash);
-        if (!tx) continue;
-        bool fConflicted;
-        const int nDepth = tx->GetDepthAndMempool(fConflicted);
-        if (nDepth < 0 || fConflicted) continue;
-        vOutputs.emplace_back(tx, outpoint.outPoint.n, nDepth, true, true);
-    }
-}
-
 // returns a COutPoint of 10000 PIV if found
 bool WalletModel::getMNCollateralCandidate(COutPoint& outPoint)
 {

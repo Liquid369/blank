@@ -282,7 +282,6 @@ public:
     bool isMine(const QString& addressStr);
     bool IsShieldedDestination(const CWDestination& address);
     bool isUsed(CTxDestination address);
-    void getOutputs(const std::vector<OutPointWrapper>& vOutpoints, std::vector<COutput>& vOutputs);
     bool getMNCollateralCandidate(COutPoint& outPoint);
     bool isSpent(const COutPoint& outpoint) const;
 
