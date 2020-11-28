@@ -505,11 +505,6 @@ void CoinControlDialog::updateLabels()
         }
     }
 
-    // TODO: Connect labels calculation in the future..
-    if (!fSelectTransparent) {
-        return;
-    }
-
     CAmount nAmount = 0;
     CAmount nPayFee = 0;
     CAmount nAfterFee = 0;
@@ -523,25 +518,36 @@ void CoinControlDialog::updateLabels()
     coinControl->ListSelected(vCoinControl);
     model->getOutputs(vCoinControl, vOutputs);
 
-    for (const COutput& out : vOutputs) {
-        // unselect already spent, very unlikely scenario, this could happen
-        // when selected are spent elsewhere, like rpc or another computer
-        uint256 txhash = out.tx->GetHash();
-        COutPoint outpt(txhash, out.i);
-        if (model->isSpent(outpt)) {
-            coinControl->UnSelect(outpt);
-            continue;
-        }
+    if (fSelectTransparent) {
+        for (const COutput& out : vOutputs) {
+            // unselect already spent, very unlikely scenario, this could happen
+            // when selected are spent elsewhere, like rpc or another computer
+            uint256 txhash = out.tx->GetHash();
+            COutPoint outpt(txhash, out.i);
+            if (model->isSpent(outpt)) {
+                coinControl->UnSelect(outpt);
+                continue;
+            }
 
-        // Quantity
-        nQuantity++;
-        // Amount
-        nAmount += out.tx->vout[out.i].nValue;
-        // Bytes
-        nBytesInputs += 148;
-        // Additional byte for P2CS
-        if (out.tx->vout[out.i].scriptPubKey.IsPayToColdStaking())
-            nBytesInputs++;
+            // Quantity
+            nQuantity++;
+            // Amount
+            nAmount += out.tx->vout[out.i].nValue;
+            // Bytes
+            nBytesInputs += CTXIN_SPEND_DUST_SIZE;
+            // Additional byte for P2CS
+            if (out.tx->vout[out.i].scriptPubKey.IsPayToColdStaking())
+                nBytesInputs++;
+        }
+    } else {
+        for (const OutPointWrapper& out : vCoinControl) {
+            // Quantity
+            nQuantity++;
+            // Amount
+            nAmount += out.value;
+            // Bytes
+            nBytesInputs += SPENDDESCRIPTION_SIZE;
+        }
     }
 
     // update SelectAll button state
@@ -550,33 +556,38 @@ void CoinControlDialog::updateLabels()
     updatePushButtonSelectAll(coinControl->QuantitySelected() * 2 > nSelectableInputs);
 
     // calculation
-    const int P2PKH_OUT_SIZE = 34;
     const int P2CS_OUT_SIZE = 61;
     if (nQuantity > 0) {
         // Bytes: nBytesInputs + (num_of_outputs * bytes_per_output)
-        nBytes = nBytesInputs + std::max(1, payAmounts.size()) * (forDelegation ? P2CS_OUT_SIZE : P2PKH_OUT_SIZE);
         // always assume +1 (p2pkh) output for change here
-        nBytes += P2PKH_OUT_SIZE;
+        if (fSelectTransparent) {
+            nBytes = nBytesInputs + std::max(1, payAmounts.size()) * (
+                    forDelegation ? P2CS_OUT_SIZE : CTXOUT_REGULAR_SIZE);
+            nBytes += CTXOUT_REGULAR_SIZE;
+        } else {
+            nBytes = nBytesInputs + std::max(1, payAmounts.size()) * SPENDDESCRIPTION_SIZE;
+            nBytes += SPENDDESCRIPTION_SIZE;
+        }
+
         // nVersion, nLockTime and vin/vout len sizes
         nBytes += 10;
 
-        // Fee
-        nPayFee = CWallet::GetMinimumFee(nBytes, nTxConfirmTarget, mempool);
+        // Fee (default K fixed for shielded fee for now)
+        nPayFee = GetMinRelayFee(nBytes, false) * (fSelectTransparent ? 1 : DEFAULT_SHIELDEDTXFEE_K);
 
         if (nPayAmount > 0) {
             nChange = nAmount - nPayFee - nPayAmount;
 
             // Never create dust outputs; if we would, just add the dust to the fee.
-            if (nChange > 0 && nChange < CENT) {
-                CTxOut txout(nChange, (CScript)std::vector<unsigned char>(24, 0));
-                if (IsDust(txout, ::minRelayTxFee)) {
-                    nPayFee += nChange;
-                    nChange = 0;
-                }
+            CAmount dustThreshold = fSelectTransparent ? GetDustThreshold(minRelayTxFee) :
+                                                         GetShieldedDustThreshold(minRelayTxFee);
+            if (nChange > 0 && nChange < dustThreshold) {
+                nPayFee += nChange;
+                nChange = 0;
             }
 
             if (nChange == 0)
-                nBytes -= P2PKH_OUT_SIZE;
+                nBytes -= (fSelectTransparent ? CTXOUT_REGULAR_SIZE : SPENDDESCRIPTION_SIZE);
         }
 
         // after fee
