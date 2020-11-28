@@ -9,7 +9,6 @@
 #include "qt/pivx/sendchangeaddressdialog.h"
 #include "qt/pivx/optionbutton.h"
 #include "qt/pivx/sendconfirmdialog.h"
-#include "qt/pivx/myaddressrow.h"
 #include "qt/pivx/guitransactionsutils.h"
 #include "qt/pivx/loadingdialog.h"
 #include "clientmodel.h"
@@ -248,6 +247,13 @@ void SendWidget::resetCoinControl()
 {
     coinControlDialog->coinControl->SetNull();
     ui->btnCoinControl->setActive(false);
+}
+
+void SendWidget::resetChangeAddress()
+{
+    coinControlDialog->coinControl->destChange = CNoDestination();
+    ui->btnChangeAddress->setActive(false);
+    ui->btnChangeAddress->setVisible(isTransparent);
 }
 
 void SendWidget::clearEntries()
@@ -714,6 +720,7 @@ void SendWidget::onCheckBoxChanged()
 void SendWidget::onPIVSelected(bool _isTransparent)
 {
     isTransparent = _isTransparent;
+    resetChangeAddress();
     resetCoinControl();
     refreshAmounts();
     updateStyle(coinIcon);

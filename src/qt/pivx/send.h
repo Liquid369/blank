@@ -118,6 +118,7 @@ private:
     void setCustomFeeSelected(bool isSelected, const CAmount& customFee = DEFAULT_TRANSACTION_FEE);
     void setCoinControlPayAmounts();
     void resetCoinControl();
+    void resetChangeAddress();
 };
 
 #endif // SEND_H
