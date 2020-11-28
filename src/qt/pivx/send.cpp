@@ -692,7 +692,8 @@ void SendWidget::setCoinControlPayAmounts()
     coinControlDialog->clearPayAmounts();
     QMutableListIterator<SendMultiRow*> it(entries);
     while (it.hasNext()) {
-        coinControlDialog->addPayAmount(it.next()->getAmountValue());
+        const auto& entry = it.next();
+        coinControlDialog->addPayAmount(entry->getAmountValue(), entry->getValue().isShieldedAddr);
     }
 }
 

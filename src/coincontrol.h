@@ -16,6 +16,7 @@ class OutPointWrapper {
 public:
     BaseOutPoint outPoint;
     CAmount value;
+    bool isP2CS;
 
     bool operator<(const OutPointWrapper& obj2) const {
         return this->outPoint < obj2.outPoint;
@@ -69,17 +70,17 @@ public:
 
     bool IsSelected(const BaseOutPoint& output) const
     {
-        return (setSelected.count(OutPointWrapper{output, 0}) > 0);
+        return (setSelected.count(OutPointWrapper{output, 0, false}) > 0);
     }
 
-    void Select(const BaseOutPoint& output, CAmount value = 0)
+    void Select(const BaseOutPoint& output, CAmount value = 0, bool isP2CS = false)
     {
-        setSelected.insert(OutPointWrapper{output, value});
+        setSelected.insert(OutPointWrapper{output, value, isP2CS});
     }
 
     void UnSelect(const BaseOutPoint& output)
     {
-        setSelected.erase(OutPointWrapper{output, 0});
+        setSelected.erase(OutPointWrapper{output, 0, false});
     }
 
     void UnSelectAll()

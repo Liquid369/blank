@@ -459,7 +459,8 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
         else {
             CAmount value = 0;
             ParseFixedPoint(item->text(COLUMN_AMOUNT).toStdString(), 8, &value);
-            coinControl->Select(outpt, value);
+            bool isP2CS = item->data(COLUMN_CHECKBOX, Qt::UserRole) == QString("Delegated");
+            coinControl->Select(outpt, value, isP2CS);
         }
 
         // selection changed -> update labels
@@ -493,13 +494,13 @@ void CoinControlDialog::updateLabels()
             "Select PIV Outputs to Spend" :
             "Select Shielded PIV to Spend");
 
-    // nPayAmount
+    // nPayAmount (!todo fix dust)
     CAmount nPayAmount = 0;
     bool fDust = false;
-    for (const CAmount& amount : payAmounts) {
-        nPayAmount += amount;
-        if (amount > 0) {
-            CTxOut txout(amount, (CScript)std::vector<unsigned char>(24, 0));
+    for (const auto& amount : payAmounts) {
+        nPayAmount += amount.first;
+        if (amount.first > 0) {
+            CTxOut txout(amount.first, (CScript)std::vector<unsigned char>(24, 0));
             if (IsDust(txout, ::minRelayTxFee))
                 fDust = true;
         }
@@ -514,40 +515,16 @@ void CoinControlDialog::updateLabels()
     unsigned int nQuantity = 0;
 
     std::vector<OutPointWrapper> vCoinControl;
-    std::vector<COutput> vOutputs;
     coinControl->ListSelected(vCoinControl);
-    model->getOutputs(vCoinControl, vOutputs);
 
-    if (fSelectTransparent) {
-        for (const COutput& out : vOutputs) {
-            // unselect already spent, very unlikely scenario, this could happen
-            // when selected are spent elsewhere, like rpc or another computer
-            uint256 txhash = out.tx->GetHash();
-            COutPoint outpt(txhash, out.i);
-            if (model->isSpent(outpt)) {
-                coinControl->UnSelect(outpt);
-                continue;
-            }
-
-            // Quantity
-            nQuantity++;
-            // Amount
-            nAmount += out.tx->vout[out.i].nValue;
-            // Bytes
-            nBytesInputs += CTXIN_SPEND_DUST_SIZE;
-            // Additional byte for P2CS
-            if (out.tx->vout[out.i].scriptPubKey.IsPayToColdStaking())
-                nBytesInputs++;
-        }
-    } else {
-        for (const OutPointWrapper& out : vCoinControl) {
-            // Quantity
-            nQuantity++;
-            // Amount
-            nAmount += out.value;
-            // Bytes
-            nBytesInputs += SPENDDESCRIPTION_SIZE;
-        }
+    for (const OutPointWrapper& out : vCoinControl) {
+        // Quantity
+        nQuantity++;
+        // Amount
+        nAmount += out.value;
+        // Bytes
+        nBytesInputs += (fSelectTransparent ? (CTXIN_SPEND_DUST_SIZE + (out.isP2CS ? 1 : 0))
+                                            : SPENDDESCRIPTION_SIZE);
     }
 
     // update SelectAll button state
@@ -558,22 +535,32 @@ void CoinControlDialog::updateLabels()
     // calculation
     const int P2CS_OUT_SIZE = 61;
     if (nQuantity > 0) {
-        // Bytes: nBytesInputs + (num_of_outputs * bytes_per_output)
+        bool isShieldedTx = !fSelectTransparent;
+        // Bytes: nBytesInputs + (sum of nBytesOutputs)
         // always assume +1 (p2pkh) output for change here
-        if (fSelectTransparent) {
-            nBytes = nBytesInputs + std::max(1, payAmounts.size()) * (
-                    forDelegation ? P2CS_OUT_SIZE : CTXOUT_REGULAR_SIZE);
-            nBytes += CTXOUT_REGULAR_SIZE;
-        } else {
-            nBytes = nBytesInputs + std::max(1, payAmounts.size()) * SPENDDESCRIPTION_SIZE;
-            nBytes += SPENDDESCRIPTION_SIZE;
+        nBytes = nBytesInputs + (fSelectTransparent ? CTXOUT_REGULAR_SIZE : OUTPUTDESCRIPTION_SIZE);
+        for (const auto& a : payAmounts) {
+            bool shieldedOut = a.second;
+            isShieldedTx |= shieldedOut;
+            nBytes += (shieldedOut ? OUTPUTDESCRIPTION_SIZE
+                                   : (forDelegation ? P2CS_OUT_SIZE : CTXOUT_REGULAR_SIZE));
         }
 
-        // nVersion, nLockTime and vin/vout len sizes
+        // Shielded txes must include binding sig and valueBalance
+        if (isShieldedTx) {
+            nBytes += (BINDINGSIG_SIZE + 8);
+            // (plus at least 2 bytes for shielded in/outs len sizes)
+            nBytes += 2;
+        }
+
+        // !TODO: ExtraPayload size for special txes. For now 1 byte for nullopt.
+        nBytes += 1;
+
+        // nVersion, nType, nLockTime and vin/vout len sizes
         nBytes += 10;
 
         // Fee (default K fixed for shielded fee for now)
-        nPayFee = GetMinRelayFee(nBytes, false) * (fSelectTransparent ? 1 : DEFAULT_SHIELDEDTXFEE_K);
+        nPayFee = GetMinRelayFee(nBytes, false) * (isShieldedTx ? DEFAULT_SHIELDEDTXFEE_K : 1);
 
         if (nPayAmount > 0) {
             nChange = nAmount - nPayFee - nPayAmount;
@@ -836,9 +823,9 @@ void CoinControlDialog::clearPayAmounts()
     payAmounts.clear();
 }
 
-void CoinControlDialog::addPayAmount(const CAmount& amount)
+void CoinControlDialog::addPayAmount(const CAmount& amount, bool isShieldedRecipient)
 {
-    payAmounts.push_back(amount);
+    payAmounts.emplace_back(amount, isShieldedRecipient);
 }
 
 void CoinControlDialog::updatePushButtonSelectAll(bool checked)
