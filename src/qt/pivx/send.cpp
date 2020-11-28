@@ -377,6 +377,13 @@ void SendWidget::onSendClicked()
 
 void SendWidget::ProcessSend(const QList<SendCoinsRecipient>& recipients, bool hasShieldedOutput)
 {
+    // First check SPORK_20 (before unlock)
+    bool isShieldedTx = hasShieldedOutput || !isTransparent;
+    if (isShieldedTx && walletModel->isSaplingInMaintenance()) {
+        inform(tr("Sapling Protocol temporarily in maintenance. Shielded transactions disabled (SPORK 20)"));
+        return;
+    }
+
     auto ptrUnlockedContext = MakeUnique<WalletModel::UnlockContext>(walletModel->requestUnlock());
     if (!ptrUnlockedContext->isValid()) {
         // Unlock wallet was cancelled
@@ -390,9 +397,9 @@ void SendWidget::ProcessSend(const QList<SendCoinsRecipient>& recipients, bool h
         return;
     }
     ptrModelTx = new WalletModelTransaction(recipients);
-    ptrModelTx->useV2 = hasShieldedOutput || !isTransparent;
+    ptrModelTx->useV2 = isShieldedTx;
 
-    // First prepare tx
+    // Prepare tx
     window->showHide(true);
     LoadingDialog *dialog = new LoadingDialog(window, tr("Preparing transaction"));
     dialog->execute(this, REQUEST_PREPARE_TX, std::move(ptrUnlockedContext));

@@ -71,6 +71,11 @@ bool WalletModel::isColdStakingNetworkelyEnabled() const
     return !sporkManager.IsSporkActive(SPORK_19_COLDSTAKING_MAINTENANCE);
 }
 
+bool WalletModel::isSaplingInMaintenance() const
+{
+    return sporkManager.IsSporkActive(SPORK_20_SAPLING_MAINTENANCE);
+}
+
 bool WalletModel::isStakingStatusActive() const
 {
     return wallet && wallet->pStakerStatus && wallet->pStakerStatus->IsActive();
@@ -457,15 +462,15 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
     bool fColdStakingActive = isColdStakingNetworkelyEnabled();
     bool fSaplingActive = Params().GetConsensus().NetworkUpgradeActive(cachedNumBlocks, Consensus::UPGRADE_V5_DUMMY);
 
-    // Double check tx before do anything
+    // Double check the tx before doing anything
+    CWalletTx* newTx = transaction.getTransaction();
     CValidationState state;
-    if (!CheckTransaction(*transaction.getTransaction(), true, true, state, true, fColdStakingActive, fSaplingActive)) {
+    if (!CheckTransaction(*newTx, true, true, state, true, fColdStakingActive, fSaplingActive)) {
         return TransactionCheckFailed;
     }
 
     {
         LOCK2(cs_main, wallet->cs_wallet);
-        CWalletTx* newTx = transaction.getTransaction();
         QList<SendCoinsRecipient> recipients = transaction.getRecipients();
 
         // Store PaymentRequests in wtx.vOrderForm in wallet.

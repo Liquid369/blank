@@ -150,6 +150,7 @@ public:
     bool isRegTestNetwork() const;
     /** Whether cold staking is enabled or disabled in the network **/
     bool isColdStakingNetworkelyEnabled() const;
+    bool isSaplingInMaintenance() const;
     CAmount getMinColdStakingAmount() const;
     /* current staking status from the miner thread **/
     bool isStakingStatusActive() const;
