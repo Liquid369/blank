@@ -1347,7 +1347,14 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
     UniValue spends(UniValue::VARR);
     UniValue outputs(UniValue::VARR);
 
-    auto addMemo = [](UniValue& entry, const std::array<unsigned char, ZC_MEMO_SIZE>& memo) {
+    auto addMemo = [](UniValue& entry, const Optional<std::array<unsigned char, ZC_MEMO_SIZE>> optMemo) {
+        // empty memo
+        if (!static_cast<bool>(optMemo)) {
+            const std::array<unsigned char, 1> memo {0xF6};
+            entry.pushKV("memo", HexStr(memo.begin(), memo.end()));
+            return;
+        }
+        const auto& memo = *optMemo;
         auto end = FindFirstNonZero(memo.rbegin(), memo.rend());
         entry.pushKV("memo", HexStr(memo.begin(), end.base()));
         // If the leading byte is 0xF4 or lower, the memo field should be interpreted as a
@@ -1431,10 +1438,7 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
         entry_.pushKV("address", addrStr);
         entry_.pushKV("value", amountStr);
         entry_.pushKV("valueSat", amount);
-
-        if (nd.memo) {
-            addMemo(entry_, *(nd.memo));
-        }
+        addMemo(entry_, nd.memo);
 
         outputs.push_back(entry_);
     }

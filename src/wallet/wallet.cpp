@@ -1051,7 +1051,11 @@ void CWallet::AddExternalNotesDataToTx(CWalletTx& wtx) const
                 // Always true for 'IsFromMe' transactions
                 wtx.mapSaplingNoteData[op].address = recovered->second;
                 wtx.mapSaplingNoteData[op].amount = recovered->first.value();
-                wtx.mapSaplingNoteData[op].memo = recovered->first.memo();
+                const auto& memo = recovered->first.memo();
+                // don't save empty memo (starting with 0xF6)
+                if (memo[0] < 0xF6) {
+                    wtx.mapSaplingNoteData[op].memo = memo;
+                }
             }
         }
     }
