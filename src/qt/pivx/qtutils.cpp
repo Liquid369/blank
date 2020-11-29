@@ -157,14 +157,27 @@ void setSortTxTypeFilter(QComboBox* filter, SortEdit* lineEditType)
 {
     initComboBox(filter, lineEditType);
     filter->addItem(QObject::tr("All"), TransactionFilterProxy::ALL_TYPES);
-    filter->addItem(QObject::tr("Received"), TransactionFilterProxy::TYPE(TransactionRecord::RecvWithAddress) | TransactionFilterProxy::TYPE(TransactionRecord::RecvFromOther));
-    filter->addItem(QObject::tr("Sent"), TransactionFilterProxy::TYPE(TransactionRecord::SendToAddress) | TransactionFilterProxy::TYPE(TransactionRecord::SendToOther));
-    filter->addItem(QObject::tr("Shielded"), TransactionFilterProxy::TYPE(TransactionRecord::RecvWithShieldedAddress | TransactionRecord::SendToShielded));
+    filter->addItem(QObject::tr("Received"),
+                    TransactionFilterProxy::TYPE(TransactionRecord::RecvWithAddress) |
+                    TransactionFilterProxy::TYPE(TransactionRecord::RecvFromOther) |
+                    TransactionFilterProxy::TYPE(TransactionRecord::RecvWithShieldedAddress));
+    filter->addItem(QObject::tr("Sent"),
+                    TransactionFilterProxy::TYPE(TransactionRecord::SendToAddress) |
+                    TransactionFilterProxy::TYPE(TransactionRecord::SendToOther) |
+                    TransactionFilterProxy::TYPE(TransactionRecord::SendToShielded));
+    filter->addItem(QObject::tr("Shield"),
+                    TransactionFilterProxy::TYPE(TransactionRecord::RecvWithShieldedAddress) |
+                    TransactionFilterProxy::TYPE(TransactionRecord::SendToShielded) |
+                    TransactionFilterProxy::TYPE(TransactionRecord::SendToSelfShieldToShieldChangeAddress) |
+                    TransactionFilterProxy::TYPE(TransactionRecord::SendToSelfShieldToTransparent) |
+                    TransactionFilterProxy::TYPE(TransactionRecord::SendToSelfShieldedAddress));
     filter->addItem(QObject::tr("Mined"), TransactionFilterProxy::TYPE(TransactionRecord::Generated));
     filter->addItem(QObject::tr("Minted"), TransactionFilterProxy::TYPE(TransactionRecord::StakeMint));
     filter->addItem(QObject::tr("MN reward"), TransactionFilterProxy::TYPE(TransactionRecord::MNReward));
-    filter->addItem(QObject::tr("To yourself"), TransactionFilterProxy::TYPE(TransactionRecord::SendToSelf |
-                TransactionRecord::SendToSelfShieldedAddress | TransactionRecord::SendToSelfShieldToShieldChangeAddress | TransactionRecord::SendToSelfShieldToTransparent));
+    filter->addItem(QObject::tr("To yourself"), TransactionFilterProxy::TYPE(TransactionRecord::SendToSelf) |
+                                            TransactionFilterProxy::TYPE(TransactionRecord::SendToSelfShieldedAddress) |
+                                            TransactionFilterProxy::TYPE(TransactionRecord::SendToSelfShieldToShieldChangeAddress) |
+                                            TransactionFilterProxy::TYPE(TransactionRecord::SendToSelfShieldToTransparent));
     filter->addItem(QObject::tr("Cold stakes"), TransactionFilterProxy::TYPE(TransactionRecord::StakeDelegated));
     filter->addItem(QObject::tr("Hot stakes"), TransactionFilterProxy::TYPE(TransactionRecord::StakeHot));
     filter->addItem(QObject::tr("Delegated"), TransactionFilterProxy::TYPE(TransactionRecord::P2CSDelegationSent) | TransactionFilterProxy::TYPE(TransactionRecord::P2CSDelegationSentOwner));
