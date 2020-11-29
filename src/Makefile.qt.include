@@ -37,10 +37,10 @@ QT_FORMS_UI = \
   qt/pivx/forms/masternodeswidget.ui \
   qt/pivx/forms/myaddressrow.ui \
   qt/pivx/forms/csrow.ui \
+  qt/pivx/forms/sendmemodialog.ui \
   qt/pivx/forms/sendchangeaddressdialog.ui \
   qt/pivx/forms/sendconfirmdialog.ui \
   qt/pivx/forms/sendcustomfeedialog.ui \
-  qt/pivx/forms/sendchangeaddressdialog.ui \
   qt/pivx/forms/sendmultirow.ui \
   qt/pivx/forms/send.ui \
   qt/pivx/forms/addnewaddressdialog.ui \
@@ -128,7 +128,7 @@ QT_MOC_CPP = \
   qt/pivx/moc_sendchangeaddressdialog.cpp \
   qt/pivx/moc_sendconfirmdialog.cpp \
   qt/pivx/moc_sendcustomfeedialog.cpp \
-  qt/pivx/moc_sendchangeaddressdialog.cpp \
+  qt/pivx/moc_sendmemodialog.cpp \
   qt/pivx/moc_sendmultirow.cpp \
   qt/pivx/moc_send.cpp \
   qt/pivx/moc_addnewaddressdialog.cpp \
@@ -250,7 +250,7 @@ BITCOIN_QT_H = \
   qt/pivx/sendchangeaddressdialog.h \
   qt/pivx/sendconfirmdialog.h \
   qt/pivx/sendcustomfeedialog.h \
-  qt/pivx/sendchangeaddressdialog.h \
+  qt/pivx/sendmemodialog.h \
   qt/pivx/sendmultirow.h \
   qt/pivx/send.h \
   qt/pivx/addnewaddressdialog.h \
@@ -571,7 +571,7 @@ BITCOIN_QT_WALLET_CPP = \
   qt/pivx/sendchangeaddressdialog.cpp \
   qt/pivx/sendconfirmdialog.cpp \
   qt/pivx/sendcustomfeedialog.cpp \
-  qt/pivx/sendchangeaddressdialog.cpp \
+  qt/pivx/sendmemodialog.cpp \
   qt/pivx/sendmultirow.cpp \
   qt/pivx/send.cpp \
   qt/pivx/addnewaddressdialog.cpp \
