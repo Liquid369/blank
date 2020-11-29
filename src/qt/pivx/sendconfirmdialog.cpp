@@ -105,7 +105,9 @@ void TxDetailDialog::setData(WalletModel *_model, const QModelIndex &index)
         QString hash = QString::fromStdString(_tx->GetHash().GetHex());
         ui->textId->setText(hash.left(20) + "..." + hash.right(20));
         ui->textId->setTextInteractionFlags(Qt::TextSelectableByMouse);
-        if (_tx->vout.size() == 1) {
+        // future: subdivide shielded and transparent by type and
+        // do not show send xxx recipients for txes with a single output + change (show the address directly).
+        if (_tx->vout.size() == 1 || (_tx->sapData && _tx->sapData->vShieldedOutput.size() == 1)) {
             ui->textSendLabel->setText((address.size() < 40) ? address : address.left(20) + "..." + address.right(20));
         } else {
             ui->textSendLabel->setText(QString::number(_tx->vout.size() +

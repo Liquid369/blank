@@ -232,7 +232,7 @@ bool TransactionRecord::decomposeCreditTransaction(const CWallet* wallet, const 
 
 bool TransactionRecord::decomposeSendToSelfTransaction(const CWalletTx& wtx, const CAmount& nCredit,
                                                        const CAmount& nDebit, bool involvesWatchAddress,
-                                                       QList<TransactionRecord>& parts)
+                                                       QList<TransactionRecord>& parts, const CWallet* wallet)
 {
     // Payment to self tx is presented as a single record.
     TransactionRecord sub(wtx.GetHash(), wtx.GetTxTime(), wtx.GetTotalSize());
@@ -251,8 +251,14 @@ bool TransactionRecord::decomposeSendToSelfTransaction(const CWalletTx& wtx, con
         // transparent -> shield transaction
         if (wtx.sapData->vShieldedSpend.empty()) {
             sub.type = TransactionRecord::SendToSelfShieldedAddress;
-            sub.shieldedCredit = wtx.GetShieldedAvailableCredit();
+            sub.shieldedCredit = wtx.GetCredit(ISMINE_SPENDABLE_SHIELDED);
             nChange += wtx.GetShieldedChange();
+
+            SaplingOutPoint out(sub.hash, 0);
+            auto opAddr = wallet->GetSaplingScriptPubKeyMan()->GetOutPointAddress(wtx, out);
+            if (opAddr) {
+                sub.address = KeyIO::EncodePaymentAddress(*opAddr);
+            }
         } else {
             // we know that the inputs are shielded now, let's see if
             // if we have transparent outputs. if we have then we are converting back coins,
@@ -474,7 +480,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet* 
     // Check if this tx is purely a payment to self.
     if (fAllFromMe && fAllToMe && allShieldedOutToMe && allShieldedSpendsFromMe) {
         // Single record for sendToSelf.
-        if (decomposeSendToSelfTransaction(wtx, nCredit, nDebit, involvesWatchAddress, parts)) {
+        if (decomposeSendToSelfTransaction(wtx, nCredit, nDebit, involvesWatchAddress, parts, wallet)) {
             return parts;
         }
     }

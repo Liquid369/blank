@@ -139,7 +139,7 @@ public:
 
     static bool decomposeSendToSelfTransaction(const CWalletTx& wtx, const CAmount& nCredit,
                                     const CAmount& nDebit, bool involvesWatchAddress,
-                                    QList<TransactionRecord>& parts);
+                                    QList<TransactionRecord>& parts, const CWallet* wallet);
 
     static bool decomposeDebitTransaction(const CWallet* wallet, const CWalletTx& wtx,
                                                       const CAmount& nDebit, bool involvesWatchAddress,
