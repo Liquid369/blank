@@ -78,6 +78,17 @@ TxDetailDialog::TxDetailDialog(QWidget *parent, bool _isConfirmDialog, const QSt
     connect(ui->pushOutputs, &QPushButton::clicked, this, &TxDetailDialog::onOutputsClicked);
 }
 
+void TxDetailDialog::setInputsType(const CWalletTx* _tx)
+{
+    if (_tx->sapData && _tx->sapData->vShieldedSpend.empty()) {
+        ui->labelTitlePrevTx->setText(tr("Previous Transaction"));
+        ui->labelOutputIndex->setText(tr("Output Index"));
+    } else {
+        ui->labelTitlePrevTx->setText(tr("Note From Address"));
+        ui->labelOutputIndex->setText(tr("Index"));
+    }
+}
+
 void TxDetailDialog::setData(WalletModel *_model, const QModelIndex &index)
 {
     this->model = _model;
@@ -102,6 +113,7 @@ void TxDetailDialog::setData(WalletModel *_model, const QModelIndex &index)
         }
         ui->textSend->setVisible(false);
 
+        setInputsType(_tx);
         int inputsSize = (_tx->sapData && !_tx->sapData->vShieldedSpend.empty()) ? _tx->sapData->vShieldedSpend.size() : _tx->vin.size();
         ui->textInputs->setText(QString::number(inputsSize));
         ui->textConfirmations->setText(QString::number(rec->status.depth));
@@ -140,13 +152,7 @@ void TxDetailDialog::setData(WalletModel *_model, WalletModelTransaction* _tx)
 
     // inputs label
     CWalletTx* walletTx = tx->getTransaction();
-    if (walletTx->sapData && walletTx->sapData->vShieldedSpend.empty()) {
-        ui->labelTitlePrevTx->setText(tr("Previous Transaction"));
-        ui->labelOutputIndex->setText(tr("Output Index"));
-    } else {
-        ui->labelTitlePrevTx->setText(tr("Note From Address"));
-        ui->labelOutputIndex->setText(tr("Index"));
-    }
+    setInputsType(walletTx);
 
     ui->textAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, totalAmount, false, BitcoinUnits::separatorAlways) + " (Fee included)");
     int nRecipients = tx->getRecipients().size();
@@ -218,14 +224,15 @@ void TxDetailDialog::onInputsClicked()
                         i++;
                     }
                 } else {
+                    ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->sapData->vShieldedSpend.size()));
                     bool fInfoAvailable = false;
                     for (int i = 0; i < (int) walletTx->sapData->vShieldedSpend.size(); ++i) {
                         Optional<QString> opAddr = model->getShieldedAddressFromSpendDesc(walletTx, i);
                         if (opAddr) {
                             QString addr = *opAddr;
-                            loadInputs(addr.left(16) + "..." + addr.right(16),
+                            loadInputs(addr.left(18) + "..." + addr.right(18),
                                        QString::number(i),
-                                       ui->gridLayoutInput, i);
+                                       ui->gridLayoutInput, i + 1);
                             fInfoAvailable = true;
                         }
                     }
