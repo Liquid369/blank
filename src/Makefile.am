@@ -287,6 +287,7 @@ BITCOIN_CORE_H = \
   wallet/hdchain.h \
   wallet/rpcwallet.h \
   wallet/scriptpubkeyman.h \
+  destination_io.h \
   wallet/wallet.h \
   wallet/walletdb.h \
   zpivchain.h \
@@ -401,6 +402,7 @@ libbitcoin_wallet_a_SOURCES = \
   wallet/rpczpiv.cpp \
   wallet/hdchain.cpp \
   wallet/scriptpubkeyman.cpp \
+  destination_io.cpp \
   wallet/wallet.cpp \
   wallet/wallet_zerocoin.cpp \
   wallet/walletdb.cpp \

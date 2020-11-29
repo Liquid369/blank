@@ -355,7 +355,7 @@ void ColdStakingWidget::onContactsClicked()
         return;
     }
 
-    menuContacts->setWalletModel(walletModel, isContactOwnerSelected ? AddressTableModel::Receive : AddressTableModel::ColdStakingSend);
+    menuContacts->setWalletModel(walletModel, {(isContactOwnerSelected ? AddressTableModel::Receive : AddressTableModel::ColdStakingSend)});
     menuContacts->resizeList(width, height);
     menuContacts->setStyleSheet(styleSheet());
     menuContacts->adjustSize();
@@ -477,7 +477,7 @@ void ColdStakingWidget::onSendClicked()
 
     // Prepare transaction for getting txFee earlier (exlude delegated coins)
     WalletModelTransaction currentTransaction(recipients);
-    WalletModel::SendCoinsReturn prepareStatus = walletModel->prepareTransaction(currentTransaction, coinControlDialog->coinControl, false);
+    WalletModel::SendCoinsReturn prepareStatus = walletModel->prepareTransaction(&currentTransaction, coinControlDialog->coinControl, false);
 
     // process prepareStatus and on error generate message shown to user
     GuiTransactionsUtils::ProcessSendCoinsReturnAndInform(
@@ -496,7 +496,7 @@ void ColdStakingWidget::onSendClicked()
     showHideOp(true);
     TxDetailDialog* dialog = new TxDetailDialog(window);
     dialog->setDisplayUnit(nDisplayUnit);
-    dialog->setData(walletModel, currentTransaction);
+    dialog->setData(walletModel, &currentTransaction);
     dialog->adjustSize();
     openDialogWithOpaqueBackgroundY(dialog, window, 3, 5);
 
@@ -547,7 +547,7 @@ void ColdStakingWidget::setCoinControlPayAmounts()
 {
     if (!coinControlDialog) return;
     coinControlDialog->clearPayAmounts();
-    coinControlDialog->addPayAmount(sendMultiRow->getAmountValue());
+    coinControlDialog->addPayAmount(sendMultiRow->getAmountValue(), false);
 }
 
 void ColdStakingWidget::onColdStakeClicked()

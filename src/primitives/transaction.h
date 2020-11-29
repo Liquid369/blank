@@ -31,9 +31,11 @@ class BaseOutPoint
 public:
     uint256 hash;
     uint32_t n;
+    bool isTransparent{true};
 
     BaseOutPoint() { SetNull(); }
-    BaseOutPoint(uint256 hashIn, uint32_t nIn) { hash = hashIn; n = nIn; }
+    BaseOutPoint(const uint256& hashIn, const uint32_t nIn, bool isTransparentIn = true) :
+        hash(hashIn), n(nIn), isTransparent(isTransparentIn) { }
 
     ADD_SERIALIZE_METHODS;
 
@@ -75,7 +77,7 @@ class COutPoint : public BaseOutPoint
 {
 public:
     COutPoint() : BaseOutPoint() {};
-    COutPoint(uint256 hashIn, uint32_t nIn) : BaseOutPoint(hashIn, nIn) {};
+    COutPoint(const uint256& hashIn, const uint32_t nIn) : BaseOutPoint(hashIn, nIn, true) {};
     std::string ToString() const;
 };
 
@@ -85,7 +87,7 @@ class SaplingOutPoint : public BaseOutPoint
 {
 public:
     SaplingOutPoint() : BaseOutPoint() {};
-    SaplingOutPoint(uint256 hashIn, uint32_t nIn) : BaseOutPoint(hashIn, nIn) {};
+    SaplingOutPoint(const uint256& hashIn, const uint32_t nIn) : BaseOutPoint(hashIn, nIn, false) {};
     std::string ToString() const;
 };
 

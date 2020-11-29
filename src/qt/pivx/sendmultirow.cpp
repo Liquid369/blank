@@ -85,7 +85,8 @@ bool SendMultiRow::addressChanged(const QString& str, bool fOnlyValidate)
 {
     if (!str.isEmpty()) {
         QString trimmedStr = str.trimmed();
-        const bool valid = walletModel->validateAddress(trimmedStr, this->onlyStakingAddressAccepted);
+        bool isShielded = false;
+        const bool valid = walletModel->validateAddress(trimmedStr, this->onlyStakingAddressAccepted, isShielded);
         if (!valid) {
             // check URI
             SendCoinsRecipient rcp;
@@ -193,7 +194,9 @@ SendCoinsRecipient SendMultiRow::getValue()
     // Normal payment
     recipient.address = getAddress();
     recipient.label = ui->lineEditDescription->text();
-    recipient.amount = getAmountValue();;
+    recipient.amount = getAmountValue();
+    auto dest = Standard::DecodeDestination(recipient.address.toStdString());
+    recipient.isShieldedAddr = boost::get<libzcash::SaplingPaymentAddress>(&dest);
     return recipient;
 }
 

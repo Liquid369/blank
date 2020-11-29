@@ -203,9 +203,9 @@ CoinControlDialog::~CoinControlDialog()
     delete coinControl;
 }
 
-void CoinControlDialog::setModel(WalletModel* model)
+void CoinControlDialog::setModel(WalletModel* _model)
 {
-    this->model = model;
+    this->model = _model;
 
     if (model && model->getOptionsModel() && model->getAddressTableModel()) {
         updateView();
@@ -234,6 +234,7 @@ void CoinControlDialog::buttonSelectAllClicked()
 // Toggle lock state
 void CoinControlDialog::buttonToggleLockClicked()
 {
+    if (!fSelectTransparent) return; // todo: implement locked notes
     QTreeWidgetItem* item;
     // Works in list-mode only
     if (ui->radioListMode->isChecked()) {
@@ -276,8 +277,7 @@ void CoinControlDialog::showMenu(const QPoint& point)
         contextMenuItem = item;
 
         // disable some items (like Copy Transaction ID, lock, unlock) for tree roots in context menu
-        if (item->text(COLUMN_TXHASH).length() == 64) // transaction hash is 64 characters (this means its a child node, so its not a parent node in tree mode)
-        {
+        if (item->text(COLUMN_TXHASH).length() == 64) { // transaction hash is 64 characters (this means its a child node, so its not a parent node in tree mode)
             copyTransactionHashAction->setEnabled(true);
             if (model->isLockedCoin(uint256(item->text(COLUMN_TXHASH).toStdString()), item->text(COLUMN_VOUT_INDEX).toUInt())) {
                 lockAction->setEnabled(false);
@@ -286,8 +286,7 @@ void CoinControlDialog::showMenu(const QPoint& point)
                 lockAction->setEnabled(true);
                 unlockAction->setEnabled(false);
             }
-        } else // this means click on parent node in tree mode -> disable all
-        {
+        } else { // this means click on parent node in tree mode -> disable all
             copyTransactionHashAction->setEnabled(false);
             lockAction->setEnabled(false);
             unlockAction->setEnabled(false);
@@ -331,6 +330,7 @@ void CoinControlDialog::copyTransactionHash()
 // context menu action: lock coin
 void CoinControlDialog::lockCoin()
 {
+    if (!fSelectTransparent) return; // todo: implement locked notes
     if (contextMenuItem->checkState(COLUMN_CHECKBOX) == Qt::Checked)
         contextMenuItem->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
 
@@ -344,6 +344,7 @@ void CoinControlDialog::lockCoin()
 // context menu action: unlock coin
 void CoinControlDialog::unlockCoin()
 {
+    if (!fSelectTransparent) return; // todo: implement locked notes
     COutPoint outpt(uint256(contextMenuItem->text(COLUMN_TXHASH).toStdString()), contextMenuItem->text(COLUMN_VOUT_INDEX).toUInt());
     model->unlockCoin(outpt);
     contextMenuItem->setDisabled(false);
@@ -416,8 +417,7 @@ void CoinControlDialog::sortView(int column, Qt::SortOrder order)
 // treeview: clicked on header
 void CoinControlDialog::headerSectionClicked(int logicalIndex)
 {
-    if (logicalIndex == COLUMN_CHECKBOX) // click on most left column -> do nothing
-    {
+    if (logicalIndex == COLUMN_CHECKBOX) { // click on most left column -> do nothing
         ui->treeWidget->header()->setSortIndicator(sortColumn, sortOrder);
     } else {
         if (sortColumn == logicalIndex)
@@ -448,19 +448,23 @@ void CoinControlDialog::radioListMode(bool checked)
 // checkbox clicked by user
 void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
 {
-    if (column == COLUMN_CHECKBOX && item->text(COLUMN_TXHASH).length() == 64) // transaction hash is 64 characters (this means its a child node, so its not a parent node in tree mode)
-    {
-        COutPoint outpt(uint256(item->text(COLUMN_TXHASH).toStdString()), item->text(COLUMN_VOUT_INDEX).toUInt());
-
+    if (column == COLUMN_CHECKBOX && item->text(COLUMN_TXHASH).length() == 64) { // transaction hash is 64 characters (this means its a child node, so its not a parent node in tree mode)
+        BaseOutPoint outpt(uint256(item->text(COLUMN_TXHASH).toStdString()),
+                           item->text(COLUMN_VOUT_INDEX).toUInt(),
+                           fSelectTransparent);
         if (item->checkState(COLUMN_CHECKBOX) == Qt::Unchecked)
             coinControl->UnSelect(outpt);
         else if (item->isDisabled()) // locked (this happens if "check all" through parent node)
             item->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
-        else
-            coinControl->Select(outpt);
+        else {
+            CAmount value = 0;
+            ParseFixedPoint(item->text(COLUMN_AMOUNT).toStdString(), 8, &value);
+            bool isP2CS = item->data(COLUMN_CHECKBOX, Qt::UserRole) == QString("Delegated");
+            coinControl->Select(outpt, value, isP2CS);
+        }
 
         // selection changed -> update labels
-        if (ui->treeWidget->isEnabled()){ // do not update on every click for (un)select all
+        if (ui->treeWidget->isEnabled()) { // do not update on every click for (un)select all
             updateLabels();
         }
     }
@@ -469,12 +473,16 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
 // shows count of locked unspent outputs
 void CoinControlDialog::updateLabelLocked()
 {
-    std::set<COutPoint> vOutpts = model->listLockedCoins();
-    if (!vOutpts.empty()) {
-        ui->labelLocked->setText(tr("(%1 locked)").arg(vOutpts.size()));
-        ui->labelLocked->setVisible(true);
-    } else
-        ui->labelLocked->setVisible(false);
+    if (fSelectTransparent) {
+        std::set<COutPoint> vOutpts = model->listLockedCoins();
+        if (!vOutpts.empty()) {
+            ui->labelLocked->setText(tr("(%1 locked)").arg(vOutpts.size()));
+            ui->labelLocked->setVisible(true);
+        } else
+            ui->labelLocked->setVisible(false);
+    } else {
+        // TODO: implement locked notes functionality inside the wallet..
+    }
 }
 
 void CoinControlDialog::updateLabels()
@@ -482,13 +490,17 @@ void CoinControlDialog::updateLabels()
     if (!model)
         return;
 
-    // nPayAmount
+    ui->labelTitle->setText(fSelectTransparent ?
+            "Select PIV Outputs to Spend" :
+            "Select Shielded PIV to Spend");
+
+    // nPayAmount (!todo fix dust)
     CAmount nPayAmount = 0;
     bool fDust = false;
-    for (const CAmount& amount : payAmounts) {
-        nPayAmount += amount;
-        if (amount > 0) {
-            CTxOut txout(amount, (CScript)std::vector<unsigned char>(24, 0));
+    for (const auto& amount : payAmounts) {
+        nPayAmount += amount.first;
+        if (amount.first > 0) {
+            CTxOut txout(amount.first, (CScript)std::vector<unsigned char>(24, 0));
             if (IsDust(txout, ::minRelayTxFee))
                 fDust = true;
         }
@@ -502,30 +514,17 @@ void CoinControlDialog::updateLabels()
     unsigned int nBytesInputs = 0;
     unsigned int nQuantity = 0;
 
-    std::vector<COutPoint> vCoinControl;
-    std::vector<COutput> vOutputs;
+    std::vector<OutPointWrapper> vCoinControl;
     coinControl->ListSelected(vCoinControl);
-    model->getOutputs(vCoinControl, vOutputs);
 
-    for (const COutput& out : vOutputs) {
-        // unselect already spent, very unlikely scenario, this could happen
-        // when selected are spent elsewhere, like rpc or another computer
-        uint256 txhash = out.tx->GetHash();
-        COutPoint outpt(txhash, out.i);
-        if (model->isSpent(outpt)) {
-            coinControl->UnSelect(outpt);
-            continue;
-        }
-
+    for (const OutPointWrapper& out : vCoinControl) {
         // Quantity
         nQuantity++;
         // Amount
-        nAmount += out.tx->vout[out.i].nValue;
+        nAmount += out.value;
         // Bytes
-        nBytesInputs += 148;
-        // Additional byte for P2CS
-        if (out.tx->vout[out.i].scriptPubKey.IsPayToColdStaking())
-            nBytesInputs++;
+        nBytesInputs += (fSelectTransparent ? (CTXIN_SPEND_DUST_SIZE + (out.isP2CS ? 1 : 0))
+                                            : SPENDDESCRIPTION_SIZE);
     }
 
     // update SelectAll button state
@@ -534,33 +533,48 @@ void CoinControlDialog::updateLabels()
     updatePushButtonSelectAll(coinControl->QuantitySelected() * 2 > nSelectableInputs);
 
     // calculation
-    const int P2PKH_OUT_SIZE = 34;
     const int P2CS_OUT_SIZE = 61;
     if (nQuantity > 0) {
-        // Bytes: nBytesInputs + (num_of_outputs * bytes_per_output)
-        nBytes = nBytesInputs + std::max(1, payAmounts.size()) * (forDelegation ? P2CS_OUT_SIZE : P2PKH_OUT_SIZE);
+        bool isShieldedTx = !fSelectTransparent;
+        // Bytes: nBytesInputs + (sum of nBytesOutputs)
         // always assume +1 (p2pkh) output for change here
-        nBytes += P2PKH_OUT_SIZE;
-        // nVersion, nLockTime and vin/vout len sizes
+        nBytes = nBytesInputs + (fSelectTransparent ? CTXOUT_REGULAR_SIZE : OUTPUTDESCRIPTION_SIZE);
+        for (const auto& a : payAmounts) {
+            bool shieldedOut = a.second;
+            isShieldedTx |= shieldedOut;
+            nBytes += (shieldedOut ? OUTPUTDESCRIPTION_SIZE
+                                   : (forDelegation ? P2CS_OUT_SIZE : CTXOUT_REGULAR_SIZE));
+        }
+
+        // Shielded txes must include binding sig and valueBalance
+        if (isShieldedTx) {
+            nBytes += (BINDINGSIG_SIZE + 8);
+            // (plus at least 2 bytes for shielded in/outs len sizes)
+            nBytes += 2;
+        }
+
+        // !TODO: ExtraPayload size for special txes. For now 1 byte for nullopt.
+        nBytes += 1;
+
+        // nVersion, nType, nLockTime and vin/vout len sizes
         nBytes += 10;
 
-        // Fee
-        nPayFee = CWallet::GetMinimumFee(nBytes, nTxConfirmTarget, mempool);
+        // Fee (default K fixed for shielded fee for now)
+        nPayFee = GetMinRelayFee(nBytes, false) * (isShieldedTx ? DEFAULT_SHIELDEDTXFEE_K : 1);
 
         if (nPayAmount > 0) {
             nChange = nAmount - nPayFee - nPayAmount;
 
             // Never create dust outputs; if we would, just add the dust to the fee.
-            if (nChange > 0 && nChange < CENT) {
-                CTxOut txout(nChange, (CScript)std::vector<unsigned char>(24, 0));
-                if (IsDust(txout, ::minRelayTxFee)) {
-                    nPayFee += nChange;
-                    nChange = 0;
-                }
+            CAmount dustThreshold = fSelectTransparent ? GetDustThreshold(minRelayTxFee) :
+                                                         GetShieldedDustThreshold(minRelayTxFee);
+            if (nChange > 0 && nChange < dustThreshold) {
+                nPayFee += nChange;
+                nChange = 0;
             }
 
             if (nChange == 0)
-                nBytes -= P2PKH_OUT_SIZE;
+                nBytes -= (fSelectTransparent ? CTXOUT_REGULAR_SIZE : SPENDDESCRIPTION_SIZE);
         }
 
         // after fee
@@ -727,7 +741,7 @@ void CoinControlDialog::updateView()
     int nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
     nSelectableInputs = 0;
     std::map<WalletModel::ListCoinsKey, std::vector<WalletModel::ListCoinsValue>> mapCoins;
-    model->listCoins(mapCoins);
+    model->listCoins(mapCoins, fSelectTransparent);
 
     for (const auto& coins : mapCoins) {
         CCoinControlWidgetItem* itemWalletAddress = new CCoinControlWidgetItem();
@@ -757,7 +771,7 @@ void CoinControlDialog::updateView()
 
         CAmount nSum = 0;
         int nChildren = 0;
-        for (const WalletModel::ListCoinsValue& out: coins.second) {
+        for (const WalletModel::ListCoinsValue& out : coins.second) {
             ++nSelectableInputs;
             nSum += out.nValue;
             nChildren++;
@@ -809,9 +823,9 @@ void CoinControlDialog::clearPayAmounts()
     payAmounts.clear();
 }
 
-void CoinControlDialog::addPayAmount(const CAmount& amount)
+void CoinControlDialog::addPayAmount(const CAmount& amount, bool isShieldedRecipient)
 {
-    payAmounts.push_back(amount);
+    payAmounts.emplace_back(amount, isShieldedRecipient);
 }
 
 void CoinControlDialog::updatePushButtonSelectAll(bool checked)

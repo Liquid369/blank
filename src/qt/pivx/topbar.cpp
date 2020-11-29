@@ -1,6 +1,6 @@
 // Copyright (c) 2019-2020 The PIVX developers
 // Distributed under the MIT software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
 #include "qt/pivx/topbar.h"
 #include "qt/pivx/forms/ui_topbar.h"
@@ -11,6 +11,7 @@
 #include "askpassphrasedialog.h"
 
 #include "bitcoinunits.h"
+#include "qt/pivx/balancebubble.h"
 #include "clientmodel.h"
 #include "qt/guiconstants.h"
 #include "qt/guiutil.h"
@@ -26,6 +27,29 @@
 #include <QPixmap>
 
 #define REQUEST_UPGRADE_WALLET 1
+
+class ButtonHoverWatcher : public QObject
+{
+public:
+    explicit ButtonHoverWatcher(QObject* parent = nullptr) :
+            QObject(parent) {}
+    bool eventFilter(QObject* watched, QEvent* event) override
+    {
+        QPushButton* button = qobject_cast<QPushButton*>(watched);
+        if (!button) return false;
+
+        if (event->type() == QEvent::Enter) {
+            button->setIcon(QIcon("://ic-information-hover"));
+            return true;
+        }
+
+        if (event->type() == QEvent::Leave){
+            button->setIcon(QIcon("://ic-information"));
+            return true;
+        }
+        return false;
+    }
+};
 
 TopBar::TopBar(PIVXGUI* _mainWindow, QWidget *parent) :
     PWidget(_mainWindow, parent),
@@ -44,7 +68,7 @@ TopBar::TopBar(PIVXGUI* _mainWindow, QWidget *parent) :
     ui->containerTop->setProperty("cssClass", "container-top");
 #endif
 
-    std::initializer_list<QWidget*> lblTitles = {ui->labelTitle1, ui->labelTitle3, ui->labelTitle4};
+    std::initializer_list<QWidget*> lblTitles = {ui->labelTitle1, ui->labelTitle3, ui->labelTitle4, ui->labelTrans, ui->labelShield};
     setCssProperty(lblTitles, "text-title-topbar");
     QFont font;
     font.setWeight(QFont::Light);
@@ -52,7 +76,7 @@ TopBar::TopBar(PIVXGUI* _mainWindow, QWidget *parent) :
 
     // Amount information top
     ui->widgetTopAmount->setVisible(false);
-    setCssProperty({ui->labelAmountTopPiv}, "amount-small-topbar");
+    setCssProperty({ui->labelAmountTopPiv, ui->labelAmountTopShieldedPiv}, "amount-small-topbar");
     setCssProperty({ui->labelAmountPiv}, "amount-topbar");
     setCssProperty({ui->labelPendingPiv, ui->labelImmaturePiv}, "amount-small-topbar");
 
@@ -103,6 +127,9 @@ TopBar::TopBar(PIVXGUI* _mainWindow, QWidget *parent) :
 
     setCssProperty(ui->qrContainer, "container-qr");
     setCssProperty(ui->pushButtonQR, "btn-qr");
+    setCssProperty(ui->pushButtonBalanceInfo, "btn-info");
+    ButtonHoverWatcher * watcher = new ButtonHoverWatcher(this);
+    ui->pushButtonBalanceInfo->installEventFilter(watcher);
 
     // QR image
     QPixmap pixmap("://img-qr-test");
@@ -119,6 +146,7 @@ TopBar::TopBar(PIVXGUI* _mainWindow, QWidget *parent) :
 
     connect(ui->pushButtonQR, &QPushButton::clicked, this, &TopBar::onBtnReceiveClicked);
     connect(ui->btnQr, &QPushButton::clicked, this, &TopBar::onBtnReceiveClicked);
+    connect(ui->pushButtonBalanceInfo, &QPushButton::clicked, this, &TopBar::onBtnBalanceInfoClicked);
     connect(ui->pushButtonLock, &ExpandableButton::Mouse_Pressed, this, &TopBar::onBtnLockClicked);
     connect(ui->pushButtonTheme, &ExpandableButton::Mouse_Pressed, this, &TopBar::onThemeClicked);
     connect(ui->pushButtonFAQ, &ExpandableButton::Mouse_Pressed, [this](){window->openFAQ();});
@@ -313,9 +341,29 @@ void TopBar::onBtnReceiveClicked()
     }
 }
 
+void TopBar::onBtnBalanceInfoClicked()
+{
+    if (!walletModel) return;
+    if (balanceBubble) {
+        if (balanceBubble->isVisible()) {
+            balanceBubble->hide();
+            return;
+        }
+    } else balanceBubble = new BalanceBubble(this);
+
+    const auto& balances = walletModel->GetWalletBalances();
+    balanceBubble->updateValues(balances.balance - balances.shielded_balance, balances.shielded_balance, nDisplayUnit);
+    QPoint pos = this->pos();
+    pos.setX(pos.x() + (ui->labelTitle1->width()) + 60);
+    pos.setY(pos.y() + 20);
+    balanceBubble->move(pos);
+    balanceBubble->show();
+}
+
 void TopBar::showTop()
 {
     if (ui->bottom_container->isVisible()) {
+        if (balanceBubble && balanceBubble->isVisible()) balanceBubble->hide();
         ui->bottom_container->setVisible(false);
         ui->widgetTopAmount->setVisible(true);
         this->setFixedHeight(75);
@@ -630,13 +678,16 @@ void TopBar::updateBalances(const interfaces::WalletBalances& newBalance)
 
     // PIV Total
     QString totalPiv = GUIUtil::formatBalance(newBalance.balance, nDisplayUnit);
+    QString totalTransparent = GUIUtil::formatBalance(newBalance.balance - newBalance.shielded_balance);
+    QString totalShielded = GUIUtil::formatBalance(newBalance.shielded_balance);
 
     // PIV
     // Top
-    ui->labelAmountTopPiv->setText(totalPiv);
+    ui->labelAmountTopPiv->setText(totalTransparent);
+    ui->labelAmountTopShieldedPiv->setText(totalShielded);
     // Expanded
     ui->labelAmountPiv->setText(totalPiv);
-    ui->labelPendingPiv->setText(GUIUtil::formatBalance(newBalance.unconfirmed_balance, nDisplayUnit));
+    ui->labelPendingPiv->setText(GUIUtil::formatBalance(newBalance.unconfirmed_balance + newBalance.unconfirmed_shielded_balance, nDisplayUnit));
     ui->labelImmaturePiv->setText(GUIUtil::formatBalance(newBalance.immature_balance, nDisplayUnit));
 }
 

@@ -9,14 +9,17 @@
 #include "qt/pivx/sendchangeaddressdialog.h"
 #include "qt/pivx/optionbutton.h"
 #include "qt/pivx/sendconfirmdialog.h"
-#include "qt/pivx/myaddressrow.h"
 #include "qt/pivx/guitransactionsutils.h"
+#include "qt/pivx/loadingdialog.h"
 #include "clientmodel.h"
 #include "optionsmodel.h"
+#include "operationresult.h"
 #include "addresstablemodel.h"
 #include "coincontrol.h"
 #include "script/standard.h"
 #include "openuridialog.h"
+
+#define REQUEST_PREPARE_TX 1
 
 SendWidget::SendWidget(PIVXGUI* parent) :
     PWidget(parent),
@@ -42,8 +45,13 @@ SendWidget::SendWidget(PIVXGUI* parent) :
     setCssProperty(ui->labelTitle, "text-title-screen");
     ui->labelTitle->setFont(fontLight);
 
+    /* Button Group */
+    setCssProperty(ui->pushLeft, "btn-check-left");
+    ui->pushLeft->setChecked(true);
+    setCssProperty(ui->pushRight, "btn-check-right");
+
     /* Subtitle */
-    setCssProperty(ui->labelSubtitle1, "text-subtitle");
+    setCssProperty({ui->labelSubtitle1, ui->labelSubtitle2}, "text-subtitle");
 
     /* Address - Amount*/
     setCssProperty({ui->labelSubtitleAddress, ui->labelSubtitleAmount}, "text-title");
@@ -67,10 +75,15 @@ SendWidget::SendWidget(PIVXGUI* parent) :
     ui->btnUri->setTitleClassAndText("btn-title-grey", tr("Open URI"));
     ui->btnUri->setSubTitleClassAndText("text-subtitle", tr("Parse a payment request"));
 
+    // Shield coins
+    ui->btnShieldCoins->setTitleClassAndText("btn-title-grey", tr("Shield Coins"));
+    ui->btnShieldCoins->setSubTitleClassAndText("text-subtitle", tr("Convert all transparent coins into shielded coins"));
+
     connect(ui->pushButtonFee, &QPushButton::clicked, this, &SendWidget::onChangeCustomFeeClicked);
     connect(ui->btnCoinControl, &OptionButton::clicked, this, &SendWidget::onCoinControlClicked);
     connect(ui->btnChangeAddress, &OptionButton::clicked, this, &SendWidget::onChangeAddressClicked);
     connect(ui->btnUri, &OptionButton::clicked, this, &SendWidget::onOpenUriClicked);
+    connect(ui->btnShieldCoins, &OptionButton::clicked, this, &SendWidget::onShieldCoinsClicked);
     connect(ui->pushButtonReset, &QPushButton::clicked, [this](){ onResetCustomOptions(true); });
     connect(ui->checkBoxDelegations, &QCheckBox::stateChanged, this, &SendWidget::onCheckBoxChanged);
 
@@ -108,6 +121,8 @@ SendWidget::SendWidget(PIVXGUI* parent) :
     setCustomFeeSelected(false);
 
     // Connect
+    connect(ui->pushLeft, &QPushButton::clicked, [this](){onPIVSelected(true);});
+    connect(ui->pushRight,  &QPushButton::clicked, [this](){onPIVSelected(false);});
     connect(ui->pushButtonSave, &QPushButton::clicked, this, &SendWidget::onSendClicked);
     connect(ui->pushButtonAddRecipient, &QPushButton::clicked, this, &SendWidget::onAddEntryClicked);
     connect(ui->pushButtonClear, &QPushButton::clicked, [this](){clearAll(true);});
@@ -127,25 +142,35 @@ void SendWidget::refreshAmounts()
     }
 
     nDisplayUnit = walletModel->getOptionsModel()->getDisplayUnit();
-
     ui->labelAmountSend->setText(GUIUtil::formatBalance(total, nDisplayUnit, false));
 
+    QString type = "transparent";
     CAmount totalAmount = 0;
     if (coinControlDialog->coinControl->HasSelected()) {
         // Set remaining balance to the sum of the coinControl selected inputs
-        totalAmount = walletModel->getBalance(coinControlDialog->coinControl) - total;
+        std::vector<OutPointWrapper> coins;
+        coinControlDialog->coinControl->ListSelected(coins);
+        CAmount selectedBalance = 0;
+        for (const auto& coin : coins) {
+            selectedBalance += coin.value;
+        }
+        totalAmount = selectedBalance - total;
         ui->labelTitleTotalRemaining->setText(tr("Total remaining from the selected UTXO"));
     } else {
-        // Wallet's unlocked balance
-        totalAmount = walletModel->getUnlockedBalance(nullptr, fDelegationsChecked) - total;
+        // Wallet's unlocked balance.
+        if (isTransparent) {
+            totalAmount = walletModel->getUnlockedBalance(nullptr, fDelegationsChecked, false) - total;
+        } else {
+            totalAmount = walletModel->GetWalletBalances().shielded_balance - total;
+            type = "shielded";
+        }
         ui->labelTitleTotalRemaining->setText(tr("Unlocked remaining"));
     }
     ui->labelAmountRemaining->setText(
             GUIUtil::formatBalance(
                     totalAmount,
                     nDisplayUnit,
-                    false
-                    )
+                    false) + " " + type
     );
     // show or hide delegations checkbox if need be
     showHideCheckBoxDelegations();
@@ -210,13 +235,25 @@ void SendWidget::onResetSettings()
 
 void SendWidget::onResetCustomOptions(bool fRefreshAmounts)
 {
-    coinControlDialog->coinControl->SetNull();
     ui->btnChangeAddress->setActive(false);
-    ui->btnCoinControl->setActive(false);
     if (ui->checkBoxDelegations->isChecked()) ui->checkBoxDelegations->setChecked(false);
+    resetCoinControl();
     if (fRefreshAmounts) {
         refreshAmounts();
     }
+}
+
+void SendWidget::resetCoinControl()
+{
+    coinControlDialog->coinControl->SetNull();
+    ui->btnCoinControl->setActive(false);
+}
+
+void SendWidget::resetChangeAddress()
+{
+    coinControlDialog->coinControl->destChange = CNoDestination();
+    ui->btnChangeAddress->setActive(false);
+    ui->btnChangeAddress->setVisible(isTransparent);
 }
 
 void SendWidget::clearEntries()
@@ -302,11 +339,11 @@ void SendWidget::setFocusOnLastEntry()
 void SendWidget::showHideCheckBoxDelegations()
 {
     // Show checkbox only when there is any available owned delegation and
-    // coincontrol is not selected.
+    // coincontrol is not selected, and we are trying to spend transparent PIVs.
     const bool isCControl = coinControlDialog->coinControl->HasSelected();
     const bool hasDel = cachedDelegatedBalance > 0;
 
-    const bool showCheckBox = !isCControl && hasDel;
+    const bool showCheckBox = isTransparent && !isCControl && hasDel;
     ui->checkBoxDelegations->setVisible(showCheckBox);
     if (showCheckBox)
         ui->checkBoxDelegations->setToolTip(
@@ -321,12 +358,15 @@ void SendWidget::onSendClicked()
         return;
 
     QList<SendCoinsRecipient> recipients;
+    bool hasShieldedOutput = false;
 
     for (SendMultiRow* entry : entries) {
         // TODO: Check UTXO splitter here..
         // Validate send..
         if (entry && entry->validate()) {
-            recipients.append(entry->getValue());
+            auto recipient = entry->getValue();
+            if (!hasShieldedOutput) hasShieldedOutput = recipient.isShieldedAddr;
+            recipients.append(recipient);
         } else {
             inform(tr("Invalid entry"));
             return;
@@ -338,51 +378,107 @@ void SendWidget::onSendClicked()
         return;
     }
 
-    WalletModel::UnlockContext ctx(walletModel->requestUnlock());
-    if (!ctx.isValid()) {
+    ProcessSend(recipients, hasShieldedOutput);
+}
+
+void SendWidget::ProcessSend(const QList<SendCoinsRecipient>& recipients, bool hasShieldedOutput)
+{
+    // First check SPORK_20 (before unlock)
+    bool isShieldedTx = hasShieldedOutput || !isTransparent;
+    if (isShieldedTx && walletModel->isSaplingInMaintenance()) {
+        inform(tr("Sapling Protocol temporarily in maintenance. Shielded transactions disabled (SPORK 20)"));
+        return;
+    }
+
+    auto ptrUnlockedContext = MakeUnique<WalletModel::UnlockContext>(walletModel->requestUnlock());
+    if (!ptrUnlockedContext->isValid()) {
         // Unlock wallet was cancelled
         inform(tr("Cannot send, wallet locked"));
         return;
     }
 
-    if (send(recipients)) {
-        updateEntryLabels(recipients);
+    // If tx exists then there is an on-going process being executed, return.
+    if (isProcessing || ptrModelTx) {
+        inform(tr("On going process being executed, please wait until it's finished to create a new transaction"));
+        return;
     }
-    setFocusOnLastEntry();
+    ptrModelTx = new WalletModelTransaction(recipients);
+    ptrModelTx->useV2 = isShieldedTx;
+
+    // Prepare tx
+    window->showHide(true);
+    LoadingDialog *dialog = new LoadingDialog(window, tr("Preparing transaction"));
+    dialog->execute(this, REQUEST_PREPARE_TX, std::move(ptrUnlockedContext));
+    openDialogWithOpaqueBackgroundFullScreen(dialog, window);
+
+    // If all went well, ask if want to broadcast it
+    if (processingResult) {
+        if (sendFinalStep()) {
+            updateEntryLabels(ptrModelTx->getRecipients());
+        }
+        setFocusOnLastEntry();
+    } else if (!processingResultError->isEmpty()){
+        inform(*processingResultError);
+    }
+
+    // Process finished, can reset the tx model now. todo: this can get wrapped on a cached struct.
+    delete ptrModelTx;
+    ptrModelTx = nullptr;
+    if (processingResultError) {
+        processingResultError->clear();
+        processingResultError = nullopt;
+    }
+    processingResult = false;
 }
 
-bool SendWidget::send(QList<SendCoinsRecipient> recipients)
+OperationResult SendWidget::prepareShielded(WalletModelTransaction* currentTransaction, bool fromTransparent)
 {
-    // prepare transaction for getting txFee earlier
-    WalletModelTransaction currentTransaction(recipients);
-    WalletModel::SendCoinsReturn prepareStatus;
+    bool hasCoinsOrNotesSelected = coinControlDialog && coinControlDialog->coinControl && coinControlDialog->coinControl->HasSelected();
+    return walletModel->PrepareShieldedTransaction(currentTransaction,
+                                                   fromTransparent,
+                                                   hasCoinsOrNotesSelected ? coinControlDialog->coinControl : nullptr);
+}
 
+OperationResult SendWidget::prepareTransparent(WalletModelTransaction* currentTransaction)
+{
+    if (!walletModel) return errorOut("Error, no wallet model loaded");
+    // prepare transaction for getting txFee earlier
+    WalletModel::SendCoinsReturn prepareStatus;
     prepareStatus = walletModel->prepareTransaction(currentTransaction, coinControlDialog->coinControl, fDelegationsChecked);
 
     // process prepareStatus and on error generate message shown to user
-    GuiTransactionsUtils::ProcessSendCoinsReturnAndInform(
+    CClientUIInterface::MessageBoxFlags informType;
+    QString informMsg = GuiTransactionsUtils::ProcessSendCoinsReturn(
             this,
             prepareStatus,
             walletModel,
+            informType,
             BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(),
-                                         currentTransaction.getTransactionFee()),
+                                         currentTransaction->getTransactionFee()),
             true
     );
 
-    if (prepareStatus.status != WalletModel::OK) {
-        inform(tr("Cannot create transaction."));
-        return false;
+    if (!informMsg.isEmpty()) {
+        return errorOut(informMsg.toStdString());
     }
 
+    if (prepareStatus.status != WalletModel::OK) {
+        return errorOut("Cannot create transaction.");
+    }
+    return OperationResult(true);
+}
+
+bool SendWidget::sendFinalStep()
+{
     showHideOp(true);
-    const bool fStakeDelegationVoided = currentTransaction.getTransaction()->fStakeDelegationVoided;
+    const bool fStakeDelegationVoided = ptrModelTx->getTransaction()->fStakeDelegationVoided;
     QString warningStr = QString();
     if (fStakeDelegationVoided)
         warningStr = tr("WARNING:\nTransaction spends a cold-stake delegation, voiding it.\n"
-                     "These coins will no longer be cold-staked.");
+                        "These coins will no longer be cold-staked.");
     TxDetailDialog* dialog = new TxDetailDialog(window, true, warningStr);
     dialog->setDisplayUnit(walletModel->getOptionsModel()->getDisplayUnit());
-    dialog->setData(walletModel, currentTransaction);
+    dialog->setData(walletModel, ptrModelTx);
     dialog->adjustSize();
     openDialogWithOpaqueBackgroundY(dialog, window, 3, 5);
 
@@ -409,6 +505,33 @@ bool SendWidget::send(QList<SendCoinsRecipient> recipients)
 
     dialog->deleteLater();
     return false;
+}
+
+void SendWidget::run(int type)
+{
+    assert(!processingResult);
+    if (type == REQUEST_PREPARE_TX) {
+        if (!isProcessing) {
+            isProcessing = true;
+            OperationResult result(false);
+            if ((result = ptrModelTx->useV2 ?
+                        prepareShielded(ptrModelTx, isTransparent) :
+                        prepareTransparent(ptrModelTx)
+                        )) {
+                processingResult = true;
+            } else {
+                processingResult = false;
+                processingResultError = tr(result.getError().c_str());
+            }
+            isProcessing = false;
+        }
+    }
+}
+
+void SendWidget::onError(QString error, int type)
+{
+    isProcessing = false;
+    processingResultError = error;
 }
 
 QString SendWidget::recipientsToString(QList<SendCoinsRecipient> recipients)
@@ -522,6 +645,7 @@ void SendWidget::onChangeCustomFeeClicked()
 void SendWidget::onCoinControlClicked()
 {
     if (walletModel->getBalance() > 0) {
+        coinControlDialog->setSelectionType(isTransparent);
         coinControlDialog->refreshDialog();
         setCoinControlPayAmounts();
         coinControlDialog->exec();
@@ -532,13 +656,50 @@ void SendWidget::onCoinControlClicked()
     }
 }
 
+void SendWidget::onShieldCoinsClicked()
+{
+    auto balances = walletModel->GetWalletBalances();
+    CAmount availableBalance = balances.balance - balances.shielded_balance;
+    if (walletModel && availableBalance > 0) {
+
+        if (!ask(tr("Shield Coins"),
+             tr("You are just about to anonymize all of your balance!\nAvailable %1\n\n"
+                "Meaning that you will be able to perform completely\nanonymous transactions"
+                "\n\nDo you want to continue?\n").arg(GUIUtil::formatBalanceWithoutHtml(availableBalance, nDisplayUnit, false)))) {
+            return;
+        }
+
+        // First get a new address
+        QString strAddress;
+        auto res = walletModel->getNewShieldedAddress(strAddress, "");
+        // Check for generation errors
+        if (!res.result) {
+            inform(tr("Error generating address to shield PIVs"));
+            return;
+        }
+
+        // load recipient and process sending..
+        QList<SendCoinsRecipient> recipients;
+        CAmount saplingTxFee = 10000 * 100; // DEFAULT_SAPLING_FEE.
+        SendCoinsRecipient recipient;
+        recipient.address = strAddress;
+        recipient.amount = availableBalance - saplingTxFee;
+        recipient.isShieldedAddr = true;
+        recipients.append(recipient);
+        ProcessSend(recipients, true);
+    } else {
+        inform(tr("You don't have any transparent PIVs to shield."));
+    }
+}
+
 void SendWidget::setCoinControlPayAmounts()
 {
     if (!coinControlDialog) return;
     coinControlDialog->clearPayAmounts();
     QMutableListIterator<SendMultiRow*> it(entries);
     while (it.hasNext()) {
-        coinControlDialog->addPayAmount(it.next()->getAmountValue());
+        const auto& entry = it.next();
+        coinControlDialog->addPayAmount(entry->getAmountValue(), entry->getValue().isShieldedAddr);
     }
 }
 
@@ -556,6 +717,15 @@ void SendWidget::onCheckBoxChanged()
     }
 }
 
+void SendWidget::onPIVSelected(bool _isTransparent)
+{
+    isTransparent = _isTransparent;
+    resetChangeAddress();
+    resetCoinControl();
+    refreshAmounts();
+    updateStyle(coinIcon);
+}
+
 void SendWidget::onContactsClicked(SendMultiRow* entry)
 {
     focusedEntry = entry;
@@ -563,7 +733,8 @@ void SendWidget::onContactsClicked(SendMultiRow* entry)
         menu->hide();
     }
 
-    int contactsSize = walletModel->getAddressTableModel()->sizeSend();
+    int contactsSize = walletModel->getAddressTableModel()->sizeSend() +
+                        walletModel->getAddressTableModel()->sizeShieldedSend();
     if (contactsSize == 0) {
         inform(tr("No contacts available, you can go to the contacts screen and add some there!"));
         return;
@@ -578,7 +749,7 @@ void SendWidget::onContactsClicked(SendMultiRow* entry)
                     height,
                     this
         );
-        menuContacts->setWalletModel(walletModel, AddressTableModel::Send);
+        menuContacts->setWalletModel(walletModel, {AddressTableModel::Send, AddressTableModel::ShieldedSend});
         connect(menuContacts, &ContactsDropdown::contactSelected, [this](QString address, QString label) {
             if (focusedEntry) {
                 if (label != "(no label)")
@@ -646,9 +817,9 @@ void SendWidget::onContactMultiClicked()
         }
 
         bool isStakingAddr = false;
-        auto pivAdd = DecodeDestination(address.toStdString(), isStakingAddr);
+        auto pivAdd = Standard::DecodeDestination(address.toStdString(), isStakingAddr);
 
-        if (!IsValidDestination(pivAdd) || isStakingAddr) {
+        if (!Standard::IsValidDestination(pivAdd) || isStakingAddr) {
             inform(tr("Invalid address"));
             return;
         }

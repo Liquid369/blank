@@ -11,6 +11,11 @@
 #include "primitives/transaction.h"
 #include "wallet/wallet.h"
 
+// transaction.h comment: spending taddr output requires CTxIn >= 148 bytes and typical taddr txout is 34 bytes
+#define CTXIN_SPEND_DUST_SIZE   148
+#define CTXOUT_REGULAR_SIZE     34
+
+class CCoinControl;
 struct TxValues;
 
 struct ShieldedRecipient
@@ -96,7 +101,9 @@ public:
     SaplingOperation* setMinDepth(int _mindepth) { assert(_mindepth >= 0); mindepth = _mindepth; return this; }
     SaplingOperation* setTxBuilder(TransactionBuilder& builder) { txBuilder = builder; return this; }
     SaplingOperation* setTransparentKeyChange(CReserveKey* reserveKey) { tkeyChange = reserveKey; return this; }
+    SaplingOperation* setCoinControl(const CCoinControl* _coinControl) { coinControl = _coinControl; return this; }
 
+    CAmount getFee() { return fee; }
     CTransaction getFinalTx() { return finalTx; }
 
 private:
@@ -104,6 +111,7 @@ private:
     // In case of no addressFrom filter selected, it will accept any utxo in the wallet as input.
     bool selectFromtaddrs{false};
     bool selectFromShield{false};
+    const CCoinControl* coinControl{nullptr};
     std::vector<SendManyRecipient> recipients;
     std::vector<COutput> transInputs;
     std::vector<SaplingNoteEntry> shieldedInputs;
@@ -118,10 +126,13 @@ private:
     CTransaction finalTx;
 
     OperationResult loadUtxos(TxValues& values);
+    OperationResult loadUtxos(TxValues& txValues, const std::vector<COutput>& selectedUTXO, const CAmount selectedUTXOAmount);
     OperationResult loadUnspentNotes(TxValues& txValues, uint256& ovk);
     OperationResult checkTxValues(TxValues& txValues, bool isFromtAddress, bool isFromShielded);
 };
 
 OperationResult GetMemoFromString(const std::string& s, std::array<unsigned char, ZC_MEMO_SIZE>& memoRet);
+
+OperationResult CheckTransactionSize(std::vector<SendManyRecipient>& recipients, bool fromTaddr);
 
 #endif //PIVX_SAPLING_OPERATION_H

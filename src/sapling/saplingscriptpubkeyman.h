@@ -45,13 +45,28 @@ public:
     SaplingNoteData(const libzcash::SaplingIncomingViewingKey& _ivk) : ivk {_ivk}, nullifier() { }
     SaplingNoteData(const libzcash::SaplingIncomingViewingKey& _ivk, const uint256& n) : ivk {_ivk}, nullifier(n) { }
 
+    /* witnesses/ivk: only for own (received) outputs */
     std::list<SaplingWitness> witnesses;
-    libzcash::SaplingIncomingViewingKey ivk;
+    Optional<libzcash::SaplingIncomingViewingKey> ivk {nullopt};
+    inline bool IsMyNote() const { return ivk != nullopt; }
+
     /**
      * Cached note amount.
-     * It will be loaded the first time that the note is decrypted.
+     * It will be loaded the first time that the note is decrypted (when the tx is added to the wallet).
      */
     Optional<CAmount> amount{nullopt};
+
+    /**
+     * Cached shielded address
+     * It will be loaded the first time that the note is decrypted (when the tx is added to the wallet)
+     */
+     Optional<libzcash::SaplingPaymentAddress> address{nullopt};
+
+     /**
+      * Cached note memo (only for non-empty memo)
+      * It will be loaded the first time that the note is decrypted (when the tx is added to the wallet)
+      */
+     Optional<std::array<unsigned char, ZC_MEMO_SIZE>> memo;
 
     /**
      * Block height corresponding to the most current witness.
@@ -91,10 +106,18 @@ public:
         READWRITE(nullifier);
         READWRITE(witnesses);
         READWRITE(witnessHeight);
+        READWRITE(amount);
+        READWRITE(address);
+        READWRITE(memo);
     }
 
     friend bool operator==(const SaplingNoteData& a, const SaplingNoteData& b) {
-        return (a.ivk == b.ivk && a.nullifier == b.nullifier && a.witnessHeight == b.witnessHeight);
+        return (a.ivk == b.ivk &&
+                a.nullifier == b.nullifier &&
+                a.witnessHeight == b.witnessHeight &&
+                a.amount == b.amount &&
+                a.address == b.address &&
+                a.memo == b.memo);
     }
 
     friend bool operator!=(const SaplingNoteData& a, const SaplingNoteData& b) {
@@ -174,12 +197,21 @@ public:
     void SetHDChain(CHDChain& chain, bool memonly);
     const CHDChain& GetHDChain() const { return hdChain; }
 
-    uint256 getCommonOVKFromSeed();
+    /* Get cached sapling commonOVK
+     * If nullopt, read it from the database, and save it.
+     * If not found in the database, create a new one from the HD seed (throw
+     * if the wallet is locked), write it to database, and save it.
+     */
+    uint256 getCommonOVK();
+    void setCommonOVK(const uint256& ovk) { commonOVK = ovk; }
 
     /* Encrypt Sapling keys */
     bool EncryptSaplingKeys(CKeyingMaterial& vMasterKeyIn);
 
     void GetConflicts(const CWalletTx& wtx, std::set<uint256>& result) const;
+
+    // Get the ivk creation time (we are only using the ivk's default address)
+    int64_t GetKeyCreationTime(const libzcash::SaplingIncomingViewingKey& ivk);
 
     // Add full viewing key if it's not already in the wallet
     KeyAddResult AddViewingKeyToWallet(const libzcash::SaplingExtendedFullViewingKey &extfvk) const;
@@ -233,6 +265,10 @@ public:
     //! Find all of the addresses in the given tx that have been sent to a SaplingPaymentAddress in this wallet.
     std::vector<libzcash::SaplingPaymentAddress> FindMySaplingAddresses(const CTransaction& tx) const;
 
+    //! Find notes for the outpoints
+    void GetNotes(const std::vector<SaplingOutPoint>& saplingOutpoints,
+                  std::vector<SaplingNoteEntry>& saplingEntriesRet);
+
     /* Find notes filtered by payment address, min depth, ability to spend */
     void GetFilteredNotes(std::vector<SaplingNoteEntry>& saplingEntries,
                           Optional<libzcash::SaplingPaymentAddress>& address,
@@ -250,6 +286,10 @@ public:
                           bool requireSpendingKey=true,
                           bool ignoreLocked=true);
 
+
+    //! Return the address from where the shielded spend is taking the funds from (if possible)
+    Optional<libzcash::SaplingPaymentAddress> GetAddressFromInputIfPossible(const CWalletTx* wtx, int index);
+
     //! Whether the nullifier is from this wallet
     bool IsSaplingNullifierFromMe(const uint256& nullifier) const;
 
@@ -262,11 +302,17 @@ public:
     std::set<std::pair<libzcash::PaymentAddress, uint256>> GetNullifiersForAddresses(const std::set<libzcash::PaymentAddress> & addresses);
     bool IsNoteSaplingChange(const std::set<std::pair<libzcash::PaymentAddress, uint256>>& nullifierSet, const libzcash::PaymentAddress& address, const SaplingOutPoint& entry);
 
-    //! Try to decrypt the note and load the amount into the always available SaplingNoteData
-    CAmount TryToRecoverAndSetAmount(const CWalletTx& tx, const SaplingOutPoint& op);
+    //! Try to recover the note using the wallet's ovks (mostly used when the outpoint is a debit)
+    Optional<std::pair<
+            libzcash::SaplingNotePlaintext,
+            libzcash::SaplingPaymentAddress>> TryToRecoverNote(const CWalletTx& tx, const SaplingOutPoint& op);
 
-    //! Return the shielded credit of an specific output description
-    CAmount GetCredit(const CWalletTx& tx, const SaplingOutPoint& op);
+    //! Return true if the wallet can decrypt & spend the shielded output.
+    isminetype IsMine(const CWalletTx& wtx, const SaplingOutPoint& op);
+    //! Return the shielded address of a specific outpoint of wallet transaction
+    Optional<libzcash::SaplingPaymentAddress> GetOutPointAddress(const CWalletTx& tx, const SaplingOutPoint& op);
+    //! Return the shielded value of a specific outpoint of wallet transaction
+    CAmount GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op);
     //! Return the shielded credit of the tx
     CAmount GetCredit(const CWalletTx& tx, const isminefilter& filter, const bool fUnspent = false);
     //! Return the shielded debit of the tx.
@@ -350,6 +396,9 @@ private:
     CWallet* wallet{nullptr};
     /* the HD chain data model (external/internal chain counters) */
     CHDChain hdChain;
+    /* cached common OVK for sapling spends from t addresses */
+    Optional<uint256> commonOVK;
+    uint256 getCommonOVKFromSeed() const;
 
 
     /**

@@ -11,6 +11,7 @@
 
 #include "base58.h"
 #include "protocol.h"
+#include "sapling/key_io_sapling.h"
 #include "serialize.h"
 #include "sync.h"
 #include "txdb.h"
@@ -146,6 +147,17 @@ bool CWalletDB::WriteCryptedSaplingZKey(
         Erase(std::make_pair(std::string("sapzkey"), ivk));
     }
     return true;
+}
+
+bool CWalletDB::WriteSaplingCommonOVK(const uint256& ovk)
+{
+    nWalletDBUpdateCounter++;
+    return Write(std::string("commonovk"), ovk);
+}
+
+bool CWalletDB::ReadSaplingCommonOVK(uint256& ovkRet)
+{
+    return Read(std::string("commonovk"), ovkRet);
 }
 
 bool CWalletDB::WriteWitnessCacheSize(int64_t nWitnessCacheSize)
@@ -424,13 +436,13 @@ bool ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue, CW
             ssKey >> strAddress;
             std::string strName;
             ssValue >> strName;
-            pwallet->LoadAddressBookName(DecodeDestination(strAddress), strName);
+            pwallet->LoadAddressBookName(Standard::DecodeDestination(strAddress), strName);
         } else if (strType == "purpose") {
             std::string strAddress;
             ssKey >> strAddress;
             std::string strPurpose;
             ssValue >> strPurpose;
-            pwallet->LoadAddressBookPurpose(DecodeDestination(strAddress), strPurpose);
+            pwallet->LoadAddressBookPurpose(Standard::DecodeDestination(strAddress), strPurpose);
         } else if (strType == "tx") {
             uint256 hash;
             ssKey >> hash;
@@ -649,14 +661,16 @@ bool ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue, CW
             ssKey >> ivk;
             libzcash::SaplingExtendedSpendingKey key;
             ssValue >> key;
-
             if (!pwallet->LoadSaplingZKey(key)) {
                 strErr = "Error reading wallet database: LoadSaplingZKey failed";
                 return false;
             }
-
             //add checks for integrity
             wss.nZKeys++;
+        } else if (strType == "commonovk") {
+            uint256 ovk;
+            ssValue >> ovk;
+            pwallet->GetSaplingScriptPubKeyMan()->setCommonOVK(ovk);
         } else if (strType == "csapzkey") {
             libzcash::SaplingIncomingViewingKey ivk;
             ssKey >> ivk;

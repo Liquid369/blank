@@ -2,14 +2,12 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2017-2020 The PIVX developers
 // Distributed under the MIT software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+// file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
 #include "script/standard.h"
 
 #include "pubkey.h"
 #include "script/script.h"
-#include "util.h"
-#include "utilstrencodings.h"
 
 typedef std::vector<unsigned char> valtype;
 
@@ -339,3 +337,4 @@ CScript GetScriptForOpReturn(const uint256& message)
 bool IsValidDestination(const CTxDestination& dest) {
     return dest.which() != 0;
 }
+

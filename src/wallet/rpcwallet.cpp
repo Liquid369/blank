@@ -283,8 +283,8 @@ UniValue getaddressesbylabel(const JSONRPCRequest& request)
     UniValue ret(UniValue::VOBJ);
     for (auto it = pwalletMain->NewAddressBookIterator(); it.IsValid(); it.Next()) {
         auto addrBook = it.GetValue();
-        if (addrBook.name == label) {
-            ret.pushKV(EncodeDestination(it.GetKey(), AddressBook::IsColdStakingPurpose(addrBook.purpose)), AddressBookDataToJSON(addrBook, false));
+        if (!addrBook.isShielded() && addrBook.name == label) {
+            ret.pushKV(EncodeDestination(*it.GetCTxDestKey(), AddressBook::IsColdStakingPurpose(addrBook.purpose)), AddressBookDataToJSON(addrBook, false));
         }
     }
 
@@ -731,9 +731,11 @@ UniValue ListaddressesForPurpose(const std::string strPurpose)
         for (auto it = pwalletMain->NewAddressBookIterator(); it.IsValid(); it.Next()) {
             auto addrBook = it.GetValue();
             if (addrBook.purpose != strPurpose) continue;
+            auto dest = it.GetCTxDestKey();
+            if (!dest) continue;
             UniValue entry(UniValue::VOBJ);
             entry.pushKV("label", addrBook.name);
-            entry.pushKV("address", EncodeDestination(it.GetKey(), addrType));
+            entry.pushKV("address", EncodeDestination(*dest, addrType));
             ret.push_back(entry);
         }
     }
@@ -919,7 +921,7 @@ void SendMoney(const CTxDestination& address, CAmount nValue, CWalletTx& wtxNew)
     // Create and send the transaction
     CReserveKey reservekey(pwalletMain);
     CAmount nFeeRequired;
-    if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, wtxNew, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0)) {
+    if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, &wtxNew, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0)) {
         if (nValue + nFeeRequired > pwalletMain->GetAvailableBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         LogPrintf("SendMoney() : %s\n", strError);
@@ -1061,7 +1063,7 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CWalletTx& wtxNew, CR
         // Delegate transparent coins
         CAmount nFeeRequired;
         CScript scriptPubKey = GetScriptForStakeDelegation(*stakeKey, ownerKey);
-        if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, wtxNew, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0, fUseDelegated)) {
+        if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, &wtxNew, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0, fUseDelegated)) {
             if (nValue + nFeeRequired > currBalance)
                 strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
             LogPrintf("%s : %s\n", __func__, strError);
@@ -1321,6 +1323,10 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
                 + HelpExampleRpc("viewshieldedtransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
         );
 
+    if (!pwalletMain->HasSaplingSPKM()) {
+        throw JSONRPCError(RPC_WALLET_ERROR, "Sapling wallet not initialized.");
+    }
+
     EnsureWalletIsUnlocked();
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -1341,7 +1347,14 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
     UniValue spends(UniValue::VARR);
     UniValue outputs(UniValue::VARR);
 
-    auto addMemo = [](UniValue &entry, std::array<unsigned char, ZC_MEMO_SIZE> &memo) {
+    auto addMemo = [](UniValue& entry, const Optional<std::array<unsigned char, ZC_MEMO_SIZE>> optMemo) {
+        // empty memo
+        if (!static_cast<bool>(optMemo)) {
+            const std::array<unsigned char, 1> memo {0xF6};
+            entry.pushKV("memo", HexStr(memo.begin(), memo.end()));
+            return;
+        }
+        const auto& memo = *optMemo;
         auto end = FindFirstNonZero(memo.rbegin(), memo.rend());
         entry.pushKV("memo", HexStr(memo.begin(), end.base()));
         // If the leading byte is 0xF4 or lower, the memo field should be interpreted as a
@@ -1358,8 +1371,10 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
 
     // Collect OutgoingViewingKeys for recovering output information
     std::set<uint256> ovks;
-    // Generate the common ovk for recovering t->shield outputs.
-    ovks.insert(sspkm->getCommonOVKFromSeed());
+    // Get the common OVK for recovering t->shield outputs.
+    // If not already databased, a new one will be generated from the HD seed.
+    // It is safe to do it here, as the wallet is unlocked.
+    ovks.insert(sspkm->getCommonOVK());
 
     // Sapling spends
     for (size_t i = 0; i < wtx.sapData->vShieldedSpend.size(); ++i) {
@@ -1370,62 +1385,61 @@ UniValue viewshieldedtransaction(const JSONRPCRequest& request)
         if (res == sspkm->mapSaplingNullifiersToNotes.end()) {
             continue;
         }
-        auto op = res->second;
-        auto wtxPrev = pwalletMain->mapWallet.at(op.hash);
-
-        auto decrypted = wtxPrev.DecryptSaplingNote(op).get();
-        auto notePt = decrypted.first;
-        auto pa = decrypted.second;
-
-        // Store the OutgoingViewingKey for recovering outputs
-        libzcash::SaplingExtendedFullViewingKey extfvk;
-        assert(pwalletMain->GetSaplingFullViewingKey(wtxPrev.mapSaplingNoteData.at(op).ivk, extfvk));
-        ovks.insert(extfvk.fvk.ovk);
+        const auto& op = res->second;
+        std::string addrStr = "unknown";
+        UniValue amountStr = UniValue("unknown");
+        CAmount amount = 0;
+        auto wtxPrevIt = pwalletMain->mapWallet.find(op.hash);
+        if (wtxPrevIt != pwalletMain->mapWallet.end()) {
+            const auto ndIt = wtxPrevIt->second.mapSaplingNoteData.find(op);
+            if (ndIt != wtxPrevIt->second.mapSaplingNoteData.end()) {
+                // get cached address and amount
+                if (ndIt->second.address) {
+                    addrStr = KeyIO::EncodePaymentAddress(*(ndIt->second.address));
+                }
+                if (ndIt->second.amount) {
+                    amount = *(ndIt->second.amount);
+                    amountStr = ValueFromAmount(amount);
+                }
+            }
+        }
 
         UniValue entry_(UniValue::VOBJ);
         entry_.pushKV("spend", (int)i);
         entry_.pushKV("txidPrev", op.hash.GetHex());
         entry_.pushKV("outputPrev", (int)op.n);
-        entry_.pushKV("address", KeyIO::EncodePaymentAddress(pa));
-        entry_.pushKV("value", ValueFromAmount(notePt.value()));
-        entry_.pushKV("valueSat", notePt.value());
+        entry_.pushKV("address", addrStr);
+        entry_.pushKV("value", amountStr);
+        entry_.pushKV("valueSat", amount);
         spends.push_back(entry_);
     }
 
     // Sapling outputs
     for (uint32_t i = 0; i < wtx.sapData->vShieldedOutput.size(); ++i) {
         auto op = SaplingOutPoint(hash, i);
+        if (!wtx.mapSaplingNoteData.count(op)) continue;
+        const auto& nd = wtx.mapSaplingNoteData.at(op);
 
-        libzcash::SaplingNotePlaintext notePt;
-        libzcash::SaplingPaymentAddress pa;
-        bool isOutgoing;
-
-        auto decrypted = wtx.DecryptSaplingNote(op);
-        if (decrypted) {
-            notePt = decrypted->first;
-            pa = decrypted->second;
-            isOutgoing = false;
-        } else {
-            // Try recovering the output
-            auto recovered = wtx.RecoverSaplingNote(op, ovks);
-            if (recovered) {
-                notePt = recovered->first;
-                pa = recovered->second;
-                isOutgoing = true;
-            } else {
-                // Unreadable
-                continue;
-            }
+        const bool isOutgoing = !nd.IsMyNote();
+        std::string addrStr = "unknown";
+        UniValue amountStr = UniValue("unknown");
+        CAmount amount = 0;
+        if (nd.address) {
+            addrStr = KeyIO::EncodePaymentAddress(*(nd.address));
         }
-        auto memo = notePt.memo();
+        if (nd.amount) {
+            amount = *(nd.amount);
+            amountStr = ValueFromAmount(amount);
+        }
 
         UniValue entry_(UniValue::VOBJ);
         entry_.pushKV("output", (int)op.n);
         entry_.pushKV("outgoing", isOutgoing);
-        entry_.pushKV("address", KeyIO::EncodePaymentAddress(pa));
-        entry_.pushKV("value", ValueFromAmount(notePt.value()));
-        entry_.pushKV("valueSat", notePt.value());
-        addMemo(entry_, memo);
+        entry_.pushKV("address", addrStr);
+        entry_.pushKV("value", amountStr);
+        entry_.pushKV("valueSat", amount);
+        addMemo(entry_, nd.memo);
+
         outputs.push_back(entry_);
     }
 
@@ -1551,33 +1565,9 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
     }
 
     // Now check the transaction
-    CMutableTransaction mtx;
-    mtx.nVersion = CTransaction::TxVersion::SAPLING;
-    unsigned int max_tx_size = MAX_TX_SIZE_AFTER_SAPLING;
-
-    // As a sanity check, estimate and verify that the size of the transaction will be valid.
-    // Depending on the input notes, the actual tx size may turn out to be larger and perhaps invalid.
-    size_t nTransparentOuts = 0;
-    for (const auto& t : recipients) {
-        if (t.IsTransparent()) {
-            nTransparentOuts++;
-            continue;
-        }
-        if (IsValidPaymentAddress(t.shieldedRecipient->address)) {
-            mtx.sapData->vShieldedOutput.emplace_back();
-        } else {
-            throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("invalid recipient shielded address %s",
-                    KeyIO::EncodePaymentAddress(t.shieldedRecipient->address)));
-        }
-    }
-    CTransaction tx(mtx);
-    size_t txsize = GetSerializeSize(tx, SER_NETWORK, tx.nVersion) + CTXOUT_REGULAR_SIZE * nTransparentOuts;
-    if (!fromSapling) {
-        txsize += CTXIN_SPEND_DUST_SIZE;
-        txsize += CTXOUT_REGULAR_SIZE;      // There will probably be taddr change
-    }
-    if (txsize > max_tx_size) {
-        throw JSONRPCError(RPC_INVALID_PARAMETER, strprintf("Too many outputs, size of raw transaction would be larger than limit of %d bytes", max_tx_size ));
+    auto opResult = CheckTransactionSize(recipients, !fromSapling);
+    if (!opResult) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, opResult.getError());
     }
 
     // Param 2: Minimum confirmations
@@ -1904,7 +1894,7 @@ UniValue getreceivedbylabel(const JSONRPCRequest& request)
 
 UniValue getbalance(const JSONRPCRequest& request)
 {
-    if (request.fHelp || (request.params.size() > 3 ))
+    if (request.fHelp || (request.params.size() > 4 ))
         throw std::runtime_error(
             "getbalance ( minconf includeWatchonly includeDelegated )\n"
             "\nReturns the server's total available balance (excluding zerocoins).\n"
@@ -1915,6 +1905,7 @@ UniValue getbalance(const JSONRPCRequest& request)
             "1. minconf          (numeric, optional, default=1) Only include transactions confirmed at least this many times.\n"
             "2. includeWatchonly (bool, optional, default=false) Also include balance in watchonly addresses (see 'importaddress')\n"
             "3. includeDelegated (bool, optional, default=true) Also include balance delegated to cold stakers\n"
+            "4. includeShielded  (bool, optional, default=true) Also include shielded balance\n"
 
             "\nResult:\n"
             "amount              (numeric) The total amount in PIV received for this wallet.\n"
@@ -1930,10 +1921,15 @@ UniValue getbalance(const JSONRPCRequest& request)
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     const int paramsSize = request.params.size();
-    const int nMinDepth = (paramsSize > 0 ? request.params[0].get_int() : 0);
-    isminefilter filter = ISMINE_SPENDABLE | (paramsSize > 1 && request.params[1].get_bool() ? ISMINE_WATCH_ONLY : ISMINE_NO);
-    filter |= (paramsSize <= 2 || request.params[2].get_bool() ? ISMINE_SPENDABLE_DELEGATED : ISMINE_NO);
+    const int nMinDepth = paramsSize > 0 ? request.params[0].get_int() : 0;
+    bool fIncludeWatchOnly = paramsSize > 1 && request.params[1].get_bool();
+    bool fIncludeDelegated = paramsSize <= 2 || request.params[2].get_bool();
+    bool fIncludeShielded = paramsSize <= 3 || request.params[3].get_bool();
 
+    isminefilter filter = ISMINE_SPENDABLE | (fIncludeWatchOnly ?
+                                              (fIncludeShielded ? ISMINE_WATCH_ONLY_SHIELDED : ISMINE_WATCH_ONLY) : ISMINE_NO);
+    filter |= fIncludeDelegated ? ISMINE_SPENDABLE_DELEGATED : ISMINE_NO;
+    filter |= fIncludeShielded ? ISMINE_SPENDABLE_SHIELDED : ISMINE_NO;
     return ValueFromAmount(pwalletMain->GetAvailableBalance(filter, true, nMinDepth));
 }
 
@@ -2080,7 +2076,7 @@ UniValue sendmany(const JSONRPCRequest& request)
     CAmount nFeeRequired = 0;
     std::string strFailReason;
     int nChangePosInOut = -1;
-    bool fCreated = pwalletMain->CreateTransaction(vecSend, wtx, keyChange, nFeeRequired, nChangePosInOut, strFailReason);
+    bool fCreated = pwalletMain->CreateTransaction(vecSend, &wtx, keyChange, nFeeRequired, nChangePosInOut, strFailReason);
     if (!fCreated)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strFailReason);
     const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, keyChange, g_connman.get());
@@ -2225,7 +2221,10 @@ UniValue ListReceived(const UniValue& params, bool by_label)
 
     for (auto& itAddrBook = itAddr; itAddrBook.IsValid(); itAddrBook.Next()) {
 
-        const auto &address = itAddrBook.GetKey();
+        auto* dest = itAddrBook.GetCTxDestKey();
+        if (!dest) continue;
+
+        const auto &address = *dest;
         const std::string &label = itAddrBook.GetValue().name;
         auto it = mapTally.find(address);
         if (it == mapTally.end() && !fIncludeEmpty) {
@@ -3955,7 +3954,9 @@ UniValue getsaplingnotescount(const JSONRPCRequest& request)
     int count = 0;
     for (const auto& wtx : pwalletMain->mapWallet) {
         if (wtx.second.GetDepthInMainChain() >= nMinDepth) {
-            count += wtx.second.mapSaplingNoteData.size();
+            for (const auto& nd : wtx.second.mapSaplingNoteData) {
+                if (nd.second.IsMyNote()) count++;
+            }
         }
     }
     return count;

@@ -14,6 +14,7 @@
 #include "consensus/tx_verify.h"
 #include "consensus/validation.h"
 #include "crypter.h"
+#include "destination_io.h"
 #include "kernel.h"
 #include "key.h"
 #include "keystore.h"
@@ -251,8 +252,10 @@ struct CRecipient
 class CAddressBookIterator
 {
 public:
-    explicit CAddressBookIterator(std::map<CTxDestination, AddressBook::CAddressBookData>& _map) : map(_map), it(_map.begin()), itEnd(_map.end()) {}
-    CTxDestination GetKey() { return it->first; }
+    explicit CAddressBookIterator(std::map<CWDestination, AddressBook::CAddressBookData>& _map) : map(_map), it(_map.begin()), itEnd(_map.end()) {}
+    const CWDestination* GetDestKey();
+    const CTxDestination* GetCTxDestKey();
+    const libzcash::SaplingPaymentAddress* GetShieldedDestKey();
     AddressBook::CAddressBookData GetValue() { return it->second; }
 
     bool IsValid() { return it != itEnd; }
@@ -272,9 +275,9 @@ public:
     }
 
 private:
-    std::map<CTxDestination, AddressBook::CAddressBookData>& map;
-    std::map<CTxDestination, AddressBook::CAddressBookData>::iterator it;
-    std::map<CTxDestination, AddressBook::CAddressBookData>::iterator itEnd;
+    std::map<CWDestination, AddressBook::CAddressBookData>& map;
+    std::map<CWDestination, AddressBook::CAddressBookData>::iterator it;
+    std::map<CWDestination, AddressBook::CAddressBookData>::iterator itEnd;
 };
 
 template <class T>
@@ -346,7 +349,7 @@ private:
     CzPIVWallet* zwallet{nullptr};
 
     //! Destination --> label/purpose mapping.
-    std::map<CTxDestination, AddressBook::CAddressBookData> mapAddressBook;
+    std::map<CWDestination, AddressBook::CAddressBookData> mapAddressBook;
 
 public:
 
@@ -506,16 +509,20 @@ public:
                                            const CChainParams::Base58Type addrType = CChainParams::PUBKEY_ADDRESS);
     PairResult getNewAddress(CTxDestination& ret, std::string label);
     PairResult getNewStakingAddress(CTxDestination& ret, std::string label);
+    int64_t GetKeyCreationTime(const CWDestination& dest);
     int64_t GetKeyCreationTime(CPubKey pubkey);
     int64_t GetKeyCreationTime(const CTxDestination& address);
+    int64_t GetKeyCreationTime(const libzcash::SaplingPaymentAddress& address);
 
     //////////// Sapling //////////////////
 
     // Search for notes and addresses from this wallet in the tx, and add the addresses --> IVK mapping to the keystore if missing.
     bool FindNotesDataAndAddMissingIVKToKeystore(const CTransaction& tx, Optional<mapSaplingNoteData_t>& saplingNoteData);
+    // Decrypt sapling output notes with the inputs ovk and updates saplingNoteDataMap
+    void AddExternalNotesDataToTx(CWalletTx& wtx) const;
 
     //! Generates new Sapling key
-    libzcash::SaplingPaymentAddress GenerateNewSaplingZKey();
+    libzcash::SaplingPaymentAddress GenerateNewSaplingZKey(std::string label = "");
 
     //! pindex is the new tip being connected.
     void IncrementNoteWitnesses(const CBlockIndex* pindex,
@@ -616,7 +623,7 @@ public:
     void ResendWalletTransactions(CConnman* connman);
 
     CAmount loopTxsBalance(std::function<void(const uint256&, const CWalletTx&, CAmount&)>method) const;
-    CAmount GetAvailableBalance(bool fIncludeDelegated = true) const;
+    CAmount GetAvailableBalance(bool fIncludeDelegated = true, bool fIncludeShielded = true) const;
     CAmount GetAvailableBalance(isminefilter& filter, bool useCache = false, int minDepth = 1) const;
     CAmount GetColdStakingBalance() const;  // delegated coins for which we have the staking key
     CAmount GetImmatureColdStakingBalance() const;
@@ -624,7 +631,7 @@ public:
     CAmount GetDelegatedBalance() const;    // delegated coins for which we have the spending key
     CAmount GetImmatureDelegatedBalance() const;
     CAmount GetLockedCoins() const;
-    CAmount GetUnconfirmedBalance() const;
+    CAmount GetUnconfirmedBalance(isminetype filter = ISMINE_SPENDABLE) const;
     CAmount GetImmatureBalance() const;
     CAmount GetWatchOnlyBalance() const;
     CAmount GetUnconfirmedWatchOnlyBalance() const;
@@ -637,7 +644,7 @@ public:
      * @note passing nChangePosInOut as -1 will result in setting a random position
      */
     bool CreateTransaction(const std::vector<CRecipient>& vecSend,
-        CWalletTx& wtxNew,
+        CWalletTx* wtxNew,
         CReserveKey& reservekey,
         CAmount& nFeeRet,
         int& nChangePosInOut,
@@ -647,7 +654,7 @@ public:
         bool sign = true,
         CAmount nFeePay = 0,
         bool fIncludeDelegated = false);
-    bool CreateTransaction(CScript scriptPubKey, const CAmount& nValue, CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl* coinControl = NULL, AvailableCoinsType coin_type = ALL_COINS, CAmount nFeePay = 0, bool fIncludeDelegated = false);
+    bool CreateTransaction(CScript scriptPubKey, const CAmount& nValue, CWalletTx* wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl* coinControl = NULL, AvailableCoinsType coin_type = ALL_COINS, CAmount nFeePay = 0, bool fIncludeDelegated = false);
 
     // enumeration for CommitResult (return status of CommitTransaction)
     enum CommitStatus
@@ -675,6 +682,10 @@ public:
                          std::vector<CStakeableOutput>* availableCoins);
     bool MultiSend();
     void AutoCombineDust(CConnman* connman);
+
+    // Shielded balances
+    CAmount GetAvailableShieldedBalance(bool fUseCache = true) const;
+    CAmount GetUnconfirmedShieldedBalance() const;
 
     static CFeeRate minTxFee;
     /**
@@ -731,21 +742,21 @@ public:
     DBErrors LoadWallet(bool& fFirstRunRet);
     DBErrors ZapWalletTx(std::vector<CWalletTx>& vWtx);
 
-    static std::string ParseIntoAddress(const CTxDestination& dest, const std::string& purpose);
+    static std::string ParseIntoAddress(const CWDestination& dest, const std::string& purpose);
 
-    bool SetAddressBook(const CTxDestination& address, const std::string& strName, const std::string& purpose);
-    bool DelAddressBook(const CTxDestination& address, const CChainParams::Base58Type addrType = CChainParams::PUBKEY_ADDRESS);
-    bool HasAddressBook(const CTxDestination& address) const;
+    bool SetAddressBook(const CWDestination& address, const std::string& strName, const std::string& purpose);
+    bool DelAddressBook(const CWDestination& address, const CChainParams::Base58Type addrType = CChainParams::PUBKEY_ADDRESS);
+    bool HasAddressBook(const CWDestination& address) const;
     bool HasDelegator(const CTxOut& out) const;
     int GetAddressBookSize() const { return mapAddressBook.size(); };
 
     CAddressBookIterator NewAddressBookIterator() { return CAddressBookIterator(mapAddressBook); }
-    std::string GetPurposeForAddressBookEntry(const CTxDestination& address) const;
-    std::string GetNameForAddressBookEntry(const CTxDestination& address) const;
-    Optional<AddressBook::CAddressBookData> GetAddressBookEntry(const CTxDestination& address) const;
+    std::string GetPurposeForAddressBookEntry(const CWDestination& address) const;
+    std::string GetNameForAddressBookEntry(const CWDestination& address) const;
+    Optional<AddressBook::CAddressBookData> GetAddressBookEntry(const CWDestination& address) const;
 
-    void LoadAddressBookName(const CTxDestination& dest, const std::string& strName);
-    void LoadAddressBookPurpose(const CTxDestination& dest, const std::string& strPurpose);
+    void LoadAddressBookName(const CWDestination& dest, const std::string& strName);
+    void LoadAddressBookPurpose(const CWDestination& dest, const std::string& strPurpose);
 
     bool UpdatedTransaction(const uint256& hashTx);
 
@@ -790,7 +801,7 @@ public:
      * Address book entry changed.
      * @note called with lock cs_wallet held.
      */
-    boost::signals2::signal<void(CWallet* wallet, const CTxDestination& address, const std::string& label, bool isMine, const std::string& purpose, ChangeType status)> NotifyAddressBookChanged;
+    boost::signals2::signal<void(CWallet* wallet, const CWDestination& address, const std::string& label, bool isMine, const std::string& purpose, ChangeType status)> NotifyAddressBookChanged;
 
     /**
      * Wallet transaction added, removed or updated.

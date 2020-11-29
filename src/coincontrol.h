@@ -10,6 +10,22 @@
 #include "policy/feerate.h"
 #include "primitives/transaction.h"
 #include "script/standard.h"
+#include <unordered_set>
+
+class OutPointWrapper {
+public:
+    BaseOutPoint outPoint;
+    CAmount value;
+    bool isP2CS;
+
+    bool operator<(const OutPointWrapper& obj2) const {
+        return this->outPoint < obj2.outPoint;
+    }
+
+    bool operator==(const OutPointWrapper& obj2) const {
+        return this->outPoint == obj2.outPoint;
+    }
+};
 
 /** Coin Control Features. */
 class CCoinControl
@@ -52,19 +68,19 @@ public:
         return (!setSelected.empty());
     }
 
-    bool IsSelected(const COutPoint& output) const
+    bool IsSelected(const BaseOutPoint& output) const
     {
-        return (setSelected.count(output) > 0);
+        return (setSelected.count(OutPointWrapper{output, 0, false}) > 0);
     }
 
-    void Select(const COutPoint& output)
+    void Select(const BaseOutPoint& output, CAmount value = 0, bool isP2CS = false)
     {
-        setSelected.insert(output);
+        setSelected.insert(OutPointWrapper{output, value, isP2CS});
     }
 
-    void UnSelect(const COutPoint& output)
+    void UnSelect(const BaseOutPoint& output)
     {
-        setSelected.erase(output);
+        setSelected.erase(OutPointWrapper{output, 0, false});
     }
 
     void UnSelectAll()
@@ -72,7 +88,7 @@ public:
         setSelected.clear();
     }
 
-    void ListSelected(std::vector<COutPoint>& vOutpoints) const
+    void ListSelected(std::vector<OutPointWrapper>& vOutpoints) const
     {
         vOutpoints.assign(setSelected.begin(), setSelected.end());
     }
@@ -82,14 +98,15 @@ public:
         return setSelected.size();
     }
 
-    void SetSelection(std::set<COutPoint> setSelected)
-    {
-        this->setSelected.clear();
-        this->setSelected = setSelected;
-    }
-
 private:
-    std::set<COutPoint> setSelected;
+
+    struct SimpleOutpointHash {
+        size_t operator() (const OutPointWrapper& obj) const {
+            return (UintToArith256(obj.outPoint.hash) + obj.outPoint.n).GetCheapHash();
+        }
+    };
+
+    std::unordered_set<OutPointWrapper, SimpleOutpointHash> setSelected;
 };
 
 #endif // BITCOIN_COINCONTROL_H

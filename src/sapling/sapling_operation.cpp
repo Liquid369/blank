@@ -4,6 +4,7 @@
 
 #include "sapling/sapling_operation.h"
 
+#include "coincontrol.h"
 #include "net.h" // for g_connman
 #include "policy/policy.h" // for GetDustThreshold
 #include "sapling/key_io_sapling.h"
@@ -64,23 +65,41 @@ TxValues calculateTarget(const std::vector<SendManyRecipient>& recipients, const
 
 OperationResult SaplingOperation::build()
 {
+    bool isFromtAddress = false;
+    bool isFromShielded = false;
 
-    bool isFromtAddress = fromAddress.isFromTAddress();
-    bool isFromShielded = fromAddress.isFromSapAddress();
+    if (coinControl) {
+        // if coin control was selected it overrides any other defined configuration
+        std::vector<OutPointWrapper> coins;
+        coinControl->ListSelected(coins);
+        // first check that every selected input is from the same type, cannot be mixed for clear privacy reasons.
+        // error is thrown below if it happens, not here.
+        for (const auto& coin : coins) {
+            if (coin.outPoint.isTransparent) {
+                isFromtAddress = true;
+            } else {
+                isFromShielded = true;
+            }
+        }
+    } else {
+        // Regular flow
+        isFromtAddress = fromAddress.isFromTAddress();
+        isFromShielded = fromAddress.isFromSapAddress();
 
-    if (!isFromtAddress && !isFromShielded) {
-        isFromtAddress = selectFromtaddrs;
-        isFromShielded = selectFromShield;
-
-        // It needs to have a from.
         if (!isFromtAddress && !isFromShielded) {
-            return errorOut("From address parameter missing");
+            isFromtAddress = selectFromtaddrs;
+            isFromShielded = selectFromShield;
         }
+    }
 
-        // Cannot be from both
-        if (isFromtAddress && isFromShielded) {
-            return errorOut("From address type cannot be shielded and transparent");
-        }
+    // It needs to have a from.
+    if (!isFromtAddress && !isFromShielded) {
+        return errorOut("From address parameter missing");
+    }
+
+    // Cannot be from both
+    if (isFromtAddress && isFromShielded) {
+        return errorOut("From address type cannot be shielded and transparent");
     }
 
     if (recipients.empty()) {
@@ -104,11 +123,10 @@ OperationResult SaplingOperation::build()
                 return result;
             }
         } else {
-            // Sending from a t-address, which we don't have an ovk for. Instead,
-            // generate a common one from the HD seed. This ensures the data is
-            // recoverable, while keeping it logically separate from the ZIP 32
-            // Sapling key hierarchy, which the user might not be using.
-            ovk = pwalletMain->GetSaplingScriptPubKeyMan()->getCommonOVKFromSeed();
+            // Get the common OVK for recovering t->shield outputs.
+            // If not already databased, a new one will be generated from the HD seed.
+            // It is safe to do it here, as the wallet is unlocked.
+            ovk = pwalletMain->GetSaplingScriptPubKeyMan()->getCommonOVK();
         }
 
         // Add outputs
@@ -228,6 +246,25 @@ void SaplingOperation::setFromAddress(const libzcash::SaplingPaymentAddress& _pa
 
 OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
 {
+    // If the user has selected coins to spend then, directly load them.
+    // The spendability, depth and other checks should have been done on the user selection side,
+    // no need to do them again.
+    if (coinControl && coinControl->HasSelected()) {
+        std::vector<OutPointWrapper> vCoins;
+        coinControl->ListSelected(vCoins);
+
+        std::vector<COutput> selectedUTXOInputs;
+        CAmount nSelectedValue = 0;
+        for (const auto& outpoint : vCoins) {
+            const auto* tx = pwalletMain->GetWalletTx(outpoint.outPoint.hash);
+            if (!tx) continue;
+            nSelectedValue += tx->vout[outpoint.outPoint.n].nValue;
+            selectedUTXOInputs.emplace_back(tx, outpoint.outPoint.n, 0, true, true);
+        }
+        return loadUtxos(txValues, selectedUTXOInputs, nSelectedValue);
+    }
+
+    // No coin control selected, let's find the utxo by our own.
     std::set<CTxDestination> destinations;
     if (fromAddress.isFromTAddress()) destinations.insert(fromAddress.fromTaddr);
     CWallet::AvailableCoinsFilter coinsFilter(false,
@@ -279,7 +316,12 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
                                   FormatMoney(selectedUTXOAmount), FormatMoney(dustThreshold - dustChange), FormatMoney(dustChange), FormatMoney(dustThreshold)));
     }
 
-    transInputs = selectedTInputs;
+    return loadUtxos(txValues, selectedTInputs, selectedUTXOAmount);
+}
+
+OperationResult SaplingOperation::loadUtxos(TxValues& txValues, const std::vector<COutput>& selectedUTXO, const CAmount selectedUTXOAmount)
+{
+    transInputs = selectedUTXO;
     txValues.transInTotal = selectedUTXOAmount;
 
     // update the transaction with these inputs
@@ -287,27 +329,41 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
         const auto& outPoint = t.tx->vout[t.i];
         txBuilder.AddTransparentInput(COutPoint(t.tx->GetHash(), t.i), outPoint.scriptPubKey, outPoint.nValue);
     }
-
     return OperationResult(true);
 }
 
 OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& ovk)
 {
     shieldedInputs.clear();
-    pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(shieldedInputs, fromAddress.fromSapAddr, mindepth);
+    // if we already have selected the notes, let's directly set them.
+    bool hasCoinControl = coinControl && coinControl->HasSelected();
+    if (hasCoinControl) {
+        std::vector<OutPointWrapper> vCoins;
+        coinControl->ListSelected(vCoins);
 
-    for (const auto& entry : shieldedInputs) {
-        std::string data(entry.memo.begin(), entry.memo.end());
-        LogPrint(BCLog::SAPLING,"%s: found unspent Sapling note (txid=%s, vShieldedSpend=%d, amount=%s, memo=%s)\n",
-                 __func__ ,
-                 entry.op.hash.ToString().substr(0, 10),
-                 entry.op.n,
-                 FormatMoney(entry.note.value()),
-                 HexStr(data).substr(0, 10));
-    }
+        // Converting outpoint wrapper to sapling outpoints
+        std::vector<SaplingOutPoint> vSaplingOutpoints;
+        vSaplingOutpoints.reserve(vCoins.size());
+        for (const auto& outpoint : vCoins) {
+            vSaplingOutpoints.emplace_back(outpoint.outPoint.hash, outpoint.outPoint.n);
+        }
 
-    if (shieldedInputs.empty()) {
-        return errorOut("Insufficient funds, no available notes to spend");
+        pwalletMain->GetSaplingScriptPubKeyMan()->GetNotes(vSaplingOutpoints, shieldedInputs);
+
+        if (shieldedInputs.empty()) {
+            return errorOut("Insufficient funds, no available notes to spend");
+        }
+    } else {
+        // If we don't have coinControl then let's find the notes
+        pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(shieldedInputs, fromAddress.fromSapAddr, mindepth);
+        if (shieldedInputs.empty()) {
+            // Just to notify the user properly, check if the wallet has notes with less than the min depth
+            std::vector<SaplingNoteEntry> _shieldedInputs;
+            pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(_shieldedInputs, fromAddress.fromSapAddr, 0);
+            return errorOut(_shieldedInputs.empty() ?
+                    "Insufficient funds, no available notes to spend" :
+                    "Insufficient funds, shielded PIV need at least 5 confirmations");
+        }
     }
 
     // sort in descending order, so big notes appear first
@@ -340,7 +396,8 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& 
         ops.emplace_back(t.op);
         notes.emplace_back(t.note);
         txValues.shieldedInTotal += t.note.value();
-        if (txValues.shieldedInTotal >= txValues.target) {
+        if (!hasCoinControl && txValues.shieldedInTotal >= txValues.target) {
+            // coin control selection by pass this check, uses all the selected notes.
             // Select another note if there is change less than the dust threshold.
             dustChange = txValues.shieldedInTotal - txValues.target;
             if (dustChange == 0 || dustChange >= dustThreshold) {
@@ -388,6 +445,39 @@ OperationResult GetMemoFromString(const std::string& s, std::array<unsigned char
     // copy vector into array
     for (unsigned int i = 0; i < sizeMemo; i++) {
         memoRet[i] = rawMemo[i];
+    }
+    return OperationResult(true);
+}
+
+OperationResult CheckTransactionSize(std::vector<SendManyRecipient>& recipients, bool fromTaddr)
+{
+    CMutableTransaction mtx;
+    mtx.nVersion = CTransaction::TxVersion::SAPLING;
+    unsigned int max_tx_size = MAX_TX_SIZE_AFTER_SAPLING;
+
+    // As a sanity check, estimate and verify that the size of the transaction will be valid.
+    // Depending on the input notes, the actual tx size may turn out to be larger and perhaps invalid.
+    size_t nTransparentOuts = 0;
+    for (const auto& t : recipients) {
+        if (t.IsTransparent()) {
+            nTransparentOuts++;
+            continue;
+        }
+        if (IsValidPaymentAddress(t.shieldedRecipient->address)) {
+            mtx.sapData->vShieldedOutput.emplace_back();
+        } else {
+            return errorOut(strprintf("invalid recipient shielded address %s",
+                    KeyIO::EncodePaymentAddress(t.shieldedRecipient->address)));
+        }
+    }
+    CTransaction tx(mtx);
+    size_t txsize = GetSerializeSize(tx, SER_NETWORK, tx.nVersion) + CTXOUT_REGULAR_SIZE * nTransparentOuts;
+    if (fromTaddr) {
+        txsize += CTXIN_SPEND_DUST_SIZE;
+        txsize += CTXOUT_REGULAR_SIZE;      // There will probably be taddr change
+    }
+    if (txsize > max_tx_size) {
+        return errorOut(strprintf("Too many outputs, size of raw transaction would be larger than limit of %d bytes", max_tx_size));
     }
     return OperationResult(true);
 }

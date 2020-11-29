@@ -13,8 +13,11 @@
 #include "transactiontablemodel.h"
 
 #include "base58.h"
+#include "coincontrol.h"
 #include "db.h"
 #include "keystore.h"
+#include "sapling/key_io_sapling.h"
+#include "sapling/sapling_operation.h"
 #include "spork.h"
 #include "sync.h"
 #include "guiinterface.h"
@@ -68,6 +71,11 @@ bool WalletModel::isColdStakingNetworkelyEnabled() const
     return !sporkManager.IsSporkActive(SPORK_19_COLDSTAKING_MAINTENANCE);
 }
 
+bool WalletModel::isSaplingInMaintenance() const
+{
+    return sporkManager.IsSporkActive(SPORK_20_SAPLING_MAINTENANCE);
+}
+
 bool WalletModel::isStakingStatusActive() const
 {
     return wallet && wallet->pStakerStatus && wallet->pStakerStatus->IsActive();
@@ -93,7 +101,7 @@ bool WalletModel::upgradeWallet(std::string& upgradeError)
     return wallet->Upgrade(upgradeError, prev_version);
 }
 
-CAmount WalletModel::getBalance(const CCoinControl* coinControl, bool fIncludeDelegated, bool fUnlockedOnly) const
+CAmount WalletModel::getBalance(const CCoinControl* coinControl, bool fIncludeDelegated, bool fUnlockedOnly, bool fIncludeShielded) const
 {
     if (coinControl) {
         CAmount nBalance = 0;
@@ -110,12 +118,12 @@ CAmount WalletModel::getBalance(const CCoinControl* coinControl, bool fIncludeDe
         return nBalance;
     }
 
-    return wallet->GetAvailableBalance(fIncludeDelegated) - (fUnlockedOnly ? wallet->GetLockedCoins() : CAmount(0));
+    return wallet->GetAvailableBalance(fIncludeDelegated, fIncludeShielded) - (fUnlockedOnly ? wallet->GetLockedCoins() : CAmount(0));
 }
 
-CAmount WalletModel::getUnlockedBalance(const CCoinControl* coinControl, bool fIncludeDelegated) const
+CAmount WalletModel::getUnlockedBalance(const CCoinControl* coinControl, bool fIncludeDelegated, bool fIncludeShielded) const
 {
-    return getBalance(coinControl, fIncludeDelegated, true);
+    return getBalance(coinControl, fIncludeDelegated, true, fIncludeShielded);
 }
 
 CAmount WalletModel::getMinColdStakingAmount() const
@@ -282,8 +290,12 @@ void WalletModel::updateWatchOnlyFlag(bool fHaveWatchonly)
 
 bool WalletModel::validateAddress(const QString& address)
 {
-    // Only regular base58 addresses accepted here
-    return IsValidDestinationString(address.toStdString(), false);
+    // Only regular base58 addresses and shielded addresses accepted here
+    bool isStaking = false;
+    CWDestination dest = Standard::DecodeDestination(address.toStdString(), isStaking);
+    const auto regDest = boost::get<CTxDestination>(&dest);
+    if (regDest && IsValidDestination(*regDest) && isStaking) return false;
+    return Standard::IsValidDestination(dest);
 }
 
 bool WalletModel::validateAddress(const QString& address, bool fStaking)
@@ -291,7 +303,18 @@ bool WalletModel::validateAddress(const QString& address, bool fStaking)
     return IsValidDestinationString(address.toStdString(), fStaking);
 }
 
-bool WalletModel::updateAddressBookLabels(const CTxDestination& dest, const std::string& strName, const std::string& strPurpose)
+bool WalletModel::validateAddress(const QString& address, bool fStaking, bool& isShielded)
+{
+    bool isStaking = false;
+    CWDestination dest = Standard::DecodeDestination(address.toStdString(), isStaking);
+    if (IsShieldedDestination(dest)) {
+        isShielded = true;
+        return true;
+    }
+    return Standard::IsValidDestination(dest) && (isStaking == fStaking);
+}
+
+bool WalletModel::updateAddressBookLabels(const CWDestination& dest, const std::string& strName, const std::string& strPurpose)
 {
     auto optAdd = pwalletMain->GetAddressBookEntry(dest);
     // Check if we have a new address or an updated label
@@ -303,10 +326,10 @@ bool WalletModel::updateAddressBookLabels(const CTxDestination& dest, const std:
     return false;
 }
 
-WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransaction& transaction, const CCoinControl* coinControl, bool fIncludeDelegations)
+WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransaction* transaction, const CCoinControl* coinControl, bool fIncludeDelegations)
 {
     CAmount total = 0;
-    QList<SendCoinsRecipient> recipients = transaction.getRecipients();
+    QList<SendCoinsRecipient> recipients = transaction->getRecipients();
     std::vector<CRecipient> vecSend;
 
     if (recipients.empty()) {
@@ -389,16 +412,13 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
     {
         LOCK2(cs_main, wallet->cs_wallet);
 
-        transaction.newPossibleKeyChange(wallet);
+        CReserveKey* keyChange = transaction->newPossibleKeyChange(wallet);
         CAmount nFeeRequired = 0;
         int nChangePosInOut = -1;
         std::string strFailReason;
 
-        CWalletTx* newTx = transaction.getTransaction();
-        CReserveKey* keyChange = transaction.getPossibleKeyChange();
-
         bool fCreated = wallet->CreateTransaction(vecSend,
-                                                  *newTx,
+                                                  transaction->getTransaction(),
                                                   *keyChange,
                                                   nFeeRequired,
                                                   nChangePosInOut,
@@ -408,7 +428,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
                                                   true,
                                                   0,
                                                   fIncludeDelegations);
-        transaction.setTransactionFee(nFeeRequired);
+        transaction->setTransactionFee(nFeeRequired);
 
         if (!fCreated) {
             if ((total + nFeeRequired) > nSpendableBalance) {
@@ -424,7 +444,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         }
 
         // reject insane fee
-        if (nFeeRequired > ::minRelayTxFee.GetFee(transaction.getTransactionSize()) * 10000)
+        if (nFeeRequired > ::minRelayTxFee.GetFee(transaction->getTransactionSize()) * 10000)
             return InsaneFee;
     }
 
@@ -440,16 +460,17 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
     }
 
     bool fColdStakingActive = isColdStakingNetworkelyEnabled();
+    bool fSaplingActive = Params().GetConsensus().NetworkUpgradeActive(cachedNumBlocks, Consensus::UPGRADE_V5_DUMMY);
 
-    // Double check tx before do anything
-    CValidationState state; // TODO: Add sapling network active flag check
-    if (!CheckTransaction(*transaction.getTransaction(), true, true, state, true, fColdStakingActive)) {
+    // Double check the tx before doing anything
+    CWalletTx* newTx = transaction.getTransaction();
+    CValidationState state;
+    if (!CheckTransaction(*newTx, true, true, state, true, fColdStakingActive, fSaplingActive)) {
         return TransactionCheckFailed;
     }
 
     {
         LOCK2(cs_main, wallet->cs_wallet);
-        CWalletTx* newTx = transaction.getTransaction();
         QList<SendCoinsRecipient> recipients = transaction.getRecipients();
 
         // Store PaymentRequests in wtx.vOrderForm in wallet.
@@ -466,7 +487,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
         }
 
         CReserveKey* keyChange = transaction.getPossibleKeyChange();
-        const CWallet::CommitResult& res = wallet->CommitTransaction(*newTx, *keyChange, g_connman.get());
+        const CWallet::CommitResult& res = wallet->CommitTransaction(*newTx, keyChange, g_connman.get());
         if (res.status != CWallet::CommitStatus::OK) {
             return SendCoinsReturn(res);
         }
@@ -483,8 +504,10 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
         // Don't touch the address book when we have a payment request
         if (!rcp.paymentRequest.IsInitialized()) {
             bool isStaking = false;
-            CTxDestination address = DecodeDestination(rcp.address.toStdString(), isStaking);
-            std::string purpose = isStaking ? AddressBook::AddressBookPurpose::COLD_STAKING_SEND : AddressBook::AddressBookPurpose::SEND;
+            bool isShielded = false;
+            auto address = Standard::DecodeDestination(rcp.address.toStdString(), isStaking, isShielded);
+            std::string purpose = isShielded ? AddressBook::AddressBookPurpose::SHIELDED_SEND :
+                                  isStaking ? AddressBook::AddressBookPurpose::COLD_STAKING_SEND : AddressBook::AddressBookPurpose::SEND;
             std::string strLabel = rcp.label.toStdString();
             updateAddressBookLabels(address, strLabel, purpose);
         }
@@ -493,6 +516,57 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
     emitBalanceChanged(); // update balance immediately, otherwise there could be a short noticeable delay until pollBalanceChanged hits
 
     return SendCoinsReturn(OK);
+}
+
+OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* modelTransaction,
+                                                        bool fromTransparent,
+                                                        const CCoinControl* coinControl)
+{
+    // Basic checks first
+
+    // Check network status
+    int nextBlockHeight = cachedNumBlocks + 1;
+    if (!Params().GetConsensus().NetworkUpgradeActive(nextBlockHeight, Consensus::UPGRADE_V5_DUMMY)) {
+        return errorOut("Error, cannot send transaction. Sapling is not activated");
+    }
+
+    // Load shieldedAddrRecipients.
+    std::vector<SendManyRecipient> recipients;
+    for (const auto& recipient : modelTransaction->getRecipients()) {
+        if (recipient.isShieldedAddr) {
+            auto pa = KeyIO::DecodeSaplingPaymentAddress(recipient.address.toStdString());
+            if (!pa) return errorOut("Error, invalid shielded address");
+            recipients.emplace_back(*pa, recipient.amount, "");
+        } else {
+            auto dest = DecodeDestination(recipient.address.toStdString());
+            if (!IsValidDestination(dest)) return errorOut("Error, invalid transparent address");
+            recipients.emplace_back(dest, recipient.amount);
+        }
+    }
+
+    // Now check the transaction size
+    auto opResult = CheckTransactionSize(recipients, true);
+    if (!opResult) return opResult;
+
+    // Create the operation
+    TransactionBuilder txBuilder = TransactionBuilder(Params().GetConsensus(), nextBlockHeight, wallet);
+    SaplingOperation operation(txBuilder);
+    auto operationResult = operation.setRecipients(recipients)
+             ->setTransparentKeyChange(modelTransaction->getPossibleKeyChange())
+             ->setSelectTransparentCoins(fromTransparent)
+             ->setSelectShieldedCoins(!fromTransparent)
+             ->setCoinControl(coinControl)
+             ->setMinDepth(fromTransparent ? 1 : 5)
+             ->build();
+
+    if (!operationResult) {
+        return operationResult;
+    }
+
+    // load the transaction and key change (if needed)
+    modelTransaction->setTransaction(new CWalletTx(wallet, operation.getFinalTx()));
+    modelTransaction->setTransactionFee(operation.getFee()); // in the future, fee will be dynamically calculated.
+    return operationResult;
 }
 
 const CWalletTx* WalletModel::getTx(uint256 id)
@@ -603,7 +677,7 @@ static void NotifyKeyStoreStatusChanged(WalletModel* walletmodel, CCryptoKeyStor
     QMetaObject::invokeMethod(walletmodel, "updateStatus", Qt::QueuedConnection);
 }
 
-static void NotifyAddressBookChanged(WalletModel* walletmodel, CWallet* wallet, const CTxDestination& address, const std::string& label, bool isMine, const std::string& purpose, ChangeType status)
+static void NotifyAddressBookChanged(WalletModel* walletmodel, CWallet* wallet, const CWDestination& address, const std::string& label, bool isMine, const std::string& purpose, ChangeType status)
 {
     QString strAddress = QString::fromStdString(pwalletMain->ParseIntoAddress(address, purpose));
     QString strLabel = QString::fromStdString(label);
@@ -757,6 +831,19 @@ int64_t WalletModel::getKeyCreationTime(const CTxDestination& address)
     return 0;
 }
 
+int64_t WalletModel::getKeyCreationTime(const std::string& address)
+{
+    return pwalletMain->GetKeyCreationTime(Standard::DecodeDestination(address));
+}
+
+int64_t WalletModel::getKeyCreationTime(const libzcash::SaplingPaymentAddress& address)
+{
+    if (this->isMine(address)) {
+        return pwalletMain->GetKeyCreationTime(address);
+    }
+    return 0;
+}
+
 PairResult WalletModel::getNewAddress(Destination& ret, std::string label) const
 {
     CTxDestination dest;
@@ -771,6 +858,13 @@ PairResult WalletModel::getNewStakingAddress(Destination& ret,std::string label)
     PairResult res = wallet->getNewStakingAddress(dest, label);
     if (res.result) ret = Destination(dest, true);
     return res;
+}
+
+PairResult WalletModel::getNewShieldedAddress(QString& shieldedAddrRet, std::string strLabel)
+{
+    shieldedAddrRet = QString::fromStdString(
+            KeyIO::EncodePaymentAddress(wallet->GenerateNewSaplingZKey(strLabel)));
+    return PairResult(true);
 }
 
 bool WalletModel::whitelistAddressFromColdStaking(const QString &addressStr)
@@ -815,20 +909,6 @@ std::string WalletModel::getLabelForAddress(const CTxDestination& address)
     return label;
 }
 
-// returns a list of COutputs from COutPoints
-void WalletModel::getOutputs(const std::vector<COutPoint>& vOutpoints, std::vector<COutput>& vOutputs)
-{
-    LOCK2(cs_main, wallet->cs_wallet);
-    for (const COutPoint& outpoint : vOutpoints) {
-        const auto* tx = wallet->GetWalletTx(outpoint.hash);
-        if (!tx) continue;
-        bool fConflicted;
-        const int nDepth = tx->GetDepthAndMempool(fConflicted);
-        if (nDepth < 0 || fConflicted) continue;
-        vOutputs.emplace_back(tx, outpoint.n, nDepth, true, true);
-    }
-}
-
 // returns a COutPoint of 10000 PIV if found
 bool WalletModel::getMNCollateralCandidate(COutPoint& outPoint)
 {
@@ -851,6 +931,33 @@ bool WalletModel::isSpent(const COutPoint& outpoint) const
 {
     LOCK2(cs_main, wallet->cs_wallet);
     return wallet->IsSpent(outpoint.hash, outpoint.n);
+}
+
+void WalletModel::listCoins(std::map<ListCoinsKey, std::vector<ListCoinsValue>>& mapCoins, bool fTransparent) const
+{
+    if (fTransparent) {
+        listCoins(mapCoins);
+    } else {
+        listAvailableNotes(mapCoins);
+    }
+}
+
+void WalletModel::listAvailableNotes(std::map<ListCoinsKey, std::vector<ListCoinsValue>>& mapCoins) const
+{
+    std::vector<SaplingNoteEntry> notes;
+    Optional<libzcash::SaplingPaymentAddress> dummy = nullopt;
+    wallet->GetSaplingScriptPubKeyMan()->GetFilteredNotes(notes, dummy);
+    for (const auto& note : notes) {
+        ListCoinsKey key{QString::fromStdString(KeyIO::EncodePaymentAddress(note.address)), false, nullopt};
+        ListCoinsValue value{
+            note.op.hash,
+            (int)note.op.n,
+            (CAmount)note.note.value(),
+            0,
+            note.confirmations
+        };
+        mapCoins[key].emplace_back(value);
+    }
 }
 
 // AvailableCoins + LockedCoins grouped by wallet address (put change in one group with wallet address)
@@ -946,7 +1053,7 @@ bool WalletModel::saveReceiveRequest(const std::string& sAddress, const int64_t 
         return wallet->AddDestData(dest, key, sRequest);
 }
 
-bool WalletModel::isMine(const CTxDestination& address)
+bool WalletModel::isMine(const CWDestination& address)
 {
     return IsMine(*wallet, address);
 }
@@ -956,7 +1063,18 @@ bool WalletModel::isMine(const QString& addressStr)
     return IsMine(*wallet, DecodeDestination(addressStr.toStdString()));
 }
 
+bool WalletModel::IsShieldedDestination(const CWDestination& address)
+{
+    return boost::get<libzcash::SaplingPaymentAddress>(&address);
+}
+
 bool WalletModel::isUsed(CTxDestination address)
 {
     return wallet->IsUsed(address);
+}
+
+Optional<QString> WalletModel::getShieldedAddressFromSpendDesc(const CWalletTx* wtx, int index)
+{
+    Optional<libzcash::SaplingPaymentAddress> opAddr = wallet->GetSaplingScriptPubKeyMan()->GetAddressFromInputIfPossible(wtx, index);
+    return opAddr ? Optional<QString>(QString::fromStdString(KeyIO::EncodePaymentAddress(*opAddr))) : nullopt;
 }
