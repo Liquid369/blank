@@ -81,7 +81,7 @@
             <item>
              <widget class="QLabel" name="labelSubtitle1">
               <property name="text">
-               <string>Transfer coins publicly or fully private</string>
+               <string>Transfer coins publicly or privately</string>
               </property>
              </widget>
             </item>
@@ -202,7 +202,7 @@ padding-top:2px;
                <string notr="true"/>
               </property>
               <property name="text">
-               <string>Select which coins do you want to spend</string>
+               <string>Select which coins to spend</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
