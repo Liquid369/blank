@@ -316,7 +316,8 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         *pfMissingInputs = false;
 
     // Check maintenance mode
-    if (sporkManager.IsSporkActive(SPORK_16_ZEROCOIN_MAINTENANCE_MODE) && tx.ContainsZerocoins())
+    bool hasTxZerocoins = tx.ContainsZerocoins();
+    if (sporkManager.IsSporkActive(SPORK_16_ZEROCOIN_MAINTENANCE_MODE) && hasTxZerocoins)
         return state.DoS(10, error("%s : Zerocoin transactions are temporarily disabled for maintenance",
                 __func__), REJECT_INVALID, "bad-tx-zerocoin-maintenance");
     if (sporkManager.IsSporkActive(SPORK_20_SAPLING_MAINTENANCE) && tx.IsShieldedTx())
@@ -325,11 +326,16 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
 
     const CChainParams& params = Params();
     const Consensus::Params& consensus = params.GetConsensus();
+    int chainHeight = chainActive.Height();
+    bool fSaplingActive = consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_V5_DUMMY);
+
+    // If v5 is active, bye bye zerocoin
+    if (fSaplingActive && hasTxZerocoins) {
+        return state.DoS(100, error("%s : v5 upgrade enforced, zerocoin disabled", __func__));
+    }
 
     // Check transaction
-    int chainHeight = chainActive.Height();
     bool fColdStakingActive = !sporkManager.IsSporkActive(SPORK_19_COLDSTAKING_MAINTENANCE);
-    bool fSaplingActive = consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_V5_DUMMY);
     if (!CheckTransaction(tx, consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_ZC),
             true, state, isBlockBetweenFakeSerialAttackRange(chainHeight), fColdStakingActive, fSaplingActive))
         return error("%s : transaction checks for %s failed with %s", __func__, tx.GetHash().ToString(), FormatStateMessage(state));
@@ -1527,6 +1533,9 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     SaplingMerkleTree sapling_tree;
     assert(view.GetSaplingAnchorAt(view.GetBestAnchor(), sapling_tree));
 
+    //
+    bool isV5UpgradeEnforced = consensus.NetworkUpgradeActive(pindex->nHeight, Consensus::UPGRADE_V5_DUMMY);
+
     std::vector<PrecomputedTransactionData> precomTxData;
     precomTxData.reserve(block.vtx.size()); // Required so that pointers to individual precomTxData don't get invalidated
     bool fInitialBlockDownload = IsInitialBlockDownload();
@@ -1546,6 +1555,11 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                 return state.DoS(100, error("%s : zerocoin transactions are currently in maintenance mode", __func__));
             if (fSaplingMaintenance && tx.IsShieldedTx())
                 return state.DoS(100, error("%s : shielded transactions are currently in maintenance mode", __func__));
+        }
+
+        // If v5 is active, bye bye zerocoin
+        if (isV5UpgradeEnforced && tx.ContainsZerocoins()) {
+            return state.DoS(100, error("%s : v5 upgrade enforced, zerocoin disabled", __func__));
         }
 
         if (tx.HasZerocoinMintOutputs()) {
