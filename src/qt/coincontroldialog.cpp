@@ -457,8 +457,7 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
         else if (item->isDisabled()) // locked (this happens if "check all" through parent node)
             item->setCheckState(COLUMN_CHECKBOX, Qt::Unchecked);
         else {
-            CAmount value = 0;
-            ParseFixedPoint(item->text(COLUMN_AMOUNT).toStdString(), 8, &value);
+            const CAmount value = static_cast<CAmount>(item->data(CoinControlDialog::COLUMN_AMOUNT, Qt::UserRole).toLongLong());
             bool isP2CS = item->data(COLUMN_CHECKBOX, Qt::UserRole) == QString("Delegated");
             coinControl->Select(outpt, value, isP2CS);
         }
