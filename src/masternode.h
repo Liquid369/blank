@@ -117,11 +117,7 @@ public:
         MASTERNODE_ENABLED,
         MASTERNODE_EXPIRED,
         MASTERNODE_REMOVE,
-        MASTERNODE_WATCHDOG_EXPIRED,
-        MASTERNODE_POSE_BAN,
         MASTERNODE_VIN_SPENT,
-        MASTERNODE_POS_ERROR,
-        MASTERNODE_MISSING
     };
 
     CTxIn vin;
@@ -257,9 +253,6 @@ public:
         if (activeState == CMasternode::MASTERNODE_EXPIRED)     return "EXPIRED";
         if (activeState == CMasternode::MASTERNODE_VIN_SPENT)   return "VIN_SPENT";
         if (activeState == CMasternode::MASTERNODE_REMOVE)      return "REMOVE";
-        if (activeState == CMasternode::MASTERNODE_POS_ERROR)   return "POS_ERROR";
-        if (activeState == CMasternode::MASTERNODE_MISSING)     return "MISSING";
-
         return strprintf("INVALID_%d", activeState);
     }
 
