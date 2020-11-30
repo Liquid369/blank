@@ -146,16 +146,9 @@ public:
     /// Get the current winner for this block
     CMasternode* GetCurrentMasterNode(int mod = 1, int64_t nBlockHeight = 0, int minProtocol = 0);
 
-    // !todo: remove this
-    std::vector<CMasternode> GetFullMasternodeVector()
-    {
-        Check();
-        std::vector<CMasternode> vMasternodes;
-        for (const auto it : mapMasternodes) {
-            vMasternodes.emplace_back(it.second);
-        }
-        return vMasternodes;
-    }
+    /// vector of pairs <masternode winner, height>
+    std::vector<std::pair<CMasternode, int>> GetMnScores(int nLast);
+
     // Retrieve the known masternodes ordered by scoring without checking them. (Only used for listmasternodes RPC call)
     std::vector<std::pair<int64_t, CMasternode>> GetMasternodeRanks(int nBlockHeight);
     int GetMasternodeRank(const CTxIn& vin, int64_t nBlockHeight, int minProtocol = 0, bool fOnlyActive = true);
