@@ -5,6 +5,7 @@
 
 #include "sapling/saplingscriptpubkeyman.h"
 #include "chain.h" // for CBlockIndex
+#include "utilstrencodings.h" // for SanitizeString()
 #include "validation.h" // for ReadBlockFromDisk()
 
 void SaplingScriptPubKeyMan::AddToSaplingSpends(const uint256& nullifier, const uint256& wtxid)
@@ -581,6 +582,13 @@ CAmount SaplingScriptPubKeyMan::GetOutPointValue(const CWalletTx& tx, const Sapl
         return 0;
     }
     return tx.mapSaplingNoteData.at(op).amount ? *(tx.mapSaplingNoteData.at(op).amount) : 0;
+}
+
+Optional<std::string> SaplingScriptPubKeyMan::GetOutPointMemo(const CWalletTx& tx, const SaplingOutPoint& op)
+{
+    auto it = tx.mapSaplingNoteData.find(op);
+    return it != tx.mapSaplingNoteData.end() && it->second.memo ?
+                Optional<std::string>(SanitizeString(std::string(it->second.memo->begin(), it->second.memo->end()))) : nullopt;
 }
 
 Optional<std::pair<
