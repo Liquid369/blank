@@ -239,28 +239,18 @@ void CMasternodeMan::AskForMN(CNode* pnode, const CTxIn& vin)
     mWeAskedForMasternodeListEntry[vin.prevout] = askAgain;
 }
 
-void CMasternodeMan::Check()
-{
-    LOCK(cs);
-
-    for (auto& mnIt : mapMasternodes) {
-        mnIt.second->Check();
-    }
-}
-
 void CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
 {
-    Check();
-
     LOCK(cs);
 
     //remove inactive and outdated
     auto it = mapMasternodes.begin();
     while (it != mapMasternodes.end()) {
         MasternodeRef& mn = it->second;
-        if (mn->activeState == CMasternode::MASTERNODE_REMOVE ||
-            mn->activeState == CMasternode::MASTERNODE_VIN_SPENT ||
-            (forceExpiredRemoval && mn->activeState == CMasternode::MASTERNODE_EXPIRED) ||
+        auto activeState = mn->GetActiveState();
+        if (activeState == CMasternode::MASTERNODE_REMOVE ||
+            activeState == CMasternode::MASTERNODE_VIN_SPENT ||
+            (forceExpiredRemoval && activeState == CMasternode::MASTERNODE_EXPIRED) ||
             mn->protocolVersion < ActiveProtocol()) {
             LogPrint(BCLog::MASTERNODE, "CMasternodeMan: Removing inactive Masternode %s - %i now\n", it->first.hash.ToString(), size() - 1);
 
@@ -357,15 +347,15 @@ void CMasternodeMan::Clear()
     nDsqCount = 0;
 }
 
-int CMasternodeMan::stable_size ()
+int CMasternodeMan::stable_size() const
 {
     int nStable_size = 0;
     int nMinProtocol = ActiveProtocol();
     int64_t nMasternode_Min_Age = MN_WINNER_MINIMUM_AGE;
     int64_t nMasternode_Age = 0;
 
-    for (auto& it : mapMasternodes) {
-        MasternodeRef& mn = it.second;
+    for (const auto& it : mapMasternodes) {
+        const MasternodeRef& mn = it.second;
         if (mn->protocolVersion < nMinProtocol) {
             continue; // Skip obsolete versions
         }
@@ -375,7 +365,7 @@ int CMasternodeMan::stable_size ()
                 continue; // Skip masternodes younger than (default) 8000 sec (MUST be > MASTERNODE_REMOVAL_SECONDS)
             }
         }
-        mn->Check ();
+
         if (!mn->IsEnabled ())
             continue; // Skip not-enabled masternodes
 
@@ -385,14 +375,13 @@ int CMasternodeMan::stable_size ()
     return nStable_size;
 }
 
-int CMasternodeMan::CountEnabled(int protocolVersion)
+int CMasternodeMan::CountEnabled(int protocolVersion) const
 {
     int i = 0;
     protocolVersion = protocolVersion == -1 ? ActiveProtocol() : protocolVersion;
 
-    for (auto& it : mapMasternodes) {
-        MasternodeRef& mn = it.second;
-        mn->Check();
+    for (const auto& it : mapMasternodes) {
+        const MasternodeRef& mn = it.second;
         if (mn->protocolVersion < protocolVersion || !mn->IsEnabled()) continue;
         i++;
     }
@@ -400,11 +389,10 @@ int CMasternodeMan::CountEnabled(int protocolVersion)
     return i;
 }
 
-void CMasternodeMan::CountNetworks(int protocolVersion, int& ipv4, int& ipv6, int& onion)
+void CMasternodeMan::CountNetworks(int protocolVersion, int& ipv4, int& ipv6, int& onion) const
 {
-    for (auto& it : mapMasternodes) {
-        MasternodeRef& mn = it.second;
-        mn->Check();
+    for (const auto& it : mapMasternodes) {
+        const MasternodeRef& mn = it.second;
         std::string strHost;
         int port;
         SplitHostPort(mn->addr.ToString(), port, strHost);
@@ -453,6 +441,13 @@ CMasternode* CMasternodeMan::Find(const COutPoint& collateralOut)
     return it != mapMasternodes.end() ? it->second.get() : nullptr;
 }
 
+const CMasternode* CMasternodeMan::Find(const COutPoint& collateralOut) const
+{
+    LOCK(cs);
+    auto const& it = mapMasternodes.find(collateralOut);
+    return it != mapMasternodes.end() ? it->second.get() : nullptr;
+}
+
 CMasternode* CMasternodeMan::Find(const CPubKey& pubKeyMasternode)
 {
     LOCK(cs);
@@ -481,11 +476,11 @@ void CMasternodeMan::CheckSpentCollaterals(const std::vector<CTransactionRef>& v
 //
 // Deterministically select the oldest/best masternode to pay on the network
 //
-CMasternode* CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight, bool fFilterSigTime, int& nCount)
+const CMasternode* CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight, bool fFilterSigTime, int& nCount) const
 {
     LOCK(cs);
 
-    CMasternode* pBestMasternode = NULL;
+    const CMasternode* pBestMasternode = nullptr;
     std::vector<std::pair<int64_t, CTxIn> > vecMasternodeLastPaid;
 
     /*
@@ -493,9 +488,8 @@ CMasternode* CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight
     */
 
     int nMnCount = CountEnabled();
-    for (auto& it : mapMasternodes) {
-        MasternodeRef& mn = it.second;
-        mn->Check();
+    for (const auto& it : mapMasternodes) {
+        const MasternodeRef& mn = it.second;
         if (!mn->IsEnabled()) continue;
 
         // //check protocol version
@@ -530,7 +524,7 @@ CMasternode* CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight
     uint256 nHigh;
     const uint256& hash = GetHashAtHeight(nBlockHeight - 101);
     for (std::pair<int64_t, CTxIn> & s : vecMasternodeLastPaid) {
-        CMasternode* pmn = Find(s.second.prevout);
+        const CMasternode* pmn = Find(s.second.prevout);
         if (!pmn) break;
 
         const uint256& n = pmn->CalculateScore(hash);
@@ -544,16 +538,15 @@ CMasternode* CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight
     return pBestMasternode;
 }
 
-CMasternode* CMasternodeMan::GetCurrentMasterNode(int mod, int64_t nBlockHeight, int minProtocol)
+const CMasternode* CMasternodeMan::GetCurrentMasterNode(int mod, int64_t nBlockHeight, int minProtocol) const
 {
     int64_t score = 0;
-    CMasternode* winner = NULL;
+    const CMasternode* winner = nullptr;
     const uint256& hash = GetHashAtHeight(nBlockHeight - 1);
 
     // scan for winner
-    for (auto& it : mapMasternodes) {
-        MasternodeRef& mn = it.second;
-        mn->Check();
+    for (const auto& it : mapMasternodes) {
+        const MasternodeRef& mn = it.second;
         if (mn->protocolVersion < minProtocol || !mn->IsEnabled()) continue;
 
         // calculate the score for each Masternode
@@ -570,13 +563,12 @@ CMasternode* CMasternodeMan::GetCurrentMasterNode(int mod, int64_t nBlockHeight,
     return winner;
 }
 
-std::vector<std::pair<MasternodeRef, int>> CMasternodeMan::GetMnScores(int nLast)
+std::vector<std::pair<MasternodeRef, int>> CMasternodeMan::GetMnScores(int nLast) const
 {
     std::vector<std::pair<MasternodeRef, int>> ret;
     int nChainHeight = GetBestHeight();
     if (nChainHeight < 0) return ret;
 
-    Check();
     for (int nHeight = nChainHeight - nLast; nHeight < nChainHeight + 20; nHeight++) {
         const uint256& hash = GetHashAtHeight(nHeight - 101);
         uint256 nHigh = UINT256_ZERO;
@@ -595,7 +587,7 @@ std::vector<std::pair<MasternodeRef, int>> CMasternodeMan::GetMnScores(int nLast
     return ret;
 }
 
-int CMasternodeMan::GetMasternodeRank(const CTxIn& vin, int64_t nBlockHeight, int minProtocol, bool fOnlyActive)
+int CMasternodeMan::GetMasternodeRank(const CTxIn& vin, int64_t nBlockHeight, int minProtocol, bool fOnlyActive) const
 {
     std::vector<std::pair<int64_t, CTxIn> > vecMasternodeScores;
     int64_t nMasternode_Min_Age = MN_WINNER_MINIMUM_AGE;
@@ -606,8 +598,8 @@ int CMasternodeMan::GetMasternodeRank(const CTxIn& vin, int64_t nBlockHeight, in
     if (!hash) return -1;
 
     // scan for winner
-    for (auto& it : mapMasternodes) {
-        MasternodeRef& mn = it.second;
+    for (const auto& it : mapMasternodes) {
+        const MasternodeRef& mn = it.second;
         if (mn->protocolVersion < minProtocol) {
             LogPrint(BCLog::MASTERNODE,"Skipping Masternode with obsolete version %d\n", mn->protocolVersion);
             continue;                                                       // Skip obsolete versions
@@ -621,7 +613,6 @@ int CMasternodeMan::GetMasternodeRank(const CTxIn& vin, int64_t nBlockHeight, in
             }
         }
         if (fOnlyActive) {
-            mn->Check();
             if (!mn->IsEnabled()) continue;
         }
         uint256 n = mn->CalculateScore(hash);
@@ -643,7 +634,7 @@ int CMasternodeMan::GetMasternodeRank(const CTxIn& vin, int64_t nBlockHeight, in
     return -1;
 }
 
-std::vector<std::pair<int64_t, CMasternode>> CMasternodeMan::GetMasternodeRanks(int nBlockHeight)
+std::vector<std::pair<int64_t, CMasternode>> CMasternodeMan::GetMasternodeRanks(int nBlockHeight) const
 {
     std::vector<std::pair<int64_t, CMasternode>> vecMasternodeScores;
     const uint256& hash = GetHashAtHeight(nBlockHeight - 1);
@@ -652,8 +643,8 @@ std::vector<std::pair<int64_t, CMasternode>> CMasternodeMan::GetMasternodeRanks(
     {
         LOCK(cs);
         // scan for winner
-        for (auto& it : mapMasternodes) {
-            MasternodeRef& mn = it.second;
+        for (const auto& it : mapMasternodes) {
+            const MasternodeRef& mn = it.second;
             if (!mn->IsEnabled()) {
                 vecMasternodeScores.emplace_back(9999, *mn);
                 continue;
