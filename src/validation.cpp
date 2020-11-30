@@ -2132,6 +2132,7 @@ bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const st
     UpdateTip(pindexNew);
     // Update MN manager cache
     mnodeman.CacheBlockHash(pindexNew);
+    mnodeman.CheckSpentCollaterals(blockConnecting.vtx);
 
     int64_t nTime6 = GetTimeMicros();
     nTimePostConnect += nTime6 - nTime5;
