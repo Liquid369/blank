@@ -76,6 +76,7 @@ private Q_SLOTS:
     void onCheckBoxChanged();
     void onContactMultiClicked();
     void onDeleteClicked();
+    void onEntryMemoClicked();
     void onResetCustomOptions(bool fRefreshAmounts);
     void onResetSettings();
 

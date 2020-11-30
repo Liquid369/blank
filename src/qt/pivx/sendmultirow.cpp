@@ -78,16 +78,24 @@ void SendMultiRow::amountChanged(const QString& amount)
 
 void SendMultiRow::onMemoClicked()
 {
+    launchMemoDialog();
+}
+
+bool SendMultiRow::launchMemoDialog()
+{
     showHideOp(true);
     SendMemoDialog* dialog = new SendMemoDialog(window, walletModel);
+    dialog->setMemo(recipient.message);
+    bool ret = false;
     if (openDialogWithOpaqueBackgroundY(dialog, window, 3, 5)) {
         QString memo = dialog->getMemo();
         if (IsValidUTF8(memo.toStdString())) {
             recipient.message = memo;
             ui->btnAddMemo->setText(tr("Update memo"));
             setCssProperty(ui->btnAddMemo, "btn-secondary-update", true);
+            ret = true;
         } else {
-            inform(tr("Invalid memo, "));
+            inform(tr("Invalid memo"));
         }
     } else if (dialog->getOperationResult()) {
         bool isMemoEmpty = recipient.message.isEmpty();
@@ -96,8 +104,10 @@ void SendMultiRow::onMemoClicked()
         ui->btnAddMemo->setText(tr("Add encrypted memo"));
         setCssProperty(ui->btnAddMemo, "btn-secundary-add", true);
         if (!isMemoEmpty) inform(tr("Memo field reset"));
+        ret = false;
     }
     dialog->deleteLater();
+    return ret;
 }
 
 /**
@@ -237,6 +247,11 @@ QString SendMultiRow::getAddress()
 CAmount SendMultiRow::getAmountValue()
 {
     return getAmountValue(ui->lineEditAmount->text());
+}
+
+QString SendMultiRow::getMemo()
+{
+    return recipient.message;
 }
 
 QRect SendMultiRow::getEditLineRect()

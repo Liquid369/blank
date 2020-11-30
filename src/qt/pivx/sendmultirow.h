@@ -38,6 +38,7 @@ public:
     SendCoinsRecipient getValue();
     QString getAddress();
     CAmount getAmountValue();
+    QString getMemo();
 
     /** Return whether the entry is still empty and unedited */
     bool isClear();
@@ -54,6 +55,9 @@ public:
     int getEditHeight();
     int getEditWidth();
     int getMenuBtnWidth();
+
+    // Return true if memo was set and false if it was cleared.
+    bool launchMemoDialog();
 
 public Q_SLOTS:
     void clear();

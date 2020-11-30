@@ -794,12 +794,13 @@ void SendWidget::onMenuClicked(SendMultiRow* entry)
 
     if (!this->menu) {
         this->menu = new TooltipMenu(window, this);
-        this->menu->setCopyBtnVisible(false);
+        this->menu->setCopyBtnText(tr("Add Memo"));
         this->menu->setEditBtnText(tr("Save contact"));
         this->menu->setMinimumSize(this->menu->width() + 30,this->menu->height());
         connect(this->menu, &TooltipMenu::message, this, &AddressesWidget::message);
         connect(this->menu, &TooltipMenu::onEditClicked, this, &SendWidget::onContactMultiClicked);
         connect(this->menu, &TooltipMenu::onDeleteClicked, this, &SendWidget::onDeleteClicked);
+        connect(this->menu, &TooltipMenu::onCopyClicked, this, &SendWidget::onEntryMemoClicked);
     } else {
         this->menu->hide();
     }
@@ -854,6 +855,14 @@ void SendWidget::onContactMultiClicked()
         dialog->deleteLater();
     }
 
+}
+
+void SendWidget::onEntryMemoClicked()
+{
+    if (focusedEntry) {
+        focusedEntry->launchMemoDialog();
+        menu->setCopyBtnText(tr("Memo"));
+    }
 }
 
 void SendWidget::onDeleteClicked()
