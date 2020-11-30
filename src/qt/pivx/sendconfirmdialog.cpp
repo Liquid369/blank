@@ -114,10 +114,18 @@ void TxDetailDialog::setData(WalletModel *_model, const QModelIndex &index)
                 (_tx->sapData ? _tx->sapData->vShieldedOutput.size() : 0)) + " recipients");
         }
         ui->textSend->setVisible(false);
+        isShieldedToShieldedRecv = rec->type == TransactionRecord::Type::RecvWithShieldedAddress;
+
+        // Do not show inputs button if there is no data to show
+        QString shieldedInputsExtraMsg = "";
+        if (isShieldedToShieldedRecv) {
+            ui->pushInputs->setVisible(false);
+            shieldedInputsExtraMsg = " shielded";
+        }
 
         setInputsType(_tx);
         int inputsSize = (_tx->sapData && !_tx->sapData->vShieldedSpend.empty()) ? _tx->sapData->vShieldedSpend.size() : _tx->vin.size();
-        ui->textInputs->setText(QString::number(inputsSize));
+        ui->textInputs->setText(QString::number(inputsSize) + shieldedInputsExtraMsg);
         ui->textConfirmations->setText(QString::number(rec->status.depth));
         ui->textDate->setText(GUIUtil::dateTimeStrWithSeconds(date));
         ui->textStatus->setText(QString::fromStdString(rec->statusToString()));
@@ -209,41 +217,43 @@ void TxDetailDialog::onInputsClicked()
     if (ui->gridInputs->isVisible()) {
         ui->gridInputs->setVisible(false);
     } else {
-        bool showGrid = true;
+        bool showGrid = !isShieldedToShieldedRecv;
         if (!inputsLoaded) {
             inputsLoaded = true;
-            const CWalletTx* walletTx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
-            if (walletTx) {
-                if (walletTx->sapData && walletTx->sapData->vShieldedSpend.empty()) {
-                    // transparent inputs
-                    ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->vin.size()));
-                    int i = 1;
-                    for (const CTxIn& in : walletTx->vin) {
-                        QString hash = QString::fromStdString(in.prevout.hash.GetHex());
-                        loadInputs(hash.left(18) + "..." + hash.right(18),
-                                   QString::number(in.prevout.n),
-                                   ui->gridLayoutInput, i);
-                        i++;
-                    }
-                } else {
-                    ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->sapData->vShieldedSpend.size()));
-                    bool fInfoAvailable = false;
-                    for (int i = 0; i < (int) walletTx->sapData->vShieldedSpend.size(); ++i) {
-                        Optional<QString> opAddr = model->getShieldedAddressFromSpendDesc(walletTx, i);
-                        if (opAddr) {
-                            QString addr = *opAddr;
-                            loadInputs(addr.left(18) + "..." + addr.right(18),
-                                       QString::number(i),
-                                       ui->gridLayoutInput, i + 1);
-                            fInfoAvailable = true;
+            if (showGrid) {
+                const CWalletTx* walletTx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
+                if (walletTx) {
+                    if (walletTx->sapData && walletTx->sapData->vShieldedSpend.empty()) {
+                        // transparent inputs
+                        ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->vin.size()));
+                        int i = 1;
+                        for (const CTxIn& in : walletTx->vin) {
+                            QString hash = QString::fromStdString(in.prevout.hash.GetHex());
+                            loadInputs(hash.left(18) + "..." + hash.right(18),
+                                       QString::number(in.prevout.n),
+                                       ui->gridLayoutInput, i);
+                            i++;
                         }
-                    }
+                    } else {
+                        ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->sapData->vShieldedSpend.size()));
+                        bool fInfoAvailable = false;
+                        for (int i = 0; i < (int) walletTx->sapData->vShieldedSpend.size(); ++i) {
+                            Optional<QString> opAddr = model->getShieldedAddressFromSpendDesc(walletTx, i);
+                            if (opAddr) {
+                                QString addr = *opAddr;
+                                loadInputs(addr.left(18) + "..." + addr.right(18),
+                                           QString::number(i),
+                                           ui->gridLayoutInput, i + 1);
+                                fInfoAvailable = true;
+                            }
+                        }
 
-                    if (!fInfoAvailable) {
-                        // note: the spends are not from the wallet, let's not show anything here
-                        showGrid = false;
-                    }
+                        if (!fInfoAvailable) {
+                            // note: the spends are not from the wallet, let's not show anything here
+                            showGrid = false;
+                        }
 
+                    }
                 }
             }
         }
