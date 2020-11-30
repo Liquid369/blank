@@ -35,7 +35,10 @@ SendMemoDialog::SendMemoDialog(QWidget* parent, WalletModel* model) :
     setCssBtnPrimary(ui->btnSave);
 
     connect(ui->textEdit, &QTextEdit::textChanged, this, &SendMemoDialog::textChanged);
-    connect(ui->btnEsc, &QPushButton::clicked, this, &SendMemoDialog::close);
+    connect(ui->btnEsc, &QPushButton::clicked, [this]() {
+        operationResult = false;
+        close();
+    });
     connect(ui->btnCancel, &QPushButton::clicked, this, &SendMemoDialog::reset);
     connect(ui->btnSave, &QPushButton::clicked, this, &SendMemoDialog::accept);
 }
@@ -74,8 +77,12 @@ void SendMemoDialog::reset()
 
 void SendMemoDialog::accept()
 {
-    // future: could add a validation here if needed.
-    QDialog::accept();
+    operationResult = true;
+    if (ui->textEdit->toPlainText().isEmpty()) {
+        QDialog::close();
+    } else {
+        QDialog::accept();
+    }
 }
 
 void SendMemoDialog::inform(const QString& text)

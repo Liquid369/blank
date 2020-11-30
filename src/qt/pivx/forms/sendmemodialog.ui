@@ -249,7 +249,7 @@ p, li { white-space: pre-wrap; }
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="text">
-           <string>CANCEL</string>
+           <string notr="true">CLEAR</string>
           </property>
          </widget>
         </item>

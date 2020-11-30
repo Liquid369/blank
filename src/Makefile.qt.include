@@ -367,6 +367,7 @@ RES_ICONS = \
   qt/pivx/res/img/img-empty-dark-transactions.svg \
   qt/pivx/res/img/ic-address-book-white.svg \
   qt/pivx/res/img/ic-chevron-right.svg \
+  qt/pivx/res/img/ic-chevron-right-liliac.svg \
   qt/pivx/res/img/ic-nav-send.svg \
   qt/pivx/res/img/img-empty-error.svg \
   qt/pivx/res/img/ic-address-book.svg \

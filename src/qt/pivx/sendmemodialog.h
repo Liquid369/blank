@@ -24,6 +24,8 @@ public:
 
     QString getMemo();
     void setMemo(QString memo);
+    // false if the operation was cancelled clicking the 'X'. No need to perform any change in the caller side.
+    bool getOperationResult() { return operationResult; }
     void showEvent(QShowEvent* event) override;
 
 public Q_SLOTS:
@@ -33,6 +35,7 @@ private:
     WalletModel* walletModel;
     Ui::SendMemoDialog *ui;
     SnackBar *snackBar = nullptr;
+    bool operationResult{false};
 
     void inform(const QString& text);
 

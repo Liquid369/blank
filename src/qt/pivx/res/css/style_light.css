@@ -1654,6 +1654,31 @@ QPushButton[cssClass="btn-secundary-add"]:pressed {
     background-color:#1A5c4b7d;
 }
 
+QPushButton[cssClass="btn-secondary-update"] {
+    background-image: url("://ic-chevron-right-liliac");
+    background-position:right center;
+    background-repeat:no-repeat;
+    border:  1px solid #335c4b7d;
+    background-color:#FFFFFF;
+    font-size:18px;
+    padding-top:4px;
+    padding-left:6px;
+    padding-bottom:4px;
+    padding-right:30px;
+    color: #5c4b7d;
+    border-radius: 2px;
+}
+
+
+QPushButton[cssClass="btn-secondary-update"]:hover {
+    border:  1px solid #5c4b7d;
+    background-color:#FFFFFF;
+}
+
+QPushButton[cssClass="btn-secondary-update"]:pressed {
+    border:  1px solid #5c4b7d;
+    background-color:#1A5c4b7d;
+}
 
 QPushButton[cssClass="btn-text-primary"] {
     border: 0;
