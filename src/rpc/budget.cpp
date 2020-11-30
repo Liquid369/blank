@@ -282,7 +282,7 @@ UniValue mnbudgetvote(const JSONRPCRequest& request)
                 break;
             }
 
-            CMasternode* pmn = mnodeman.Find(*(activeMasternode.vin));
+            CMasternode* pmn = mnodeman.Find(activeMasternode.vin->prevout);
             if (pmn == NULL) {
                 failed++;
                 statusObj.pushKV("node", "local");
@@ -675,7 +675,7 @@ UniValue mnbudgetrawvote(const JSONRPCRequest& request)
     if (fInvalid)
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Malformed base64 encoding");
 
-    CMasternode* pmn = mnodeman.Find(vin);
+    CMasternode* pmn = mnodeman.Find(vin.prevout);
     if (pmn == NULL) {
         return "Failure to find masternode in list : " + vin.ToString();
     }
@@ -822,7 +822,7 @@ UniValue mnfinalbudget(const JSONRPCRequest& request)
         if (!CMessageSigner::GetKeysFromSecret(strMasterNodePrivKey, keyMasternode, pubKeyMasternode))
             return "Error upon calling GetKeysFromSecret";
 
-        CMasternode* pmn = mnodeman.Find(*(activeMasternode.vin));
+        CMasternode* pmn = mnodeman.Find(activeMasternode.vin->prevout);
         if (pmn == NULL) {
             return "Failure to find masternode in list : " + activeMasternode.vin->ToString();
         }

@@ -164,7 +164,7 @@ std::string CMasternodePaymentWinner::GetStrMessage() const
 
 bool CMasternodePaymentWinner::IsValid(CNode* pnode, std::string& strError)
 {
-    CMasternode* pmn = mnodeman.Find(vinMasternode);
+    CMasternode* pmn = mnodeman.Find(vinMasternode.prevout);
 
     if (!pmn) {
         strError = strprintf("Unknown Masternode %s", vinMasternode.prevout.hash.ToString());

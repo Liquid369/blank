@@ -26,10 +26,9 @@ void MNModel::updateMNList()
         int nIndex;
         if (!mne.castOutputIndex(nIndex))
             continue;
-
         uint256 txHash(mne.getTxHash());
         CTxIn txIn(txHash, uint32_t(nIndex));
-        CMasternode* pmn = mnodeman.Find(txIn);
+        CMasternode* pmn = mnodeman.Find(txIn.prevout);
         if (!pmn) {
             pmn = new CMasternode();
             pmn->vin = txIn;
@@ -151,7 +150,7 @@ bool MNModel::addMn(CMasternodeConfig::CMasternodeEntry* mne)
     if (!mne->castOutputIndex(nIndex))
         return false;
 
-    CMasternode* pmn = mnodeman.Find(CTxIn(uint256S(mne->getTxHash()), uint32_t(nIndex)));
+    CMasternode* pmn = mnodeman.Find(COutPoint(uint256S(mne->getTxHash()), uint32_t(nIndex)));
     nodes.insert(QString::fromStdString(mne->getAlias()), std::make_pair(QString::fromStdString(mne->getIp()), pmn));
     endInsertRows();
     return true;
