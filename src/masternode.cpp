@@ -180,10 +180,8 @@ void CMasternode::Check(bool forceCheck)
     if (!forceCheck && (GetTime() - lastTimeChecked < MASTERNODE_CHECK_SECONDS)) return;
     lastTimeChecked = GetTime();
 
-
     //once spent, stop doing the checks
     if (activeState == MASTERNODE_VIN_SPENT) return;
-
 
     if (!IsPingedWithin(MasternodeRemovalSeconds())) {
         activeState = MASTERNODE_REMOVE;
@@ -198,13 +196,6 @@ void CMasternode::Check(bool forceCheck)
     if(lastPing.sigTime - sigTime < MasternodeMinPingSeconds()){
         activeState = MASTERNODE_PRE_ENABLED;
         return;
-    }
-
-    if (!unitTest) {
-        if (pcoinsTip->AccessCoin(vin.prevout).IsSpent()) {
-            activeState = MASTERNODE_VIN_SPENT;
-            return;
-        }
     }
 
     activeState = MASTERNODE_ENABLED; // OK
