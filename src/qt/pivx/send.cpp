@@ -144,7 +144,6 @@ void SendWidget::refreshAmounts()
     nDisplayUnit = walletModel->getOptionsModel()->getDisplayUnit();
     ui->labelAmountSend->setText(GUIUtil::formatBalance(total, nDisplayUnit, false));
 
-    QString type = "transparent";
     CAmount totalAmount = 0;
     if (coinControlDialog->coinControl->HasSelected()) {
         // Set remaining balance to the sum of the coinControl selected inputs
@@ -158,14 +157,11 @@ void SendWidget::refreshAmounts()
         ui->labelTitleTotalRemaining->setText(tr("Total remaining from the selected UTXO"));
     } else {
         // Wallet's unlocked balance.
-        if (isTransparent) {
-            totalAmount = walletModel->getUnlockedBalance(nullptr, fDelegationsChecked, false) - total;
-        } else {
-            totalAmount = walletModel->GetWalletBalances().shielded_balance - total;
-            type = "shielded";
-        }
+        totalAmount = isTransparent ? (walletModel->getUnlockedBalance(nullptr, fDelegationsChecked, false) - total)
+                                    : (walletModel->GetWalletBalances().shielded_balance - total);
         ui->labelTitleTotalRemaining->setText(tr("Unlocked remaining"));
     }
+    QString type = isTransparent ? "transparent" : "shielded";
     ui->labelAmountRemaining->setText(
             GUIUtil::formatBalance(
                     totalAmount,
