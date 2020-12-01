@@ -65,10 +65,11 @@ class SaplingMempoolTest(PivxTestFramework):
         # Mine tx_B and try to send tx_A again
         self.log.info("Mine a block and verify that tx_B gets on chain")
         miner.generate(1)
-        txB_json = miner.getrawtransaction(txid_B, True)
+        self.sync_all()
+        txB_json = alice.getrawtransaction(txid_B, True)
         assert("blockhash" in txB_json)
         self.log.info("trying to relay tx_A again...")
-        assert_raises_rpc_error(-26, "bad-txns-nullifier-double-spent",
+        assert_raises_rpc_error(-26, "bad-txns-shielded-requirements-not-met",
                                 alice.sendrawtransaction, rawTx['hex'])
         self.log.info("tx_A NOT accepted in the mempool. Good.")
 
