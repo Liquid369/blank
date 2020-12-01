@@ -35,6 +35,8 @@ std::vector<SaplingOutPoint> SetSaplingNoteData(CWalletTx& wtx) {
     mapSaplingNoteData_t saplingNoteData;
     SaplingOutPoint saplingOutPoint = {wtx.GetHash(), 0};
     SaplingNoteData saplingNd;
+    // set this as internal note (with non-nullopt ivk)
+    saplingNd.ivk = libzcash::SaplingIncomingViewingKey();
     saplingNoteData[saplingOutPoint] = saplingNd;
     wtx.SetSaplingNoteData(saplingNoteData);
     std::vector<SaplingOutPoint> saplingNotes {saplingOutPoint};
@@ -59,7 +61,7 @@ SaplingOutPoint CreateValidBlock(CWallet& wallet,
 }
 
 uint256 GetWitnessesAndAnchors(CWallet& wallet,
-                               std::vector<SaplingOutPoint>& saplingNotes,
+                               const std::vector<SaplingOutPoint>& saplingNotes,
                                std::vector<Optional<SaplingWitness>>& saplingWitnesses)
 {
     saplingWitnesses.clear();
