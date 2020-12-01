@@ -112,6 +112,10 @@ static QString translateTypeToString(AddressTableEntry::Type type)
             return QObject::tr("Cold Staking");
         case AddressTableEntry::ColdStakingSend:
             return QObject::tr("Cold Staking Contact");
+        case AddressTableEntry::ShieldedReceive:
+            return QObject::tr("Receiving Shielded");
+        case AddressTableEntry::ShieldedSend:
+            return QObject::tr("Contact Shielded");
         case AddressTableEntry::Hidden:
             return QObject::tr("Hidden");
         default:
