@@ -10,6 +10,7 @@
 #include "key.h"
 #include "messagesigner.h"
 #include "net.h"
+#include "serialize.h"
 #include "sync.h"
 #include "timedata.h"
 #include "util.h"
@@ -117,11 +118,7 @@ public:
         MASTERNODE_ENABLED,
         MASTERNODE_EXPIRED,
         MASTERNODE_REMOVE,
-        MASTERNODE_WATCHDOG_EXPIRED,
-        MASTERNODE_POSE_BAN,
         MASTERNODE_VIN_SPENT,
-        MASTERNODE_POS_ERROR,
-        MASTERNODE_MISSING
     };
 
     CTxIn vin;
@@ -130,15 +127,12 @@ public:
     CPubKey pubKeyMasternode;
     int activeState;
     int64_t sigTime; //mnb message time
-    bool unitTest;
-    bool allowFreeTx;
     int protocolVersion;
-    int64_t nLastDsq; //the dsq count from the last dsq broadcast of this node
     int nScanningErrorCount;
     int nLastScanningErrorBlockHeight;
     CMasternodePing lastPing;
 
-    CMasternode();
+    explicit CMasternode();
     CMasternode(const CMasternode& other);
 
     // override CSignedMessage functions
@@ -165,10 +159,7 @@ public:
         swap(first.activeState, second.activeState);
         swap(first.sigTime, second.sigTime);
         swap(first.lastPing, second.lastPing);
-        swap(first.unitTest, second.unitTest);
-        swap(first.allowFreeTx, second.allowFreeTx);
         swap(first.protocolVersion, second.protocolVersion);
-        swap(first.nLastDsq, second.nLastDsq);
         swap(first.nScanningErrorCount, second.nScanningErrorCount);
         swap(first.nLastScanningErrorBlockHeight, second.nLastScanningErrorBlockHeight);
     }
@@ -205,11 +196,13 @@ public:
         READWRITE(protocolVersion);
         READWRITE(activeState);
         READWRITE(lastPing);
-        READWRITE(unitTest);
-        READWRITE(allowFreeTx);
-        READWRITE(nLastDsq);
         READWRITE(nScanningErrorCount);
         READWRITE(nLastScanningErrorBlockHeight);
+    }
+
+    template <typename Stream>
+    CMasternode(deserialize_type, Stream& s) {
+        Unserialize(s);
     }
 
     int64_t SecondsSincePayment();
@@ -229,6 +222,8 @@ public:
 
         return lastPing.IsNull() ? false : now - lastPing.sigTime < seconds;
     }
+
+    void SetSpent() { LOCK(cs); activeState = CMasternode::MASTERNODE_VIN_SPENT; }
 
     void Disable()
     {
@@ -255,9 +250,6 @@ public:
         if (activeState == CMasternode::MASTERNODE_EXPIRED)     return "EXPIRED";
         if (activeState == CMasternode::MASTERNODE_VIN_SPENT)   return "VIN_SPENT";
         if (activeState == CMasternode::MASTERNODE_REMOVE)      return "REMOVE";
-        if (activeState == CMasternode::MASTERNODE_POS_ERROR)   return "POS_ERROR";
-        if (activeState == CMasternode::MASTERNODE_MISSING)     return "MISSING";
-
         return strprintf("INVALID_%d", activeState);
     }
 
@@ -305,9 +297,7 @@ public:
         READWRITE(sigTime);
         READWRITE(protocolVersion);
         READWRITE(lastPing);
-        READWRITE(nMessVersion);    // abuse nLastDsq (which will be removed) for old serialization
-        if (ser_action.ForRead())
-            nLastDsq = 0;
+        READWRITE(nMessVersion);
     }
 
     /// Create Masternode broadcast, needs to be relayed manually after that

@@ -262,7 +262,7 @@ void CBudgetProposal::CleanAndRemove()
     std::map<uint256, CBudgetVote>::iterator it = mapVotes.begin();
 
     while (it != mapVotes.end()) {
-        CMasternode* pmn = mnodeman.Find((*it).second.GetVin());
+        CMasternode* pmn = mnodeman.Find(it->second.GetVin().prevout);
         (*it).second.SetValid(pmn != nullptr);
         ++it;
     }

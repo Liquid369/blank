@@ -76,10 +76,7 @@ CMasternode::CMasternode() :
     activeState = MASTERNODE_ENABLED;
     sigTime = GetAdjustedTime();
     lastPing = CMasternodePing();
-    unitTest = false;
-    allowFreeTx = true;
     protocolVersion = PROTOCOL_VERSION;
-    nLastDsq = 0;
     nScanningErrorCount = 0;
     nLastScanningErrorBlockHeight = 0;
     lastTimeChecked = 0;
@@ -96,10 +93,7 @@ CMasternode::CMasternode(const CMasternode& other) :
     activeState = other.activeState;
     sigTime = other.sigTime;
     lastPing = other.lastPing;
-    unitTest = other.unitTest;
-    allowFreeTx = other.allowFreeTx;
     protocolVersion = other.protocolVersion;
-    nLastDsq = other.nLastDsq;
     nScanningErrorCount = other.nScanningErrorCount;
     nLastScanningErrorBlockHeight = other.nLastScanningErrorBlockHeight;
     lastTimeChecked = 0;
@@ -180,10 +174,8 @@ void CMasternode::Check(bool forceCheck)
     if (!forceCheck && (GetTime() - lastTimeChecked < MASTERNODE_CHECK_SECONDS)) return;
     lastTimeChecked = GetTime();
 
-
     //once spent, stop doing the checks
     if (activeState == MASTERNODE_VIN_SPENT) return;
-
 
     if (!IsPingedWithin(MasternodeRemovalSeconds())) {
         activeState = MASTERNODE_REMOVE;
@@ -198,13 +190,6 @@ void CMasternode::Check(bool forceCheck)
     if(lastPing.sigTime - sigTime < MasternodeMinPingSeconds()){
         activeState = MASTERNODE_PRE_ENABLED;
         return;
-    }
-
-    if (!unitTest) {
-        if (pcoinsTip->AccessCoin(vin.prevout).IsSpent()) {
-            activeState = MASTERNODE_VIN_SPENT;
-            return;
-        }
     }
 
     activeState = MASTERNODE_ENABLED; // OK
@@ -523,7 +508,7 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
     }
 
     //search existing Masternode list, this is where we update existing Masternodes with new mnb broadcasts
-    CMasternode* pmn = mnodeman.Find(vin);
+    CMasternode* pmn = mnodeman.Find(vin.prevout);
 
     // no such masternode, nothing to update
     if (pmn == NULL) return true;
@@ -571,14 +556,14 @@ bool CMasternodeBroadcast::CheckInputsAndAdd(int& nDoS)
     }
 
     // search existing Masternode list
-    CMasternode* pmn = mnodeman.Find(vin);
+    CMasternode* pmn = mnodeman.Find(vin.prevout);
 
     if (pmn != NULL) {
         // nothing to do here if we already know about this masternode and it's enabled
         if (pmn->IsEnabled()) return true;
         // if it's not enabled, remove old MN first and continue
         else
-            mnodeman.Remove(pmn->vin);
+            mnodeman.Remove(pmn->vin.prevout);
     }
 
     if (pcoinsTip->AccessCoin(vin.prevout).IsSpent()) {
@@ -697,7 +682,7 @@ bool CMasternodePing::CheckAndUpdate(int& nDos, bool fRequireEnabled, bool fChec
     }
 
     // see if we have this Masternode
-    CMasternode* pmn = mnodeman.Find(vin);
+    CMasternode* pmn = mnodeman.Find(vin.prevout);
     const bool isMasternodeFound = (pmn != nullptr);
     const bool isSignatureValid = (isMasternodeFound && CheckSignature(pmn->pubKeyMasternode));
 

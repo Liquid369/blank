@@ -259,7 +259,7 @@ bool StartMasternodeEntry(UniValue& statusObjRet, CMasternodeBroadcast& mnbRet, 
     }
 
     CTxIn vin = CTxIn(uint256S(mne.getTxHash()), uint32_t(nIndex));
-    CMasternode* pmn = mnodeman.Find(vin);
+    CMasternode* pmn = mnodeman.Find(vin.prevout);
     if (pmn != NULL) {
         if (strCommand == "missing") return false;
         if (strCommand == "disabled" && pmn->IsEnabled()) return false;
@@ -546,7 +546,7 @@ UniValue listmasternodeconf (const JSONRPCRequest& request)
         if(!mne.castOutputIndex(nIndex))
             continue;
         CTxIn vin = CTxIn(uint256S(mne.getTxHash()), uint32_t(nIndex));
-        CMasternode* pmn = mnodeman.Find(vin);
+        CMasternode* pmn = mnodeman.Find(vin.prevout);
 
         std::string strStatus = pmn ? pmn->Status() : "MISSING";
 
@@ -594,7 +594,7 @@ UniValue getmasternodestatus (const JSONRPCRequest& request)
     if (activeMasternode.vin == nullopt)
         throw JSONRPCError(RPC_MISC_ERROR, _("Active Masternode not initialized."));
 
-    CMasternode* pmn = mnodeman.Find(*(activeMasternode.vin));
+    CMasternode* pmn = mnodeman.Find(activeMasternode.vin->prevout);
 
     if (pmn) {
         UniValue mnObj(UniValue::VOBJ);
@@ -735,25 +735,16 @@ UniValue getmasternodescores (const JSONRPCRequest& request)
             throw std::runtime_error("Exception on param 2");
         }
     }
-    int nChainHeight = mnodeman.GetBestHeight();
-    if (nChainHeight < 0) return "unknown";
-    UniValue obj(UniValue::VOBJ);
-    std::vector<CMasternode> vMasternodes = mnodeman.GetFullMasternodeVector();
-    for (int nHeight = nChainHeight - nLast; nHeight < nChainHeight + 20; nHeight++) {
-        const uint256& hash = mnodeman.GetHashAtHeight(nHeight - 101);
-        uint256 nHigh;
-        CMasternode* pBestMasternode = NULL;
-        for (CMasternode& mn : vMasternodes) {
-            const uint256& n = mn.CalculateScore(hash);
-            if (n > nHigh) {
-                nHigh = n;
-                pBestMasternode = &mn;
-            }
-        }
-        if (pBestMasternode)
-            obj.pushKV(strprintf("%d", nHeight), pBestMasternode->vin.prevout.hash.ToString().c_str());
-    }
 
+    std::vector<std::pair<MasternodeRef, int>> vMnScores = mnodeman.GetMnScores(nLast);
+    if (vMnScores.empty()) return "unknown";
+
+    UniValue obj(UniValue::VOBJ);
+    for (const auto& p : vMnScores) {
+        const MasternodeRef& mn = p.first;
+        const int nHeight = p.second;
+        obj.pushKV(strprintf("%d", nHeight), mn->vin.prevout.hash.ToString().c_str());
+    }
     return obj;
 }
 
@@ -902,7 +893,6 @@ UniValue decodemasternodebroadcast(const JSONRPCRequest& request)
             "  \"sigtime\": \"nnn\"             (numeric) Signature timestamp\n"
             "  \"sigvalid\": \"xxx\"            (string) \"true\"/\"false\" whether or not the mnb signature checks out.\n"
             "  \"protocolversion\": \"nnn\"     (numeric) Masternode's protocol version\n"
-            "  \"nlastdsq\": \"nnn\"            (numeric) The last time the masternode sent a DSQ message (for mixing) (DEPRECATED)\n"
             "  \"nMessVersion\": \"nnn\"        (numeric) MNB Message version number\n"
             "  \"lastping\" : {                 (object) JSON object with information about the masternode's last ping\n"
             "      \"vin\": \"xxxx\"            (string) The unspent output of the masternode which is signing the message\n"
@@ -932,7 +922,6 @@ UniValue decodemasternodebroadcast(const JSONRPCRequest& request)
     resultObj.pushKV("sigtime", mnb.sigTime);
     resultObj.pushKV("sigvalid", mnb.CheckSignature() ? "true" : "false");
     resultObj.pushKV("protocolversion", mnb.protocolVersion);
-    resultObj.pushKV("nlastdsq", mnb.nLastDsq);
     resultObj.pushKV("nMessVersion", mnb.nMessVersion);
 
     UniValue lastPingObj(UniValue::VOBJ);

@@ -971,7 +971,7 @@ void CBudgetManager::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         }
 
         const CTxIn& voteVin = vote.GetVin();
-        CMasternode* pmn = mnodeman.Find(voteVin);
+        CMasternode* pmn = mnodeman.Find(voteVin.prevout);
         if (pmn == NULL) {
             LogPrint(BCLog::MNBUDGET,"mvote - unknown masternode - vin: %s\n", voteVin.ToString());
             mnodeman.AskForMN(pfrom, voteVin);
@@ -1034,7 +1034,7 @@ void CBudgetManager::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         }
 
         const CTxIn& voteVin = vote.GetVin();
-        CMasternode* pmn = mnodeman.Find(voteVin);
+        CMasternode* pmn = mnodeman.Find(voteVin.prevout);
         if (pmn == NULL) {
             LogPrint(BCLog::MNBUDGET, "fbvote - unknown masternode - vin: %s\n", voteVin.prevout.hash.ToString());
             mnodeman.AskForMN(pfrom, voteVin);

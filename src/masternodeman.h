@@ -54,6 +54,9 @@ public:
     ReadResult Read(CMasternodeMan& mnodemanToLoad, bool fDryRun = false);
 };
 
+//
+typedef std::shared_ptr<CMasternode> MasternodeRef;
+
 class CMasternodeMan
 {
 private:
@@ -63,8 +66,8 @@ private:
     // critical section to protect the inner data structures specifically on messaging
     mutable RecursiveMutex cs_process_message;
 
-    // map to hold all MNs
-    std::vector<CMasternode> vMasternodes;
+    // map to hold all MNs (indexed by collateral outpoint)
+    std::map<COutPoint, MasternodeRef> mapMasternodes;
     // who's asked for the Masternode list and the last time
     std::map<CNetAddr, int64_t> mAskedUsForMasternodeList;
     // who we asked for the Masternode list and the last time
@@ -99,7 +102,7 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action)
     {
         LOCK(cs);
-        READWRITE(vMasternodes);
+        READWRITE(mapMasternodes);
         READWRITE(mAskedUsForMasternodeList);
         READWRITE(mWeAskedForMasternodeList);
         READWRITE(mWeAskedForMasternodeListEntry);
@@ -136,9 +139,11 @@ public:
     void DsegUpdate(CNode* pnode);
 
     /// Find an entry
-    CMasternode* Find(const CScript& payee);
-    CMasternode* Find(const CTxIn& vin);
+    CMasternode* Find(const COutPoint& collateralOut);
     CMasternode* Find(const CPubKey& pubKeyMasternode);
+
+    /// Check all transactions in a block, for spent masternode collateral outpoints.
+    void CheckSpentCollaterals(const std::vector<CTransactionRef>& vtx);
 
     /// Find an entry in the masternode list that is next to be paid
     CMasternode* GetNextMasternodeInQueueForPayment(int nBlockHeight, bool fFilterSigTime, int& nCount);
@@ -146,11 +151,9 @@ public:
     /// Get the current winner for this block
     CMasternode* GetCurrentMasterNode(int mod = 1, int64_t nBlockHeight = 0, int minProtocol = 0);
 
-    std::vector<CMasternode> GetFullMasternodeVector()
-    {
-        Check();
-        return vMasternodes;
-    }
+    /// vector of pairs <masternode winner, height>
+    std::vector<std::pair<MasternodeRef, int>> GetMnScores(int nLast);
+
     // Retrieve the known masternodes ordered by scoring without checking them. (Only used for listmasternodes RPC call)
     std::vector<std::pair<int64_t, CMasternode>> GetMasternodeRanks(int nBlockHeight);
     int GetMasternodeRank(const CTxIn& vin, int64_t nBlockHeight, int minProtocol = 0, bool fOnlyActive = true);
@@ -161,14 +164,14 @@ public:
     int ProcessGetMNList(CNode* pfrom, CTxIn& vin);
 
     /// Return the number of (unique) Masternodes
-    int size() { return vMasternodes.size(); }
+    int size() const { LOCK(cs); return mapMasternodes.size(); }
 
     /// Return the number of Masternodes older than (default) 8000 seconds
     int stable_size ();
 
     std::string ToString() const;
 
-    void Remove(CTxIn vin);
+    void Remove(const COutPoint& collateralOut);
 
     /// Update masternode list and maps using provided CMasternodeBroadcast
     void UpdateMasternodeList(CMasternodeBroadcast mnb);
