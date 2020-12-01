@@ -34,7 +34,7 @@ class PIVX_ColdStakingTest(PivxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 3
-        self.extra_args = [['-nuparams=v5_dummy:201']] * self.num_nodes
+        self.extra_args = [['-nuparams=v5_shield:201']] * self.num_nodes
         self.extra_args[0].append('-sporkkey=932HEevBSujW2ud7RfB1YF91AFygbBRQj3de3LyaCRqNzKKgWXi')
 
     def setup_chain(self):

@@ -928,7 +928,7 @@ KeyAddResult SaplingScriptPubKeyMan::AddSpendingKeyToWallet(
 
             int64_t nTimeToSet;
             // Sapling addresses can't have been used in transactions prior to activation.
-            if (params.vUpgrades[Consensus::UPGRADE_V5_DUMMY].nActivationHeight == Consensus::NetworkUpgrade::ALWAYS_ACTIVE) {
+            if (params.vUpgrades[Consensus::UPGRADE_V5_0].nActivationHeight == Consensus::NetworkUpgrade::ALWAYS_ACTIVE) {
                 nTimeToSet = nTime;
             } else {
                 // TODO: Update epoch before release v5.

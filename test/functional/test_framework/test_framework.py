@@ -755,7 +755,7 @@ class PivxTestFramework():
             fDoubleSpend=False):
         """ Calls stake_block appending to the current tip"""
         assert_greater_than(len(self.nodes), node_id)
-        saplingActive = self.nodes[node_id].getblockchaininfo()['upgrades']['v5 dummy']['status'] == 'active'
+        saplingActive = self.nodes[node_id].getblockchaininfo()['upgrades']['v5 shield']['status'] == 'active'
         blockVersion = 8 if saplingActive else 7
         nHeight = self.nodes[node_id].getblockcount()
         prevHhash = self.nodes[node_id].getblockhash(nHeight)

@@ -23,7 +23,7 @@ class WalletSaplingTest(PivxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 4
-        saplingUpgrade = ['-nuparams=v5_dummy:201']
+        saplingUpgrade = ['-nuparams=v5_shield:201']
         self.extra_args = [saplingUpgrade, saplingUpgrade, saplingUpgrade, saplingUpgrade]
         self.extra_args[0].append('-sporkkey=932HEevBSujW2ud7RfB1YF91AFygbBRQj3de3LyaCRqNzKKgWXi')
 

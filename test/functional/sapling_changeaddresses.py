@@ -15,7 +15,7 @@ class WalletChangeAddressesTest(PivxTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.setup_clean_chain = True
-        saplingUpgrade = ['-nuparams=v5_dummy:1']
+        saplingUpgrade = ['-nuparams=v5_shield:1']
         self.extra_args = [saplingUpgrade, saplingUpgrade]
 
     def run_test(self):

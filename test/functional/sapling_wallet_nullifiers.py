@@ -16,7 +16,7 @@ class WalletNullifiersTest (PivxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 4
-        saplingUpgrade = ['-nuparams=v5_dummy:201']
+        saplingUpgrade = ['-nuparams=v5_shield:201']
         self.extra_args = [saplingUpgrade, saplingUpgrade, saplingUpgrade, saplingUpgrade]
 
     def run_test (self):

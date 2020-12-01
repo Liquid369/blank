@@ -14,7 +14,7 @@ class SaplingSupplyTest(PivxTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
         self.setup_clean_chain = True
-        self.extra_args = [['-nuparams=v5_dummy:1']]
+        self.extra_args = [['-nuparams=v5_shield:1']]
 
     def generate_and_sync(self, count):
         assert(count > 0)
