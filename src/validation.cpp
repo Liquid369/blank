@@ -327,7 +327,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     const CChainParams& params = Params();
     const Consensus::Params& consensus = params.GetConsensus();
     int chainHeight = chainActive.Height();
-    bool fSaplingActive = consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_V5_DUMMY);
+    bool fSaplingActive = consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_V5_0);
 
     // If v5 is active, bye bye zerocoin
     if (fSaplingActive && hasTxZerocoins) {
@@ -1390,7 +1390,7 @@ DisconnectResult DisconnectBlock(CBlock& block, CBlockIndex* pindex, CCoinsViewC
     // However, this is only reliable if the last block was on or after
     // the Sapling activation height. Otherwise, the last anchor was the
     // empty root.
-    if (consensus.NetworkUpgradeActive(pindex->pprev->nHeight, Consensus::UPGRADE_V5_DUMMY)) {
+    if (consensus.NetworkUpgradeActive(pindex->pprev->nHeight, Consensus::UPGRADE_V5_0)) {
         view.PopAnchor(pindex->pprev->hashFinalSaplingRoot);
     } else {
         view.PopAnchor(SaplingMerkleTree::empty_root());
@@ -1534,7 +1534,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     assert(view.GetSaplingAnchorAt(view.GetBestAnchor(), sapling_tree));
 
     //
-    bool isV5UpgradeEnforced = consensus.NetworkUpgradeActive(pindex->nHeight, Consensus::UPGRADE_V5_DUMMY);
+    bool isV5UpgradeEnforced = consensus.NetworkUpgradeActive(pindex->nHeight, Consensus::UPGRADE_V5_0);
 
     std::vector<PrecomputedTransactionData> precomTxData;
     precomTxData.reserve(block.vtx.size()); // Required so that pointers to individual precomTxData don't get invalidated
@@ -1687,7 +1687,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     view.PushAnchor(sapling_tree);
 
     // Verify header correctness
-    if (consensus.NetworkUpgradeActive(pindex->nHeight, Consensus::UPGRADE_V5_DUMMY)) {
+    if (consensus.NetworkUpgradeActive(pindex->nHeight, Consensus::UPGRADE_V5_0)) {
         // If Sapling is active, block.hashFinalSaplingRoot must be the
         // same as the root of the Sapling tree
         if (block.hashFinalSaplingRoot != sapling_tree.root()) {
@@ -1939,7 +1939,7 @@ void static UpdateTip(CBlockIndex* pindexNew)
 {
     AssertLockHeld(cs_main);
     chainActive.SetTip(pindexNew);
-    g_IsSaplingActive = Params().GetConsensus().NetworkUpgradeActive(pindexNew->nHeight, Consensus::UPGRADE_V5_DUMMY);
+    g_IsSaplingActive = Params().GetConsensus().NetworkUpgradeActive(pindexNew->nHeight, Consensus::UPGRADE_V5_0);
 
     // New best block
     mempool.AddTransactionsUpdated(1);
@@ -2043,7 +2043,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
         GetMainSignals().SyncTransaction(*tx, pindexDelete->pprev, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK);
     }
 
-    if (chainparams.GetConsensus().NetworkUpgradeActive(pindexDelete->nHeight, Consensus::UPGRADE_V5_DUMMY)) {
+    if (chainparams.GetConsensus().NetworkUpgradeActive(pindexDelete->nHeight, Consensus::UPGRADE_V5_0)) {
         // Update Sapling cached incremental witnesses
         GetMainSignals().ChainTip(pindexDelete, &block, nullopt);
     }
@@ -2400,7 +2400,7 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
                 SaplingMerkleTree oldSaplingTree;
                 bool isSaplingActive = (pprev) != nullptr &&
                                        Params().GetConsensus().NetworkUpgradeActive(pprev->nHeight,
-                                                                                    Consensus::UPGRADE_V5_DUMMY);
+                                                                                    Consensus::UPGRADE_V5_0);
                 if (isSaplingActive) {
                     assert(pcoinsTip->GetSaplingAnchorAt(pprev->hashFinalSaplingRoot, oldSaplingTree));
                 } else {
@@ -2875,7 +2875,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
     // TODO: Check if this is ok... blockHeight is always the tip or should we look for the prevHash and get the height?
     int blockHeight = chainActive.Height() + 1;
     const Consensus::Params& consensus = Params().GetConsensus();
-    bool fSaplingActive = consensus.NetworkUpgradeActive(blockHeight, Consensus::UPGRADE_V5_DUMMY);
+    bool fSaplingActive = consensus.NetworkUpgradeActive(blockHeight, Consensus::UPGRADE_V5_0);
     for (const auto& txIn : block.vtx) {
         const CTransaction& tx = *txIn;
         if (!CheckTransaction(
@@ -3472,7 +3472,7 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, const std::shared_pt
     // For now, we need the tip to know whether p2pkh block signatures are accepted or not.
     // After 5.0, this can be removed and replaced by the enforcement block time.
     const int newHeight = chainActive.Height() + 1;
-    const bool enableP2PKH = consensus.NetworkUpgradeActive(newHeight, Consensus::UPGRADE_V5_DUMMY);
+    const bool enableP2PKH = consensus.NetworkUpgradeActive(newHeight, Consensus::UPGRADE_V5_0);
     if (!CheckBlockSignature(*pblock, enableP2PKH))
         return error("%s : bad proof-of-stake block signature", __func__);
 
@@ -3742,7 +3742,7 @@ bool static LoadBlockIndexDB(std::string& strError)
     const CBlockIndex* pChainTip = chainActive.Tip();
 
     // initial global flag update
-    g_IsSaplingActive = Params().GetConsensus().NetworkUpgradeActive(pChainTip->nHeight, Consensus::UPGRADE_V5_DUMMY);
+    g_IsSaplingActive = Params().GetConsensus().NetworkUpgradeActive(pChainTip->nHeight, Consensus::UPGRADE_V5_0);
 
     LogPrintf("LoadBlockIndexDB(): hashBestChain=%s height=%d date=%s progress=%f\n",
             pChainTip->GetBlockHash().GetHex(), pChainTip->nHeight,

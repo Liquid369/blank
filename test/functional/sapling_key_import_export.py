@@ -14,7 +14,7 @@ class SaplingkeyImportExportTest (PivxTestFramework):
     def set_test_params(self):
         self.num_nodes = 5
         self.setup_clean_chain = True
-        saplingUpgrade = ['-nuparams=v5_dummy:1']
+        saplingUpgrade = ['-nuparams=v5_shield:1']
         self.extra_args = [saplingUpgrade, saplingUpgrade, saplingUpgrade, saplingUpgrade, saplingUpgrade]
 
     def run_test(self):

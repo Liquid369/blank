@@ -101,7 +101,7 @@ std::string TransactionBuilderResult::GetError() {
 CMutableTransaction CreateNewContextualCMutableTransaction(const Consensus::Params& consensusParams, int nHeight)
 {
     CMutableTransaction mtx;
-    bool isSapling = consensusParams.NetworkUpgradeActive(nHeight, Consensus::UPGRADE_V5_DUMMY);
+    bool isSapling = consensusParams.NetworkUpgradeActive(nHeight, Consensus::UPGRADE_V5_0);
     mtx.nVersion = isSapling ? CTransaction::TxVersion::SAPLING : CTransaction::TxVersion::LEGACY;
     return mtx;
 }

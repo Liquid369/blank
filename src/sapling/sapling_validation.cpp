@@ -138,7 +138,7 @@ bool ContextualCheckTransaction(
 
     // If Sapling is not active return quickly and don't perform any check here.
     // basic data checks are performed in CheckTransaction which is ALWAYS called before ContextualCheckTransaction.
-    if (!chainparams.GetConsensus().NetworkUpgradeActive(nHeight, Consensus::UPGRADE_V5_DUMMY)) {
+    if (!chainparams.GetConsensus().NetworkUpgradeActive(nHeight, Consensus::UPGRADE_V5_0)) {
         return true;
     }
 

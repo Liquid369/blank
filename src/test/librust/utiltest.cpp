@@ -15,13 +15,13 @@ static const std::string T_SECRET_REGTEST = "cND2ZvtabDbJ1gucx9GWH6XT9kgTAqfb6co
 
 const Consensus::Params& RegtestActivateSapling() {
     SelectParams(CBaseChainParams::REGTEST);
-    UpdateNetworkUpgradeParameters(Consensus::UPGRADE_V5_DUMMY, Consensus::NetworkUpgrade::ALWAYS_ACTIVE);
+    UpdateNetworkUpgradeParameters(Consensus::UPGRADE_V5_0, Consensus::NetworkUpgrade::ALWAYS_ACTIVE);
     g_IsSaplingActive = true;
     return Params().GetConsensus();
 }
 
 void RegtestDeactivateSapling() {
-    UpdateNetworkUpgradeParameters(Consensus::UPGRADE_V5_DUMMY, Consensus::NetworkUpgrade::NO_ACTIVATION_HEIGHT);
+    UpdateNetworkUpgradeParameters(Consensus::UPGRADE_V5_0, Consensus::NetworkUpgrade::NO_ACTIVATION_HEIGHT);
     g_IsSaplingActive = false;
 }
 

@@ -98,7 +98,7 @@ bool IsStandard(const CScript& scriptPubKey, txnouttype& whichType)
 bool IsStandardTx(const CTransaction& tx, int nBlockHeight, std::string& reason)
 {
     AssertLockHeld(cs_main);
-    if (!Params().GetConsensus().NetworkUpgradeActive(nBlockHeight, Consensus::UPGRADE_V5_DUMMY)) {
+    if (!Params().GetConsensus().NetworkUpgradeActive(nBlockHeight, Consensus::UPGRADE_V5_0)) {
         // Before v5, all txes with version other than STANDARD_VERSION (1) are considered non-standard
         if (tx.nVersion != CTransaction::TxVersion::LEGACY) {
             reason = "version";

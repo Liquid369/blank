@@ -18,7 +18,7 @@ class SaplingMempoolTest(PivxTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.setup_clean_chain = True
-        self.extra_args = [['-nuparams=v5_dummy:1']] * self.num_nodes
+        self.extra_args = [['-nuparams=v5_shield:1']] * self.num_nodes
 
     def run_test(self):
         miner = self.nodes[0]

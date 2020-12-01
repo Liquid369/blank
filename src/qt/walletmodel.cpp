@@ -460,7 +460,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
     }
 
     bool fColdStakingActive = isColdStakingNetworkelyEnabled();
-    bool fSaplingActive = Params().GetConsensus().NetworkUpgradeActive(cachedNumBlocks, Consensus::UPGRADE_V5_DUMMY);
+    bool fSaplingActive = Params().GetConsensus().NetworkUpgradeActive(cachedNumBlocks, Consensus::UPGRADE_V5_0);
 
     // Double check the tx before doing anything
     CWalletTx* newTx = transaction.getTransaction();
@@ -526,7 +526,7 @@ OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* 
 
     // Check network status
     int nextBlockHeight = cachedNumBlocks + 1;
-    if (!Params().GetConsensus().NetworkUpgradeActive(nextBlockHeight, Consensus::UPGRADE_V5_DUMMY)) {
+    if (!Params().GetConsensus().NetworkUpgradeActive(nextBlockHeight, Consensus::UPGRADE_V5_0)) {
         return errorOut("Error, cannot send transaction. Sapling is not activated");
     }
 

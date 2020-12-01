@@ -1731,7 +1731,7 @@ int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, b
             // This should never fail: we should always be able to get the tree
             // state on the path to the tip of our chain
             if (pindex->pprev) {
-                if (Params().GetConsensus().NetworkUpgradeActive(pindex->pprev->nHeight,  Consensus::UPGRADE_V5_DUMMY)) {
+                if (Params().GetConsensus().NetworkUpgradeActive(pindex->pprev->nHeight,  Consensus::UPGRADE_V5_0)) {
                     SaplingMerkleTree saplingTree;
                     assert(pcoinsTip->GetSaplingAnchorAt(pindex->pprev->hashFinalSaplingRoot, saplingTree));
                     // Increment note witness caches
@@ -2955,7 +2955,7 @@ bool CWallet::CreateCoinStake(
     pStakerStatus->SetLastCoins((int) availableCoins->size());
 
     // P2PKH block signatures were not accepted before v5 update.
-    bool onlyP2PK = !consensus.NetworkUpgradeActive(pindexPrev->nHeight + 1, Consensus::UPGRADE_V5_DUMMY);
+    bool onlyP2PK = !consensus.NetworkUpgradeActive(pindexPrev->nHeight + 1, Consensus::UPGRADE_V5_0);
 
     // Kernel Search
     CAmount nCredit;
