@@ -12,8 +12,8 @@
 #include "qt/pivx/sendmemodialog.h"
 #include "qt/pivx/qtutils.h"
 
-SendMultiRow::SendMultiRow(PWidget *parent) :
-    PWidget(parent),
+SendMultiRow::SendMultiRow(PIVXGUI* _window, PWidget *parent) :
+    PWidget(_window, parent),
     ui(new Ui::SendMultiRow),
     iconNumber(new QPushButton())
 {
@@ -83,7 +83,7 @@ void SendMultiRow::onMemoClicked()
 
 bool SendMultiRow::launchMemoDialog()
 {
-    showHideOp(true);
+    window->showHide(true);
     SendMemoDialog* dialog = new SendMemoDialog(window, walletModel);
     dialog->setMemo(recipient.message);
     bool ret = false;

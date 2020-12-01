@@ -290,7 +290,7 @@ void SendWidget::addEntry()
 
 SendMultiRow* SendWidget::createEntry()
 {
-    SendMultiRow *sendMultiRow = new SendMultiRow(this);
+    SendMultiRow *sendMultiRow = new SendMultiRow(window, this);
     if (this->walletModel) sendMultiRow->setWalletModel(this->walletModel);
     entries.append(sendMultiRow);
     ui->scrollAreaWidgetContents->layout()->addWidget(sendMultiRow);
