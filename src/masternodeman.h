@@ -140,7 +140,6 @@ public:
 
     /// Find an entry
     CMasternode* Find(const COutPoint& collateralOut);
-    CMasternode* Find(const CScript& payee);
     CMasternode* Find(const CPubKey& pubKeyMasternode);
 
     /// Check all transactions in a block, for spent masternode collateral outpoints.
