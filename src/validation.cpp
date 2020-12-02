@@ -50,6 +50,7 @@
 #include "validationinterface.h"
 #include "zpivchain.h"
 #include "zpiv/zerocoin.h"
+#include "zpiv/zpivmodule.h"
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/thread.hpp>
@@ -1325,12 +1326,6 @@ DisconnectResult DisconnectBlock(CBlock& block, CBlockIndex* pindex, CCoinsViewC
         return DISCONNECT_FAILED;
     }
 
-    //Track zPIV money supply
-    if (!UpdateZPIVSupplyDisconnect(block, pindex)) {
-        error("%s: Failed to calculate new zPIV supply", __func__);
-        return DISCONNECT_FAILED;
-    }
-
     // undo transactions in reverse order
     for (int i = block.vtx.size() - 1; i >= 0; i--) {
         const CTransaction& tx = *block.vtx[i];
@@ -1744,41 +1739,9 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
         setDirtyBlockIndex.insert(pindex);
     }
 
-    //Record zPIV serials
-    if (pwalletMain) {
-        std::set<uint256> setAddedTx;
-        for (const std::pair<libzerocoin::CoinSpend, uint256>& pSpend : vSpends) {
-            // Send signal to wallet if this is ours
-            if (pwalletMain->IsMyZerocoinSpend(pSpend.first.getCoinSerialNumber())) {
-                LogPrintf("%s: %s detected zerocoinspend in transaction %s \n", __func__,
-                          pSpend.first.getCoinSerialNumber().GetHex(), pSpend.second.GetHex());
-                pwalletMain->NotifyZerocoinChanged(pwalletMain, pSpend.first.getCoinSerialNumber().GetHex(), "Used",
-                                                   CT_UPDATED);
-
-                //Don't add the same tx multiple times
-                if (setAddedTx.count(pSpend.second))
-                    continue;
-
-                //Search block for matching tx, turn into wtx, set merkle branch, add to wallet
-                int posInBlock = 0;
-                for (posInBlock = 0; posInBlock < (int)block.vtx.size(); posInBlock++) {
-                    auto& tx = *block.vtx[posInBlock];
-                    if (tx.GetHash() == pSpend.second) {
-                        CWalletTx wtx(pwalletMain, tx);
-                        wtx.nTimeReceived = pindex->GetBlockTime();
-                        wtx.SetMerkleBranch(pindex->GetBlockHash(), posInBlock);
-                        pwalletMain->AddToWallet(wtx);
-                        setAddedTx.insert(pSpend.second);
-                    }
-                }
-            }
-        }
-    }
-
     // Flush spend/mint info to disk
     if (!vSpends.empty() && !zerocoinDB->WriteCoinSpendBatch(vSpends))
         return AbortNode(state, "Failed to record coin serials to database");
-
     if (!vMints.empty() && !zerocoinDB->WriteCoinMintBatch(vMints))
         return AbortNode(state, "Failed to record new mints to database");
 
@@ -1788,12 +1751,6 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 
     // add this block to the view's block chain
     view.SetBestBlock(pindex->GetBlockHash());
-
-    // Update zPIV money supply map
-    if (!UpdateZPIVSupplyConnect(block, pindex, fJustCheck)) {
-        return state.DoS(100, error("%s: Failed to calculate new zPIV supply for block=%s height=%d", __func__,
-                                    block.GetHash().GetHex(), pindex->nHeight), REJECT_INVALID);
-    }
 
     int64_t nTime3 = GetTimeMicros();
     nTimeIndex += nTime3 - nTime2;

@@ -7,6 +7,7 @@
 #include "libzerocoin/CoinSpend.h"
 #include "wallet/wallet.h"
 #include "zpivchain.h"
+#include "zpiv/zpivmodule.h"
 
 bool AcceptToMemoryPoolZerocoin(const CTransaction& tx, CAmount& nValueIn, int chainHeight, CValidationState& state, const Consensus::Params& consensus)
 {
@@ -71,14 +72,6 @@ bool DisconnectZerocoinTx(const CTransaction& tx, CAmount& nValueIn, CZerocoinDB
 
                     if (!zerocoinDB->EraseCoinSpend(serial))
                         return error("failed to erase spent zerocoin in block");
-
-                    //if this was our spend, then mark it unspent now
-                    if (pwalletMain) {
-                        if (pwalletMain->IsMyZerocoinSpend(serial)) {
-                            if (!pwalletMain->SetMintUnspent(serial))
-                                LogPrintf("%s: failed to automatically reset mint", __func__);
-                        }
-                    }
                 }
 
             }

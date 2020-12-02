@@ -35,6 +35,7 @@
 #include "invalid.h"
 #include "policy/policy.h"
 #include "zpivchain.h"
+#include "zpiv/zpivmodule.h"
 
 
 #include <boost/thread.hpp>
