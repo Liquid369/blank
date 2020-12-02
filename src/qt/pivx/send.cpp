@@ -355,15 +355,26 @@ void SendWidget::onSendClicked()
 
     QList<SendCoinsRecipient> recipients;
     bool hasShieldedOutput = false;
-    bool hasMemo = false;
 
     for (SendMultiRow* entry : entries) {
         // TODO: Check UTXO splitter here..
         // Validate send..
         if (entry && entry->validate()) {
             auto recipient = entry->getValue();
-            if (!hasShieldedOutput) hasShieldedOutput = recipient.isShieldedAddr;
-            if (!hasMemo) hasMemo = !recipient.message.isEmpty();
+            bool isShielded = recipient.isShieldedAddr;
+            if (!hasShieldedOutput) hasShieldedOutput = isShielded;
+            if (!recipient.message.isEmpty() && !isShielded) {
+                // memo set for transparent address
+                if (!ask(tr("Warning!"),
+                         tr("Cannot send memo to address\n%1\n\n"
+                            "Encrypted memo messages are available only for shielded recipients.\n\n"
+                            "Do you wish to proceed without memo?\n").arg(recipient.address))) {
+                    return;
+                } else {
+                    // remove memo, so it doesn't show on the confirmation dialog.
+                    recipient.message.clear();
+                }
+            }
             recipients.append(recipient);
         } else {
             inform(tr("Invalid entry"));
@@ -374,15 +385,6 @@ void SendWidget::onSendClicked()
     if (recipients.isEmpty()) {
         inform(tr("No set recipients"));
         return;
-    }
-
-    bool isShieldedTx = hasShieldedOutput || !isTransparent;
-    if (!isShieldedTx && hasMemo) {
-        if (!ask(tr("Warning!"),
-                 tr("Transparent transactions cannot include encrypted memos\n\n"
-                    "Do you wish to proceed without it?\n"))) {
-            return;
-        }
     }
 
     ProcessSend(recipients, hasShieldedOutput);
