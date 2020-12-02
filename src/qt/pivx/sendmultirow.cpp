@@ -88,15 +88,9 @@ bool SendMultiRow::launchMemoDialog()
     dialog->setMemo(recipient.message);
     bool ret = false;
     if (openDialogWithOpaqueBackgroundY(dialog, window, 3, 5)) {
-        QString memo = dialog->getMemo();
-        if (IsValidUTF8(memo.toStdString())) {
-            recipient.message = memo;
-            ui->btnAddMemo->setText(tr("Update memo"));
-            setCssProperty(ui->btnAddMemo, "btn-secondary-update", true);
-            ret = true;
-        } else {
-            inform(tr("Invalid memo"));
-        }
+        recipient.message = dialog->getMemo();
+        ui->btnAddMemo->setText(tr("Update memo"));
+        setCssProperty(ui->btnAddMemo, "btn-secondary-update", true);
     } else if (dialog->getOperationResult()) {
         bool isMemoEmpty = recipient.message.isEmpty();
         // reset..
