@@ -123,12 +123,12 @@ public:
 
     /// Helpers
     static bool decomposeCoinStake(const CWallet* wallet, const CWalletTx& wtx,
-                                   const CAmount& nCredit, const CAmount& nDebit, bool fZSpendFromMe,
+                                   const CAmount& nCredit, const CAmount& nDebit,
                                    QList<TransactionRecord>& parts);
 
     static bool decomposeZcSpendTx(const CWallet* wallet, const CWalletTx& wtx,
-                                    const CAmount& nCredit, const CAmount& nDebit, bool fZSpendFromMe,
-                                    QList<TransactionRecord>& parts);
+                                   const CAmount& nCredit, const CAmount& nDebit,
+                                   QList<TransactionRecord>& parts);
 
     static bool decomposeP2CS(const CWallet* wallet, const CWalletTx& wtx,
                                     const CAmount& nCredit, const CAmount& nDebit,

@@ -10,37 +10,6 @@
 #include "validation.h"
 #include "zpivchain.h"
 
-PublicCoinSpend::PublicCoinSpend(libzerocoin::ZerocoinParams* params, const uint8_t version,
-        const CBigNum& serial, const CBigNum& randomness, const uint256& ptxHash, CPubKey* pubkey):
-            pubCoin(params)
-{
-    this->coinSerialNumber = serial;
-    this->version = version;
-    this->spendType = libzerocoin::SpendType::SPEND;
-    this->ptxHash = ptxHash;
-    this->coinVersion = libzerocoin::ExtractVersionFromSerial(coinSerialNumber);
-
-    if (!isAllowed()) {
-        // v1 coins need at least version 4 spends
-        std::string errMsg = strprintf("Unable to create PublicCoinSpend version %d with coin version 1. "
-                "Minimum spend version required: %d", version, PUBSPEND_SCHNORR);
-        // this should be unreachable code (already checked in createInput)
-        // throw runtime error
-        throw std::runtime_error(errMsg);
-    }
-
-    if (pubkey && getCoinVersion() >= libzerocoin::PrivateCoin::PUBKEY_VERSION) {
-        // pubkey available only from v2 coins onwards
-        this->pubkey = *pubkey;
-    }
-
-    if (version < PUBSPEND_SCHNORR)
-        this->randomness = randomness;
-    else
-        this->schnorrSig = libzerocoin::CoinRandomnessSchnorrSignature(params, randomness, ptxHash);
-
-}
-
 template <typename Stream>
 PublicCoinSpend::PublicCoinSpend(libzerocoin::ZerocoinParams* params, Stream& strm): pubCoin(params) {
     strm >> *this;
@@ -134,51 +103,6 @@ namespace ZPIVModule {
         uint8_t byteskip = ((uint8_t) scriptSig[1] + 2);
         data.insert(data.end(), scriptSig.begin() + byteskip, scriptSig.end());
         return CDataStream(data, SER_NETWORK, PROTOCOL_VERSION);
-    }
-
-    bool createInput(CTxIn &in, CZerocoinMint &mint, uint256 hashTxOut, const int spendVersion) {
-        // check that this spend is allowed
-        const bool fUseV1Params = mint.GetVersion() < libzerocoin::PrivateCoin::PUBKEY_VERSION;
-        if (!PublicCoinSpend::isAllowed(fUseV1Params, spendVersion)) {
-            // v1 coins need at least version 4 spends
-            std::string errMsg = strprintf("Unable to create PublicCoinSpend version %d with coin version 1. "
-                    "Minimum spend version required: %d", spendVersion, PUBSPEND_SCHNORR);
-            return error("%s: %s", __func__, errMsg);
-        }
-
-        // create the PublicCoinSpend
-        libzerocoin::ZerocoinParams *params = Params().GetConsensus().Zerocoin_Params(fUseV1Params);
-        PublicCoinSpend spend(params, spendVersion, mint.GetSerialNumber(), mint.GetRandomness(), hashTxOut, nullptr);
-
-        spend.outputIndex = mint.GetOutputIndex();
-        spend.txHash = mint.GetTxHash();
-        spend.setDenom(mint.GetDenomination());
-
-        // add public key and signature
-        if (!fUseV1Params) {
-            CKey key;
-            if (!mint.GetKeyPair(key))
-                return error("%s: failed to set zPIV privkey mint.", __func__);
-            spend.setPubKey(key.GetPubKey(), true);
-
-            std::vector<unsigned char> vchSig;
-            if (!key.Sign(spend.signatureHash(), vchSig))
-                return error("%s: ZPIVModule failed to sign signatureHash.", __func__);
-            spend.setVchSig(vchSig);
-
-        }
-
-        // serialize the PublicCoinSpend and add it to the input scriptSig
-        CDataStream ser(SER_NETWORK, PROTOCOL_VERSION);
-        ser << spend;
-        std::vector<unsigned char> data(ser.begin(), ser.end());
-        CScript scriptSigIn = CScript() << OP_ZEROCOINPUBLICSPEND << data.size();
-        scriptSigIn.insert(scriptSigIn.end(), data.begin(), data.end());
-
-        // create the tx input
-        in = CTxIn(mint.GetTxHash(), mint.GetOutputIndex(), scriptSigIn, mint.GetDenomination());
-        in.nSequence = mint.GetDenomination();
-        return true;
     }
 
     PublicCoinSpend parseCoinSpend(const CTxIn &in)

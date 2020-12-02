@@ -253,7 +253,6 @@ endif()
 set(WALLET_SOURCES
         ./src/activemasternode.cpp
         ./src/bip38.cpp
-        ./src/denomination_functions.cpp
         ./src/wallet/db.cpp
         ./src/addressbook.cpp
         ./src/crypter.cpp
@@ -277,14 +276,10 @@ set(WALLET_SOURCES
         ./src/zpiv/zerocoin.cpp
         ./src/wallet/scriptpubkeyman.cpp
         ./src/wallet/rpcwallet.cpp
-        ./src/wallet/rpczpiv.cpp
         ./src/kernel.cpp
         ./src/legacy/stakemodifier.cpp
         ./src/wallet/wallet.cpp
-        ./src/wallet/wallet_zerocoin.cpp
         ./src/wallet/walletdb.cpp
-        ./src/zpiv/zpivwallet.cpp
-        ./src/zpiv/zpivtracker.cpp
         ./src/zpiv/zpivmodule.cpp
         ./src/zpiv/zpos.cpp
         ./src/stakeinput.cpp
