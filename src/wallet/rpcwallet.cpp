@@ -1460,12 +1460,15 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
     SaplingOperation operation(txBuilder);
 
     // Param 0: source of funds. Can either be a valid address, sapling address,
-    // or the string "from_transparent"|"from_shielded"
+    // or the string "from_transparent"|"from_trans_cold"|"from_shielded"
     bool fromSapling  = false;
     std::string sendFromStr = request.params[0].get_str();
     if (sendFromStr == "from_transparent") {
         // send from any transparent address
         operation.setSelectTransparentCoins(true);
+    } else if (sendFromStr == "from_trans_cold") {
+        // send from any transparent address + delegations
+        operation.setSelectTransparentCoins(true, true);
     } else if (sendFromStr == "from_shielded") {
         // send from any shielded address
         operation.setSelectShieldedCoins(true);
@@ -1617,6 +1620,8 @@ UniValue shieldedsendmany(const JSONRPCRequest& request)
                 "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
                 "                             It can also be the string \"from_transparent\"|\"from_shielded\" to send the funds\n"
                 "                             from any transparent|shielded address available.\n"
+                "                             Additionally, it can be the string \"from_trans_cold\" to select transparent funds,\n"
+                "                             possibly including delegated coins, if needed.\n"
                 "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
                 "    [{\n"
                 "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
@@ -1658,6 +1663,8 @@ UniValue rawshieldedsendmany(const JSONRPCRequest& request)
                 "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
                 "                             It can also be the string \"from_transparent\"|\"from_shielded\" to send the funds\n"
                 "                             from any transparent|shielded address available.\n"
+                "                             Additionally, it can be the string \"from_trans_cold\" to select transparent funds,\n"
+                "                             possibly including delegated coins, if needed.\n"
                 "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
                 "    [{\n"
                 "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
@@ -2120,7 +2127,11 @@ UniValue sendmany(const JSONRPCRequest& request)
         // convert params to 'shieldedsendmany' format
         JSONRPCRequest req;
         req.params = UniValue(UniValue::VARR);
-        req.params.push_back(UniValue("from_transparent"));
+        if (!fIncludeDelegated) {
+            req.params.push_back(UniValue("from_transparent"));
+        } else {
+            req.params.push_back(UniValue("from_trans_cold"));
+        }
         UniValue recipients(UniValue::VARR);
         for (const std::string& key : sendTo.getKeys()) {
             UniValue recipient(UniValue::VOBJ);
