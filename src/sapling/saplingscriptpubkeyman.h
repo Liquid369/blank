@@ -136,7 +136,12 @@ typedef std::map<SaplingOutPoint, SaplingNoteData> mapSaplingNoteData_t;
 
 /*
  * Sapling keys manager
- * todo: add real description..
+ * A class implementing SaplingScriptPubKeyMan manages all sapling keys and Notes used in a wallet.
+ * It is responsible for the decryption of notes and caching metadata.
+ * A SaplingScriptPubKeyMan will be able to give out notes to be used, as well as marking
+ * when a note has been used. It also handles when and how to store a sapling OutputDescription
+ * and its related keys, including encryption.
+ * A ScriptPubKeyMan will also update notes witnesses, and keep track of nullifiers.
  */
 class SaplingScriptPubKeyMan {
 
@@ -267,14 +272,14 @@ public:
 
     //! Find notes for the outpoints
     void GetNotes(const std::vector<SaplingOutPoint>& saplingOutpoints,
-                  std::vector<SaplingNoteEntry>& saplingEntriesRet);
+                  std::vector<SaplingNoteEntry>& saplingEntriesRet) const;
 
     /* Find notes filtered by payment address, min depth, ability to spend */
     void GetFilteredNotes(std::vector<SaplingNoteEntry>& saplingEntries,
                           Optional<libzcash::SaplingPaymentAddress>& address,
                           int minDepth=1,
                           bool ignoreSpent=true,
-                          bool requireSpendingKey=true);
+                          bool requireSpendingKey=true) const;
 
     /* Find notes filtered by payment addresses, min depth, max depth, if they are spent,
        if a spending key is required, and if they are locked */
@@ -284,11 +289,11 @@ public:
                           int maxDepth=INT_MAX,
                           bool ignoreSpent=true,
                           bool requireSpendingKey=true,
-                          bool ignoreLocked=true);
+                          bool ignoreLocked=true) const;
 
 
     //! Return the address from where the shielded spend is taking the funds from (if possible)
-    Optional<libzcash::SaplingPaymentAddress> GetAddressFromInputIfPossible(const CWalletTx* wtx, int index);
+    Optional<libzcash::SaplingPaymentAddress> GetAddressFromInputIfPossible(const CWalletTx* wtx, int index) const;
 
     //! Whether the nullifier is from this wallet
     bool IsSaplingNullifierFromMe(const uint256& nullifier) const;
@@ -297,10 +302,10 @@ public:
     void GetSaplingNoteWitnesses(
             const std::vector<SaplingOutPoint>& notes,
             std::vector<Optional<SaplingWitness>>& witnesses,
-            uint256& final_anchor);
+            uint256& final_anchor) const;
 
-    std::set<std::pair<libzcash::PaymentAddress, uint256>> GetNullifiersForAddresses(const std::set<libzcash::PaymentAddress> & addresses);
-    bool IsNoteSaplingChange(const std::set<std::pair<libzcash::PaymentAddress, uint256>>& nullifierSet, const libzcash::PaymentAddress& address, const SaplingOutPoint& entry);
+    std::set<std::pair<libzcash::PaymentAddress, uint256>> GetNullifiersForAddresses(const std::set<libzcash::PaymentAddress> & addresses) const;
+    bool IsNoteSaplingChange(const std::set<std::pair<libzcash::PaymentAddress, uint256>>& nullifierSet, const libzcash::PaymentAddress& address, const SaplingOutPoint& entry) const;
 
     //! Try to recover the note using the wallet's ovks (mostly used when the outpoint is a debit)
     Optional<std::pair<
@@ -308,22 +313,22 @@ public:
             libzcash::SaplingPaymentAddress>> TryToRecoverNote(const CWalletTx& tx, const SaplingOutPoint& op);
 
     //! Return true if the wallet can decrypt & spend the shielded output.
-    isminetype IsMine(const CWalletTx& wtx, const SaplingOutPoint& op);
+    isminetype IsMine(const CWalletTx& wtx, const SaplingOutPoint& op) const;
     //! Return the shielded address of a specific outpoint of wallet transaction
-    Optional<libzcash::SaplingPaymentAddress> GetOutPointAddress(const CWalletTx& tx, const SaplingOutPoint& op);
+    Optional<libzcash::SaplingPaymentAddress> GetOutPointAddress(const CWalletTx& tx, const SaplingOutPoint& op) const;
     //! Return the shielded value of a specific outpoint of wallet transaction
-    CAmount GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op);
+    CAmount GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op) const;
     //! Return the memo value of a specific outpoint of wallet transaction
     Optional<std::string> GetOutPointMemo(const CWalletTx& tx, const SaplingOutPoint& op) const;
     //! Return the shielded credit of the tx
-    CAmount GetCredit(const CWalletTx& tx, const isminefilter& filter, const bool fUnspent = false);
+    CAmount GetCredit(const CWalletTx& tx, const isminefilter& filter, const bool fUnspent = false) const;
     //! Return the shielded debit of the tx.
-    CAmount GetDebit(const CTransaction& tx, const isminefilter& filter);
+    CAmount GetDebit(const CTransaction& tx, const isminefilter& filter) const;
     //! Return the shielded change of the tx
-    CAmount GetShieldedChange(const CWalletTx& wtx);
+    CAmount GetShieldedChange(const CWalletTx& wtx) const;
 
     //! Check whether an specific output is change or not.
-    bool IsNoteSaplingChange(const SaplingOutPoint& op, libzcash::SaplingPaymentAddress address);
+    bool IsNoteSaplingChange(const SaplingOutPoint& op, libzcash::SaplingPaymentAddress address) const;
 
     //! Update note data if is needed
     bool UpdatedNoteData(const CWalletTx& wtxIn, CWalletTx& wtx);

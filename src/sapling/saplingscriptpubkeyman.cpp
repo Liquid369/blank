@@ -381,7 +381,7 @@ std::vector<libzcash::SaplingPaymentAddress> SaplingScriptPubKeyMan::FindMySapli
 }
 
 void SaplingScriptPubKeyMan::GetNotes(const std::vector<SaplingOutPoint>& saplingOutpoints,
-                                      std::vector<SaplingNoteEntry>& saplingEntriesRet)
+                                      std::vector<SaplingNoteEntry>& saplingEntriesRet) const
 {
     for (const auto& outpoint : saplingOutpoints) {
         const auto* wtx = wallet->GetWalletTx(outpoint.hash);
@@ -424,7 +424,7 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
         Optional<libzcash::SaplingPaymentAddress>& address,
         int minDepth,
         bool ignoreSpent,
-        bool requireSpendingKey)
+        bool requireSpendingKey) const
 {
     std::set<libzcash::PaymentAddress> filterAddresses;
 
@@ -447,7 +447,7 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
         int maxDepth,
         bool ignoreSpent,
         bool requireSpendingKey,
-        bool ignoreLocked)
+        bool ignoreLocked) const
 {
     LOCK2(cs_main, wallet->cs_wallet);
 
@@ -512,7 +512,7 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
 }
 
 Optional<libzcash::SaplingPaymentAddress>
-        SaplingScriptPubKeyMan::GetAddressFromInputIfPossible(const CWalletTx* wtx, int index)
+        SaplingScriptPubKeyMan::GetAddressFromInputIfPossible(const CWalletTx* wtx, int index) const
 {
     if (!wtx->sapData || wtx->sapData->vShieldedSpend.empty()) return nullopt;
 
@@ -533,7 +533,7 @@ bool SaplingScriptPubKeyMan::IsSaplingNullifierFromMe(const uint256& nullifier) 
 }
 
 std::set<std::pair<libzcash::PaymentAddress, uint256>> SaplingScriptPubKeyMan::GetNullifiersForAddresses(
-        const std::set<libzcash::PaymentAddress> & addresses)
+        const std::set<libzcash::PaymentAddress> & addresses) const
 {
     AssertLockHeld(wallet->cs_wallet);
     std::set<std::pair<libzcash::PaymentAddress, uint256>> nullifierSet;
@@ -567,7 +567,7 @@ std::set<std::pair<libzcash::PaymentAddress, uint256>> SaplingScriptPubKeyMan::G
     return nullifierSet;
 }
 
-Optional<libzcash::SaplingPaymentAddress> SaplingScriptPubKeyMan::GetOutPointAddress(const CWalletTx& tx, const SaplingOutPoint& op)
+Optional<libzcash::SaplingPaymentAddress> SaplingScriptPubKeyMan::GetOutPointAddress(const CWalletTx& tx, const SaplingOutPoint& op) const
 {
     if (!tx.mapSaplingNoteData.count(op)) {
         return nullopt;
@@ -575,7 +575,7 @@ Optional<libzcash::SaplingPaymentAddress> SaplingScriptPubKeyMan::GetOutPointAdd
     return tx.mapSaplingNoteData.at(op).address;
 }
 
-CAmount SaplingScriptPubKeyMan::GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op)
+CAmount SaplingScriptPubKeyMan::GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op) const
 {
     if (!tx.mapSaplingNoteData.count(op)) {
         return 0;
@@ -641,7 +641,7 @@ Optional<std::pair<
     return tx.RecoverSaplingNote(op, ovks);
 }
 
-isminetype SaplingScriptPubKeyMan::IsMine(const CWalletTx& wtx, const SaplingOutPoint& op)
+isminetype SaplingScriptPubKeyMan::IsMine(const CWalletTx& wtx, const SaplingOutPoint& op) const
 {
     auto ndIt = wtx.mapSaplingNoteData.find(op);
     if (ndIt != wtx.mapSaplingNoteData.end() && ndIt->second.IsMyNote()) {
@@ -652,7 +652,7 @@ isminetype SaplingScriptPubKeyMan::IsMine(const CWalletTx& wtx, const SaplingOut
     return ISMINE_NO;
 }
 
-CAmount SaplingScriptPubKeyMan::GetCredit(const CWalletTx& tx, const isminefilter& filter, const bool fUnspent)
+CAmount SaplingScriptPubKeyMan::GetCredit(const CWalletTx& tx, const isminefilter& filter, const bool fUnspent) const
 {
     CAmount nCredit = 0;
     for (int i = 0; i < (int) tx.sapData->vShieldedOutput.size(); ++i) {
@@ -678,7 +678,7 @@ CAmount SaplingScriptPubKeyMan::GetCredit(const CWalletTx& tx, const isminefilte
     return nCredit;
 }
 
-CAmount SaplingScriptPubKeyMan::GetDebit(const CTransaction& tx, const isminefilter& filter)
+CAmount SaplingScriptPubKeyMan::GetDebit(const CTransaction& tx, const isminefilter& filter) const
 {
     CAmount nDebit = 0;
     for (const SpendDescription& spend : tx.sapData->vShieldedSpend) {
@@ -701,7 +701,7 @@ CAmount SaplingScriptPubKeyMan::GetDebit(const CTransaction& tx, const isminefil
     return nDebit;
 }
 
-CAmount SaplingScriptPubKeyMan::GetShieldedChange(const CWalletTx& wtx)
+CAmount SaplingScriptPubKeyMan::GetShieldedChange(const CWalletTx& wtx) const
 {
     if (!wtx.isSaplingVersion() || wtx.sapData->vShieldedOutput.empty()) {
         return 0;
@@ -723,7 +723,7 @@ CAmount SaplingScriptPubKeyMan::GetShieldedChange(const CWalletTx& wtx)
     return nChange;
 }
 
-bool SaplingScriptPubKeyMan::IsNoteSaplingChange(const SaplingOutPoint& op, libzcash::SaplingPaymentAddress address)
+bool SaplingScriptPubKeyMan::IsNoteSaplingChange(const SaplingOutPoint& op, libzcash::SaplingPaymentAddress address) const
 {
     LOCK(wallet->cs_KeyStore);
     std::set<libzcash::PaymentAddress> shieldedAddresses = {address};
@@ -733,7 +733,7 @@ bool SaplingScriptPubKeyMan::IsNoteSaplingChange(const SaplingOutPoint& op, libz
 
 bool SaplingScriptPubKeyMan::IsNoteSaplingChange(const std::set<std::pair<libzcash::PaymentAddress, uint256>> & nullifierSet,
                                   const libzcash::PaymentAddress & address,
-                                  const SaplingOutPoint & op)
+                                  const SaplingOutPoint & op) const
 {
     // A Note is marked as "change" if the address that received it
     // also spent Notes in the same transaction. This will catch,
@@ -754,7 +754,7 @@ bool SaplingScriptPubKeyMan::IsNoteSaplingChange(const std::set<std::pair<libzca
 
 void SaplingScriptPubKeyMan::GetSaplingNoteWitnesses(const std::vector<SaplingOutPoint>& notes,
                                       std::vector<Optional<SaplingWitness>>& witnesses,
-                                      uint256& final_anchor)
+                                      uint256& final_anchor) const
 {
     LOCK(wallet->cs_wallet);
     witnesses.resize(notes.size());
