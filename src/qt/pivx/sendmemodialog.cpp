@@ -72,6 +72,8 @@ void SendMemoDialog::reset()
         ui->textEdit->clear();
         ui->btnCancel->setText(tr("CANCEL"));
     }
+    // caller reset memo on the recipient
+    operationResult = true;
     close();
 }
 
