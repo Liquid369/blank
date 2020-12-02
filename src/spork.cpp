@@ -57,6 +57,21 @@ void CSporkManager::LoadSporksFromDB()
             continue;
         }
 
+        // TODO: Temporary workaround for v5.0 clients to ensure up-to-date protocol version spork
+        if (spork.nSporkID == SPORK_15_NEW_PROTOCOL_ENFORCEMENT_2) {
+            LogPrintf("%s : Spork 15 signed at %d\n", __func__, spork.nTimeSigned);
+            // 1578338986 is the timestamp that spork 15 was last signed at for mainnet for the previous
+            // protocol bump. If the timestamp in the DB is equal or lower than this, we know that
+            // the value is stale and should ignore it to prevent un-necessary disconnections in the
+            // version handshake process. This value is also suitable for testnet as the timestamp
+            // for this spork on that network was signed shortly after this.
+            if (spork.nTimeSigned <= 1578338986 ) {
+                LogPrintf("%s : Stale spork 15 detected, clearing...\n", __func__);
+                CSporkManager::Clear();
+                return;
+            }
+        }
+
         // add spork to memory
         mapSporks[spork.GetHash()] = spork;
         mapSporksActive[spork.nSporkID] = spork;
