@@ -142,7 +142,7 @@ SET(QT_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/pivx/sendchangeaddressdialog.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/pivx/sendconfirmdialog.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/pivx/sendcustomfeedialog.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/pivx/sendchangeaddressdialog.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/pivx/sendmemodialog.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/pivx/sendmultirow.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/pivx/send.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/pivx/addnewaddressdialog.cpp

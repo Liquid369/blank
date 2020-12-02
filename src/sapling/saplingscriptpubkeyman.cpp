@@ -583,6 +583,21 @@ CAmount SaplingScriptPubKeyMan::GetOutPointValue(const CWalletTx& tx, const Sapl
     return tx.mapSaplingNoteData.at(op).amount ? *(tx.mapSaplingNoteData.at(op).amount) : 0;
 }
 
+Optional<std::string> SaplingScriptPubKeyMan::GetOutPointMemo(const CWalletTx& tx, const SaplingOutPoint& op) const
+{
+    auto it = tx.mapSaplingNoteData.find(op);
+    if (it == tx.mapSaplingNoteData.end() || !static_cast<bool>(it->second.memo))
+        return nullopt;
+    auto& memo = *(it->second.memo);
+    auto end = FindFirstNonZero(memo.rbegin(), memo.rend());
+    if (memo[0] <= 0xf4) {
+        std::string memoStr(memo.begin(), end.base());
+        if (IsValidUTF8(memoStr)) return memoStr;
+    }
+    // non UTF-8 memo. Return as hex encoded raw memo.
+    return HexStr(memo.begin(), end.base());
+}
+
 Optional<std::pair<
         libzcash::SaplingNotePlaintext,
         libzcash::SaplingPaymentAddress>>

@@ -86,6 +86,7 @@
         <file alias="ic-check">pivx/res/img/ic-check.svg</file>
         <file alias="ic-chevron-left">pivx/res/img/ic-chevron-left.svg</file>
         <file alias="ic-chevron-right">pivx/res/img/ic-chevron-right.svg</file>
+        <file alias="ic-chevron-right-liliac">pivx/res/img/ic-chevron-right-liliac.svg</file>
         <file alias="ic-clear-liliac">pivx/res/img/ic-clear-liliac.svg</file>
         <file alias="ic-clear-purple">pivx/res/img/ic-clear-purple.svg</file>
         <file alias="ic-close-white">pivx/res/img/ic-close-white.svg</file>

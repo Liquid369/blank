@@ -66,7 +66,7 @@ public:
       * Cached note memo (only for non-empty memo)
       * It will be loaded the first time that the note is decrypted (when the tx is added to the wallet)
       */
-     Optional<std::array<unsigned char, ZC_MEMO_SIZE>> memo;
+     Optional<std::array<unsigned char, ZC_MEMO_SIZE>> memo{nullopt};
 
     /**
      * Block height corresponding to the most current witness.
@@ -313,6 +313,8 @@ public:
     Optional<libzcash::SaplingPaymentAddress> GetOutPointAddress(const CWalletTx& tx, const SaplingOutPoint& op);
     //! Return the shielded value of a specific outpoint of wallet transaction
     CAmount GetOutPointValue(const CWalletTx& tx, const SaplingOutPoint& op);
+    //! Return the memo value of a specific outpoint of wallet transaction
+    Optional<std::string> GetOutPointMemo(const CWalletTx& tx, const SaplingOutPoint& op) const;
     //! Return the shielded credit of the tx
     CAmount GetCredit(const CWalletTx& tx, const isminefilter& filter, const bool fUnspent = false);
     //! Return the shielded debit of the tx.

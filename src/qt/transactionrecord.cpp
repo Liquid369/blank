@@ -221,6 +221,7 @@ bool TransactionRecord::decomposeCreditTransaction(const CWallet* wallet, const 
                 sub.address = (opAddr) ? KeyIO::EncodePaymentAddress(*opAddr) : "";
                 sub.type = TransactionRecord::RecvWithShieldedAddress;
                 sub.credit = sspkm->GetOutPointValue(wtx, out);
+                sub.memo = sspkm->GetOutPointMemo(wtx, out);
                 sub.idx = i;
                 parts.append(sub);
             }
@@ -254,11 +255,13 @@ bool TransactionRecord::decomposeSendToSelfTransaction(const CWalletTx& wtx, con
             sub.shieldedCredit = wtx.GetCredit(ISMINE_SPENDABLE_SHIELDED);
             nChange += wtx.GetShieldedChange();
 
+            const auto& sspkm = wallet->GetSaplingScriptPubKeyMan();
             SaplingOutPoint out(sub.hash, 0);
-            auto opAddr = wallet->GetSaplingScriptPubKeyMan()->GetOutPointAddress(wtx, out);
+            auto opAddr = sspkm->GetOutPointAddress(wtx, out);
             if (opAddr) {
                 sub.address = KeyIO::EncodePaymentAddress(*opAddr);
             }
+            sub.memo = sspkm->GetOutPointMemo(wtx, out);
         } else {
             // we know that the inputs are shielded now, let's see if
             // if we have transparent outputs. if we have then we are converting back coins,
@@ -308,6 +311,7 @@ bool TransactionRecord::decomposeShieldedDebitTransaction(const CWallet* wallet,
         sub.involvesWatchAddress = involvesWatchAddress;
         sub.type = TransactionRecord::SendToShielded;
         sub.address = KeyIO::EncodePaymentAddress(*opAddr);
+        sub.memo = sspkm->GetOutPointMemo(wtx, out);
         CAmount nValue = sspkm->GetOutPointValue(wtx, out);
         /* Add fee to first output */
         if (nTxFee > 0) {

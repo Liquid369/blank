@@ -536,7 +536,7 @@ OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* 
         if (recipient.isShieldedAddr) {
             auto pa = KeyIO::DecodeSaplingPaymentAddress(recipient.address.toStdString());
             if (!pa) return errorOut("Error, invalid shielded address");
-            recipients.emplace_back(*pa, recipient.amount, "");
+            recipients.emplace_back(*pa, recipient.amount, recipient.message.toStdString());
         } else {
             auto dest = DecodeDestination(recipient.address.toStdString());
             if (!IsValidDestination(dest)) return errorOut("Error, invalid transparent address");

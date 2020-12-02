@@ -286,7 +286,7 @@ void SendWidget::addEntry()
 
 SendMultiRow* SendWidget::createEntry()
 {
-    SendMultiRow *sendMultiRow = new SendMultiRow(this);
+    SendMultiRow *sendMultiRow = new SendMultiRow(window, this);
     if (this->walletModel) sendMultiRow->setWalletModel(this->walletModel);
     entries.append(sendMultiRow);
     ui->scrollAreaWidgetContents->layout()->addWidget(sendMultiRow);
@@ -355,6 +355,7 @@ void SendWidget::onSendClicked()
 
     QList<SendCoinsRecipient> recipients;
     bool hasShieldedOutput = false;
+    bool hasMemo = false;
 
     for (SendMultiRow* entry : entries) {
         // TODO: Check UTXO splitter here..
@@ -362,6 +363,7 @@ void SendWidget::onSendClicked()
         if (entry && entry->validate()) {
             auto recipient = entry->getValue();
             if (!hasShieldedOutput) hasShieldedOutput = recipient.isShieldedAddr;
+            if (!hasMemo) hasMemo = !recipient.message.isEmpty();
             recipients.append(recipient);
         } else {
             inform(tr("Invalid entry"));
@@ -372,6 +374,15 @@ void SendWidget::onSendClicked()
     if (recipients.isEmpty()) {
         inform(tr("No set recipients"));
         return;
+    }
+
+    bool isShieldedTx = hasShieldedOutput || !isTransparent;
+    if (!isShieldedTx && hasMemo) {
+        if (!ask(tr("Warning!"),
+                 tr("Transparent transactions cannot include encrypted memos\n\n"
+                    "Do you wish to proceed without it?\n"))) {
+            return;
+        }
     }
 
     ProcessSend(recipients, hasShieldedOutput);
@@ -812,12 +823,13 @@ void SendWidget::onMenuClicked(SendMultiRow* entry)
 
     if (!this->menu) {
         this->menu = new TooltipMenu(window, this);
-        this->menu->setCopyBtnVisible(false);
+        this->menu->setCopyBtnText(tr("Add Memo"));
         this->menu->setEditBtnText(tr("Save contact"));
         this->menu->setMinimumSize(this->menu->width() + 30,this->menu->height());
         connect(this->menu, &TooltipMenu::message, this, &AddressesWidget::message);
         connect(this->menu, &TooltipMenu::onEditClicked, this, &SendWidget::onContactMultiClicked);
         connect(this->menu, &TooltipMenu::onDeleteClicked, this, &SendWidget::onDeleteClicked);
+        connect(this->menu, &TooltipMenu::onCopyClicked, this, &SendWidget::onEntryMemoClicked);
     } else {
         this->menu->hide();
     }
@@ -872,6 +884,14 @@ void SendWidget::onContactMultiClicked()
         dialog->deleteLater();
     }
 
+}
+
+void SendWidget::onEntryMemoClicked()
+{
+    if (focusedEntry) {
+        focusedEntry->launchMemoDialog();
+        menu->setCopyBtnText(tr("Memo"));
+    }
 }
 
 void SendWidget::onDeleteClicked()
