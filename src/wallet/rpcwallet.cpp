@@ -10,6 +10,7 @@
 #include "base58.h"
 #include "coincontrol.h"
 #include "core_io.h"
+#include "destination_io.h"
 #include "init.h"
 #include "key_io.h"
 #include "masternode-sync.h"
@@ -1988,7 +1989,80 @@ UniValue getunconfirmedbalance(const JSONRPCRequest& request)
     return ValueFromAmount(pwalletMain->GetUnconfirmedBalance());
 }
 
+/*
+ * Only used for t->t transactions (via sendmany RPC)
+ */
+static UniValue legacy_sendmany(const UniValue& sendTo, int nMinDepth, std::string comment, bool fIncludeDelegated)
+{
+    LOCK2(cs_main, pwalletMain->cs_wallet);
 
+    if (!g_connman)
+        throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
+
+    isminefilter filter = ISMINE_SPENDABLE | (fIncludeDelegated ? ISMINE_SPENDABLE_DELEGATED : ISMINE_NO);
+
+    CWalletTx wtx;
+    if (!comment.empty())
+        wtx.mapValue["comment"] = comment;
+
+    std::set<CTxDestination> setAddress;
+    std::vector<CRecipient> vecSend;
+
+    CAmount totalAmount = 0;
+    std::vector<std::string> keys = sendTo.getKeys();
+    for (const std::string& name_ : keys) {
+        bool isStaking = false;
+        CTxDestination dest = DecodeDestination(name_,isStaking);
+        if (!IsValidDestination(dest) || isStaking)
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid PIVX address: ")+name_);
+
+        if (setAddress.count(dest))
+            throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ")+name_);
+        setAddress.insert(dest);
+
+        CScript scriptPubKey = GetScriptForDestination(dest);
+        CAmount nAmount = AmountFromValue(sendTo[name_]);
+        totalAmount += nAmount;
+
+        vecSend.emplace_back(scriptPubKey, nAmount, false);
+    }
+
+    EnsureWalletIsUnlocked();
+
+    // Check funds
+    if (totalAmount > pwalletMain->GetLegacyBalance(filter, nMinDepth)) {
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Wallet has insufficient funds");
+    }
+
+    // Send
+    CReserveKey keyChange(pwalletMain);
+    CAmount nFeeRequired = 0;
+    std::string strFailReason;
+    int nChangePosInOut = -1;
+    bool fCreated = pwalletMain->CreateTransaction(vecSend,
+                                                   &wtx,
+                                                   keyChange,
+                                                   nFeeRequired,
+                                                   nChangePosInOut,
+                                                   strFailReason,
+                                                   nullptr,     // coinControl
+                                                   ALL_COINS,   // inputType
+                                                   true,        // sign
+                                                   0,           // nFeePay
+                                                   fIncludeDelegated);
+    if (!fCreated)
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strFailReason);
+    const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, keyChange, g_connman.get());
+    if (res.status != CWallet::CommitStatus::OK)
+        throw JSONRPCError(RPC_WALLET_ERROR, res.ToString());
+
+    return wtx.GetHash().GetHex();
+}
+
+/*
+ * This function uses [legacy_sendmany] in the background.
+ * If any recipient is a shielded address, instead it uses [shieldedsendmany "from_transparent"].
+ */
 UniValue sendmany(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 5)
@@ -2021,78 +2095,61 @@ UniValue sendmany(const JSONRPCRequest& request)
             HelpExampleRpc("sendmany", "\"\", \"{\\\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\\\":0.01,\\\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\\\":0.02}\", 6, \"testing\"")
         );
 
-    LOCK2(cs_main, pwalletMain->cs_wallet);
-
-    if (!g_connman)
-        throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
-
+    // Read Params
     if (!request.params[0].isNull() && !request.params[0].get_str().empty()) {
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Dummy value must be set to \"\"");
     }
-    UniValue sendTo = request.params[1].get_obj();
-    int nMinDepth = 1;
-    if (request.params.size() > 2)
-        nMinDepth = request.params[2].get_int();
+    const UniValue sendTo = request.params[1].get_obj();
+    const int nMinDepth = request.params.size() > 2 ? request.params[2].get_int() : 1;
+    const std::string comment = (request.params.size() > 3 && !request.params[3].isNull() && !request.params[3].get_str().empty()) ?
+                        request.params[3].get_str() : "";
+    const bool fIncludeDelegated = (request.params.size() > 5 && request.params[5].get_bool());
 
-    CWalletTx wtx;
-    if (request.params.size() > 3 && !request.params[3].isNull() && !request.params[3].get_str().empty())
-        wtx.mapValue["comment"] = request.params[3].get_str();
-
-    std::set<CTxDestination> setAddress;
-    std::vector<CRecipient> vecSend;
-
-    CAmount totalAmount = 0;
-    std::vector<std::string> keys = sendTo.getKeys();
-    for (const std::string& name_ : keys) {
-        bool isStaking = false;
-        CTxDestination dest = DecodeDestination(name_,isStaking);
-        if (!IsValidDestination(dest) || isStaking)
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid PIVX address: ")+name_);
-
-        if (setAddress.count(dest))
-            throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ")+name_);
-        setAddress.insert(dest);
-
-        CScript scriptPubKey = GetScriptForDestination(dest);
-        CAmount nAmount = AmountFromValue(sendTo[name_]);
-        totalAmount += nAmount;
-
-        vecSend.emplace_back(scriptPubKey, nAmount, false);
+    // Check  if any recipient address is shielded
+    bool fShieldSend = false;
+    for (const std::string& key : sendTo.getKeys()) {
+        bool isStaking = false, isShielded = false;
+        const CWDestination& dest = Standard::DecodeDestination(key, isStaking, isShielded);
+        if (isShielded) {
+            fShieldSend = true;
+            break;
+        }
     }
 
-    const bool fIncludeDelegated = request.params.size() > 5 && request.params[5].get_bool();
-    isminefilter filter = ISMINE_SPENDABLE | (fIncludeDelegated ? ISMINE_SPENDABLE_DELEGATED : ISMINE_NO);
+    if (fShieldSend) {
+        // convert params to 'shieldedsendmany' format
+        JSONRPCRequest req;
+        req.params = UniValue(UniValue::VARR);
+        req.params.push_back(UniValue("from_transparent"));
+        UniValue recipients(UniValue::VARR);
+        for (const std::string& key : sendTo.getKeys()) {
+            UniValue recipient(UniValue::VOBJ);
+            recipient.pushKV("address", key);
+            recipient.pushKV("amount", sendTo[key]);
+            recipients.push_back(recipient);
+        }
+        req.params.push_back(recipients);
+        req.params.push_back(nMinDepth);
 
-    EnsureWalletIsUnlocked();
+        // send
+        SaplingOperation operation = CreateShieldedTransaction(req);
+        std::string txid;
+        auto res = operation.send(txid);
+        if (!res)
+            throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
 
-    // Check funds
-    if (totalAmount > pwalletMain->GetLegacyBalance(filter, nMinDepth)) {
-        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Wallet has insufficient funds");
+        // add comment
+        if (!comment.empty()) {
+            const uint256 txHash(txid);
+            assert(pwalletMain->mapWallet.count(txHash));
+            pwalletMain->mapWallet[txHash].mapValue["comment"] = comment;
+        }
+
+        return txid;
     }
 
-    // Send
-    CReserveKey keyChange(pwalletMain);
-    CAmount nFeeRequired = 0;
-    std::string strFailReason;
-    int nChangePosInOut = -1;
-    bool fCreated = pwalletMain->CreateTransaction(vecSend,
-                                                   &wtx,
-                                                   keyChange,
-                                                   nFeeRequired,
-                                                   nChangePosInOut,
-                                                   strFailReason,
-                                                   nullptr,     // coinControl
-                                                   ALL_COINS,   // inputType
-                                                   true,        // sign
-                                                   0,           // nFeePay
-                                                   fIncludeDelegated);
-    if (!fCreated)
-        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strFailReason);
-    const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, keyChange, g_connman.get());
-    if (res.status != CWallet::CommitStatus::OK)
-        throw JSONRPCError(RPC_WALLET_ERROR, res.ToString());
-
-    return wtx.GetHash().GetHex();
+    // All recipients are transparent: use Legacy sendmany t->t
+    return legacy_sendmany(sendTo, nMinDepth, comment, fIncludeDelegated);
 }
 
 // Defined in rpc/misc.cpp
