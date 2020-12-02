@@ -294,9 +294,6 @@ BITCOIN_CORE_H = \
   zpiv/deterministicmint.h \
   zpiv/mintpool.h \
   zpiv/zerocoin.h \
-  zpiv/zpivtracker.h \
-  zpiv/zpivwallet.h \
-  zpiv/zpivmodule.h \
   zpiv/zpos.h \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h \
@@ -403,15 +400,11 @@ libbitcoin_wallet_a_SOURCES = \
   wallet/scriptpubkeyman.cpp \
   destination_io.cpp \
   wallet/wallet.cpp \
-  wallet/wallet_zerocoin.cpp \
   wallet/walletdb.cpp \
   zpiv/deterministicmint.cpp \
   zpiv/zerocoin.cpp \
   zpiv/mintpool.cpp \
-  zpiv/zpivwallet.cpp \
-  zpiv/zpivtracker.cpp \
   stakeinput.cpp \
-  zpiv/zpivmodule.cpp \
   zpiv/zpos.cpp \
   $(BITCOIN_CORE_H) \
   $(LIBSAPLING_H)
@@ -471,6 +464,7 @@ libzerocoin_libbitcoin_zerocoin_a_SOURCES = \
   libzerocoin/Params.h \
   libzerocoin/SpendType.h \
   libzerocoin/ZerocoinDefines.h \
+  zpiv/zpivmodule.h \
   libzerocoin/bignum.cpp \
   libzerocoin/Accumulator.cpp \
   libzerocoin/Coin.cpp \
@@ -478,7 +472,8 @@ libzerocoin_libbitcoin_zerocoin_a_SOURCES = \
   libzerocoin/CoinSpend.cpp \
   libzerocoin/Denominations.cpp \
   libzerocoin/ParamGeneration.cpp \
-  libzerocoin/Params.cpp
+  libzerocoin/Params.cpp \
+  zpiv/zpivmodule.cpp
 if USE_NUM_GMP
   libzerocoin_libbitcoin_zerocoin_a_SOURCES += libzerocoin/bignum_gmp.cpp
 endif

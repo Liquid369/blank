@@ -280,10 +280,7 @@ set(WALLET_SOURCES
         ./src/kernel.cpp
         ./src/legacy/stakemodifier.cpp
         ./src/wallet/wallet.cpp
-        ./src/wallet/wallet_zerocoin.cpp
         ./src/wallet/walletdb.cpp
-        ./src/zpiv/zpivwallet.cpp
-        ./src/zpiv/zpivtracker.cpp
         ./src/zpiv/zpivmodule.cpp
         ./src/zpiv/zpos.cpp
         ./src/stakeinput.cpp
