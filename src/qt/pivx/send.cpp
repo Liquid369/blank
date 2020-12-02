@@ -662,10 +662,37 @@ void SendWidget::onShieldCoinsClicked()
     CAmount availableBalance = balances.balance - balances.shielded_balance;
     if (walletModel && availableBalance > 0) {
 
+        // Calculate the required fee first. TODO future: Unify this code with the code in coincontroldialog into the model.
+        std::map<WalletModel::ListCoinsKey, std::vector<WalletModel::ListCoinsValue>> mapCoins;
+        walletModel->listCoins(mapCoins);
+        unsigned int nBytesInputs = 0;
+        for (const auto& out : mapCoins) {
+            bool isP2CS = out.first.stakerAddress != nullopt;
+            nBytesInputs += (CTXIN_SPEND_DUST_SIZE + (isP2CS ? 1 : 0)) * out.second.size();
+        }
+        nBytesInputs += OUTPUTDESCRIPTION_SIZE;
+        nBytesInputs += (BINDINGSIG_SIZE + 8);
+        // (plus at least 2 bytes for shielded in/outs len sizes)
+        nBytesInputs += 2;
+        // ExtraPayload size for special txes. For now 1 byte for nullopt.
+        nBytesInputs += 1;
+        // nVersion, nType, nLockTime and vin/vout len sizes
+        nBytesInputs += 10;
+        CAmount nPayFee = GetMinRelayFee(nBytesInputs, false) * DEFAULT_SHIELDEDTXFEE_K;
+
+        // load recipient
+        QList<SendCoinsRecipient> recipients;
+        SendCoinsRecipient recipient;
+        recipient.amount = availableBalance - nPayFee;
+        recipient.isShieldedAddr = true;
+
+        // Ask if the user want to do it
         if (!ask(tr("Shield Coins"),
-             tr("You are just about to anonymize all of your balance!\nAvailable %1\n\n"
-                "Meaning that you will be able to perform completely\nanonymous transactions"
-                "\n\nDo you want to continue?\n").arg(GUIUtil::formatBalanceWithoutHtml(availableBalance, nDisplayUnit, false)))) {
+                 tr("You are just about to anonymize all of your balance!\nAvailable %1\nWith fee %2\n\n"
+                    "Meaning that you will be able to perform completely\nanonymous transactions"
+                    "\n\nDo you want to continue?\n").arg(GUIUtil::formatBalanceWithoutHtml(recipient.amount, nDisplayUnit, false))
+                                                     .arg(GUIUtil::formatBalanceWithoutHtml(nPayFee, nDisplayUnit, false))
+                    )) {
             return;
         }
 
@@ -678,13 +705,8 @@ void SendWidget::onShieldCoinsClicked()
             return;
         }
 
-        // load recipient and process sending..
-        QList<SendCoinsRecipient> recipients;
-        CAmount saplingTxFee = 10000 * 100; // DEFAULT_SAPLING_FEE.
-        SendCoinsRecipient recipient;
+        // Process spending
         recipient.address = strAddress;
-        recipient.amount = availableBalance - saplingTxFee;
-        recipient.isShieldedAddr = true;
         recipients.append(recipient);
         ProcessSend(recipients, true);
     } else {
