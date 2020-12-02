@@ -2060,14 +2060,13 @@ UniValue sendmany(const JSONRPCRequest& request)
         vecSend.emplace_back(scriptPubKey, nAmount, false);
     }
 
-    isminefilter filter = ISMINE_SPENDABLE;
-    if ( request.params.size() > 5 && request.params[5].get_bool() )
-        filter = filter | ISMINE_SPENDABLE_DELEGATED;
+    const bool fIncludeDelegated = request.params.size() > 5 && request.params[5].get_bool();
+    isminefilter filter = ISMINE_SPENDABLE | (fIncludeDelegated ? ISMINE_SPENDABLE_DELEGATED : ISMINE_NO);
 
     EnsureWalletIsUnlocked();
 
     // Check funds
-    if (totalAmount > pwalletMain->GetLegacyBalance(ISMINE_SPENDABLE, nMinDepth)) {
+    if (totalAmount > pwalletMain->GetLegacyBalance(filter, nMinDepth)) {
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Wallet has insufficient funds");
     }
 
@@ -2076,7 +2075,17 @@ UniValue sendmany(const JSONRPCRequest& request)
     CAmount nFeeRequired = 0;
     std::string strFailReason;
     int nChangePosInOut = -1;
-    bool fCreated = pwalletMain->CreateTransaction(vecSend, &wtx, keyChange, nFeeRequired, nChangePosInOut, strFailReason);
+    bool fCreated = pwalletMain->CreateTransaction(vecSend,
+                                                   &wtx,
+                                                   keyChange,
+                                                   nFeeRequired,
+                                                   nChangePosInOut,
+                                                   strFailReason,
+                                                   nullptr,     // coinControl
+                                                   ALL_COINS,   // inputType
+                                                   true,        // sign
+                                                   0,           // nFeePay
+                                                   fIncludeDelegated);
     if (!fCreated)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strFailReason);
     const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, keyChange, g_connman.get());
