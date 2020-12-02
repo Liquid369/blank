@@ -32,8 +32,6 @@ class CCoinControl
 {
 public:
     CTxDestination destChange = CNoDestination();
-    bool fSplitBlock;
-    int nSplitBlock;
     //! If false, allows unselected inputs, but requires all selected inputs be used
     bool fAllowOtherInputs;
     //! Includes watch only addresses which are solvable
@@ -59,8 +57,6 @@ public:
         nMinimumTotalFee = 0;
         nFeeRate = CFeeRate(0);
         fOverrideFeeRate = false;
-        fSplitBlock = false;
-        nSplitBlock = 1;
     }
 
     bool HasSelected() const
