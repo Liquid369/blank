@@ -106,6 +106,8 @@ void CopyPreviousWitnesses(NoteDataMap& noteDataMap, int indexHeight, int64_t nW
 {
     for (auto& item : noteDataMap) {
         auto* nd = &(item.second);
+        // skip externally sent notes
+        if (!nd->IsMyNote()) continue;
         // Only increment witnesses that are behind the current height
         if (nd->witnessHeight < indexHeight) {
             // Check the validity of the cache
@@ -133,6 +135,8 @@ void AppendNoteCommitment(NoteDataMap& noteDataMap, int indexHeight, int64_t nWi
 {
     for (auto& item : noteDataMap) {
         auto* nd = &(item.second);
+        // skip externally sent notes
+        if (!nd->IsMyNote()) continue;
         if (nd->witnessHeight < indexHeight && nd->witnesses.size() > 0) {
             // Check the validity of the cache
             // See comment in CopyPreviousWitnesses about validity.
@@ -145,8 +149,11 @@ void AppendNoteCommitment(NoteDataMap& noteDataMap, int indexHeight, int64_t nWi
 template<typename OutPoint, typename NoteData, typename Witness>
 void WitnessNoteIfMine(std::map<OutPoint, NoteData>& noteDataMap, int indexHeight, int64_t nWitnessCacheSize, const OutPoint& key, const Witness& witness)
 {
-    if (noteDataMap.count(key) && noteDataMap[key].witnessHeight < indexHeight) {
-        auto* nd = &(noteDataMap[key]);
+    auto ndIt = noteDataMap.find(key);
+    if (ndIt != noteDataMap.end()) {
+        auto* nd = &ndIt->second;
+        // skip externally sent and already witnessed notes
+        if (!nd->IsMyNote() || nd->witnessHeight >= indexHeight) return;
         if (nd->witnesses.size() > 0) {
             // We think this can happen because we write out the
             // witness cache state after every block increment or
@@ -177,6 +184,8 @@ void UpdateWitnessHeights(NoteDataMap& noteDataMap, int indexHeight, int64_t nWi
 {
     for (auto& item : noteDataMap) {
         auto* nd = &(item.second);
+        // skip externally sent notes
+        if (!nd->IsMyNote()) continue;
         if (nd->witnessHeight < indexHeight) {
             nd->witnessHeight = indexHeight;
             // Check the validity of the cache
