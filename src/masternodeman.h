@@ -131,7 +131,8 @@ public:
 
     int CountEnabled(int protocolVersion = -1) const;
 
-    void CountNetworks(int protocolVersion, int& ipv4, int& ipv6, int& onion) const;
+    /// Count the number of nodes with a specific proto version for each network. Return the total.
+    int CountNetworks(int& ipv4, int& ipv6, int& onion) const;
 
     void DsegUpdate(CNode* pnode);
 

@@ -203,9 +203,9 @@ UniValue getmasternodecount (const JSONRPCRequest& request)
     if (nChainHeight < 0) return "unknown";
 
     mnodeman.GetNextMasternodeInQueueForPayment(nChainHeight, true, nCount);
-    mnodeman.CountNetworks(ActiveProtocol(), ipv4, ipv6, onion);
+    int total = mnodeman.CountNetworks(ipv4, ipv6, onion);
 
-    obj.pushKV("total", mnodeman.size());
+    obj.pushKV("total", total);
     obj.pushKV("stable", mnodeman.stable_size());
     obj.pushKV("enabled", mnodeman.CountEnabled());
     obj.pushKV("inqueue", nCount);

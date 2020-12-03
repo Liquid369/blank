@@ -389,8 +389,9 @@ int CMasternodeMan::CountEnabled(int protocolVersion) const
     return i;
 }
 
-void CMasternodeMan::CountNetworks(int protocolVersion, int& ipv4, int& ipv6, int& onion) const
+int CMasternodeMan::CountNetworks(int& ipv4, int& ipv6, int& onion) const
 {
+    LOCK(cs);
     for (const auto& it : mapMasternodes) {
         const MasternodeRef& mn = it.second;
         std::string strHost;
@@ -411,6 +412,7 @@ void CMasternodeMan::CountNetworks(int protocolVersion, int& ipv4, int& ipv6, in
                 break;
         }
     }
+    return mapMasternodes.size();
 }
 
 void CMasternodeMan::DsegUpdate(CNode* pnode)
