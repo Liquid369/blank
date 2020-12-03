@@ -93,7 +93,7 @@ bool CMasternodeDB::Write(const CMasternodeMan& mnodemanToSave)
     return true;
 }
 
-CMasternodeDB::ReadResult CMasternodeDB::Read(CMasternodeMan& mnodemanToLoad, bool fDryRun)
+CMasternodeDB::ReadResult CMasternodeDB::Read(CMasternodeMan& mnodemanToLoad)
 {
     int64_t nStart = GetTimeMillis();
     // open input file, and associate with CAutoFile
@@ -164,12 +164,6 @@ CMasternodeDB::ReadResult CMasternodeDB::Read(CMasternodeMan& mnodemanToLoad, bo
 
     LogPrint(BCLog::MASTERNODE,"Loaded info from mncache.dat  %dms\n", GetTimeMillis() - nStart);
     LogPrint(BCLog::MASTERNODE,"  %s\n", mnodemanToLoad.ToString());
-    if (!fDryRun) {
-        LogPrint(BCLog::MASTERNODE,"Masternode manager - cleaning....\n");
-        mnodemanToLoad.CheckAndRemove(true);
-        LogPrint(BCLog::MASTERNODE,"Masternode manager - result:\n");
-        LogPrint(BCLog::MASTERNODE,"  %s\n", mnodemanToLoad.ToString());
-    }
 
     return Ok;
 }
@@ -182,7 +176,7 @@ void DumpMasternodes()
     CMasternodeMan tempMnodeman;
 
     LogPrint(BCLog::MASTERNODE,"Verifying mncache.dat format...\n");
-    CMasternodeDB::ReadResult readResult = mndb.Read(tempMnodeman, true);
+    CMasternodeDB::ReadResult readResult = mndb.Read(tempMnodeman);
     // there was an error and it was not an error on file opening => do not proceed
     if (readResult == CMasternodeDB::FileError)
         LogPrint(BCLog::MASTERNODE,"Missing masternode cache file - mncache.dat, will try to recreate\n");
@@ -239,7 +233,7 @@ void CMasternodeMan::AskForMN(CNode* pnode, const CTxIn& vin)
     mWeAskedForMasternodeListEntry[vin.prevout] = askAgain;
 }
 
-void CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
+int CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
 {
     LOCK(cs);
 
@@ -333,6 +327,8 @@ void CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
             ++it4;
         }
     }
+
+    return mapMasternodes.size();
 }
 
 void CMasternodeMan::Clear()
@@ -915,6 +911,9 @@ void ThreadCheckMasternodes()
     unsigned int c = 0;
 
     try {
+        // first clean up stale masternode payments data
+        masternodePayments.CleanPaymentList(mnodeman.CheckAndRemove(), mnodeman.GetBestHeight());
+
         while (true) {
 
             if (ShutdownRequested()) {
@@ -923,6 +922,7 @@ void ThreadCheckMasternodes()
 
             MilliSleep(1000);
             boost::this_thread::interruption_point();
+
             // try to sync from all available nodes, one step at a time
             masternodeSync.Process();
 
@@ -935,8 +935,7 @@ void ThreadCheckMasternodes()
                     activeMasternode.ManageStatus();
 
                 if (c % (MasternodePingSeconds()/5) == 0) {
-                    mnodeman.CheckAndRemove();
-                    masternodePayments.CleanPaymentList();
+                    masternodePayments.CleanPaymentList(mnodeman.CheckAndRemove(), mnodeman.GetBestHeight());
                 }
             }
         }

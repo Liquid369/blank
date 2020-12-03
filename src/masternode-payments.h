@@ -52,7 +52,7 @@ public:
 
     CMasternodePaymentDB();
     bool Write(const CMasternodePayments& objToSave);
-    ReadResult Read(CMasternodePayments& objToLoad, bool fDryRun = false);
+    ReadResult Read(CMasternodePayments& objToLoad);
 };
 
 class CMasternodePayee
@@ -251,7 +251,7 @@ public:
     bool ProcessBlock(int nBlockHeight);
 
     void Sync(CNode* node, int nCountNeeded);
-    void CleanPaymentList();
+    void CleanPaymentList(int mnCount, int nHeight);
 
     bool GetBlockPayee(int nBlockHeight, CScript& payee);
     bool IsTransactionValid(const CTransaction& txNew, int nBlockHeight);

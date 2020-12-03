@@ -51,7 +51,7 @@ public:
 
     CMasternodeDB();
     bool Write(const CMasternodeMan& mnodemanToSave);
-    ReadResult Read(CMasternodeMan& mnodemanToLoad, bool fDryRun = false);
+    ReadResult Read(CMasternodeMan& mnodemanToLoad);
 };
 
 //
@@ -120,8 +120,8 @@ public:
     /// Ask (source) node for mnb
     void AskForMN(CNode* pnode, const CTxIn& vin);
 
-    /// Check all Masternodes and remove inactive
-    void CheckAndRemove(bool forceExpiredRemoval = false);
+    /// Check all Masternodes and remove inactive. Return the total masternode count.
+    int CheckAndRemove(bool forceExpiredRemoval = false);
 
     /// Clear Masternode vector
     void Clear();

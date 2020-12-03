@@ -66,7 +66,7 @@ bool CMasternodePaymentDB::Write(const CMasternodePayments& objToSave)
     return true;
 }
 
-CMasternodePaymentDB::ReadResult CMasternodePaymentDB::Read(CMasternodePayments& objToLoad, bool fDryRun)
+CMasternodePaymentDB::ReadResult CMasternodePaymentDB::Read(CMasternodePayments& objToLoad)
 {
     int64_t nStart = GetTimeMillis();
     // open input file, and associate with CAutoFile
@@ -138,12 +138,6 @@ CMasternodePaymentDB::ReadResult CMasternodePaymentDB::Read(CMasternodePayments&
 
     LogPrint(BCLog::MASTERNODE,"Loaded info from mnpayments.dat  %dms\n", GetTimeMillis() - nStart);
     LogPrint(BCLog::MASTERNODE,"  %s\n", objToLoad.ToString());
-    if (!fDryRun) {
-        LogPrint(BCLog::MASTERNODE,"Masternode payments manager - cleaning....\n");
-        objToLoad.CleanPaymentList();
-        LogPrint(BCLog::MASTERNODE,"Masternode payments manager - result:\n");
-        LogPrint(BCLog::MASTERNODE,"  %s\n", objToLoad.ToString());
-    }
 
     return Ok;
 }
@@ -209,7 +203,7 @@ void DumpMasternodePayments()
     CMasternodePayments tempPayments;
 
     LogPrint(BCLog::MASTERNODE,"Verifying mnpayments.dat format...\n");
-    CMasternodePaymentDB::ReadResult readResult = paymentdb.Read(tempPayments, true);
+    CMasternodePaymentDB::ReadResult readResult = paymentdb.Read(tempPayments);
     // there was an error and it was not an error on file opening => do not proceed
     if (readResult == CMasternodePaymentDB::FileError)
         LogPrint(BCLog::MASTERNODE,"Missing budgets file - mnpayments.dat, will try to recreate\n");
@@ -614,14 +608,12 @@ bool CMasternodePayments::IsTransactionValid(const CTransaction& txNew, int nBlo
     return true;
 }
 
-void CMasternodePayments::CleanPaymentList()
+void CMasternodePayments::CleanPaymentList(int mnCount, int nHeight)
 {
     LOCK2(cs_mapMasternodePayeeVotes, cs_mapMasternodeBlocks);
 
-    int nHeight = mnodeman.GetBestHeight();
-
     //keep up to five cycles for historical sake
-    int nLimit = std::max(int(mnodeman.size() * 1.25), 1000);
+    int nLimit = std::max(int(mnCount * 1.25), 1000);
 
     std::map<uint256, CMasternodePaymentWinner>::iterator it = mapMasternodePayeeVotes.begin();
     while (it != mapMasternodePayeeVotes.end()) {
