@@ -162,9 +162,6 @@ public:
     // Process GETMNLIST message, returning the banning score (if 0, no ban score increase is needed)
     int ProcessGetMNList(CNode* pfrom, CTxIn& vin);
 
-    /// Return the number of (unique) Masternodes
-    int size() const { LOCK(cs); return mapMasternodes.size(); }
-
     /// Return the number of Masternodes older than (default) 8000 seconds
     int stable_size() const;
 

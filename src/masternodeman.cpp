@@ -209,8 +209,9 @@ bool CMasternodeMan::Add(CMasternode& mn)
 
     const auto& it = mapMasternodes.find(mn.vin.prevout);
     if (it == mapMasternodes.end()) {
-        LogPrint(BCLog::MASTERNODE, "CMasternodeMan: Adding new Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), size() + 1);
+        LogPrint(BCLog::MASTERNODE, "Adding new Masternode %s\n", mn.vin.prevout.ToString());
         mapMasternodes.emplace(mn.vin.prevout, std::make_shared<CMasternode>(mn));
+        LogPrint(BCLog::MASTERNODE, "Masternode added. New total count: %d\n", mapMasternodes.size());
         return true;
     }
 
@@ -246,7 +247,7 @@ int CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
             activeState == CMasternode::MASTERNODE_VIN_SPENT ||
             (forceExpiredRemoval && activeState == CMasternode::MASTERNODE_EXPIRED) ||
             mn->protocolVersion < ActiveProtocol()) {
-            LogPrint(BCLog::MASTERNODE, "CMasternodeMan: Removing inactive Masternode %s - %i now\n", it->first.hash.ToString(), size() - 1);
+            LogPrint(BCLog::MASTERNODE, "Removing inactive Masternode %s\n", it->first.ToString());
 
             //erase all of the broadcasts we've seen from this vin
             // -- if we missed a few pings and the node was removed, this will allow is to get it back without them
@@ -272,10 +273,12 @@ int CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
             }
 
             it = mapMasternodes.erase(it);
+            LogPrint(BCLog::MASTERNODE, "Masternode removed.\n");
         } else {
             ++it;
         }
     }
+    LogPrint(BCLog::MASTERNODE, "New total masternode count: %d\n", mapMasternodes.size());
 
     // check who's asked for the Masternode list
     std::map<CNetAddr, int64_t>::iterator it1 = mAskedUsForMasternodeList.begin();
@@ -841,9 +844,10 @@ void CMasternodeMan::UpdateMasternodeList(CMasternodeBroadcast mnb)
 std::string CMasternodeMan::ToString() const
 {
     std::ostringstream info;
-
-    info << "Masternodes: " << (int)size() << ", peers who asked us for Masternode list: " << (int)mAskedUsForMasternodeList.size() << ", peers we asked for Masternode list: " << (int)mWeAskedForMasternodeList.size() << ", entries in Masternode list we asked for: " << (int)mWeAskedForMasternodeListEntry.size();
-
+    info << "Masternodes: " << (int)mapMasternodes.size()
+         << ", peers who asked us for Masternode list: " << (int)mAskedUsForMasternodeList.size()
+         << ", peers we asked for Masternode list: " << (int)mWeAskedForMasternodeList.size()
+         << ", entries in Masternode list we asked for: " << (int)mWeAskedForMasternodeListEntry.size();
     return info.str();
 }
 
