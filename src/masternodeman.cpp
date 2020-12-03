@@ -43,8 +43,8 @@ struct CompareScoreTxIn {
 };
 
 struct CompareScoreMN {
-    bool operator()(const std::pair<int64_t, CMasternode>& t1,
-        const std::pair<int64_t, CMasternode>& t2) const
+    bool operator()(const std::pair<int64_t, MasternodeRef>& t1,
+        const std::pair<int64_t, MasternodeRef>& t2) const
     {
         return t1.first < t2.first;
     }
@@ -636,9 +636,9 @@ int CMasternodeMan::GetMasternodeRank(const CTxIn& vin, int64_t nBlockHeight, in
     return -1;
 }
 
-std::vector<std::pair<int64_t, CMasternode>> CMasternodeMan::GetMasternodeRanks(int nBlockHeight) const
+std::vector<std::pair<int64_t, MasternodeRef>> CMasternodeMan::GetMasternodeRanks(int nBlockHeight) const
 {
-    std::vector<std::pair<int64_t, CMasternode>> vecMasternodeScores;
+    std::vector<std::pair<int64_t, MasternodeRef>> vecMasternodeScores;
     const uint256& hash = GetHashAtHeight(nBlockHeight - 1);
     // height outside range
     if (!hash) return vecMasternodeScores;
@@ -648,12 +648,12 @@ std::vector<std::pair<int64_t, CMasternode>> CMasternodeMan::GetMasternodeRanks(
         for (const auto& it : mapMasternodes) {
             const MasternodeRef& mn = it.second;
             if (!mn->IsEnabled()) {
-                vecMasternodeScores.emplace_back(9999, *mn);
+                vecMasternodeScores.emplace_back(9999, mn);
                 continue;
             }
 
             int64_t n2 = mn->CalculateScore(hash).GetCompact(false);
-            vecMasternodeScores.emplace_back(n2, *mn);
+            vecMasternodeScores.emplace_back(n2, mn);
         }
     }
     sort(vecMasternodeScores.rbegin(), vecMasternodeScores.rend(), CompareScoreMN());
