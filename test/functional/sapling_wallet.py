@@ -10,6 +10,7 @@ from test_framework.util import (
     assert_raises_rpc_error,
     connect_nodes,
     disconnect_nodes,
+    satoshi_round,
     sync_mempools,
     get_coinstake_address,
     wait_until,
@@ -281,6 +282,47 @@ class WalletSaplingTest(PivxTestFramework):
         assert_equal(self.nodes[3].getshieldedbalance(), Decimal('0'))
         # watch only balance
         assert_equal(self.nodes[3].getshieldedbalance("*", 1, True), Decimal('12.00'))
+
+        # Now shield some funds using sendmany
+        self.log.info("TX11: Shielding coins to multiple destinations with sendmany RPC...")
+        prev_balance = self.nodes[0].getbalance()
+        recipients8 = {saplingAddr0: Decimal('8'), saplingAddr1: Decimal('1'), saplingAddr2: Decimal('0.5')}
+        mytxid11 = self.nodes[0].sendmany("", recipients8)
+        self.check_tx_priority([mytxid11])
+        self.log.info("Done. Checking details and balances...")
+
+        # Decrypted transaction details should be correct
+        pt = self.nodes[0].viewshieldedtransaction(mytxid11)
+        fee = pt["fee"]
+        assert_equal(pt['txid'], mytxid11)
+        assert_equal(len(pt['spends']), 0)
+        assert_equal(len(pt['outputs']), 3)
+        found = [False] * 3
+        for out in pt['outputs']:
+            assert_equal(pt['outputs'].index(out), out['output'])
+            if out['address'] == saplingAddr0:
+                assert_equal(out['outgoing'], False)
+                assert_equal(out['value'], Decimal('8'))
+                found[0] = True
+            elif out['address'] == saplingAddr1:
+                assert_equal(out['outgoing'], True)
+                assert_equal(out['value'], Decimal('1'))
+                found[1] = True
+            else:
+                assert_equal(out['address'], saplingAddr2)
+                assert_equal(out['outgoing'], False)
+                assert_equal(out['value'], Decimal('0.5'))
+                found[2] = True
+        assert_equal(found, [True] * 3)
+
+        # Verify balance
+        self.nodes[2].generate(1)
+        self.sync_all()
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr0), Decimal('19'))  # 11 prev balance + 8 received
+        assert_equal(self.nodes[1].getshieldedbalance(saplingAddr1), Decimal('2'))  # 1 prev balance + 1 received
+        assert_equal(self.nodes[0].getshieldedbalance(saplingAddr2), Decimal('2.5'))  # 2 prev balance + 0.5 received
+        # Balance of node 0 is: prev_balance - 1 PIV (+fee) sent externally +  250 PIV matured coinbase
+        assert_equal(self.nodes[0].getbalance(), satoshi_round(prev_balance + Decimal('249') - Decimal(fee)))
 
         self.log.info("All good.")
 

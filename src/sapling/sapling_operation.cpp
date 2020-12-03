@@ -244,6 +244,13 @@ void SaplingOperation::setFromAddress(const libzcash::SaplingPaymentAddress& _pa
     fromAddress = FromAddress(_payment);
 }
 
+SaplingOperation* SaplingOperation::setSelectTransparentCoins(const bool select, const bool _fIncludeDelegated)
+{
+    selectFromtaddrs = select;
+    if (selectFromtaddrs) fIncludeDelegated = _fIncludeDelegated;
+    return this;
+};
+
 OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
 {
     // If the user has selected coins to spend then, directly load them.
@@ -267,7 +274,7 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
     // No coin control selected, let's find the utxo by our own.
     std::set<CTxDestination> destinations;
     if (fromAddress.isFromTAddress()) destinations.insert(fromAddress.fromTaddr);
-    CWallet::AvailableCoinsFilter coinsFilter(false,
+    CWallet::AvailableCoinsFilter coinsFilter(fIncludeDelegated,
                                               false,
                                               ALL_COINS,
                                               true,

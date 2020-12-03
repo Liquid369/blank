@@ -10,6 +10,7 @@
 #include "base58.h"
 #include "coincontrol.h"
 #include "core_io.h"
+#include "destination_io.h"
 #include "init.h"
 #include "key_io.h"
 #include "masternode-sync.h"
@@ -1459,12 +1460,15 @@ static SaplingOperation CreateShieldedTransaction(const JSONRPCRequest& request)
     SaplingOperation operation(txBuilder);
 
     // Param 0: source of funds. Can either be a valid address, sapling address,
-    // or the string "from_transparent"|"from_shielded"
+    // or the string "from_transparent"|"from_trans_cold"|"from_shielded"
     bool fromSapling  = false;
     std::string sendFromStr = request.params[0].get_str();
     if (sendFromStr == "from_transparent") {
         // send from any transparent address
         operation.setSelectTransparentCoins(true);
+    } else if (sendFromStr == "from_trans_cold") {
+        // send from any transparent address + delegations
+        operation.setSelectTransparentCoins(true, true);
     } else if (sendFromStr == "from_shielded") {
         // send from any shielded address
         operation.setSelectShieldedCoins(true);
@@ -1616,6 +1620,8 @@ UniValue shieldedsendmany(const JSONRPCRequest& request)
                 "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
                 "                             It can also be the string \"from_transparent\"|\"from_shielded\" to send the funds\n"
                 "                             from any transparent|shielded address available.\n"
+                "                             Additionally, it can be the string \"from_trans_cold\" to select transparent funds,\n"
+                "                             possibly including delegated coins, if needed.\n"
                 "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
                 "    [{\n"
                 "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
@@ -1657,6 +1663,8 @@ UniValue rawshieldedsendmany(const JSONRPCRequest& request)
                 "1. \"fromaddress\"         (string, required) The transparent addr or shielded addr to send the funds from.\n"
                 "                             It can also be the string \"from_transparent\"|\"from_shielded\" to send the funds\n"
                 "                             from any transparent|shielded address available.\n"
+                "                             Additionally, it can be the string \"from_trans_cold\" to select transparent funds,\n"
+                "                             possibly including delegated coins, if needed.\n"
                 "2. \"amounts\"             (array, required) An array of json objects representing the amounts to send.\n"
                 "    [{\n"
                 "      \"address\":address  (string, required) The address is a transparent addr or shielded addr\n"
@@ -1988,55 +1996,21 @@ UniValue getunconfirmedbalance(const JSONRPCRequest& request)
     return ValueFromAmount(pwalletMain->GetUnconfirmedBalance());
 }
 
-
-UniValue sendmany(const JSONRPCRequest& request)
+/*
+ * Only used for t->t transactions (via sendmany RPC)
+ */
+static UniValue legacy_sendmany(const UniValue& sendTo, int nMinDepth, std::string comment, bool fIncludeDelegated)
 {
-    if (request.fHelp || request.params.size() < 2 || request.params.size() > 5)
-        throw std::runtime_error(
-            "sendmany \"\" {\"address\":amount,...} ( minconf \"comment\" includeDelegated )\n"
-            "\nSend multiple times. Amounts are double-precision floating point numbers.\n"
-            + HelpRequiringPassphrase() + "\n"
-
-            "\nArguments:\n"
-            "1. \"dummy\"               (string, required) Must be set to \"\" for backwards compatibility.\n"
-            "2. \"amounts\"             (string, required) A json object with addresses and amounts\n"
-            "    {\n"
-            "      \"address\":amount   (numeric) The pivx address is the key, the numeric amount in PIV is the value\n"
-            "      ,...\n"
-            "    }\n"
-            "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
-            "4. \"comment\"             (string, optional) A comment\n"
-            "5. includeDelegated        (bool, optional, default=false) Also include balance delegated to cold stakers\n"
-
-            "\nResult:\n"
-            "\"transactionid\"          (string) The transaction id for the send. Only 1 transaction is created regardless of \n"
-            "                                    the number of addresses.\n"
-
-            "\nExamples:\n"
-            "\nSend two amounts to two different addresses:\n" +
-            HelpExampleCli("sendmany", "\"\" \"{\\\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\\\":0.01,\\\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\\\":0.02}\"") +
-            "\nSend two amounts to two different addresses setting the confirmation and comment:\n" +
-            HelpExampleCli("sendmany", "\"\" \"{\\\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\\\":0.01,\\\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\\\":0.02}\" 6 \"testing\"") +
-            "\nAs a json rpc call\n" +
-            HelpExampleRpc("sendmany", "\"\", \"{\\\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\\\":0.01,\\\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\\\":0.02}\", 6, \"testing\"")
-        );
-
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     if (!g_connman)
         throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
 
-    if (!request.params[0].isNull() && !request.params[0].get_str().empty()) {
-        throw JSONRPCError(RPC_INVALID_PARAMETER, "Dummy value must be set to \"\"");
-    }
-    UniValue sendTo = request.params[1].get_obj();
-    int nMinDepth = 1;
-    if (request.params.size() > 2)
-        nMinDepth = request.params[2].get_int();
+    isminefilter filter = ISMINE_SPENDABLE | (fIncludeDelegated ? ISMINE_SPENDABLE_DELEGATED : ISMINE_NO);
 
     CWalletTx wtx;
-    if (request.params.size() > 3 && !request.params[3].isNull() && !request.params[3].get_str().empty())
-        wtx.mapValue["comment"] = request.params[3].get_str();
+    if (!comment.empty())
+        wtx.mapValue["comment"] = comment;
 
     std::set<CTxDestination> setAddress;
     std::vector<CRecipient> vecSend;
@@ -2060,14 +2034,10 @@ UniValue sendmany(const JSONRPCRequest& request)
         vecSend.emplace_back(scriptPubKey, nAmount, false);
     }
 
-    isminefilter filter = ISMINE_SPENDABLE;
-    if ( request.params.size() > 5 && request.params[5].get_bool() )
-        filter = filter | ISMINE_SPENDABLE_DELEGATED;
-
     EnsureWalletIsUnlocked();
 
     // Check funds
-    if (totalAmount > pwalletMain->GetLegacyBalance(ISMINE_SPENDABLE, nMinDepth)) {
+    if (totalAmount > pwalletMain->GetLegacyBalance(filter, nMinDepth)) {
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Wallet has insufficient funds");
     }
 
@@ -2076,7 +2046,17 @@ UniValue sendmany(const JSONRPCRequest& request)
     CAmount nFeeRequired = 0;
     std::string strFailReason;
     int nChangePosInOut = -1;
-    bool fCreated = pwalletMain->CreateTransaction(vecSend, &wtx, keyChange, nFeeRequired, nChangePosInOut, strFailReason);
+    bool fCreated = pwalletMain->CreateTransaction(vecSend,
+                                                   &wtx,
+                                                   keyChange,
+                                                   nFeeRequired,
+                                                   nChangePosInOut,
+                                                   strFailReason,
+                                                   nullptr,     // coinControl
+                                                   ALL_COINS,   // inputType
+                                                   true,        // sign
+                                                   0,           // nFeePay
+                                                   fIncludeDelegated);
     if (!fCreated)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strFailReason);
     const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, keyChange, g_connman.get());
@@ -2084,6 +2064,107 @@ UniValue sendmany(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_ERROR, res.ToString());
 
     return wtx.GetHash().GetHex();
+}
+
+/*
+ * This function uses [legacy_sendmany] in the background.
+ * If any recipient is a shielded address, instead it uses [shieldedsendmany "from_transparent"].
+ */
+UniValue sendmany(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 2 || request.params.size() > 5)
+        throw std::runtime_error(
+            "sendmany \"\" {\"address\":amount,...} ( minconf \"comment\" includeDelegated )\n"
+            "\nSend to multiple destinations. Recipients are transparent or shielded PIVX addresses.\n"
+            "\nAmounts are double-precision floating point numbers.\n"
+            + HelpRequiringPassphrase() + "\n"
+
+            "\nArguments:\n"
+            "1. \"dummy\"               (string, required) Must be set to \"\" for backwards compatibility.\n"
+            "2. \"amounts\"             (string, required) A json object with addresses and amounts\n"
+            "    {\n"
+            "      \"address\":amount   (numeric) The pivx address (either transparent or shielded) is the key,\n"
+            "                                     the numeric amount in PIV is the value\n"
+            "      ,...\n"
+            "    }\n"
+            "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
+            "4. \"comment\"             (string, optional) A comment\n"
+            "5. includeDelegated        (bool, optional, default=false) Also include balance delegated to cold stakers\n"
+
+            "\nResult:\n"
+            "\"transactionid\"          (string) The transaction id for the send. Only 1 transaction is created regardless of \n"
+            "                                    the number of addresses.\n"
+
+            "\nExamples:\n"
+            "\nSend two amounts to two different addresses:\n" +
+            HelpExampleCli("sendmany", "\"\" \"{\\\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\\\":0.01,\\\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\\\":0.02}\"") +
+            "\nSend two amounts to two different addresses setting the confirmation and comment:\n" +
+            HelpExampleCli("sendmany", "\"\" \"{\\\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\\\":0.01,\\\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\\\":0.02}\" 6 \"testing\"") +
+            "\nSend to shielded address:\n" +
+            HelpExampleCli("sendmany", "\"\" \"{\\\"ps1u87kylcmn28yclnx2uy0psnvuhs2xn608ukm6n2nshrpg2nzyu3n62ls8j77m9cgp40dx40evej\\\":10}\"") +
+            "\nAs a json rpc call\n" +
+            HelpExampleRpc("sendmany", "\"\", \"{\\\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\\\":0.01,\\\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\\\":0.02}\", 6, \"testing\"")
+        );
+
+    // Read Params
+    if (!request.params[0].isNull() && !request.params[0].get_str().empty()) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Dummy value must be set to \"\"");
+    }
+    const UniValue sendTo = request.params[1].get_obj();
+    const int nMinDepth = request.params.size() > 2 ? request.params[2].get_int() : 1;
+    const std::string comment = (request.params.size() > 3 && !request.params[3].isNull() && !request.params[3].get_str().empty()) ?
+                        request.params[3].get_str() : "";
+    const bool fIncludeDelegated = (request.params.size() > 5 && request.params[5].get_bool());
+
+    // Check  if any recipient address is shielded
+    bool fShieldSend = false;
+    for (const std::string& key : sendTo.getKeys()) {
+        bool isStaking = false, isShielded = false;
+        const CWDestination& dest = Standard::DecodeDestination(key, isStaking, isShielded);
+        if (isShielded) {
+            fShieldSend = true;
+            break;
+        }
+    }
+
+    if (fShieldSend) {
+        // convert params to 'shieldedsendmany' format
+        JSONRPCRequest req;
+        req.params = UniValue(UniValue::VARR);
+        if (!fIncludeDelegated) {
+            req.params.push_back(UniValue("from_transparent"));
+        } else {
+            req.params.push_back(UniValue("from_trans_cold"));
+        }
+        UniValue recipients(UniValue::VARR);
+        for (const std::string& key : sendTo.getKeys()) {
+            UniValue recipient(UniValue::VOBJ);
+            recipient.pushKV("address", key);
+            recipient.pushKV("amount", sendTo[key]);
+            recipients.push_back(recipient);
+        }
+        req.params.push_back(recipients);
+        req.params.push_back(nMinDepth);
+
+        // send
+        SaplingOperation operation = CreateShieldedTransaction(req);
+        std::string txid;
+        auto res = operation.send(txid);
+        if (!res)
+            throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
+
+        // add comment
+        if (!comment.empty()) {
+            const uint256 txHash(txid);
+            assert(pwalletMain->mapWallet.count(txHash));
+            pwalletMain->mapWallet[txHash].mapValue["comment"] = comment;
+        }
+
+        return txid;
+    }
+
+    // All recipients are transparent: use Legacy sendmany t->t
+    return legacy_sendmany(sendTo, nMinDepth, comment, fIncludeDelegated);
 }
 
 // Defined in rpc/misc.cpp
