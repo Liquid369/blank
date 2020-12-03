@@ -2075,14 +2075,16 @@ UniValue sendmany(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 5)
         throw std::runtime_error(
             "sendmany \"\" {\"address\":amount,...} ( minconf \"comment\" includeDelegated )\n"
-            "\nSend multiple times. Amounts are double-precision floating point numbers.\n"
+            "\nSend to multiple destinations. Recipients are transparent or shielded PIVX addresses.\n"
+            "\nAmounts are double-precision floating point numbers.\n"
             + HelpRequiringPassphrase() + "\n"
 
             "\nArguments:\n"
             "1. \"dummy\"               (string, required) Must be set to \"\" for backwards compatibility.\n"
             "2. \"amounts\"             (string, required) A json object with addresses and amounts\n"
             "    {\n"
-            "      \"address\":amount   (numeric) The pivx address is the key, the numeric amount in PIV is the value\n"
+            "      \"address\":amount   (numeric) The pivx address (either transparent or shielded) is the key,\n"
+            "                                     the numeric amount in PIV is the value\n"
             "      ,...\n"
             "    }\n"
             "3. minconf                 (numeric, optional, default=1) Only use the balance confirmed at least this many times.\n"
@@ -2098,6 +2100,8 @@ UniValue sendmany(const JSONRPCRequest& request)
             HelpExampleCli("sendmany", "\"\" \"{\\\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\\\":0.01,\\\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\\\":0.02}\"") +
             "\nSend two amounts to two different addresses setting the confirmation and comment:\n" +
             HelpExampleCli("sendmany", "\"\" \"{\\\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\\\":0.01,\\\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\\\":0.02}\" 6 \"testing\"") +
+            "\nSend to shielded address:\n" +
+            HelpExampleCli("sendmany", "\"\" \"{\\\"ps1u87kylcmn28yclnx2uy0psnvuhs2xn608ukm6n2nshrpg2nzyu3n62ls8j77m9cgp40dx40evej\\\":10}\"") +
             "\nAs a json rpc call\n" +
             HelpExampleRpc("sendmany", "\"\", \"{\\\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\\\":0.01,\\\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\\\":0.02}\", 6, \"testing\"")
         );
