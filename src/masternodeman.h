@@ -174,6 +174,10 @@ public:
     /// Update masternode list and maps using provided CMasternodeBroadcast
     void UpdateMasternodeList(CMasternodeBroadcast mnb);
 
+    /// Get the time a masternode was last paid
+    int64_t GetLastPaid(const MasternodeRef& mn, const CBlockIndex* BlockReading) const;
+    int64_t SecondsSincePayment(const MasternodeRef& mn, const CBlockIndex* BlockReading) const;
+
     // Block hashes cycling vector management
     void CacheBlockHash(const CBlockIndex* pindex);
     void UncacheBlockHash(const CBlockIndex* pindex);

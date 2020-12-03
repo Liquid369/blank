@@ -138,11 +138,12 @@ UniValue listmasternodes(const JSONRPCRequest& request)
     if (!chainTip) return "[]";
     int nHeight = chainTip->nHeight;
 
+    // !todo: return masternodeRef with ranks
     std::vector<std::pair<int64_t, CMasternode>> vMasternodeRanks = mnodeman.GetMasternodeRanks(nHeight);
     for (int pos=0; pos < (int) vMasternodeRanks.size(); pos++) {
         const auto& s = vMasternodeRanks[pos];
         UniValue obj(UniValue::VOBJ);
-        CMasternode mn = s.second;
+        const CMasternode& mn = s.second;
 
         std::string strVin = mn.vin.prevout.ToStringShort();
         std::string strTxHash = mn.vin.prevout.hash.ToString();
@@ -170,7 +171,7 @@ UniValue listmasternodes(const JSONRPCRequest& request)
         obj.pushKV("version", mn.protocolVersion);
         obj.pushKV("lastseen", (int64_t)mn.lastPing.sigTime);
         obj.pushKV("activetime", (int64_t)(mn.lastPing.sigTime - mn.sigTime));
-        obj.pushKV("lastpaid", (int64_t)mn.GetLastPaid(chainTip));
+        obj.pushKV("lastpaid", (int64_t)mnodeman.GetLastPaid(std::make_shared<CMasternode>(mn), chainTip));
 
         ret.push_back(obj);
     }
