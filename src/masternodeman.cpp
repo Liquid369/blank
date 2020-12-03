@@ -844,9 +844,6 @@ void CMasternodeMan::UpdateMasternodeList(CMasternodeBroadcast mnb)
 
 int64_t CMasternodeMan::SecondsSincePayment(const MasternodeRef& mn, const CBlockIndex* BlockReading) const
 {
-    CScript pubkeyScript;
-    pubkeyScript = GetScriptForDestination(mn->pubKeyCollateralAddress.GetID());
-
     int64_t sec = (GetAdjustedTime() - GetLastPaid(mn, BlockReading));
     int64_t month = 60 * 60 * 24 * 30;
     if (sec < month) return sec; //if it's less than 30 days, give seconds
@@ -876,28 +873,19 @@ int64_t CMasternodeMan::GetLastPaid(const MasternodeRef& mn, const CBlockIndex* 
     int64_t nOffset = hash.GetCompact(false) % 150;
 
     int nMnCount = CountEnabled() * 1.25;
-    int n = 0;
-    for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
-        if (n >= nMnCount) {
-            return 0;
-        }
-        n++;
-
-        if (masternodePayments.mapMasternodeBlocks.count(BlockReading->nHeight)) {
-            /*
-                Search for this payee, with at least 2 votes. This will aid in consensus allowing the network
-                to converge on the same payees quickly, then keep the same schedule.
-            */
-            if (masternodePayments.mapMasternodeBlocks[BlockReading->nHeight].HasPayeeWithVotes(mnpayee, 2)) {
+    for (int n = 0; n < nMnCount; n++) {
+        const auto& it = masternodePayments.mapMasternodeBlocks.find(BlockReading->nHeight);
+        if (it != masternodePayments.mapMasternodeBlocks.end()) {
+            // Search for this payee, with at least 2 votes. This will aid in consensus
+            // allowing the network to converge on the same payees quickly, then keep the same schedule.
+            if (it->second.HasPayeeWithVotes(mnpayee, 2))
                 return BlockReading->nTime + nOffset;
-            }
-        }
-
-        if (BlockReading->pprev == NULL) {
-            assert(BlockReading);
-            break;
         }
         BlockReading = BlockReading->pprev;
+
+        if (BlockReading == nullptr || BlockReading->nHeight <= 0) {
+            break;
+        }
     }
 
     return 0;
