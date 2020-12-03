@@ -226,6 +226,7 @@ def main():
                                      epilog='''
     Help text and arguments for individual test script:''',
                                      formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument('--all', '-a', action='store_true', help='run all available tests (overrides other flags)')
     parser.add_argument('--combinedlogslen', '-c', type=int, default=0, help='print a combined log (of length n lines) from all test nodes and test framework to the console on failure.')
     parser.add_argument('--coverage', action='store_true', help='generate a basic coverage report for the RPC interface')
     parser.add_argument('--exclude', '-x', help='specify a comma-separated-list of scripts to exclude.')
@@ -285,30 +286,33 @@ def main():
         sys.exit(0)
 
     # Build list of tests
-    if tests:
-        # Individual tests have been specified. Run specified tests that exist
-        # in the ALL_SCRIPTS list. Accept the name with or without .py extension.
-        tests = [re.sub("\.py$", "", t) + ".py" for t in tests]
-        test_list = []
-        for t in tests:
-            if t in ALL_SCRIPTS:
-                test_list.append(t)
-            else:
-                print("{}WARNING!{} Test '{}' not found in full test list.".format(BOLD[1], BOLD[0], t))
+    if args.all:
+        test_list = ALL_SCRIPTS
     else:
-        test_list = []
-        if args.tiertwo:
-            test_list += TIERTWO_SCRIPTS
-        if args.sapling:
-            test_list += SAPLING_SCRIPTS
-        if len(test_list) == 0:
-            # No individual tests (or sub-list) have been specified.
-            # Run all base tests, and optionally run extended tests.
-            test_list = BASE_SCRIPTS
-            if args.extended:
-                # place the EXTENDED_SCRIPTS first since the three longest ones
-                # are there and the list is shorter
-                test_list = EXTENDED_SCRIPTS + test_list
+        if tests:
+            # Individual tests have been specified. Run specified tests that exist
+            # in the ALL_SCRIPTS list. Accept the name with or without .py extension.
+            tests = [re.sub("\.py$", "", t) + ".py" for t in tests]
+            test_list = []
+            for t in tests:
+                if t in ALL_SCRIPTS:
+                    test_list.append(t)
+                else:
+                    print("{}WARNING!{} Test '{}' not found in full test list.".format(BOLD[1], BOLD[0], t))
+        else:
+            test_list = []
+            if args.tiertwo:
+                test_list += TIERTWO_SCRIPTS
+            if args.sapling:
+                test_list += SAPLING_SCRIPTS
+            if len(test_list) == 0:
+                # No individual tests (or sub-list) have been specified.
+                # Run all base tests, and optionally run extended tests.
+                test_list = BASE_SCRIPTS
+                if args.extended:
+                    # place the EXTENDED_SCRIPTS first since the three longest ones
+                    # are there and the list is shorter
+                    test_list = EXTENDED_SCRIPTS + test_list
 
     # Remove the test cases that the user has explicitly asked to exclude.
     if args.exclude:
