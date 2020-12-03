@@ -96,6 +96,11 @@ bool CWallet::IsHDEnabled() const
     return m_spk_man->IsHDEnabled();
 }
 
+bool CWallet::IsSaplingUpgradeEnabled() const
+{
+    return m_sspk_man->IsEnabled();
+}
+
 const CWalletTx* CWallet::GetWalletTx(const uint256& hash) const
 {
     LOCK(cs_wallet);

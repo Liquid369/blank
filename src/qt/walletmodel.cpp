@@ -86,6 +86,11 @@ bool WalletModel::isHDEnabled() const
     return wallet->IsHDEnabled();
 }
 
+bool WalletModel::isSaplingWalletEnabled() const
+{
+    return wallet->IsSaplingUpgradeEnabled();
+}
+
 bool WalletModel::upgradeWallet(std::string& upgradeError)
 {
     // This action must be performed in a separate thread and not the main one.

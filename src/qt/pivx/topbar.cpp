@@ -560,13 +560,10 @@ void TopBar::setNumBlocks(int count)
     ui->pushButtonSync->setButtonText(tr(text.data()));
 }
 
-void TopBar::showUpgradeDialog()
+void TopBar::showUpgradeDialog(const QString& message)
 {
     QString title = tr("Wallet Upgrade");
-    if (ask(title,
-            tr("Upgrading to HD wallet will improve\nthe wallet's reliability and security.\n\n\n"
-                    "NOTE: after the upgrade, a new\nbackup will be created.\n"))) {
-
+    if (ask(title, message)) {
         std::unique_ptr<WalletModel::UnlockContext> pctx = MakeUnique<WalletModel::UnlockContext>(walletModel->requestUnlock());
         if (!pctx->isValid()) {
             warn(tr("Upgrade Wallet"), tr("Wallet unlock cancelled"));
@@ -583,14 +580,19 @@ void TopBar::loadWalletModel()
 {
     // Upgrade wallet.
     if (walletModel->isHDEnabled()) {
-        ui->pushButtonHDUpgrade->setVisible(false);
+        if (walletModel->isSaplingWalletEnabled()) {
+            // hide upgrade
+            ui->pushButtonHDUpgrade->setVisible(false);
+        } else {
+            // show upgrade to Sapling
+            ui->pushButtonHDUpgrade->setButtonText(tr("Upgrade to Sapling Wallet"));
+            ui->pushButtonHDUpgrade->setNoIconText("SHIELD UPGRADE");
+            connectUpgradeBtnAndDialogTimer(tr("Upgrading to Sapling wallet will enable\nall of the privacy features!\n\n\n"
+                                               "NOTE: after the upgrade, a new\nbackup will be created.\n"));
+        }
     } else {
-        connect(ui->pushButtonHDUpgrade, &ExpandableButton::Mouse_Pressed, this, &TopBar::showUpgradeDialog);
-
-        // Upgrade wallet timer, only once. launched 4 seconds after the wallet started.
-        QTimer::singleShot(4000, [this](){
-            showUpgradeDialog();
-        });
+        connectUpgradeBtnAndDialogTimer(tr("Upgrading to HD wallet will improve\nthe wallet's reliability and security.\n\n\n"
+                                           "NOTE: after the upgrade, a new\nbackup will be created.\n"));
     }
 
     connect(walletModel, &WalletModel::balanceChanged, this, &TopBar::updateBalances);
@@ -605,6 +607,15 @@ void TopBar::loadWalletModel()
     onColdStakingClicked();
 
     isInitializing = false;
+}
+
+void TopBar::connectUpgradeBtnAndDialogTimer(const QString& message)
+{
+    const auto& func = [this, message]() { showUpgradeDialog(message); };
+    connect(ui->pushButtonHDUpgrade, &ExpandableButton::Mouse_Pressed, func);
+
+    // Upgrade wallet timer, only once. launched 4 seconds after the wallet started.
+    QTimer::singleShot(4000, func);
 }
 
 void TopBar::updateTorIcon()
