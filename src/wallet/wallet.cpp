@@ -2699,37 +2699,16 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                 txNew.vin.clear();
                 txNew.vout.clear();
                 wtxNew->fFromMe = true;
-
                 CAmount nTotalValue = nValue + nFeeRet;
 
-                // vouts to the payees
-                if (coinControl && !coinControl->fSplitBlock) {
-                    for (const CRecipient& rec : vecSend) {
-                        CTxOut txout(rec.nAmount, rec.scriptPubKey);
-                        if (IsDust(txout, ::minRelayTxFee)) {
-                            strFailReason = _("Transaction amount too small");
-                            return false;
-                        }
-                        txNew.vout.push_back(txout);
+                // Fill outputs
+                for (const CRecipient& rec : vecSend) {
+                    CTxOut txout(rec.nAmount, rec.scriptPubKey);
+                    if (IsDust(txout, ::minRelayTxFee)) {
+                        strFailReason = _("Transaction amount too small");
+                        return false;
                     }
-                } else //UTXO Splitter Transaction
-                {
-                    int nSplitBlock;
-
-                    if (coinControl)
-                        nSplitBlock = coinControl->nSplitBlock;
-                    else
-                        nSplitBlock = 1;
-
-                    for (const CRecipient& rec : vecSend) {
-                        for (int i = 0; i < nSplitBlock; i++) {
-                            if (i == nSplitBlock - 1) {
-                                uint64_t nRemainder = rec.nAmount % nSplitBlock;
-                                txNew.vout.emplace_back((rec.nAmount / nSplitBlock) + nRemainder, rec.scriptPubKey);
-                            } else
-                                txNew.vout.emplace_back(rec.nAmount / nSplitBlock, rec.scriptPubKey);
-                        }
-                    }
+                    txNew.vout.emplace_back(txout);
                 }
 
                 // Choose coins to use
@@ -2743,22 +2722,8 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                     return false;
                 }
 
-
-                for (std::pair<const CWalletTx*, unsigned int> pcoin : setCoins) {
-                    if(pcoin.first->vout[pcoin.second].scriptPubKey.IsPayToColdStaking())
-                        wtxNew->fStakeDelegationVoided = true;
-                    //The coin age after the next block (depth+1) is used instead of the current,
-                    //reflecting an assumption the user would accept a bit more delay for
-                    //a chance at a free transaction.
-                    //But mempool inputs might still be in the mempool, so their age stays 0
-                    int age = pcoin.first->GetDepthInMainChain();
-                    assert(age >= 0);
-                    if (age != 0)
-                        age += 1;
-                }
-
+                // Change
                 CAmount nChange = nValueIn - nValue - nFeeRet;
-
                 if (nChange > 0) {
                     // Fill a vout to ourself
                     // TODO: pass in scriptChange instead of reservekey so
@@ -2827,8 +2792,12 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                     reservekey.ReturnKey();
 
                 // Fill vin
-                for (const std::pair<const CWalletTx*, unsigned int> & coin : setCoins)
+                for (const std::pair<const CWalletTx*, unsigned int>& coin : setCoins) {
+                    if(coin.first->vout[coin.second].scriptPubKey.IsPayToColdStaking()) {
+                        wtxNew->fStakeDelegationVoided = true;
+                    }
                     txNew.vin.emplace_back(coin.first->GetHash(), coin.second);
+                }
 
                 // Sign
                 int nIn = 0;
