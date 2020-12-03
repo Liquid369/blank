@@ -338,7 +338,7 @@ void ReceiveWidget::sortAddresses()
 
 void ReceiveWidget::onTransparentSelected(bool transparentSelected)
 {
-    this->shieldedMode = !transparentSelected;
+    shieldedMode = !transparentSelected;
     refreshView();
     this->filter->setType(shieldedMode ? AddressTableModel::ShieldedReceive : AddressTableModel::Receive);
 };

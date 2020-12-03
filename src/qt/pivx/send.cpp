@@ -394,9 +394,16 @@ void SendWidget::ProcessSend(const QList<SendCoinsRecipient>& recipients, bool h
 {
     // First check SPORK_20 (before unlock)
     bool isShieldedTx = hasShieldedOutput || !isTransparent;
-    if (isShieldedTx && walletModel->isSaplingInMaintenance()) {
-        inform(tr("Sapling Protocol temporarily in maintenance. Shielded transactions disabled (SPORK 20)"));
-        return;
+    if (isShieldedTx) {
+        if (!walletModel->isSaplingEnforced()) {
+            inform(tr("Cannot perform shielded operations, v5 upgrade isn't being enforced yet!"));
+            return;
+        }
+
+        if (walletModel->isSaplingInMaintenance()) {
+            inform(tr("Sapling Protocol temporarily in maintenance. Shielded transactions disabled (SPORK 20)"));
+            return;
+        }
     }
 
     auto ptrUnlockedContext = MakeUnique<WalletModel::UnlockContext>(walletModel->requestUnlock());
@@ -667,6 +674,11 @@ void SendWidget::onCoinControlClicked()
 
 void SendWidget::onShieldCoinsClicked()
 {
+    if (!walletModel->isSaplingEnforced()) {
+        inform(tr("Cannot perform shielded operations, v5 upgrade isn't being enforced yet!"));
+        return;
+    }
+
     auto balances = walletModel->GetWalletBalances();
     CAmount availableBalance = balances.balance - balances.shielded_balance;
     if (walletModel && availableBalance > 0) {
@@ -751,6 +763,13 @@ void SendWidget::onCheckBoxChanged()
 void SendWidget::onPIVSelected(bool _isTransparent)
 {
     isTransparent = _isTransparent;
+
+    if (!isTransparent && !walletModel->isSaplingEnforced()) {
+        ui->pushLeft->setChecked(true);
+        inform(tr("Cannot perform shielded operations, v5 upgrade isn't being enforced yet!"));
+        return;
+    }
+
     resetChangeAddress();
     resetCoinControl();
     refreshAmounts();
