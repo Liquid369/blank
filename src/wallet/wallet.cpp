@@ -4020,7 +4020,9 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
     }
 
     // Upgrade to HD only if explicit upgrade was requested
-    if (gArgs.GetBoolArg("-upgradewallet", false)) {
+    // or if we are running an HD wallet and need to upgrade to Sapling.
+    if (gArgs.GetBoolArg("-upgradewallet", false) ||
+        (!walletInstance->IsLocked() && prev_version == FEATURE_PRE_SPLIT_KEYPOOL)) {
         std::string upgradeError;
         if (!walletInstance->Upgrade(upgradeError, prev_version)) {
             UIError(upgradeError);
@@ -4435,6 +4437,10 @@ int CWallet::GetVersion()
 ////////////////////////////////////////////////////////////
 
 libzcash::SaplingPaymentAddress CWallet::GenerateNewSaplingZKey(std::string label) {
+    if (!m_sspk_man->IsEnabled()) {
+        throw std::runtime_error("Cannot generate shielded addresses. Start with -upgradewallet in order to upgrade a non-HD wallet to HD and Sapling features");
+    }
+
     auto address = m_sspk_man->GenerateNewSaplingZKey();
     SetAddressBook(address, label, AddressBook::AddressBookPurpose::SHIELDED_RECEIVE);
     return address;
