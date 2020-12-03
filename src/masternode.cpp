@@ -178,12 +178,12 @@ CMasternode::state CMasternode::GetActiveState() const
     return MASTERNODE_ENABLED;
 }
 
-int64_t CMasternode::SecondsSincePayment() const
+int64_t CMasternode::SecondsSincePayment(const CBlockIndex* BlockReading) const
 {
     CScript pubkeyScript;
     pubkeyScript = GetScriptForDestination(pubKeyCollateralAddress.GetID());
 
-    int64_t sec = (GetAdjustedTime() - GetLastPaid());
+    int64_t sec = (GetAdjustedTime() - GetLastPaid(BlockReading));
     int64_t month = 60 * 60 * 24 * 30;
     if (sec < month) return sec; //if it's less than 30 days, give seconds
 
@@ -196,9 +196,8 @@ int64_t CMasternode::SecondsSincePayment() const
     return month + hash.GetCompact(false);
 }
 
-int64_t CMasternode::GetLastPaid() const
+int64_t CMasternode::GetLastPaid(const CBlockIndex* BlockReading) const
 {
-    const CBlockIndex* BlockReading = GetChainTip();
     if (BlockReading == nullptr) return false;
 
     CScript mnpayee;

@@ -202,7 +202,7 @@ public:
         Unserialize(s);
     }
 
-    int64_t SecondsSincePayment() const;
+    int64_t SecondsSincePayment(const CBlockIndex* BlockReading) const;
 
     bool UpdateFromNewBroadcast(CMasternodeBroadcast& mnb);
 
@@ -256,7 +256,7 @@ public:
         return strprintf("INVALID_%d", activeState);
     }
 
-    int64_t GetLastPaid() const;
+    int64_t GetLastPaid(const CBlockIndex* BlockReading) const;
     bool IsValidNetAddr() const;
 
     /// Is the input associated with collateral public key? (and there is 10000 PIV - checking if valid masternode)

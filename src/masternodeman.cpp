@@ -478,6 +478,8 @@ void CMasternodeMan::CheckSpentCollaterals(const std::vector<CTransactionRef>& v
 //
 const CMasternode* CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight, bool fFilterSigTime, int& nCount) const
 {
+    AssertLockNotHeld(cs_main);
+    const CBlockIndex* BlockReading = GetChainTip();
     LOCK(cs);
 
     const CMasternode* pBestMasternode = nullptr;
@@ -504,7 +506,7 @@ const CMasternode* CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlock
         //make sure it has as many confirmations as there are masternodes
         if (pcoinsTip->GetCoinDepthAtHeight(mn->vin.prevout, nBlockHeight) < nMnCount) continue;
 
-        vecMasternodeLastPaid.emplace_back(mn->SecondsSincePayment(), mn->vin);
+        vecMasternodeLastPaid.emplace_back(mn->SecondsSincePayment(BlockReading), mn->vin);
     }
 
     nCount = (int)vecMasternodeLastPaid.size();
