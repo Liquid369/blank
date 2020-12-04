@@ -339,9 +339,41 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues, const std::vecto
     return OperationResult(true);
 }
 
+/*
+ * Check that the witness and nullifier of a sapling note (about to be spent) have been
+ * correctly cached. If the witness is missing, return an error. If the nullifier is missing,
+ * recover it from the note (now that we have the spending key).
+ */
+enum CacheCheckResult {OK, SPENT, INVALID};
+static CacheCheckResult CheckCachedNote(const SaplingNoteEntry& t, const libzcash::SaplingExpandedSpendingKey& expsk)
+{
+    CWalletTx& prevTx = pwalletMain->mapWallet.at(t.op.hash);
+    SaplingNoteData& nd = prevTx.mapSaplingNoteData.at(t.op);
+    if (nd.witnesses.empty()) {
+        return CacheCheckResult::INVALID;
+    }
+    if (nd.nullifier == nullopt) {
+        const std::string& noteStr = t.op.ToString();
+        LogPrintf("WARNING: nullifier not cached for note %s. Updating...\n", noteStr);
+        // get the nullifier from the note and update the cache
+        const auto& witness = nd.witnesses.front();
+        nd.nullifier = t.note.nullifier(expsk.full_viewing_key(), witness.position());
+        if (nd.nullifier == nullopt) {
+            return CacheCheckResult::INVALID;
+        }
+        // re-check the spent status
+        if (pwalletMain->GetSaplingScriptPubKeyMan()->IsSaplingSpent(*(nd.nullifier))) {
+            LogPrintf("Removed note %s as it appears to be already spent.\n", noteStr);
+            return CacheCheckResult::SPENT;
+        }
+    }
+    return CacheCheckResult::OK;
+}
+
 OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& ovk)
 {
     shieldedInputs.clear();
+    auto sspkm = pwalletMain->GetSaplingScriptPubKeyMan();
     // if we already have selected the notes, let's directly set them.
     bool hasCoinControl = coinControl && coinControl->HasSelected();
     if (hasCoinControl) {
@@ -355,18 +387,18 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& 
             vSaplingOutpoints.emplace_back(outpoint.outPoint.hash, outpoint.outPoint.n);
         }
 
-        pwalletMain->GetSaplingScriptPubKeyMan()->GetNotes(vSaplingOutpoints, shieldedInputs);
+        sspkm->GetNotes(vSaplingOutpoints, shieldedInputs);
 
         if (shieldedInputs.empty()) {
             return errorOut("Insufficient funds, no available notes to spend");
         }
     } else {
         // If we don't have coinControl then let's find the notes
-        pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(shieldedInputs, fromAddress.fromSapAddr, mindepth);
+        sspkm->GetFilteredNotes(shieldedInputs, fromAddress.fromSapAddr, mindepth);
         if (shieldedInputs.empty()) {
             // Just to notify the user properly, check if the wallet has notes with less than the min depth
             std::vector<SaplingNoteEntry> _shieldedInputs;
-            pwalletMain->GetSaplingScriptPubKeyMan()->GetFilteredNotes(_shieldedInputs, fromAddress.fromSapAddr, 0);
+            sspkm->GetFilteredNotes(_shieldedInputs, fromAddress.fromSapAddr, 0);
             return errorOut(_shieldedInputs.empty() ?
                     "Insufficient funds, no available notes to spend" :
                     "Insufficient funds, shielded PIV need at least 5 confirmations");
@@ -392,7 +424,18 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& 
         uint256 ovkIn;
         auto resLoadKeys = loadKeysFromShieldedFrom(t.address, expsk, ovkIn);
         if (!resLoadKeys) return resLoadKeys;
-        spendingKeys.emplace_back(expsk);
+
+        // If the noteData is not properly cached, for whatever reason,
+        // try to update it here, now that we have the spending key.
+        CacheCheckResult res = CheckCachedNote(t, expsk);
+        if (res == CacheCheckResult::INVALID) {
+            // This should never happen. User would be forced to zap.
+            LogPrintf("ERROR: Witness/Nullifier invalid for note %s. Restart with --zapwallettxes\n", t.op.ToString());
+            return errorOut("Note cache corrupt. Try \"Recover transactions\" (Settings-->Debug-->\"wallet repair\")");
+        } else if (res == CacheCheckResult::SPENT) {
+            // note was already spent, don't include it in the inputs
+            continue;
+        }
 
         // Return ovk to be used in the outputs
         if (ovk.IsNull()) {
@@ -400,6 +443,7 @@ OperationResult SaplingOperation::loadUnspentNotes(TxValues& txValues, uint256& 
         }
 
         // Load data
+        spendingKeys.emplace_back(expsk);
         ops.emplace_back(t.op);
         notes.emplace_back(t.note);
         txValues.shieldedInTotal += t.note.value();
