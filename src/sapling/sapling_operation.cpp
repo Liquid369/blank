@@ -347,6 +347,7 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues, const std::vecto
 enum CacheCheckResult {OK, SPENT, INVALID};
 static CacheCheckResult CheckCachedNote(const SaplingNoteEntry& t, const libzcash::SaplingExpandedSpendingKey& expsk)
 {
+    auto sspkm = pwalletMain->GetSaplingScriptPubKeyMan();
     CWalletTx& prevTx = pwalletMain->mapWallet.at(t.op.hash);
     SaplingNoteData& nd = prevTx.mapSaplingNoteData.at(t.op);
     if (nd.witnesses.empty()) {
@@ -357,12 +358,15 @@ static CacheCheckResult CheckCachedNote(const SaplingNoteEntry& t, const libzcas
         LogPrintf("WARNING: nullifier not cached for note %s. Updating...\n", noteStr);
         // get the nullifier from the note and update the cache
         const auto& witness = nd.witnesses.front();
-        nd.nullifier = t.note.nullifier(expsk.full_viewing_key(), witness.position());
-        if (nd.nullifier == nullopt) {
+        const Optional<uint256> nf = t.note.nullifier(expsk.full_viewing_key(), witness.position());
+        // check that it's valid
+        if (nf == nullopt) {
+            LogPrintf("ERROR: Unable to recover nullifier for note %s.\n", noteStr);
             return CacheCheckResult::INVALID;
         }
+        sspkm->UpdateSaplingNullifierNoteMap(nd, t.op, nf);
         // re-check the spent status
-        if (pwalletMain->GetSaplingScriptPubKeyMan()->IsSaplingSpent(*(nd.nullifier))) {
+        if (sspkm->IsSaplingSpent(*(nd.nullifier))) {
             LogPrintf("Removed note %s as it appears to be already spent.\n", noteStr);
             return CacheCheckResult::SPENT;
         }
