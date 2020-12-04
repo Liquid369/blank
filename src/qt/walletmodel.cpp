@@ -76,6 +76,11 @@ bool WalletModel::isSaplingInMaintenance() const
     return sporkManager.IsSporkActive(SPORK_20_SAPLING_MAINTENANCE);
 }
 
+bool WalletModel::isSaplingEnforced() const
+{
+    return Params().GetConsensus().NetworkUpgradeActive(cachedNumBlocks, Consensus::UPGRADE_V5_0);
+}
+
 bool WalletModel::isStakingStatusActive() const
 {
     return wallet && wallet->pStakerStatus && wallet->pStakerStatus->IsActive();
