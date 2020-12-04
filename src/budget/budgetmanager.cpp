@@ -206,6 +206,7 @@ bool CBudgetManager::AddFinalizedBudget(CFinalizedBudget& finalizedBudget)
     if (!CheckCollateral(feeTxId, nHash, strError, finalizedBudget.nTime, nCurrentHeight, true)) {
         LogPrint(BCLog::MNBUDGET,"%s: invalid finalized budget (%s) collateral id=%s - %s\n",
                 __func__, nHash.ToString(), feeTxId.ToString(), strError);
+        finalizedBudget.SetStrInvalid(strError);
         return false;
     }
 
@@ -251,6 +252,7 @@ bool CBudgetManager::AddProposal(CBudgetProposal& budgetProposal)
     if (!CheckCollateral(feeTxId, nHash, strError, budgetProposal.nTime, nCurrentHeight, false)) {
         LogPrint(BCLog::MNBUDGET,"%s: invalid budget proposal (%s) collateral id=%s - %s\n",
                 __func__, nHash.ToString(), feeTxId.ToString(), strError);
+        budgetProposal.SetStrInvalid(strError);
         return false;
     }
 

@@ -62,6 +62,7 @@ public:
     // Static checks that should be done only once - sets strInvalid
     bool IsWellFormed(const CAmount& nTotalBudget);
     bool IsValid() const  { return fValid; }
+    void SetStrInvalid(const std::string& _strInvalid) { strInvalid = _strInvalid; }
     std::string IsInvalidReason() const { return strInvalid; }
     std::string IsInvalidLogStr() const { return strprintf("[%s]: %s", GetName(), IsInvalidReason()); }
 
