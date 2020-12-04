@@ -364,7 +364,7 @@ static CacheCheckResult CheckCachedNote(const SaplingNoteEntry& t, const libzcas
             LogPrintf("ERROR: Unable to recover nullifier for note %s.\n", noteStr);
             return CacheCheckResult::INVALID;
         }
-        sspkm->UpdateSaplingNullifierNoteMap(nd, t.op, nf);
+        WITH_LOCK(pwalletMain->cs_wallet, sspkm->UpdateSaplingNullifierNoteMap(nd, t.op, nf));
         // re-check the spent status
         if (sspkm->IsSaplingSpent(*(nd.nullifier))) {
             LogPrintf("Removed note %s as it appears to be already spent.\n", noteStr);

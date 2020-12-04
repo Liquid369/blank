@@ -46,6 +46,7 @@ void SaplingScriptPubKeyMan::UpdateSaplingNullifierNoteMapForBlock(const CBlock 
 // Updates noteData and mapSaplingNullifiersToNotes directly
 void SaplingScriptPubKeyMan::UpdateSaplingNullifierNoteMap(SaplingNoteData& nd, const SaplingOutPoint& op, const Optional<uint256>& nullifier)
 {
+    AssertLockHeld(wallet->cs_wallet);
     nd.nullifier = nullifier;
     if (nullifier) mapSaplingNullifiersToNotes[*nullifier] = op;
 }
