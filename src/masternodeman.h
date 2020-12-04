@@ -154,7 +154,7 @@ public:
     std::vector<std::pair<MasternodeRef, int>> GetMnScores(int nLast) const;
 
     // Retrieve the known masternodes ordered by scoring without checking them. (Only used for listmasternodes RPC call)
-    std::vector<std::pair<int64_t, CMasternode>> GetMasternodeRanks(int nBlockHeight) const;
+    std::vector<std::pair<int64_t, MasternodeRef>> GetMasternodeRanks(int nBlockHeight) const;
     int GetMasternodeRank(const CTxIn& vin, int64_t nBlockHeight, int minProtocol = 0, bool fOnlyActive = true) const;
 
     void ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
@@ -171,6 +171,10 @@ public:
 
     /// Update masternode list and maps using provided CMasternodeBroadcast
     void UpdateMasternodeList(CMasternodeBroadcast mnb);
+
+    /// Get the time a masternode was last paid
+    int64_t GetLastPaid(const MasternodeRef& mn, const CBlockIndex* BlockReading) const;
+    int64_t SecondsSincePayment(const MasternodeRef& mn, const CBlockIndex* BlockReading) const;
 
     // Block hashes cycling vector management
     void CacheBlockHash(const CBlockIndex* pindex);

@@ -43,8 +43,8 @@ struct CompareScoreTxIn {
 };
 
 struct CompareScoreMN {
-    bool operator()(const std::pair<int64_t, CMasternode>& t1,
-        const std::pair<int64_t, CMasternode>& t2) const
+    bool operator()(const std::pair<int64_t, MasternodeRef>& t1,
+        const std::pair<int64_t, MasternodeRef>& t2) const
     {
         return t1.first < t2.first;
     }
@@ -479,6 +479,8 @@ void CMasternodeMan::CheckSpentCollaterals(const std::vector<CTransactionRef>& v
 //
 const CMasternode* CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlockHeight, bool fFilterSigTime, int& nCount) const
 {
+    AssertLockNotHeld(cs_main);
+    const CBlockIndex* BlockReading = GetChainTip();
     LOCK(cs);
 
     const CMasternode* pBestMasternode = nullptr;
@@ -505,7 +507,7 @@ const CMasternode* CMasternodeMan::GetNextMasternodeInQueueForPayment(int nBlock
         //make sure it has as many confirmations as there are masternodes
         if (pcoinsTip->GetCoinDepthAtHeight(mn->vin.prevout, nBlockHeight) < nMnCount) continue;
 
-        vecMasternodeLastPaid.emplace_back(mn->SecondsSincePayment(), mn->vin);
+        vecMasternodeLastPaid.emplace_back(SecondsSincePayment(mn, BlockReading), mn->vin);
     }
 
     nCount = (int)vecMasternodeLastPaid.size();
@@ -635,9 +637,9 @@ int CMasternodeMan::GetMasternodeRank(const CTxIn& vin, int64_t nBlockHeight, in
     return -1;
 }
 
-std::vector<std::pair<int64_t, CMasternode>> CMasternodeMan::GetMasternodeRanks(int nBlockHeight) const
+std::vector<std::pair<int64_t, MasternodeRef>> CMasternodeMan::GetMasternodeRanks(int nBlockHeight) const
 {
-    std::vector<std::pair<int64_t, CMasternode>> vecMasternodeScores;
+    std::vector<std::pair<int64_t, MasternodeRef>> vecMasternodeScores;
     const uint256& hash = GetHashAtHeight(nBlockHeight - 1);
     // height outside range
     if (!hash) return vecMasternodeScores;
@@ -647,12 +649,12 @@ std::vector<std::pair<int64_t, CMasternode>> CMasternodeMan::GetMasternodeRanks(
         for (const auto& it : mapMasternodes) {
             const MasternodeRef& mn = it.second;
             if (!mn->IsEnabled()) {
-                vecMasternodeScores.emplace_back(9999, *mn);
+                vecMasternodeScores.emplace_back(9999, mn);
                 continue;
             }
 
             int64_t n2 = mn->CalculateScore(hash).GetCompact(false);
-            vecMasternodeScores.emplace_back(n2, *mn);
+            vecMasternodeScores.emplace_back(n2, mn);
         }
     }
     sort(vecMasternodeScores.rbegin(), vecMasternodeScores.rend(), CompareScoreMN());
@@ -839,6 +841,55 @@ void CMasternodeMan::UpdateMasternodeList(CMasternodeBroadcast mnb)
     } else {
         pmn->UpdateFromNewBroadcast(mnb);
     }
+}
+
+int64_t CMasternodeMan::SecondsSincePayment(const MasternodeRef& mn, const CBlockIndex* BlockReading) const
+{
+    int64_t sec = (GetAdjustedTime() - GetLastPaid(mn, BlockReading));
+    int64_t month = 60 * 60 * 24 * 30;
+    if (sec < month) return sec; //if it's less than 30 days, give seconds
+
+    CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
+    ss << mn->vin;
+    ss << mn->sigTime;
+    uint256 hash = ss.GetHash();
+
+    // return some deterministic value for unknown/unpaid but force it to be more than 30 days old
+    return month + hash.GetCompact(false);
+}
+
+int64_t CMasternodeMan::GetLastPaid(const MasternodeRef& mn, const CBlockIndex* BlockReading) const
+{
+    if (BlockReading == nullptr) return false;
+
+    CScript mnpayee;
+    mnpayee = GetScriptForDestination(mn->pubKeyCollateralAddress.GetID());
+
+    CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
+    ss << mn->vin;
+    ss << mn->sigTime;
+    uint256 hash = ss.GetHash();
+
+    // use a deterministic offset to break a tie -- 2.5 minutes
+    int64_t nOffset = hash.GetCompact(false) % 150;
+
+    int nMnCount = CountEnabled() * 1.25;
+    for (int n = 0; n < nMnCount; n++) {
+        const auto& it = masternodePayments.mapMasternodeBlocks.find(BlockReading->nHeight);
+        if (it != masternodePayments.mapMasternodeBlocks.end()) {
+            // Search for this payee, with at least 2 votes. This will aid in consensus
+            // allowing the network to converge on the same payees quickly, then keep the same schedule.
+            if (it->second.HasPayeeWithVotes(mnpayee, 2))
+                return BlockReading->nTime + nOffset;
+        }
+        BlockReading = BlockReading->pprev;
+
+        if (BlockReading == nullptr || BlockReading->nHeight <= 0) {
+            break;
+        }
+    }
+
+    return 0;
 }
 
 std::string CMasternodeMan::ToString() const
