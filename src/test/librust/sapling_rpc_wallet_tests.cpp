@@ -27,9 +27,6 @@
 
 extern UniValue CallRPC(std::string args); // Implemented in rpc_tests.cpp
 
-// Remember: this method will be moved to an utility file in the short future. For now, it's in sapling_keystore_tests.cpp
-extern libzcash::SaplingExtendedSpendingKey GetTestMasterSaplingSpendingKey();
-
 namespace {
 
     /** Set the working directory for the duration of the scope. */
