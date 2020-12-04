@@ -93,7 +93,7 @@ bool CMasternodeDB::Write(const CMasternodeMan& mnodemanToSave)
     return true;
 }
 
-CMasternodeDB::ReadResult CMasternodeDB::Read(CMasternodeMan& mnodemanToLoad, bool fDryRun)
+CMasternodeDB::ReadResult CMasternodeDB::Read(CMasternodeMan& mnodemanToLoad)
 {
     int64_t nStart = GetTimeMillis();
     // open input file, and associate with CAutoFile
@@ -164,12 +164,6 @@ CMasternodeDB::ReadResult CMasternodeDB::Read(CMasternodeMan& mnodemanToLoad, bo
 
     LogPrint(BCLog::MASTERNODE,"Loaded info from mncache.dat  %dms\n", GetTimeMillis() - nStart);
     LogPrint(BCLog::MASTERNODE,"  %s\n", mnodemanToLoad.ToString());
-    if (!fDryRun) {
-        LogPrint(BCLog::MASTERNODE,"Masternode manager - cleaning....\n");
-        mnodemanToLoad.CheckAndRemove(true);
-        LogPrint(BCLog::MASTERNODE,"Masternode manager - result:\n");
-        LogPrint(BCLog::MASTERNODE,"  %s\n", mnodemanToLoad.ToString());
-    }
 
     return Ok;
 }
@@ -182,7 +176,7 @@ void DumpMasternodes()
     CMasternodeMan tempMnodeman;
 
     LogPrint(BCLog::MASTERNODE,"Verifying mncache.dat format...\n");
-    CMasternodeDB::ReadResult readResult = mndb.Read(tempMnodeman, true);
+    CMasternodeDB::ReadResult readResult = mndb.Read(tempMnodeman);
     // there was an error and it was not an error on file opening => do not proceed
     if (readResult == CMasternodeDB::FileError)
         LogPrint(BCLog::MASTERNODE,"Missing masternode cache file - mncache.dat, will try to recreate\n");
@@ -215,8 +209,9 @@ bool CMasternodeMan::Add(CMasternode& mn)
 
     const auto& it = mapMasternodes.find(mn.vin.prevout);
     if (it == mapMasternodes.end()) {
-        LogPrint(BCLog::MASTERNODE, "CMasternodeMan: Adding new Masternode %s - %i now\n", mn.vin.prevout.hash.ToString(), size() + 1);
+        LogPrint(BCLog::MASTERNODE, "Adding new Masternode %s\n", mn.vin.prevout.ToString());
         mapMasternodes.emplace(mn.vin.prevout, std::make_shared<CMasternode>(mn));
+        LogPrint(BCLog::MASTERNODE, "Masternode added. New total count: %d\n", mapMasternodes.size());
         return true;
     }
 
@@ -239,7 +234,7 @@ void CMasternodeMan::AskForMN(CNode* pnode, const CTxIn& vin)
     mWeAskedForMasternodeListEntry[vin.prevout] = askAgain;
 }
 
-void CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
+int CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
 {
     LOCK(cs);
 
@@ -252,7 +247,7 @@ void CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
             activeState == CMasternode::MASTERNODE_VIN_SPENT ||
             (forceExpiredRemoval && activeState == CMasternode::MASTERNODE_EXPIRED) ||
             mn->protocolVersion < ActiveProtocol()) {
-            LogPrint(BCLog::MASTERNODE, "CMasternodeMan: Removing inactive Masternode %s - %i now\n", it->first.hash.ToString(), size() - 1);
+            LogPrint(BCLog::MASTERNODE, "Removing inactive Masternode %s\n", it->first.ToString());
 
             //erase all of the broadcasts we've seen from this vin
             // -- if we missed a few pings and the node was removed, this will allow is to get it back without them
@@ -278,10 +273,12 @@ void CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
             }
 
             it = mapMasternodes.erase(it);
+            LogPrint(BCLog::MASTERNODE, "Masternode removed.\n");
         } else {
             ++it;
         }
     }
+    LogPrint(BCLog::MASTERNODE, "New total masternode count: %d\n", mapMasternodes.size());
 
     // check who's asked for the Masternode list
     std::map<CNetAddr, int64_t>::iterator it1 = mAskedUsForMasternodeList.begin();
@@ -333,6 +330,8 @@ void CMasternodeMan::CheckAndRemove(bool forceExpiredRemoval)
             ++it4;
         }
     }
+
+    return mapMasternodes.size();
 }
 
 void CMasternodeMan::Clear()
@@ -389,8 +388,9 @@ int CMasternodeMan::CountEnabled(int protocolVersion) const
     return i;
 }
 
-void CMasternodeMan::CountNetworks(int protocolVersion, int& ipv4, int& ipv6, int& onion) const
+int CMasternodeMan::CountNetworks(int& ipv4, int& ipv6, int& onion) const
 {
+    LOCK(cs);
     for (const auto& it : mapMasternodes) {
         const MasternodeRef& mn = it.second;
         std::string strHost;
@@ -411,6 +411,7 @@ void CMasternodeMan::CountNetworks(int protocolVersion, int& ipv4, int& ipv6, in
                 break;
         }
     }
+    return mapMasternodes.size();
 }
 
 void CMasternodeMan::DsegUpdate(CNode* pnode)
@@ -843,9 +844,10 @@ void CMasternodeMan::UpdateMasternodeList(CMasternodeBroadcast mnb)
 std::string CMasternodeMan::ToString() const
 {
     std::ostringstream info;
-
-    info << "Masternodes: " << (int)size() << ", peers who asked us for Masternode list: " << (int)mAskedUsForMasternodeList.size() << ", peers we asked for Masternode list: " << (int)mWeAskedForMasternodeList.size() << ", entries in Masternode list we asked for: " << (int)mWeAskedForMasternodeListEntry.size();
-
+    info << "Masternodes: " << (int)mapMasternodes.size()
+         << ", peers who asked us for Masternode list: " << (int)mAskedUsForMasternodeList.size()
+         << ", peers we asked for Masternode list: " << (int)mWeAskedForMasternodeList.size()
+         << ", entries in Masternode list we asked for: " << (int)mWeAskedForMasternodeListEntry.size();
     return info.str();
 }
 
@@ -913,6 +915,9 @@ void ThreadCheckMasternodes()
     unsigned int c = 0;
 
     try {
+        // first clean up stale masternode payments data
+        masternodePayments.CleanPaymentList(mnodeman.CheckAndRemove(), mnodeman.GetBestHeight());
+
         while (true) {
 
             if (ShutdownRequested()) {
@@ -921,6 +926,7 @@ void ThreadCheckMasternodes()
 
             MilliSleep(1000);
             boost::this_thread::interruption_point();
+
             // try to sync from all available nodes, one step at a time
             masternodeSync.Process();
 
@@ -933,8 +939,7 @@ void ThreadCheckMasternodes()
                     activeMasternode.ManageStatus();
 
                 if (c % (MasternodePingSeconds()/5) == 0) {
-                    mnodeman.CheckAndRemove();
-                    masternodePayments.CleanPaymentList();
+                    masternodePayments.CleanPaymentList(mnodeman.CheckAndRemove(), mnodeman.GetBestHeight());
                 }
             }
         }

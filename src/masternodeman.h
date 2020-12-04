@@ -51,7 +51,7 @@ public:
 
     CMasternodeDB();
     bool Write(const CMasternodeMan& mnodemanToSave);
-    ReadResult Read(CMasternodeMan& mnodemanToLoad, bool fDryRun = false);
+    ReadResult Read(CMasternodeMan& mnodemanToLoad);
 };
 
 //
@@ -120,8 +120,8 @@ public:
     /// Ask (source) node for mnb
     void AskForMN(CNode* pnode, const CTxIn& vin);
 
-    /// Check all Masternodes and remove inactive
-    void CheckAndRemove(bool forceExpiredRemoval = false);
+    /// Check all Masternodes and remove inactive. Return the total masternode count.
+    int CheckAndRemove(bool forceExpiredRemoval = false);
 
     /// Clear Masternode vector
     void Clear();
@@ -131,7 +131,8 @@ public:
 
     int CountEnabled(int protocolVersion = -1) const;
 
-    void CountNetworks(int protocolVersion, int& ipv4, int& ipv6, int& onion) const;
+    /// Count the number of nodes with a specific proto version for each network. Return the total.
+    int CountNetworks(int& ipv4, int& ipv6, int& onion) const;
 
     void DsegUpdate(CNode* pnode);
 
@@ -160,9 +161,6 @@ public:
 
     // Process GETMNLIST message, returning the banning score (if 0, no ban score increase is needed)
     int ProcessGetMNList(CNode* pfrom, CTxIn& vin);
-
-    /// Return the number of (unique) Masternodes
-    int size() const { LOCK(cs); return mapMasternodes.size(); }
 
     /// Return the number of Masternodes older than (default) 8000 seconds
     int stable_size() const;
