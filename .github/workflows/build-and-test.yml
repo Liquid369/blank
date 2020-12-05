@@ -279,27 +279,17 @@ jobs:
             unit_tests: true
             functional_tests: true
             goal: install
-            test_runner_extra: "--coverage --extended"
+            test_runner_extra: "--coverage --all"
             BITCOIN_CONFIG: "--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust"
 
           - name: x86_64 Linux  [GOAL:install]  [bionic] [no GUI no unit tests - only functional tests on legacy pre-HD wallets]
             os: ubuntu-18.04
             host: x86_64-unknown-linux-gnu
-            apt_get: python3-zmq qtbase5-dev qttools5-dev-tools libqt5svg5-dev libqt5charts5-dev libqrencode-dev protobuf-compiler libdbus-1-dev libharfbuzz-dev libprotobuf-dev
+            apt_get: python3-zmq
             unit_tests: false
             functional_tests: true
             goal: install
             test_runner_extra: "--legacywallet"
-            BITCOIN_CONFIG: "--enable-zmq --with-gui=no --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust"
-
-          - name: x86_64 Linux  [GOAL:install]  [bionic] [no GUI no unit tests - only tiertwo/sapling functional tests]
-            os: ubuntu-18.04
-            host: x86_64-unknown-linux-gnu
-            apt_get: python3-zmq qtbase5-dev qttools5-dev-tools libqt5svg5-dev libqt5charts5-dev libqrencode-dev protobuf-compiler libdbus-1-dev libharfbuzz-dev libprotobuf-dev
-            unit_tests: false
-            functional_tests: true
-            goal: install
-            test_runner_extra: "--tiertwo --sapling"
             BITCOIN_CONFIG: "--enable-zmq --with-gui=no --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust"
 
           - name: x86_64 Linux  [GOAL:install]  [xenial]  [no depends only system libs]
@@ -310,6 +300,7 @@ jobs:
             functional_tests: true
             no_depends: 1
             goal: install
+            test_runner_extra: "--all"
             BITCOIN_CONFIG: "--enable-zmq --with-incompatible-bdb --with-gui=qt5 CPPFLAGS=-DDEBUG_LOCKORDER --disable-hardening --disable-asm"
 
           - name: x86_64 Linux  [GOAL:install]  [bionic]  [no depends only system libs]
