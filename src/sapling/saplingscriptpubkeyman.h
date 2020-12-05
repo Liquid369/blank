@@ -174,6 +174,12 @@ public:
     void UpdateNullifierNoteMapWithTx(const CWalletTx& wtx);
 
     /**
+     *  Update mapSaplingNullifiersToNotes, and NoteData of a specific outpoint,
+     *  directly with nullifier provided by the caller.
+     */
+    void UpdateSaplingNullifierNoteMap(SaplingNoteData& nd, const SaplingOutPoint& op, const Optional<uint256>& nullifier);
+
+    /**
      *  Update mapSaplingNullifiersToNotes, computing the nullifier
      *  from a cached witness if necessary.
      */

@@ -1451,7 +1451,7 @@ CAmount CWalletTx::GetCredit(const isminefilter& filter, bool recalculate) const
         credit += GetCachableAmount(CREDIT, ISMINE_SPENDABLE_DELEGATED, recalculate);
     }
     if (filter & ISMINE_SPENDABLE_SHIELDED) {
-        credit += GetCachableAmount(CREDIT, ISMINE_SPENDABLE_SHIELDED);
+        credit += GetCachableAmount(CREDIT, ISMINE_SPENDABLE_SHIELDED, recalculate);
     }
     return credit;
 }

@@ -43,6 +43,14 @@ void SaplingScriptPubKeyMan::UpdateSaplingNullifierNoteMapForBlock(const CBlock 
     }
 }
 
+// Updates noteData and mapSaplingNullifiersToNotes directly
+void SaplingScriptPubKeyMan::UpdateSaplingNullifierNoteMap(SaplingNoteData& nd, const SaplingOutPoint& op, const Optional<uint256>& nullifier)
+{
+    AssertLockHeld(wallet->cs_wallet);
+    nd.nullifier = nullifier;
+    if (nullifier) mapSaplingNullifiersToNotes[*nullifier] = op;
+}
+
 /**
  * Update mapSaplingNullifiersToNotes, computing the nullifier from a cached witness if necessary.
  */
@@ -50,15 +58,15 @@ void SaplingScriptPubKeyMan::UpdateSaplingNullifierNoteMapWithTx(CWalletTx& wtx)
     LOCK(wallet->cs_wallet);
 
     for (mapSaplingNoteData_t::value_type &item : wtx.mapSaplingNoteData) {
-        SaplingOutPoint op = item.first;
-        SaplingNoteData nd = item.second;
+        const SaplingOutPoint& op = item.first;
+        SaplingNoteData& nd = item.second;
 
         if (nd.witnesses.empty() || !nd.IsMyNote()) {
             // If there are no witnesses, erase the nullifier and associated mapping.
-            if (item.second.nullifier) {
+            if (nd.nullifier) {
                 mapSaplingNullifiersToNotes.erase(item.second.nullifier.get());
             }
-            item.second.nullifier = boost::none;
+            nd.nullifier = boost::none;
         } else {
             const libzcash::SaplingIncomingViewingKey& ivk = *(nd.ivk);
             uint64_t position = nd.witnesses.front().position();
@@ -79,9 +87,7 @@ void SaplingScriptPubKeyMan::UpdateSaplingNullifierNoteMapWithTx(CWalletTx& wtx)
                 // This should not happen.  If it does, maybe the position has been corrupted or miscalculated?
                 assert(false);
             }
-            uint256 nullifier = optNullifier.get();
-            mapSaplingNullifiersToNotes[nullifier] = op;
-            item.second.nullifier = nullifier;
+            UpdateSaplingNullifierNoteMap(nd, op, optNullifier.get());
         }
     }
 }
