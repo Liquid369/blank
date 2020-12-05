@@ -332,6 +332,8 @@ public:
     bool SetupSPKM(bool newKeypool = true, bool memOnly = false);
     //! Whether the wallet is hd or not //
     bool IsHDEnabled() const;
+    //! Whether the wallet supports Sapling or not //
+    bool IsSaplingUpgradeEnabled() const;
 
     /* SPKM Helpers */
     const CKeyingMaterial& GetEncryptionKey() const;

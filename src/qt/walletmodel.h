@@ -159,6 +159,7 @@ public:
     bool hasWallet() { return wallet; };
 
     bool isHDEnabled() const;
+    bool isSaplingWalletEnabled() const;
     bool upgradeWallet(std::string& upgradeError);
 
     interfaces::WalletBalances GetWalletBalances() { return m_cached_balances; };
