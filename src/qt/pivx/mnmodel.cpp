@@ -87,7 +87,19 @@ QVariant MNModel::data(const QModelIndex &index, int role) const
                 return (isAvailable) ? QString::number(rec->vin.prevout.n) : "Not available";
             case STATUS: {
                 std::pair<QString, CMasternode*> pair = nodes.values().value(row);
-                return (pair.second) ? QString::fromStdString(pair.second->Status()) : "MISSING";
+                std::string status = "MISSING";
+                if (pair.second) {
+                    status = pair.second->Status();
+                    // Quick workaround to the current Masternode status types.
+                    // If the status is REMOVE and there is no pubkey associated to the Masternode
+                    // means that the MN is not in the network list and was created in
+                    // updateMNList(). Which.. denotes a not started masternode.
+                    // This will change in the future with the MasternodeWrapper introduction.
+                    if (status == "REMOVE" && !pair.second->pubKeyCollateralAddress.IsValid()) {
+                        return "MISSING";
+                    }
+                }
+                return QString::fromStdString(status);
             }
             case PRIV_KEY: {
                 for (CMasternodeConfig::CMasternodeEntry mne : masternodeConfig.getEntries()) {
