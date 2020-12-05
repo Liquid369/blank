@@ -175,9 +175,9 @@ parts:
       fi
       ./autogen.sh
       if [ $DEPENDS = 1 ]; then
-        ./configure --prefix=`pwd`/depends/${HOST} --with-params-dir=${SNAP_USER_COMMON}/${PARAMSDIR}
+        ./configure --prefix=`pwd`/depends/${HOST}
       else
-        ./configure --with-incompatible-bdb --with-params-dir=${SNAP_USER_COMMON}/${PARAMSDIR}
+        ./configure --with-incompatible-bdb
       fi
       echo "-----------------------------------------------"
       echo "+++++++++++++++++++++++++++++++++++++++++++++++"
@@ -231,11 +231,13 @@ parts:
       echo "CONFIG FILE" # create .pivx folder and copy example config - !!!warning!!!: do not copy as pivx.conf
       echo "+++++++++++++++++++++++++++++++++++++++++++++++"
       mkdir -p ${SNAP_USER_COMMON}/.${DATADIR}
+      mkdir -p ${SNAP_USER_COMMON}/${PARAMSDIR}
       if [ $COPYCONF = 1 ]; then
         cp ${SNAPCRAFT_PART_BUILD}/contrib/debian/manpages/${CONF}.conf.5 ${SNAP_USER_COMMON}/.${DATADIR}/${CONF}-example.conf
       else
         echo "COPY CONFIG FILE disabled, skipping"
       fi
+      cp ${SNAPCRAFT_PART_BUILD}/params/*.params ${SNAP_USER_COMMON}/${PARAMSDIR}/
       echo "-----------------------------------------------"
       echo "+++++++++++++++++++++++++++++++++++++++++++++++"
       echo "RUN TESTS" # if tests fail to pass, build and release will fail
@@ -243,7 +245,6 @@ parts:
       cd ${SNAPCRAFT_PART_BUILD}
       if [ ! $SNAPCRAFT_ARCH_TRIPLET = "s390x-linux-gnu" ]; then
         if [ $RUNTESTS = 1 ]; then
-          ${SNAPCRAFT_PROJECT_DIR}/util/fetch-params.sh ${SNAP_USER_COMMON}/${PARAMSDIR}
           make check
         else
           echo "RUN TESTS disabled, skipping"
@@ -300,6 +301,7 @@ parts:
       - libdb++-dev
     stage-packages:
       - libxkbcommon0
+      - libxcb-xinerama0
       - ttf-ubuntu-font-family
       - dmz-cursor-theme
       - light-themes
@@ -324,6 +326,8 @@ parts:
       - libpgm-5.2-0
       - libprotobuf10
       - libqrencode3
+      - libqt5core5a
+      - libqt5dbus5
       - libqt5charts5
       - libqt5test5
       - libsodium23
