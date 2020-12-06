@@ -244,7 +244,6 @@ public:
 
     std::string Status() const
     {
-        LOCK(cs);
         auto activeState = GetActiveState();
         if (activeState == CMasternode::MASTERNODE_PRE_ENABLED) return "PRE_ENABLED";
         if (activeState == CMasternode::MASTERNODE_ENABLED)     return "ENABLED";
