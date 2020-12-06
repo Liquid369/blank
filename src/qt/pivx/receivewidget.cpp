@@ -75,6 +75,8 @@ ReceiveWidget::ReceiveWidget(PIVXGUI* parent) :
     ui->pushButtonCopy->setLayoutDirection(Qt::RightToLeft);
     setCssProperty(ui->pushButtonCopy, "btn-secundary-copy");
 
+    setCssProperty(ui->labelQrImg, "text-subtitle");
+
     // List Addresses
     setCssProperty(ui->listViewAddress, "container");
     ui->listViewAddress->setItemDelegate(delegate);
@@ -143,7 +145,7 @@ void ReceiveWidget::refreshView(QString refreshAddress)
 
         if (latestAddress.isEmpty()) {
             // Check for generation errors
-            ui->labelQrImg->setText(tr("No available address, try unlocking the wallet"));
+            ui->labelQrImg->setText(tr("No available address\ntry unlocking the wallet"));
             inform(tr("Error generating address"));
             return;
         }
@@ -159,7 +161,7 @@ void ReceiveWidget::refreshView(QString refreshAddress)
         updateQr(latestAddress);
         updateLabel();
     } catch (const std::runtime_error& error) {
-        ui->labelQrImg->setText(tr("No available address, try unlocking the wallet"));
+        ui->labelQrImg->setText(tr("No available address\ntry unlocking the wallet"));
         inform(tr("Error generating address"));
     }
 }
