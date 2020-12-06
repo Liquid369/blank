@@ -674,7 +674,7 @@ void SendWidget::onShieldCoinsClicked()
     }
 
     auto balances = walletModel->GetWalletBalances();
-    CAmount availableBalance = balances.balance - balances.shielded_balance;
+    CAmount availableBalance = balances.balance - balances.shielded_balance - walletModel->getLockedBalance();
     if (walletModel && availableBalance > 0) {
 
         // Calculate the required fee first. TODO future: Unify this code with the code in coincontroldialog into the model.
