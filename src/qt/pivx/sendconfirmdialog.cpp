@@ -139,9 +139,11 @@ void TxDetailDialog::setData(WalletModel *_model, const QModelIndex &index)
             ui->textMemo->insertPlainText(QString::fromStdString(*rec->memo));
             ui->contentMemo->setVisible(true);
             ui->labelDividerMemo->setVisible(true);
+            ui->textMemo->adjustSize();
         } else {
             ui->contentMemo->setVisible(false);
             ui->labelDividerMemo->setVisible(false);
+            adjustSize();
         }
 
         connect(ui->pushCopy, &QPushButton::clicked, [this](){
