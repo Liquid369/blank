@@ -24,8 +24,7 @@
 SendWidget::SendWidget(PIVXGUI* parent) :
     PWidget(parent),
     ui(new Ui::send),
-    coinIcon(new QPushButton()),
-    btnContacts(new QPushButton())
+    coinIcon(new QPushButton())
 {
     ui->setupUi(this);
 
@@ -552,15 +551,6 @@ void SendWidget::onError(QString error, int type)
 {
     isProcessing = false;
     processingResultError = error;
-}
-
-QString SendWidget::recipientsToString(QList<SendCoinsRecipient> recipients)
-{
-    QString s = "";
-    for (SendCoinsRecipient rec : recipients) {
-        s += rec.address + " -> " + BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), rec.amount, false, BitcoinUnits::separatorAlways) + "\n";
-    }
-    return s;
 }
 
 void SendWidget::updateEntryLabels(QList<SendCoinsRecipient> recipients)

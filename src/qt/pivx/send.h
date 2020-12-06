@@ -83,7 +83,6 @@ private Q_SLOTS:
 private:
     Ui::send *ui;
     QPushButton *coinIcon;
-    QPushButton *btnContacts;
 
     SendCustomFeeDialog* customFeeDialog = nullptr;
     bool isCustomFeeSelected = false;
@@ -107,7 +106,6 @@ private:
 
     bool isTransparent = true;
     void resizeMenu();
-    QString recipientsToString(QList<SendCoinsRecipient> recipients);
     SendMultiRow* createEntry();
     void ProcessSend(QList<SendCoinsRecipient>& recipients, bool hasShieldedOutput,
                      const std::function<bool(QList<SendCoinsRecipient>&)>& func = nullptr);
