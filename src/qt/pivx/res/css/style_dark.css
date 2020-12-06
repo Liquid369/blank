@@ -1745,6 +1745,13 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
     color: #FFFFFF;
 }
 
+*[cssClass="edit-primary-no-border"] {
+    border: 0px;
+    background-color:#0f0b16;
+    font-size:15px;
+    color: #B3FFFFFF;
+}
+
 QPushButton[cssClass="btn-expand"] {
     background-image: url("://ic-expand");
     background-position:center;
