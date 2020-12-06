@@ -722,6 +722,7 @@ void SendWidget::onShieldCoinsClicked()
                 return false;
             }
             recipients.back().address = strAddress;
+            resetCoinControl();
             return true;
         });
     } else {
