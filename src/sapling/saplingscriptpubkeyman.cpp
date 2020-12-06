@@ -263,6 +263,8 @@ void DecrementNoteWitnesses(NoteDataMap& noteDataMap, int indexHeight, int64_t n
 {
     for (auto& item : noteDataMap) {
         auto* nd = &(item.second);
+        // skip externally sent notes
+        if (!nd->IsMyNote()) continue;
         // Only decrement witnesses that are not above the current height
         if (nd->witnessHeight <= indexHeight) {
             // Check the validity of the cache
