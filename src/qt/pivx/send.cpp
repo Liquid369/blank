@@ -24,8 +24,7 @@
 SendWidget::SendWidget(PIVXGUI* parent) :
     PWidget(parent),
     ui(new Ui::send),
-    coinIcon(new QPushButton()),
-    btnContacts(new QPushButton())
+    coinIcon(new QPushButton())
 {
     ui->setupUi(this);
 
@@ -390,7 +389,8 @@ void SendWidget::onSendClicked()
     ProcessSend(recipients, hasShieldedOutput);
 }
 
-void SendWidget::ProcessSend(const QList<SendCoinsRecipient>& recipients, bool hasShieldedOutput)
+void SendWidget::ProcessSend(QList<SendCoinsRecipient>& recipients, bool hasShieldedOutput,
+                             const std::function<bool(QList<SendCoinsRecipient>&)>& func)
 {
     // First check SPORK_20 (before unlock)
     bool isShieldedTx = hasShieldedOutput || !isTransparent;
@@ -412,6 +412,9 @@ void SendWidget::ProcessSend(const QList<SendCoinsRecipient>& recipients, bool h
         inform(tr("Cannot send, wallet locked"));
         return;
     }
+
+    // Perform needed operation that requires the wallet unlocked
+    if (func && !func(recipients)) return;
 
     // If tx exists then there is an on-going process being executed, return.
     if (isProcessing || ptrModelTx) {
@@ -550,15 +553,6 @@ void SendWidget::onError(QString error, int type)
     processingResultError = error;
 }
 
-QString SendWidget::recipientsToString(QList<SendCoinsRecipient> recipients)
-{
-    QString s = "";
-    for (SendCoinsRecipient rec : recipients) {
-        s += rec.address + " -> " + BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), rec.amount, false, BitcoinUnits::separatorAlways) + "\n";
-    }
-    return s;
-}
-
 void SendWidget::updateEntryLabels(QList<SendCoinsRecipient> recipients)
 {
     for (SendCoinsRecipient rec : recipients) {
@@ -680,7 +674,7 @@ void SendWidget::onShieldCoinsClicked()
     }
 
     auto balances = walletModel->GetWalletBalances();
-    CAmount availableBalance = balances.balance - balances.shielded_balance;
+    CAmount availableBalance = balances.balance - balances.shielded_balance - walletModel->getLockedBalance();
     if (walletModel && availableBalance > 0) {
 
         // Calculate the required fee first. TODO future: Unify this code with the code in coincontroldialog into the model.
@@ -706,6 +700,7 @@ void SendWidget::onShieldCoinsClicked()
         SendCoinsRecipient recipient;
         recipient.amount = availableBalance - nPayFee;
         recipient.isShieldedAddr = true;
+        recipients.append(recipient); // address is added later on, when the wallet is unlocked
 
         // Ask if the user want to do it
         if (!ask(tr("Shield Coins"),
@@ -717,19 +712,19 @@ void SendWidget::onShieldCoinsClicked()
             return;
         }
 
-        // First get a new address
-        QString strAddress;
-        auto res = walletModel->getNewShieldedAddress(strAddress, "");
-        // Check for generation errors
-        if (!res.result) {
-            inform(tr("Error generating address to shield PIVs"));
-            return;
-        }
-
         // Process spending
-        recipient.address = strAddress;
-        recipients.append(recipient);
-        ProcessSend(recipients, true);
+        ProcessSend(recipients, true, [this](QList<SendCoinsRecipient>& recipients) {
+            QString strAddress;
+            auto res = walletModel->getNewShieldedAddress(strAddress, "");
+            // Check for generation errors
+            if (!res.result) {
+                inform(tr("Error generating address to shield PIVs"));
+                return false;
+            }
+            recipients.back().address = strAddress;
+            resetCoinControl();
+            return true;
+        });
     } else {
         inform(tr("You don't have any transparent PIVs to shield."));
     }
