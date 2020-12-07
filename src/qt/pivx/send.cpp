@@ -496,7 +496,7 @@ bool SendWidget::sendFinalStep()
     dialog->setDisplayUnit(walletModel->getOptionsModel()->getDisplayUnit());
     dialog->setData(walletModel, ptrModelTx);
     dialog->adjustSize();
-    openDialogWithOpaqueBackgroundY(dialog, window, 3, 5);
+    openDialogWithOpaqueBackgroundY(dialog, window, 3, 15);
 
     if (dialog->isConfirm()) {
         // now send the prepared transaction
