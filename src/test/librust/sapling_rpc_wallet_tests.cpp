@@ -408,7 +408,7 @@ BOOST_AUTO_TEST_CASE(rpc_shieldsendmany_taddr_to_sapling)
     // Add a fake transaction to the wallet
     CMutableTransaction mtx;
     mtx.vout.emplace_back(5 * COIN, GetScriptForDestination(taddr));
-    CWalletTx wtx(pwalletMain, mtx);
+    CWalletTx wtx(pwalletMain, MakeTransactionRef(mtx));
     pwalletMain->LoadToWallet(wtx);
 
     // Fake-mine the transaction

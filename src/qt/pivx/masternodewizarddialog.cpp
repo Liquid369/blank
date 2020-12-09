@@ -260,8 +260,8 @@ bool MasterNodeWizardDialog::createMN()
         CWalletTx* walletTx = currentTransaction.getTransaction();
         std::string txID = walletTx->GetHash().GetHex();
         int indexOut = -1;
-        for (int i=0; i < (int)walletTx->vout.size(); i++) {
-            CTxOut& out = walletTx->vout[i];
+        for (int i=0; i < (int)walletTx->tx->vout.size(); i++) {
+            const CTxOut& out = walletTx->tx->vout[i];
             if (out.nValue == 10000 * COIN) {
                 indexOut = i;
                 break;

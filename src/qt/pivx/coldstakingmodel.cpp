@@ -40,7 +40,7 @@ void ColdStakingModel::refresh()
 
             const auto *wtx = utxo.tx;
             const QString txId = QString::fromStdString(wtx->GetHash().GetHex());
-            const CTxOut& out = wtx->vout[utxo.i];
+            const CTxOut& out = wtx->tx->vout[utxo.i];
 
             // First parse the cs delegation
             CSDelegation delegation;

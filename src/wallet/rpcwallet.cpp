@@ -1172,7 +1172,7 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CWalletTx& wtxNew, CR
                                        ->setRecipients(recipients)
                                        ->build();
         if (!res) throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
-        wtxNew = CWalletTx(pwalletMain, operation.getFinalTx());
+        wtxNew = CWalletTx(pwalletMain, MakeTransactionRef(operation.getFinalTx()));
     }
 
     UniValue result(UniValue::VOBJ);
@@ -1388,7 +1388,7 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid or non-wallet transaction id");
     const CWalletTx& wtx = pwalletMain->mapWallet[hash];
 
-    if (!wtx.IsShieldedTx()) {
+    if (!wtx.tx->IsShieldedTx()) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid transaction, no shield data available");
     }
 
@@ -1427,8 +1427,8 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
     ovks.insert(sspkm->getCommonOVK());
 
     // Sapling spends
-    for (size_t i = 0; i < wtx.sapData->vShieldedSpend.size(); ++i) {
-        const auto& spend = wtx.sapData->vShieldedSpend[i];
+    for (size_t i = 0; i < wtx.tx->sapData->vShieldedSpend.size(); ++i) {
+        const auto& spend = wtx.tx->sapData->vShieldedSpend[i];
 
         // Fetch the note that is being spent
         auto res = sspkm->mapSaplingNullifiersToNotes.find(spend.nullifier);
@@ -1465,7 +1465,7 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
     }
 
     // Sapling outputs
-    for (uint32_t i = 0; i < wtx.sapData->vShieldedOutput.size(); ++i) {
+    for (uint32_t i = 0; i < wtx.tx->sapData->vShieldedOutput.size(); ++i) {
         auto op = SaplingOutPoint(hash, i);
         if (!wtx.mapSaplingNoteData.count(op)) continue;
         const auto& nd = wtx.mapSaplingNoteData.at(op);
@@ -1493,7 +1493,7 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
         outputs.push_back(entry_);
     }
 
-    entry.pushKV("fee", FormatMoney(pcoinsTip->GetValueIn(wtx) - wtx.GetValueOut()));
+    entry.pushKV("fee", FormatMoney(pcoinsTip->GetValueIn(wtx) - wtx.tx->GetValueOut()));
     entry.pushKV("spends", spends);
     entry.pushKV("outputs", outputs);
 
@@ -1885,7 +1885,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
         if (wtx.IsCoinBase() || !IsFinalTx(wtx))
             continue;
 
-        for (const CTxOut& txout : wtx.vout)
+        for (const CTxOut& txout : wtx.tx->vout)
             if (txout.scriptPubKey == scriptPubKey)
                 if (wtx.GetDepthInMainChain() >= nMinDepth)
                     nAmount += txout.nValue;
@@ -1937,7 +1937,7 @@ UniValue getreceivedbylabel(const JSONRPCRequest& request)
         if (wtx.IsCoinBase() || !IsFinalTx(wtx))
             continue;
 
-        for (const CTxOut& txout : wtx.vout) {
+        for (const CTxOut& txout : wtx.tx->vout) {
             CTxDestination address;
             if (ExtractDestination(txout.scriptPubKey, address) && IsMine(*pwalletMain, address) && setAddress.count(address))
                 if (wtx.GetDepthInMainChain() >= nMinDepth)
@@ -2284,7 +2284,7 @@ UniValue ListReceived(const UniValue& params, bool by_label)
         if (nDepth < nMinDepth)
             continue;
 
-        for (const CTxOut& txout : wtx.vout) {
+        for (const CTxOut& txout : wtx.tx->vout) {
             CTxDestination address;
             if (!ExtractDestination(txout.scriptPubKey, address))
                 continue;
@@ -2592,8 +2592,8 @@ UniValue listcoldutxos(const JSONRPCRequest& request)
         if(pcoin->GetColdStakingCredit() == 0 && pcoin->GetStakeDelegationCredit() == 0)
             continue;
 
-        for (unsigned int i = 0; i < pcoin->vout.size(); i++) {
-            const CTxOut& out = pcoin->vout[i];
+        for (unsigned int i = 0; i < pcoin->tx->vout.size(); i++) {
+            const CTxOut& out = pcoin->tx->vout[i];
             isminetype mine = pwalletMain->IsMine(out);
             if (!bool(mine & ISMINE_COLD) && !bool(mine & ISMINE_SPENDABLE_DELEGATED))
                 continue;
@@ -2946,7 +2946,7 @@ UniValue gettransaction(const JSONRPCRequest& request)
     CAmount nCredit = wtx.GetCredit(filter);
     CAmount nDebit = wtx.GetDebit(filter);
     CAmount nNet = nCredit - nDebit;
-    CAmount nFee = (wtx.IsFromMe(filter) ? wtx.GetValueOut() - nDebit : 0);
+    CAmount nFee = (wtx.IsFromMe(filter) ? wtx.tx->GetValueOut() - nDebit : 0);
 
     entry.pushKV("amount", ValueFromAmount(nNet - nFee));
     if (wtx.IsFromMe(filter))
@@ -3361,21 +3361,21 @@ UniValue listunspent(const JSONRPCRequest& request)
 
         if (destinations.size()) {
             CTxDestination address;
-            if (!ExtractDestination(out.tx->vout[out.i].scriptPubKey, address))
+            if (!ExtractDestination(out.tx->tx->vout[out.i].scriptPubKey, address))
                 continue;
 
             if (!destinations.count(address))
                 continue;
         }
 
-        CAmount nValue = out.tx->vout[out.i].nValue;
-        const CScript& pk = out.tx->vout[out.i].scriptPubKey;
+        CAmount nValue = out.tx->tx->vout[out.i].nValue;
+        const CScript& pk = out.tx->tx->vout[out.i].scriptPubKey;
         UniValue entry(UniValue::VOBJ);
         entry.pushKV("txid", out.tx->GetHash().GetHex());
         entry.pushKV("vout", out.i);
         entry.pushKV("generated", out.tx->IsCoinStake() || out.tx->IsCoinBase());
         CTxDestination address;
-        if (ExtractDestination(out.tx->vout[out.i].scriptPubKey, address)) {
+        if (ExtractDestination(out.tx->tx->vout[out.i].scriptPubKey, address)) {
             entry.pushKV("address", EncodeDestination(address));
             if (pwalletMain->HasAddressBook(address)) {
                 entry.pushKV("label", pwalletMain->GetNameForAddressBookEntry(address));
@@ -3487,7 +3487,7 @@ UniValue lockunspent(const JSONRPCRequest& request)
 
         const CWalletTx& wtx = it->second;
 
-        if (outpt.n >= wtx.vout.size()) {
+        if (outpt.n >= wtx.tx->vout.size()) {
             throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, vout index out of bounds");
         }
 
@@ -3847,13 +3847,13 @@ UniValue printAddresses()
     std::map<std::string, double> mapAddresses;
     for (const COutput& out : vCoins) {
         CTxDestination utxoAddress;
-        ExtractDestination(out.tx->vout[out.i].scriptPubKey, utxoAddress);
+        ExtractDestination(out.tx->tx->vout[out.i].scriptPubKey, utxoAddress);
         std::string strAdd = EncodeDestination(utxoAddress);
 
         if (mapAddresses.find(strAdd) == mapAddresses.end()) //if strAdd is not already part of the map
-            mapAddresses[strAdd] = (double)out.tx->vout[out.i].nValue / (double)COIN;
+            mapAddresses[strAdd] = (double)out.tx->tx->vout[out.i].nValue / (double)COIN;
         else
-            mapAddresses[strAdd] += (double)out.tx->vout[out.i].nValue / (double)COIN;
+            mapAddresses[strAdd] += (double)out.tx->tx->vout[out.i].nValue / (double)COIN;
     }
 
     UniValue ret(UniValue::VARR);

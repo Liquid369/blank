@@ -846,13 +846,14 @@ struct COutputEntry {
 };
 
 /** A transaction with a merkle branch linking it to the block chain. */
-class CMerkleTx : public CTransaction
+class CMerkleTx
 {
 private:
     /** Constant used in hashBlock to indicate tx has been abandoned */
     static const uint256 ABANDON_HASH;
 
 public:
+    CTransactionRef tx;
     uint256 hashBlock;
     /* An nIndex == -1 means that hashBlock (in nonzero) refers to the earliest
      * block in the chain we know this or any in-wallet dependency conflicts
@@ -863,18 +864,29 @@ public:
 
     CMerkleTx()
     {
+        SetTx(MakeTransactionRef());
         Init();
     }
 
-    CMerkleTx(const CTransaction& txIn) : CTransaction(txIn)
+    CMerkleTx(CTransactionRef arg)
     {
+        SetTx(std::move(arg));
         Init();
     }
+
+    /** Helper conversion operator to allow passing CMerkleTx where CTransaction is expected.
+     *  TODO: adapt callers and remove this operator. */
+    operator const CTransaction&() const { return *tx; }
 
     void Init()
     {
         hashBlock = UINT256_ZERO;
         nIndex = -1;
+    }
+
+    void SetTx(CTransactionRef arg)
+    {
+        tx = std::move(arg);
     }
 
     ADD_SERIALIZE_METHODS;
@@ -883,7 +895,7 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action)
     {
         std::vector<uint256> vMerkleBranch; // For compatibility with older versions.
-        READWRITE(*(CTransaction*)this);
+        READWRITE(tx);
         READWRITE(hashBlock);
         READWRITE(vMerkleBranch);
         READWRITE(nIndex);
@@ -906,6 +918,10 @@ public:
     bool hashUnset() const { return (hashBlock.IsNull() || hashBlock == ABANDON_HASH); }
     bool isAbandoned() const { return (hashBlock == ABANDON_HASH); }
     void setAbandoned() { hashBlock = ABANDON_HASH; }
+
+    const uint256& GetHash() const { return tx->GetHash(); }
+    bool IsCoinBase() const { return tx->IsCoinBase(); }
+    bool IsCoinStake() const { return tx->IsCoinStake(); }
 };
 
 /**
@@ -944,9 +960,7 @@ public:
     mutable CAmount nShieldedChangeCached;
 
     CWalletTx();
-    CWalletTx(const CWallet* pwalletIn);
-    CWalletTx(const CWallet* pwalletIn, const CMerkleTx& txIn);
-    CWalletTx(const CWallet* pwalletIn, const CTransaction& txIn);
+    CWalletTx(const CWallet* pwalletIn, CTransactionRef arg);
     void Init(const CWallet* pwalletIn);
 
     ADD_SERIALIZE_METHODS;
@@ -977,7 +991,7 @@ public:
         READWRITE(fFromMe);
         READWRITE(fSpent);
 
-        if (this->isSaplingVersion()) {
+        if (this->tx->isSaplingVersion()) {
             READWRITE(mapSaplingNoteData);
         }
 
@@ -1077,7 +1091,7 @@ public:
     COutput(const CWalletTx* txIn, int iIn, int nDepthIn, bool fSpendableIn, bool fSolvableIn) :
         tx(txIn), i(iIn), nDepth(nDepthIn), fSpendable(fSpendableIn), fSolvable(fSolvableIn) {}
 
-    CAmount Value() const { return tx->vout[i].nValue; }
+    CAmount Value() const { return tx->tx->vout[i].nValue; }
     std::string ToString() const;
 };
 

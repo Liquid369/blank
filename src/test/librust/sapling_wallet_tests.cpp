@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(SetSaplingNoteAddrsInCWalletTx) {
     builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
-    CWalletTx wtx {&wallet, tx};
+    CWalletTx wtx {&wallet, MakeTransactionRef(tx)};
 
     BOOST_CHECK_EQUAL(0, wtx.mapSaplingNoteData.size());
     mapSaplingNoteData_t noteData;
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(FindMySaplingNotes) {
     auto tx = builder.Build().GetTxOrThrow();
 
     // No Sapling notes can be found in tx which does not belong to the wallet
-    CWalletTx wtx {&wallet, tx};
+    CWalletTx wtx {&wallet, MakeTransactionRef(tx)};
     BOOST_CHECK(!wallet.HaveSaplingSpendingKey(extfvk));
     auto noteMap = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(wtx).first;
     BOOST_CHECK_EQUAL(0, noteMap.size());
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE(GetConflictedSaplingNotes) {
     builder.AddSaplingOutput(extfvk.fvk.ovk, pk, 35000000, {});
     builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
-    CWalletTx wtx {&wallet, tx};
+    CWalletTx wtx {&wallet, MakeTransactionRef(tx)};
 
     // Fake-mine the transaction
     BOOST_CHECK_EQUAL(0, chainActive.Height());
@@ -245,10 +245,10 @@ BOOST_AUTO_TEST_CASE(GetConflictedSaplingNotes) {
 
     // Decrypt output note B
     auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
-            wtx.sapData->vShieldedOutput[0].encCiphertext,
+            wtx.tx->sapData->vShieldedOutput[0].encCiphertext,
             ivk,
-            wtx.sapData->vShieldedOutput[0].ephemeralKey,
-            wtx.sapData->vShieldedOutput[0].cmu);
+            wtx.tx->sapData->vShieldedOutput[0].ephemeralKey,
+            wtx.tx->sapData->vShieldedOutput[0].cmu);
     BOOST_CHECK(static_cast<bool>(maybe_pt) == true);
     auto maybe_note = maybe_pt.get().note(ivk);
     BOOST_CHECK(static_cast<bool>(maybe_note) == true);
@@ -275,8 +275,8 @@ BOOST_AUTO_TEST_CASE(GetConflictedSaplingNotes) {
     builder3.AddSaplingOutput(extfvk.fvk.ovk, pk, 19999000, {});
     auto tx3 = builder3.Build().GetTxOrThrow();
 
-    CWalletTx wtx2 {&wallet, tx2};
-    CWalletTx wtx3 {&wallet, tx3};
+    CWalletTx wtx2 {&wallet, MakeTransactionRef(tx2)};
+    CWalletTx wtx3 {&wallet, MakeTransactionRef(tx3)};
 
     const auto& hash2 = wtx2.GetHash();
     const auto& hash3 = wtx3.GetHash();
@@ -325,7 +325,7 @@ BOOST_AUTO_TEST_CASE(SaplingNullifierIsSpent) {
     builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
-    CWalletTx wtx {&wallet, tx};
+    CWalletTx wtx {&wallet, MakeTransactionRef(tx)};
     BOOST_CHECK(wallet.AddSaplingZKey(sk));
     BOOST_CHECK(wallet.HaveSaplingSpendingKey(extfvk));
 
@@ -387,7 +387,7 @@ BOOST_AUTO_TEST_CASE(NavigateFromSaplingNullifierToNote) {
     builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
-    CWalletTx wtx {&wallet, tx};
+    CWalletTx wtx {&wallet, MakeTransactionRef(tx)};
     BOOST_CHECK(wallet.AddSaplingZKey(sk));
     BOOST_CHECK(wallet.HaveSaplingSpendingKey(extfvk));
 
@@ -491,7 +491,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     builder.SetFee(10000000);
     auto tx = builder.Build().GetTxOrThrow();
 
-    CWalletTx wtx {&wallet, tx};
+    CWalletTx wtx {&wallet, MakeTransactionRef(tx)};
     BOOST_CHECK(wallet.AddSaplingZKey(sk));
     BOOST_CHECK(wallet.HaveSaplingSpendingKey(extfvk));
 
@@ -536,10 +536,10 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
 
     // Decrypt note B
     auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
-            wtx.sapData->vShieldedOutput[0].encCiphertext,
+            wtx.tx->sapData->vShieldedOutput[0].encCiphertext,
             ivk,
-            wtx.sapData->vShieldedOutput[0].ephemeralKey,
-            wtx.sapData->vShieldedOutput[0].cmu);
+            wtx.tx->sapData->vShieldedOutput[0].ephemeralKey,
+            wtx.tx->sapData->vShieldedOutput[0].cmu);
     BOOST_CHECK_EQUAL(static_cast<bool>(maybe_pt), true);
     auto maybe_note = maybe_pt.get().note(ivk);
     BOOST_CHECK_EQUAL(static_cast<bool>(maybe_note), true);
@@ -568,7 +568,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     BOOST_CHECK_EQUAL(tx2.sapData->vShieldedOutput.size(), 2);
     BOOST_CHECK_EQUAL(tx2.sapData->valueBalance, 10000000);
 
-    CWalletTx wtx2 {&wallet, tx2};
+    CWalletTx wtx2 {&wallet, MakeTransactionRef(tx2)};
 
     // Fake-mine this tx into the next block
     BOOST_CHECK_EQUAL(0, chainActive.Height());
@@ -945,7 +945,7 @@ BOOST_AUTO_TEST_CASE(UpdatedSaplingNoteData) {
     auto tx = builder.Build().GetTxOrThrow();
 
     // Wallet contains extfvk1 but not extfvk2
-    CWalletTx wtx {&wallet, tx};
+    CWalletTx wtx {&wallet, MakeTransactionRef(tx)};
     BOOST_CHECK(wallet.AddSaplingZKey(sk));
     BOOST_CHECK(wallet.HaveSaplingSpendingKey(extfvk));
     BOOST_CHECK(!wallet.HaveSaplingSpendingKey(extfvk2));
@@ -1063,7 +1063,7 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
     BOOST_CHECK_EQUAL(tx1.sapData->vShieldedOutput.size(), 1);
     BOOST_CHECK_EQUAL(tx1.sapData->valueBalance, -40000000);
 
-    CWalletTx wtx {&wallet, tx1};
+    CWalletTx wtx {&wallet, MakeTransactionRef(tx1)};
 
     // Fake-mine the transaction
     BOOST_CHECK_EQUAL(0, chainActive.Height());
@@ -1118,7 +1118,7 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
     BOOST_CHECK_EQUAL(tx2.sapData->vShieldedOutput.size(), 2);
     BOOST_CHECK_EQUAL(tx2.sapData->valueBalance, 10000000);
 
-    CWalletTx wtx2 {&wallet, tx2};
+    CWalletTx wtx2 {&wallet, MakeTransactionRef(tx2)};
 
     wallet.MarkAffectedTransactionsDirty(wtx);
 
