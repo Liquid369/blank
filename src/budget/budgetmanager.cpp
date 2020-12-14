@@ -500,10 +500,8 @@ void CBudgetManager::VoteOnFinalizedBudgets()
     // Get masternode keys
     CPubKey pubKeyMasternode;
     CKey keyMasternode;
-    if (!CMessageSigner::GetKeysFromSecret(strMasterNodePrivKey, keyMasternode, pubKeyMasternode)) {
-        LogPrintf("%s: Unable to get masternode keys\n", __func__);
-        return;
-    }
+    activeMasternode.GetKeys(keyMasternode, pubKeyMasternode);
+
     // Sign finalized budgets
     for (const uint256& budgetHash: vBudgetHashes) {
         CFinalizedBudgetVote vote(*(activeMasternode.vin), budgetHash);
