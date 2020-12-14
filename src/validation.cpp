@@ -2095,50 +2095,6 @@ bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const st
     return true;
 }
 
-bool DisconnectBlocks(int nBlocks, const CChainParams& chainparams)
-{
-    LOCK(cs_main);
-
-    CValidationState state;
-
-    LogPrintf("%s: Got command to replay %d blocks\n", __func__, nBlocks);
-    for (int i = 0; i <= nBlocks; i++)
-        DisconnectTip(state, chainparams);
-
-    return true;
-}
-
-void ReprocessBlocks(int nBlocks, const CChainParams& chainparams)
-{
-    std::map<uint256, int64_t>::iterator it = mapRejectedBlocks.begin();
-    while (it != mapRejectedBlocks.end()) {
-        //use a window twice as large as is usual for the nBlocks we want to reset
-        if ((*it).second > GetTime() - (nBlocks * Params().GetConsensus().nTargetSpacing * 2)) {
-            BlockMap::iterator mi = mapBlockIndex.find((*it).first);
-            if (mi != mapBlockIndex.end() && (*mi).second) {
-                LOCK(cs_main);
-
-                CBlockIndex* pindex = (*mi).second;
-                LogPrintf("%s - %s\n", __func__, (*it).first.ToString());
-
-                CValidationState state;
-                ReconsiderBlock(state, pindex);
-            }
-        }
-        ++it;
-    }
-
-    CValidationState state;
-    {
-        LOCK(cs_main);
-        DisconnectBlocks(nBlocks, chainparams);
-    }
-
-    if (state.IsValid()) {
-        ActivateBestChain(state);
-    }
-}
-
 /**
  * Return the tip of the chain with the most work in it, that isn't
  * known to be invalid (it's however far from certain to be valid).
