@@ -92,17 +92,13 @@ const char * const PIVX_MASTERNODE_CONF_FILENAME = "masternode.conf";
 std::atomic<bool> fMasterNode{false};
 std::string strMasterNodeAddr = "";
 bool fLiteMode = false;
-
-
-/** Spork enforcement enabled time */
-int64_t enforceMasternodePaymentsTime = 4085657524;
-bool fSucessfullyLoaded = false;
+// budget finalization
 std::string strBudgetMode = "";
 
 ArgsManager gArgs;
 
 bool fDaemon = false;
-std::string strMiscWarning;
+CTranslationInterface translationInterface;
 
 /** Init OpenSSL library multithreading support */
 static RecursiveMutex** ppmutexOpenSSL;
@@ -345,7 +341,6 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
     std::string message = FormatException(pex, pszThread);
     LogPrintf("\n\n************************\n%s\n", message);
     fprintf(stderr, "\n\n************************\n%s\n", message.c_str());
-    strMiscWarning = message;
 }
 
 fs::path GetDefaultDataDir()
@@ -842,3 +837,4 @@ int GetNumCores()
 {
     return std::thread::hardware_concurrency();
 }
+

@@ -66,6 +66,7 @@
 #include "wallet/rpcwallet.h"
 
 #endif
+#include "warnings.h"
 
 #include <atomic>
 #include <fstream>
@@ -125,7 +126,7 @@ enum BindFlags {
 };
 
 static const char* FEE_ESTIMATES_FILENAME = "fee_estimates.dat";
-CClientUIInterface uiInterface;
+CClientUIInterface uiInterface;  // Declared but not defined in guiinterface.h
 
 //////////////////////////////////////////////////////////////////////////////
 //
