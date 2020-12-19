@@ -55,6 +55,11 @@ struct TransparentInputInfo {
         CAmount value) : scriptPubKey(scriptPubKey), value(value) {}
 };
 
+// Dummy constants used during fee-calculation loop
+extern const OutputDescription DUMMY_SHIELD_OUT;
+extern const SpendDescription DUMMY_SHIELD_SPEND;
+extern const SaplingTxData::binding_sig_t DUMMY_SHIELD_BINDSIG;
+
 class TransactionBuilderResult {
 private:
     Optional<CTransaction> maybeTx;
@@ -120,7 +125,13 @@ public:
 
     void SendChangeTo(CTxDestination& changeAddr);
 
-    TransactionBuilderResult Build();
+    TransactionBuilderResult Build(bool fDummySig = false);
+    // Add Sapling Spend/Output descriptions, binding sig, and transparent signatures
+    TransactionBuilderResult ProveAndSign();
+    // Add dummy Sapling Spend/Output descriptions, binding sig, and transparent signatures
+    TransactionBuilderResult AddDummySignatures();
+    // Remove Sapling Spend/Output descriptions, binding sig, and transparent signatures
+    void ClearProofsAndSignatures();
 };
 
 #endif /* TRANSACTION_BUILDER_H */
