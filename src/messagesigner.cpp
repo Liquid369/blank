@@ -144,14 +144,3 @@ std::string CSignedMessage::GetSignatureBase64() const
     return EncodeBase64(&vchSig[0], vchSig.size());
 }
 
-void CSignedMessage::swap(CSignedMessage& first, CSignedMessage& second) // nothrow
-{
-    // enable ADL (not necessary in our case, but good practice)
-    using std::swap;
-
-    // by swapping the members of two classes,
-    // the two classes are effectively swapped
-    swap(first.vchSig, second.vchSig);
-    swap(first.nMessVersion, second.nMessVersion);
-}
-

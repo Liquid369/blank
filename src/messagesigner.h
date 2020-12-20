@@ -50,7 +50,6 @@ class CSignedMessage
 {
 protected:
     std::vector<unsigned char> vchSig;
-    void swap(CSignedMessage& first, CSignedMessage& second); // Swap two messages
 
 public:
     int nMessVersion;
