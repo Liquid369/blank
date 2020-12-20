@@ -1223,8 +1223,8 @@ bool AppInitMain()
     }
 
     // Start the lightweight task scheduler thread
-    CScheduler::Function serviceLoop = boost::bind(&CScheduler::serviceQueue, &scheduler);
-    threadGroup.create_thread(boost::bind(&TraceThread<CScheduler::Function>, "scheduler", serviceLoop));
+    CScheduler::Function serviceLoop = std::bind(&CScheduler::serviceQueue, &scheduler);
+    threadGroup.create_thread(std::bind(&TraceThread<CScheduler::Function>, "scheduler", serviceLoop));
 
     // Initialize Sapling circuit parameters
     LoadSaplingParams();
@@ -1732,7 +1732,7 @@ bool AppInitMain()
     for (const std::string& strFile : gArgs.GetArgs("-loadblock")) {
         vImportFiles.push_back(strFile);;
     }
-    threadGroup.create_thread(boost::bind(&ThreadImport, vImportFiles));
+    threadGroup.create_thread(std::bind(&ThreadImport, vImportFiles));
 
     // Wait for genesis block to be processed
     LogPrintf("Waiting for genesis block to be imported...\n");
@@ -1841,7 +1841,7 @@ bool AppInitMain()
     LogPrintf("fLiteMode %d\n", fLiteMode);
     LogPrintf("Budget Mode %s\n", strBudgetMode.c_str());
 
-    threadGroup.create_thread(boost::bind(&ThreadCheckMasternodes));
+    threadGroup.create_thread(std::bind(&ThreadCheckMasternodes));
 
     if (ShutdownRequested()) {
         LogPrintf("Shutdown requested. Exiting.\n");
@@ -1909,7 +1909,7 @@ bool AppInitMain()
 
         // StakeMiner thread disabled by default on regtest
         if (gArgs.GetBoolArg("-staking", !Params().IsRegTestNet() && DEFAULT_STAKING)) {
-            threadGroup.create_thread(boost::bind(&ThreadStakeMinter));
+            threadGroup.create_thread(std::bind(&ThreadStakeMinter));
         }
     }
 #endif
