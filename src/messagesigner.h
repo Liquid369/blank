@@ -58,11 +58,6 @@ public:
         vchSig(),
         nMessVersion(MessageVersion::MESS_VER_HASH)
     {}
-    CSignedMessage(const CSignedMessage& other)
-    {
-        vchSig = other.GetVchSig();
-        nMessVersion = other.nMessVersion;
-    }
     virtual ~CSignedMessage() {};
 
     // Sign-Verify message
