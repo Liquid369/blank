@@ -150,7 +150,7 @@ void SettingsBitToolWidget::onEncryptKeyButtonENCClicked()
         return;
     }
 
-    CKeyID keyID = *boost::get<CKeyID>(&dest);
+    const CKeyID* keyID = boost::get<CKeyID>(&dest);
     if (!keyID) {
         //ui->addressIn_ENC->setValid(false);
         ui->statusLabel_ENC->setStyleSheet("QLabel { color: red; }");
@@ -166,7 +166,7 @@ void SettingsBitToolWidget::onEncryptKeyButtonENCClicked()
     }
 
     CKey key;
-    if (!pwalletMain->GetKey(keyID, key)) {
+    if (!pwalletMain->GetKey(*keyID, key)) {
         ui->statusLabel_ENC->setStyleSheet("QLabel { color: red; }");
         ui->statusLabel_ENC->setText(tr("Private key for the entered address is not available."));
         return;
