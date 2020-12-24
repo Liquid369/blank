@@ -45,6 +45,10 @@ Notable Changes
 (Developers: add your notes here as part of your pull requests whenever possible)
 
 
+#### Disable PoW mining RPC Commands
+
+A new configure flag has been introduced to allow more granular control over weather or not the PoW mining RPC commands are compiled into the wallet. By default they are not. This behavior can be overridden by passing `--enable-mining-rpc` to the `configure` script.
+
 
 *version* Change log
 ==============
