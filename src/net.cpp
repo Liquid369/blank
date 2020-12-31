@@ -2445,6 +2445,7 @@ CNode::CNode(NodeId idIn, ServiceFlags nLocalServicesIn, int nMyStartingHeightIn
     nNextInvSend = 0;
     fRelayTxes = false;
     pfilter = new CBloomFilter();
+    timeLastMempoolReq = 0;
     nPingNonceSent = 0;
     nPingUsecStart = 0;
     nPingUsecTime = 0;
