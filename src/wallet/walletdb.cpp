@@ -917,9 +917,9 @@ void ThreadFlushWalletDB()
         }
 
         if (nLastFlushed != CWalletDB::GetUpdateCounter() && GetTime() - nLastWalletUpdate >= 2) {
-            const std::string& strFile = pwalletMain->strWalletFile;
-            if (CDB::PeriodicFlush(strFile))
+            if (CDB::PeriodicFlush(pwalletMain->GetDBHandle())) {
                 nLastFlushed = CWalletDB::GetUpdateCounter();
+            }
         }
     }
 }
@@ -957,18 +957,18 @@ bool BackupWallet(const CWallet& wallet, const fs::path& strDest, bool fEnableCu
     while (true) {
         {
             LOCK(bitdb.cs_db);
-            if (!bitdb.mapFileUseCount.count(wallet.strWalletFile) || bitdb.mapFileUseCount[wallet.strWalletFile] == 0) {
+            if (!bitdb.mapFileUseCount.count(wallet.GetDBHandle().GetName()) || bitdb.mapFileUseCount[wallet.GetDBHandle().GetName()] == 0) {
                 // Flush log data to the dat file
-                bitdb.CloseDb(wallet.strWalletFile);
-                bitdb.CheckpointLSN(wallet.strWalletFile);
-                bitdb.mapFileUseCount.erase(wallet.strWalletFile);
+                bitdb.CloseDb(wallet.GetDBHandle().GetName());
+                bitdb.CheckpointLSN(wallet.GetDBHandle().GetName());
+                bitdb.mapFileUseCount.erase(wallet.GetDBHandle().GetName());
 
                 // Copy wallet file
                 fs::path pathDest(strDest);
-                fs::path pathSrc = GetDataDir() / wallet.strWalletFile;
+                fs::path pathSrc = GetDataDir() / wallet.GetDBHandle().GetName();
                 if (is_directory(pathDest)) {
                     if(!exists(pathDest)) create_directory(pathDest);
-                    pathDest /= wallet.strWalletFile;
+                    pathDest /= wallet.GetDBHandle().GetName();
                 }
                 bool defaultPath = AttemptBackupWallet(wallet, pathSrc.string(), pathDest.string());
 
@@ -989,7 +989,7 @@ bool BackupWallet(const CWallet& wallet, const fs::path& strDest, bool fEnableCu
                             if (fs::is_regular_file(dir_iter->status())) {
                                 currentFile = dir_iter->path().filename();
                                 // Only add the backups for the current wallet, e.g. wallet.dat.*
-                                if (dir_iter->path().stem().string() == wallet.strWalletFile) {
+                                if (dir_iter->path().stem().string() == wallet.GetDBHandle().GetName()) {
                                     folderSet.insert(folder_set_t::value_type(fs::last_write_time(dir_iter->path()), *dir_iter));
                                 }
                             }
@@ -1055,7 +1055,7 @@ bool AttemptBackupWallet(const CWallet& wallet, const fs::path& pathSrc, const f
         src.close();
         dst.close();
 #endif
-        strMessage = strprintf("copied %s to %s\n", wallet.strWalletFile, pathDest.string());
+        strMessage = strprintf("copied %s to %s\n", wallet.GetDBHandle().GetName(), pathDest.string());
         LogPrintf("%s : %s\n", __func__, strMessage);
         retStatus = true;
     } catch (const fs::filesystem_error& e) {

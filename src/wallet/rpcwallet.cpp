@@ -3744,7 +3744,7 @@ UniValue setstakesplitthreshold(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked();
 
-    CWalletDB walletdb(pwalletMain->strWalletFile);
+    CWalletDB walletdb(pwalletMain->GetDBHandle());
     LOCK(pwalletMain->cs_wallet);
     {
         bool fFileBacked = pwalletMain->fFileBacked;
@@ -3797,7 +3797,7 @@ UniValue autocombinerewards(const JSONRPCRequest& request)
             "\nExamples:\n" +
             HelpExampleCli("autocombinerewards", "true 500") + HelpExampleRpc("autocombinerewards", "true 500"));
 
-    CWalletDB walletdb(pwalletMain->strWalletFile);
+    CWalletDB walletdb(pwalletMain->GetDBHandle());
     CAmount nThreshold = 0;
 
     if (fEnable)

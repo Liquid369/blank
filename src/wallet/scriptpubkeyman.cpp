@@ -100,7 +100,7 @@ int64_t ScriptPubKeyMan::GetOldestKeyPoolTime()
 {
     LOCK(wallet->cs_KeyStore);
 
-    CWalletDB batch(wallet->strWalletFile);
+    CWalletDB batch(wallet->GetDBHandle());
     // load oldest key from keypool, get time and return
     int64_t oldestKey = GetOldestKeyTimeInPool(setExternalKeyPool, batch);
     if (IsHDEnabled()) {
@@ -148,7 +148,7 @@ bool ScriptPubKeyMan::GetKeyFromPool(CPubKey& result, const uint8_t& changeType)
                 LogPrintf("%s: Wallet locked, cannot get address\n", __func__);
                 return false;
             }
-            CWalletDB batch(wallet->strWalletFile);
+            CWalletDB batch(wallet->GetDBHandle());
             result = GenerateNewKey(batch, changeType);
             return true;
         }
@@ -188,7 +188,7 @@ bool ScriptPubKeyMan::ReserveKeyFromKeyPool(int64_t& nIndex, CKeyPool& keypool, 
             return false;
         }
 
-        CWalletDB batch(wallet->strWalletFile);
+        CWalletDB batch(wallet->GetDBHandle());
 
         auto it = setKeyPool.begin();
         nIndex = *it;
@@ -225,7 +225,7 @@ bool ScriptPubKeyMan::ReserveKeyFromKeyPool(int64_t& nIndex, CKeyPool& keypool, 
 void ScriptPubKeyMan::KeepDestination(int64_t nIndex)
 {
     // Remove from key pool
-    CWalletDB batch(wallet->strWalletFile);
+    CWalletDB batch(wallet->GetDBHandle());
     batch.ErasePool(nIndex);
     CPubKey pubkey;
     bool have_pk = wallet->GetPubKey(m_index_to_reserved_key.at(nIndex), pubkey);
@@ -267,7 +267,7 @@ void ScriptPubKeyMan::MarkReserveKeysAsUsed(int64_t keypool_id)
             (staking ? &setStakingKeyPool : &setExternalKeyPool) : &set_pre_split_keypool);
     auto it = setKeyPool->begin();
 
-    CWalletDB batch(wallet->strWalletFile);
+    CWalletDB batch(wallet->GetDBHandle());
     while (it != std::end(*setKeyPool)) {
         const int64_t& index = *(it);
         if (index > keypool_id) break; // set*KeyPool is ordered
@@ -301,7 +301,7 @@ void ScriptPubKeyMan::MarkUnusedAddresses(const CScript& script)
 
 void ScriptPubKeyMan::MarkPreSplitKeys()
 {
-    CWalletDB batch(wallet->strWalletFile);
+    CWalletDB batch(wallet->GetDBHandle());
     for (auto it = setExternalKeyPool.begin(); it != setExternalKeyPool.end();) {
         int64_t index = *it;
         CKeyPool keypool;
@@ -326,7 +326,7 @@ bool ScriptPubKeyMan::NewKeyPool()
     {
         LOCK(wallet->cs_wallet);
 
-        CWalletDB walletdb(wallet->strWalletFile);
+        CWalletDB walletdb(wallet->GetDBHandle());
         // Internal
         for (const int64_t nIndex : setInternalKeyPool) {
             walletdb.ErasePool(nIndex);
@@ -387,7 +387,7 @@ bool ScriptPubKeyMan::TopUp(unsigned int kpSize)
             missingStaking = 0;
         }
 
-        CWalletDB batch(wallet->strWalletFile);
+        CWalletDB batch(wallet->GetDBHandle());
         GeneratePool(batch, missingExternal, HDChain::ChangeType::EXTERNAL);
         GeneratePool(batch, missingInternal, HDChain::ChangeType::INTERNAL);
         GeneratePool(batch, missingStaking, HDChain::ChangeType::STAKING);
@@ -676,7 +676,7 @@ void ScriptPubKeyMan::SetHDSeed(const CPubKey& seed, bool force, bool memOnly)
 void ScriptPubKeyMan::SetHDChain(CHDChain& chain, bool memonly)
 {
     LOCK(wallet->cs_wallet);
-    if (!memonly && !CWalletDB(wallet->strWalletFile).WriteHDChain(chain))
+    if (!memonly && !CWalletDB(wallet->GetDBHandle()).WriteHDChain(chain))
         throw std::runtime_error(std::string(__func__) + ": writing chain failed");
 
     hdChain = chain;

@@ -244,7 +244,7 @@ void SettingsMultisendWidget::clearAll()
     std::vector<std::pair<std::string, int> > vMultiSendTemp = pwalletMain->vMultiSend;
     bool fRemoved = true;
     pwalletMain->vMultiSend.clear();
-    CWalletDB walletdb(pwalletMain->strWalletFile);
+    CWalletDB walletdb(pwalletMain->GetDBHandle());
     if (!walletdb.EraseMultiSend(vMultiSendTemp))
         fRemoved = false;
     if (!walletdb.WriteMultiSend(pwalletMain->vMultiSend))
@@ -317,7 +317,7 @@ void SettingsMultisendWidget::addMultiSend(QString address, int percentage, QStr
                 AddressBook::AddressBookPurpose::SEND);
     }
 
-    CWalletDB walletdb(pwalletMain->strWalletFile);
+    CWalletDB walletdb(pwalletMain->GetDBHandle());
     if (!walletdb.WriteMultiSend(pwalletMain->vMultiSend)) {
         inform(tr("Error saving  MultiSend, failed saving properties to the database."));
         return;
@@ -341,7 +341,7 @@ void SettingsMultisendWidget::activate()
         pwalletMain->fMultiSendStake = ui->checkBoxStake->isChecked();
         pwalletMain->fMultiSendMasternodeReward = ui->checkBoxRewards->isChecked();
 
-        CWalletDB walletdb(pwalletMain->strWalletFile);
+        CWalletDB walletdb(pwalletMain->GetDBHandle());
         if (!walletdb.WriteMSettings(pwalletMain->fMultiSendStake, pwalletMain->fMultiSendMasternodeReward, pwalletMain->nLastMultiSendHeight))
             strRet = tr("MultiSend activated but writing settings to DB failed");
         else
@@ -357,7 +357,7 @@ void SettingsMultisendWidget::deactivate()
     if (pwalletMain->isMultiSendEnabled()) {
         QString strRet;
         pwalletMain->setMultiSendDisabled();
-        CWalletDB walletdb(pwalletMain->strWalletFile);
+        CWalletDB walletdb(pwalletMain->GetDBHandle());
         inform(!walletdb.WriteMSettings(false, false, pwalletMain->nLastMultiSendHeight) ?
                tr("MultiSend deactivated but writing settings to DB failed") :
                tr("MultiSend deactivated")

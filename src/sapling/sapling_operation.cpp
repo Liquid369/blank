@@ -379,7 +379,7 @@ static CacheCheckResult CheckCachedNote(const SaplingNoteEntry& t, const libzcas
         if (sspkm->IsSaplingSpent(*(nd.nullifier))) {
             LogPrintf("Removed note %s as it appears to be already spent.\n", noteStr);
             prevTx.MarkDirty();
-            CWalletDB(pwalletMain->strWalletFile, "r+").WriteTx(prevTx);
+            CWalletDB(pwalletMain->GetDBHandle(), "r+").WriteTx(prevTx);
             pwalletMain->NotifyTransactionChanged(pwalletMain, t.op.hash, CT_UPDATED);
             return CacheCheckResult::SPENT;
         }

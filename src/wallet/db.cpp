@@ -349,13 +349,12 @@ void CDBEnv::CheckpointLSN(const std::string& strFile)
 }
 
 
-CDB::CDB(const std::string& strFilename, const char* pszMode, bool fFlushOnCloseIn) : pdb(NULL), activeTxn(NULL)
+CDB::CDB(CWalletDBWrapper& dbw, const char* pszMode, bool fFlushOnCloseIn) : pdb(NULL), activeTxn(NULL)
 {
     int ret;
     fReadOnly = (!strchr(pszMode, '+') && !strchr(pszMode, 'w'));
     fFlushOnClose = fFlushOnCloseIn;
-    if (strFilename.empty())
-        return;
+    const std::string& strFilename = dbw.strFile;
 
     bool fCreate = strchr(pszMode, 'c') != NULL;
     unsigned int nFlags = DB_THREAD;
@@ -463,8 +462,12 @@ bool CDBEnv::RemoveDb(const std::string& strFile)
     return (rc == 0);
 }
 
-bool CDB::Rewrite(const std::string& strFile, const char* pszSkip)
+bool CDB::Rewrite(CWalletDBWrapper& dbw, const char* pszSkip)
 {
+    if (!dbw.env) {
+        return true;
+    }
+    const std::string& strFile = dbw.strFile;
     while (true) {
         {
             LOCK(bitdb.cs_db);
@@ -478,7 +481,7 @@ bool CDB::Rewrite(const std::string& strFile, const char* pszSkip)
                 LogPrintf("CDB::Rewrite : Rewriting %s...\n", strFile);
                 std::string strFileRes = strFile + ".rewrite";
                 { // surround usage of db with extra {}
-                    CDB db(strFile.c_str(), "r");
+                    CDB db(dbw, "r");
                     Db* pdbCopy = new Db(bitdb.dbenv, 0);
 
                     int ret = pdbCopy->open(NULL, // Txn pointer
@@ -587,11 +590,13 @@ void CDBEnv::Flush(bool fShutdown)
     }
 }
 
-bool CDB::PeriodicFlush(const std::string& strFile)
+bool CDB::PeriodicFlush(CWalletDBWrapper& dbw)
 {
     bool ret = false;
-    TRY_LOCK(bitdb.cs_db, lockDb);
-    if (lockDb) {
+    const std::string& strFile = dbw.strFile;
+    TRY_LOCK(bitdb.cs_db,lockDb);
+    if (lockDb)
+    {
         // Don't do this if any databases are in use
         int nRefCount = 0;
         std::map<std::string, int>::iterator mi = bitdb.mapFileUseCount.begin();
@@ -621,3 +626,48 @@ bool CDB::PeriodicFlush(const std::string& strFile)
     return ret;
 }
 
+bool CWalletDBWrapper::Rewrite(const char* pszSkip)
+{
+    return CDB::Rewrite(*this, pszSkip);
+}
+
+bool CWalletDBWrapper::Backup(const std::string& strDest)
+{
+    if (!env) {
+        return false;
+    }
+    while (true)
+    {
+        {
+            LOCK(bitdb.cs_db);
+            if (!bitdb.mapFileUseCount.count(strFile) || bitdb.mapFileUseCount[strFile] == 0)
+            {
+                // Flush log data to the dat file
+                bitdb.CloseDb(strFile);
+                bitdb.CheckpointLSN(strFile);
+                bitdb.mapFileUseCount.erase(strFile);
+
+                // Copy wallet file
+                fs::path pathSrc = GetDataDir() / strFile;
+                fs::path pathDest(strDest);
+                if (fs::is_directory(pathDest))
+                    pathDest /= strFile;
+
+                try {
+#if BOOST_VERSION >= 107400
+                    fs::copy_file(pathSrc.c_str(), pathDest, fs::copy_options::overwrite_existing);
+#elif BOOST_VERSION >= 105800 /* BOOST_LIB_VERSION 1_58 */
+                    fs::copy_file(pathSrc.c_str(), pathDest, fs::copy_option::overwrite_if_exists);
+#endif
+                    LogPrintf("copied %s to %s\n", strFile, pathDest.string());
+                    return true;
+                } catch (const fs::filesystem_error& e) {
+                    LogPrintf("error copying %s to %s - %s\n", strFile, pathDest.string(), e.what());
+                    return false;
+                }
+            }
+        }
+        MilliSleep(100);
+    }
+    return false;
+}

@@ -280,6 +280,8 @@ private:
     //! the maximum wallet format version: memory-only variable that specifies to what version this wallet may be upgraded
     int nWalletMaxVersion;
 
+    std::unique_ptr<CWalletDBWrapper> dbw;
+
     int64_t nNextResend;
     int64_t nLastResend;
 
@@ -354,7 +356,6 @@ public:
 
     bool fFileBacked;
     bool fWalletUnlockStaking;
-    std::string strWalletFile;
 
     CWalletDB* pwalletdbEncryption;
 
@@ -388,8 +389,27 @@ public:
     bool fCombineDust;
     CAmount nAutoCombineThreshold;
 
+    /** Get database handle used by this wallet. Ideally this function would
+     * not be necessary.
+     */
+    CWalletDBWrapper& GetDBHandle() const
+    {
+        return *dbw;
+    }
+
+    /** Get a name for this wallet for logging/debugging purposes.
+     */
+    std::string GetName() const
+    {
+        if (dbw) {
+            return dbw->GetName();
+        } else {
+            return "dummy";
+        }
+    }
+
     CWallet();
-    CWallet(std::string strWalletFileIn);
+    CWallet(std::unique_ptr<CWalletDBWrapper> dbw_in);
     ~CWallet();
     void SetNull();
     bool isMultiSendEnabled();

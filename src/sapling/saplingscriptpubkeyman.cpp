@@ -890,7 +890,7 @@ libzcash::SaplingPaymentAddress SaplingScriptPubKeyMan::GenerateNewSaplingZKey()
     } while (wallet->HaveSaplingSpendingKey(xsk.ToXFVK()));
 
     // Update the chain model in the database
-    if (wallet->fFileBacked && !CWalletDB(wallet->strWalletFile).WriteHDChain(hdChain))
+    if (wallet->fFileBacked && !CWalletDB(wallet->GetDBHandle()).WriteHDChain(hdChain))
         throw std::runtime_error(std::string(__func__) + ": Writing HD chain model failed");
 
     // Create new metadata
@@ -1000,7 +1000,7 @@ bool SaplingScriptPubKeyMan::AddSaplingZKey(
 
     if (!wallet->IsCrypted()) {
         auto ivk = sk.expsk.full_viewing_key().in_viewing_key();
-        return CWalletDB(wallet->strWalletFile).WriteSaplingZKey(ivk, sk, mapSaplingZKeyMetadata[ivk]);
+        return CWalletDB(wallet->GetDBHandle()).WriteSaplingZKey(ivk, sk, mapSaplingZKeyMetadata[ivk]);
     }
 
     return true;
@@ -1051,7 +1051,7 @@ bool SaplingScriptPubKeyMan::AddSaplingIncomingViewingKey(
     }
 
     if (!wallet->IsCrypted()) {
-        return CWalletDB(wallet->strWalletFile).WriteSaplingPaymentAddress(addr, ivk);
+        return CWalletDB(wallet->GetDBHandle()).WriteSaplingPaymentAddress(addr, ivk);
     }
 
     return true;
@@ -1093,7 +1093,7 @@ bool SaplingScriptPubKeyMan::AddCryptedSaplingSpendingKeyDB(const libzcash::Sapl
                                                                 vchCryptedSecret,
                                                                 mapSaplingZKeyMetadata[extfvk.fvk.in_viewing_key()]);
         } else {
-            return CWalletDB(wallet->strWalletFile).WriteCryptedSaplingZKey(extfvk,
+            return CWalletDB(wallet->GetDBHandle()).WriteCryptedSaplingZKey(extfvk,
                                                                     vchCryptedSecret,
                                                                     mapSaplingZKeyMetadata[extfvk.fvk.in_viewing_key()]);
         }
@@ -1180,7 +1180,7 @@ void SaplingScriptPubKeyMan::SetHDSeed(const CKeyID& keyID, bool force, bool mem
 
     // Update the commonOVK to recover t->shield notes
     commonOVK = getCommonOVKFromSeed();
-    if (!memonly && !CWalletDB(wallet->strWalletFile).WriteSaplingCommonOVK(*commonOVK)) {
+    if (!memonly && !CWalletDB(wallet->GetDBHandle()).WriteSaplingCommonOVK(*commonOVK)) {
         throw std::runtime_error(std::string(__func__) + ": writing sapling commonOVK failed");
     }
 }
@@ -1191,7 +1191,7 @@ void SaplingScriptPubKeyMan::SetHDChain(CHDChain& chain, bool memonly)
     if (chain.chainType != HDChain::ChainCounterType::Sapling)
         throw std::runtime_error(std::string(__func__) + ": trying to store an invalid chain type");
 
-    if (!memonly && !CWalletDB(wallet->strWalletFile).WriteHDChain(chain))
+    if (!memonly && !CWalletDB(wallet->GetDBHandle()).WriteHDChain(chain))
         throw std::runtime_error(std::string(__func__) + ": writing sapling chain failed");
 
     hdChain = chain;
@@ -1208,7 +1208,7 @@ uint256 SaplingScriptPubKeyMan::getCommonOVK()
 
     // Else, look for it in the database
     uint256 ovk;
-    if (CWalletDB(wallet->strWalletFile).ReadSaplingCommonOVK(ovk)) {
+    if (CWalletDB(wallet->GetDBHandle()).ReadSaplingCommonOVK(ovk)) {
         commonOVK = std::move(ovk);
         return *commonOVK;
     }
@@ -1217,7 +1217,7 @@ uint256 SaplingScriptPubKeyMan::getCommonOVK()
     // So we should always call this after unlocking the wallet during a spend
     // from a transparent address, or when changing/setting the HD seed.
     commonOVK = getCommonOVKFromSeed();
-    if (!CWalletDB(wallet->strWalletFile).WriteSaplingCommonOVK(*commonOVK)) {
+    if (!CWalletDB(wallet->GetDBHandle()).WriteSaplingCommonOVK(*commonOVK)) {
         throw std::runtime_error("Unable to write sapling Common OVK to database");
     }
     return *commonOVK;
