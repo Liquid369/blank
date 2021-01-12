@@ -213,6 +213,9 @@ public:
     };
 
     void RelayInv(CInv& inv);
+    bool IsNodeConnected(const CAddress& addr);
+    // Retrieves a connected peer (if connection success). Used only to check peer address availability for now.
+    CNode* ConnectNode(CAddress addrConnect);
 
     // Addrman functions
     size_t GetAddressCount() const;

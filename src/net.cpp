@@ -2594,6 +2594,16 @@ bool CConnman::ForNode(NodeId id, std::function<bool(CNode* pnode)> func)
     return found != nullptr && NodeFullyConnected(found) && func(found);
 }
 
+bool CConnman::IsNodeConnected(const CAddress& addr)
+{
+    return FindNode(addr.ToStringIPPort());
+}
+
+CNode* CConnman::ConnectNode(CAddress addrConnect)
+{
+    return ConnectNode(addrConnect, nullptr, true);
+}
+
 // valid, reachable and routable address (except for RegTest)
 bool validateMasternodeIP(const std::string& addrStr)
 {

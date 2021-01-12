@@ -105,12 +105,17 @@ void CActiveMasternode::ManageStatus()
         status = ACTIVE_MASTERNODE_NOT_CAPABLE;
         notCapableReason = "";
 
-        LogPrintf("CActiveMasternode::ManageStatus() - Checking inbound connection to '%s'\n", service.ToString());
+        LogPrintf("%s - Checking inbound connection for masternode to '%s'\n", __func__ , service.ToString());
 
         CAddress addr(service, NODE_NETWORK);
-        if (!g_connman->OpenNetworkConnection(addr, true, nullptr)) {
-            notCapableReason = "Could not connect to " + service.ToString();
-            LogPrintf("CActiveMasternode::ManageStatus() - not capable: %s\n", notCapableReason);
+        if (!g_connman->IsNodeConnected(addr)) {
+            CNode* node = g_connman->ConnectNode(addr);
+            if (!node) {
+                notCapableReason =
+                        "Masternode address:port connection availability test failed, could not open a connection to the public masternode address (" +
+                        service.ToString() + ")";
+                LogPrintf("%s - not capable: %s\n", __func__, notCapableReason);
+            }
             return;
         }
 
