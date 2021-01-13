@@ -489,7 +489,7 @@ void CTxMemPool::CalculateDescendants(txiter entryit, setEntries &setDescendants
     }
 }
 
-void CTxMemPool::removeRecursive(const CTransaction& origTx, std::list<CTransactionRef>* removed)
+void CTxMemPool::removeRecursive(const CTransaction& origTx, std::vector<CTransactionRef>* removed)
 {
     // Remove transaction from memory pool
     {
@@ -580,7 +580,7 @@ void CTxMemPool::removeWithAnchor(const uint256& invalidRoot)
     }
 }
 
-void CTxMemPool::removeConflicts(const CTransaction& tx, std::list<CTransactionRef>* removed)
+void CTxMemPool::removeConflicts(const CTransaction& tx, std::vector<CTransactionRef>* removed)
 {
     // Remove transactions which depend on inputs of tx, recursively
     std::list<CTransaction> result;
@@ -612,7 +612,7 @@ void CTxMemPool::removeConflicts(const CTransaction& tx, std::list<CTransactionR
  * Called when a block is connected. Removes from mempool and updates the miner fee estimator.
  */
 void CTxMemPool::removeForBlock(const std::vector<CTransactionRef>& vtx, unsigned int nBlockHeight,
-                                std::list<CTransactionRef>* conflicts, bool fCurrentEstimate)
+                                std::vector<CTransactionRef>* conflicts, bool fCurrentEstimate)
 {
     LOCK(cs);
     std::vector<CTxMemPoolEntry> entries;

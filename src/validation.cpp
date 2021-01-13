@@ -2020,7 +2020,7 @@ static int64_t nTimePostConnect = 0;
  * applied to the UTXO state as a part of a single ActivateBestChainStep call.
  */
 struct ConnectTrace {
-    std::list<CTransactionRef> txConflicted;
+    std::vector<CTransactionRef> txConflicted;
     std::vector<std::pair<CBlockIndex*, std::shared_ptr<const CBlock> > > blocksConnected;
 };
 

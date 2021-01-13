@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(MempoolRemoveTest)
 
 
     CTxMemPool testPool(CFeeRate(0));
-    std::list<CTransactionRef> removed;
+    std::vector<CTransactionRef> removed;
 
     // Nothing in pool, remove should do nothing:
     testPool.removeRecursive(txParent, &removed);
