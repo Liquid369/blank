@@ -489,7 +489,7 @@ void CTxMemPool::CalculateDescendants(txiter entryit, setEntries &setDescendants
     }
 }
 
-void CTxMemPool::removeRecursive(const CTransaction& origTx, std::list<CTransactionRef>& removed)
+void CTxMemPool::removeRecursive(const CTransaction& origTx, std::list<CTransactionRef>* removed)
 {
     // Remove transaction from memory pool
     {
@@ -516,8 +516,10 @@ void CTxMemPool::removeRecursive(const CTransaction& origTx, std::list<CTransact
         for (const txiter& it : txToRemove) {
             CalculateDescendants(it, setAllRemoves);
         }
-        for (const txiter& it : setAllRemoves) {
-            removed.emplace_back(it->GetSharedTx());
+        if (removed) {
+            for (const txiter& it : setAllRemoves) {
+                removed->emplace_back(it->GetSharedTx());
+            }
         }
         RemoveStaged(setAllRemoves, false);
     }
@@ -574,12 +576,11 @@ void CTxMemPool::removeWithAnchor(const uint256& invalidRoot)
         }
     }
     for (const CTransaction& tx : transactionsToRemove) {
-        std::list<CTransactionRef> removed;
-        removeRecursive(tx, removed);
+        removeRecursive(tx);
     }
 }
 
-void CTxMemPool::removeConflicts(const CTransaction& tx, std::list<CTransactionRef>& removed)
+void CTxMemPool::removeConflicts(const CTransaction& tx, std::list<CTransactionRef>* removed)
 {
     // Remove transactions which depend on inputs of tx, recursively
     std::list<CTransaction> result;
@@ -610,7 +611,8 @@ void CTxMemPool::removeConflicts(const CTransaction& tx, std::list<CTransactionR
 /**
  * Called when a block is connected. Removes from mempool and updates the miner fee estimator.
  */
-void CTxMemPool::removeForBlock(const std::vector<CTransactionRef>& vtx, unsigned int nBlockHeight, std::list<CTransactionRef>& conflicts, bool fCurrentEstimate)
+void CTxMemPool::removeForBlock(const std::vector<CTransactionRef>& vtx, unsigned int nBlockHeight,
+                                std::list<CTransactionRef>* conflicts, bool fCurrentEstimate)
 {
     LOCK(cs);
     std::vector<CTxMemPoolEntry> entries;

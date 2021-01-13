@@ -520,11 +520,12 @@ public:
     // then invoke the second version.
     bool addUnchecked(const uint256& hash, const CTxMemPoolEntry& entry, bool fCurrentEstimate = true);
     bool addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry, setEntries &setAncestors, bool fCurrentEstimate = true);
-    void removeRecursive(const CTransaction& tx, std::list<CTransactionRef>& removed);
+    void removeRecursive(const CTransaction& tx, std::list<CTransactionRef>* removed = nullptr);
     void removeForReorg(const CCoinsViewCache* pcoins, unsigned int nMemPoolHeight, int flags);
     void removeWithAnchor(const uint256& invalidRoot);
-    void removeConflicts(const CTransaction& tx, std::list<CTransactionRef>& removed);
-    void removeForBlock(const std::vector<CTransactionRef>& vtx, unsigned int nBlockHeight, std::list<CTransactionRef>& conflicts, bool fCurrentEstimate = true);
+    void removeConflicts(const CTransaction& tx, std::list<CTransactionRef>* removed = nullptr);
+    void removeForBlock(const std::vector<CTransactionRef>& vtx, unsigned int nBlockHeight,
+                        std::list<CTransactionRef>* conflicts = nullptr, bool fCurrentEstimate = true);
     void clear();
     void _clear();  // lock-free
     bool CompareDepthAndScore(const uint256& hasha, const uint256& hashb);
