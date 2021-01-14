@@ -57,6 +57,8 @@ static const unsigned int DEFAULT_ANCESTOR_LIMIT = 25;
 static const unsigned int DEFAULT_ANCESTOR_SIZE_LIMIT = 101;
 /** Default for -banscore */
 static const int DEFAULT_BANSCORE_THRESHOLD = 100;
+/** Default for -persistmempool */
+static const bool DEFAULT_PERSIST_MEMPOOL = true;
 /** Default for -limitdescendantcount, max number of in-mempool descendants */
 static const unsigned int DEFAULT_DESCENDANT_LIMIT = 25;
 /** Default for -limitdescendantsize, maximum kilobytes of in-mempool descendants */
