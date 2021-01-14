@@ -245,6 +245,7 @@ void PrepareShutdown()
     DumpBudgets(g_budgetman);
     DumpMasternodePayments();
     UnregisterNodeSignals(GetNodeSignals());
+    DumpMempool();
 
     // After everything has been shut down, but before things get flushed, stop the
     // CScheduler/checkqueue threadGroup
@@ -700,6 +701,8 @@ void ThreadImport(std::vector<fs::path> vImportFiles)
         LogPrintf("Stopping after block import\n");
         StartShutdown();
     }
+
+    LoadMempool();
 }
 
 /** Sanity checks
