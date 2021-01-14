@@ -292,7 +292,7 @@ class CBlockPolicyEstimator;
 struct TxMempoolInfo
 {
     /** The transaction itself */
-    std::shared_ptr<const CTransaction> tx;
+    CTransactionRef tx;
 
     /** Time the transaction entered the mempool. */
     int64_t nTime;
