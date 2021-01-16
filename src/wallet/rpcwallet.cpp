@@ -1958,7 +1958,7 @@ UniValue getbalance(const JSONRPCRequest& request)
             "thus affected by options which limit spendability such as -spendzeroconfchange.\n"
 
             "\nArguments:\n"
-            "1. minconf          (numeric, optional, default=1) Only include transactions confirmed at least this many times.\n"
+            "1. minconf          (numeric, optional, default=0) Only include transactions confirmed at least this many times.\n"
             "2. includeWatchonly (bool, optional, default=false) Also include balance in watchonly addresses (see 'importaddress')\n"
             "3. includeDelegated (bool, optional, default=true) Also include balance delegated to cold stakers\n"
             "4. includeShield    (bool, optional, default=true) Also include shield balance\n"
@@ -1970,9 +1970,9 @@ UniValue getbalance(const JSONRPCRequest& request)
             "\nThe total amount in the wallet\n" +
             HelpExampleCli("getbalance", "") +
             "\nThe total amount in the wallet, with at least 5 confirmations\n" +
-            HelpExampleCli("getbalance", "\"*\" 6") +
+            HelpExampleCli("getbalance", "6") +
             "\nAs a json rpc call\n" +
-            HelpExampleRpc("getbalance", "\"*\", 6"));
+            HelpExampleRpc("getbalance", "6"));
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
