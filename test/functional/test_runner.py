@@ -88,6 +88,7 @@ BASE_SCRIPTS= [
     'feature_blockhashcache.py',                # ~ 100 sec
     'wallet_listtransactions.py',               # ~ 97 sec
     'mempool_reorg.py',                         # ~ 92 sec
+    'mempool_persist.py',
     'wallet_encryption.py',                     # ~ 89 sec
     'wallet_keypool.py',                        # ~ 88 sec
     'wallet_dump.py',                           # ~ 83 sec
@@ -117,7 +118,6 @@ BASE_SCRIPTS= [
     # 'mempool_limit.py', # We currently don't limit our mempool_reorg
     # 'interface_zmq.py',
     # 'rpc_getchaintips.py',
-    # 'mempool_persist.py',
     # 'rpc_users.py',
     # 'p2p_mempool.py',
     # 'mining_prioritisetransaction.py',
