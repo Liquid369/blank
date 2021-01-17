@@ -909,6 +909,11 @@ void InitParameterInteraction()
             LogPrintf("%s : parameter interaction: -salvagewallet=1 -> setting -rescan=1\n", __func__);
     }
 
+    // -zapwallettx implies dropping the mempool on startup
+    if (gArgs.GetBoolArg("-zapwallettxes", false) && gArgs.SoftSetBoolArg("-persistmempool", false)) {
+        LogPrintf("%s: parameter interaction: -zapwallettxes=<mode> -> setting -persistmempool=0\n", __func__);
+    }
+
     // -zapwallettx implies a rescan
     if (gArgs.GetBoolArg("-zapwallettxes", false)) {
         if (gArgs.SoftSetBoolArg("-rescan", true))
