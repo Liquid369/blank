@@ -37,6 +37,8 @@ static void DeserializeAndCheckBlockTest(benchmark::State& state)
     char a;
     stream.write(&a, 1); // Prevent compaction
 
+    SelectParams(CBaseChainParams::MAIN);
+
     while (state.KeepRunning()) {
         CBlock block; // Note that CBlock caches its checked state, so we need to recreate it here
         stream >> block;
