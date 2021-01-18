@@ -50,7 +50,7 @@ class BlockHashCacheTest(PivxTestFramework):
         self.log.info("Block %d correctly cached (overwriting genesis hash)" % CACHE_SIZE)
 
         # Mine a random number of blocks between 1 and CACHE_SIZE-1
-        x = random.randint(1, CACHE_SIZE)
+        x = random.randint(1, CACHE_SIZE - 1)
         self.log.info("Mining %d more blocks..." % x)
         for i in range(x):
             vBlocks.append(self.node.generate(1)[0])
