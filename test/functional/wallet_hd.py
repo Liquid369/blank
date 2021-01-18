@@ -207,7 +207,7 @@ class WalletHDTest(PivxTestFramework):
         assert_equal(z_add, z_add_3)
         # Restart, zap, and check balance: 1 PIV * (NUM_HD_ADDS + NUM_SHIELD_ADDS) recovered from seed
         self.stop_node(1)
-        self.start_node(1, extra_args=self.extra_args[1] + ['-zapwallettxes'])
+        self.start_node(1, extra_args=self.extra_args[1] + ['-zapwallettxes=1'])
         assert_equal(self.nodes[1].getbalance(), NUM_HD_ADDS + NUM_SHIELD_ADDS)
 
 if __name__ == '__main__':
