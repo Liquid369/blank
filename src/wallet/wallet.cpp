@@ -1780,10 +1780,7 @@ void CWallet::ReacceptWalletTransactions(bool fFirstLoad)
 bool CWalletTx::InMempool() const
 {
     LOCK(mempool.cs);
-    if (mempool.exists(GetHash())) {
-        return true;
-    }
-    return false;
+    return mempool.exists(GetHash());
 }
 
 void CWalletTx::RelayWalletTransaction(CConnman* connman)
