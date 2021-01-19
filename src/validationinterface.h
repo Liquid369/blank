@@ -59,7 +59,9 @@ private:
 public:
     CMainSignals();
 
-    /** A posInBlock value for SyncTransaction which indicates the transaction was conflicted, disconnected, or not in a block */
+    /** A posInBlock value for SyncTransaction calls for transactions not
+     * included in connected blocks such as transactions removed from mempool,
+     * accepted to mempool or appearing in disconnected blocks.*/
     static const int SYNC_TRANSACTION_NOT_IN_BLOCK = -1;
 
     void UpdatedBlockTip(const CBlockIndex *, const CBlockIndex *, bool fInitialDownload);
