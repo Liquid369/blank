@@ -527,7 +527,7 @@ public:
     void removeWithAnchor(const uint256& invalidRoot);
     void removeConflicts(const CTransaction& tx, std::vector<CTransactionRef>* removed = nullptr);
     void removeForBlock(const std::vector<CTransactionRef>& vtx, unsigned int nBlockHeight,
-                        std::vector<CTransactionRef>* conflicts = nullptr, bool fCurrentEstimate = true);
+                        bool fCurrentEstimate = true);
     void clear();
     void _clear();  // lock-free
     bool CompareDepthAndScore(const uint256& hasha, const uint256& hashb);
