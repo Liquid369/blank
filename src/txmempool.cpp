@@ -370,6 +370,7 @@ void CTxMemPool::AddTransactionsUpdated(unsigned int n)
 
 bool CTxMemPool::addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry, setEntries &setAncestors, bool fCurrentEstimate)
 {
+    NotifyEntryAdded(entry.GetSharedTx());
     // Add to memory pool without checking anything.
     // Used by AcceptToMemoryPool(), which DOES do all the appropriate checks.
     LOCK(cs);
@@ -431,8 +432,9 @@ bool CTxMemPool::addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry,
     return true;
 }
 
-void CTxMemPool::removeUnchecked(txiter it)
+void CTxMemPool::removeUnchecked(txiter it, MemPoolRemovalReason reason)
 {
+    NotifyEntryRemoved(it->GetSharedTx(), reason);
     AssertLockHeld(cs);
     const CTransaction& tx = it->GetTx();
     for (const CTxIn& txin : tx.vin)
@@ -481,7 +483,7 @@ void CTxMemPool::CalculateDescendants(txiter entryit, setEntries &setDescendants
     }
 }
 
-void CTxMemPool::removeRecursive(const CTransaction& origTx)
+void CTxMemPool::removeRecursive(const CTransaction& origTx, MemPoolRemovalReason reason)
 {
     // Remove transaction from memory pool
     {
@@ -508,7 +510,8 @@ void CTxMemPool::removeRecursive(const CTransaction& origTx)
         for (const txiter& it : txToRemove) {
             CalculateDescendants(it, setAllRemoves);
         }
-        RemoveStaged(setAllRemoves, false);
+
+        RemoveStaged(setAllRemoves, false, reason);
     }
 }
 
@@ -540,7 +543,7 @@ void CTxMemPool::removeForReorg(const CCoinsViewCache *pcoins, unsigned int nMem
     for (txiter it : txToRemove) {
         CalculateDescendants(it, setAllRemoves);
     }
-    RemoveStaged(setAllRemoves, false);
+    RemoveStaged(setAllRemoves, false, MemPoolRemovalReason::REORG);
 }
 
 void CTxMemPool::removeWithAnchor(const uint256& invalidRoot)
@@ -577,7 +580,7 @@ void CTxMemPool::removeConflicts(const CTransaction& tx)
         if (it != mapNextTx.end()) {
             const CTransaction& txConflict = *it->second;
             if (txConflict != tx) {
-                removeRecursive(txConflict);
+                removeRecursive(txConflict, MemPoolRemovalReason::CONFLICT);
                 ClearPrioritisation(txConflict.GetHash());
             }
         }
@@ -589,7 +592,7 @@ void CTxMemPool::removeConflicts(const CTransaction& tx)
             if (it != mapSaplingNullifiers.end()) {
                 const CTransaction& txConflict = *it->second;
                 if (txConflict != tx) {
-                    removeRecursive(txConflict);
+                    removeRecursive(txConflict, MemPoolRemovalReason::CONFLICT);
                     ClearPrioritisation(txConflict.GetHash());
                 }
             }
@@ -616,7 +619,7 @@ void CTxMemPool::removeForBlock(const std::vector<CTransactionRef>& vtx, unsigne
         if (it != mapTx.end()) {
             setEntries stage;
             stage.insert(it);
-            RemoveStaged(stage, true);
+            RemoveStaged(stage, true, MemPoolRemovalReason::BLOCK);
         }
         removeConflicts(*tx);
         ClearPrioritisation(tx->GetHash());
@@ -1059,12 +1062,12 @@ size_t CTxMemPool::DynamicMemoryUsage() const
             memusage::DynamicUsage(mapSaplingNullifiers);
 }
 
-void CTxMemPool::RemoveStaged(setEntries &stage, bool updateDescendants)
+void CTxMemPool::RemoveStaged(setEntries &stage, bool updateDescendants, MemPoolRemovalReason reason)
 {
     AssertLockHeld(cs);
     UpdateForRemoveFromMempool(stage, updateDescendants);
     for (const txiter& it : stage) {
-        removeUnchecked(it);
+        removeUnchecked(it, reason);
     }
 }
 
@@ -1081,7 +1084,7 @@ int CTxMemPool::Expire(int64_t time)
     for (const txiter& removeit : toremove) {
         CalculateDescendants(removeit, stage);
     }
-    RemoveStaged(stage, false);
+    RemoveStaged(stage, false, MemPoolRemovalReason::EXPIRY);
     return stage.size();
 }
 
@@ -1192,7 +1195,7 @@ void CTxMemPool::TrimToSize(size_t sizelimit, std::vector<COutPoint>* pvNoSpends
             for (txiter it: stage)
                 txn.push_back(it->GetTx());
         }
-        RemoveStaged(stage, false);
+        RemoveStaged(stage, false, MemPoolRemovalReason::SIZELIMIT);
         if (pvNoSpendsRemaining) {
             for (const CTransaction& tx: txn) {
                 for (const CTxIn& txin: tx.vin) {

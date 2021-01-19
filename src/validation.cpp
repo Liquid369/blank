@@ -1975,7 +1975,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
         // ignore validation errors in resurrected transactions
         CValidationState stateDummy;
         if (tx->IsCoinBase() || tx->IsCoinStake() || !AcceptToMemoryPool(mempool, stateDummy, tx, false, nullptr, true)) {
-            mempool.removeRecursive(*tx);
+            mempool.removeRecursive(*tx, MemPoolRemovalReason::REORG);
         } else if (mempool.exists(tx->GetHash())) {
             vHashUpdate.push_back(tx->GetHash());
         }
