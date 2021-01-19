@@ -2067,9 +2067,7 @@ struct ConnectTrace {
  * Connect a new block to chainActive. pblock is either NULL or a pointer to a CBlock
  * corresponding to pindexNew, to bypass loading it again from disk.
  *
- * The block is always added to connectTrace (either after loading from disk or by copying
- * pblock) - if that is not intended, care must be taken to remove the last entry in
- * blocksConnected in case of failure.
+ * The block is added to connectTrace if connection succeeds.
  */
 bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const std::shared_ptr<const CBlock>& pblock, bool fAlreadyChecked, ConnectTrace& connectTrace)
 {
@@ -2080,15 +2078,16 @@ bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const st
 
     // Read block from disk.
     int64_t nTime1 = GetTimeMicros();
+    std::shared_ptr<const CBlock> pthisBlock;
     if (!pblock) {
         std::shared_ptr<CBlock> pblockNew = std::make_shared<CBlock>();
-        connectTrace.blocksConnected.emplace_back(pindexNew, pblockNew);
         if (!ReadBlockFromDisk(*pblockNew, pindexNew))
             return AbortNode(state, "Failed to read block");
+        pthisBlock = pblockNew;
     } else {
-        connectTrace.blocksConnected.emplace_back(pindexNew, pblock);
+        pthisBlock = pblock;
     }
-    const CBlock& blockConnecting = *connectTrace.blocksConnected.back().second;
+    const CBlock& blockConnecting = *pthisBlock;
 
     // Apply the block atomically to the chain state.
     int64_t nTime2 = GetTimeMicros();
@@ -2136,6 +2135,8 @@ bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const st
     nTimeTotal += nTime6 - nTime1;
     LogPrint(BCLog::BENCH, "  - Connect postprocess: %.2fms [%.2fs]\n", (nTime6 - nTime5) * 0.001, nTimePostConnect * 0.000001);
     LogPrint(BCLog::BENCH, "- Connect block: %.2fms [%.2fs]\n", (nTime6 - nTime1) * 0.001, nTimeTotal * 0.000001);
+
+    connectTrace.blocksConnected.emplace_back(pindexNew, std::move(pthisBlock));
     return true;
 }
 
@@ -2259,8 +2260,6 @@ static bool ActivateBestChainStep(CValidationState& state, CBlockIndex* pindexMo
                     state = CValidationState();
                     fInvalidFound = true;
                     fContinue = false;
-                    // If we didn't actually connect the block, don't notify listeners about it
-                    connectTrace.blocksConnected.pop_back();
                     break;
                 } else {
                     // A system error occurred (disk space, database error, ...).
