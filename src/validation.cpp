@@ -26,8 +26,8 @@
 #include "guiinterface.h"
 #include "init.h"
 #include "invalid.h"
+#include "interfaces/handler.h"
 #include "legacy/validation_zerocoin_legacy.h"
-#include "libzerocoin/Denominations.h"
 #include "kernel.h"
 #include "masternode-payments.h"
 #include "masternode-sync.h"
@@ -186,10 +186,11 @@ class MemPoolConflictRemovalTracker
 private:
     std::vector<CTransactionRef> conflictedTxs;
     CTxMemPool &pool;
+    std::unique_ptr<interfaces::Handler> m_handler_notify_entry_removed;
 
 public:
     MemPoolConflictRemovalTracker(CTxMemPool &_pool) : pool(_pool) {
-        pool.NotifyEntryRemoved.connect(std::bind(&MemPoolConflictRemovalTracker::NotifyEntryRemoved, this, std::placeholders::_1, std::placeholders::_2));
+        m_handler_notify_entry_removed = interfaces::MakeHandler(pool.NotifyEntryRemoved.connect(std::bind(&MemPoolConflictRemovalTracker::NotifyEntryRemoved, this, std::placeholders::_1, std::placeholders::_2)));
     }
 
     void NotifyEntryRemoved(CTransactionRef txRemoved, MemPoolRemovalReason reason) {
@@ -199,7 +200,7 @@ public:
     }
 
     ~MemPoolConflictRemovalTracker() {
-        pool.NotifyEntryRemoved.disconnect(std::bind(&MemPoolConflictRemovalTracker::NotifyEntryRemoved, this, std::placeholders::_1, std::placeholders::_2));
+        m_handler_notify_entry_removed->disconnect();
         for (const auto& tx : conflictedTxs) {
             GetMainSignals().SyncTransaction(*tx, nullptr, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK);
         }
