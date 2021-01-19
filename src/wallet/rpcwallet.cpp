@@ -1983,7 +1983,7 @@ UniValue getbalance(const JSONRPCRequest& request)
     bool fIncludeShielded = paramsSize <= 3 || request.params[3].get_bool();
 
     isminefilter filter = ISMINE_SPENDABLE | (fIncludeWatchOnly ?
-                                              (fIncludeShielded ? ISMINE_WATCH_ONLY_SHIELDED : ISMINE_WATCH_ONLY) : ISMINE_NO);
+                                              (fIncludeShielded ? ISMINE_WATCH_ONLY_ALL : ISMINE_WATCH_ONLY) : ISMINE_NO);
     filter |= fIncludeDelegated ? ISMINE_SPENDABLE_DELEGATED : ISMINE_NO;
     filter |= fIncludeShielded ? ISMINE_SPENDABLE_SHIELDED : ISMINE_NO;
     return ValueFromAmount(pwalletMain->GetAvailableBalance(filter, true, nMinDepth));
