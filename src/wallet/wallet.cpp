@@ -15,6 +15,7 @@
 #include "policy/policy.h"
 #include "sapling/key_io_sapling.h"
 #include "script/sign.h"
+#include "scheduler.h"
 #include "spork.h"
 #include "util.h"
 #include "utilmoneystr.h"
@@ -4128,16 +4129,16 @@ bool CWallet::InitLoadWallet()
     return true;
 }
 
-std::atomic<bool> CWallet::fFlushThreadRunning(false);
+std::atomic<bool> CWallet::fFlushScheduled(false);
 
-void CWallet::postInitProcess(boost::thread_group& threadGroup)
+void CWallet::postInitProcess(CScheduler& scheduler)
 {
     // Add wallet transactions that aren't already in a block to mapTransactions
     ReacceptWalletTransactions(/*fFirstLoad*/true);
 
     // Run a thread to flush wallet periodically
-    if (!CWallet::fFlushThreadRunning.exchange(true)) {
-        threadGroup.create_thread(ThreadFlushWalletDB);
+    if (!CWallet::fFlushScheduled.exchange(true)) {
+        scheduler.scheduleEvery(MaybeFlushWalletDB, 500);
     }
 }
 

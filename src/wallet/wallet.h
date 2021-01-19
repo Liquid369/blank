@@ -44,8 +44,6 @@
 #include <utility>
 #include <vector>
 
-#include <boost/thread/thread.hpp>
-
 extern CWallet* pwalletMain;
 
 /**
@@ -94,6 +92,7 @@ class COutput;
 class CStakeableOutput;
 class CReserveKey;
 class CScript;
+class CScheduler;
 class CWalletTx;
 class ScriptPubKeyMan;
 class SaplingScriptPubKeyMan;
@@ -265,7 +264,7 @@ typedef std::map<SaplingOutPoint, SaplingNoteData> mapSaplingNoteData_t;
 class CWallet : public CCryptoKeyStore, public CValidationInterface
 {
 private:
-    static std::atomic<bool> fFlushThreadRunning;
+    static std::atomic<bool> fFlushScheduled;
 
     //! keeps track of whether Unlock has run a thorough check before
     bool fDecryptionThoroughlyChecked{false};
@@ -786,7 +785,7 @@ public:
      * Wallet post-init setup
      * Gives the wallet a chance to register repetitive tasks and complete post-init tasks
      */
-    void postInitProcess(boost::thread_group& threadGroup);
+    void postInitProcess(CScheduler& scheduler);
 
     /**
      * Address book entry changed.
