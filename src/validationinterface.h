@@ -9,13 +9,12 @@
 
 #include "optional.h"
 #include "sapling/incrementalmerkletree.h"
+#include "primitives/transaction.h"
 
 class CBlock;
 struct CBlockLocator;
 class CBlockIndex;
 class CConnman;
-class CReserveScript;
-class CTransaction;
 class CValidationInterface;
 class CValidationState;
 class uint256;
@@ -33,7 +32,9 @@ class CValidationInterface {
 protected:
     /** Notifies listeners of updated block chain tip */
     virtual void UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload) {}
-    virtual void SyncTransaction(const CTransaction &tx, const CBlockIndex *pindex, int posInBlock) {}
+    virtual void TransactionAddedToMempool(const CTransactionRef &ptxn) {}
+    virtual void BlockConnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindex, const std::vector<CTransactionRef> &txnConflicted) {}
+    virtual void BlockDisconnected(const std::shared_ptr<const CBlock> &block) {}
     virtual void ChainTip(const CBlockIndex *pindex, const CBlock *pblock, Optional<SaplingMerkleTree> added) {}
     virtual void NotifyTransactionLock(const CTransaction &tx) {}
     /** Notifies listeners of the new active block chain on-disk. */
@@ -59,13 +60,10 @@ private:
 public:
     CMainSignals();
 
-    /** A posInBlock value for SyncTransaction calls for transactions not
-     * included in connected blocks such as transactions removed from mempool,
-     * accepted to mempool or appearing in disconnected blocks.*/
-    static const int SYNC_TRANSACTION_NOT_IN_BLOCK = -1;
-
     void UpdatedBlockTip(const CBlockIndex *, const CBlockIndex *, bool fInitialDownload);
-    void SyncTransaction(const CTransaction &, const CBlockIndex *pindex, int posInBlock);
+    void TransactionAddedToMempool(const CTransactionRef &ptxn);
+    void BlockConnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindex, const std::vector<CTransactionRef> &txnConflicted);
+    void BlockDisconnected(const std::shared_ptr<const CBlock> &block);
     void NotifyTransactionLock(const CTransaction&);
     void UpdatedTransaction(const uint256 &);
     void SetBestChain(const CBlockLocator &);

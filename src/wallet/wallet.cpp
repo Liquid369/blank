@@ -1240,13 +1240,51 @@ void CWallet::MarkConflicted(const uint256& hashBlock, const uint256& hashTx)
     }
 }
 
-void CWallet::SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, int posInBlock)
+void CWallet::SyncTransaction(const CTransactionRef& ptx, const CBlockIndex *pindexBlockConnected, int posInBlock)
 {
-    LOCK(cs_wallet);
-    if (!AddToWalletIfInvolvingMe(tx, (pindex) ? pindex->GetBlockHash() : uint256(), posInBlock, true))
+    const CTransaction& tx = *ptx;
+    if (!AddToWalletIfInvolvingMe(tx,
+                                  (pindexBlockConnected) ? pindexBlockConnected->GetBlockHash() : uint256(),
+                                  posInBlock,
+                                  true)) {
         return; // Not one of ours
+    }
 
     MarkAffectedTransactionsDirty(tx);
+}
+
+void CWallet::TransactionAddedToMempool(const CTransactionRef& ptx)
+{
+    LOCK2(cs_main, cs_wallet);
+    SyncTransaction(ptx, NULL, -1);
+}
+
+void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted)
+{
+    // TODO: Tempoarily ensure that mempool removals are notified before
+    // connected transactions.  This shouldn't matter, but the abandoned
+    // state of transactions in our wallet is currently cleared when we
+    // receive another notification and there is a race condition where
+    // notification of a connected conflict might cause an outside process
+    // to abandon a transaction and then have it inadvertantly cleared by
+    // the notification that the conflicted transaction was evicted.
+
+    for (const CTransactionRef& ptx : vtxConflicted) {
+        LOCK2(cs_main, cs_wallet);
+        SyncTransaction(ptx, NULL, -1);
+    }
+    for (size_t i = 0; i < pblock->vtx.size(); i++) {
+        LOCK2(cs_main, cs_wallet);
+        SyncTransaction(pblock->vtx[i], pindex, i);
+    }
+}
+
+void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock)
+{
+    for (const CTransactionRef& ptx : pblock->vtx) {
+        LOCK2(cs_main, cs_wallet);
+        SyncTransaction(ptx, NULL, -1);
+    }
 }
 
 void CWallet::MarkAffectedTransactionsDirty(const CTransaction& tx)

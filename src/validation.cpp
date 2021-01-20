@@ -605,7 +605,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
             return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "mempool full");
     }
 
-    GetMainSignals().SyncTransaction(tx, nullptr, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK);
+    GetMainSignals().TransactionAddedToMempool(_tx);
 
     return true;
 }
@@ -1951,7 +1951,8 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     CBlockIndex* pindexDelete = chainActive.Tip();
     assert(pindexDelete);
     // Read block from disk.
-    CBlock block;
+    std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>();
+    CBlock& block = *pblock;
     if (!ReadBlockFromDisk(block, pindexDelete))
         return AbortNode(state, "Failed to read block");
     // Apply the block atomically to the chain state.
@@ -2003,9 +2004,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     UpdateTip(pindexDelete->pprev);
     // Let wallets know transactions went from 1-confirmed to
     // 0-confirmed or conflicted:
-    for (const auto& tx : block.vtx) {
-        GetMainSignals().SyncTransaction(*tx, pindexDelete->pprev, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK);
-    }
+    GetMainSignals().BlockDisconnected(pblock);
 
     if (chainparams.GetConsensus().NetworkUpgradeActive(pindexDelete->nHeight, Consensus::UPGRADE_V5_0)) {
         // Update Sapling cached incremental witnesses
@@ -2359,30 +2358,9 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
             pindexFork = chainActive.FindFork(pindexOldTip);
             fInitialDownload = IsInitialBlockDownload();
 
-            // TODO: Temporarily ensure that mempool removals are notified before
-            // connected transactions.  This shouldn't matter, but the abandoned
-            // state of transactions in our wallet is currently cleared when we
-            // receive another notification and there is a race condition where
-            // notification of a connected conflict might cause an outside process
-            // to abandon a transaction and then have it inadvertently cleared by
-            // the notification that the conflicted transaction was evicted.
-
-            // throw all transactions though the signal-interface
-            auto blocksConnected = connectTrace.GetBlocksConnected();
-            for (const PerBlockConnectTrace& trace : blocksConnected) {
-                assert(trace.conflictedTxs);
-                for (const auto& tx : *trace.conflictedTxs) {
-                    GetMainSignals().SyncTransaction(*tx, NULL, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK);
-                }
-            }
-
-            // Transactions in the connnected block are notified
-            for (const PerBlockConnectTrace& trace : blocksConnected) {
+            for (const PerBlockConnectTrace& trace : connectTrace.GetBlocksConnected()) {
                 assert(trace.pblock && trace.pindex);
-                const CBlock& block = *(trace.pblock);
-                for (unsigned int i = 0; i < block.vtx.size(); i++) {
-                    GetMainSignals().SyncTransaction(*block.vtx[i], trace.pindex, i);
-                }
+                GetMainSignals().BlockConnected(trace.pblock, trace.pindex, *trace.conflictedTxs);
 
                 // Sapling: notify wallet about the connected blocks ordered
                 // Get prev block tree anchor
@@ -2398,7 +2376,7 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
                 }
 
                 // Sapling: Update cached incremental witnesses
-                GetMainSignals().ChainTip(trace.pindex, &block, oldSaplingTree);
+                GetMainSignals().ChainTip(trace.pindex, trace.pblock.get(), oldSaplingTree);
             }
 
             break;
