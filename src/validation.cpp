@@ -2386,7 +2386,7 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
 
                 // Sapling: notify wallet about the connected blocks ordered
                 // Get prev block tree anchor
-                CBlockIndex* pprev = pair.first->pprev;
+                CBlockIndex* pprev = trace.pindex->pprev;
                 SaplingMerkleTree oldSaplingTree;
                 bool isSaplingActive = (pprev) != nullptr &&
                                        Params().GetConsensus().NetworkUpgradeActive(pprev->nHeight,
@@ -2398,7 +2398,7 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
                 }
 
                 // Sapling: Update cached incremental witnesses
-                GetMainSignals().ChainTip(pair.first, &block, oldSaplingTree);
+                GetMainSignals().ChainTip(trace.pindex, &block, oldSaplingTree);
             }
 
             break;
