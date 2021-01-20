@@ -554,7 +554,7 @@ public:
     //////////// End Sapling //////////////
 
     //! Adds a key to the store, and saves it to disk.
-    bool AddKeyPubKey(const CKey& key, const CPubKey& pubkey);
+    bool AddKeyPubKey(const CKey& key, const CPubKey& pubkey) override;
     //! Adds a key to the store, without saving it to disk (used by LoadWallet)
     bool LoadKey(const CKey& key, const CPubKey& pubkey) { return CCryptoKeyStore::AddKeyPubKey(key, pubkey); }
     //! Load metadata (used by LoadWallet)
@@ -563,10 +563,10 @@ public:
     bool LoadMinVersion(int nVersion);
 
     //! Adds an encrypted key to the store, and saves it to disk.
-    bool AddCryptedKey(const CPubKey& vchPubKey, const std::vector<unsigned char>& vchCryptedSecret);
+    bool AddCryptedKey(const CPubKey& vchPubKey, const std::vector<unsigned char>& vchCryptedSecret) override;
     //! Adds an encrypted key to the store, without saving it to disk (used by LoadWallet)
     bool LoadCryptedKey(const CPubKey& vchPubKey, const std::vector<unsigned char>& vchCryptedSecret);
-    bool AddCScript(const CScript& redeemScript);
+    bool AddCScript(const CScript& redeemScript) override;
     bool LoadCScript(const CScript& redeemScript);
 
     //! Adds a destination data tuple to the store, and saves it to disk
@@ -577,8 +577,8 @@ public:
     bool LoadDestData(const CTxDestination& dest, const std::string& key, const std::string& value);
 
     //! Adds a watch-only address to the store, and saves it to disk.
-    bool AddWatchOnly(const CScript& dest);
-    bool RemoveWatchOnly(const CScript& dest);
+    bool AddWatchOnly(const CScript& dest) override;
+    bool RemoveWatchOnly(const CScript& dest) override;
     //! Adds a watch-only address to the store, without saving it to disk (used by LoadWallet)
     bool LoadWatchOnly(const CScript& dest);
 
@@ -615,7 +615,7 @@ public:
 
     int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false, bool fromStartup = false);
     void ReacceptWalletTransactions(bool fFirstLoad = false);
-    void ResendWalletTransactions(CConnman* connman);
+    void ResendWalletTransactions(CConnman* connman) override;
 
     CAmount loopTxsBalance(std::function<void(const uint256&, const CWalletTx&, CAmount&)>method) const;
     CAmount GetAvailableBalance(bool fIncludeDelegated = true, bool fIncludeShielded = true) const;
@@ -727,9 +727,9 @@ public:
     //! Sapling merkle tree update
     void ChainTip(const CBlockIndex *pindex,
             const CBlock *pblock,
-            Optional<SaplingMerkleTree> added);
+            Optional<SaplingMerkleTree> added) override;
 
-    void SetBestChain(const CBlockLocator& loc);
+    void SetBestChain(const CBlockLocator& loc) override;
     void SetBestChainInternal(CWalletDB& walletdb, const CBlockLocator& loc); // only public for testing purposes, must never be called directly in any other situation
     // Force balance recomputation if any transaction got conflicted
     void MarkAffectedTransactionsDirty(const CTransaction& tx); // only public for testing purposes, must never be called directly in any other situation
@@ -753,7 +753,7 @@ public:
     void LoadAddressBookName(const CWDestination& dest, const std::string& strName);
     void LoadAddressBookPurpose(const CWDestination& dest, const std::string& strPurpose);
 
-    bool UpdatedTransaction(const uint256& hashTx);
+    bool UpdatedTransaction(const uint256& hashTx) override;
 
     unsigned int GetKeyPoolSize();
     unsigned int GetStakingKeyPoolSize();
