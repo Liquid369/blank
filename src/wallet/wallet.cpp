@@ -1060,8 +1060,9 @@ void CWallet::AddExternalNotesDataToTx(CWalletTx& wtx) const
  * Abandoned state should probably be more carefully tracked via different
  * posInBlock signals or by checking mempool presence when necessary.
  */
-bool CWallet::AddToWalletIfInvolvingMe(const CTransaction& tx, const uint256& blockHash, int posInBlock, bool fUpdate)
+bool CWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const uint256& blockHash, int posInBlock, bool fUpdate)
 {
+    const CTransaction& tx = *ptx;
     {
         AssertLockHeld(cs_wallet);
 
@@ -1242,15 +1243,14 @@ void CWallet::MarkConflicted(const uint256& hashBlock, const uint256& hashTx)
 
 void CWallet::SyncTransaction(const CTransactionRef& ptx, const CBlockIndex *pindexBlockConnected, int posInBlock)
 {
-    const CTransaction& tx = *ptx;
-    if (!AddToWalletIfInvolvingMe(tx,
+    if (!AddToWalletIfInvolvingMe(ptx,
                                   (pindexBlockConnected) ? pindexBlockConnected->GetBlockHash() : uint256(),
                                   posInBlock,
                                   true)) {
         return; // Not one of ours
     }
 
-    MarkAffectedTransactionsDirty(tx);
+    MarkAffectedTransactionsDirty(*ptx);
 }
 
 void CWallet::TransactionAddedToMempool(const CTransactionRef& ptx)
@@ -1747,7 +1747,7 @@ int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, b
             int posInBlock;
             for (posInBlock = 0; posInBlock < (int)block.vtx.size(); posInBlock++) {
                 const auto& tx = block.vtx[posInBlock];
-                if (AddToWalletIfInvolvingMe(*tx, pindex->GetBlockHash(), posInBlock, fUpdate)) {
+                if (AddToWalletIfInvolvingMe(tx, pindex->GetBlockHash(), posInBlock, fUpdate)) {
                     myTxHashes.push_back(tx->GetHash());
                     ret++;
                 }
