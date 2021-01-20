@@ -43,7 +43,6 @@ protected:
     /** Tells listeners to broadcast their data. */
     virtual void ResendWalletTransactions(CConnman* connman) {}
     virtual void BlockChecked(const CBlock&, const CValidationState&) {}
-    virtual void ResetRequestCount(const uint256 &hash) {};
     friend void ::RegisterValidationInterface(CValidationInterface*);
     friend void ::UnregisterValidationInterface(CValidationInterface*);
     friend void ::UnregisterAllValidationInterfaces();
@@ -69,7 +68,6 @@ public:
     void SetBestChain(const CBlockLocator &);
     void Broadcast(CConnman* connman);
     void BlockChecked(const CBlock&, const CValidationState&);
-    void BlockFound(const uint256&);
     void ChainTip(const CBlockIndex *, const CBlock *, Optional<SaplingMerkleTree>);
 };
 

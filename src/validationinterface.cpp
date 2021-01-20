@@ -19,7 +19,6 @@ struct ValidationInterfaceConnections {
     boost::signals2::scoped_connection SetBestChain;
     boost::signals2::scoped_connection Broadcast;
     boost::signals2::scoped_connection BlockChecked;
-    boost::signals2::scoped_connection BlockFound;
     boost::signals2::scoped_connection ChainTip;
 };
 
@@ -46,8 +45,6 @@ struct MainSignalsInstance {
     boost::signals2::signal<void (CConnman* connman)> Broadcast;
     /** Notifies listeners of a block validation result */
     boost::signals2::signal<void (const CBlock&, const CValidationState&)> BlockChecked;
-    /** Notifies listeners that a block has been successfully mined */
-    boost::signals2::signal<void (const uint256 &)> BlockFound;
 
     /** Notifies listeners of a change to the tip of the active block chain. */
     boost::signals2::signal<void (const CBlockIndex *, const CBlock *, Optional<SaplingMerkleTree>)> ChainTip;
@@ -79,7 +76,6 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn)
     conns.SetBestChain = g_signals.m_internals->SetBestChain.connect(std::bind(&CValidationInterface::SetBestChain, pwalletIn, std::placeholders::_1));
     conns.Broadcast = g_signals.m_internals->Broadcast.connect(std::bind(&CValidationInterface::ResendWalletTransactions, pwalletIn, std::placeholders::_1));
     conns.BlockChecked = g_signals.m_internals->BlockChecked.connect(std::bind(&CValidationInterface::BlockChecked, pwalletIn, std::placeholders::_1, std::placeholders::_2));
-    conns.BlockFound = g_signals.m_internals->BlockFound.connect(std::bind(&CValidationInterface::ResetRequestCount, pwalletIn, std::placeholders::_1));
 }
 
 void UnregisterValidationInterface(CValidationInterface* pwalletIn)
@@ -131,10 +127,6 @@ void CMainSignals::Broadcast(CConnman* connman) {
 
 void CMainSignals::BlockChecked(const CBlock& block, const CValidationState& state) {
     m_internals->BlockChecked(block, state);
-}
-
-void CMainSignals::BlockFound(const uint256& hash) {
-    m_internals->BlockFound(hash);
 }
 
 void CMainSignals::ChainTip(const CBlockIndex* pindex, const CBlock* block, Optional<SaplingMerkleTree> tree) {
