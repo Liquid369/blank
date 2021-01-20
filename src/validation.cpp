@@ -174,40 +174,6 @@ std::set<CBlockIndex*> setDirtyBlockIndex;
 std::set<int> setDirtyFileInfo;
 } // anon namespace
 
-/* Use this class to start tracking transactions that are removed from the
- * mempool and pass all those transactions through SyncTransaction when the
- * object goes out of scope. This is currently only used to call SyncTransaction
- * on conflicts removed from the mempool during block connection.  Applied in
- * ActivateBestChain around ActivateBestStep which in turn calls:
- * ConnectTip->removeForBlock->removeConflicts
- */
-class MemPoolConflictRemovalTracker
-{
-private:
-    std::vector<CTransactionRef> conflictedTxs;
-    CTxMemPool &pool;
-    std::unique_ptr<interfaces::Handler> m_handler_notify_entry_removed;
-
-public:
-    MemPoolConflictRemovalTracker(CTxMemPool &_pool) : pool(_pool) {
-        m_handler_notify_entry_removed = interfaces::MakeHandler(pool.NotifyEntryRemoved.connect(std::bind(&MemPoolConflictRemovalTracker::NotifyEntryRemoved, this, std::placeholders::_1, std::placeholders::_2)));
-    }
-
-    void NotifyEntryRemoved(CTransactionRef txRemoved, MemPoolRemovalReason reason) {
-        if (reason == MemPoolRemovalReason::CONFLICT) {
-            conflictedTxs.push_back(txRemoved);
-        }
-    }
-
-    ~MemPoolConflictRemovalTracker() {
-        m_handler_notify_entry_removed->disconnect();
-        for (const auto& tx : conflictedTxs) {
-            GetMainSignals().SyncTransaction(*tx, nullptr, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK);
-        }
-        conflictedTxs.clear();
-    }
-};
-
 CBlockIndex* FindForkInGlobalIndex(const CChain& chain, const CBlockLocator& locator)
 {
     // Find the first block the caller has in the main chain
@@ -2058,18 +2024,46 @@ static int64_t nTimePostConnect = 0;
 /**
  * Used to track blocks whose transactions were applied to the UTXO state as a
  * part of a single ActivateBestChainStep call.
+ *
+ * This class also tracks transactions that are removed from the mempool as
+ * conflicts and can be used to pass all those transactions through
+ * SyncTransaction.
  */
-struct ConnectTrace {
+class ConnectTrace {
 private:
     std::vector<std::pair<CBlockIndex*, std::shared_ptr<const CBlock> > > blocksConnected;
+    std::vector<CTransactionRef> conflictedTxs;
+    CTxMemPool &pool;
+    std::unique_ptr<interfaces::Handler> m_handler_notify_entry_removed;
 
 public:
+    ConnectTrace(CTxMemPool &_pool) : pool(_pool) {
+        m_handler_notify_entry_removed = interfaces::MakeHandler(pool.NotifyEntryRemoved.connect(std::bind(&ConnectTrace::NotifyEntryRemoved, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+
+    ~ConnectTrace() {
+        m_handler_notify_entry_removed->disconnect();
+    }
+
     void BlockConnected(CBlockIndex* pindex, std::shared_ptr<const CBlock> pblock) {
         blocksConnected.emplace_back(pindex, std::move(pblock));
     }
 
     std::vector<std::pair<CBlockIndex*, std::shared_ptr<const CBlock> > >& GetBlocksConnected() {
         return blocksConnected;
+    }
+
+    void NotifyEntryRemoved(CTransactionRef txRemoved, MemPoolRemovalReason reason) {
+        if (reason == MemPoolRemovalReason::CONFLICT) {
+            conflictedTxs.emplace_back(txRemoved);
+        }
+    }
+
+    void CallSyncTransactionOnConflictedTransactions() {
+        for (const auto& tx : conflictedTxs) {
+            GetMainSignals().SyncTransaction(*tx, nullptr, CMainSignals::SYNC_TRANSACTION_NOT_IN_BLOCK);
+        }
+        conflictedTxs.clear();
     }
 };
 
@@ -2321,7 +2315,6 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
         boost::this_thread::interruption_point();
 
         const CBlockIndex *pindexFork;
-        ConnectTrace connectTrace;
         bool fInitialDownload;
         while (true) {
             TRY_LOCK(cs_main, lockMain);
@@ -2329,14 +2322,8 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
                 MilliSleep(50);
                 continue;
             }
-            { // TODO: Temporarily ensure that mempool removals are notified before
-            // connected transactions.  This shouldn't matter, but the abandoned
-            // state of transactions in our wallet is currently cleared when we
-            // receive another notification and there is a race condition where
-            // notification of a connected conflict might cause an outside process
-            // to abandon a transaction and then have it inadvertently cleared by
-            // the notification that the conflicted transaction was evicted.
-            MemPoolConflictRemovalTracker mrt(mempool);
+            ConnectTrace connectTrace(mempool); // Destructed before cs_main is unlocked
+
             CBlockIndex *pindexOldTip = chainActive.Tip();
             pindexMostWork = FindMostWorkChain();
 
@@ -2353,8 +2340,15 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
             fInitialDownload = IsInitialBlockDownload();
 
             // throw all transactions though the signal-interface
+            connectTrace.CallSyncTransactionOnConflictedTransactions();
 
-            } // MemPoolConflictRemovalTracker destroyed and conflict evictions are notified
+            // TODO: Temporarily ensure that mempool removals are notified before
+            // connected transactions.  This shouldn't matter, but the abandoned
+            // state of transactions in our wallet is currently cleared when we
+            // receive another notification and there is a race condition where
+            // notification of a connected conflict might cause an outside process
+            // to abandon a transaction and then have it inadvertently cleared by
+            // the notification that the conflicted transaction was evicted.
 
             // Transactions in the connnected block are notified
             for (const auto& pair : connectTrace.GetBlocksConnected()) {
