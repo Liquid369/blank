@@ -300,11 +300,11 @@ void DecrementNoteWitnesses(NoteDataMap& noteDataMap, int indexHeight, int64_t n
     }
 }
 
-void SaplingScriptPubKeyMan::DecrementNoteWitnesses(const CBlockIndex* pindex)
+void SaplingScriptPubKeyMan::DecrementNoteWitnesses(int nChainHeight)
 {
     LOCK(wallet->cs_wallet);
     for (std::pair<const uint256, CWalletTx>& wtxItem : wallet->mapWallet) {
-        ::DecrementNoteWitnesses(wtxItem.second.mapSaplingNoteData, pindex->nHeight, nWitnessCacheSize);
+        ::DecrementNoteWitnesses(wtxItem.second.mapSaplingNoteData, nChainHeight, nWitnessCacheSize);
     }
     nWitnessCacheSize -= 1;
     nWitnessCacheNeedsUpdate = true;

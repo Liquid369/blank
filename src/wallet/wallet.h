@@ -603,7 +603,7 @@ public:
     bool LoadToWallet(const CWalletTx& wtxIn);
     void TransactionAddedToMempool(const CTransactionRef& tx) override;
     void BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) override;
-    void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock) override;
+    void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, int nBlockHeight) override;
     bool AddToWalletIfInvolvingMe(const CTransactionRef& tx, const uint256& blockHash, int posInBlock, bool fUpdate);
     void EraseFromWallet(const uint256& hash);
 

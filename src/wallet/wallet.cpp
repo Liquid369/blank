@@ -1267,22 +1267,44 @@ void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const 
     // state of transactions in our wallet is currently cleared when we
     // receive another notification and there is a race condition where
     // notification of a connected conflict might cause an outside process
-    // to abandon a transaction and then have it inadvertantly cleared by
+    // to abandon a transaction and then have it inadvertently cleared by
     // the notification that the conflicted transaction was evicted.
 
     for (const CTransactionRef& ptx : vtxConflicted) {
-        SyncTransaction(ptx, NULL, -1);
+        SyncTransaction(ptx, nullptr, -1);
     }
     for (size_t i = 0; i < pblock->vtx.size(); i++) {
         SyncTransaction(pblock->vtx[i], pindex, i);
     }
+
+    // Sapling: notify about the connected block
+    // Get prev block tree anchor
+    CBlockIndex* pprev = pindex->pprev;
+    SaplingMerkleTree oldSaplingTree;
+    bool isSaplingActive = (pprev) != nullptr &&
+                           Params().GetConsensus().NetworkUpgradeActive(pprev->nHeight,
+                                                                        Consensus::UPGRADE_V5_0);
+    if (isSaplingActive) {
+        assert(pcoinsTip->GetSaplingAnchorAt(pprev->hashFinalSaplingRoot, oldSaplingTree));
+    } else {
+        assert(pcoinsTip->GetSaplingAnchorAt(SaplingMerkleTree::empty_root(), oldSaplingTree));
+    }
+
+    // Sapling: Update cached incremental witnesses
+    ChainTipAdded(pindex, pblock.get(), oldSaplingTree);
 }
 
-void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock)
+void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, int nBlockHeight)
 {
     LOCK2(cs_main, cs_wallet);
     for (const CTransactionRef& ptx : pblock->vtx) {
         SyncTransaction(ptx, NULL, -1);
+    }
+
+    if (Params().GetConsensus().NetworkUpgradeActive(nBlockHeight, Consensus::UPGRADE_V5_0)) {
+        // Update Sapling cached incremental witnesses
+        m_sspk_man->DecrementNoteWitnesses(nBlockHeight);
+        m_sspk_man->UpdateSaplingNullifierNoteMapForBlock(pblock.get());
     }
 }
 
@@ -4490,7 +4512,7 @@ void CWallet::IncrementNoteWitnesses(const CBlockIndex* pindex,
                             const CBlock* pblock,
                             SaplingMerkleTree& saplingTree) { m_sspk_man->IncrementNoteWitnesses(pindex, pblock, saplingTree); }
 
-void CWallet::DecrementNoteWitnesses(const CBlockIndex* pindex) { m_sspk_man->DecrementNoteWitnesses(pindex); }
+void CWallet::DecrementNoteWitnesses(const CBlockIndex* pindex) { m_sspk_man->DecrementNoteWitnesses(pindex->nHeight); }
 
 bool CWallet::AddSaplingZKey(const libzcash::SaplingExtendedSpendingKey &key) { return m_sspk_man->AddSaplingZKey(key); }
 

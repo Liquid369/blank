@@ -34,7 +34,7 @@ struct MainSignalsInstance {
      */
     boost::signals2::signal<void (const std::shared_ptr<const CBlock> &, const CBlockIndex *pindex, const std::vector<CTransactionRef> &)> BlockConnected;
     /** Notifies listeners of a block being disconnected */
-    boost::signals2::signal<void (const std::shared_ptr<const CBlock> &)> BlockDisconnected;
+    boost::signals2::signal<void (const std::shared_ptr<const CBlock> &, int nBlockHeight)> BlockDisconnected;
     /** Notifies listeners of an updated transaction lock without new data. */
     boost::signals2::signal<void (const CTransaction &)> NotifyTransactionLock;
     /** Notifies listeners of an updated transaction without new data (for now: a coinbase potentially becoming visible). */
@@ -69,7 +69,7 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn)
     conns.UpdatedBlockTip = g_signals.m_internals->UpdatedBlockTip.connect(std::bind(&CValidationInterface::UpdatedBlockTip, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
     conns.TransactionAddedToMempool = g_signals.m_internals->TransactionAddedToMempool.connect(std::bind(&CValidationInterface::TransactionAddedToMempool, pwalletIn, std::placeholders::_1));
     conns.BlockConnected = g_signals.m_internals->BlockConnected.connect(std::bind(&CValidationInterface::BlockConnected, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-    conns.BlockDisconnected = g_signals.m_internals->BlockDisconnected.connect(std::bind(&CValidationInterface::BlockDisconnected, pwalletIn, std::placeholders::_1));
+    conns.BlockDisconnected = g_signals.m_internals->BlockDisconnected.connect(std::bind(&CValidationInterface::BlockDisconnected, pwalletIn, std::placeholders::_1, std::placeholders::_2));
     conns.ChainTip = g_signals.m_internals->ChainTip.connect(std::bind(&CValidationInterface::ChainTip, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
     conns.NotifyTransactionLock = g_signals.m_internals->NotifyTransactionLock.connect(std::bind(&CValidationInterface::NotifyTransactionLock, pwalletIn, std::placeholders::_1));
     conns.UpdatedTransaction = g_signals.m_internals->UpdatedTransaction.connect(std::bind(&CValidationInterface::UpdatedTransaction, pwalletIn, std::placeholders::_1));
@@ -105,8 +105,8 @@ void CMainSignals::BlockConnected(const std::shared_ptr<const CBlock> &block, co
     m_internals->BlockConnected(block, pindex, txnConflicted);
 }
 
-void CMainSignals::BlockDisconnected(const std::shared_ptr<const CBlock> &block) {
-    m_internals->BlockDisconnected(block);
+void CMainSignals::BlockDisconnected(const std::shared_ptr<const CBlock> &block, int nBlockHeight) {
+    m_internals->BlockDisconnected(block, nBlockHeight);
 }
 
 void CMainSignals::NotifyTransactionLock(const CTransaction& tx) {

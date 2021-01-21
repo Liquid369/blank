@@ -2004,12 +2004,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     UpdateTip(pindexDelete->pprev);
     // Let wallets know transactions went from 1-confirmed to
     // 0-confirmed or conflicted:
-    GetMainSignals().BlockDisconnected(pblock);
-
-    if (chainparams.GetConsensus().NetworkUpgradeActive(pindexDelete->nHeight, Consensus::UPGRADE_V5_0)) {
-        // Update Sapling cached incremental witnesses
-        GetMainSignals().ChainTip(pindexDelete, &block, nullopt);
-    }
+    GetMainSignals().BlockDisconnected(pblock, pindexDelete->nHeight);
 
     return true;
 }
@@ -2361,22 +2356,6 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
             for (const PerBlockConnectTrace& trace : connectTrace.GetBlocksConnected()) {
                 assert(trace.pblock && trace.pindex);
                 GetMainSignals().BlockConnected(trace.pblock, trace.pindex, *trace.conflictedTxs);
-
-                // Sapling: notify wallet about the connected blocks ordered
-                // Get prev block tree anchor
-                CBlockIndex* pprev = trace.pindex->pprev;
-                SaplingMerkleTree oldSaplingTree;
-                bool isSaplingActive = (pprev) != nullptr &&
-                                       Params().GetConsensus().NetworkUpgradeActive(pprev->nHeight,
-                                                                                    Consensus::UPGRADE_V5_0);
-                if (isSaplingActive) {
-                    assert(pcoinsTip->GetSaplingAnchorAt(pprev->hashFinalSaplingRoot, oldSaplingTree));
-                } else {
-                    assert(pcoinsTip->GetSaplingAnchorAt(SaplingMerkleTree::empty_root(), oldSaplingTree));
-                }
-
-                // Sapling: Update cached incremental witnesses
-                GetMainSignals().ChainTip(trace.pindex, trace.pblock.get(), oldSaplingTree);
             }
 
             break;

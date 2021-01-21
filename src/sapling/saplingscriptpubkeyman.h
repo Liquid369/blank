@@ -163,9 +163,9 @@ public:
                                 const CBlock* pblock,
                                 SaplingMerkleTree& saplingTree);
     /**
-     * pindex is the old tip being disconnected.
+     * nChainHeight is the old tip height being disconnected.
      */
-    void DecrementNoteWitnesses(const CBlockIndex* pindex);
+    void DecrementNoteWitnesses(int nChainHeight);
 
     /**
      * Update mapSaplingNullifiersToNotes
