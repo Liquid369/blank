@@ -266,6 +266,7 @@ public:
     CTransaction(const CMutableTransaction &tx);
     CTransaction(CMutableTransaction &&tx);
 
+    CTransaction(const CTransaction& tx) = default;
     CTransaction& operator=(const CTransaction& tx);
 
     ADD_SERIALIZE_METHODS;

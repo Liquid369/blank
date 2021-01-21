@@ -71,25 +71,7 @@ public:
     bool CheckAndUpdate(int& nDos, bool fRequireAvailable = true, bool fCheckSigTimeOnly = false);
     void Relay();
 
-    void swap(CMasternodePing& first, CMasternodePing& second) // nothrow
-    {
-        CSignedMessage::swap(first, second);
-
-        // enable ADL (not necessary in our case, but good practice)
-        using std::swap;
-
-        // by swapping the members of two classes,
-        // the two classes are effectively swapped
-        swap(first.vin, second.vin);
-        swap(first.blockHash, second.blockHash);
-        swap(first.sigTime, second.sigTime);
-    }
-
-    CMasternodePing& operator=(CMasternodePing from)
-    {
-        swap(*this, from);
-        return *this;
-    }
+    CMasternodePing& operator=(const CMasternodePing& other) = default;
 
     friend bool operator==(const CMasternodePing& a, const CMasternodePing& b)
     {
@@ -142,31 +124,22 @@ public:
 
     void SetLastPing(const CMasternodePing& _lastPing) { WITH_LOCK(cs, lastPing = _lastPing;); }
 
-    void swap(CMasternode& first, CMasternode& second) // nothrow
+    CMasternode& operator=(const CMasternode& other)
     {
-        CSignedMessage::swap(first, second);
-
-        // enable ADL (not necessary in our case, but good practice)
-        using std::swap;
-
-        // by swapping the members of two classes,
-        // the two classes are effectively swapped
-        swap(first.vin, second.vin);
-        swap(first.addr, second.addr);
-        swap(first.pubKeyCollateralAddress, second.pubKeyCollateralAddress);
-        swap(first.pubKeyMasternode, second.pubKeyMasternode);
-        swap(first.sigTime, second.sigTime);
-        swap(first.lastPing, second.lastPing);
-        swap(first.protocolVersion, second.protocolVersion);
-        swap(first.nScanningErrorCount, second.nScanningErrorCount);
-        swap(first.nLastScanningErrorBlockHeight, second.nLastScanningErrorBlockHeight);
-    }
-
-    CMasternode& operator=(CMasternode from)
-    {
-        swap(*this, from);
+        nMessVersion = other.nMessVersion;
+        vchSig = other.vchSig;
+        vin = other.vin;
+        addr = other.addr;
+        pubKeyCollateralAddress = other.pubKeyCollateralAddress;
+        pubKeyMasternode = other.pubKeyMasternode;
+        sigTime = other.sigTime;
+        lastPing = other.lastPing;
+        protocolVersion = other.protocolVersion;
+        nScanningErrorCount = other.nScanningErrorCount;
+        nLastScanningErrorBlockHeight = other.nLastScanningErrorBlockHeight;
         return *this;
     }
+
     friend bool operator==(const CMasternode& a, const CMasternode& b)
     {
         return a.vin == b.vin;
