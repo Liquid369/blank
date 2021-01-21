@@ -950,82 +950,88 @@ std::pair<fs::path, fs::path> GetBackupPath(const CWallet& wallet)
     return {pathCustom, pathWithFile};
 }
 
+void MultiBackup(const CWallet& wallet, fs::path pathCustom, fs::path pathWithFile, const fs::path& pathSrc)
+{
+    int nThreshold = gArgs.GetArg("-custombackupthreshold", DEFAULT_CUSTOMBACKUPTHRESHOLD);
+    if (nThreshold > 0) {
+
+        typedef std::multimap<std::time_t, fs::path> folder_set_t;
+        folder_set_t folderSet;
+        fs::directory_iterator end_iter;
+
+        pathCustom.make_preferred();
+        // Build map of backup files for current(!) wallet sorted by last write time
+
+        fs::path currentFile;
+        for (fs::directory_iterator dir_iter(pathCustom); dir_iter != end_iter; ++dir_iter) {
+            // Only check regular files
+            if (fs::is_regular_file(dir_iter->status())) {
+                currentFile = dir_iter->path().filename();
+                // Only add the backups for the current wallet, e.g. wallet.dat.*
+                if (dir_iter->path().stem().string() == wallet.GetDBHandle().GetName()) {
+                    folderSet.insert(folder_set_t::value_type(fs::last_write_time(dir_iter->path()), *dir_iter));
+                }
+            }
+        }
+
+        int counter = 0; //TODO: add seconds to avoid naming conflicts
+        for (auto entry : folderSet) {
+            counter++;
+            if(entry.second == pathWithFile) {
+                pathWithFile += "(1)";
+            }
+        }
+
+        if (counter >= nThreshold) {
+            std::time_t oldestBackup = 0;
+            for(auto entry : folderSet) {
+                if(oldestBackup == 0 || entry.first < oldestBackup) {
+                    oldestBackup = entry.first;
+                }
+            }
+
+            try {
+                auto entry = folderSet.find(oldestBackup);
+                if (entry != folderSet.end()) {
+                    fs::remove(entry->second);
+                    LogPrintf("Old backup deleted: %s\n", (*entry).second);
+                }
+            } catch (const fs::filesystem_error& error) {
+                std::string strMessage = strprintf("Failed to delete backup %s\n", error.what());
+                NotifyBacked(wallet, false, strMessage);
+            }
+        }
+    }
+    AttemptBackupWallet(wallet, pathSrc.string(), pathWithFile.string());
+}
+
 bool BackupWallet(const CWallet& wallet, const fs::path& strDest)
 {
     const auto& pathsPair = GetBackupPath(wallet);
     fs::path pathCustom = pathsPair.first;
     fs::path pathWithFile = pathsPair.second;
 
+    std::string strFile = wallet.GetDBHandle().GetName();
     while (true) {
         {
             LOCK(bitdb.cs_db);
-            if (!bitdb.mapFileUseCount.count(wallet.GetDBHandle().GetName()) || bitdb.mapFileUseCount[wallet.GetDBHandle().GetName()] == 0) {
+            if (!bitdb.mapFileUseCount.count(strFile) || bitdb.mapFileUseCount[strFile] == 0) {
                 // Flush log data to the dat file
-                bitdb.CloseDb(wallet.GetDBHandle().GetName());
-                bitdb.CheckpointLSN(wallet.GetDBHandle().GetName());
-                bitdb.mapFileUseCount.erase(wallet.GetDBHandle().GetName());
+                bitdb.CloseDb(strFile);
+                bitdb.CheckpointLSN(strFile);
+                bitdb.mapFileUseCount.erase(strFile);
 
                 // Copy wallet file
                 fs::path pathDest(strDest);
-                fs::path pathSrc = GetDataDir() / wallet.GetDBHandle().GetName();
+                fs::path pathSrc = GetDataDir() / strFile;
                 if (is_directory(pathDest)) {
                     if(!exists(pathDest)) create_directory(pathDest);
-                    pathDest /= wallet.GetDBHandle().GetName();
+                    pathDest /= strFile;
                 }
                 bool defaultPath = AttemptBackupWallet(wallet, pathSrc.string(), pathDest.string());
 
                 if(defaultPath && !pathCustom.empty()) {
-                    int nThreshold = gArgs.GetArg("-custombackupthreshold", DEFAULT_CUSTOMBACKUPTHRESHOLD);
-                    if (nThreshold > 0) {
-
-                        typedef std::multimap<std::time_t, fs::path> folder_set_t;
-                        folder_set_t folderSet;
-                        fs::directory_iterator end_iter;
-
-                        pathCustom.make_preferred();
-                        // Build map of backup files for current(!) wallet sorted by last write time
-
-                        fs::path currentFile;
-                        for (fs::directory_iterator dir_iter(pathCustom); dir_iter != end_iter; ++dir_iter) {
-                            // Only check regular files
-                            if (fs::is_regular_file(dir_iter->status())) {
-                                currentFile = dir_iter->path().filename();
-                                // Only add the backups for the current wallet, e.g. wallet.dat.*
-                                if (dir_iter->path().stem().string() == wallet.GetDBHandle().GetName()) {
-                                    folderSet.insert(folder_set_t::value_type(fs::last_write_time(dir_iter->path()), *dir_iter));
-                                }
-                            }
-                        }
-
-                        int counter = 0; //TODO: add seconds to avoid naming conflicts
-                        for (auto entry : folderSet) {
-                            counter++;
-                            if(entry.second == pathWithFile) {
-                                pathWithFile += "(1)";
-                            }
-                        }
-
-                        if (counter >= nThreshold) {
-                            std::time_t oldestBackup = 0;
-                            for(auto entry : folderSet) {
-                                if(oldestBackup == 0 || entry.first < oldestBackup) {
-                                    oldestBackup = entry.first;
-                                }
-                            }
-
-                            try {
-                                auto entry = folderSet.find(oldestBackup);
-                                if (entry != folderSet.end()) {
-                                    fs::remove(entry->second);
-                                    LogPrintf("Old backup deleted: %s\n", (*entry).second);
-                                }
-                            } catch (const fs::filesystem_error& error) {
-                                std::string strMessage = strprintf("Failed to delete backup %s\n", error.what());
-                                NotifyBacked(wallet, false, strMessage);
-                            }
-                        }
-                    }
-                    AttemptBackupWallet(wallet, pathSrc.string(), pathWithFile.string());
+                    MultiBackup(wallet, pathCustom, pathWithFile, pathSrc);
                 }
 
                 return defaultPath;
