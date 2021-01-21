@@ -724,11 +724,6 @@ public:
     CAmount GetCredit(const CWalletTx& tx, const isminefilter& filter) const;
     CAmount GetChange(const CTransaction& tx) const;
 
-    //! Sapling merkle tree update
-    void ChainTip(const CBlockIndex *pindex,
-            const CBlock *pblock,
-            Optional<SaplingMerkleTree> added) override;
-
     void SetBestChain(const CBlockLocator& loc) override;
     void SetBestChainInternal(CWalletDB& walletdb, const CBlockLocator& loc); // only public for testing purposes, must never be called directly in any other situation
     // Force balance recomputation if any transaction got conflicted

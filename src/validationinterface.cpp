@@ -19,11 +19,10 @@ struct ValidationInterfaceConnections {
     boost::signals2::scoped_connection SetBestChain;
     boost::signals2::scoped_connection Broadcast;
     boost::signals2::scoped_connection BlockChecked;
-    boost::signals2::scoped_connection ChainTip;
 };
 
 struct MainSignalsInstance {
-// XX42    boost::signals2::signal<void(const uint256&)> EraseTransaction;
+
     /** Notifies listeners of updated block chain tip */
     boost::signals2::signal<void (const CBlockIndex *, const CBlockIndex *, bool fInitialDownload)> UpdatedBlockTip;
     /** Notifies listeners of a transaction having been added to mempool. */
@@ -46,9 +45,6 @@ struct MainSignalsInstance {
     /** Notifies listeners of a block validation result */
     boost::signals2::signal<void (const CBlock&, const CValidationState&)> BlockChecked;
 
-    /** Notifies listeners of a change to the tip of the active block chain. */
-    boost::signals2::signal<void (const CBlockIndex *, const CBlock *, Optional<SaplingMerkleTree>)> ChainTip;
-
     std::unordered_map<CValidationInterface*, ValidationInterfaceConnections> m_connMainSignals;
 };
 
@@ -70,7 +66,6 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn)
     conns.TransactionAddedToMempool = g_signals.m_internals->TransactionAddedToMempool.connect(std::bind(&CValidationInterface::TransactionAddedToMempool, pwalletIn, std::placeholders::_1));
     conns.BlockConnected = g_signals.m_internals->BlockConnected.connect(std::bind(&CValidationInterface::BlockConnected, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
     conns.BlockDisconnected = g_signals.m_internals->BlockDisconnected.connect(std::bind(&CValidationInterface::BlockDisconnected, pwalletIn, std::placeholders::_1, std::placeholders::_2));
-    conns.ChainTip = g_signals.m_internals->ChainTip.connect(std::bind(&CValidationInterface::ChainTip, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
     conns.NotifyTransactionLock = g_signals.m_internals->NotifyTransactionLock.connect(std::bind(&CValidationInterface::NotifyTransactionLock, pwalletIn, std::placeholders::_1));
     conns.UpdatedTransaction = g_signals.m_internals->UpdatedTransaction.connect(std::bind(&CValidationInterface::UpdatedTransaction, pwalletIn, std::placeholders::_1));
     conns.SetBestChain = g_signals.m_internals->SetBestChain.connect(std::bind(&CValidationInterface::SetBestChain, pwalletIn, std::placeholders::_1));
@@ -127,8 +122,4 @@ void CMainSignals::Broadcast(CConnman* connman) {
 
 void CMainSignals::BlockChecked(const CBlock& block, const CValidationState& state) {
     m_internals->BlockChecked(block, state);
-}
-
-void CMainSignals::ChainTip(const CBlockIndex* pindex, const CBlock* block, Optional<SaplingMerkleTree> tree) {
-    m_internals->ChainTip(pindex, block, tree);
 }

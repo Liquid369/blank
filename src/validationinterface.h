@@ -35,7 +35,6 @@ protected:
     virtual void TransactionAddedToMempool(const CTransactionRef &ptxn) {}
     virtual void BlockConnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindex, const std::vector<CTransactionRef> &txnConflicted) {}
     virtual void BlockDisconnected(const std::shared_ptr<const CBlock> &block, int nBlockHeight) {}
-    virtual void ChainTip(const CBlockIndex *pindex, const CBlock *pblock, Optional<SaplingMerkleTree> added) {}
     virtual void NotifyTransactionLock(const CTransaction &tx) {}
     /** Notifies listeners of the new active block chain on-disk. */
     virtual void SetBestChain(const CBlockLocator &locator) {}
@@ -68,7 +67,6 @@ public:
     void SetBestChain(const CBlockLocator &);
     void Broadcast(CConnman* connman);
     void BlockChecked(const CBlock&, const CValidationState&);
-    void ChainTip(const CBlockIndex *, const CBlock *, Optional<SaplingMerkleTree>);
 };
 
 CMainSignals& GetMainSignals();

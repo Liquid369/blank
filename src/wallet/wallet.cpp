@@ -445,18 +445,6 @@ void CWallet::ChainTipAdded(const CBlockIndex *pindex,
     m_sspk_man->UpdateSaplingNullifierNoteMapForBlock(pblock);
 }
 
-void CWallet::ChainTip(const CBlockIndex *pindex,
-                       const CBlock *pblock,
-                       Optional<SaplingMerkleTree> added)
-{
-    if (added) {
-        ChainTipAdded(pindex, pblock, added.get());
-    } else {
-        DecrementNoteWitnesses(pindex);
-        m_sspk_man->UpdateSaplingNullifierNoteMapForBlock(pblock);
-    }
-}
-
 void CWallet::SetBestChain(const CBlockLocator& loc)
 {
     CWalletDB walletdb(*dbw);

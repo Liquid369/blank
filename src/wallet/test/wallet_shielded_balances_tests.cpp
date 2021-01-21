@@ -348,7 +348,9 @@ BOOST_AUTO_TEST_CASE(GetShieldedAvailableCredit)
     // 2) Confirm the tx
     SaplingMerkleTree tree;
     FakeBlock fakeBlock = SimpleFakeMine(wtxUpdated, tree);
-    wallet.ChainTip(fakeBlock.pindex, &fakeBlock.block, tree);
+    // Simulate receiving a new block and updating the witnesses/nullifiers
+    wallet.IncrementNoteWitnesses(fakeBlock.pindex, &fakeBlock.block, tree);
+    wallet.GetSaplingScriptPubKeyMan()->UpdateSaplingNullifierNoteMapForBlock(&fakeBlock.block);
     wtxUpdated = wallet.mapWallet[wtxUpdated.GetHash()];
 
     // 3) Now can spend one output and recalculate the shielded credit.
