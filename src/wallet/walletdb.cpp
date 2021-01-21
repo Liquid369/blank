@@ -928,27 +928,33 @@ void NotifyBacked(const CWallet& wallet, bool fSuccess, std::string strMessage)
     wallet.NotifyWalletBacked(fSuccess, strMessage);
 }
 
-bool BackupWallet(const CWallet& wallet, const fs::path& strDest, bool fEnableCustom)
+// Returns first the pathCustom, second the pathWithFile.
+std::pair<fs::path, fs::path> GetBackupPath(const CWallet& wallet)
 {
     fs::path pathCustom;
-    fs::path pathWithFile;
-    if(fEnableCustom) {
-        pathWithFile = gArgs.GetArg("-backuppath", "");
-        if(!pathWithFile.empty()) {
-            if(!pathWithFile.has_extension()) {
-                pathCustom = pathWithFile;
-                pathWithFile /= wallet.GetUniqueWalletBackupName();
-            } else {
-                pathCustom = pathWithFile.parent_path();
-            }
-            try {
-                fs::create_directories(pathCustom);
-            } catch (const fs::filesystem_error& e) {
-                NotifyBacked(wallet, false, strprintf("%s\n", e.what()));
-                pathCustom = "";
-            }
+    fs::path pathWithFile = gArgs.GetArg("-backuppath", "");
+    if(!pathWithFile.empty()) {
+        if(!pathWithFile.has_extension()) {
+            pathCustom = pathWithFile;
+            pathWithFile /= wallet.GetUniqueWalletBackupName();
+        } else {
+            pathCustom = pathWithFile.parent_path();
+        }
+        try {
+            fs::create_directories(pathCustom);
+        } catch (const fs::filesystem_error& e) {
+            NotifyBacked(wallet, false, strprintf("%s\n", e.what()));
+            pathCustom = "";
         }
     }
+    return {pathCustom, pathWithFile};
+}
+
+bool BackupWallet(const CWallet& wallet, const fs::path& strDest)
+{
+    const auto& pathsPair = GetBackupPath(wallet);
+    fs::path pathCustom = pathsPair.first;
+    fs::path pathWithFile = pathsPair.second;
 
     while (true) {
         {

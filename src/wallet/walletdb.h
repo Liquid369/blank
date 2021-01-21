@@ -227,7 +227,7 @@ private:
 };
 
 void NotifyBacked(const CWallet& wallet, bool fSuccess, std::string strMessage);
-bool BackupWallet(const CWallet& wallet, const fs::path& strDest, bool fEnableCustom = true);
+bool BackupWallet(const CWallet& wallet, const fs::path& strDest);
 bool AttemptBackupWallet(const CWallet& wallet, const fs::path& pathSrc, const fs::path& pathDest);
 
 void ThreadFlushWalletDB();
