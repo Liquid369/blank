@@ -56,6 +56,12 @@ class WalletHDTest(PivxTestFramework):
         connect_nodes(self.nodes[1], 0)
         self.sync_all()
 
+    def check_addressbook(self, old_book, new_book):
+        assert_equal(len(old_book), len(new_book))
+        for add in new_book:
+            assert add in old_book
+            assert_equal(old_book[add], new_book[add])
+
     def run_test(self):
         # Make sure we use hd
         if '-legacywallet' in self.nodes[0].extra_args:
@@ -108,7 +114,18 @@ class WalletHDTest(PivxTestFramework):
         self.sync_all()
         assert_equal(self.nodes[1].getbalance(), NUM_HD_ADDS + NUM_SHIELD_ADDS + 1)
 
-        self.log.info("Restore backup ...")
+        # verify address-book recovery
+        self.log.info("Restore backup (with chain)...")
+        addrbook_old = self.nodes[1].getaddressesbylabel("")
+        self.stop_node(1)
+        shutil.copyfile(os.path.join(self.nodes[1].datadir, "hd.bak"), os.path.join(self.nodes[1].datadir, "regtest", "wallet.dat"))
+        self.start_node(1)
+        connect_nodes(self.nodes[0], 1)
+        self.sync_all()
+        self.check_addressbook(addrbook_old, self.nodes[1].getaddressesbylabel(""))
+
+        # now delete the chain and recreate the addresses
+        self.log.info("Restore backup (without chain)...")
         self.stop_node(1)
         # we need to delete the complete regtest directory
         # otherwise node1 would auto-recover all funds in flag the keypool keys as used
