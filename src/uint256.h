@@ -22,15 +22,15 @@
 // with the blob_uint256 file.
 //
 
-/** 160-bit unsigned big integer. */
-class uint160 : public base_uint<160>
-{
+/** 160-bit opaque blob.
+ * @note This type is called uint160 for historical reasons only. It is an opaque
+ * blob of 160 bits and has no integer operations.
+ */
+class uint160 : public base_blob<160> {
 public:
     uint160() {}
-    uint160(const base_uint<160>& b) : base_uint<160>(b) {}
-    uint160(uint64_t b) : base_uint<160>(b) {}
-    explicit uint160(const std::string& str) : base_uint<160>(str) {}
-    explicit uint160(const std::vector<unsigned char>& vch) : base_uint<160>(vch) {}
+    uint160(const base_blob<160>& b) : base_blob<160>(b) {}
+    explicit uint160(const std::vector<unsigned char>& vch) : base_blob<160>(vch) {}
 };
 
 /** 256-bit unsigned big integer. */
