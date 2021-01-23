@@ -353,8 +353,6 @@ public:
 
     UniValue operator()(const CTxDestination &dest) const {
         UniValue ret(UniValue::VOBJ);
-        std::string currentAddress = EncodeDestination(dest, isStaking);
-        ret.pushKV("address", currentAddress);
         CScript scriptPubKey = GetScriptForDestination(dest);
         ret.pushKV("scriptPubKey", HexStr(scriptPubKey.begin(), scriptPubKey.end()));
 
