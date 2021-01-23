@@ -864,11 +864,11 @@ void static ProcessGetData(CNode* pfrom, CConnman& connman, std::atomic<bool>& i
                 bool pushed = false;
 
                 if (inv.type == MSG_TX) {
-                    CTransaction tx;
-                    if (mempool.lookup(inv.hash, tx)) {
+                    auto txinfo = mempool.info(inv.hash);
+                    if (txinfo.tx) { // future: add timeLastMempoolReq check
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
-                        ss << tx;
+                        ss << *txinfo.tx;
                         connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::TX, ss));
                         pushed = true;
                     }
@@ -1027,7 +1027,6 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
         std::string strSubVer;
         std::string cleanSubVer;
         int nStartingHeight = -1;
-        bool fRelay = true;
         vRecv >> nVersion >> nServiceInt >> nTime >> addrMe;
         nSendVersion = std::min(nVersion, PROTOCOL_VERSION);
         nServices = ServiceFlags(nServiceInt);
@@ -1053,10 +1052,9 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
             vRecv >> LIMITED_STRING(strSubVer, MAX_SUBVERSION_LENGTH);
             cleanSubVer = SanitizeString(strSubVer);
         }
-        if (!vRecv.empty())
+        if (!vRecv.empty()) {
             vRecv >> nStartingHeight;
-        if (!vRecv.empty())
-            vRecv >> fRelay;
+        }
 
         // Disconnect if we connected to ourself
         if (pfrom->fInbound && !connman.CheckIncomingNonce(nNonce)) {
@@ -1084,9 +1082,14 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
         }
         pfrom->nStartingHeight = nStartingHeight;
         pfrom->fClient = !(nServices & NODE_NETWORK);
+
         {
             LOCK(pfrom->cs_filter);
-            pfrom->fRelayTxes = fRelay; // set to true after we get the first filter* message
+            if (!vRecv.empty()) {
+                vRecv >> pfrom->fRelayTxes; // set to true after we get the first filter* message
+            } else {
+                pfrom->fRelayTxes = true;
+            }
         }
 
         // Change version
@@ -1633,26 +1636,10 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
 
 
     else if (strCommand == NetMsgType::MEMPOOL) {
-        LOCK2(cs_main, pfrom->cs_filter);
 
-        std::vector<uint256> vtxid;
-        mempool.queryHashes(vtxid);
-        std::vector<CInv> vInv;
-        for (uint256& hash : vtxid) {
-            CInv inv(MSG_TX, hash);
-            CTransaction tx;
-            bool fInMemPool = mempool.lookup(hash, tx);
-            if (!fInMemPool) continue; // another thread removed since queryHashes, maybe...
-            if ((pfrom->pfilter && pfrom->pfilter->IsRelevantAndUpdate(tx)) ||
-                (!pfrom->pfilter))
-                vInv.push_back(inv);
-            if (vInv.size() == MAX_INV_SZ) {
-                connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::INV, vInv));
-                vInv.clear();
-            }
-        }
-        if (vInv.size() > 0)
-            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::INV, vInv));
+        // todo: limit mempool request with a bandwidth limit
+        LOCK(pfrom->cs_inventory);
+        pfrom->fSendMempool = true;
     }
 
 
@@ -1745,12 +1732,13 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
         CBloomFilter filter;
         vRecv >> filter;
 
+        LOCK(pfrom->cs_filter);
+
         if (!filter.IsWithinSizeConstraints()) {
             // There is no excuse for sending a too-large filter
             LOCK(cs_main);
             Misbehaving(pfrom->GetId(), 100);
         } else {
-            LOCK(pfrom->cs_filter);
             delete pfrom->pfilter;
             pfrom->pfilter = new CBloomFilter(filter);
             pfrom->pfilter->UpdateEmptyFull();
@@ -1940,6 +1928,22 @@ bool ProcessMessages(CNode* pfrom, CConnman& connman, std::atomic<bool>& interru
     return fMoreWork;
 }
 
+class CompareInvMempoolOrder
+{
+    CTxMemPool *mp;
+public:
+    CompareInvMempoolOrder(CTxMemPool *_mempool)
+    {
+        mp = _mempool;
+    }
+
+    bool operator()(std::set<uint256>::iterator a, std::set<uint256>::iterator b)
+    {
+        /* As std::make_heap produces a max-heap, we want the entries with the
+         * fewest ancestors/highest fee to sort later. */
+        return mp->CompareDepthAndScore(*b, *a);
+    }
+};
 
 bool SendMessages(CNode* pto, CConnman& connman, std::atomic<bool>& interruptMsgProc)
 {
@@ -2064,43 +2068,113 @@ bool SendMessages(CNode* pto, CConnman& connman, std::atomic<bool>& interruptMsg
         std::vector<CInv> vInv;
         std::vector<CInv> vInvWait;
         {
-            bool fSendTrickle = pto->fWhitelisted;
-            if (pto->nNextInvSend < nNow) {
-                fSendTrickle = true;
-                pto->nNextInvSend = PoissonNextSend(nNow, AVG_INVENTORY_BROADCAST_INTERVAL);
-            }
             LOCK(pto->cs_inventory);
-            vInv.reserve(pto->vInventoryToSend.size());
-            vInvWait.reserve(pto->vInventoryToSend.size());
-            for (const CInv& inv : pto->vInventoryToSend) {
-                if (inv.type == MSG_TX && pto->filterInventoryKnown.contains(inv.hash))
-                    continue;
+            vInv.reserve(std::max<size_t>(pto->vInventoryBlockToSend.size(), INVENTORY_BROADCAST_MAX));
 
-                // trickle out tx inv to protect privacy
-                if (inv.type == MSG_TX && !fSendTrickle) {
-                    // 1/4 of tx invs blast to all immediately
-                    static uint256 hashSalt;
-                    if (hashSalt.IsNull())
-                        hashSalt = GetRandHash();
-                    uint256 hashRand = inv.hash ^ hashSalt;
-                    hashRand = Hash(BEGIN(hashRand), END(hashRand));
-                    bool fTrickleWait = ((hashRand & 3) != 0);
-
-                    if (fTrickleWait) {
-                        vInvWait.push_back(inv);
-                        continue;
-                    }
-                }
-
-                pto->filterInventoryKnown.insert(inv.hash);
-
-                vInv.push_back(inv);
-                if (vInv.size() >= 1000) {
+            // Add blocks
+            for (const uint256& hash : pto->vInventoryBlockToSend) {
+                vInv.emplace_back(CInv(MSG_BLOCK, hash));
+                if (vInv.size() == MAX_INV_SZ) {
                     connman.PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
                     vInv.clear();
                 }
             }
-            pto->vInventoryToSend = vInvWait;
+            pto->vInventoryBlockToSend.clear();
+
+            // Add tier two INVs
+            for (const CInv& tInv : pto->vInventoryTierTwoToSend) {
+                vInv.emplace_back(tInv);
+                if (vInv.size() == MAX_INV_SZ) {
+                    connman.PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
+                    vInv.clear();
+                }
+            }
+            pto->vInventoryTierTwoToSend.clear();
+
+            // Check whether periodic send should happen
+            bool fSendTrickle = pto->fWhitelisted;
+            if (pto->nNextInvSend < nNow) {
+                fSendTrickle = true;
+                // Use half the delay for outbound peers, as there is less privacy concern for them.
+                pto->nNextInvSend = PoissonNextSend(nNow, INVENTORY_BROADCAST_INTERVAL >> !pto->fInbound);
+            }
+
+            // Time to send but the peer has requested we not relay transactions.
+            if (fSendTrickle) {
+                LOCK(pto->cs_filter);
+                if (!pto->fRelayTxes) pto->setInventoryTxToSend.clear();
+            }
+
+            // Respond to BIP35 mempool requests
+            if (fSendTrickle && pto->fSendMempool) {
+                auto vtxinfo = mempool.infoAll();
+                pto->fSendMempool = false;
+                // future: back port fee filter rate
+                LOCK(pto->cs_filter);
+
+                for (const auto& txinfo : vtxinfo) {
+                    const uint256& hash = txinfo.tx->GetHash();
+                    CInv inv(MSG_TX, hash);
+                    pto->setInventoryTxToSend.erase(hash);
+                    // future: add fee filter check here..
+                    if (pto->pfilter) {
+                        if (!pto->pfilter->IsRelevantAndUpdate(*txinfo.tx)) continue;
+                    }
+                    pto->filterInventoryKnown.insert(hash);
+                    vInv.emplace_back(inv);
+                    if (vInv.size() == MAX_INV_SZ) {
+                        connman.PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
+                        vInv.clear();
+                    }
+                }
+                pto->timeLastMempoolReq = GetTime();
+            }
+
+            // Determine transactions to relay
+            if (fSendTrickle) {
+                // Produce a vector with all candidates for sending
+                std::vector<std::set<uint256>::iterator> vInvTx;
+                vInvTx.reserve(pto->setInventoryTxToSend.size());
+                for (std::set<uint256>::iterator it = pto->setInventoryTxToSend.begin(); it != pto->setInventoryTxToSend.end(); it++) {
+                    vInvTx.push_back(it);
+                }
+                // Topologically and fee-rate sort the inventory we send for privacy and priority reasons.
+                // A heap is used so that not all items need sorting if only a few are being sent.
+                CompareInvMempoolOrder compareInvMempoolOrder(&mempool);
+                std::make_heap(vInvTx.begin(), vInvTx.end(), compareInvMempoolOrder);
+                // No reason to drain out at many times the network's capacity,
+                // especially since we have many peers and some will draw much shorter delays.
+                unsigned int nRelayedTransactions = 0;
+                LOCK(pto->cs_filter);
+                while (!vInvTx.empty() && nRelayedTransactions < INVENTORY_BROADCAST_MAX) {
+                    // Fetch the top element from the heap
+                    std::pop_heap(vInvTx.begin(), vInvTx.end(), compareInvMempoolOrder);
+                    std::set<uint256>::iterator it = vInvTx.back();
+                    vInvTx.pop_back();
+                    uint256 hash = *it;
+                    // Remove it from the to-be-sent set
+                    pto->setInventoryTxToSend.erase(it);
+                    // Check if not in the filter already
+                    if (pto->filterInventoryKnown.contains(hash)) {
+                        continue;
+                    }
+                    // Not in the mempool anymore? don't bother sending it.
+                    auto txinfo = mempool.info(hash);
+                    if (!txinfo.tx) {
+                        continue;
+                    }
+                    // todo: back port feerate filter.
+                    if (pto->pfilter && !pto->pfilter->IsRelevantAndUpdate(*txinfo.tx)) continue;
+                    // Send
+                    vInv.emplace_back(CInv(MSG_TX, hash));
+                    nRelayedTransactions++;
+                    if (vInv.size() == MAX_INV_SZ) {
+                        connman.PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
+                        vInv.clear();
+                    }
+                    pto->filterInventoryKnown.insert(hash);
+                }
+            }
         }
         if (!vInv.empty())
             connman.PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));

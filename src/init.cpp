@@ -155,6 +155,7 @@ CClientUIInterface uiInterface;  // Declared but not defined in guiinterface.h
 //
 
 volatile bool fRequestShutdown = false;
+std::atomic<bool> fDumpMempoolLater(false);
 
 void StartShutdown()
 {
@@ -245,6 +246,9 @@ void PrepareShutdown()
     DumpBudgets(g_budgetman);
     DumpMasternodePayments();
     UnregisterNodeSignals(GetNodeSignals());
+    if (fDumpMempoolLater && gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
+        DumpMempool();
+    }
 
     // After everything has been shut down, but before things get flushed, stop the
     // CScheduler/checkqueue threadGroup
@@ -418,6 +422,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-maxorphantx=<n>", strprintf(_("Keep at most <n> unconnectable transactions in memory (default: %u)"), DEFAULT_MAX_ORPHAN_TRANSACTIONS));
     strUsage += HelpMessageOpt("-maxmempool=<n>", strprintf(_("Keep the transaction memory pool below <n> megabytes (default: %u)"), DEFAULT_MAX_MEMPOOL_SIZE));
     strUsage += HelpMessageOpt("-mempoolexpiry=<n>", strprintf(_("Do not keep transactions in the mempool longer than <n> hours (default: %u)"), DEFAULT_MEMPOOL_EXPIRY));
+    strUsage += HelpMessageOpt("-persistmempool", strprintf(_("Whether to save the mempool on shutdown and load on restart (default: %u)"), DEFAULT_PERSIST_MEMPOOL));
     strUsage += HelpMessageOpt("-par=<n>", strprintf(_("Set the number of script verification threads (%u to %d, 0 = auto, <0 = leave that many cores free, default: %d)"), -GetNumCores(), MAX_SCRIPTCHECK_THREADS, DEFAULT_SCRIPTCHECK_THREADS));
 #ifndef WIN32
     strUsage += HelpMessageOpt("-pid=<file>", strprintf(_("Specify pid file (default: %s)"), PIVX_PID_FILENAME));
@@ -700,6 +705,11 @@ void ThreadImport(std::vector<fs::path> vImportFiles)
         LogPrintf("Stopping after block import\n");
         StartShutdown();
     }
+
+    if (gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
+        LoadMempool();
+        fDumpMempoolLater = !fRequestShutdown;
+    }
 }
 
 /** Sanity checks
@@ -899,10 +909,16 @@ void InitParameterInteraction()
             LogPrintf("%s : parameter interaction: -salvagewallet=1 -> setting -rescan=1\n", __func__);
     }
 
-    // -zapwallettx implies a rescan
-    if (gArgs.GetBoolArg("-zapwallettxes", false)) {
+    int zapwallettxes = gArgs.GetArg("-zapwallettxes", 0);
+    // -zapwallettxes implies dropping the mempool on startup
+    if (zapwallettxes != 0 && gArgs.SoftSetBoolArg("-persistmempool", false)) {
+        LogPrintf("%s: parameter interaction: -zapwallettxes=%s -> setting -persistmempool=0\n", __func__, zapwallettxes);
+    }
+
+    // -zapwallettxes implies a rescan
+    if (zapwallettxes != 0) {
         if (gArgs.SoftSetBoolArg("-rescan", true))
-            LogPrintf("%s : parameter interaction: -zapwallettxes=<mode> -> setting -rescan=1\n", __func__);
+            LogPrintf("%s : parameter interaction: -zapwallettxes=%s -> setting -rescan=1\n", __func__, zapwallettxes);
     }
 }
 

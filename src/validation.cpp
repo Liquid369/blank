@@ -309,7 +309,7 @@ std::string FormatStateMessage(const CValidationState &state)
 }
 
 bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const CTransactionRef& _tx, bool fLimitFree,
-                              bool* pfMissingInputs, bool fOverrideMempoolLimit, bool fRejectAbsurdFee, bool ignoreFees,
+                              bool* pfMissingInputs, int64_t nAcceptTime, bool fOverrideMempoolLimit, bool fRejectAbsurdFee, bool ignoreFees,
                               std::vector<COutPoint>& coins_to_uncache)
 {
     AssertLockHeld(cs_main);
@@ -495,7 +495,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
             }
         }
 
-        CTxMemPoolEntry entry(_tx, nFees, GetTime(), dPriority, chainHeight, pool.HasNoInputsOf(tx), inChainInputValue, fSpendsCoinbaseOrCoinstake, nSigOps);
+        CTxMemPoolEntry entry(_tx, nFees, nAcceptTime, dPriority, chainHeight, pool.HasNoInputsOf(tx), inChainInputValue, fSpendsCoinbaseOrCoinstake, nSigOps);
         unsigned int nSize = entry.GetTxSize();
 
         // Don't accept it if it can't get into a block
@@ -589,6 +589,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
             return error("%s: BUG! PLEASE REPORT THIS! ConnectInputs failed against MANDATORY but not STANDARD flags %s, %s",
                     __func__, hash.ToString(), FormatStateMessage(state));
         }
+        // todo: pool.removeStaged for all conflicting entries
 
         // Store transaction in memory
         pool.addUnchecked(hash, entry, setAncestors, !IsInitialBlockDownload());
@@ -610,11 +611,11 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     return true;
 }
 
-bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransactionRef& tx, bool fLimitFree,
-                        bool* pfMissingInputs, bool fOverrideMempoolLimit, bool fRejectAbsurdFee, bool fIgnoreFees)
+bool AcceptToMemoryPoolWithTime(CTxMemPool& pool, CValidationState &state, const CTransactionRef& tx, bool fLimitFree,
+                        bool* pfMissingInputs, int64_t nAcceptTime, bool fOverrideMempoolLimit, bool fRejectAbsurdFee, bool fIgnoreFees)
 {
     std::vector<COutPoint> coins_to_uncache;
-    bool res = AcceptToMemoryPoolWorker(pool, state, tx, fLimitFree, pfMissingInputs, fOverrideMempoolLimit, fRejectAbsurdFee, fIgnoreFees, coins_to_uncache);
+    bool res = AcceptToMemoryPoolWorker(pool, state, tx, fLimitFree, pfMissingInputs, nAcceptTime, fOverrideMempoolLimit, fRejectAbsurdFee, fIgnoreFees, coins_to_uncache);
     if (!res) {
         for (const COutPoint& outpoint: coins_to_uncache)
             pcoinsTip->Uncache(outpoint);
@@ -623,6 +624,13 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransa
     CValidationState stateDummy;
     FlushStateToDisk(stateDummy, FLUSH_STATE_PERIODIC);
     return res;
+}
+
+bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState& state, const CTransactionRef& tx,
+                        bool fLimitFree, bool* pfMissingInputs, bool fOverrideMempoolLimit,
+                        bool fRejectInsaneFee, bool ignoreFees)
+{
+    return AcceptToMemoryPoolWithTime(pool, state, tx, fLimitFree, pfMissingInputs, GetTime(), fOverrideMempoolLimit, fRejectInsaneFee, ignoreFees);
 }
 
 bool GetOutput(const uint256& hash, unsigned int index, CValidationState& state, CTxOut& out)
@@ -647,7 +655,10 @@ bool GetTransaction(const uint256& hash, CTransaction& txOut, uint256& hashBlock
     LOCK(cs_main);
 
     if (!blockIndex) {
-        if (mempool.lookup(hash, txOut)) {
+
+        CTransactionRef ptx = mempool.get(hash);
+        if (ptx) {
+            txOut = *ptx;
             return true;
         }
 
@@ -1962,10 +1973,9 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     std::vector<uint256> vHashUpdate;
     for (const auto& tx : block.vtx) {
         // ignore validation errors in resurrected transactions
-        std::list<CTransactionRef> removed;
         CValidationState stateDummy;
         if (tx->IsCoinBase() || tx->IsCoinStake() || !AcceptToMemoryPool(mempool, stateDummy, tx, false, nullptr, true)) {
-            mempool.remove(*tx, removed, true);
+            mempool.removeRecursive(*tx);
         } else if (mempool.exists(tx->GetHash())) {
             vHashUpdate.push_back(tx->GetHash());
         }
@@ -2017,7 +2027,7 @@ static int64_t nTimePostConnect = 0;
  * applied to the UTXO state as a part of a single ActivateBestChainStep call.
  */
 struct ConnectTrace {
-    std::list<CTransactionRef> txConflicted;
+    std::vector<CTransactionRef> txConflicted;
     std::vector<std::pair<CBlockIndex*, std::shared_ptr<const CBlock> > > blocksConnected;
 };
 
@@ -2082,7 +2092,7 @@ bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const st
     LogPrint(BCLog::BENCH, "  - Writing chainstate: %.2fms [%.2fs]\n", (nTime5 - nTime4) * 0.001, nTimeChainState * 0.000001);
 
     // Remove conflicting transactions from the mempool.
-    mempool.removeForBlock(blockConnecting.vtx, pindexNew->nHeight, connectTrace.txConflicted, !IsInitialBlockDownload());
+    mempool.removeForBlock(blockConnecting.vtx, pindexNew->nHeight, &connectTrace.txConflicted, !IsInitialBlockDownload());
     // Update chainActive & related variables.
     UpdateTip(pindexNew);
     // Update MN manager cache
@@ -4086,6 +4096,120 @@ std::string CBlockFileInfo::ToString() const
     return strprintf("CBlockFileInfo(blocks=%u, size=%u, heights=%u...%u, time=%s...%s)", nBlocks, nSize, nHeightFirst, nHeightLast, DateTimeStrFormat("%Y-%m-%d", nTimeFirst), DateTimeStrFormat("%Y-%m-%d", nTimeLast));
 }
 
+static const uint64_t MEMPOOL_DUMP_VERSION = 1;
+
+bool LoadMempool(void)
+{
+    int64_t nExpiryTimeout = gArgs.GetArg("-mempoolexpiry", DEFAULT_MEMPOOL_EXPIRY) * 60 * 60;
+    FILE* filestr = fopen((GetDataDir() / "mempool.dat").string().c_str(), "r");
+    CAutoFile file(filestr, SER_DISK, CLIENT_VERSION);
+    if (file.IsNull()) {
+        LogPrintf("Failed to open mempool file from disk. Continuing anyway.\n");
+        return false;
+    }
+
+    int64_t count = 0;
+    int64_t skipped = 0;
+    int64_t failed = 0;
+    int64_t nNow = GetTime();
+
+    try {
+        uint64_t version;
+        file >> version;
+        if (version != MEMPOOL_DUMP_VERSION) {
+            return false;
+        }
+        uint64_t num;
+        file >> num;
+        double prioritydummy = 0;
+        while (num--) {
+            CTransactionRef tx;
+            int64_t nTime;
+            int64_t nFeeDelta;
+            file >> tx;
+            file >> nTime;
+            file >> nFeeDelta;
+
+            CAmount amountdelta = nFeeDelta;
+            if (amountdelta) {
+                mempool.PrioritiseTransaction(tx->GetHash(), tx->GetHash().ToString(), prioritydummy, amountdelta);
+            }
+            CValidationState state;
+            if (nTime + nExpiryTimeout > nNow) {
+                LOCK(cs_main);
+                AcceptToMemoryPoolWithTime(mempool, state, tx, true, NULL, nTime);
+                if (state.IsValid()) {
+                    ++count;
+                } else {
+                    ++failed;
+                }
+            } else {
+                ++skipped;
+            }
+            if (ShutdownRequested())
+                return false;
+        }
+        std::map<uint256, CAmount> mapDeltas;
+        file >> mapDeltas;
+
+        for (const auto& i : mapDeltas) {
+            mempool.PrioritiseTransaction(i.first, i.first.ToString(), prioritydummy, i.second);
+        }
+    } catch (const std::exception& e) {
+        LogPrintf("Failed to deserialize mempool data on disk: %s. Continuing anyway.\n", e.what());
+        return false;
+    }
+
+    LogPrintf("Imported mempool transactions from disk: %i successes, %i failed, %i expired\n", count, failed, skipped);
+    return true;
+}
+
+void DumpMempool(void)
+{
+    int64_t start = GetTimeMicros();
+
+    std::map<uint256, CAmount> mapDeltas;
+    std::vector<TxMempoolInfo> vinfo;
+
+    {
+        LOCK(mempool.cs);
+        for (const auto &i : mempool.mapDeltas) {
+            mapDeltas[i.first] = i.second.first;
+        }
+        vinfo = mempool.infoAll();
+    }
+
+    int64_t mid = GetTimeMicros();
+
+    try {
+        FILE* filestr = fopen((GetDataDir() / "mempool.dat.new").string().c_str(), "w");
+        if (!filestr) {
+            return;
+        }
+
+        CAutoFile file(filestr, SER_DISK, CLIENT_VERSION);
+
+        uint64_t version = MEMPOOL_DUMP_VERSION;
+        file << version;
+
+        file << (uint64_t)vinfo.size();
+        for (const auto& i : vinfo) {
+            file << i.tx;
+            file << (int64_t)i.nTime;
+            file << (int64_t)i.nFeeDelta;
+            mapDeltas.erase(i.tx->GetHash());
+        }
+
+        file << mapDeltas;
+        FileCommit(file.Get());
+        file.fclose();
+        RenameOver(GetDataDir() / "mempool.dat.new", GetDataDir() / "mempool.dat");
+        int64_t last = GetTimeMicros();
+        LogPrintf("Dumped mempool: %gs to copy, %gs to dump\n", (mid-start)*0.000001, (last-mid)*0.000001);
+    } catch (const std::exception& e) {
+        LogPrintf("Failed to dump mempool: %s. Continuing anyway.\n", e.what());
+    }
+}
 
 class CMainCleanup
 {

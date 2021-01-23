@@ -38,7 +38,6 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
     for (unsigned int i = 0; i < 128; i++)
         garbage.push_back('X');
     CMutableTransaction tx;
-    std::list<CTransactionRef> dummyConflicted;
     tx.vin.resize(1);
     tx.vin[0].scriptSig = garbage;
     tx.vout.resize(1);
@@ -67,13 +66,13 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
             // 9/10 blocks add 2nd highest and so on until ...
             // 1/10 blocks add lowest fee transactions
             while (txHashes[9-h].size()) {
-                CTransaction btx;
-                if (mpool.lookup(txHashes[9-h].back(), btx))
-                    block.push_back(std::make_shared<const CTransaction>(btx));
+                CTransactionRef ptx = mpool.get(txHashes[9-h].back());
+                if (ptx)
+                    block.emplace_back(ptx);
                 txHashes[9-h].pop_back();
             }
         }
-        mpool.removeForBlock(block, ++blocknum, dummyConflicted);
+        mpool.removeForBlock(block, ++blocknum);
         block.clear();
         if (blocknum == 30) {
             // At this point we should need to combine 5 buckets to get enough data points
@@ -112,7 +111,7 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
     // Mine 50 more blocks with no transactions happening, estimates shouldn't change
     // We haven't decayed the moving average enough so we still have enough data points in every bucket
     while (blocknum < 250)
-        mpool.removeForBlock(block, ++blocknum, dummyConflicted);
+        mpool.removeForBlock(block, ++blocknum);
 
     for (int i = 1; i < 10;i++) {
         BOOST_CHECK(mpool.estimateFee(i).GetFeePerK() < origFeeEst[i-1] + deltaFee);
@@ -131,7 +130,7 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
                 txHashes[j].push_back(hash);
             }
         }
-        mpool.removeForBlock(block, ++blocknum, dummyConflicted);
+        mpool.removeForBlock(block, ++blocknum);
     }
 
     int answerFound;
@@ -144,13 +143,13 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
     // Estimates should still not be below original
     for (int j = 0; j < 10; j++) {
         while(txHashes[j].size()) {
-            CTransaction btx;
-            if (mpool.lookup(txHashes[j].back(), btx))
-                block.push_back(std::make_shared<const CTransaction>(btx));
+            CTransactionRef ptx = mpool.get(txHashes[j].back());
+            if (ptx)
+                block.emplace_back(ptx);
             txHashes[j].pop_back();
         }
     }
-    mpool.removeForBlock(block, 265, dummyConflicted);
+    mpool.removeForBlock(block, 265);
     block.clear();
     for (int i = 1; i < 10;i++) {
         BOOST_CHECK(mpool.estimateFee(i).GetFeePerK() > origFeeEst[i-1] - deltaFee);
@@ -164,12 +163,12 @@ BOOST_AUTO_TEST_CASE(BlockPolicyEstimates)
                 tx.vin[0].prevout.n = 10000*blocknum+100*j+k;
                 uint256 hash = tx.GetHash();
                 mpool.addUnchecked(hash, entry.Fee(feeV[j]).Time(GetTime()).Priority(0).Height(blocknum).FromTx(tx, &mpool));
-                CTransaction btx;
-                if (mpool.lookup(hash, btx))
-                    block.push_back(std::make_shared<const CTransaction>(btx));
+                CTransactionRef ptx = mpool.get(hash);
+                if (ptx)
+                    block.emplace_back(ptx);
             }
         }
-        mpool.removeForBlock(block, ++blocknum, dummyConflicted);
+        mpool.removeForBlock(block, ++blocknum);
         block.clear();
     }
     for (int i = 1; i < 10; i++) {

@@ -57,6 +57,8 @@ static const unsigned int DEFAULT_ANCESTOR_LIMIT = 25;
 static const unsigned int DEFAULT_ANCESTOR_SIZE_LIMIT = 101;
 /** Default for -banscore */
 static const int DEFAULT_BANSCORE_THRESHOLD = 100;
+/** Default for -persistmempool */
+static const bool DEFAULT_PERSIST_MEMPOOL = true;
 /** Default for -limitdescendantcount, max number of in-mempool descendants */
 static const unsigned int DEFAULT_DESCENDANT_LIMIT = 25;
 /** Default for -limitdescendantsize, maximum kilobytes of in-mempool descendants */
@@ -107,9 +109,6 @@ static const unsigned int MAX_REJECT_MESSAGE_LENGTH = 111;
 static const unsigned int AVG_LOCAL_ADDRESS_BROADCAST_INTERVAL = 24 * 24 * 60;
 /** Average delay between peer address broadcasts in seconds. */
 static const unsigned int AVG_ADDRESS_BROADCAST_INTERVAL = 30;
-/** Average delay between trickled inventory broadcasts in seconds.
- *  Blocks, whitelisted receivers, and a random 25% of transactions bypass this. */
-static const unsigned int AVG_INVENTORY_BROADCAST_INTERVAL = 5;
 /** Default multiplier used in the computation for shielded txes min fee */
 static const unsigned int DEFAULT_SHIELDEDTXFEE_K = 100;
 
@@ -218,6 +217,11 @@ void FlushStateToDisk();
 
 /** (try to) add transaction to memory pool **/
 bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState& state, const CTransactionRef& tx, bool fLimitFree, bool* pfMissingInputs, bool fOverrideMempoolLimit = false, bool fRejectInsaneFee = false, bool ignoreFees = false);
+
+/** (try to) add transaction to memory pool with a specified acceptance time **/
+bool AcceptToMemoryPoolWithTime(CTxMemPool& pool, CValidationState &state, const CTransactionRef &tx, bool fLimitFree,
+                                bool* pfMissingInputs, int64_t nAcceptTime, bool fOverrideMempoolLimit = false,
+                                bool fRejectInsaneFee = false, bool ignoreFees = false);
 
 /** Convert CValidationState to a human-readable message for logging */
 std::string FormatStateMessage(const CValidationState &state);
@@ -394,5 +398,11 @@ static const unsigned int REJECT_HIGHFEE = 0x100;
 static const unsigned int REJECT_ALREADY_KNOWN = 0x101;
 /** Transaction conflicts with a transaction already known */
 static const unsigned int REJECT_CONFLICT = 0x102;
+
+/** Dump the mempool to disk. */
+void DumpMempool();
+
+/** Load the mempool from disk. */
+bool LoadMempool();
 
 #endif // BITCOIN_MAIN_H
