@@ -268,6 +268,50 @@ bool voteProposalMasternodeEntry(const CMasternodeConfig::CMasternodeEntry& mne,
     return voteProposal(pubKeyMasternode, keyMasternode, mne.getAlias(), propHash, nVote, resultsObj);
 }
 
+UniValue packVoteReturnValue(const UniValue& details, int success, int failed)
+{
+    UniValue returnObj(UniValue::VOBJ);
+    returnObj.pushKV("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", success, failed));
+    returnObj.pushKV("detail", details);
+    return returnObj;
+}
+
+UniValue mnBudgetVoteInner(Optional<std::string> mnAliasFilter, const uint256& propHash,
+                           const CBudgetVote::VoteDirection& nVote)
+{
+    UniValue resultsObj(UniValue::VARR);
+    int success = 0;
+    int failed = 0;
+    for (const CMasternodeConfig::CMasternodeEntry& mne : masternodeConfig.getEntries()) {
+        if (mnAliasFilter && *mnAliasFilter != mne.getAlias()) continue;
+        if (!voteProposalMasternodeEntry(mne, propHash, nVote, resultsObj)) {
+            failed++;
+        } else {
+            success++;
+        }
+    }
+    return packVoteReturnValue(resultsObj, success, failed);
+}
+
+UniValue mnLocalBudgetVoteInner(const uint256& propHash, const CBudgetVote::VoteDirection& nVote)
+{
+    // local node must be a masternode
+    if (!fMasterNode)
+        throw JSONRPCError(RPC_MISC_ERROR, _("This is not a masternode. 'local' option disabled."));
+
+    if (activeMasternode.vin == nullopt)
+        throw JSONRPCError(RPC_MISC_ERROR, _("Active Masternode not initialized."));
+
+    UniValue returnObj(UniValue::VOBJ);
+    UniValue resultsObj(UniValue::VARR);
+    // Get MN keys
+    CPubKey pubKeyMasternode;
+    CKey keyMasternode;
+    activeMasternode.GetKeys(keyMasternode, pubKeyMasternode);
+    bool ret = voteProposal(pubKeyMasternode, keyMasternode, "local", propHash, nVote, resultsObj);
+    return packVoteReturnValue(resultsObj, ret, !ret);
+}
+
 UniValue mnbudgetvote(const JSONRPCRequest& request)
 {
     std::string strCommand;
@@ -309,73 +353,22 @@ UniValue mnbudgetvote(const JSONRPCRequest& request)
             HelpExampleCli("mnbudgetvote", "\"local\" \"ed2f83cedee59a91406f5f47ec4d60bf5a7f9ee6293913c82976bd2d3a658041\" \"yes\"") +
             HelpExampleRpc("mnbudgetvote", "\"local\" \"ed2f83cedee59a91406f5f47ec4d60bf5a7f9ee6293913c82976bd2d3a658041\" \"yes\""));
 
-    uint256 hash = ParseHashV(request.params[1], "parameter 1");
-    std::string strVote = request.params[2].get_str();
+    const uint256& hash = ParseHashV(request.params[1], "parameter 1");
+    const std::string& strVote = request.params[2].get_str();
 
     if (strVote != "yes" && strVote != "no") return "You can only vote 'yes' or 'no'";
     CBudgetVote::VoteDirection nVote = CBudgetVote::VOTE_ABSTAIN;
     if (strVote == "yes") nVote = CBudgetVote::VOTE_YES;
     if (strVote == "no") nVote = CBudgetVote::VOTE_NO;
 
-    int success = 0;
-    int failed = 0;
-
-    UniValue resultsObj(UniValue::VARR);
-
     if (strCommand == "local") {
-        // local node must be a masternode
-        if (!fMasterNode)
-            throw JSONRPCError(RPC_MISC_ERROR, _("This is not a masternode. 'local' option disabled."));
-
-        if (activeMasternode.vin == nullopt)
-            throw JSONRPCError(RPC_MISC_ERROR, _("Active Masternode not initialized."));
-
-        // Get MN keys
-        CPubKey pubKeyMasternode;
-        CKey keyMasternode;
-        activeMasternode.GetKeys(keyMasternode, pubKeyMasternode);
-        if (!voteProposal(pubKeyMasternode, keyMasternode, "local", hash, nVote, resultsObj)) {
-            failed++;
-        } else {
-            success++;
-        }
-
-        UniValue returnObj(UniValue::VOBJ);
-        returnObj.pushKV("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", success, failed));
-        returnObj.pushKV("detail", resultsObj);
-        return returnObj;
+        return mnLocalBudgetVoteInner(hash, nVote);
     }
 
-    if (strCommand == "many") {
-        for (const CMasternodeConfig::CMasternodeEntry& mne : masternodeConfig.getEntries()) {
-            if (!voteProposalMasternodeEntry(mne, hash, nVote, resultsObj)) {
-                failed++;
-            } else {
-                success++;
-            }
-        }
-
-        UniValue returnObj(UniValue::VOBJ);
-        returnObj.pushKV("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", success, failed));
-        returnObj.pushKV("detail", resultsObj);
-        return returnObj;
-    }
-
-    if (strCommand == "alias") {
-        std::string strAlias = request.params[3].get_str();
-        for (const CMasternodeConfig::CMasternodeEntry& mne : masternodeConfig.getEntries()) {
-            if (strAlias != mne.getAlias()) continue;
-            if (!voteProposalMasternodeEntry(mne, hash, nVote, resultsObj)) {
-                failed++;
-            } else {
-                success++;
-            }
-        }
-
-        UniValue returnObj(UniValue::VOBJ);
-        returnObj.pushKV("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", success, failed));
-        returnObj.pushKV("detail", resultsObj);
-        return returnObj;
+    bool isAlias = false;
+    if (strCommand == "many" || (isAlias = strCommand == "alias")) {
+        Optional<std::string> mnAlias = isAlias ? Optional<std::string>(request.params[3].get_str()) : nullopt;
+        return mnBudgetVoteInner(mnAlias, hash, nVote);
     }
 
     return NullUniValue;
