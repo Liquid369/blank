@@ -4,7 +4,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "tiertwo/specialtx_validation.h"
+#include "evo/specialtx.h"
 
 #include "chain.h"
 #include "chainparams.h"
@@ -71,3 +71,4 @@ bool UndoSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindexPrev)
     /* undo special txes in batches */
     return true;
 }
+

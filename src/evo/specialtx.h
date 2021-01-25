@@ -27,4 +27,4 @@ bool CheckSpecialTx(const CTransaction& tx, CValidationState& state, bool fIsSap
 bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindexPrev, CValidationState& state);
 bool UndoSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindexPrev);
 
-#endif //PIVX_SAPLING_VALIDATION_H
+#endif // PIVX_SPECIALTX_H

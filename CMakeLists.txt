@@ -383,7 +383,7 @@ set(COMMON_SOURCES
         ./src/coins.cpp
         ./src/key_io.cpp
         ./src/compressor.cpp
-        ./src/tiertwo/specialtx_validation.cpp
+        ./src/evo/specialtx.cpp
         ./src/consensus/merkle.cpp
         ./src/consensus/zerocoin_verify.cpp
         ./src/primitives/block.cpp

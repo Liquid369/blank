@@ -5,9 +5,9 @@
 #include "tx_verify.h"
 
 #include "consensus/consensus.h"
+#include "evo/specialtx.h"
 #include "consensus/zerocoin_verify.h"
 #include "sapling/sapling_validation.h"
-#include "tiertwo/specialtx_validation.h"
 #include "../validation.h"
 
 bool IsFinalTx(const CTransactionRef& tx, int nBlockHeight, int64_t nBlockTime)

@@ -5,7 +5,7 @@
 #include "test/test_pivx.h"
 #include "primitives/transaction.h"
 #include "sapling/sapling_validation.h"
-#include "tiertwo/specialtx_validation.h"
+#include "evo/specialtx.h"
 #include "test/librust/utiltest.h"
 
 #include <boost/test/unit_test.hpp>
