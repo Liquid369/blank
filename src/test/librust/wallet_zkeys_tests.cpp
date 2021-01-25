@@ -159,7 +159,8 @@ BOOST_AUTO_TEST_CASE(WriteCryptedSaplingZkeyDirectToDb) {
 
     // Create a new wallet from the existing wallet path
     bool fFirstRun;
-    CWallet wallet2(pwalletMain->strWalletFile);
+    std::unique_ptr<CWalletDBWrapper> dbw(new CWalletDBWrapper(&bitdb, pwalletMain->GetDBHandle().GetName()));
+    CWallet wallet2(std::move(dbw));
     BOOST_CHECK_EQUAL(DB_LOAD_OK, wallet2.LoadWallet(fFirstRun));
 
     // Confirm it's not the same as the other wallet

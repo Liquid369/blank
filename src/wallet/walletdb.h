@@ -13,15 +13,27 @@
 #include "key.h"
 #include "keystore.h"
 #include "script/keyorigin.h"
-#include "zpiv/zerocoin.h"
-#include "libzerocoin/Accumulator.h"
-#include "libzerocoin/Denominations.h"
 
 #include <list>
 #include <stdint.h>
 #include <string>
 #include <utility>
 #include <vector>
+
+/**
+ * Overview of wallet database classes:
+ *
+ * - CDBEnv is an environment in which the database exists (has no analog in dbwrapper.h)
+ * - CWalletDBWrapper represents a wallet database (similar to CDBWrapper in dbwrapper.h)
+ * - CDB is a low-level database transaction (similar to CDBBatch in dbwrapper.h)
+ * - CWalletDB is a modifier object for the wallet, and encapsulates a database
+ *   transaction as well as methods to act on the database (no analog in
+ *   dbwrapper.h)
+ *
+ * The latter two are named confusingly, in contrast to what the names CDB
+ * and CWalletDB suggest they are transient transaction objects and don't
+ * represent the database itself.
+ */
 
 static const bool DEFAULT_FLUSHWALLET = true;
 
@@ -32,8 +44,6 @@ class CScript;
 class CWallet;
 class CWalletTx;
 class CDeterministicMint;
-class CZerocoinMint;
-class CZerocoinSpend;
 class uint160;
 class uint256;
 
@@ -98,11 +108,16 @@ public:
     }
 };
 
-/** Access to the wallet database */
-class CWalletDB : public CDB
+/** Access to the wallet database.
+ * This should really be named CWalletDBBatch, as it represents a single transaction at the
+ * database. It will be committed when the object goes out of scope.
+ * Optionally (on by default) it will flush to disk as well.
+ */
+class CWalletDB
 {
 public:
-    CWalletDB(const std::string& strFilename, const char* pszMode = "r+", bool fFlushOnClose = true) : CDB(strFilename, pszMode, fFlushOnClose)
+    CWalletDB(CWalletDBWrapper& dbw, const char* pszMode = "r+", bool _fFlushOnClose = true) :
+        batch(dbw, pszMode, _fFlushOnClose)
     {
     }
 
@@ -191,48 +206,28 @@ public:
     /* verifies the database file */
     static bool VerifyDatabaseFile(const std::string& walletFile, const fs::path& dataDir, std::string& warningStr, std::string& errorStr);
 
-    bool WriteDeterministicMint(const CDeterministicMint& dMint);
-    bool ReadDeterministicMint(const uint256& hashPubcoin, CDeterministicMint& dMint);
-    bool EraseDeterministicMint(const uint256& hashPubcoin);
-    bool WriteZerocoinMint(const CZerocoinMint& zerocoinMint);
-    bool EraseZerocoinMint(const CZerocoinMint& zerocoinMint);
-    bool ReadZerocoinMint(const CBigNum &bnPubcoinValue, CZerocoinMint& zerocoinMint);
-    bool ReadZerocoinMint(const uint256& hashPubcoin, CZerocoinMint& mint);
-    bool ArchiveMintOrphan(const CZerocoinMint& zerocoinMint);
-    bool ArchiveDeterministicOrphan(const CDeterministicMint& dMint);
-    bool UnarchiveZerocoinMint(const uint256& hashPubcoin, CZerocoinMint& mint);
-    bool UnarchiveDeterministicMint(const uint256& hashPubcoin, CDeterministicMint& dMint);
-    std::list<CZerocoinMint> ListMintedCoins();
-    std::list<CDeterministicMint> ListDeterministicMints();
-    std::list<CZerocoinSpend> ListSpentCoins();
-    std::list<CBigNum> ListSpentCoinsSerial();
-    std::list<CZerocoinMint> ListArchivedZerocoins();
-    std::list<CDeterministicMint> ListArchivedDeterministicMints();
-    bool WriteZerocoinSpendSerialEntry(const CZerocoinSpend& zerocoinSpend);
-    bool EraseZerocoinSpendSerialEntry(const CBigNum& serialEntry);
-    bool ReadZerocoinSpendSerialEntry(const CBigNum& bnSerial);
-    bool WriteCurrentSeedHash(const uint256& hashSeed);
-    bool ReadCurrentSeedHash(uint256& hashSeed);
-    bool WriteZPIVSeed(const uint256& hashSeed, const std::vector<unsigned char>& seed);
-    bool ReadZPIVSeed(const uint256& hashSeed, std::vector<unsigned char>& seed);
-    bool ReadZPIVSeed_deprecated(uint256& seed);
-    bool EraseZPIVSeed();
-    bool EraseZPIVSeed_deprecated();
-
-    bool WriteZPIVCount(const uint32_t& nCount);
-    bool ReadZPIVCount(uint32_t& nCount);
-    std::map<uint256, std::vector<std::pair<uint256, uint32_t> > > MapMintPool();
-    bool WriteMintPoolPair(const uint256& hashMasterSeed, const uint256& hashPubcoin, const uint32_t& nCount);
-
     static void IncrementUpdateCounter();
     static unsigned int GetUpdateCounter();
+
+    //! Begin a new transaction
+    bool TxnBegin();
+    //! Commit current transaction
+    bool TxnCommit();
+    //! Abort current transaction
+    bool TxnAbort();
+    //! Read wallet version
+    bool ReadVersion(int& nVersion);
+    //! Write wallet version
+    bool WriteVersion(int nVersion);
 private:
+    CDB batch;
+
     CWalletDB(const CWalletDB&);
     void operator=(const CWalletDB&);
 };
 
 void NotifyBacked(const CWallet& wallet, bool fSuccess, std::string strMessage);
-bool BackupWallet(const CWallet& wallet, const fs::path& strDest, bool fEnableCustom = true);
+bool BackupWallet(const CWallet& wallet, const fs::path& strDest);
 bool AttemptBackupWallet(const CWallet& wallet, const fs::path& pathSrc, const fs::path& pathDest);
 
 void ThreadFlushWalletDB();
