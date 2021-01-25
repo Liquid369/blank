@@ -193,8 +193,8 @@ bool CMasternode::IsInputAssociatedWithPubkey() const
     CTransactionRef txVin;
     uint256 hash;
     if(GetTransaction(vin.prevout.hash, txVin, hash, true)) {
-        for (CTxOut out : txVin->vout) {
-            if (out.nValue == 10000 * COIN && out.scriptPubKey == payee) return true;
+        for (const CTxOut& out : txVin->vout) {
+            if (out.nValue == MN_COLL_AMT && out.scriptPubKey == payee) return true;
         }
     }
 

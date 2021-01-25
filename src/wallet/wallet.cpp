@@ -11,6 +11,7 @@
 #include "coincontrol.h"
 #include "init.h"
 #include "guiinterfaceutil.h"
+#include "masternode.h"
 #include "masternode-payments.h"
 #include "policy/policy.h"
 #include "sapling/key_io_sapling.h"
@@ -1605,7 +1606,7 @@ CAmount CWalletTx::GetLockedCredit() const
         }
 
         // Add masternode collaterals which are handled like locked coins
-        else if (fMasterNode && tx->vout[i].nValue == 10000 * COIN) {
+        else if (fMasterNode && tx->vout[i].nValue == MN_COLL_AMT) {
             nCredit += pwallet->GetCredit(txout, ISMINE_SPENDABLE);
         }
 
@@ -2234,7 +2235,7 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& 
     CTxOut txOut = wtx->tx->vout[nOutputIndex];
 
     // Masternode collateral value
-    if (txOut.nValue != 10000 * COIN) {
+    if (txOut.nValue != MN_COLL_AMT) {
         strError = "Invalid collateral tx value, must be 10,000 PIV";
         return error("%s: tx %s, index %d not a masternode collateral", __func__, strTxHash, nOutputIndex);
     }
@@ -2288,7 +2289,7 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
     OutputAvailabilityResult res;
 
     // Check for only 10k utxo
-    if (nCoinType == ONLY_10000 && output.nValue != 10000 * COIN) return res;
+    if (nCoinType == ONLY_10000 && output.nValue != MN_COLL_AMT) return res;
 
     // Check for stakeable utxo
     if (nCoinType == STAKEABLE_COINS && output.IsZerocoinMint()) return res;
