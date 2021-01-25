@@ -227,6 +227,47 @@ UniValue packErrorRetStatus(const std::string& nodeType, const std::string& erro
     return packRetStatus(nodeType, "failed", error);
 }
 
+bool voteProposal(CPubKey& pubKeyMasternode, CKey& keyMasternode, const std::string& mnAlias,
+                  const uint256& propHash, const CBudgetVote::VoteDirection& nVote,
+                  UniValue& resultsObj)
+{
+    CMasternode* pmn = mnodeman.Find(pubKeyMasternode);
+    if (!pmn) {
+        resultsObj.push_back(packErrorRetStatus(mnAlias, "Can't find masternode by pubkey"));
+        return false;
+    }
+
+    CBudgetVote vote(pmn->vin, propHash, nVote);
+    if (!vote.Sign(keyMasternode, pubKeyMasternode)) {
+        resultsObj.push_back(packErrorRetStatus(mnAlias, "Failure to sign."));
+        return false;
+    }
+
+    std::string strError;
+    if (!g_budgetman.AddAndRelayProposalVote(vote, strError)) {
+        resultsObj.push_back(packErrorRetStatus(mnAlias, strError));
+        return false;
+    }
+
+    resultsObj.push_back(packRetStatus(mnAlias, "success", ""));
+    return true;
+}
+
+bool voteProposalMasternodeEntry(const CMasternodeConfig::CMasternodeEntry& mne,
+                                 const uint256& propHash, const CBudgetVote::VoteDirection& nVote,
+                                 UniValue& resultsObj) {
+    CPubKey pubKeyMasternode;
+    CKey keyMasternode;
+
+    if (!CMessageSigner::GetKeysFromSecret(mne.getPrivKey(), keyMasternode, pubKeyMasternode)) {
+        resultsObj.push_back(
+                packErrorRetStatus(mne.getAlias(), "Masternode signing error, could not set key correctly."));
+        return false;
+    }
+
+    return voteProposal(pubKeyMasternode, keyMasternode, mne.getAlias(), propHash, nVote, resultsObj);
+}
+
 UniValue mnbudgetvote(const JSONRPCRequest& request)
 {
     std::string strCommand;
@@ -289,133 +330,51 @@ UniValue mnbudgetvote(const JSONRPCRequest& request)
         if (activeMasternode.vin == nullopt)
             throw JSONRPCError(RPC_MISC_ERROR, _("Active Masternode not initialized."));
 
-        while (true) {
-            // Get MN keys
-            CPubKey pubKeyMasternode;
-            CKey keyMasternode;
-            activeMasternode.GetKeys(keyMasternode, pubKeyMasternode);
-
-            CMasternode* pmn = mnodeman.Find(activeMasternode.vin->prevout);
-            if (!pmn) {
-                failed++;
-                resultsObj.push_back(packErrorRetStatus("local", "Failure to find masternode in list : " + activeMasternode.vin->ToString()));
-                break;
-            }
-
-            CBudgetVote vote(*(activeMasternode.vin), hash, nVote);
-            if (!vote.Sign(keyMasternode, pubKeyMasternode)) {
-                failed++;
-                resultsObj.push_back(packErrorRetStatus("local", "Failure to sign."));
-                break;
-            }
-
-            std::string strError;
-            if (g_budgetman.AddAndRelayProposalVote(vote, strError)) {
-                success++;
-                resultsObj.push_back(packRetStatus("local", "success", ""));
-            } else {
-                failed++;
-                resultsObj.push_back(packErrorRetStatus("local", "Error voting : " + strError));
-            }
-            break;
+        // Get MN keys
+        CPubKey pubKeyMasternode;
+        CKey keyMasternode;
+        activeMasternode.GetKeys(keyMasternode, pubKeyMasternode);
+        if (!voteProposal(pubKeyMasternode, keyMasternode, "local", hash, nVote, resultsObj)) {
+            failed++;
+        } else {
+            success++;
         }
 
         UniValue returnObj(UniValue::VOBJ);
         returnObj.pushKV("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", success, failed));
         returnObj.pushKV("detail", resultsObj);
-
         return returnObj;
     }
 
     if (strCommand == "many") {
         for (const CMasternodeConfig::CMasternodeEntry& mne : masternodeConfig.getEntries()) {
-
-            CPubKey pubKeyMasternode;
-            CKey keyMasternode;
-
-            if (!CMessageSigner::GetKeysFromSecret(mne.getPrivKey(), keyMasternode, pubKeyMasternode)) {
+            if (!voteProposalMasternodeEntry(mne, hash, nVote, resultsObj)) {
                 failed++;
-                resultsObj.push_back(packErrorRetStatus(mne.getAlias(), "Masternode signing error, could not set key correctly."));
-                continue;
-            }
-
-            CMasternode* pmn = mnodeman.Find(pubKeyMasternode);
-            if (!pmn) {
-                failed++;
-                resultsObj.push_back(packErrorRetStatus(mne.getAlias(), "Can't find masternode by pubkey"));
-                continue;
-            }
-
-            CBudgetVote vote(pmn->vin, hash, nVote);
-            if (!vote.Sign(keyMasternode, pubKeyMasternode)) {
-                failed++;
-                resultsObj.push_back(packErrorRetStatus(mne.getAlias(), "Failure to sign."));
-                continue;
-            }
-
-            std::string strError;
-            if (g_budgetman.AddAndRelayProposalVote(vote, strError)) {
-                success++;
-                resultsObj.push_back(packRetStatus(mne.getAlias(), "success", ""));
             } else {
-                failed++;
-                resultsObj.push_back(packErrorRetStatus(mne.getAlias(), strError));
+                success++;
             }
         }
 
         UniValue returnObj(UniValue::VOBJ);
         returnObj.pushKV("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", success, failed));
         returnObj.pushKV("detail", resultsObj);
-
         return returnObj;
     }
 
     if (strCommand == "alias") {
         std::string strAlias = request.params[3].get_str();
-
         for (const CMasternodeConfig::CMasternodeEntry& mne : masternodeConfig.getEntries()) {
-
             if (strAlias != mne.getAlias()) continue;
-
-            CPubKey pubKeyMasternode;
-            CKey keyMasternode;
-
-            UniValue statusObj(UniValue::VOBJ);
-
-            if (!CMessageSigner::GetKeysFromSecret(mne.getPrivKey(), keyMasternode, pubKeyMasternode)){
+            if (!voteProposalMasternodeEntry(mne, hash, nVote, resultsObj)) {
                 failed++;
-                resultsObj.push_back(packErrorRetStatus(mne.getAlias(), "Masternode signing error, could not set key correctly."));
-                continue;
-            }
-
-            CMasternode* pmn = mnodeman.Find(pubKeyMasternode);
-            if (!pmn) {
-                failed++;
-                resultsObj.push_back(packErrorRetStatus(mne.getAlias(), "Can't find masternode by pubkey"));
-                continue;
-            }
-
-            CBudgetVote vote(pmn->vin, hash, nVote);
-            if (!vote.Sign(keyMasternode, pubKeyMasternode)){
-                failed++;
-                resultsObj.push_back(packErrorRetStatus(mne.getAlias(), "Failure to sign."));
-                continue;
-            }
-
-            std::string strError;
-            if (g_budgetman.AddAndRelayProposalVote(vote, strError)) {
-                success++;
-                resultsObj.push_back(packRetStatus(mne.getAlias(), "success", ""));
             } else {
-                failed++;
-                resultsObj.push_back(packErrorRetStatus(mne.getAlias(), strError));
+                success++;
             }
         }
 
         UniValue returnObj(UniValue::VOBJ);
         returnObj.pushKV("overall", strprintf("Voted successfully %d time(s) and failed %d time(s).", success, failed));
         returnObj.pushKV("detail", resultsObj);
-
         return returnObj;
     }
 
