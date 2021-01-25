@@ -312,6 +312,15 @@ UniValue mnLocalBudgetVoteInner(const uint256& propHash, const CBudgetVote::Vote
     return packVoteReturnValue(resultsObj, ret, !ret);
 }
 
+CBudgetVote::VoteDirection parseVote(const std::string& strVote)
+{
+    if (strVote != "yes" && strVote != "no") throw JSONRPCError(RPC_MISC_ERROR, "You can only vote 'yes' or 'no'");
+    CBudgetVote::VoteDirection nVote = CBudgetVote::VOTE_ABSTAIN;
+    if (strVote == "yes") nVote = CBudgetVote::VOTE_YES;
+    if (strVote == "no") nVote = CBudgetVote::VOTE_NO;
+    return nVote;
+}
+
 UniValue mnbudgetvote(const JSONRPCRequest& request)
 {
     std::string strCommand;
@@ -354,12 +363,7 @@ UniValue mnbudgetvote(const JSONRPCRequest& request)
             HelpExampleRpc("mnbudgetvote", "\"local\" \"ed2f83cedee59a91406f5f47ec4d60bf5a7f9ee6293913c82976bd2d3a658041\" \"yes\""));
 
     const uint256& hash = ParseHashV(request.params[1], "parameter 1");
-    const std::string& strVote = request.params[2].get_str();
-
-    if (strVote != "yes" && strVote != "no") return "You can only vote 'yes' or 'no'";
-    CBudgetVote::VoteDirection nVote = CBudgetVote::VOTE_ABSTAIN;
-    if (strVote == "yes") nVote = CBudgetVote::VOTE_YES;
-    if (strVote == "no") nVote = CBudgetVote::VOTE_NO;
+    CBudgetVote::VoteDirection nVote = parseVote(request.params[2].get_str());
 
     if (strCommand == "local") {
         return mnLocalBudgetVoteInner(hash, nVote);
@@ -520,7 +524,6 @@ UniValue getbudgetinfo(const JSONRPCRequest& request)
     UniValue ret(UniValue::VARR);
     int nCurrentHeight = g_budgetman.GetBestHeight();
 
-    std::string strShow = "valid";
     if (request.params.size() == 1) {
         std::string strProposalName = SanitizeString(request.params[0].get_str());
         const CBudgetProposal* pbudgetProposal = g_budgetman.FindProposalByName(strProposalName);
@@ -533,11 +536,10 @@ UniValue getbudgetinfo(const JSONRPCRequest& request)
 
     std::vector<CBudgetProposal*> winningProps = g_budgetman.GetAllProposals();
     for (CBudgetProposal* pbudgetProposal : winningProps) {
-        if (strShow == "valid" && !pbudgetProposal->IsValid()) continue;
+        if (!pbudgetProposal->IsValid()) continue;
 
         UniValue bObj(UniValue::VOBJ);
         budgetToJSON(pbudgetProposal, bObj, nCurrentHeight);
-
         ret.push_back(bObj);
     }
 
@@ -565,17 +567,12 @@ UniValue mnbudgetrawvote(const JSONRPCRequest& request)
             "\nExamples:\n" +
             HelpExampleCli("mnbudgetrawvote", "") + HelpExampleRpc("mnbudgetrawvote", ""));
 
-    uint256 hashMnTx = ParseHashV(request.params[0], "mn tx hash");
+    const uint256& hashMnTx = ParseHashV(request.params[0], "mn tx hash");
     int nMnTxIndex = request.params[1].get_int();
-    CTxIn vin = CTxIn(hashMnTx, nMnTxIndex);
+    const CTxIn& vin = CTxIn(hashMnTx, nMnTxIndex);
 
-    uint256 hashProposal = ParseHashV(request.params[2], "Proposal hash");
-    std::string strVote = request.params[3].get_str();
-
-    if (strVote != "yes" && strVote != "no") return "You can only vote 'yes' or 'no'";
-    CBudgetVote::VoteDirection nVote = CBudgetVote::VOTE_ABSTAIN;
-    if (strVote == "yes") nVote = CBudgetVote::VOTE_YES;
-    if (strVote == "no") nVote = CBudgetVote::VOTE_NO;
+    const uint256& hashProposal = ParseHashV(request.params[2], "Proposal hash");
+    CBudgetVote::VoteDirection nVote = parseVote(request.params[3].get_str());
 
     int64_t nTime = request.params[4].get_int64();
     std::string strSig = request.params[5].get_str();
@@ -586,7 +583,7 @@ UniValue mnbudgetrawvote(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Malformed base64 encoding");
 
     CMasternode* pmn = mnodeman.Find(vin.prevout);
-    if (pmn == NULL) {
+    if (!pmn) {
         return "Failure to find masternode in list : " + vin.ToString();
     }
 
@@ -600,7 +597,7 @@ UniValue mnbudgetrawvote(const JSONRPCRequest& request)
         if (!vote.CheckSignature()) return "Failure to verify signature.";
     }
 
-    std::string strError = "";
+    std::string strError;
     if (g_budgetman.AddAndRelayProposalVote(vote, strError)) {
         return "Voted successfully";
     } else {
