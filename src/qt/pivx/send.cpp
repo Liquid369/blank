@@ -214,10 +214,18 @@ void SendWidget::loadWalletModel()
     }
 }
 
+void SendWidget::hideContactsMenu()
+{
+    if (menuContacts && menuContacts->isVisible()) {
+        menuContacts->hide();
+    }
+}
+
 void SendWidget::clearAll(bool fClearSettings)
 {
     onResetCustomOptions(false);
     if (fClearSettings) onResetSettings();
+    hideContactsMenu();
     clearEntries();
     refreshAmounts();
 }
