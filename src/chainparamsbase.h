@@ -20,7 +20,6 @@ public:
     static const std::string MAIN;
     static const std::string TESTNET;
     static const std::string REGTEST;
-    static const std::string MAX_NETWORK_TYPES;
 
     const std::string& DataDir() const { return strDataDir; }
     int RPCPort() const { return nRPCPort; }
@@ -31,6 +30,12 @@ protected:
     int nRPCPort;
     std::string strDataDir;
 };
+
+/**
+ * Append the help messages for the chainparams options to the
+ * parameter string.
+ */
+void AppendParamsHelpMessages(std::string& strUsage, bool debugHelp=true);
 
 /**
  * Return the currently selected parameters. This won't change after app startup
@@ -48,11 +53,5 @@ void SelectBaseParams(const std::string& chain);
  * @return CBaseChainParams::MAX_NETWORK_TYPES if an invalid combination is given. CBaseChainParams::MAIN by default.
  */
 std::string ChainNameFromCommandLine();
-
-/**
- * Calls NetworkIdFromCommandLine() and then calls SelectParams as appropriate.
- * Returns false if an invalid combination is given.
- */
-bool SelectBaseParamsFromCommandLine();
 
 #endif // BITCOIN_CHAINPARAMSBASE_H

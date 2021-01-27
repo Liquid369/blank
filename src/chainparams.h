@@ -116,13 +116,6 @@ CChainParams& Params(const std::string& chain);
  */
 void SelectParams(const std::string& chain);
 
-
-/**
- * Looks for -regtest or -testnet and then calls SelectParams as appropriate.
- * Returns false if an invalid combination is given.
- */
-bool SelectParamsFromCommandLine();
-
 /**
  * Allows modifying the network upgrade regtest parameters.
  */

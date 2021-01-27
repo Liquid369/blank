@@ -525,16 +525,6 @@ void SelectParams(const std::string& network)
     pCurrentParams = &Params(network);
 }
 
-bool SelectParamsFromCommandLine()
-{
-    std::string network = ChainNameFromCommandLine();
-    if (network == CBaseChainParams::MAX_NETWORK_TYPES)
-        return false;
-
-    SelectParams(network);
-    return true;
-}
-
 void UpdateNetworkUpgradeParameters(Consensus::UpgradeIndex idx, int nActivationHeight)
 {
     regTestParams.UpdateNetworkUpgradeParameters(idx, nActivationHeight);
