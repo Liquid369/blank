@@ -59,7 +59,7 @@ WalletModel::~WalletModel()
 
 bool WalletModel::isTestNetwork() const
 {
-    return Params().NetworkID() == CBaseChainParams::TESTNET;
+    return Params().IsTestnet();
 }
 
 bool WalletModel::isRegTestNetwork() const

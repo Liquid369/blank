@@ -83,6 +83,7 @@ public:
 
     CBaseChainParams::Network NetworkID() const { return networkID; }
     bool IsRegTestNet() const { return NetworkID() == CBaseChainParams::REGTEST; }
+    bool IsTestnet() const { return NetworkID() == CBaseChainParams::TESTNET; }
 
 
 protected:

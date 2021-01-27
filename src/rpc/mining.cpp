@@ -309,7 +309,7 @@ UniValue getmininginfo(const JSONRPCRequest& request)
     obj.pushKV("genproclimit", (int)gArgs.GetArg("-genproclimit", -1));
     obj.pushKV("networkhashps", getnetworkhashps(request));
     obj.pushKV("pooledtx", (uint64_t)mempool.size());
-    obj.pushKV("testnet", Params().NetworkID() == CBaseChainParams::TESTNET);
+    obj.pushKV("testnet", Params().IsTestnet());
     obj.pushKV("chain", Params().NetworkIDString());
 #ifdef ENABLE_WALLET
     obj.pushKV("generate", getgenerate(request));

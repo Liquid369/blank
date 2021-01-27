@@ -217,7 +217,7 @@ bool IsBlockValueValid(int nHeight, CAmount& nExpectedValue, CAmount nMinted)
         //there is no budget data to use to check anything
         //super blocks will always be on these blocks, max 100 per budgeting
         if (nHeight % Params().GetConsensus().nBudgetCycleBlocks < 100) {
-            if (Params().NetworkID() == CBaseChainParams::TESTNET) {
+            if (Params().IsTestnet()) {
                 return true;
             }
             nExpectedValue += g_budgetman.GetTotalBudget(nHeight);

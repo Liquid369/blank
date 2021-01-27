@@ -126,7 +126,7 @@ UniValue getinfo(const JSONRPCRequest& request)
         obj.pushKV("connections", (int)g_connman->GetNodeCount(CConnman::CONNECTIONS_ALL));
     obj.pushKV("proxy", (proxy.IsValid() ? proxy.proxy.ToStringIPPort() : std::string()));
     obj.pushKV("difficulty", (double)GetDifficulty());
-    obj.pushKV("testnet", Params().NetworkID() == CBaseChainParams::TESTNET);
+    obj.pushKV("testnet", Params().IsTestnet());
 
     // Add (cached) money supply via getsupplyinfo RPC
     UniValue supply_info = getsupplyinfo(JSONRPCRequest());
