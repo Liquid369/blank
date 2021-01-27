@@ -116,7 +116,13 @@ BOOST_AUTO_TEST_CASE(StoreAndLoadSaplingZkeys) {
     BOOST_CHECK_EQUAL(wallet.GetSaplingScriptPubKeyMan()->mapSaplingZKeyMetadata[ivk2].nCreateTime, now);
 
     // Load a diversified address for the third key into the wallet
+    libzcash::SaplingPaymentAddress defaultAddr2 = sk2.DefaultAddress();
+    diversifier.begin()[0] = 10;
     auto dpa2 = sk2.ToXFVK().Address(diversifier).get().second;
+    while (dpa2 == defaultAddr2 && diversifier.begin()[0] < 255) {
+        diversifier.begin()[0] += 1;
+        dpa2 = sk2.ToXFVK().Address(diversifier).get().second;
+    }
     BOOST_CHECK(wallet.HaveSaplingIncomingViewingKey(sk2.DefaultAddress()));
     BOOST_CHECK(!wallet.HaveSaplingIncomingViewingKey(dpa2));
     BOOST_CHECK(wallet.LoadSaplingPaymentAddress(dpa2, ivk2));
