@@ -35,6 +35,13 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
     return genesis;
 }
 
+void CChainParams::UpdateNetworkUpgradeParameters(Consensus::UpgradeIndex idx, int nActivationHeight)
+{
+    assert(IsRegTestNet()); // only available for regtest
+    assert(idx > Consensus::BASE_NETWORK && idx < Consensus::MAX_NETWORK_UPGRADES);
+    consensus.vUpgrades[idx].nActivationHeight = nActivationHeight;
+}
+
 /**
  * Build the genesis block. Note that the output of the genesis coinbase cannot
  * be spent as it did not originally exist in the database.
@@ -247,7 +254,6 @@ public:
     }
 
 };
-static CMainParams mainParams;
 
 /**
  * Testnet (v5)
@@ -369,7 +375,6 @@ public:
         return dataTestnet;
     }
 };
-static CTestNetParams testNetParams;
 
 /**
  * Regression test
@@ -490,42 +495,41 @@ public:
     {
         return dataRegtest;
     }
-
-    void UpdateNetworkUpgradeParameters(Consensus::UpgradeIndex idx, int nActivationHeight)
-    {
-        assert(idx > Consensus::BASE_NETWORK && idx < Consensus::MAX_NETWORK_UPGRADES);
-        consensus.vUpgrades[idx].nActivationHeight = nActivationHeight;
-    }
 };
-static CRegTestParams regTestParams;
 
-static CChainParams* pCurrentParams = 0;
+static std::unique_ptr<CChainParams> globalChainParams;
+static std::unique_ptr<CChainParams> globalSwitchingChainParams;
 
-const CChainParams& Params()
+const CChainParams &Params()
 {
-    assert(pCurrentParams);
-    return *pCurrentParams;
+    assert(globalChainParams);
+    return *globalChainParams;
 }
 
-CChainParams& Params(const std::string& chain)
+std::unique_ptr<CChainParams> CreateChainParams(const std::string& chain)
 {
     if (chain == CBaseChainParams::MAIN)
-        return mainParams;
+        return std::unique_ptr<CChainParams>(new CMainParams());
     else if (chain == CBaseChainParams::TESTNET)
-        return testNetParams;
+        return std::unique_ptr<CChainParams>(new CTestNetParams());
     else if (chain == CBaseChainParams::REGTEST)
-        return regTestParams;
-    else
-        throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
+        return std::unique_ptr<CChainParams>(new CRegTestParams());
+    throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
+}
+
+const CChainParams& Params(const std::string& chain)
+{
+    globalSwitchingChainParams = CreateChainParams(chain);
+    return *globalSwitchingChainParams;
 }
 
 void SelectParams(const std::string& network)
 {
     SelectBaseParams(network);
-    pCurrentParams = &Params(network);
+    globalChainParams = CreateChainParams(network);
 }
 
 void UpdateNetworkUpgradeParameters(Consensus::UpgradeIndex idx, int nActivationHeight)
 {
-    regTestParams.UpdateNetworkUpgradeParameters(idx, nActivationHeight);
+    globalChainParams->UpdateNetworkUpgradeParameters(idx, nActivationHeight);
 }
