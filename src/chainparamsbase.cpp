@@ -106,7 +106,3 @@ bool SelectBaseParamsFromCommandLine()
     return true;
 }
 
-bool AreBaseParamsConfigured()
-{
-    return pCurrentBaseParams != NULL;
-}
