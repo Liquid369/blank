@@ -6,9 +6,15 @@
 
 #include "chainparamsbase.h"
 
+#include "tinyformat.h"
 #include "util.h"
 
 #include <assert.h>
+
+const std::string CBaseChainParams::MAIN = "main";
+const std::string CBaseChainParams::TESTNET = "test";
+const std::string CBaseChainParams::REGTEST = "regtest";
+const std::string CBaseChainParams::MAX_NETWORK_TYPES = "unknown_chain";
 
 /**
  * Main network
@@ -18,7 +24,6 @@ class CBaseMainParams : public CBaseChainParams
 public:
     CBaseMainParams()
     {
-        networkID = CBaseChainParams::MAIN;
         nRPCPort = 51473;
     }
 };
@@ -32,7 +37,6 @@ class CBaseTestNetParams : public CBaseChainParams
 public:
     CBaseTestNetParams()
     {
-        networkID = CBaseChainParams::TESTNET;
         nRPCPort = 51475;
         strDataDir = "testnet5";
     }
@@ -47,7 +51,6 @@ class CBaseRegTestParams : public CBaseChainParams
 public:
     CBaseRegTestParams()
     {
-        networkID = CBaseChainParams::REGTEST;
         nRPCPort = 51475;
         strDataDir = "regtest";
     }
@@ -62,33 +65,30 @@ const CBaseChainParams& BaseParams()
     return *pCurrentBaseParams;
 }
 
-CBaseChainParams& BaseParams(CBaseChainParams::Network network)
+CBaseChainParams& BaseParams(const std::string& chain)
 {
-    switch (network) {
-    case CBaseChainParams::MAIN:
+    if (chain == CBaseChainParams::MAIN)
         return mainParams;
-    case CBaseChainParams::TESTNET:
+    else if (chain == CBaseChainParams::TESTNET)
         return testNetParams;
-    case CBaseChainParams::REGTEST:
+    else if (chain == CBaseChainParams::REGTEST)
         return regTestParams;
-    default:
-        assert(false && "Unimplemented network");
-        return mainParams;
-    }
+    else
+        throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
 }
 
-void SelectBaseParams(CBaseChainParams::Network network)
+void SelectBaseParams(const std::string& chain)
 {
-    pCurrentBaseParams = &BaseParams(network);
+    pCurrentBaseParams = &BaseParams(chain);
 }
 
-CBaseChainParams::Network NetworkIdFromCommandLine()
+std::string ChainNameFromCommandLine()
 {
     bool fRegTest = gArgs.GetBoolArg("-regtest", false);
     bool fTestNet = gArgs.GetBoolArg("-testnet", false);
 
     if (fTestNet && fRegTest)
-        return CBaseChainParams::MAX_NETWORK_TYPES;
+        throw std::runtime_error("Invalid combination of -regtest and -testnet.");
     if (fRegTest)
         return CBaseChainParams::REGTEST;
     if (fTestNet)
@@ -98,7 +98,7 @@ CBaseChainParams::Network NetworkIdFromCommandLine()
 
 bool SelectBaseParamsFromCommandLine()
 {
-    CBaseChainParams::Network network = NetworkIdFromCommandLine();
+    std::string network = ChainNameFromCommandLine();
     if (network == CBaseChainParams::MAX_NETWORK_TYPES)
         return false;
 

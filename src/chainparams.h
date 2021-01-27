@@ -81,15 +81,13 @@ public:
     const std::vector<SeedSpec6>& FixedSeeds() const { return vFixedSeeds; }
     virtual const Checkpoints::CCheckpointData& Checkpoints() const = 0;
 
-    CBaseChainParams::Network NetworkID() const { return networkID; }
-    bool IsRegTestNet() const { return NetworkID() == CBaseChainParams::REGTEST; }
-    bool IsTestnet() const { return NetworkID() == CBaseChainParams::TESTNET; }
+    bool IsRegTestNet() const { return NetworkIDString() == CBaseChainParams::REGTEST; }
+    bool IsTestnet() const { return NetworkIDString() == CBaseChainParams::TESTNET; }
 
 
 protected:
     CChainParams() {}
 
-    CBaseChainParams::Network networkID;
     std::string strNetworkID;
     CBlock genesis;
     Consensus::Params consensus;
@@ -102,16 +100,22 @@ protected:
 };
 
 /**
- * Return the currently selected parameters. This won't change after app startup
- * outside of the unit tests.
+ * Return the currently selected parameters. This won't change after app
+ * startup, except for unit tests.
  */
 const CChainParams& Params();
 
-/** Return parameters for the given network. */
-CChainParams& Params(CBaseChainParams::Network network);
+/**
+ * @returns CChainParams for the given BIP70 chain name.
+ */
+CChainParams& Params(const std::string& chain);
 
-/** Sets the params returned by Params() to those for the given network. */
-void SelectParams(CBaseChainParams::Network network);
+/**
+ * Sets the params returned by Params() to those for the given BIP70 chain name.
+ * @throws std::runtime_error when the chain is not supported.
+ */
+void SelectParams(const std::string& chain);
+
 
 /**
  * Looks for -regtest or -testnet and then calls SelectParams as appropriate.

@@ -105,7 +105,7 @@ bool CheckZerocoinSpend(const CTransaction& tx, bool fVerifySignature, CValidati
 
 bool isBlockBetweenFakeSerialAttackRange(int nHeight)
 {
-    if (Params().NetworkID() != CBaseChainParams::MAIN)
+    if (Params().NetworkIDString() != CBaseChainParams::MAIN)
         return false;
 
     return nHeight <= Params().GetConsensus().height_last_ZC_WrappedSerials;

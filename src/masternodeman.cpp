@@ -406,7 +406,7 @@ void CMasternodeMan::DsegUpdate(CNode* pnode)
 {
     LOCK(cs);
 
-    if (Params().NetworkID() == CBaseChainParams::MAIN) {
+    if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         if (!(pnode->addr.IsRFC1918() || pnode->addr.IsLocal())) {
             std::map<CNetAddr, int64_t>::iterator it = mWeAskedForMasternodeList.find(pnode->addr);
             if (it != mWeAskedForMasternodeList.end()) {
@@ -719,7 +719,7 @@ int CMasternodeMan::ProcessGetMNList(CNode* pfrom, CTxIn& vin)
         //local network
         bool isLocal = (pfrom->addr.IsRFC1918() || pfrom->addr.IsLocal());
 
-        if (!isLocal && Params().NetworkID() == CBaseChainParams::MAIN) {
+        if (!isLocal && Params().NetworkIDString() == CBaseChainParams::MAIN) {
             std::map<CNetAddr, int64_t>::iterator i = mAskedUsForMasternodeList.find(pfrom->addr);
             if (i != mAskedUsForMasternodeList.end()) {
                 int64_t t = (*i).second;

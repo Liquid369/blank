@@ -79,7 +79,7 @@ int CZerocoinSpendReceipt::GetNeededSpends()
 
 
 int GetWrapppedSerialInflation(libzerocoin::CoinDenomination denom){
-    if(Params().NetworkID() == CBaseChainParams::MAIN) {
+    if(Params().NetworkIDString() == CBaseChainParams::MAIN) {
         switch (denom) {
             case libzerocoin::CoinDenomination::ZQ_ONE:
                 return 7;

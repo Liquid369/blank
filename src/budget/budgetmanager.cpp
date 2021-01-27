@@ -878,7 +878,7 @@ void CBudgetManager::NewBlock(int height)
 
 int CBudgetManager::ProcessBudgetVoteSync(const uint256& nProp, CNode* pfrom)
 {
-    if (Params().NetworkID() == CBaseChainParams::MAIN) {
+    if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         if (nProp.IsNull()) {
             if (pfrom->HasFulfilledRequest("budgetvotesync")) {
                 LogPrint(BCLog::MNBUDGET, "mnvs - peer already asked me for the list\n");

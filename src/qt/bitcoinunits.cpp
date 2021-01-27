@@ -59,7 +59,7 @@ QString BitcoinUnits::name(int unit, bool isZpiv)
     const QString CURR_UNIT = QString(CURRENCY_UNIT.c_str());
     QString z = "";
     if(isZpiv) z = "z";
-    if (Params().NetworkID() == CBaseChainParams::MAIN) {
+    if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         switch (unit) {
         case PIV:
             return z + CURR_UNIT;
@@ -87,7 +87,7 @@ QString BitcoinUnits::name(int unit, bool isZpiv)
 QString BitcoinUnits::description(int unit)
 {
     const QString CURR_UNIT = QString(CURRENCY_UNIT.c_str());
-    if (Params().NetworkID() == CBaseChainParams::MAIN) {
+    if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         switch (unit) {
         case PIV:
             return CURR_UNIT;
