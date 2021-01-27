@@ -21,7 +21,7 @@ static const unsigned int MAX_SPECIALTX_EXTRAPAYLOAD = 10000;
 /** Context-independent validity checks */
 // Note: for +v2, if the tx is not a special tx, this method returns true.
 // Note2: This function only performs extra payload related checks, it does NOT checks regular inputs and outputs.
-bool CheckSpecialTx(const CTransaction& tx, CValidationState& state, bool fIsSaplingActive);
+bool CheckSpecialTx(const CTransaction& tx, CValidationState& state);
 
 // Update internal tiertwo data when blocks containing special txes get connected/disconnected
 bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindexPrev, CValidationState& state);
