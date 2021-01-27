@@ -39,6 +39,7 @@ struct SeedSpec6 {
 class CChainParams
 {
 public:
+    virtual ~CChainParams() {}
     enum Base58Type {
         PUBKEY_ADDRESS,
         SCRIPT_ADDRESS,
