@@ -210,8 +210,8 @@ LEGACY_SKIP_TESTS = [
     'sapling_mempool.py',
 ]
 
-# Place EXTENDED_SCRIPTS first since it has the 3 longest running tests
-ALL_SCRIPTS = EXTENDED_SCRIPTS + BASE_SCRIPTS + TIERTWO_SCRIPTS + SAPLING_SCRIPTS
+# Place the lists with the longest tests (on average) first
+ALL_SCRIPTS = EXTENDED_SCRIPTS + TIERTWO_SCRIPTS + SAPLING_SCRIPTS + BASE_SCRIPTS
 
 NON_SCRIPTS = [
     # These are python files that live in the functional tests directory, but are not test scripts.
