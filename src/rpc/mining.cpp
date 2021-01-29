@@ -26,7 +26,99 @@
 
 #include <univalue.h>
 
+#ifdef ENABLE_WALLET
+UniValue generate(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() < 1 || request.params.size() > 1)
+        throw std::runtime_error(
+            "generate numblocks\n"
+            "\nMine blocks immediately (before the RPC call returns)\n"
+            "\nNote: this function can only be used on the regtest network\n"
 
+            "\nArguments:\n"
+            "1. numblocks    (numeric, required) How many blocks to generate.\n"
+
+            "\nResult\n"
+            "[ blockhashes ]     (array) hashes of blocks generated\n"
+
+            "\nExamples:\n"
+            "\nGenerate 11 blocks\n"
+            + HelpExampleCli("generate", "11")
+        );
+
+    if (!Params().IsRegTestNet())
+        throw JSONRPCError(RPC_METHOD_NOT_FOUND, "This method can only be used on regtest");
+
+    const int nGenerate = request.params[0].get_int();
+    int nHeightEnd = 0;
+    int nHeight = 0;
+
+    {   // Don't keep cs_main locked
+        LOCK(cs_main);
+        nHeight = chainActive.Height();
+        nHeightEnd = nHeight + nGenerate;
+    }
+
+    const Consensus::Params& consensus = Params().GetConsensus();
+    bool fPoS = consensus.NetworkUpgradeActive(nHeight + 1, Consensus::UPGRADE_POS);
+
+    if (fPoS) {
+        // If we are in PoS, wallet must be unlocked.
+        EnsureWalletIsUnlocked();
+    }
+
+    UniValue blockHashes(UniValue::VARR);
+    CReserveKey reservekey(pwalletMain);
+    unsigned int nExtraNonce = 0;
+
+    while (nHeight < nHeightEnd && !ShutdownRequested()) {
+
+        // Get available coins
+        std::vector<CStakeableOutput> availableCoins;
+        if (fPoS && !pwalletMain->StakeableCoins(&availableCoins)) {
+            throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "No available coins to stake");
+        }
+
+        std::unique_ptr<CBlockTemplate> pblocktemplate(fPoS ?
+                                                       CreateNewBlock(CScript(), pwalletMain, true, &availableCoins) :
+                                                       CreateNewBlockWithKey(reservekey, pwalletMain));
+        if (!pblocktemplate.get()) break;
+        std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>(pblocktemplate->block);
+
+        if(!fPoS) {
+            {
+                LOCK(cs_main);
+                IncrementExtraNonce(pblock, chainActive.Tip(), nExtraNonce);
+            }
+            while (pblock->nNonce < std::numeric_limits<uint32_t>::max() &&
+                   !CheckProofOfWork(pblock->GetHash(), pblock->nBits)) {
+                ++pblock->nNonce;
+            }
+            if (ShutdownRequested()) break;
+            if (pblock->nNonce == std::numeric_limits<uint32_t>::max()) continue;
+        }
+
+        CValidationState state;
+        if (!ProcessNewBlock(state, nullptr, pblock, nullptr))
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
+
+        ++nHeight;
+        blockHashes.push_back(pblock->GetHash().GetHex());
+
+        // Check PoS if needed.
+        if (!fPoS)
+            fPoS = consensus.NetworkUpgradeActive(nHeight + 1, Consensus::UPGRADE_POS);
+    }
+
+    const int nGenerated = blockHashes.size();
+    if (nGenerated == 0 || (!fPoS && nGenerated < nGenerate))
+        throw JSONRPCError(RPC_INTERNAL_ERROR, "Couldn't create new blocks");
+
+    return blockHashes;
+}
+#endif // ENABLE_WALLET
+
+#ifdef ENABLE_MINING_RPC
 /**
  * Return average network hashes per second based on the last 'lookup' blocks,
  * or from the last difficulty change if 'lookup' is nonpositive.
@@ -110,96 +202,6 @@ UniValue getgenerate(const JSONRPCRequest& request)
 
     LOCK(cs_main);
     return gArgs.GetBoolArg("-gen", false);
-}
-
-UniValue generate(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() < 1 || request.params.size() > 1)
-        throw std::runtime_error(
-            "generate numblocks\n"
-            "\nMine blocks immediately (before the RPC call returns)\n"
-            "\nNote: this function can only be used on the regtest network\n"
-
-            "\nArguments:\n"
-            "1. numblocks    (numeric, required) How many blocks to generate.\n"
-
-            "\nResult\n"
-            "[ blockhashes ]     (array) hashes of blocks generated\n"
-
-            "\nExamples:\n"
-            "\nGenerate 11 blocks\n"
-            + HelpExampleCli("generate", "11")
-        );
-
-    if (!Params().IsRegTestNet())
-        throw JSONRPCError(RPC_METHOD_NOT_FOUND, "This method can only be used on regtest");
-
-    const int nGenerate = request.params[0].get_int();
-    int nHeightEnd = 0;
-    int nHeight = 0;
-
-    {   // Don't keep cs_main locked
-        LOCK(cs_main);
-        nHeight = chainActive.Height();
-        nHeightEnd = nHeight + nGenerate;
-    }
-
-    const Consensus::Params& consensus = Params().GetConsensus();
-    bool fPoS = consensus.NetworkUpgradeActive(nHeight + 1, Consensus::UPGRADE_POS);
-
-    if (fPoS) {
-        // If we are in PoS, wallet must be unlocked.
-        EnsureWalletIsUnlocked();
-    }
-
-    UniValue blockHashes(UniValue::VARR);
-    CReserveKey reservekey(pwalletMain);
-    unsigned int nExtraNonce = 0;
-
-    while (nHeight < nHeightEnd && !ShutdownRequested()) {
-
-        // Get available coins
-        std::vector<CStakeableOutput> availableCoins;
-        if (fPoS && !pwalletMain->StakeableCoins(&availableCoins)) {
-            throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "No available coins to stake");
-        }
-
-        std::unique_ptr<CBlockTemplate> pblocktemplate(fPoS ?
-                                                       CreateNewBlock(CScript(), pwalletMain, true, &availableCoins) :
-                                                       CreateNewBlockWithKey(reservekey, pwalletMain));
-        if (!pblocktemplate.get()) break;
-        std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>(pblocktemplate->block);
-
-        if(!fPoS) {
-            {
-                LOCK(cs_main);
-                IncrementExtraNonce(pblock, chainActive.Tip(), nExtraNonce);
-            }
-            while (pblock->nNonce < std::numeric_limits<uint32_t>::max() &&
-                    !CheckProofOfWork(pblock->GetHash(), pblock->nBits)) {
-                ++pblock->nNonce;
-            }
-            if (ShutdownRequested()) break;
-            if (pblock->nNonce == std::numeric_limits<uint32_t>::max()) continue;
-        }
-
-        CValidationState state;
-        if (!ProcessNewBlock(state, nullptr, pblock, nullptr))
-            throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
-
-        ++nHeight;
-        blockHashes.push_back(pblock->GetHash().GetHex());
-
-        // Check PoS if needed.
-        if (!fPoS)
-            fPoS = consensus.NetworkUpgradeActive(nHeight + 1, Consensus::UPGRADE_POS);
-    }
-
-    const int nGenerated = blockHashes.size();
-    if (nGenerated == 0 || (!fPoS && nGenerated < nGenerate))
-        throw JSONRPCError(RPC_INTERNAL_ERROR, "Couldn't create new blocks");
-
-    return blockHashes;
 }
 
 UniValue setgenerate(const JSONRPCRequest& request)
@@ -315,7 +317,7 @@ UniValue getmininginfo(const JSONRPCRequest& request)
 #endif
     return obj;
 }
-
+#endif // ENABLE_MINING_RPC
 
 // NOTE: Unlike wallet RPC (which use BTC values), mining RPCs follow GBT (BIP 22) in using satoshi amounts
 UniValue prioritisetransaction(const JSONRPCRequest& request)
@@ -349,7 +351,6 @@ UniValue prioritisetransaction(const JSONRPCRequest& request)
     return true;
 }
 
-
 // NOTE: Assumes a conclusive result; if result is inconclusive, it must be handled by caller
 static UniValue BIP22ValidationResult(const CValidationState& state)
 {
@@ -368,6 +369,7 @@ static UniValue BIP22ValidationResult(const CValidationState& state)
     return "valid?";
 }
 
+#ifdef ENABLE_MINING_RPC
 UniValue getblocktemplate(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() > 1)
@@ -637,6 +639,7 @@ UniValue getblocktemplate(const JSONRPCRequest& request)
 
     return result;
 }
+#endif // ENABLE_MINING_RPC
 
 class submitblock_StateCatcher : public CValidationInterface
 {
@@ -799,16 +802,20 @@ static const CRPCCommand commands[] =
     { "util",               "estimatesmartfee",       &estimatesmartfee,       true  },
 
     /* Not shown in help */
+#ifdef ENABLE_WALLET
+    { "hidden",             "generate",               &generate,               true  },
+#endif
+    { "hidden",             "submitblock",            &submitblock,            true  },
+#ifdef ENABLE_MINING_RPC
     { "hidden",             "getblocktemplate",       &getblocktemplate,       true  },
     { "hidden",             "getnetworkhashps",       &getnetworkhashps,       true  },
-    { "hidden",             "submitblock",            &submitblock,            true  },
     { "hidden",             "getmininginfo",          &getmininginfo,          true  },
 #ifdef ENABLE_WALLET
     { "hidden",             "getgenerate",            &getgenerate,            true  },
     { "hidden",             "gethashespersec",        &gethashespersec,        true  },
     { "hidden",             "setgenerate",            &setgenerate,            true  },
-    { "hidden",             "generate",               &generate,               true  },
 #endif // ENABLE_WALLET
+#endif // ENABLE_MINING_RPC
 
     };
 
