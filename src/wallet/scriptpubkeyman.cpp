@@ -273,8 +273,14 @@ void ScriptPubKeyMan::MarkReserveKeysAsUsed(int64_t keypool_id)
         if (index > keypool_id) break; // set*KeyPool is ordered
 
         CKeyPool keypool;
-        if (batch.ReadPool(index, keypool)) { //TODO: This should be unnecessary
-            m_pool_key_to_index.erase(keypool.vchPubKey.GetID());
+        if (batch.ReadPool(index, keypool)) {
+            const CKeyID& keyid = keypool.vchPubKey.GetID();
+            m_pool_key_to_index.erase(keyid);
+            // add missing receive addresses to the AddressBook
+            if (!internal && !wallet->HasAddressBook(keyid)) {
+                wallet->SetAddressBook(keyid, "", staking ? AddressBook::AddressBookPurpose::COLD_STAKING
+                                                          : AddressBook::AddressBookPurpose::RECEIVE);
+            }
         }
         batch.ErasePool(index);
         LogPrintf("keypool index %d removed\n", index);
