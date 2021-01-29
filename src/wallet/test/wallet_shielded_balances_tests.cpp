@@ -93,10 +93,10 @@ SaplingSpendValues UpdateWalletInternalNotesData(CWalletTx& wtx, SaplingOutPoint
     assert(nd.IsMyNote());
     const auto& ivk = *(nd.ivk);
     auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
-            wtx.sapData->vShieldedOutput[sapPoint.n].encCiphertext,
+            wtx.tx->sapData->vShieldedOutput[sapPoint.n].encCiphertext,
             ivk,
-            wtx.sapData->vShieldedOutput[sapPoint.n].ephemeralKey,
-            wtx.sapData->vShieldedOutput[sapPoint.n].cmu);
+            wtx.tx->sapData->vShieldedOutput[sapPoint.n].ephemeralKey,
+            wtx.tx->sapData->vShieldedOutput[sapPoint.n].cmu);
     assert(static_cast<bool>(maybe_pt));
     boost::optional<libzcash::SaplingNotePlaintext> notePlainText = maybe_pt.get();
     libzcash::SaplingNote note = notePlainText->note(ivk).get();
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE(GetShieldedSimpleCachedCreditAndDebit)
 
     CTransaction tx = builder.Build().GetTxOrThrow();
     // add tx to wallet and update it.
-    wallet.AddToWallet({&wallet, tx});
+    wallet.AddToWallet({&wallet, MakeTransactionRef(tx)});
     CWalletTx& wtxDebit = wallet.mapWallet[tx.GetHash()];
     // Update tx notes data (shielded change need it)
     CWalletTx& wtxDebitUpdated = SetWalletNotesData(&wallet, wtxDebit);
@@ -226,7 +226,7 @@ CWalletTx& buildTxAndLoadToWallet(CWallet& wallet, libzcash::SaplingExtendedSpen
 
     CTransaction tx = builder.Build().GetTxOrThrow();
     // add tx to wallet and update it.
-    wallet.AddToWallet({&wallet, tx});
+    wallet.AddToWallet({&wallet, MakeTransactionRef(tx)});
     CWalletTx& wtx = wallet.mapWallet[tx.GetHash()];
     // Update tx notes data and return the updated wtx.
     return SetWalletNotesData(&wallet, wtx);
@@ -297,7 +297,7 @@ FakeBlock SimpleFakeMine(CWalletTx& wtx, SaplingMerkleTree& currentTree)
     fakeBlock.block.nVersion = 8;
     fakeBlock.block.vtx.emplace_back(MakeTransactionRef(wtx));
     fakeBlock.block.hashMerkleRoot = BlockMerkleRoot(fakeBlock.block);
-    for (const OutputDescription& out : wtx.sapData->vShieldedOutput) {
+    for (const OutputDescription& out : wtx.tx->sapData->vShieldedOutput) {
         currentTree.append(out.cmu);
     }
     fakeBlock.block.hashFinalSaplingRoot = currentTree.root();

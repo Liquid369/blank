@@ -107,13 +107,8 @@ public:
     COutPoint prevout;
     CScript scriptSig;
     uint32_t nSequence;
-    CScript prevPubKey;
 
-    CTxIn()
-    {
-        nSequence = std::numeric_limits<unsigned int>::max();
-    }
-
+    CTxIn() { nSequence = std::numeric_limits<unsigned int>::max(); }
     explicit CTxIn(COutPoint prevoutIn, CScript scriptSigIn=CScript(), uint32_t nSequenceIn=std::numeric_limits<unsigned int>::max());
     CTxIn(uint256 hashPrevTx, uint32_t nOut, CScript scriptSigIn=CScript(), uint32_t nSequenceIn=std::numeric_limits<uint32_t>::max());
 
@@ -221,8 +216,33 @@ public:
 
 struct CMutableTransaction;
 
+/**
+ * Transaction serialization format:
+ * - int32_t nVersion
+ * - std::vector<CTxIn> vin
+ * - std::vector<CTxOut> vout
+ * - uint32_t nLockTime
+ * - Optional<SaplingTxData> sapData
+ * - Optional<std::vector<uint8_t>> extraPayload
+ */
+template<typename Stream, typename Operation, typename TxType>
+inline void SerializeTransaction(TxType& tx, Stream& s, Operation ser_action) {
+    READWRITE(*const_cast<int16_t*>(&tx.nVersion));
+    READWRITE(*const_cast<int16_t*>(&tx.nType));
+    READWRITE(*const_cast<std::vector<CTxIn>*>(&tx.vin));
+    READWRITE(*const_cast<std::vector<CTxOut>*>(&tx.vout));
+    READWRITE(*const_cast<uint32_t*>(&tx.nLockTime));
+
+    if (g_IsSaplingActive && tx.isSaplingVersion()) {
+        READWRITE(*const_cast<Optional<SaplingTxData>*>(&tx.sapData));
+        if (!tx.IsNormalType()) {
+            READWRITE(*const_cast<Optional<std::vector<uint8_t>>*>(&tx.extraPayload));
+        }
+    }
+}
+
 /** The basic transaction that is broadcasted on the network and contained in
- * blocks.  A transaction can contain multiple inputs and outputs.
+ * blocks. A transaction can contain multiple inputs and outputs.
  */
 class CTransaction
 {
@@ -273,20 +293,10 @@ public:
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(*const_cast<int16_t*>(&nVersion));
-        READWRITE(*const_cast<int16_t*>(&nType));
-        READWRITE(*const_cast<std::vector<CTxIn>*>(&vin));
-        READWRITE(*const_cast<std::vector<CTxOut>*>(&vout));
-        READWRITE(*const_cast<uint32_t*>(&nLockTime));
-
-        if (g_IsSaplingActive && isSaplingVersion()) {
-            READWRITE(*const_cast<Optional<SaplingTxData>*>(&sapData));
-            if (nType != TxType::NORMAL)
-                READWRITE(*const_cast<Optional<std::vector<uint8_t> >*>(&extraPayload));
-        }
-
-        if (ser_action.ForRead())
+        SerializeTransaction(*this, s, ser_action);
+        if (ser_action.ForRead()) {
             UpdateHash();
+        }
     }
 
     template <typename Stream>
@@ -328,6 +338,8 @@ public:
     {
         return isSaplingVersion() && nType != TxType::NORMAL && hasExtraPayload();
     }
+
+    bool IsNormalType() const { return nType == TxType::NORMAL; }
 
     // Ensure that special and sapling fields are signed
     SigVersion GetRequiredSigVersion() const
@@ -412,17 +424,7 @@ struct CMutableTransaction
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(nVersion);
-        READWRITE(nType);
-        READWRITE(vin);
-        READWRITE(vout);
-        READWRITE(nLockTime);
-
-        if (g_IsSaplingActive && nVersion >= CTransaction::TxVersion::SAPLING) {
-            READWRITE(*const_cast<Optional<SaplingTxData>*>(&sapData));
-            if (nType != CTransaction::TxType::NORMAL)
-                READWRITE(*const_cast<Optional<std::vector<uint8_t> >*>(&extraPayload));
-        }
+        SerializeTransaction(*this, s, ser_action);
     }
 
     template <typename Stream>
@@ -430,15 +432,13 @@ struct CMutableTransaction
         Unserialize(s);
     }
 
+    bool isSaplingVersion() const { return nVersion >= CTransaction::TxVersion::SAPLING; }
+    bool IsNormalType() const { return nType == CTransaction::TxType::NORMAL; }
+
     /** Compute the hash of this CMutableTransaction. This is computed on the
      * fly, as opposed to GetHash() in CTransaction, which uses a cached result.
      */
     uint256 GetHash() const;
-
-    bool isSaplingVersion() const
-    {
-        return nVersion >= CTransaction::TxVersion::SAPLING;
-    }
 
     // Ensure that special and sapling fields are signed
     SigVersion GetRequiredSigVersion() const

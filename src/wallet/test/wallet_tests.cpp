@@ -43,7 +43,7 @@ static void add_coin(const CAmount& nValue, int nAge = 6*24, bool fIsFromMe = fa
         // so stop vin being empty, and cache a non-zero Debit to fake out IsFromMe()
         tx.vin.resize(1);
     }
-    CWalletTx* wtx = new CWalletTx(pwalletMain, tx);
+    CWalletTx* wtx = new CWalletTx(pwalletMain, MakeTransactionRef(tx));
     if (fIsFromMe) {
         wtx->m_amounts[CWalletTx::DEBIT].Set(ISMINE_SPENDABLE, 1);
     }
@@ -352,7 +352,7 @@ CWalletTx& BuildAndLoadTxToWallet(const std::vector<CTxIn>& vin,
     mTx.vin = vin;
     mTx.vout = vout;
     CTransaction tx(mTx);
-    wallet.LoadToWallet({&wallet, tx});
+    wallet.LoadToWallet({&wallet, MakeTransactionRef(tx)});
     return wallet.mapWallet[tx.GetHash()];
 }
 

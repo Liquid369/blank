@@ -123,7 +123,7 @@ CAmount WalletModel::getBalance(const CCoinControl* coinControl, bool fIncludeDe
         for (const COutput& out : vCoins) {
             bool fSkip = fUnlockedOnly && isLockedCoin(out.tx->GetHash(), out.i);
             if (out.fSpendable && !fSkip)
-                nBalance += out.tx->vout[out.i].nValue;
+                nBalance += out.tx->tx->vout[out.i].nValue;
         }
 
         return nBalance;
@@ -571,7 +571,7 @@ OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* 
     }
 
     // load the transaction and key change (if needed)
-    modelTransaction->setTransaction(new CWalletTx(wallet, operation.getFinalTx()));
+    modelTransaction->setTransaction(new CWalletTx(wallet, MakeTransactionRef(operation.getFinalTx())));
     modelTransaction->setTransactionFee(operation.getFee()); // in the future, fee will be dynamically calculated.
     return operationResult;
 }
@@ -978,7 +978,7 @@ void WalletModel::listCoins(std::map<ListCoinsKey, std::vector<ListCoinsValue>>&
     for (const COutput& out : vCoins) {
         if (!out.fSpendable) continue;
 
-        const CScript& scriptPubKey = out.tx->vout[out.i].scriptPubKey;
+        const CScript& scriptPubKey = out.tx->tx->vout[out.i].scriptPubKey;
         const bool isP2CS = scriptPubKey.IsPayToColdStaking();
 
         CTxDestination outputAddress;
@@ -1003,7 +1003,7 @@ void WalletModel::listCoins(std::map<ListCoinsKey, std::vector<ListCoinsValue>>&
         ListCoinsValue value{
                 out.tx->GetHash(),
                 out.i,
-                out.tx->vout[out.i].nValue,
+                out.tx->tx->vout[out.i].nValue,
                 out.tx->GetTxTime(),
                 out.nDepth
         };

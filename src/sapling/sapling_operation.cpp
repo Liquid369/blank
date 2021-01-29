@@ -228,7 +228,7 @@ OperationResult SaplingOperation::build()
 
 OperationResult SaplingOperation::send(std::string& retTxHash)
 {
-    CWalletTx wtx(pwalletMain, finalTx);
+    CWalletTx wtx(pwalletMain, MakeTransactionRef(finalTx));
     const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, tkeyChange, g_connman.get());
     if (res.status != CWallet::CommitStatus::OK) {
         return errorOut(res.ToString());
@@ -275,7 +275,7 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
         for (const auto& outpoint : vCoins) {
             const auto* tx = pwalletMain->GetWalletTx(outpoint.outPoint.hash);
             if (!tx) continue;
-            nSelectedValue += tx->vout[outpoint.outPoint.n].nValue;
+            nSelectedValue += tx->tx->vout[outpoint.outPoint.n].nValue;
             selectedUTXOInputs.emplace_back(tx, outpoint.outPoint.n, 0, true, true);
         }
         return loadUtxos(txValues, selectedUTXOInputs, nSelectedValue);
@@ -309,7 +309,7 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues)
     CAmount selectedUTXOAmount = 0;
     std::vector<COutput> selectedTInputs;
     for (const COutput& t : transInputs) {
-        const auto& outPoint = t.tx->vout[t.i];
+        const auto& outPoint = t.tx->tx->vout[t.i];
         selectedUTXOAmount += outPoint.nValue;
         selectedTInputs.emplace_back(t);
         if (selectedUTXOAmount >= txValues.target) {
@@ -343,7 +343,7 @@ OperationResult SaplingOperation::loadUtxos(TxValues& txValues, const std::vecto
 
     // update the transaction with these inputs
     for (const auto& t : transInputs) {
-        const auto& outPoint = t.tx->vout[t.i];
+        const auto& outPoint = t.tx->tx->vout[t.i];
         txBuilder.AddTransparentInput(COutPoint(t.tx->GetHash(), t.i), outPoint.scriptPubKey, outPoint.nValue);
     }
     return OperationResult(true);
