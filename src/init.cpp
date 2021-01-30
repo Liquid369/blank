@@ -1628,6 +1628,11 @@ bool AppInitMain()
                     if (fZerocoinActive && pblocktree->Read('M', nDummySupply)) {
                         LogPrintf("Pruning zerocoin mints / invalid outs, at height %d\n", chainHeight);
                         pcoinsTip->PruneInvalidEntries();
+                        if (!pcoinsTip->Flush()) {
+                            strLoadError = _("System error while flushing the chainstate after pruning invalid entries. Possible corrupt database.");
+                            break;
+                        }
+                        MoneySupply.Update(pcoinsTip->GetTotalAmount(), chainHeight);
                         pblocktree->Erase('M');
                     }
                 }
