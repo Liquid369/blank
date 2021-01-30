@@ -27,10 +27,6 @@ enum SigVersion
     SIGVERSION_SAPLING = 1,
 };
 
-// contextual flag to guard the serialization for v5 upgrade.
-// can be removed once v5 enforcement is activated.
-extern std::atomic<bool> g_IsSaplingActive;
-
 /** An outpoint - a combination of a transaction hash and an index n into its vout */
 class BaseOutPoint
 {
@@ -233,7 +229,7 @@ inline void SerializeTransaction(TxType& tx, Stream& s, Operation ser_action) {
     READWRITE(*const_cast<std::vector<CTxOut>*>(&tx.vout));
     READWRITE(*const_cast<uint32_t*>(&tx.nLockTime));
 
-    if (g_IsSaplingActive && tx.isSaplingVersion()) {
+    if (tx.isSaplingVersion()) {
         READWRITE(*const_cast<Optional<SaplingTxData>*>(&tx.sapData));
         if (!tx.IsNormalType()) {
             READWRITE(*const_cast<Optional<std::vector<uint8_t>>*>(&tx.extraPayload));
