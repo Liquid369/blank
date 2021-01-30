@@ -15,6 +15,7 @@
 #include "policy/policy.h"
 #include "sapling/key_io_sapling.h"
 #include "script/sign.h"
+#include "scheduler.h"
 #include "spork.h"
 #include "util.h"
 #include "utilmoneystr.h"
@@ -442,18 +443,6 @@ void CWallet::ChainTipAdded(const CBlockIndex *pindex,
 {
     IncrementNoteWitnesses(pindex, pblock, saplingTree);
     m_sspk_man->UpdateSaplingNullifierNoteMapForBlock(pblock);
-}
-
-void CWallet::ChainTip(const CBlockIndex *pindex,
-                       const CBlock *pblock,
-                       Optional<SaplingMerkleTree> added)
-{
-    if (added) {
-        ChainTipAdded(pindex, pblock, added.get());
-    } else {
-        DecrementNoteWitnesses(pindex);
-        m_sspk_man->UpdateSaplingNullifierNoteMapForBlock(pblock);
-    }
 }
 
 void CWallet::SetBestChain(const CBlockLocator& loc)
@@ -1047,12 +1036,21 @@ void CWallet::AddExternalNotesDataToTx(CWalletTx& wtx) const
 }
 
 /**
- * Add a transaction to the wallet, or update it.
- * pblock is optional, but should be provided if the transaction is known to be in a block.
+ * Add a transaction to the wallet, or update it. pIndex and posInBlock should
+ * be set when the transaction was known to be included in a block.  When
+ * posInBlock = SYNC_TRANSACTION_NOT_IN_BLOCK (-1) , then wallet state is not
+ * updated in AddToWallet, but notifications happen and cached balances are
+ * marked dirty.
  * If fUpdate is true, existing transactions will be updated.
+ * TODO: One exception to this is that the abandoned state is cleared under the
+ * assumption that any further notification of a transaction that was considered
+ * abandoned is an indication that it is not safe to be considered abandoned.
+ * Abandoned state should probably be more carefully tracked via different
+ * posInBlock signals or by checking mempool presence when necessary.
  */
-bool CWallet::AddToWalletIfInvolvingMe(const CTransaction& tx, const uint256& blockHash, int posInBlock, bool fUpdate)
+bool CWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const uint256& blockHash, int posInBlock, bool fUpdate)
 {
+    const CTransaction& tx = *ptx;
     {
         AssertLockHeld(cs_wallet);
 
@@ -1231,13 +1229,71 @@ void CWallet::MarkConflicted(const uint256& hashBlock, const uint256& hashTx)
     }
 }
 
-void CWallet::SyncTransaction(const CTransaction& tx, const CBlockIndex *pindex, int posInBlock)
+void CWallet::SyncTransaction(const CTransactionRef& ptx, const CBlockIndex *pindexBlockConnected, int posInBlock)
 {
-    LOCK(cs_wallet);
-    if (!AddToWalletIfInvolvingMe(tx, (pindex) ? pindex->GetBlockHash() : uint256(), posInBlock, true))
+    if (!AddToWalletIfInvolvingMe(ptx,
+                                  (pindexBlockConnected) ? pindexBlockConnected->GetBlockHash() : uint256(),
+                                  posInBlock,
+                                  true)) {
         return; // Not one of ours
+    }
 
-    MarkAffectedTransactionsDirty(tx);
+    MarkAffectedTransactionsDirty(*ptx);
+}
+
+void CWallet::TransactionAddedToMempool(const CTransactionRef& ptx)
+{
+    LOCK2(cs_main, cs_wallet);
+    SyncTransaction(ptx, NULL, -1);
+}
+
+void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted)
+{
+    LOCK2(cs_main, cs_wallet);
+    // TODO: Tempoarily ensure that mempool removals are notified before
+    // connected transactions.  This shouldn't matter, but the abandoned
+    // state of transactions in our wallet is currently cleared when we
+    // receive another notification and there is a race condition where
+    // notification of a connected conflict might cause an outside process
+    // to abandon a transaction and then have it inadvertently cleared by
+    // the notification that the conflicted transaction was evicted.
+
+    for (const CTransactionRef& ptx : vtxConflicted) {
+        SyncTransaction(ptx, nullptr, -1);
+    }
+    for (size_t i = 0; i < pblock->vtx.size(); i++) {
+        SyncTransaction(pblock->vtx[i], pindex, i);
+    }
+
+    // Sapling: notify about the connected block
+    // Get prev block tree anchor
+    CBlockIndex* pprev = pindex->pprev;
+    SaplingMerkleTree oldSaplingTree;
+    bool isSaplingActive = (pprev) != nullptr &&
+                           Params().GetConsensus().NetworkUpgradeActive(pprev->nHeight,
+                                                                        Consensus::UPGRADE_V5_0);
+    if (isSaplingActive) {
+        assert(pcoinsTip->GetSaplingAnchorAt(pprev->hashFinalSaplingRoot, oldSaplingTree));
+    } else {
+        assert(pcoinsTip->GetSaplingAnchorAt(SaplingMerkleTree::empty_root(), oldSaplingTree));
+    }
+
+    // Sapling: Update cached incremental witnesses
+    ChainTipAdded(pindex, pblock.get(), oldSaplingTree);
+}
+
+void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, int nBlockHeight)
+{
+    LOCK2(cs_main, cs_wallet);
+    for (const CTransactionRef& ptx : pblock->vtx) {
+        SyncTransaction(ptx, NULL, -1);
+    }
+
+    if (Params().GetConsensus().NetworkUpgradeActive(nBlockHeight, Consensus::UPGRADE_V5_0)) {
+        // Update Sapling cached incremental witnesses
+        m_sspk_man->DecrementNoteWitnesses(nBlockHeight);
+        m_sspk_man->UpdateSaplingNullifierNoteMapForBlock(pblock.get());
+    }
 }
 
 void CWallet::MarkAffectedTransactionsDirty(const CTransaction& tx)
@@ -1701,7 +1757,7 @@ int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, b
             int posInBlock;
             for (posInBlock = 0; posInBlock < (int)block.vtx.size(); posInBlock++) {
                 const auto& tx = block.vtx[posInBlock];
-                if (AddToWalletIfInvolvingMe(*tx, pindex->GetBlockHash(), posInBlock, fUpdate)) {
+                if (AddToWalletIfInvolvingMe(tx, pindex->GetBlockHash(), posInBlock, fUpdate)) {
                     myTxHashes.push_back(tx->GetHash());
                     ret++;
                 }
@@ -1779,10 +1835,7 @@ void CWallet::ReacceptWalletTransactions(bool fFirstLoad)
 bool CWalletTx::InMempool() const
 {
     LOCK(mempool.cs);
-    if (mempool.exists(GetHash())) {
-        return true;
-    }
-    return false;
+    return mempool.exists(GetHash());
 }
 
 void CWalletTx::RelayWalletTransaction(CConnman* connman)
@@ -4128,16 +4181,16 @@ bool CWallet::InitLoadWallet()
     return true;
 }
 
-std::atomic<bool> CWallet::fFlushThreadRunning(false);
+std::atomic<bool> CWallet::fFlushScheduled(false);
 
-void CWallet::postInitProcess(boost::thread_group& threadGroup)
+void CWallet::postInitProcess(CScheduler& scheduler)
 {
     // Add wallet transactions that aren't already in a block to mapTransactions
     ReacceptWalletTransactions(/*fFirstLoad*/true);
 
     // Run a thread to flush wallet periodically
-    if (!CWallet::fFlushThreadRunning.exchange(true)) {
-        threadGroup.create_thread(ThreadFlushWalletDB);
+    if (!CWallet::fFlushScheduled.exchange(true)) {
+        scheduler.scheduleEvery(MaybeCompactWalletDB, 500);
     }
 }
 
@@ -4447,7 +4500,7 @@ void CWallet::IncrementNoteWitnesses(const CBlockIndex* pindex,
                             const CBlock* pblock,
                             SaplingMerkleTree& saplingTree) { m_sspk_man->IncrementNoteWitnesses(pindex, pblock, saplingTree); }
 
-void CWallet::DecrementNoteWitnesses(const CBlockIndex* pindex) { m_sspk_man->DecrementNoteWitnesses(pindex); }
+void CWallet::DecrementNoteWitnesses(const CBlockIndex* pindex) { m_sspk_man->DecrementNoteWitnesses(pindex->nHeight); }
 
 bool CWallet::AddSaplingZKey(const libzcash::SaplingExtendedSpendingKey &key) { return m_sspk_man->AddSaplingZKey(key); }
 

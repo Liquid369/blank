@@ -891,35 +891,31 @@ DBErrors CWalletDB::ZapWalletTx(CWallet* pwallet, std::vector<CWalletTx>& vWtx)
     return DB_LOAD_OK;
 }
 
-void ThreadFlushWalletDB()
+void MaybeCompactWalletDB()
 {
-    // Make this thread recognisable as the wallet flushing thread
-    util::ThreadRename("pivx-wallet");
-
-    static bool fOneThread;
-    if (fOneThread)
+    static std::atomic<bool> fOneThread;
+    if (fOneThread.exchange(true)) {
         return;
-    fOneThread = true;
-    if (!gArgs.GetBoolArg("-flushwallet", DEFAULT_FLUSHWALLET))
+    }
+    if (!gArgs.GetBoolArg("-flushwallet", DEFAULT_FLUSHWALLET)) {
         return;
+    }
 
-    unsigned int nLastSeen = CWalletDB::GetUpdateCounter();
-    unsigned int nLastFlushed = CWalletDB::GetUpdateCounter();
-    int64_t nLastWalletUpdate = GetTime();
-    while (true) {
-        MilliSleep(500);
+    static unsigned int nLastSeen = CWalletDB::GetUpdateCounter();
+    static unsigned int nLastFlushed = CWalletDB::GetUpdateCounter();
+    static int64_t nLastWalletUpdate = GetTime();
 
-        if (nLastSeen != CWalletDB::GetUpdateCounter()) {
-            nLastSeen = CWalletDB::GetUpdateCounter();
-            nLastWalletUpdate = GetTime();
-        }
+    if (nLastSeen != CWalletDB::GetUpdateCounter()) {
+        nLastSeen = CWalletDB::GetUpdateCounter();
+        nLastWalletUpdate = GetTime();
+    }
 
-        if (nLastFlushed != CWalletDB::GetUpdateCounter() && GetTime() - nLastWalletUpdate >= 2) {
-            if (CDB::PeriodicFlush(pwalletMain->GetDBHandle())) {
-                nLastFlushed = CWalletDB::GetUpdateCounter();
-            }
+    if (nLastFlushed != CWalletDB::GetUpdateCounter() && GetTime() - nLastWalletUpdate >= 2) {
+        if (CDB::PeriodicFlush(pwalletMain->GetDBHandle())) {
+            nLastFlushed = CWalletDB::GetUpdateCounter();
         }
     }
+    fOneThread = false;
 }
 
 void NotifyBacked(const CWallet& wallet, bool fSuccess, std::string strMessage)

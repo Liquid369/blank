@@ -9,13 +9,12 @@
 
 #include "optional.h"
 #include "sapling/incrementalmerkletree.h"
+#include "primitives/transaction.h"
 
 class CBlock;
 struct CBlockLocator;
 class CBlockIndex;
 class CConnman;
-class CReserveScript;
-class CTransaction;
 class CValidationInterface;
 class CValidationState;
 class uint256;
@@ -33,8 +32,9 @@ class CValidationInterface {
 protected:
     /** Notifies listeners of updated block chain tip */
     virtual void UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload) {}
-    virtual void SyncTransaction(const CTransaction &tx, const CBlockIndex *pindex, int posInBlock) {}
-    virtual void ChainTip(const CBlockIndex *pindex, const CBlock *pblock, Optional<SaplingMerkleTree> added) {}
+    virtual void TransactionAddedToMempool(const CTransactionRef &ptxn) {}
+    virtual void BlockConnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindex, const std::vector<CTransactionRef> &txnConflicted) {}
+    virtual void BlockDisconnected(const std::shared_ptr<const CBlock> &block, int nBlockHeight) {}
     virtual void NotifyTransactionLock(const CTransaction &tx) {}
     /** Notifies listeners of the new active block chain on-disk. */
     virtual void SetBestChain(const CBlockLocator &locator) {}
@@ -42,7 +42,6 @@ protected:
     /** Tells listeners to broadcast their data. */
     virtual void ResendWalletTransactions(CConnman* connman) {}
     virtual void BlockChecked(const CBlock&, const CValidationState&) {}
-    virtual void ResetRequestCount(const uint256 &hash) {};
     friend void ::RegisterValidationInterface(CValidationInterface*);
     friend void ::UnregisterValidationInterface(CValidationInterface*);
     friend void ::UnregisterAllValidationInterfaces();
@@ -59,18 +58,15 @@ private:
 public:
     CMainSignals();
 
-    /** A posInBlock value for SyncTransaction which indicates the transaction was conflicted, disconnected, or not in a block */
-    static const int SYNC_TRANSACTION_NOT_IN_BLOCK = -1;
-
     void UpdatedBlockTip(const CBlockIndex *, const CBlockIndex *, bool fInitialDownload);
-    void SyncTransaction(const CTransaction &, const CBlockIndex *pindex, int posInBlock);
+    void TransactionAddedToMempool(const CTransactionRef &ptxn);
+    void BlockConnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindex, const std::vector<CTransactionRef> &txnConflicted);
+    void BlockDisconnected(const std::shared_ptr<const CBlock> &block, int nBlockHeight);
     void NotifyTransactionLock(const CTransaction&);
     void UpdatedTransaction(const uint256 &);
     void SetBestChain(const CBlockLocator &);
     void Broadcast(CConnman* connman);
     void BlockChecked(const CBlock&, const CValidationState&);
-    void BlockFound(const uint256&);
-    void ChainTip(const CBlockIndex *, const CBlock *, Optional<SaplingMerkleTree>);
 };
 
 CMainSignals& GetMainSignals();

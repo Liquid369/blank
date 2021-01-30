@@ -72,7 +72,7 @@ public:
      * Block height corresponding to the most current witness.
      *
      * When we first create a SaplingNoteData in SaplingScriptPubKeyMan::FindMySaplingNotes, this is set to
-     * -1 as a placeholder. The next time CWallet::ChainTip is called, we can
+     * -1 as a placeholder. The next time CWallet::BlockConnected/CWallet::BlockDisconnected is called, we can
      * determine what height the witness cache for this note is valid for (even
      * if no witnesses were cached), and so can set the correct value in
      * SaplingScriptPubKeyMan::IncrementNoteWitnesses and SaplingScriptPubKeyMan::DecrementNoteWitnesses.
@@ -163,9 +163,9 @@ public:
                                 const CBlock* pblock,
                                 SaplingMerkleTree& saplingTree);
     /**
-     * pindex is the old tip being disconnected.
+     * nChainHeight is the old tip height being disconnected.
      */
-    void DecrementNoteWitnesses(const CBlockIndex* pindex);
+    void DecrementNoteWitnesses(int nChainHeight);
 
     /**
      * Update mapSaplingNullifiersToNotes

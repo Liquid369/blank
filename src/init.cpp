@@ -1908,7 +1908,7 @@ bool AppInitMain()
 
 #ifdef ENABLE_WALLET
     if (pwalletMain) {
-        pwalletMain->postInitProcess(threadGroup);
+        pwalletMain->postInitProcess(scheduler);
 
         // StakeMiner thread disabled by default on regtest
         if (gArgs.GetBoolArg("-staking", !Params().IsRegTestNet() && DEFAULT_STAKING)) {

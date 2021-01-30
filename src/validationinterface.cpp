@@ -11,24 +11,29 @@
 
 struct ValidationInterfaceConnections {
     boost::signals2::scoped_connection UpdatedBlockTip;
-    boost::signals2::scoped_connection SyncTransaction;
+    boost::signals2::scoped_connection TransactionAddedToMempool;
+    boost::signals2::scoped_connection BlockConnected;
+    boost::signals2::scoped_connection BlockDisconnected;
     boost::signals2::scoped_connection NotifyTransactionLock;
     boost::signals2::scoped_connection UpdatedTransaction;
     boost::signals2::scoped_connection SetBestChain;
     boost::signals2::scoped_connection Broadcast;
     boost::signals2::scoped_connection BlockChecked;
-    boost::signals2::scoped_connection BlockFound;
-    boost::signals2::scoped_connection ChainTip;
 };
 
 struct MainSignalsInstance {
-// XX42    boost::signals2::signal<void(const uint256&)> EraseTransaction;
+
     /** Notifies listeners of updated block chain tip */
     boost::signals2::signal<void (const CBlockIndex *, const CBlockIndex *, bool fInitialDownload)> UpdatedBlockTip;
-    /** A posInBlock value for SyncTransaction which indicates the transaction was conflicted, disconnected, or not in a block */
-    static const int SYNC_TRANSACTION_NOT_IN_BLOCK = -1;
-    /** Notifies listeners of updated transaction data (transaction, and optionally the block it is found in. */
-    boost::signals2::signal<void (const CTransaction &, const CBlockIndex *pindex, int posInBlock)> SyncTransaction;
+    /** Notifies listeners of a transaction having been added to mempool. */
+    boost::signals2::signal<void (const CTransactionRef &)> TransactionAddedToMempool;
+    /**
+     * Notifies listeners of a block being connected.
+     * Provides a vector of transactions evicted from the mempool as a result.
+     */
+    boost::signals2::signal<void (const std::shared_ptr<const CBlock> &, const CBlockIndex *pindex, const std::vector<CTransactionRef> &)> BlockConnected;
+    /** Notifies listeners of a block being disconnected */
+    boost::signals2::signal<void (const std::shared_ptr<const CBlock> &, int nBlockHeight)> BlockDisconnected;
     /** Notifies listeners of an updated transaction lock without new data. */
     boost::signals2::signal<void (const CTransaction &)> NotifyTransactionLock;
     /** Notifies listeners of an updated transaction without new data (for now: a coinbase potentially becoming visible). */
@@ -39,11 +44,6 @@ struct MainSignalsInstance {
     boost::signals2::signal<void (CConnman* connman)> Broadcast;
     /** Notifies listeners of a block validation result */
     boost::signals2::signal<void (const CBlock&, const CValidationState&)> BlockChecked;
-    /** Notifies listeners that a block has been successfully mined */
-    boost::signals2::signal<void (const uint256 &)> BlockFound;
-
-    /** Notifies listeners of a change to the tip of the active block chain. */
-    boost::signals2::signal<void (const CBlockIndex *, const CBlock *, Optional<SaplingMerkleTree>)> ChainTip;
 
     std::unordered_map<CValidationInterface*, ValidationInterfaceConnections> m_connMainSignals;
 };
@@ -63,14 +63,14 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn)
 {
     ValidationInterfaceConnections& conns = g_signals.m_internals->m_connMainSignals[pwalletIn];
     conns.UpdatedBlockTip = g_signals.m_internals->UpdatedBlockTip.connect(std::bind(&CValidationInterface::UpdatedBlockTip, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-    conns.SyncTransaction = g_signals.m_internals->SyncTransaction.connect(std::bind(&CValidationInterface::SyncTransaction, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-    conns.ChainTip = g_signals.m_internals->ChainTip.connect(std::bind(&CValidationInterface::ChainTip, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+    conns.TransactionAddedToMempool = g_signals.m_internals->TransactionAddedToMempool.connect(std::bind(&CValidationInterface::TransactionAddedToMempool, pwalletIn, std::placeholders::_1));
+    conns.BlockConnected = g_signals.m_internals->BlockConnected.connect(std::bind(&CValidationInterface::BlockConnected, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+    conns.BlockDisconnected = g_signals.m_internals->BlockDisconnected.connect(std::bind(&CValidationInterface::BlockDisconnected, pwalletIn, std::placeholders::_1, std::placeholders::_2));
     conns.NotifyTransactionLock = g_signals.m_internals->NotifyTransactionLock.connect(std::bind(&CValidationInterface::NotifyTransactionLock, pwalletIn, std::placeholders::_1));
     conns.UpdatedTransaction = g_signals.m_internals->UpdatedTransaction.connect(std::bind(&CValidationInterface::UpdatedTransaction, pwalletIn, std::placeholders::_1));
     conns.SetBestChain = g_signals.m_internals->SetBestChain.connect(std::bind(&CValidationInterface::SetBestChain, pwalletIn, std::placeholders::_1));
     conns.Broadcast = g_signals.m_internals->Broadcast.connect(std::bind(&CValidationInterface::ResendWalletTransactions, pwalletIn, std::placeholders::_1));
     conns.BlockChecked = g_signals.m_internals->BlockChecked.connect(std::bind(&CValidationInterface::BlockChecked, pwalletIn, std::placeholders::_1, std::placeholders::_2));
-    conns.BlockFound = g_signals.m_internals->BlockFound.connect(std::bind(&CValidationInterface::ResetRequestCount, pwalletIn, std::placeholders::_1));
 }
 
 void UnregisterValidationInterface(CValidationInterface* pwalletIn)
@@ -92,8 +92,16 @@ void CMainSignals::UpdatedBlockTip(const CBlockIndex* pindexNew, const CBlockInd
     m_internals->UpdatedBlockTip(pindexNew, pindexFork, fInitialDownload);
 }
 
-void CMainSignals::SyncTransaction(const CTransaction& tx, const CBlockIndex* pindex, int posInBlock) {
-    m_internals->SyncTransaction(tx, pindex, posInBlock);
+void CMainSignals::TransactionAddedToMempool(const CTransactionRef &ptxn) {
+    m_internals->TransactionAddedToMempool(ptxn);
+}
+
+void CMainSignals::BlockConnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindex, const std::vector<CTransactionRef> &txnConflicted) {
+    m_internals->BlockConnected(block, pindex, txnConflicted);
+}
+
+void CMainSignals::BlockDisconnected(const std::shared_ptr<const CBlock> &block, int nBlockHeight) {
+    m_internals->BlockDisconnected(block, nBlockHeight);
 }
 
 void CMainSignals::NotifyTransactionLock(const CTransaction& tx) {
@@ -114,12 +122,4 @@ void CMainSignals::Broadcast(CConnman* connman) {
 
 void CMainSignals::BlockChecked(const CBlock& block, const CValidationState& state) {
     m_internals->BlockChecked(block, state);
-}
-
-void CMainSignals::BlockFound(const uint256& hash) {
-    m_internals->BlockFound(hash);
-}
-
-void CMainSignals::ChainTip(const CBlockIndex* pindex, const CBlock* block, Optional<SaplingMerkleTree> tree) {
-    m_internals->ChainTip(pindex, block, tree);
 }
