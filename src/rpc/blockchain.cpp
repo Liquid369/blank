@@ -1320,16 +1320,11 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
     int64_t nTxCount = 0;
     int64_t nTxCount_all = 0;
 
-    CBlockIndex* pindex = nullptr;
-    {
-        LOCK(cs_main);
-        pindex = chainActive[heightStart];
-    }
-
+    const CBlockIndex* pindex = WITH_LOCK(cs_main, return chainActive[heightEnd]);
     if (!pindex)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "invalid block height");
 
-    while (true) {
+    while (pindex && pindex->nHeight >= heightStart) {
         CBlock block;
         if (!ReadBlockFromDisk(block, pindex)) {
             throw JSONRPCError(RPC_DATABASE_ERROR, "failed to read block from disk");
@@ -1338,20 +1333,23 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
         CAmount nValueIn = 0;
         CAmount nValueOut = 0;
         const int ntx = block.vtx.size();
+        const int firstTxIndex = block.IsProofOfStake() ? 2 : 1;
         nTxCount_all += ntx;
-        nTxCount = block.IsProofOfStake() ? nTxCount + ntx - 2 : nTxCount + ntx - 1;
+        nTxCount = nTxCount + ntx - firstTxIndex;
 
-        // loop through each tx in block and save size and fee
-        for (const auto& txIn : block.vtx) {
-            const CTransaction& tx = *txIn;
-            if (tx.IsCoinBase() || (tx.IsCoinStake() && !tx.HasZerocoinSpendInputs()))
+        // loop through each tx in block and save size and fee (except for coinbase/coinstake)
+        for (int idx = firstTxIndex; idx < ntx; idx++) {
+            const CTransaction& tx = *(block.vtx[idx]);
+
+            // zerocoin txes have fixed fee, don't count them here.
+            if (tx.ContainsZerocoins())
                 continue;
 
-            // fetch input value from prevouts and count spends
+            // Transaction size
+            nBytes += GetSerializeSize(tx, SER_NETWORK, CLIENT_VERSION);
+
+            // Transparent inputs
             for (unsigned int j = 0; j < tx.vin.size(); j++) {
-                if (tx.vin[j].IsZerocoinSpend() || tx.vin[j].IsZerocoinPublicSpend()) {
-                    continue;
-                }
                 COutPoint prevout = tx.vin[j].prevout;
                 CTransaction txPrev;
                 uint256 hashBlock;
@@ -1359,29 +1357,16 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
                     throw JSONRPCError(RPC_DATABASE_ERROR, "failed to read tx from disk");
                 nValueIn += txPrev.vout[prevout.n].nValue;
             }
+            // Shield inputs
+            nValueIn += tx.GetShieldedValueIn();
 
-            // zc spends have no fee
-            if (tx.HasZerocoinSpendInputs())
-                continue;
+            // Tranparent/Shield outputs
+            nValueOut += tx.GetValueOut();
 
-            // sum output values in nValueOut
-            for (unsigned int j = 0; j < tx.vout.size(); j++) {
-                nValueOut += tx.vout[j].nValue;
-            }
-
-            // update sums
-            if (!tx.HasZerocoinMintOutputs()) {
-                nFees += nValueIn - nValueOut;
-                nBytes += GetSerializeSize(tx, SER_NETWORK, CLIENT_VERSION);
-            }
+            // update fee
+            nFees += nValueIn - nValueOut;
         }
-
-        if (pindex->nHeight < heightEnd) {
-            LOCK(cs_main);
-            pindex = chainActive.Next(pindex);
-        } else {
-            break;
-        }
+        pindex = pindex->pprev;
     }
 
     // get fee rate
