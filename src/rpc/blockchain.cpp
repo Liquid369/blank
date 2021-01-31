@@ -1301,7 +1301,6 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
                 "  \"txcount_all\": xxxxx            (numeric) tx count (including coinbase/coinstake)\n"
                 "  \"txbytes\": xxxxx                (numeric) Sum of the size of all txes over block range\n"
                 "  \"ttlfee\": xxxxx                 (numeric) Sum of the fee amount of all txes over block range\n"
-                "  \"ttlfee_all\": xxxxx             (numeric) Sum of the fee amount of all txes over block range\n"
                 "  \"feeperkb\": xxxxx               (numeric) Average fee per kb (excluding zc txes)\n"
                 "}\n"
 
@@ -1317,7 +1316,6 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
     ret.pushKV("Ending block", heightEnd);
 
     CAmount nFees = 0;
-    CAmount nFees_all = 0;
     int64_t nBytes = 0;
     int64_t nTxCount = 0;
     int64_t nTxCount_all = 0;
@@ -1372,7 +1370,6 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
             }
 
             // update sums
-            nFees_all += nValueIn - nValueOut;
             if (!tx.HasZerocoinMintOutputs()) {
                 nFees += nValueIn - nValueOut;
                 nBytes += GetSerializeSize(tx, SER_NETWORK, CLIENT_VERSION);
@@ -1395,7 +1392,6 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
     ret.pushKV("txcount_all", (int64_t)nTxCount_all);
     ret.pushKV("txbytes", (int64_t)nBytes);
     ret.pushKV("ttlfee", FormatMoney(nFees));
-    ret.pushKV("ttlfee_all", FormatMoney(nFees_all));
     ret.pushKV("feeperkb", FormatMoney(nFeeRate.GetFeePerK()));
 
     return ret;
