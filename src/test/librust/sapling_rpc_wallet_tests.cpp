@@ -449,8 +449,7 @@ BOOST_AUTO_TEST_CASE(rpc_shieldsendmany_taddr_to_sapling)
     // Test mode does not send the transaction to the network.
     auto hexTx = EncodeHexTx(operation.getFinalTx());
     CDataStream ss(ParseHex(hexTx), SER_NETWORK, PROTOCOL_VERSION);
-    CTransaction tx;
-    ss >> tx;
+    CTransaction tx(deserialize, ss);
     BOOST_ASSERT(!tx.sapData->vShieldedOutput.empty());
 
     // We shouldn't be able to decrypt with the empty ovk

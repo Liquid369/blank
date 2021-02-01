@@ -172,7 +172,7 @@ public:
 class TxWithNullifiers
 {
 public:
-    CTransaction tx;
+    CTransactionRef tx;
     uint256 saplingNullifier;
 
     TxWithNullifiers()
@@ -183,7 +183,7 @@ public:
         SpendDescription sd;
         sd.nullifier = saplingNullifier;
         mutableTx.sapData->vShieldedSpend.push_back(sd);
-        tx = CTransaction(mutableTx);
+        tx = MakeTransactionRef(CTransaction(mutableTx));
     }
 };
 
@@ -235,12 +235,12 @@ BOOST_AUTO_TEST_CASE(nullifier_regression_test)
     TxWithNullifiers txWithNullifiers;
 
     // Insert a nullifier into the base.
-    cache1.SetNullifiers(txWithNullifiers.tx, true);
+    cache1.SetNullifiers(*txWithNullifiers.tx, true);
     checkNullifierCache(cache1, txWithNullifiers, true);
     cache1.Flush(); // Flush to base.
 
     // Remove the nullifier from cache
-    cache1.SetNullifiers(txWithNullifiers.tx, false);
+    cache1.SetNullifiers(*txWithNullifiers.tx, false);
 
     // The nullifier now should be `false`.
     checkNullifierCache(cache1, txWithNullifiers, false);
@@ -254,12 +254,12 @@ BOOST_AUTO_TEST_CASE(nullifier_regression_test)
         TxWithNullifiers txWithNullifiers;
 
         // Insert a nullifier into the base.
-        cache1.SetNullifiers(txWithNullifiers.tx, true);
+        cache1.SetNullifiers(*txWithNullifiers.tx, true);
         checkNullifierCache(cache1, txWithNullifiers, true);
         cache1.Flush(); // Flush to base.
 
         // Remove the nullifier from cache
-        cache1.SetNullifiers(txWithNullifiers.tx, false);
+        cache1.SetNullifiers(*txWithNullifiers.tx, false);
         cache1.Flush(); // Flush to base.
 
         // The nullifier now should be `false`.
@@ -273,7 +273,7 @@ BOOST_AUTO_TEST_CASE(nullifier_regression_test)
 
         // Insert a nullifier into the base.
         TxWithNullifiers txWithNullifiers;
-        cache1.SetNullifiers(txWithNullifiers.tx, true);
+        cache1.SetNullifiers(*txWithNullifiers.tx, true);
         checkNullifierCache(cache1, txWithNullifiers, true);
         cache1.Flush(); // Empties cache.
 
@@ -282,7 +282,7 @@ BOOST_AUTO_TEST_CASE(nullifier_regression_test)
             // Remove the nullifier.
             CCoinsViewCache cache2(&cache1);
             checkNullifierCache(cache2, txWithNullifiers, true);
-            cache1.SetNullifiers(txWithNullifiers.tx, false);
+            cache1.SetNullifiers(*txWithNullifiers.tx, false);
             cache2.Flush(); // Empties cache, flushes to cache1.
         }
 
@@ -297,14 +297,14 @@ BOOST_AUTO_TEST_CASE(nullifier_regression_test)
 
         // Insert a nullifier into the base.
         TxWithNullifiers txWithNullifiers;
-        cache1.SetNullifiers(txWithNullifiers.tx, true);
+        cache1.SetNullifiers(*txWithNullifiers.tx, true);
         cache1.Flush(); // Empties cache.
 
         // Create cache on top.
         {
             // Remove the nullifier.
             CCoinsViewCache cache2(&cache1);
-            cache2.SetNullifiers(txWithNullifiers.tx, false);
+            cache2.SetNullifiers(*txWithNullifiers.tx, false);
             cache2.Flush(); // Empties cache, flushes to cache1.
         }
 
@@ -485,14 +485,14 @@ BOOST_AUTO_TEST_CASE(nullifiers_test)
 
     TxWithNullifiers txWithNullifiers;
     checkNullifierCache(cache, txWithNullifiers, false);
-    cache.SetNullifiers(txWithNullifiers.tx, true);
+    cache.SetNullifiers(*txWithNullifiers.tx, true);
     checkNullifierCache(cache, txWithNullifiers, true);
     cache.Flush();
 
     CCoinsViewCache cache2(&base);
 
     checkNullifierCache(cache2, txWithNullifiers, true);
-    cache2.SetNullifiers(txWithNullifiers.tx, false);
+    cache2.SetNullifiers(*txWithNullifiers.tx, false);
     checkNullifierCache(cache2, txWithNullifiers, false);
     cache2.Flush();
 

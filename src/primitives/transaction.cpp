@@ -121,9 +121,9 @@ uint256 CMutableTransaction::GetHash() const
     return SerializeHash(*this);
 }
 
-void CTransaction::UpdateHash() const
+uint256 CTransaction::ComputeHash() const
 {
-    *const_cast<uint256*>(&hash) = SerializeHash(*this);
+    return SerializeHash(*this);
 }
 
 size_t CTransaction::DynamicMemoryUsage() const
@@ -131,26 +131,10 @@ size_t CTransaction::DynamicMemoryUsage() const
     return memusage::RecursiveDynamicUsage(vin) + memusage::RecursiveDynamicUsage(vout);
 }
 
-CTransaction::CTransaction() : nVersion(CTransaction::CURRENT_VERSION), nType(TxType::NORMAL), vin(), vout(), nLockTime(0) { }
-
-CTransaction::CTransaction(const CMutableTransaction &tx) : nVersion(tx.nVersion), nType(tx.nType), vin(tx.vin), vout(tx.vout), nLockTime(tx.nLockTime), sapData(tx.sapData), extraPayload(tx.extraPayload) {
-    UpdateHash();
-}
-
-CTransaction::CTransaction(CMutableTransaction &&tx) : nVersion(tx.nVersion), nType(tx.nType), vin(std::move(tx.vin)), vout(std::move(tx.vout)), nLockTime(tx.nLockTime), sapData(tx.sapData), extraPayload(tx.extraPayload) {
-    UpdateHash();
-}
-
-CTransaction& CTransaction::operator=(const CTransaction &tx) {
-    *const_cast<int16_t*>(&nVersion) = tx.nVersion;
-    *const_cast<int16_t*>(&nType) = tx.nType;
-    *const_cast<std::vector<CTxIn>*>(&vin) = tx.vin;
-    *const_cast<std::vector<CTxOut>*>(&vout) = tx.vout;
-    *const_cast<unsigned int*>(&nLockTime) = tx.nLockTime;
-    *const_cast<uint256*>(&hash) = tx.hash;
-    *const_cast<Optional<SaplingTxData>*>(&sapData) = tx.sapData;
-    return *this;
-}
+/* For backward compatibility, the hash is initialized to 0. TODO: remove the need for this default constructor entirely. */
+CTransaction::CTransaction() : nVersion(CTransaction::CURRENT_VERSION), nType(TxType::NORMAL), vin(), vout(), nLockTime(0), hash() {}
+CTransaction::CTransaction(const CMutableTransaction &tx) : nVersion(tx.nVersion), nType(tx.nType), vin(tx.vin), vout(tx.vout), nLockTime(tx.nLockTime), sapData(tx.sapData), extraPayload(tx.extraPayload), hash(ComputeHash()) {}
+CTransaction::CTransaction(CMutableTransaction &&tx) : nVersion(tx.nVersion), nType(tx.nType), vin(std::move(tx.vin)), vout(std::move(tx.vout)), nLockTime(tx.nLockTime), sapData(tx.sapData), extraPayload(tx.extraPayload), hash(ComputeHash()) {}
 
 bool CTransaction::HasZerocoinSpendInputs() const
 {

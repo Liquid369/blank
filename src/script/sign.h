@@ -46,7 +46,7 @@ public:
 };
 
 class MutableTransactionSignatureCreator : public TransactionSignatureCreator {
-    CTransaction tx;
+    const CTransaction tx;
 
 public:
     MutableTransactionSignatureCreator(const CKeyStore* keystoreIn, const CMutableTransaction* txToIn, unsigned int nInIn, const CAmount& amount, int nHashTypeIn) : TransactionSignatureCreator(keystoreIn, &tx, nInIn, amount, nHashTypeIn), tx(*txToIn) {}
