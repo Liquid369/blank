@@ -634,20 +634,20 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState& state, const CTransa
 
 bool GetOutput(const uint256& hash, unsigned int index, CValidationState& state, CTxOut& out)
 {
-    CTransaction txPrev;
+    CTransactionRef txPrev;
     uint256 hashBlock;
     if (!GetTransaction(hash, txPrev, hashBlock, true)) {
         return state.DoS(100, error("Output not found"));
     }
-    if (index > txPrev.vout.size()) {
+    if (index > txPrev->vout.size()) {
         return state.DoS(100, error("Output not found, invalid index %d for %s",index, hash.GetHex()));
     }
-    out = txPrev.vout[index];
+    out = txPrev->vout[index];
     return true;
 }
 
 /** Return transaction in tx, and if it was found inside a block, its hash is placed in hashBlock */
-bool GetTransaction(const uint256& hash, CTransaction& txOut, uint256& hashBlock, bool fAllowSlow, CBlockIndex* blockIndex)
+bool GetTransaction(const uint256& hash, CTransactionRef& txOut, uint256& hashBlock, bool fAllowSlow, CBlockIndex* blockIndex)
 {
     CBlockIndex* pindexSlow = blockIndex;
 
@@ -657,7 +657,7 @@ bool GetTransaction(const uint256& hash, CTransaction& txOut, uint256& hashBlock
 
         CTransactionRef ptx = mempool.get(hash);
         if (ptx) {
-            txOut = *ptx;
+            txOut = ptx;
             return true;
         }
 
@@ -676,7 +676,7 @@ bool GetTransaction(const uint256& hash, CTransaction& txOut, uint256& hashBlock
                     return error("%s : Deserialize or I/O error - %s", __func__, e.what());
                 }
                 hashBlock = header.GetHash();
-                if (txOut.GetHash() != hash)
+                if (txOut->GetHash() != hash)
                     return error("%s : txid mismatch", __func__);
                 return true;
             }
@@ -696,7 +696,7 @@ bool GetTransaction(const uint256& hash, CTransaction& txOut, uint256& hashBlock
         if (ReadBlockFromDisk(block, pindexSlow)) {
             for (const auto& tx : block.vtx) {
                 if (tx->GetHash() == hash) {
-                    txOut = *tx;
+                    txOut = tx;
                     hashBlock = pindexSlow->GetBlockHash();
                     return true;
                 }
@@ -1037,15 +1037,15 @@ void AddInvalidSpendsToMap(const CBlock& block)
                     if (zerocoinDB->ReadCoinSpend(bnActualSerial, txHash)) {
                         mapInvalidSerials[bnActualSerial] = spend->getDenomination() * COIN;
 
-                        CTransaction txPrev;
+                        CTransactionRef txPrev;
                         uint256 hashBlock;
                         if (!GetTransaction(txHash, txPrev, hashBlock, true))
                             continue;
 
                         //Record all txouts from txPrev as invalid
-                        for (unsigned int i = 0; i < txPrev.vout.size(); i++) {
+                        for (unsigned int i = 0; i < txPrev->vout.size(); i++) {
                             //map to an empty outpoint to represent that this is the first in the chain of bad outs
-                            mapInvalidOutPoints[COutPoint(txPrev.GetHash(), i)] = COutPoint();
+                            mapInvalidOutPoints[COutPoint(txPrev->GetHash(), i)] = COutPoint();
                         }
                     }
 
@@ -2669,10 +2669,10 @@ bool CheckColdStakeFreeOutput(const CTransaction& tx, const int nHeight)
         // so we check that the staker is not transferring value to the free output
         if (!masternodeSync.IsSynced()) {
             // First try finding the previous transaction in database
-            CTransaction txPrev; uint256 hashBlock;
+            CTransactionRef txPrev; uint256 hashBlock;
             if (!GetTransaction(tx.vin[0].prevout.hash, txPrev, hashBlock, true))
                 return error("%s : read txPrev failed: %s",  __func__, tx.vin[0].prevout.hash.GetHex());
-            CAmount amtIn = txPrev.vout[tx.vin[0].prevout.n].nValue + GetBlockValue(nHeight);
+            CAmount amtIn = txPrev->vout[tx.vin[0].prevout.n].nValue + GetBlockValue(nHeight);
             CAmount amtOut = 0;
             for (unsigned int i = 1; i < outs-1; i++) amtOut += tx.vout[i].nValue;
             if (amtOut != amtIn)
@@ -2988,7 +2988,7 @@ bool IsBlockHashInChain(const uint256& hashBlock)
     return chainActive.Contains(mapBlockIndex[hashBlock]);
 }
 
-bool IsTransactionInChain(const uint256& txId, int& nHeightTx, CTransaction& tx)
+bool IsTransactionInChain(const uint256& txId, int& nHeightTx, CTransactionRef& tx)
 {
     uint256 hashBlock;
     if (!GetTransaction(txId, tx, hashBlock, true))
@@ -3002,7 +3002,7 @@ bool IsTransactionInChain(const uint256& txId, int& nHeightTx, CTransaction& tx)
 
 bool IsTransactionInChain(const uint256& txId, int& nHeightTx)
 {
-    CTransaction tx;
+    CTransactionRef tx;
     return IsTransactionInChain(txId, nHeightTx, tx);
 }
 
