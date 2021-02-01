@@ -499,9 +499,8 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
             return SendCoinsReturn(res);
         }
 
-        CTransaction* t = (CTransaction*)newTx;
         CDataStream ssTx(SER_NETWORK, PROTOCOL_VERSION);
-        ssTx << *t;
+        ssTx << *(newTx->tx);
         transaction_array.append(&(ssTx[0]), ssTx.size());
     }
 
