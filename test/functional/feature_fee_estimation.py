@@ -10,7 +10,7 @@ from test_framework.script import CScript, OP_1, OP_DROP, OP_2, OP_HASH160, OP_E
 from test_framework.mininode import CTransaction, CTxIn, CTxOut, COutPoint, ToHex, COIN
 
 # Use as minTxFee
-MIN_FEE = Decimal("0.0001")
+MIN_FEE = Decimal("0.00001")
 
 # Construct 2 trivial P2SH's and the ScriptSigs that spend them
 # So we can create many transactions without needing to spend
@@ -35,6 +35,9 @@ def small_txpuzzle_randfee(from_node, conflist, unconflist, amount, min_fee, fee
     It adds the newly created outputs to the unconfirmed list.
     Returns (raw transaction, fee)
     """
+    # Don't send dust (3 * dustRelayFee.GetFee(182))
+    DUST_THRESHOLD = 55
+    assert int(amount*COIN) > DUST_THRESHOLD
     # It's best to exponentially distribute our random fees
     # because the buckets are exponentially spaced.
     # Exponentially distributed from 1-128 * fee_increment
@@ -54,15 +57,24 @@ def small_txpuzzle_randfee(from_node, conflist, unconflist, amount, min_fee, fee
             tx.vin.append(CTxIn(COutPoint(int(t["txid"], 16), t["vout"]), b""))
         if total_in <= amount + fee:
             raise RuntimeError("Insufficient funds: need %d, have %d"%(amount+fee, total_in))
-    tx.vout.append(CTxOut(int((total_in - amount - fee)*COIN), P2SH_1))
-    tx.vout.append(CTxOut(int(amount*COIN), P2SH_2))
+
+    tx.vout.append(CTxOut(int(amount * COIN), P2SH_1))
+    # Prevent the creation of dust change outputs (otherwise add the change value to the fee)
+    change = int((total_in - amount - fee)*COIN)
+    if change > DUST_THRESHOLD:
+        tx.vout.append(CTxOut(change, P2SH_2))
+    else:
+        fee += change
+
     # These transactions don't need to be signed, but we still have to insert
     # the ScriptSig that will satisfy the ScriptPubKey.
     for inp in tx.vin:
         inp.scriptSig = SCRIPT_SIG[inp.prevout.n]
     txid = from_node.sendrawtransaction(ToHex(tx), True)
-    unconflist.append({ "txid" : txid, "vout" : 0 , "amount" : total_in - amount - fee})
-    unconflist.append({ "txid" : txid, "vout" : 1 , "amount" : amount})
+
+    unconflist.append({"txid": txid, "vout": 0, "amount": amount})
+    if change > DUST_THRESHOLD:
+        unconflist.append({ "txid" : txid, "vout" : 1 , "amount" : total_in - amount - fee})
 
     return (ToHex(tx), fee)
 
