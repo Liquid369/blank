@@ -44,7 +44,7 @@ uint256 CFinalizedBudgetVote::GetHash() const
 UniValue CFinalizedBudgetVote::ToJSON() const
 {
     UniValue bObj(UniValue::VOBJ);
-    bObj.pushKV("nHash", vin.prevout.GetHash().ToString());
+    bObj.pushKV("nHash", GetHash().ToString());
     bObj.pushKV("nTime", (int64_t) nTime);
     bObj.pushKV("fValid", fValid);
     return bObj;

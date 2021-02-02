@@ -56,7 +56,7 @@ class MasternodeGovernanceBasicTest(PivxTier2TestFramework):
             assert(len(votesInfo) > 0)
             found = False
             for voteInfo in votesInfo:
-                if (voteInfo["mnId"] == mnCollateralHash) :
+                if (voteInfo["mnId"].split("-")[0] == mnCollateralHash) :
                     assert_equal(voteInfo["Vote"], voteType)
                     found = True
             assert_true(found, "Error checking vote existence in node " + str(i))
