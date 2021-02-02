@@ -306,7 +306,7 @@ std::vector<uint256> CBudgetProposal::GetVotesHashes() const
 {
     std::vector<uint256> vRet;
     for (const auto& it: mapVotes) {
-        vRet.push_back(it.first);
+        vRet.push_back(it.second.GetHash());
     }
     return vRet;
 }
