@@ -215,11 +215,11 @@ bool CBudgetProposal::IsPassing(int nBlockStartBudget, int nBlockEndBudget, int 
 bool CBudgetProposal::AddOrUpdateVote(const CBudgetVote& vote, std::string& strError)
 {
     std::string strAction = "New vote inserted:";
-    const uint256& hash = vote.GetVin().prevout.GetHash();
+    const COutPoint& mnId = vote.GetVin().prevout;
     const int64_t voteTime = vote.GetTime();
 
-    if (mapVotes.count(hash)) {
-        const int64_t& oldTime = mapVotes[hash].GetTime();
+    if (mapVotes.count(mnId)) {
+        const int64_t& oldTime = mapVotes[mnId].GetTime();
         if (oldTime > voteTime) {
             strError = strprintf("new vote older than existing vote - %s\n", vote.GetHash().ToString());
             LogPrint(BCLog::MNBUDGET, "%s: %s\n", __func__, strError);
@@ -240,7 +240,7 @@ bool CBudgetProposal::AddOrUpdateVote(const CBudgetVote& vote, std::string& strE
         return false;
     }
 
-    mapVotes[hash] = vote;
+    mapVotes[mnId] = vote;
     LogPrint(BCLog::MNBUDGET, "%s: %s %s\n", __func__, strAction.c_str(), vote.GetHash().ToString().c_str());
 
     return true;
@@ -271,10 +271,10 @@ void CBudgetProposal::SetSynced(bool synced)
 void CBudgetProposal::CleanAndRemove()
 {
     LogPrint(BCLog::MNBUDGET, "Cleaning budget votes for %s. Before: YES=%d, NO=%d\n", GetName(), GetYeas(), GetNays());
-    std::map<uint256, CBudgetVote>::iterator it = mapVotes.begin();
+    auto it = mapVotes.begin();
 
     while (it != mapVotes.end()) {
-        CMasternode* pmn = mnodeman.Find(it->second.GetVin().prevout);
+        CMasternode* pmn = mnodeman.Find(it->first);
         (*it).second.SetValid(pmn != nullptr);
         ++it;
     }

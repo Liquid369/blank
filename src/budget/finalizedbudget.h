@@ -40,7 +40,7 @@ private:
     bool CheckName();
 
 protected:
-    std::map<uint256, CFinalizedBudgetVote> mapVotes;
+    std::map<COutPoint, CFinalizedBudgetVote> mapVotes;
     std::string strBudgetName;
     int nBlockStart;
     std::vector<CTxBudgetPayment> vecBudgetPayments;
