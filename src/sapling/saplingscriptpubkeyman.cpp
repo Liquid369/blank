@@ -219,7 +219,11 @@ void SaplingScriptPubKeyMan::IncrementNoteWitnesses(const CBlockIndex* pindex,
     const CBlock* pblock {pblockIn};
     CBlock block;
     if (!pblock) {
-        ReadBlockFromDisk(block, pindex);
+        if (!ReadBlockFromDisk(block, pindex)) {
+            std::string read_failed_str = strprintf("Unable to read block %d (%s) from disk.",
+                    pindex->nHeight, pindex->GetBlockHash().ToString());
+            throw std::runtime_error(read_failed_str);
+        }
         pblock = &block;
     }
 
