@@ -44,14 +44,14 @@ class SpendDescription
 public:
     typedef std::array<unsigned char, 64> spend_auth_sig_t;
 
-    uint256 cv;                    //!< A value commitment to the value of the input note.
-    uint256 anchor;                //!< A Merkle root of the Sapling note commitment tree at some block height in the past.
-    uint256 nullifier;             //!< The nullifier of the input note.
-    uint256 rk;                    //!< The randomized public key for spendAuthSig.
-    libzcash::GrothProof zkproof;  //!< A zero-knowledge proof using the spend circuit.
-    spend_auth_sig_t spendAuthSig; //!< A signature authorizing this spend.
+    uint256 cv{UINT256_ZERO};              //!< A value commitment to the value of the input note.
+    uint256 anchor{UINT256_ZERO};          //!< A Merkle root of the Sapling note commitment tree at some block height in the past.
+    uint256 nullifier{UINT256_ZERO};       //!< The nullifier of the input note.
+    uint256 rk{UINT256_ZERO};              //!< The randomized public key for spendAuthSig.
+    libzcash::GrothProof zkproof = {{0}};  //!< A zero-knowledge proof using the spend circuit.
+    spend_auth_sig_t spendAuthSig = {{0}}; //!< A signature authorizing this spend.
 
-    SpendDescription() { }
+    SpendDescription() {}
 
     ADD_SERIALIZE_METHODS;
 
@@ -89,14 +89,14 @@ public:
 class OutputDescription
 {
 public:
-    uint256 cv;                     //!< A value commitment to the value of the output note.
-    uint256 cmu;                     //!< The u-coordinate of the note commitment for the output note.
-    uint256 ephemeralKey;           //!< A Jubjub public key.
-    libzcash::SaplingEncCiphertext encCiphertext; //!< A ciphertext component for the encrypted output note.
-    libzcash::SaplingOutCiphertext outCiphertext; //!< A ciphertext component for the encrypted output note.
-    libzcash::GrothProof zkproof;   //!< A zero-knowledge proof using the output circuit.
+    uint256 cv{UINT256_ZERO};                             //!< A value commitment to the value of the output note.
+    uint256 cmu{UINT256_ZERO};                            //!< The u-coordinate of the note commitment for the output note.
+    uint256 ephemeralKey{UINT256_ZERO};                   //!< A Jubjub public key.
+    libzcash::SaplingEncCiphertext encCiphertext = {{0}}; //!< A ciphertext component for the encrypted output note.
+    libzcash::SaplingOutCiphertext outCiphertext = {{0}}; //!< A ciphertext component for the encrypted output note.
+    libzcash::GrothProof zkproof = {{0}};                 //!< A zero-knowledge proof using the output circuit.
 
-    OutputDescription() { }
+    OutputDescription() {}
 
     ADD_SERIALIZE_METHODS;
 

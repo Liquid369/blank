@@ -27,10 +27,10 @@ struct SpendDescriptionInfo {
     SaplingWitness witness;
 
     SpendDescriptionInfo(
-        libzcash::SaplingExpandedSpendingKey expsk,
-        libzcash::SaplingNote note,
-        uint256 anchor,
-        SaplingWitness witness);
+        libzcash::SaplingExpandedSpendingKey _expsk,
+        libzcash::SaplingNote _note,
+        uint256 _anchor,
+        SaplingWitness _witness);
 };
 
 struct OutputDescriptionInfo {
@@ -39,9 +39,9 @@ struct OutputDescriptionInfo {
     std::array<unsigned char, ZC_MEMO_SIZE> memo;
 
     OutputDescriptionInfo(
-        uint256 ovk,
-        libzcash::SaplingNote note,
-        std::array<unsigned char, ZC_MEMO_SIZE> memo) : ovk(ovk), note(note), memo(memo) {}
+        uint256 _ovk,
+        libzcash::SaplingNote _note,
+        std::array<unsigned char, ZC_MEMO_SIZE> _memo) : ovk(_ovk), note(_note), memo(_memo) {}
 
     Optional<OutputDescription> Build(void* ctx);
 };
@@ -51,8 +51,8 @@ struct TransparentInputInfo {
     CAmount value;
 
     TransparentInputInfo(
-        CScript scriptPubKey,
-        CAmount value) : scriptPubKey(scriptPubKey), value(value) {}
+        CScript _scriptPubKey,
+        CAmount _value) : scriptPubKey(_scriptPubKey), value(_value) {}
 };
 
 // Dummy constants used during fee-calculation loop

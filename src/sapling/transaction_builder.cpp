@@ -14,10 +14,10 @@
 #include <librustzcash.h>
 
 SpendDescriptionInfo::SpendDescriptionInfo(
-    libzcash::SaplingExpandedSpendingKey expsk,
-    libzcash::SaplingNote note,
-    uint256 anchor,
-    SaplingWitness witness) : expsk(expsk), note(note), anchor(anchor), witness(witness)
+    libzcash::SaplingExpandedSpendingKey _expsk,
+    libzcash::SaplingNote _note,
+    uint256 _anchor,
+    SaplingWitness _witness) : expsk(_expsk), note(_note), anchor(_anchor), witness(_witness)
 {
     librustzcash_sapling_generate_r(alpha.begin());
 }

@@ -28,7 +28,7 @@ public:
     uint256 pk_d;
 
     SaplingPaymentAddress() : d(), pk_d() { }
-    SaplingPaymentAddress(diversifier_t d, uint256 pk_d) : d(d), pk_d(pk_d) { }
+    SaplingPaymentAddress(diversifier_t _d, uint256 _pk_d) : d(_d), pk_d(_pk_d) { }
 
     ADD_SERIALIZE_METHODS;
 

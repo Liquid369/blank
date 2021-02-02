@@ -145,3 +145,4 @@ ui_*
 build*
 pivxd.*
 pivxd-new-gui.*
+/cov-int/
