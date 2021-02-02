@@ -27,10 +27,10 @@ struct SpendDescriptionInfo {
     SaplingWitness witness;
 
     SpendDescriptionInfo(
-        libzcash::SaplingExpandedSpendingKey _expsk,
-        libzcash::SaplingNote _note,
-        uint256 _anchor,
-        SaplingWitness _witness);
+        const libzcash::SaplingExpandedSpendingKey& _expsk,
+        const libzcash::SaplingNote& _note,
+        const uint256& _anchor,
+        const SaplingWitness& _witness);
 };
 
 struct OutputDescriptionInfo {
@@ -39,9 +39,13 @@ struct OutputDescriptionInfo {
     std::array<unsigned char, ZC_MEMO_SIZE> memo;
 
     OutputDescriptionInfo(
-        uint256 _ovk,
-        libzcash::SaplingNote _note,
-        std::array<unsigned char, ZC_MEMO_SIZE> _memo) : ovk(_ovk), note(_note), memo(_memo) {}
+        const uint256& _ovk,
+        const libzcash::SaplingNote& _note,
+        const std::array<unsigned char, ZC_MEMO_SIZE>& _memo):
+            ovk(_ovk),
+            note(_note),
+            memo(_memo)
+    {}
 
     Optional<OutputDescription> Build(void* ctx);
 };
@@ -50,9 +54,10 @@ struct TransparentInputInfo {
     CScript scriptPubKey;
     CAmount value;
 
-    TransparentInputInfo(
-        CScript _scriptPubKey,
-        CAmount _value) : scriptPubKey(_scriptPubKey), value(_value) {}
+    TransparentInputInfo(const CScript& _scriptPubKey, CAmount _value):
+        scriptPubKey(_scriptPubKey),
+        value(_value)
+    {}
 };
 
 // Dummy constants used during fee-calculation loop
@@ -104,26 +109,35 @@ public:
     // Throws if the anchor does not match the anchor used by
     // previously-added Sapling spends.
     void AddSaplingSpend(
-        libzcash::SaplingExpandedSpendingKey expsk,
-        libzcash::SaplingNote note,
-        uint256 anchor,
-        SaplingWitness witness);
+        const libzcash::SaplingExpandedSpendingKey& expsk,
+        const libzcash::SaplingNote& note,
+        const uint256& anchor,
+        const SaplingWitness& witness);
 
     void AddSaplingOutput(
-        uint256 ovk,
-        libzcash::SaplingPaymentAddress to,
+        const uint256& ovk,
+        const libzcash::SaplingPaymentAddress& to,
         CAmount value,
-        std::array<unsigned char, ZC_MEMO_SIZE> memo = {{0xF6}});
+        const std::array<unsigned char, ZC_MEMO_SIZE>& memo);
+
+    void AddSaplingOutput(
+        const uint256& ovk,
+        const libzcash::SaplingPaymentAddress& to,
+        CAmount value)
+    {
+        const std::array<unsigned char, ZC_MEMO_SIZE> memo = {{0xF6}};
+        AddSaplingOutput(ovk, to, value, memo);
+    }
 
     // Assumes that the value correctly corresponds to the provided UTXO.
-    void AddTransparentInput(const COutPoint& utxo, const CScript& scriptPubKey, const CAmount& value);
+    void AddTransparentInput(const COutPoint& utxo, const CScript& scriptPubKey, CAmount value);
 
     void AddTransparentOutput(const CTxOut& out);
-    void AddTransparentOutput(const CTxDestination& dest, const CAmount& value);
+    void AddTransparentOutput(const CTxDestination& dest, CAmount value);
 
-    void SendChangeTo(libzcash::SaplingPaymentAddress changeAddr, uint256 ovk);
+    void SendChangeTo(const libzcash::SaplingPaymentAddress& changeAddr, const uint256& ovk);
 
-    void SendChangeTo(CTxDestination& changeAddr);
+    void SendChangeTo(const CTxDestination& changeAddr);
 
     TransactionBuilderResult Build(bool fDummySig = false);
     // Add Sapling Spend/Output descriptions, binding sig, and transparent signatures

@@ -32,17 +32,17 @@ public:
     uint256 r{UINT256_ZERO};
 
     SaplingNote() {};
-    SaplingNote(diversifier_t _d, uint256 _pk_d, uint64_t value, uint256 _r):
+    SaplingNote(const diversifier_t& _d, const uint256& _pk_d, uint64_t value, const uint256& _r):
         BaseNote(value),
         d(_d),
         pk_d(_pk_d),
         r(_r)
     {}
-    SaplingNote(const SaplingPaymentAddress &address, uint64_t value);
+    SaplingNote(const SaplingPaymentAddress& address, uint64_t value);
     virtual ~SaplingNote() {};
 
     boost::optional<uint256> cmu() const;
-    boost::optional<uint256> nullifier(const SaplingFullViewingKey &vk, const uint64_t position) const;
+    boost::optional<uint256> nullifier(const SaplingFullViewingKey& vk, const uint64_t position) const;
 };
 
 class BaseNotePlaintext {
@@ -51,7 +51,7 @@ protected:
     std::array<unsigned char, ZC_MEMO_SIZE> memo_ = {{0}};
 public:
     BaseNotePlaintext() {}
-    BaseNotePlaintext(const BaseNote& note, std::array<unsigned char, ZC_MEMO_SIZE> memo):
+    BaseNotePlaintext(const BaseNote& note, const std::array<unsigned char, ZC_MEMO_SIZE>& memo):
         value_(note.value()),
         memo_(memo)
     {}
@@ -69,22 +69,22 @@ public:
     uint256 rcm{UINT256_ZERO};
 
     SaplingNotePlaintext() {}
-    SaplingNotePlaintext(const SaplingNote& note, std::array<unsigned char, ZC_MEMO_SIZE> memo);
+    SaplingNotePlaintext(const SaplingNote& note, const std::array<unsigned char, ZC_MEMO_SIZE>& memo);
     virtual ~SaplingNotePlaintext() {}
 
     static boost::optional<SaplingNotePlaintext> decrypt(
-        const SaplingEncCiphertext &ciphertext,
-        const uint256 &ivk,
-        const uint256 &epk,
-        const uint256 &cmu
+        const SaplingEncCiphertext& ciphertext,
+        const uint256& ivk,
+        const uint256& epk,
+        const uint256& cmu
     );
 
     static boost::optional<SaplingNotePlaintext> decrypt(
-        const SaplingEncCiphertext &ciphertext,
-        const uint256 &epk,
-        const uint256 &esk,
-        const uint256 &pk_d,
-        const uint256 &cmu
+        const SaplingEncCiphertext& ciphertext,
+        const uint256& epk,
+        const uint256& esk,
+        const uint256& pk_d,
+        const uint256& cmu
     );
 
     boost::optional<SaplingNote> note(const SaplingIncomingViewingKey& ivk) const;
@@ -116,7 +116,7 @@ public:
     uint256 esk{UINT256_ZERO};
 
     SaplingOutgoingPlaintext() {};
-    SaplingOutgoingPlaintext(uint256 _pk_d, uint256 _esk) :
+    SaplingOutgoingPlaintext(const uint256& _pk_d, const uint256& _esk) :
         pk_d(_pk_d),
         esk(_esk)
     {}
@@ -130,7 +130,7 @@ public:
     }
 
     static boost::optional<SaplingOutgoingPlaintext> decrypt(
-        const SaplingOutCiphertext &ciphertext,
+        const SaplingOutCiphertext& ciphertext,
         const uint256& ovk,
         const uint256& cv,
         const uint256& cm,
