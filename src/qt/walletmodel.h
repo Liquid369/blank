@@ -59,7 +59,6 @@ public:
     // Todo: This is a hack, should be replaced with a cleaner solution!
     QString address{};
     QString label{};
-    AvailableCoinsType inputType;
 
     // Cold staking.
     bool isP2CS{false};
