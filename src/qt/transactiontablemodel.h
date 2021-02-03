@@ -95,9 +95,9 @@ private:
 
     CWallet* wallet{nullptr};
     WalletModel* walletModel{nullptr};
-    QStringList columns;
+    QStringList columns{};
     TransactionTablePriv* priv{nullptr};
-    bool fProcessingQueuedTransactions;
+    bool fProcessingQueuedTransactions{false};
 
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();

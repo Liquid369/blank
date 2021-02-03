@@ -828,7 +828,7 @@ void TransactionTableModel::updateDisplayUnit()
 // queue notifications to show a non freezing progress dialog e.g. for rescan
 struct TransactionNotification {
 public:
-    TransactionNotification() {}
+    TransactionNotification() = delete; // need to specify hash and status
     TransactionNotification(uint256 hash, ChangeType status) : hash(hash), status(status) {}
 
     void invoke(QObject* ttm)

@@ -109,8 +109,8 @@ private:
     WalletModel* walletModel{nullptr};
     CWallet* wallet{nullptr};
     AddressTablePriv* priv{nullptr};
-    QStringList columns;
-    EditStatus editStatus;
+    QStringList columns{};
+    EditStatus editStatus{OK};
 
     /** Notify listeners that data changed. */
     void emitDataChanged(int index);

@@ -168,7 +168,7 @@ Q_SIGNALS:
 
 private:
     /// Flag indicating a restart
-    bool execute_restart;
+    bool execute_restart{false};
 
     /// Pass fatal exception message to UI thread
     void handleRunawayException(const std::exception* e);
@@ -224,16 +224,16 @@ Q_SIGNALS:
     void splashFinished(QWidget* window);
 
 private:
-    QThread* coreThread;
-    OptionsModel* optionsModel;
-    ClientModel* clientModel;
-    PIVXGUI* window;
-    QTimer* pollShutdownTimer;
+    QThread* coreThread{nullptr};
+    OptionsModel* optionsModel{nullptr};
+    ClientModel* clientModel{nullptr};
+    PIVXGUI* window{nullptr};
+    QTimer* pollShutdownTimer{nullptr};
 #ifdef ENABLE_WALLET
-    PaymentServer* paymentServer;
-    WalletModel* walletModel;
+    PaymentServer* paymentServer{nullptr};
+    WalletModel* walletModel{nullptr};
 #endif
-    int returnValue;
+    int returnValue{0};
     QTranslator qtTranslatorBase, qtTranslator, translatorBase, translator;
 
     void startThread();
