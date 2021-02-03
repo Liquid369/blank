@@ -169,9 +169,9 @@ struct HTTPPathHandler
         prefix(prefix), exactMatch(exactMatch), handler(handler)
     {
     }
-    std::string prefix;
-    bool exactMatch;
-    HTTPRequestHandler handler;
+    std::string prefix{};
+    bool exactMatch{false};
+    HTTPRequestHandler handler{};
 };
 
 /** HTTP module state */

@@ -96,7 +96,7 @@ private:
     // Combine the conf counts with tx counts to calculate the confirmation % for each Y,X
     // Combine the total value with the tx counts to calculate the avg feerate per bucket
 
-    double decay;
+    double decay{0.0};
 
     // Mempool counts of outstanding transactions
     // For each bucket X, track the number of transactions in the mempool

@@ -305,7 +305,7 @@ void BlockAssembler::AddToBlock(CTxMemPool::txiter iter)
     bool fPrintPriority = gArgs.GetBoolArg("-printpriority", defaultPrintPriority);
     if (fPrintPriority) {
         double dPriority = iter->GetPriority(nHeight);
-        CAmount dummy;
+        CAmount dummy{0};
         mempool.ApplyDeltas(iter->GetTx().GetHash(), dPriority, dummy);
         LogPrintf("priority %.1f fee %s txid %s\n",
                   dPriority,
@@ -390,7 +390,7 @@ void BlockAssembler::addPriorityTxs()
     for (CTxMemPool::indexed_transaction_set::iterator mi = mempool.mapTx.begin();
          mi != mempool.mapTx.end(); ++mi) {
         double dPriority = mi->GetPriority(nHeight);
-        CAmount dummy;
+        CAmount dummy{0};
         mempool.ApplyDeltas(mi->GetSharedTx()->GetHash(), dPriority, dummy);
         vecPriority.emplace_back(TxCoinAgePriority(dPriority, mi));
     }
