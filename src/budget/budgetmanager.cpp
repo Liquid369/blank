@@ -876,30 +876,38 @@ void CBudgetManager::NewBlock(int height)
     LogPrint(BCLog::MNBUDGET,"%s:  PASSED\n", __func__);
 }
 
+int CBudgetManager::ProcessBudgetVoteSync(const uint256& nProp, CNode* pfrom)
+{
+    if (Params().NetworkID() == CBaseChainParams::MAIN) {
+        if (nProp.IsNull()) {
+            if (pfrom->HasFulfilledRequest("budgetvotesync")) {
+                LogPrint(BCLog::MNBUDGET, "mnvs - peer already asked me for the list\n");
+                return 20;
+            }
+            pfrom->FulfilledRequest("budgetvotesync");
+        }
+    }
+
+    Sync(pfrom, nProp);
+    LogPrint(BCLog::MNBUDGET, "mnvs - Sent Masternode votes to peer %i\n", pfrom->GetId());
+    return 0;
+}
+
 void CBudgetManager::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
 {
     // lite mode is not supported
     if (fLiteMode) return;
     if (!masternodeSync.IsBlockchainSynced()) return;
 
-    if (strCommand == NetMsgType::BUDGETVOTESYNC) { //Masternode vote sync
+    if (strCommand == NetMsgType::BUDGETVOTESYNC) {
+        // Masternode vote sync
         uint256 nProp;
         vRecv >> nProp;
-
-        if (Params().NetworkID() == CBaseChainParams::MAIN) {
-            if (nProp.IsNull()) {
-                if (pfrom->HasFulfilledRequest("budgetvotesync")) {
-                    LogPrint(BCLog::MNBUDGET,"mnvs - peer already asked me for the list\n");
-                    LOCK(cs_main);
-                    Misbehaving(pfrom->GetId(), 20);
-                    return;
-                }
-                pfrom->FulfilledRequest("budgetvotesync");
-            }
+        int banScore = ProcessBudgetVoteSync(nProp, pfrom);
+        if (banScore > 0) {
+            LOCK(cs_main);
+            Misbehaving(pfrom->GetId(), banScore);
         }
-
-        Sync(pfrom, nProp);
-        LogPrint(BCLog::MNBUDGET, "mnvs - Sent Masternode votes to peer %i\n", pfrom->GetId());
     }
 
     if (strCommand == NetMsgType::BUDGETPROPOSAL) {
