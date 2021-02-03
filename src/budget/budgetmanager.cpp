@@ -893,6 +893,25 @@ int CBudgetManager::ProcessBudgetVoteSync(const uint256& nProp, CNode* pfrom)
     return 0;
 }
 
+int CBudgetManager::ProcessProposal(CBudgetProposal& proposal)
+{
+    const uint256& nHash = proposal.GetHash();
+    if (HaveProposal(nHash)) {
+        masternodeSync.AddedBudgetItem(nHash);
+        return 0;
+    }
+    if (!AddProposal(proposal)) {
+        return 0;
+    }
+    proposal.Relay();
+    masternodeSync.AddedBudgetItem(nHash);
+
+    LogPrint(BCLog::MNBUDGET, "mprop (new) %s\n", nHash.ToString());
+    //We might have active votes for this proposal that are valid now
+    CheckOrphanVotes();
+    return 0;
+}
+
 void CBudgetManager::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
 {
     // lite mode is not supported
@@ -917,20 +936,11 @@ void CBudgetManager::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
             // !TODO: we should probably call misbehaving here
             return;
         }
-        const uint256& nHash = proposal.GetHash();
-        if (HaveProposal(nHash)) {
-            masternodeSync.AddedBudgetItem(nHash);
-            return;
+        int banScore = ProcessProposal(proposal);
+        if (banScore > 0) {
+            LOCK(cs_main);
+            Misbehaving(pfrom->GetId(), banScore);
         }
-        if (!AddProposal(proposal)) {
-            return;
-        }
-        proposal.Relay();
-        masternodeSync.AddedBudgetItem(nHash);
-
-        LogPrint(BCLog::MNBUDGET,"mprop (new) %s\n", nHash.ToString());
-        //We might have active votes for this proposal that are valid now
-        CheckOrphanVotes();
     }
 
     if (strCommand == NetMsgType::BUDGETVOTE) { // Budget Vote

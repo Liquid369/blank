@@ -91,6 +91,7 @@ public:
     void NewBlock(int height);
 
     int ProcessBudgetVoteSync(const uint256& nProp, CNode* pfrom);
+    int ProcessProposal(CBudgetProposal& proposal);
 
     // functions returning a pointer in the map. Need cs_proposals/cs_budgets locked from the caller
     CBudgetProposal* FindProposal(const uint256& nHash);
