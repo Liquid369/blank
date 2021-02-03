@@ -81,22 +81,22 @@ private Q_SLOTS:
     void onSaveOptionsClicked();
 
 private:
-    Ui::SettingsWidget *ui;
+    Ui::SettingsWidget *ui{nullptr};
     int navAreaBaseHeight{0};
 
-    SettingsBackupWallet *settingsBackupWallet;
-    SettingsExportCSV *settingsExportCsvWidget;
-    SettingsBitToolWidget *settingsBitToolWidget;
-    SettingsSignMessageWidgets *settingsSingMessageWidgets;
-    SettingsWalletRepairWidget *settingsWalletRepairWidget;
-    SettingsWalletOptionsWidget *settingsWalletOptionsWidget;
-    SettingsMainOptionsWidget *settingsMainOptionsWidget;
-    SettingsDisplayOptionsWidget *settingsDisplayOptionsWidget;
-    SettingsMultisendWidget *settingsMultisendWidget;
-    SettingsInformationWidget *settingsInformationWidget;
-    SettingsConsoleWidget *settingsConsoleWidget;
+    SettingsBackupWallet *settingsBackupWallet{nullptr};
+    SettingsExportCSV *settingsExportCsvWidget{nullptr};
+    SettingsBitToolWidget *settingsBitToolWidget{nullptr};
+    SettingsSignMessageWidgets *settingsSingMessageWidgets{nullptr};
+    SettingsWalletRepairWidget *settingsWalletRepairWidget{nullptr};
+    SettingsWalletOptionsWidget *settingsWalletOptionsWidget{nullptr};
+    SettingsMainOptionsWidget *settingsMainOptionsWidget{nullptr};
+    SettingsDisplayOptionsWidget *settingsDisplayOptionsWidget{nullptr};
+    SettingsMultisendWidget *settingsMultisendWidget{nullptr};
+    SettingsInformationWidget *settingsInformationWidget{nullptr};
+    SettingsConsoleWidget *settingsConsoleWidget{nullptr};
 
-    QDataWidgetMapper* mapper;
+    QDataWidgetMapper* mapper{nullptr};
 
     QList<QPushButton*> options;
     // Map of: menu button -> sub menu items

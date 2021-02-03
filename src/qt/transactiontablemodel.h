@@ -93,10 +93,10 @@ private:
     std::unique_ptr<interfaces::Handler> m_handler_transaction_changed;
     std::unique_ptr<interfaces::Handler> m_handler_show_progress;
 
-    CWallet* wallet;
-    WalletModel* walletModel;
+    CWallet* wallet{nullptr};
+    WalletModel* walletModel{nullptr};
     QStringList columns;
-    TransactionTablePriv* priv;
+    TransactionTablePriv* priv{nullptr};
     bool fProcessingQueuedTransactions;
 
     void subscribeToCoreSignals();
