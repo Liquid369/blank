@@ -459,7 +459,7 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
     return true;
 }
 
-bool CMasternodeBroadcast::CheckInputsAndAdd(int& nDoS)
+bool CMasternodeBroadcast::CheckInputsAndAdd(int nChainHeight, int& nDoS)
 {
     // we are a masternode with the same vin (i.e. already activated) and this mnb is ours (matches our Masternode privkey)
     // so nothing to do here for us
@@ -491,21 +491,8 @@ bool CMasternodeBroadcast::CheckInputsAndAdd(int& nDoS)
         return false;
     }
 
-    const int utxoHeight = collateralUtxo.nHeight;
-    int nChainHeight = 0;
-    {
-        TRY_LOCK(cs_main, lockMain);
-        if (!lockMain) {
-            // not mnb fault, let it to be checked again later
-            mnodeman.mapSeenMasternodeBroadcast.erase(GetHash());
-            masternodeSync.mapSeenSyncMNB.erase(GetHash());
-            return false;
-        }
-        nChainHeight = chainActive.Height();
-    }
-
     LogPrint(BCLog::MASTERNODE, "mnb - Accepted Masternode entry\n");
-
+    const int utxoHeight = collateralUtxo.nHeight;
     int collateralUtxoDepth = nChainHeight - utxoHeight + 1;
     if (collateralUtxoDepth < MasternodeCollateralMinConf()) {
         LogPrint(BCLog::MASTERNODE,"mnb - Input must have at least %d confirmations\n", MasternodeCollateralMinConf());

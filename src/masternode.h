@@ -245,7 +245,7 @@ public:
     CMasternodeBroadcast(const CMasternode& mn);
 
     bool CheckAndUpdate(int& nDoS);
-    bool CheckInputsAndAdd(int& nDos);
+    bool CheckInputsAndAdd(int chainHeight, int& nDos);
 
     uint256 GetHash() const;
 
