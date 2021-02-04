@@ -7,7 +7,6 @@
 
 #include "addrman.h"
 #include "init.h"
-#include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
 #include "netbase.h"
@@ -478,7 +477,6 @@ bool CMasternodeBroadcast::CheckInputsAndAdd(int& nDoS)
 
     // search existing Masternode list
     CMasternode* pmn = mnodeman.Find(vin.prevout);
-
     if (pmn != NULL) {
         // nothing to do here if we already know about this masternode and it's enabled
         if (pmn->IsEnabled()) return true;
@@ -487,11 +485,13 @@ bool CMasternodeBroadcast::CheckInputsAndAdd(int& nDoS)
             mnodeman.Remove(pmn->vin.prevout);
     }
 
-    if (pcoinsTip->AccessCoin(vin.prevout).IsSpent()) {
+    const Coin& collateralUtxo = pcoinsTip->AccessCoin(vin.prevout);
+    if (collateralUtxo.IsSpent()) {
         LogPrint(BCLog::MASTERNODE,"mnb - vin %s spent\n", vin.prevout.ToString());
         return false;
     }
 
+    const int utxoHeight = collateralUtxo.nHeight;
     int nChainHeight = 0;
     {
         TRY_LOCK(cs_main, lockMain);
@@ -506,7 +506,8 @@ bool CMasternodeBroadcast::CheckInputsAndAdd(int& nDoS)
 
     LogPrint(BCLog::MASTERNODE, "mnb - Accepted Masternode entry\n");
 
-    if (pcoinsTip->GetCoinDepthAtHeight(vin.prevout, nChainHeight) < MasternodeCollateralMinConf()) {
+    int collateralUtxoDepth = nChainHeight - utxoHeight + 1;
+    if (collateralUtxoDepth < MasternodeCollateralMinConf()) {
         LogPrint(BCLog::MASTERNODE,"mnb - Input must have at least %d confirmations\n", MasternodeCollateralMinConf());
         // maybe we miss few blocks, let this mnb to be checked again later
         mnodeman.mapSeenMasternodeBroadcast.erase(GetHash());
@@ -516,18 +517,11 @@ bool CMasternodeBroadcast::CheckInputsAndAdd(int& nDoS)
 
     // verify that sig time is legit in past
     // should be at least not earlier than block when 1000 PIV tx got MASTERNODE_MIN_CONFIRMATIONS
-    uint256 hashBlock = UINT256_ZERO;
-    CTransactionRef tx2;
-    GetTransaction(vin.prevout.hash, tx2, hashBlock, true);
-    BlockMap::iterator mi = mapBlockIndex.find(hashBlock);
-    if (mi != mapBlockIndex.end() && (*mi).second) {
-        CBlockIndex* pMNIndex = (*mi).second;                                                        // block for 1000 PIVX tx -> 1 confirmation
-        CBlockIndex* pConfIndex = chainActive[pMNIndex->nHeight + MasternodeCollateralMinConf() - 1]; // block where tx got MASTERNODE_MIN_CONFIRMATIONS
-        if (pConfIndex->GetBlockTime() > sigTime) {
-            LogPrint(BCLog::MASTERNODE,"mnb - Bad sigTime %d for Masternode %s (%i conf block is at %d)\n",
-                sigTime, vin.prevout.hash.ToString(), MasternodeCollateralMinConf(), pConfIndex->GetBlockTime());
-            return false;
-        }
+    CBlockIndex* pConfIndex = WITH_LOCK(cs_main, return chainActive[utxoHeight + MasternodeCollateralMinConf() - 1]); // block where tx got MASTERNODE_MIN_CONFIRMATIONS
+    if (pConfIndex->GetBlockTime() > sigTime) {
+        LogPrint(BCLog::MASTERNODE,"mnb - Bad sigTime %d for Masternode %s (%i conf block is at %d)\n",
+            sigTime, vin.prevout.hash.ToString(), MasternodeCollateralMinConf(), pConfIndex->GetBlockTime());
+        return false;
     }
 
     LogPrint(BCLog::MASTERNODE,"mnb - Got NEW Masternode entry - %s - %lli \n", vin.prevout.hash.ToString(), sigTime);
