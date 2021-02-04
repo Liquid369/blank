@@ -174,6 +174,9 @@ BOOST_AUTO_TEST_CASE(cnode_simple_test)
     CNode* pnode2 = new CNode(id++, NODE_NETWORK, height, hSocket, addr, 1, 1, pszDest, fInboundIn);
     BOOST_CHECK(pnode2->fInbound == true);
     BOOST_CHECK(pnode2->fFeeler == false);
+
+    delete pnode1;
+    delete pnode2;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

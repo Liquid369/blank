@@ -115,6 +115,9 @@ void CActiveMasternode::ManageStatus()
                         "Masternode address:port connection availability test failed, could not open a connection to the public masternode address (" +
                         service.ToString() + ")";
                 LogPrintf("%s - not capable: %s\n", __func__, notCapableReason);
+            } else {
+                // don't leak allocated object in memory
+                delete node;
             }
             return;
         }
