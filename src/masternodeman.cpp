@@ -815,7 +815,7 @@ void CMasternodeMan::Remove(const COutPoint& collateralOut)
     }
 }
 
-void CMasternodeMan::UpdateMasternodeList(CMasternodeBroadcast mnb)
+void CMasternodeMan::UpdateMasternodeList(CMasternodeBroadcast& mnb)
 {
     mapSeenMasternodePing.emplace(mnb.lastPing.GetHash(), mnb.lastPing);
     mapSeenMasternodeBroadcast.emplace(mnb.GetHash(), mnb);

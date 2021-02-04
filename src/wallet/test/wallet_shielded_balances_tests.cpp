@@ -42,8 +42,8 @@ CWalletTx& SetWalletNotesData(CWallet* wallet, CWalletTx& wtx)
 /**
  * Creates and send a tx with an input of 'inputAmount' to 'vDest'.
  */
-CWalletTx& AddShieldedBalanceToWallet(const CAmount& inputAmount,
-                                      std::vector<ShieldedDestination> vDest,
+CWalletTx& AddShieldedBalanceToWallet(CAmount inputAmount,
+                                      const std::vector<ShieldedDestination>& vDest,
                                       CWallet* wallet,
                                       const Consensus::Params& consensusParams)
 {
@@ -65,9 +65,9 @@ CWalletTx& AddShieldedBalanceToWallet(const CAmount& inputAmount,
     return wtxUpdated;
 }
 
-CWalletTx& AddShieldedBalanceToWallet(libzcash::SaplingPaymentAddress& sendTo, CAmount amount,
-                                CWallet& wallet, const Consensus::Params& consensusParams,
-                                libzcash::SaplingExtendedSpendingKey& extskOut)
+CWalletTx& AddShieldedBalanceToWallet(const libzcash::SaplingPaymentAddress& sendTo, CAmount amount,
+                                      CWallet& wallet, const Consensus::Params& consensusParams,
+                                      libzcash::SaplingExtendedSpendingKey& extskOut)
 {
     // Create a transaction shielding balance to 'sendTo' and load it to the wallet.
     BOOST_CHECK(wallet.GetSaplingExtendedSpendingKey(sendTo, extskOut));
@@ -86,7 +86,7 @@ struct SaplingSpendValues {
  * Update the wallet internally as if the wallet would had received a valid block containing wtx.
  * Then return the note, anchor and witness for any subsequent spending process.
  */
-SaplingSpendValues UpdateWalletInternalNotesData(CWalletTx& wtx, SaplingOutPoint& sapPoint, CWallet& wallet)
+SaplingSpendValues UpdateWalletInternalNotesData(CWalletTx& wtx, const SaplingOutPoint& sapPoint, CWallet& wallet)
 {
     // Get note
     SaplingNoteData nd = wtx.mapSaplingNoteData.at(sapPoint);
@@ -203,7 +203,7 @@ libzcash::SaplingPaymentAddress getNewDummyShieldedAddress()
     return m.DefaultAddress();
 }
 
-CWalletTx& buildTxAndLoadToWallet(CWallet& wallet, libzcash::SaplingExtendedSpendingKey extskOut,
+CWalletTx& buildTxAndLoadToWallet(CWallet& wallet, const libzcash::SaplingExtendedSpendingKey& extskOut,
                                   const SaplingSpendValues& sapSpendValues, libzcash::SaplingPaymentAddress dest,
                                   const CAmount& destAmount, const Consensus::Params& consensus)
 {

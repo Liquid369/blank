@@ -169,7 +169,7 @@ public:
     void Remove(const COutPoint& collateralOut);
 
     /// Update masternode list and maps using provided CMasternodeBroadcast
-    void UpdateMasternodeList(CMasternodeBroadcast mnb);
+    void UpdateMasternodeList(CMasternodeBroadcast& mnb);
 
     /// Get the time a masternode was last paid
     int64_t GetLastPaid(const MasternodeRef& mn, const CBlockIndex* BlockReading) const;

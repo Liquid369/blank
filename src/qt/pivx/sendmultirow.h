@@ -69,7 +69,7 @@ Q_SIGNALS:
     void onContactsClicked(SendMultiRow* entry);
     void onMenuClicked(SendMultiRow* entry);
     void onValueChanged();
-    void onUriParsed(SendCoinsRecipient rcp);
+    void onUriParsed(const SendCoinsRecipient& rcp);
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

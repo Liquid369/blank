@@ -1391,7 +1391,7 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
     UniValue spends(UniValue::VARR);
     UniValue outputs(UniValue::VARR);
 
-    auto addMemo = [](UniValue& entry, const Optional<std::array<unsigned char, ZC_MEMO_SIZE>> optMemo) {
+    auto addMemo = [](UniValue& entry, const Optional<std::array<unsigned char, ZC_MEMO_SIZE>>& optMemo) {
         // empty memo
         if (!static_cast<bool>(optMemo)) {
             const std::array<unsigned char, 1> memo {0xF6};
