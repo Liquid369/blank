@@ -675,7 +675,6 @@ UniValue bip38decrypt(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_ERROR, "Private Key Not Valid");
 
     CPubKey pubkey = key.GetPubKey();
-    pubkey.IsCompressed();
     assert(key.VerifyPubKey(pubkey));
     result.pushKV("Address", EncodeDestination(pubkey.GetID()));
     CKeyID vchAddress = pubkey.GetID();
