@@ -462,7 +462,7 @@ void CBudgetManager::VoteOnFinalizedBudgets()
 
     // Do this 1 in 4 blocks -- spread out the voting activity
     // -- this function is only called every fourteenth block, so this is really 1 in 56 blocks
-    if (rand() % 4 != 0) {
+    if (GetRandInt(4) != 0) {
         LogPrint(BCLog::MNBUDGET,"%s: waiting\n", __func__);
         return;
     }
@@ -832,7 +832,7 @@ void CBudgetManager::NewBlock(int height)
     // incremental sync with our peers
     if (masternodeSync.IsSynced()) {
         LogPrint(BCLog::MNBUDGET,"%s:  incremental sync started\n", __func__);
-        if (rand() % 1440 == 0) {
+        if (GetRandInt(1440) == 0) {
             ClearSeen();
             ResetSync();
         }
