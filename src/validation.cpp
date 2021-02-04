@@ -998,68 +998,6 @@ bool CScriptCheck::operator()()
     return VerifyScript(scriptSig, scriptPubKey, nFlags, CachingTransactionSignatureChecker(ptxTo, nIn, amount, cacheStore, *precomTxData), ptxTo->GetRequiredSigVersion(), &error);
 }
 
-std::map<COutPoint, COutPoint> mapInvalidOutPoints;
-std::map<CBigNum, CAmount> mapInvalidSerials;
-void AddInvalidSpendsToMap(const CBlock& block)
-{
-    libzerocoin::ZerocoinParams* params = Params().GetConsensus().Zerocoin_Params(false);
-    for (const auto& txIn : block.vtx) {
-        const CTransaction tx = *txIn;
-        if (!tx.ContainsZerocoins())
-            continue;
-
-        //Check all zerocoinspends for bad serials
-        for (const CTxIn& in : tx.vin) {
-            bool isPublicSpend = in.IsZerocoinPublicSpend();
-            if (in.IsZerocoinSpend() || isPublicSpend) {
-
-                libzerocoin::CoinSpend* spend;
-                if (isPublicSpend) {
-                    PublicCoinSpend publicSpend(params);
-                    CValidationState state;
-                    if (!ZPIVModule::ParseZerocoinPublicSpend(in, tx, state, publicSpend)){
-                        throw std::runtime_error("Failed to parse public spend");
-                    }
-                    spend = &publicSpend;
-                } else {
-                    libzerocoin::CoinSpend spendObj = TxInToZerocoinSpend(in);
-                    spend = &spendObj;
-                }
-
-                //If serial is not valid, mark all outputs as bad
-                if (!spend->HasValidSerial(params)) {
-                    mapInvalidSerials[spend->getCoinSerialNumber()] = spend->getDenomination() * COIN;
-
-                    // Derive the actual valid serial from the invalid serial if possible
-                    CBigNum bnActualSerial = spend->CalculateValidSerial(params);
-                    uint256 txHash;
-
-                    if (zerocoinDB->ReadCoinSpend(bnActualSerial, txHash)) {
-                        mapInvalidSerials[bnActualSerial] = spend->getDenomination() * COIN;
-
-                        CTransactionRef txPrev;
-                        uint256 hashBlock;
-                        if (!GetTransaction(txHash, txPrev, hashBlock, true))
-                            continue;
-
-                        //Record all txouts from txPrev as invalid
-                        for (unsigned int i = 0; i < txPrev->vout.size(); i++) {
-                            //map to an empty outpoint to represent that this is the first in the chain of bad outs
-                            mapInvalidOutPoints[COutPoint(txPrev->GetHash(), i)] = COutPoint();
-                        }
-                    }
-
-                    //Record all txouts from this invalid zerocoin spend tx as invalid
-                    for (unsigned int i = 0; i < tx.vout.size(); i++) {
-                        //map to an empty outpoint to represent that this is the first in the chain of bad outs
-                        mapInvalidOutPoints[COutPoint(tx.GetHash(), i)] = COutPoint();
-                    }
-                }
-            }
-        }
-    }
-}
-
 bool ValidOutPoint(const COutPoint& out, int nHeight)
 {
     bool isInvalid = nHeight >= Params().GetConsensus().height_start_InvalidUTXOsCheck && invalid_out::ContainsOutPoint(out);
@@ -1774,11 +1712,6 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
     int64_t nTime4 = GetTimeMicros();
     nTimeCallbacks += nTime4 - nTime3;
     LogPrint(BCLog::BENCH, "    - Callbacks: %.2fms [%.2fs]\n", 0.001 * (nTime4 - nTime3), nTimeCallbacks * 0.000001);
-
-    //Continue tracking possible movement of fraudulent funds until they are completely frozen
-    if (pindex->nHeight >= consensus.height_start_ZC_InvalidSerials &&
-            pindex->nHeight <= consensus.height_ZC_RecalcAccumulators + 1)
-        AddInvalidSpendsToMap(block);
 
     if (consensus.NetworkUpgradeActive(pindex->nHeight, Consensus::UPGRADE_ZC_V2) &&
             pindex->nHeight < consensus.height_last_ZC_AccumCheckpoint) {
