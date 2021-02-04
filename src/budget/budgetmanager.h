@@ -94,6 +94,7 @@ public:
     int ProcessProposal(CBudgetProposal& proposal);
     int ProcessProposalVote(CBudgetVote& proposal, CNode* pfrom);
     int ProcessFinalizedBudget(CFinalizedBudget& finalbudget);
+    int ProcessFinalizedBudgetVote(CFinalizedBudgetVote& vote, CNode* pfrom);
 
     // functions returning a pointer in the map. Need cs_proposals/cs_budgets locked from the caller
     CBudgetProposal* FindProposal(const uint256& nHash);
