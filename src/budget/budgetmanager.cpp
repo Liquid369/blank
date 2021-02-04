@@ -1239,7 +1239,7 @@ bool CheckCollateral(const uint256& nTxCollateralHash, const uint256& nExpectedH
 
     bool foundOpReturn = false;
     for (const CTxOut &o : txCollateral->vout) {
-        if (!o.scriptPubKey.IsNormalPaymentScript() && !o.scriptPubKey.IsUnspendable()) {
+        if (!o.scriptPubKey.IsPayToPublicKeyHash() && !o.scriptPubKey.IsUnspendable()) {
             strError = strprintf("Invalid Script %s", txCollateral->ToString());
             return false;
         }
@@ -1252,6 +1252,7 @@ bool CheckCollateral(const uint256& nTxCollateralHash, const uint256& nExpectedH
                 LogPrint(BCLog::MNBUDGET, "Final Budget: o.nValue(%ld) >= BUDGET_FEE_TX(%ld) ?\n", o.nValue, BUDGET_FEE_TX);
                 if(o.nValue >= BUDGET_FEE_TX) {
                     foundOpReturn = true;
+                    break;
                 }
             }
         } else {
@@ -1261,6 +1262,7 @@ bool CheckCollateral(const uint256& nTxCollateralHash, const uint256& nExpectedH
                 LogPrint(BCLog::MNBUDGET, "Normal Budget: o.nValue(%ld) >= PROPOSAL_FEE_TX(%ld) ?\n", o.nValue, PROPOSAL_FEE_TX);
                 if(o.nValue >= PROPOSAL_FEE_TX) {
                     foundOpReturn = true;
+                    break;
                 }
             }
         }
