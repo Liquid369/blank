@@ -1009,72 +1009,60 @@ int CBudgetManager::ProcessFinalizedBudgetVote(CFinalizedBudgetVote& vote, CNode
 
 void CBudgetManager::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
 {
+    int banScore = ProcessMessageInner(pfrom, strCommand, vRecv);
+    if (banScore > 0) {
+        LOCK(cs_main);
+        Misbehaving(pfrom->GetId(), banScore);
+    }
+}
+
+int CBudgetManager::ProcessMessageInner(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
+{
     // lite mode is not supported
-    if (fLiteMode) return;
-    if (!masternodeSync.IsBlockchainSynced()) return;
+    if (fLiteMode) return 0;
+    if (!masternodeSync.IsBlockchainSynced()) return 0;
 
     if (strCommand == NetMsgType::BUDGETVOTESYNC) {
         // Masternode vote sync
         uint256 nProp;
         vRecv >> nProp;
-        int banScore = ProcessBudgetVoteSync(nProp, pfrom);
-        if (banScore > 0) {
-            LOCK(cs_main);
-            Misbehaving(pfrom->GetId(), banScore);
-        }
+        return ProcessBudgetVoteSync(nProp, pfrom);
     }
 
     if (strCommand == NetMsgType::BUDGETPROPOSAL) {
         // Masternode Proposal
         CBudgetProposal proposal;
         if (!proposal.ParseBroadcast(vRecv)) {
-            // !TODO: we should probably call misbehaving here
-            return;
+            return 20;
         }
-        int banScore = ProcessProposal(proposal);
-        if (banScore > 0) {
-            LOCK(cs_main);
-            Misbehaving(pfrom->GetId(), banScore);
-        }
+        return ProcessProposal(proposal);
     }
 
     if (strCommand == NetMsgType::BUDGETVOTE) {
         CBudgetVote vote;
         vRecv >> vote;
         vote.SetValid(true);
-
-        int banScore = ProcessProposalVote(vote, pfrom);
-        if (banScore > 0) {
-            LOCK(cs_main);
-            Misbehaving(pfrom->GetId(), banScore);
-        }
+        return ProcessProposalVote(vote, pfrom);
     }
 
     if (strCommand == NetMsgType::FINALBUDGET) {
         // Finalized Budget Suggestion
         CFinalizedBudget finalbudget;
         if (!finalbudget.ParseBroadcast(vRecv)) {
-            // !TODO: we should probably call misbehaving here
-            return;
+            return 20;
         }
-        int banScore = ProcessFinalizedBudget(finalbudget);
-        if (banScore > 0) {
-            LOCK(cs_main);
-            Misbehaving(pfrom->GetId(), banScore);
-        }
+        return ProcessFinalizedBudget(finalbudget);
     }
 
     if (strCommand == NetMsgType::FINALBUDGETVOTE) {
         CFinalizedBudgetVote vote;
         vRecv >> vote;
         vote.SetValid(true);
-
-        int banScore = ProcessFinalizedBudgetVote(vote, pfrom);
-        if (banScore > 0) {
-            LOCK(cs_main);
-            Misbehaving(pfrom->GetId(), banScore);
-        }
+        return ProcessFinalizedBudgetVote(vote, pfrom);
     }
+
+    // nothing was done
+    return 0;
 }
 
 void CBudgetManager::SetSynced(bool synced)
