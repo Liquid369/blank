@@ -88,7 +88,15 @@ public:
     int GetBestHeight() const { return nBestHeight.load(std::memory_order_acquire); }
 
     void ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
+    /// Process the message and returns the ban score (0 if no banning is needed)
+    int ProcessMessageInner(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
     void NewBlock(int height);
+
+    int ProcessBudgetVoteSync(const uint256& nProp, CNode* pfrom);
+    int ProcessProposal(CBudgetProposal& proposal);
+    int ProcessProposalVote(CBudgetVote& proposal, CNode* pfrom);
+    int ProcessFinalizedBudget(CFinalizedBudget& finalbudget);
+    int ProcessFinalizedBudgetVote(CFinalizedBudgetVote& vote, CNode* pfrom);
 
     // functions returning a pointer in the map. Need cs_proposals/cs_budgets locked from the caller
     CBudgetProposal* FindProposal(const uint256& nHash);
