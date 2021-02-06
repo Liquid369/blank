@@ -1637,6 +1637,12 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
 
     else if (strCommand == NetMsgType::MEMPOOL) {
 
+        if (!(pfrom->GetLocalServices() & NODE_BLOOM) && !pfrom->fWhitelisted) {
+            LogPrint(BCLog::NET, "mempool request with bloom filters disabled, disconnect peer=%d\n", pfrom->GetId());
+            pfrom->fDisconnect = true;
+            return true;
+        }
+
         // todo: limit mempool request with a bandwidth limit
         LOCK(pfrom->cs_inventory);
         pfrom->fSendMempool = true;
