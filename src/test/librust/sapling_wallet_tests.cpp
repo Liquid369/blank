@@ -54,7 +54,7 @@ SaplingOutPoint CreateValidBlock(CWallet& wallet,
     auto saplingNotes = SetSaplingNoteData(wtx);
     wallet.LoadToWallet(wtx);
 
-    block.vtx.emplace_back(MakeTransactionRef(wtx));
+    block.vtx.emplace_back(wtx.tx);
     wallet.IncrementNoteWitnesses(&index, &block, saplingTree);
 
     return saplingNotes[0];
@@ -218,7 +218,7 @@ BOOST_AUTO_TEST_CASE(GetConflictedSaplingNotes) {
     BOOST_CHECK_EQUAL(0, chainActive.Height());
     CBlock block;
     block.hashPrevBlock = chainActive[0]->GetBlockHash();
-    block.vtx.emplace_back(MakeTransactionRef(wtx));
+    block.vtx.emplace_back(wtx.tx);
     block.hashMerkleRoot = BlockMerkleRoot(block);
     const auto& blockHash = block.GetHash();
     CBlockIndex fakeIndex {block};
@@ -341,7 +341,7 @@ BOOST_AUTO_TEST_CASE(SaplingNullifierIsSpent) {
     BOOST_CHECK_EQUAL(0, chainActive.Height());
     CBlock block;
     block.hashPrevBlock = chainActive[0]->GetBlockHash();
-    block.vtx.emplace_back(MakeTransactionRef(wtx));
+    block.vtx.emplace_back(wtx.tx);
     block.hashMerkleRoot = BlockMerkleRoot(block);
     const auto& blockHash = block.GetHash();
     CBlockIndex fakeIndex {block};
@@ -403,7 +403,7 @@ BOOST_AUTO_TEST_CASE(NavigateFromSaplingNullifierToNote) {
     BOOST_CHECK_EQUAL(0, chainActive.Height());
     CBlock block;
     block.hashPrevBlock = chainActive[0]->GetBlockHash();
-    block.vtx.emplace_back(MakeTransactionRef(wtx));
+    block.vtx.emplace_back(wtx.tx);
     block.hashMerkleRoot = BlockMerkleRoot(block);
     const auto& blockHash = block.GetHash();
     CBlockIndex fakeIndex {block};
@@ -499,7 +499,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     BOOST_CHECK_EQUAL(0, chainActive.Height());
     CBlock block;
     block.hashPrevBlock = chainActive[0]->GetBlockHash();
-    block.vtx.emplace_back(MakeTransactionRef(wtx));
+    block.vtx.emplace_back(wtx.tx);
     block.hashMerkleRoot = BlockMerkleRoot(block);
     const auto& blockHash = block.GetHash();
     CBlockIndex fakeIndex {block};
@@ -573,7 +573,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     // Fake-mine this tx into the next block
     BOOST_CHECK_EQUAL(0, chainActive.Height());
     CBlock block2;
-    block2.vtx.emplace_back(MakeTransactionRef(wtx2));
+    block2.vtx.emplace_back(wtx2.tx);
     block.hashMerkleRoot = BlockMerkleRoot(block);
     block2.hashPrevBlock = blockHash;
     auto blockHash2 = block2.GetHash();
@@ -631,7 +631,7 @@ BOOST_AUTO_TEST_CASE(CachedWitnessesEmptyChain) {
     BOOST_CHECK(!(bool) saplingWitnesses[0]);
 
     CBlock block;
-    block.vtx.emplace_back(MakeTransactionRef(wtx));
+    block.vtx.emplace_back(wtx.tx);
     CBlockIndex index(block);
     SaplingMerkleTree saplingTree;
     wallet.IncrementNoteWitnesses(&index, &block, saplingTree);
@@ -691,7 +691,7 @@ BOOST_AUTO_TEST_CASE(CachedWitnessesChainTip) {
         // Second block
         CBlock block2;
         block2.hashPrevBlock = block1.GetHash();
-        block2.vtx.emplace_back(MakeTransactionRef(wtx));
+        block2.vtx.emplace_back(wtx.tx);
         CBlockIndex index2(block2);
         index2.nHeight = 2;
         SaplingMerkleTree saplingTree2 {saplingTree};
@@ -953,7 +953,7 @@ BOOST_AUTO_TEST_CASE(UpdatedSaplingNoteData) {
     // Fake-mine the transaction
     BOOST_CHECK_EQUAL(0, chainActive.Height());
     CBlock block;
-    block.vtx.emplace_back(MakeTransactionRef(wtx));
+    block.vtx.emplace_back(wtx.tx);
     block.hashMerkleRoot = BlockMerkleRoot(block);
     const auto& blockHash = block.GetHash();
     CBlockIndex fakeIndex {block};
@@ -1069,7 +1069,7 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
     BOOST_CHECK_EQUAL(0, chainActive.Height());
     SaplingMerkleTree saplingTree;
     CBlock block;
-    block.vtx.emplace_back(MakeTransactionRef(wtx));
+    block.vtx.emplace_back(wtx.tx);
     block.hashMerkleRoot = BlockMerkleRoot(block);
     const auto& blockHash = block.GetHash();
     CBlockIndex fakeIndex {block};

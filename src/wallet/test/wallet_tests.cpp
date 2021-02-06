@@ -435,7 +435,7 @@ BOOST_AUTO_TEST_CASE(cached_balances_tests)
     );
 
     // GetUnconfirmedBalance requires tx in mempool.
-    fakeMempoolInsertion(MakeTransactionRef(wtxCredit));
+    fakeMempoolInsertion(wtxCredit.tx);
     BOOST_CHECK_EQUAL(wallet.GetUnconfirmedBalance(), nCredit);
 
     // 2) Confirm tx and verify

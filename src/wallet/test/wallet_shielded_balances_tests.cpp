@@ -295,7 +295,7 @@ FakeBlock SimpleFakeMine(CWalletTx& wtx, SaplingMerkleTree& currentTree)
 {
     FakeBlock fakeBlock;
     fakeBlock.block.nVersion = 8;
-    fakeBlock.block.vtx.emplace_back(MakeTransactionRef(wtx));
+    fakeBlock.block.vtx.emplace_back(wtx.tx);
     fakeBlock.block.hashMerkleRoot = BlockMerkleRoot(fakeBlock.block);
     for (const OutputDescription& out : wtx.tx->sapData->vShieldedOutput) {
         currentTree.append(out.cmu);
