@@ -77,12 +77,11 @@ jobs:
             cc: gcc
             cxx: g++
 
-          # macOS disabled for now due to a compiler error
-          #- name: macOS
-          #  os: macos-10.15
-          #  packages: python3 autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config protobuf qt5 zmq libevent qrencode gmp libsodium
-          #  cc: clang
-          #  cxx: clang++
+          - name: macOS
+            os: macos-10.15
+            packages: python3 autoconf automake berkeley-db4 libtool boost miniupnpc pkg-config protobuf qt5 zmq libevent qrencode gmp libsodium rust
+            cc: $(brew --prefix llvm)/bin/clang
+            cxx: $(brew --prefix llvm)/bin/clang++
 
     steps:
       - name: Get Source
@@ -117,6 +116,10 @@ jobs:
         run: |
           CC=${{ matrix.config.cc }}
           CXX=${{ matrix.config.cxx }}
+          if [[ ${{ matrix.config.os }} = macos* ]]; then
+            export CPPFLAGS="-I/usr/local/Cellar/gmp/6.2.1/include"
+            export LDFLAGS="-L/usr/local/Cellar/gmp/6.2.1/lib"
+          fi
           export CC
           export CXX
           mkdir -p ${{ github.workspace }}/cmake-build-debug && cd ${{ github.workspace }}/cmake-build-debug
