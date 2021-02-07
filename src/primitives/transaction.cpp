@@ -11,10 +11,6 @@
 #include "tinyformat.h"
 #include "utilstrencodings.h"
 
-// contextual flag to guard the serialization for v5 upgrade.
-// can be removed once v5 enforcement is activated.
-std::atomic<bool> g_IsSaplingActive{false};
-
 std::string BaseOutPoint::ToStringShort() const
 {
     return strprintf("%s-%u", hash.ToString().substr(0,64), n);
