@@ -67,6 +67,7 @@ BASE_SCRIPTS= [
     'mining_pos_coldStaking.py',                # ~ 215 sec
     'wallet_abandonconflict.py',                # ~ 212 sec
     'feature_logging.py',                       # ~ 200 sec
+    'feature_blockindexstats.py',               # ~ 197 sec
     'rpc_rawtransaction.py',                    # ~ 193 sec
     'wallet_keypool_topup.py',                  # ~ 174 sec
     'wallet_txn_doublespend.py --mineblock',    # ~ 157 sec
@@ -177,6 +178,7 @@ EXTENDED_SCRIPTS = [
 
 LEGACY_SKIP_TESTS = [
     # These tests are not run when the flag --legacywallet is used
+    'feature_blockindexstats.py',
     'feature_help.py',
     'feature_logging.py',
     'feature_reindex.py',
