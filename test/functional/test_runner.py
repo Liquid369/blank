@@ -96,6 +96,7 @@ BASE_SCRIPTS= [
     'rpc_net.py',                               # ~ 83 sec
     'rpc_bip38.py',                             # ~ 82 sec
     #'rpc_deprecated.py',                        # ~ 80 sec (disabled for now, no deprecated RPC commands to test)
+    'interface_zmq.py',                         # ~ 95 sec
     'interface_bitcoin_cli.py',                 # ~ 80 sec
     'mempool_packages.py',                      # ~ 63 sec
 
@@ -117,7 +118,6 @@ BASE_SCRIPTS= [
     # 'feature_block.py',
     # 'wallet_importmulti.py',
     # 'mempool_limit.py', # We currently don't limit our mempool_reorg
-    # 'interface_zmq.py',
     # 'rpc_getchaintips.py',
     # 'rpc_users.py',
     # 'p2p_mempool.py',
