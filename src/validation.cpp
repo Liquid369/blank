@@ -417,10 +417,9 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
             state, isBlockBetweenFakeSerialAttackRange(chainHeight), fColdStakingActive))
         return error("%s : transaction checks for %s failed with %s", __func__, tx.GetHash().ToString(), FormatStateMessage(state));
 
-    // Sapling
     int nextBlockHeight = chainHeight + 1;
-    // Check transaction contextually against the set of consensus rules which apply in the next block to be mined.
-    if (!SaplingValidation::ContextualCheckTransaction(tx, state, params, nextBlockHeight, false, IsInitialBlockDownload())) {
+    // Check transaction contextually against consensus rules at block height
+    if (!ContextualCheckTransaction(_tx, state, params, nextBlockHeight, false /* isMined */, IsInitialBlockDownload())) {
         return error("AcceptToMemoryPool: ContextualCheckTransaction failed");
     }
 
@@ -3012,9 +3011,9 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
     // Check that all transactions are finalized
     for (const auto& tx : block.vtx) {
 
-        // Sapling: Check transaction contextually against consensus rules at block height
-        if (!SaplingValidation::ContextualCheckTransaction(*tx, state, chainparams, nHeight, true, IsInitialBlockDownload())) {
-            return false; // Failure reason has been set in validation state object
+        // Check transaction contextually against consensus rules at block height
+        if (!ContextualCheckTransaction(tx, state, chainparams, nHeight, true /* isMined */, IsInitialBlockDownload())) {
+            return false;
         }
 
         if (!IsFinalTx(tx, nHeight, block.GetBlockTime())) {
