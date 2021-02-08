@@ -18,8 +18,9 @@
 #include "zpiv/zpivmodule.h"
 
 
-bool CheckZerocoinSpend(const CTransaction& tx, bool fVerifySignature, CValidationState& state, bool fFakeSerialAttack)
+bool CheckZerocoinSpend(const CTransactionRef _tx, bool fVerifySignature, CValidationState& state, bool fFakeSerialAttack)
 {
+    const CTransaction& tx = *_tx;
     //max needed non-mint outputs should be 2 - one for redemption address and a possible 2nd for change
     if (tx.vout.size() > 2) {
         int outs = 0;
@@ -133,6 +134,65 @@ int CurrentPublicCoinSpendVersion() {
 
 bool CheckPublicCoinSpendVersion(int version) {
     return version == CurrentPublicCoinSpendVersion();
+}
+
+bool ContextualCheckZerocoinTx(const CTransactionRef& tx, CValidationState& state, const Consensus::Params& consensus, int nHeight)
+{
+    // zerocoin enforced via block time. First block with a zc mint is 863735
+    const bool fZerocoinEnforced = (nHeight >= consensus.ZC_HeightStart);
+    const bool fPublicSpendEnforced = consensus.NetworkUpgradeActive(nHeight, Consensus::UPGRADE_ZC_PUBLIC);
+    const bool fRejectMintsAndPrivateSpends = !fZerocoinEnforced || fPublicSpendEnforced;
+    const bool fRejectPublicSpends = !fPublicSpendEnforced || consensus.NetworkUpgradeActive(nHeight, Consensus::UPGRADE_V5_0);
+
+    const bool hasPrivateSpendInputs = !tx->vin.empty() && tx->vin[0].IsZerocoinSpend();
+    const bool hasPublicSpendInputs = !tx->vin.empty() && tx->vin[0].IsZerocoinPublicSpend();
+    const std::string& txId = tx->GetHash().ToString();
+
+    int nSpendCount{0};
+    for (const CTxIn& in : tx->vin) {
+        if (in.IsZerocoinSpend()) {
+            if (fRejectMintsAndPrivateSpends)
+                return state.DoS(100, error("%s: zerocoin spend tx %s not accepted at height %d",
+                                            __func__, txId, nHeight), REJECT_INVALID, "bad-txns-zc-private-spend");
+            if (!hasPrivateSpendInputs)
+                return state.DoS(100, error("%s: zerocoin spend tx %s has mixed spend inputs",
+                                            __func__, txId), REJECT_INVALID, "bad-txns-zc-private-spend-mixed-types");
+            if (++nSpendCount > consensus.ZC_MaxSpendsPerTx)
+                return state.DoS(100, error("%s: zerocoin spend tx %s has more than %d inputs",
+                                            __func__, txId, consensus.ZC_MaxSpendsPerTx), REJECT_INVALID, "bad-txns-zc-private-spend-max-inputs");
+
+        } else if (in.IsZerocoinPublicSpend()) {
+            if (fRejectPublicSpends)
+                return state.DoS(100, error("%s: zerocoin public spend tx %s not accepted at height %d",
+                                            __func__, txId, nHeight), REJECT_INVALID, "bad-txns-zc-public-spend");
+            if (!hasPublicSpendInputs)
+                return state.DoS(100, error("%s: zerocoin spend tx %s has mixed spend inputs",
+                                            __func__, txId), REJECT_INVALID, "bad-txns-zc-public-spend-mixed-types");
+            if (++nSpendCount > consensus.ZC_MaxPublicSpendsPerTx)
+                return state.DoS(100, error("%s: zerocoin spend tx %s has more than %d inputs",
+                                            __func__, txId, consensus.ZC_MaxPublicSpendsPerTx), REJECT_INVALID, "bad-txns-zc-public-spend-max-inputs");
+
+        } else {
+            // this is a transparent input
+            if (hasPrivateSpendInputs || hasPublicSpendInputs)
+                return state.DoS(100, error("%s: zerocoin spend tx %s has mixed spend inputs",
+                                            __func__, txId), REJECT_INVALID, "bad-txns-zc-spend-mixed-types");
+        }
+    }
+
+    if (hasPrivateSpendInputs || hasPublicSpendInputs) {
+        if (!CheckZerocoinSpend(tx, false, state, false))
+            return false;   // failure reason logged in validation state
+    }
+
+    for (const CTxOut& o : tx->vout) {
+        if (o.IsZerocoinMint() && fRejectMintsAndPrivateSpends) {
+            return state.DoS(100, error("%s: zerocoin mint tx %s not accepted at height %d",
+                                        __func__, txId, nHeight), REJECT_INVALID, "bad-txns-zc-mint");
+        }
+    }
+
+    return true;
 }
 
 bool ContextualCheckZerocoinSpend(const CTransaction& tx, const libzerocoin::CoinSpend* spend, int nHeight, const uint256& hashBlock)

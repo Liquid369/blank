@@ -53,7 +53,7 @@ SaplingOperation createOperationAndBuildTx(std::vector<SendManyRecipient> recipi
 
     CValidationState state;
     BOOST_ASSERT_MSG(
-            CheckTransaction(operation.getFinalTx(), true, state, false, true),
+            CheckTransaction(operation.getFinalTx(), state, true),
             "Invalid Sapling transaction");
     return operation;
 }
