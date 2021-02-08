@@ -921,7 +921,7 @@ UniValue setlabel(const JSONRPCRequest& request)
     return NullUniValue;
 }
 
-void SendMoney(const CTxDestination& address, CAmount nValue, CWalletTx& wtxNew)
+void SendMoney(const CTxDestination& address, CAmount nValue, CTransactionRef& tx)
 {
     // Check amount
     if (nValue <= 0)
@@ -946,13 +946,13 @@ void SendMoney(const CTxDestination& address, CAmount nValue, CWalletTx& wtxNew)
     // Create and send the transaction
     CReserveKey reservekey(pwalletMain);
     CAmount nFeeRequired;
-    if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, &wtxNew, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0)) {
+    if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, tx, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0)) {
         if (nValue + nFeeRequired > pwalletMain->GetAvailableBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         LogPrintf("SendMoney() : %s\n", strError);
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
     }
-    const CWallet::CommitResult&& res = pwalletMain->CommitTransaction(wtxNew, reservekey, g_connman.get());
+    const CWallet::CommitResult&& res = pwalletMain->CommitTransaction(tx, reservekey, g_connman.get());
     if (res.status != CWallet::CommitStatus::OK)
         throw JSONRPCError(RPC_WALLET_ERROR, res.ToString());
 }
@@ -1031,6 +1031,8 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
             HelpExampleCli("sendtoaddress", "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\" 0.1 \"donation\" \"seans outpost\"") +
             HelpExampleRpc("sendtoaddress", "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", 0.1, \"donation\", \"seans outpost\""));
 
+    EnsureWalletIsUnlocked();
+
     bool isStaking = false, isShielded = false;
     const std::string addrStr = request.params[0].get_str();
     const CWDestination& destination = Standard::DecodeDestination(addrStr, isStaking, isShielded);
@@ -1053,21 +1055,20 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
     // Amount
     CAmount nAmount = AmountFromValue(request.params[1]);
 
+    CTransactionRef tx;
+    SendMoney(address, nAmount, tx);
+
     // Wallet comments
-    CWalletTx wtx;
+    CWalletTx& wtx = pwalletMain->mapWallet[tx->GetHash()];
     if (!commentStr.empty())
         wtx.mapValue["comment"] = commentStr;
     if (!toStr.empty())
         wtx.mapValue["to"] = toStr;
 
-    EnsureWalletIsUnlocked();
-
-    SendMoney(address, nAmount, wtx);
-
     return wtx.GetHash().GetHex();
 }
 
-UniValue CreateColdStakeDelegation(const UniValue& params, CWalletTx& wtxNew, CReserveKey& reservekey)
+UniValue CreateColdStakeDelegation(const UniValue& params, CTransactionRef& txNew, CReserveKey& reservekey)
 {
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -1147,7 +1148,7 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CWalletTx& wtxNew, CR
         // Delegate transparent coins
         CAmount nFeeRequired;
         CScript scriptPubKey = GetScriptForStakeDelegation(*stakeKey, ownerKey);
-        if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, &wtxNew, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0, fUseDelegated)) {
+        if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, txNew, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0, fUseDelegated)) {
             if (nValue + nFeeRequired > currBalance)
                 strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
             LogPrintf("%s : %s\n", __func__, strError);
@@ -1168,7 +1169,7 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CWalletTx& wtxNew, CR
                                        ->setRecipients(recipients)
                                        ->build();
         if (!res) throw JSONRPCError(RPC_WALLET_ERROR, res.getError());
-        wtxNew = CWalletTx(pwalletMain, MakeTransactionRef(operation.getFinalTx()));
+        txNew = MakeTransactionRef(operation.getFinalTx());
     }
 
     UniValue result(UniValue::VOBJ);
@@ -1210,7 +1211,7 @@ UniValue delegatestake(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    CWalletTx wtx;
+    CTransactionRef wtx;
     CReserveKey reservekey(pwalletMain);
     UniValue ret = CreateColdStakeDelegation(request.params, wtx, reservekey);
 
@@ -1218,7 +1219,7 @@ UniValue delegatestake(const JSONRPCRequest& request)
     if (res.status != CWallet::CommitStatus::OK)
         throw JSONRPCError(RPC_WALLET_ERROR, res.ToString());
 
-    ret.pushKV("txid", wtx.GetHash().GetHex());
+    ret.pushKV("txid", wtx->GetHash().GetHex());
     return ret;
 }
 
@@ -1252,11 +1253,11 @@ UniValue rawdelegatestake(const JSONRPCRequest& request)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    CWalletTx wtx;
+    CTransactionRef wtx;
     CReserveKey reservekey(pwalletMain);
     CreateColdStakeDelegation(request.params, wtx, reservekey);
 
-    return EncodeHexTx(*wtx.tx);
+    return EncodeHexTx(*wtx);
 }
 
 
@@ -2052,10 +2053,7 @@ static UniValue legacy_sendmany(const UniValue& sendTo, int nMinDepth, std::stri
 
     isminefilter filter = ISMINE_SPENDABLE | (fIncludeDelegated ? ISMINE_SPENDABLE_DELEGATED : ISMINE_NO);
 
-    CWalletTx wtx;
-    if (!comment.empty())
-        wtx.mapValue["comment"] = comment;
-
+    CTransactionRef txNew;
     std::set<CTxDestination> setAddress;
     std::vector<CRecipient> vecSend;
 
@@ -2091,7 +2089,7 @@ static UniValue legacy_sendmany(const UniValue& sendTo, int nMinDepth, std::stri
     std::string strFailReason;
     int nChangePosInOut = -1;
     bool fCreated = pwalletMain->CreateTransaction(vecSend,
-                                                   &wtx,
+                                                   txNew,
                                                    keyChange,
                                                    nFeeRequired,
                                                    nChangePosInOut,
@@ -2103,9 +2101,15 @@ static UniValue legacy_sendmany(const UniValue& sendTo, int nMinDepth, std::stri
                                                    fIncludeDelegated);
     if (!fCreated)
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strFailReason);
-    const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, keyChange, g_connman.get());
+    const CWallet::CommitResult& res = pwalletMain->CommitTransaction(txNew, keyChange, g_connman.get());
     if (res.status != CWallet::CommitStatus::OK)
         throw JSONRPCError(RPC_WALLET_ERROR, res.ToString());
+
+    // Set comment
+    CWalletTx& wtx = pwalletMain->mapWallet[txNew->GetHash()];
+    if (!comment.empty()) {
+        wtx.mapValue["comment"] = comment;
+    }
 
     return wtx.GetHash().GetHex();
 }

@@ -143,7 +143,7 @@ UniValue preparebudget(const JSONRPCRequest& request)
     if (!proposal.IsWellFormed(g_budgetman.GetTotalBudget(proposal.GetBlockStart())))
         throw std::runtime_error("Proposal is not valid " + proposal.IsInvalidReason());
 
-    CWalletTx wtx;
+    CTransactionRef wtx;
     // make our change address
     CReserveKey keyChange(pwalletMain);
     if (!pwalletMain->CreateBudgetFeeTX(wtx, nHash, keyChange, false)) { // 50 PIV collateral for proposal
@@ -156,10 +156,10 @@ UniValue preparebudget(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_ERROR, res.ToString());
 
     // Store proposal name as a comment
-    assert(pwalletMain->mapWallet.count(wtx.GetHash()));
-    pwalletMain->mapWallet[wtx.GetHash()].SetComment("Proposal: " + strProposalName);
+    assert(pwalletMain->mapWallet.count(wtx->GetHash()));
+    pwalletMain->mapWallet[wtx->GetHash()].SetComment("Proposal: " + strProposalName);
 
-    return wtx.GetHash().ToString();
+    return wtx->GetHash().ToString();
 }
 
 UniValue submitbudget(const JSONRPCRequest& request)

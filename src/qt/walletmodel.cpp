@@ -468,9 +468,9 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
     bool fSaplingActive = Params().GetConsensus().NetworkUpgradeActive(cachedNumBlocks, Consensus::UPGRADE_V5_0);
 
     // Double check the tx before doing anything
-    CWalletTx* newTx = transaction.getTransaction();
+    CTransactionRef& newTx = transaction.getTransaction();
     CValidationState state;
-    if (!CheckTransaction(*newTx->tx, true, true, state, true, fColdStakingActive, fSaplingActive)) {
+    if (!CheckTransaction(*newTx, true, true, state, true, fColdStakingActive, fSaplingActive)) {
         return TransactionCheckFailed;
     }
 
@@ -481,6 +481,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
         QList<SendCoinsRecipient> recipients = transaction.getRecipients();
 
         // Store PaymentRequests in wtx.vOrderForm in wallet.
+        /* todo: clean this functionality, we don't have the payment request server nor using the vOrderForm field.
         for (const SendCoinsRecipient& rcp : recipients) {
             if (rcp.paymentRequest.IsInitialized()) {
                 std::string key("PaymentRequest");
@@ -491,16 +492,16 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
             {
                 newTx->vOrderForm.emplace_back("Message", rcp.message.toStdString());
             }
-        }
+        }*/
 
         CReserveKey* keyChange = transaction.getPossibleKeyChange();
-        const CWallet::CommitResult& res = wallet->CommitTransaction(*newTx, keyChange, g_connman.get());
+        const CWallet::CommitResult& res = wallet->CommitTransaction(newTx, keyChange, g_connman.get());
         if (res.status != CWallet::CommitStatus::OK) {
             return SendCoinsReturn(res);
         }
 
         CDataStream ssTx(SER_NETWORK, PROTOCOL_VERSION);
-        ssTx << *(newTx->tx);
+        ssTx << *newTx;
         transaction_array.append(&(ssTx[0]), ssTx.size());
     }
 
@@ -570,7 +571,8 @@ OperationResult WalletModel::PrepareShieldedTransaction(WalletModelTransaction* 
     }
 
     // load the transaction and key change (if needed)
-    modelTransaction->setTransaction(new CWalletTx(wallet, MakeTransactionRef(operation.getFinalTx())));
+    CTransactionRef& txRef = modelTransaction->getTransaction();
+    txRef = MakeTransactionRef(operation.getFinalTx());
     modelTransaction->setTransactionFee(operation.getFee()); // in the future, fee will be dynamically calculated.
     return operationResult;
 }

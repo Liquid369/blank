@@ -230,8 +230,7 @@ OperationResult SaplingOperation::build()
 
 OperationResult SaplingOperation::send(std::string& retTxHash)
 {
-    CWalletTx wtx(pwalletMain, finalTx);
-    const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, tkeyChange, g_connman.get());
+    const CWallet::CommitResult& res = pwalletMain->CommitTransaction(finalTx, tkeyChange, g_connman.get());
     if (res.status != CWallet::CommitStatus::OK) {
         return errorOut(res.ToString());
     }
