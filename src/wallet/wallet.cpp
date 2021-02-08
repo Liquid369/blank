@@ -49,7 +49,7 @@ CFeeRate CWallet::minTxFee = CFeeRate(10000);
  */
 CAmount CWallet::minStakeSplitThreshold = DEFAULT_MIN_STAKE_SPLIT_THRESHOLD;
 
-const uint256 CMerkleTx::ABANDON_HASH(uint256S("0000000000000000000000000000000000000000000000000000000000000001"));
+const uint256 CWalletTx::ABANDON_HASH(uint256S("0000000000000000000000000000000000000000000000000000000000000001"));
 
 /** @defgroup mapWallet
  *
@@ -4211,7 +4211,7 @@ CWalletKey::CWalletKey(int64_t nExpires)
     nTimeExpires = nExpires;
 }
 
-void CMerkleTx::SetMerkleBranch(const uint256& blockHash, int posInBlock)
+void CWalletTx::SetMerkleBranch(const uint256& blockHash, int posInBlock)
 {
     // Update the tx's hashBlock
     hashBlock = blockHash;
@@ -4220,13 +4220,13 @@ void CMerkleTx::SetMerkleBranch(const uint256& blockHash, int posInBlock)
     nIndex = posInBlock;
 }
 
-int CMerkleTx::GetDepthInMainChain() const
+int CWalletTx::GetDepthInMainChain() const
 {
     const CBlockIndex* pindexRet = nullptr;
     return GetDepthInMainChain(pindexRet);
 }
 
-int CMerkleTx::GetDepthInMainChain(const CBlockIndex*& pindexRet) const
+int CWalletTx::GetDepthInMainChain(const CBlockIndex*& pindexRet) const
 {
     if (hashUnset())
         return 0;
@@ -4250,7 +4250,7 @@ int CMerkleTx::GetDepthInMainChain(const CBlockIndex*& pindexRet) const
     return nResult;
 }
 
-int CMerkleTx::GetBlocksToMaturity() const
+int CWalletTx::GetBlocksToMaturity() const
 {
     LOCK(cs_main);
     if (!(IsCoinBase() || IsCoinStake()))
@@ -4258,12 +4258,12 @@ int CMerkleTx::GetBlocksToMaturity() const
     return std::max(0, (Params().GetConsensus().nCoinbaseMaturity + 1) - GetDepthInMainChain());
 }
 
-bool CMerkleTx::IsInMainChain() const
+bool CWalletTx::IsInMainChain() const
 {
     return GetDepthInMainChain() > 0;
 }
 
-bool CMerkleTx::IsInMainChainImmature() const
+bool CWalletTx::IsInMainChainImmature() const
 {
     if (!IsCoinBase() && !IsCoinStake()) return false;
     const int depth = GetDepthInMainChain();
@@ -4271,7 +4271,7 @@ bool CMerkleTx::IsInMainChainImmature() const
 }
 
 
-bool CMerkleTx::AcceptToMemoryPool(CValidationState& state, bool fLimitFree, bool fRejectInsaneFee, bool ignoreFees)
+bool CWalletTx::AcceptToMemoryPool(CValidationState& state, bool fLimitFree, bool fRejectInsaneFee, bool ignoreFees)
 {
     bool fAccepted = ::AcceptToMemoryPool(mempool, state, tx, fLimitFree, nullptr, false, fRejectInsaneFee, ignoreFees);
     if (!fAccepted)

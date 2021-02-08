@@ -862,12 +862,14 @@ struct COutputEntry {
     int vout;
 };
 
-/** A transaction with a merkle branch linking it to the block chain. */
+/** Legacy class used for deserializing vtxPrev for backwards compatibility.
+ * vtxPrev was removed in commit 93a18a3650292afbb441a47d1fa1b94aeb0164e3,
+ * but old wallet.dat files may still contain vtxPrev vectors of CMerkleTxs.
+ * These need to get deserialized for field alignment when deserializing
+ * a CWalletTx, but the deserialized values are discarded.**/
 class CMerkleTx
 {
 private:
-    /** Constant used in hashBlock to indicate tx has been abandoned */
-    static const uint256 ABANDON_HASH;
 
 public:
     CTransactionRef tx;
@@ -913,28 +915,6 @@ public:
         READWRITE(vMerkleBranch);
         READWRITE(nIndex);
     }
-
-    void SetMerkleBranch(const uint256& blockHash, int posInBlock);
-
-    /**
-     * Return depth of transaction in blockchain:
-     * <0  : conflicts with a transaction this deep in the blockchain
-     *  0  : in memory pool, waiting to be included in a block
-     * >=1 : this many blocks deep in the main chain
-     */
-    int GetDepthInMainChain(const CBlockIndex*& pindexRet) const;
-    int GetDepthInMainChain() const;
-    bool IsInMainChain() const;
-    bool IsInMainChainImmature() const;
-    int GetBlocksToMaturity() const;
-    bool AcceptToMemoryPool(CValidationState& state, bool fLimitFree = true, bool fRejectInsaneFee = true, bool ignoreFees = false);
-    bool hashUnset() const { return (hashBlock.IsNull() || hashBlock == ABANDON_HASH); }
-    bool isAbandoned() const { return (hashBlock == ABANDON_HASH); }
-    void setAbandoned() { hashBlock = ABANDON_HASH; }
-
-    const uint256& GetHash() const { return tx->GetHash(); }
-    bool IsCoinBase() const { return tx->IsCoinBase(); }
-    bool IsCoinStake() const { return tx->IsCoinStake(); }
 };
 
 /**
@@ -945,6 +925,9 @@ class CWalletTx : public CMerkleTx
 {
 private:
     const CWallet* pwallet;
+
+    /** Constant used in hashBlock to indicate tx has been abandoned */
+    static const uint256 ABANDON_HASH;
 
 public:
     mapValue_t mapValue;
@@ -1089,6 +1072,30 @@ public:
     void UpdateTimeSmart();
     void RelayWalletTransaction(CConnman* connman);
     std::set<uint256> GetConflicts() const;
+
+    void SetMerkleBranch(const uint256& blockHash, int posInBlock);
+
+    /**
+     * Return depth of transaction in blockchain:
+     * <0  : conflicts with a transaction this deep in the blockchain
+     *  0  : in memory pool, waiting to be included in a block
+     * >=1 : this many blocks deep in the main chain
+     */
+    int GetDepthInMainChain(const CBlockIndex*& pindexRet) const;
+    int GetDepthInMainChain() const;
+    bool IsInMainChain() const;
+    bool IsInMainChainImmature() const;
+    int GetBlocksToMaturity() const;
+    bool hashUnset() const { return (hashBlock.IsNull() || hashBlock == ABANDON_HASH); }
+    bool isAbandoned() const { return (hashBlock == ABANDON_HASH); }
+    void setAbandoned() { hashBlock = ABANDON_HASH; }
+
+    const uint256& GetHash() const { return tx->GetHash(); }
+    bool IsCoinBase() const { return tx->IsCoinBase(); }
+    bool IsCoinStake() const { return tx->IsCoinStake(); }
+
+    /** Pass this transaction to the mempool. Fails if absolute fee exceeds absurd fee. */
+    bool AcceptToMemoryPool(CValidationState& state, bool fLimitFree = true, bool fRejectInsaneFee = true, bool ignoreFees = false);
 };
 
 
