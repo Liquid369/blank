@@ -516,12 +516,11 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
 WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& transaction)
 {
     bool fColdStakingActive = isColdStakingNetworkelyEnabled();
-    bool fSaplingActive = Params().GetConsensus().NetworkUpgradeActive(cachedNumBlocks, Consensus::UPGRADE_V5_0);
 
     // Double check the tx before doing anything
     CTransactionRef& newTx = transaction.getTransaction();
     CValidationState state;
-    if (!CheckTransaction(*newTx, true, state, true, fColdStakingActive, fSaplingActive)) {
+    if (!CheckTransaction(*newTx, true, state, true, fColdStakingActive)) {
         return TransactionCheckFailed;
     }
 

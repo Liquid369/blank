@@ -17,7 +17,7 @@ class CValidationState;
 /** Transaction validation functions */
 
 /** Context-independent validity checks */
-bool CheckTransaction(const CTransaction& tx, bool fZerocoinActive, CValidationState& state, bool fFakeSerialAttack = false, bool fColdStakingActive=false, bool fSaplingActive=false);
+bool CheckTransaction(const CTransaction& tx, bool fZerocoinActive, CValidationState& state, bool fFakeSerialAttack, bool fColdStakingActive);
 
 /**
  * Count ECDSA signature operations the old-fashioned (pre-0.6) way

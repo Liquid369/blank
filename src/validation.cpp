@@ -405,7 +405,6 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     const CChainParams& params = Params();
     const Consensus::Params& consensus = params.GetConsensus();
     int chainHeight = chainActive.Height();
-    bool fSaplingActive = consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_V5_0);
 
     // Zerocoin txes are not longer accepted in the mempool.
     if (hasTxZerocoins) {
@@ -415,7 +414,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     // Check transaction
     bool fColdStakingActive = !sporkManager.IsSporkActive(SPORK_19_COLDSTAKING_MAINTENANCE);
     if (!CheckTransaction(tx, consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_ZC),
-            state, isBlockBetweenFakeSerialAttackRange(chainHeight), fColdStakingActive, fSaplingActive))
+            state, isBlockBetweenFakeSerialAttackRange(chainHeight), fColdStakingActive))
         return error("%s : transaction checks for %s failed with %s", __func__, tx.GetHash().ToString(), FormatStateMessage(state));
 
     // Sapling
@@ -2836,11 +2835,11 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
     }
 
     // Check transactions
+    bool fSaplingActive = consensus.NetworkUpgradeActive(blockHeight, Consensus::UPGRADE_V5_0);
     std::vector<CBigNum> vBlockSerials;
     // TODO: Check if this is ok... blockHeight is always the tip or should we look for the prevHash and get the height?
     int blockHeight = chainActive.Height() + 1;
     const Consensus::Params& consensus = Params().GetConsensus();
-    bool fSaplingActive = consensus.NetworkUpgradeActive(blockHeight, Consensus::UPGRADE_V5_0);
     for (const auto& txIn : block.vtx) {
         const CTransaction& tx = *txIn;
         if (!CheckTransaction(
@@ -2848,8 +2847,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                 fZerocoinActive,
                 state,
                 isBlockBetweenFakeSerialAttackRange(blockHeight),
-                fColdStakingActive,
-                fSaplingActive
+                fColdStakingActive
         ))
             return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
                                              strprintf("Transaction check failed (tx hash %s) %s", tx.GetHash().ToString(), state.GetDebugMessage()));
