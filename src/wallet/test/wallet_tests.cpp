@@ -323,7 +323,7 @@ void removeTxFromMempool(CWalletTx& wtx)
 CBlockIndex* SimpleFakeMine(CWalletTx& wtx, CBlockIndex* pprev = nullptr)
 {
     CBlock block;
-    block.vtx.emplace_back(std::make_shared<const CTransaction>(wtx));
+    block.vtx.emplace_back(wtx.tx);
     block.hashMerkleRoot = BlockMerkleRoot(block);
     if (pprev) block.hashPrevBlock = pprev->GetBlockHash();
     CBlockIndex* fakeIndex = new CBlockIndex(block);

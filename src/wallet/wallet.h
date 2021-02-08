@@ -717,12 +717,12 @@ public:
     bool IsChange(const CTxOut& txout) const;
     bool IsChange(const CTxDestination& address) const;
     CAmount GetChange(const CTxOut& txout) const;
-    bool IsMine(const CTransaction& tx) const;
+    bool IsMine(const CTransactionRef& tx) const;
     /** should probably be renamed to IsRelevantToMe */
-    bool IsFromMe(const CTransaction& tx) const;
-    CAmount GetDebit(const CTransaction& tx, const isminefilter& filter) const;
+    bool IsFromMe(const CTransactionRef& tx) const;
+    CAmount GetDebit(const CTransactionRef& tx, const isminefilter& filter) const;
     CAmount GetCredit(const CWalletTx& tx, const isminefilter& filter) const;
-    CAmount GetChange(const CTransaction& tx) const;
+    CAmount GetChange(const CTransactionRef& tx) const;
 
     void SetBestChain(const CBlockLocator& loc) override;
     void SetBestChainInternal(CWalletDB& walletdb, const CBlockLocator& loc); // only public for testing purposes, must never be called directly in any other situation
@@ -890,10 +890,6 @@ public:
         SetTx(std::move(arg));
         Init();
     }
-
-    /** Helper conversion operator to allow passing CMerkleTx where CTransaction is expected.
-     *  TODO: adapt callers and remove this operator. */
-    operator const CTransaction&() const { return *tx; }
 
     void Init()
     {

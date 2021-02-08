@@ -1077,8 +1077,8 @@ bool CWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const uint256
             }
         }
 
-        bool isFromMe = IsFromMe(tx);
-        if (fExisted || IsMine(tx) || isFromMe || (saplingNoteData && !saplingNoteData->empty())) {
+        bool isFromMe = IsFromMe(ptx);
+        if (fExisted || IsMine(ptx) || isFromMe || (saplingNoteData && !saplingNoteData->empty())) {
 
             /* Check if any keys in the wallet keypool that were supposed to be unused
              * have appeared in a new transaction. If so, remove those keys from the keypool.
@@ -1432,7 +1432,7 @@ CAmount CWalletTx::GetCachableAmount(AmountType type, const isminefilter& filter
 {
     auto& amount = m_amounts[type];
     if (recalculate || !amount.m_cached[filter]) {
-        amount.Set(filter, type == DEBIT ? pwallet->GetDebit(*this, filter) : pwallet->GetCredit(*this, filter));
+        amount.Set(filter, type == DEBIT ? pwallet->GetDebit(tx, filter) : pwallet->GetCredit(*this, filter));
     }
     return amount.m_value[filter];
 }
@@ -2089,7 +2089,7 @@ CAmount CWallet::GetLegacyBalance(const isminefilter& filter, int minDepth) cons
         const CWalletTx& wtx = entry.second;
         bool fConflicted;
         const int depth = wtx.GetDepthAndMempool(fConflicted);
-        if (!IsFinalTx(wtx) || wtx.GetBlocksToMaturity() > 0 || depth < 0 || fConflicted) {
+        if (!IsFinalTx(wtx.tx) || wtx.GetBlocksToMaturity() > 0 || depth < 0 || fConflicted) {
             continue;
         }
 
@@ -2167,7 +2167,7 @@ void CWallet::GetAvailableP2CSCoins(std::vector<COutput>& vCoins) const {
 bool CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth, const CBlockIndex*& pindexRet)
 {
     AssertLockHeld(cs_main);
-    if (!CheckFinalTx(*pcoin)) return false;
+    if (!CheckFinalTx(pcoin->tx)) return false;
     if (fOnlyConfirmed && !pcoin->IsTrusted()) return false;
     if (pcoin->GetBlocksToMaturity() > 0) return false;
 
@@ -3075,7 +3075,7 @@ bool CWallet::CreateCoinStake(
     int nIn = 0;
     for (const CTxIn& txIn : txNew.vin) {
         const CWalletTx* wtx = GetWalletTx(txIn.prevout.hash);
-        if (!wtx || !SignSignature(*this, *wtx, txNew, nIn++, SIGHASH_ALL, true))
+        if (!wtx || !SignSignature(*this, *(wtx->tx), txNew, nIn++, SIGHASH_ALL, true))
             return error("%s : failed to sign coinstake", __func__);
     }
 
@@ -3375,7 +3375,7 @@ std::map<CTxDestination, CAmount> CWallet::GetAddressBalances()
         for (std::pair<uint256, CWalletTx> walletEntry : mapWallet) {
             CWalletTx* pcoin = &walletEntry.second;
 
-            if (!IsFinalTx(*pcoin) || !pcoin->IsTrusted())
+            if (!IsFinalTx(pcoin->tx) || !pcoin->IsTrusted())
                 continue;
 
             if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0)
@@ -4387,22 +4387,22 @@ CAmount CWallet::GetChange(const CTxOut& txout) const
     return (IsChange(txout) ? txout.nValue : 0);
 }
 
-bool CWallet::IsMine(const CTransaction& tx) const
+bool CWallet::IsMine(const CTransactionRef& tx) const
 {
-    for (const CTxOut& txout : tx.vout)
+    for (const CTxOut& txout : tx->vout)
         if (IsMine(txout))
             return true;
     return false;
 }
 
-bool CWallet::IsFromMe(const CTransaction& tx) const
+bool CWallet::IsFromMe(const CTransactionRef& tx) const
 {
     if (GetDebit(tx, ISMINE_ALL) > 0) {
         return true;
     }
 
-    if (tx.IsShieldedTx()) {
-        for (const SpendDescription& spend : tx.sapData->vShieldedSpend) {
+    if (tx->IsShieldedTx()) {
+        for (const SpendDescription& spend : tx->sapData->vShieldedSpend) {
             if (m_sspk_man->IsSaplingNullifierFromMe(spend.nullifier)) {
                 return true;
             }
@@ -4412,10 +4412,10 @@ bool CWallet::IsFromMe(const CTransaction& tx) const
     return false;
 }
 
-CAmount CWallet::GetDebit(const CTransaction& tx, const isminefilter& filter) const
+CAmount CWallet::GetDebit(const CTransactionRef& tx, const isminefilter& filter) const
 {
     CAmount nDebit = 0;
-    for (const CTxIn& txin : tx.vin) {
+    for (const CTxIn& txin : tx->vin) {
         nDebit += GetDebit(txin, filter);
         if (!Params().GetConsensus().MoneyRange(nDebit))
             throw std::runtime_error("CWallet::GetDebit() : value out of range");
@@ -4423,8 +4423,8 @@ CAmount CWallet::GetDebit(const CTransaction& tx, const isminefilter& filter) co
 
     // Shielded debit
     if (filter & ISMINE_SPENDABLE_SHIELDED || filter & ISMINE_WATCH_ONLY_SHIELDED) {
-        if (tx.hasSaplingData()) {
-            nDebit += m_sspk_man->GetDebit(tx, filter);
+        if (tx->hasSaplingData()) {
+            nDebit += m_sspk_man->GetDebit(*tx, filter);
         }
     }
 
@@ -4450,10 +4450,10 @@ CAmount CWallet::GetCredit(const CWalletTx& tx, const isminefilter& filter) cons
     return nCredit;
 }
 
-CAmount CWallet::GetChange(const CTransaction& tx) const
+CAmount CWallet::GetChange(const CTransactionRef& tx) const
 {
     CAmount nChange = 0;
-    for (const CTxOut& txout : tx.vout) {
+    for (const CTxOut& txout : tx->vout) {
         nChange += GetChange(txout);
         if (!Params().GetConsensus().MoneyRange(nChange))
             throw std::runtime_error("CWallet::GetChange() : value out of range");
@@ -4558,7 +4558,7 @@ bool CWalletTx::IsTrusted() const
 bool CWalletTx::IsTrusted(int& nDepth, bool& fConflicted) const
 {
     // Quick answer in most cases
-    if (!IsFinalTx(*this))
+    if (!IsFinalTx(tx))
         return false;
 
     nDepth = GetDepthAndMempool(fConflicted);
@@ -4594,8 +4594,8 @@ int CWalletTx::GetDepthAndMempool(bool& fConflicted) const
 
 bool CWalletTx::IsEquivalentTo(const CWalletTx& _tx) const
 {
-    CMutableTransaction tx1 {*this};
-    CMutableTransaction tx2 {_tx};
+    CMutableTransaction tx1 {*tx};
+    CMutableTransaction tx2 {*_tx.tx};
     for (auto& txin : tx1.vin) txin.scriptSig = CScript();
     for (auto& txin : tx2.vin) txin.scriptSig = CScript();
     return CTransaction(tx1) == CTransaction(tx2);
@@ -4703,7 +4703,7 @@ CAmount CWalletTx::GetChange() const
 {
     if (fChangeCached)
         return nChangeCached;
-    nChangeCached = pwallet->GetChange(*this);
+    nChangeCached = pwallet->GetChange(tx);
     fChangeCached = true;
     return nChangeCached;
 }

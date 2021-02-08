@@ -1256,7 +1256,7 @@ UniValue rawdelegatestake(const JSONRPCRequest& request)
     CReserveKey reservekey(pwalletMain);
     CreateColdStakeDelegation(request.params, wtx, reservekey);
 
-    return EncodeHexTx(wtx);
+    return EncodeHexTx(*wtx.tx);
 }
 
 
@@ -1489,7 +1489,7 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
         outputs.push_back(entry_);
     }
 
-    entry.pushKV("fee", FormatMoney(pcoinsTip->GetValueIn(wtx) - wtx.tx->GetValueOut()));
+    entry.pushKV("fee", FormatMoney(pcoinsTip->GetValueIn(*wtx.tx) - wtx.tx->GetValueOut()));
     entry.pushKV("spends", spends);
     entry.pushKV("outputs", outputs);
 
@@ -1878,7 +1878,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it) {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsCoinBase() || !IsFinalTx(wtx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx))
             continue;
 
         for (const CTxOut& txout : wtx.tx->vout)
@@ -1930,7 +1930,7 @@ UniValue getreceivedbylabel(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it) {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsCoinBase() || !IsFinalTx(wtx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx))
             continue;
 
         for (const CTxOut& txout : wtx.tx->vout) {
@@ -2273,7 +2273,7 @@ UniValue ListReceived(const UniValue& params, bool by_label)
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it) {
         const CWalletTx& wtx = (*it).second;
 
-        if (wtx.IsCoinBase() || !IsFinalTx(wtx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx))
             continue;
 
         int nDepth = wtx.GetDepthInMainChain();
@@ -2581,7 +2581,7 @@ UniValue listcoldutxos(const JSONRPCRequest& request)
             pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it) {
         const uint256& wtxid = it->first;
         const CWalletTx* pcoin = &(*it).second;
-        if (!CheckFinalTx(*pcoin) || !pcoin->IsTrusted())
+        if (!CheckFinalTx(pcoin->tx) || !pcoin->IsTrusted())
             continue;
 
         // if this tx has no unspent P2CS outputs for us, skip it
@@ -2954,7 +2954,7 @@ UniValue gettransaction(const JSONRPCRequest& request)
     ListTransactions(wtx, 0, false, details, filter);
     entry.pushKV("details", details);
 
-    std::string strHex = EncodeHexTx(static_cast<CTransaction>(wtx));
+    std::string strHex = EncodeHexTx(*wtx.tx);
     entry.pushKV("hex", strHex);
 
     return entry;

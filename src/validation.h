@@ -266,7 +266,7 @@ bool ValidOutPoint(const COutPoint& out, int nHeight);
  *
  * See consensus/consensus.h for flag definitions.
  */
-bool CheckFinalTx(const CTransaction& tx, int flags = -1);
+bool CheckFinalTx(const CTransactionRef& tx, int flags = -1);
 
 /**
  * Closure representing one script verification

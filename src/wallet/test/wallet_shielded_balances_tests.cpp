@@ -31,7 +31,7 @@ void setupWallet(CWallet& wallet)
 CWalletTx& SetWalletNotesData(CWallet* wallet, CWalletTx& wtx)
 {
     Optional<mapSaplingNoteData_t> saplingNoteData{nullopt};
-    wallet->FindNotesDataAndAddMissingIVKToKeystore(wtx, saplingNoteData);
+    wallet->FindNotesDataAndAddMissingIVKToKeystore(*wtx.tx, saplingNoteData);
     assert(static_cast<bool>(saplingNoteData));
     wtx.SetSaplingNoteData(*saplingNoteData);
     BOOST_CHECK(wallet->AddToWallet(wtx));

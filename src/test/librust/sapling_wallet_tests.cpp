@@ -167,13 +167,13 @@ BOOST_AUTO_TEST_CASE(FindMySaplingNotes) {
     // No Sapling notes can be found in tx which does not belong to the wallet
     CWalletTx wtx {&wallet, MakeTransactionRef(tx)};
     BOOST_CHECK(!wallet.HaveSaplingSpendingKey(extfvk));
-    auto noteMap = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(wtx).first;
+    auto noteMap = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK_EQUAL(0, noteMap.size());
 
     // Add spending key to wallet, so Sapling notes can be found
     BOOST_CHECK(wallet.AddSaplingZKey(sk));
     BOOST_CHECK(wallet.HaveSaplingSpendingKey(extfvk));
-    noteMap = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(wtx).first;
+    noteMap = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK_EQUAL(2, noteMap.size());
 
     // Revert to default
@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(GetConflictedSaplingNotes) {
     BOOST_CHECK_EQUAL(0, chainActive.Height());
 
     // Simulate SyncTransaction which calls AddToWalletIfInvolvingMe
-    auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(wtx).first;
+    auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK(saplingNoteData.size() > 0);
     wtx.SetSaplingNoteData(saplingNoteData);
     wtx.SetMerkleBranch(block.GetHash(), 0);
@@ -415,7 +415,7 @@ BOOST_AUTO_TEST_CASE(NavigateFromSaplingNullifierToNote) {
 
     // Simulate SyncTransaction which calls AddToWalletIfInvolvingMe
     wtx.SetMerkleBranch(block.GetHash(), 0);
-    auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(wtx).first;
+    auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK(saplingNoteData.size() > 0);
     wtx.SetSaplingNoteData(saplingNoteData);
     wallet.LoadToWallet(wtx);
@@ -509,7 +509,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     BOOST_CHECK(chainActive.Contains(&fakeIndex));
     BOOST_CHECK_EQUAL(0, chainActive.Height());
 
-    auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(wtx).first;
+    auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK(saplingNoteData.size() > 0);
     wtx.SetSaplingNoteData(saplingNoteData);
     wtx.SetMerkleBranch(block.GetHash(), 0);
@@ -527,7 +527,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     // The test wallet never received the fake note which is being spent, so there
     // is no mapping from nullifier to notedata stored in mapSaplingNullifiersToNotes.
     // Therefore the wallet does not know the tx belongs to the wallet.
-    BOOST_CHECK(!wallet.IsFromMe(wtx));
+    BOOST_CHECK(!wallet.IsFromMe(wtx.tx));
 
     // Manually compute the nullifier and check map entry does not exist
     auto nf = note.nullifier(extfvk.fvk, witness.position());
@@ -585,7 +585,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     BOOST_CHECK(chainActive.Contains(&fakeIndex2));
     BOOST_CHECK_EQUAL(1, chainActive.Height());
 
-    auto saplingNoteData2 = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(wtx2).first;
+    auto saplingNoteData2 = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx2.tx).first;
     BOOST_CHECK(saplingNoteData2.size() > 0);
     wtx2.SetSaplingNoteData(saplingNoteData2);
     wtx2.SetMerkleBranch(block2.GetHash(), 0);
@@ -595,7 +595,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     BOOST_CHECK(wallet.GetSaplingScriptPubKeyMan()->IsSaplingSpent(nullifier2));
 
     // Verify note B belongs to wallet.
-    BOOST_CHECK(wallet.IsFromMe(wtx2));
+    BOOST_CHECK(wallet.IsFromMe(wtx2.tx));
     BOOST_CHECK(wallet.GetSaplingScriptPubKeyMan()->mapSaplingNullifiersToNotes.count(nullifier2));
 
     // Tear down
@@ -964,7 +964,7 @@ BOOST_AUTO_TEST_CASE(UpdatedSaplingNoteData) {
     BOOST_CHECK_EQUAL(0, chainActive.Height());
 
     // Simulate SyncTransaction which calls AddToWalletIfInvolvingMe
-    auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(wtx).first;
+    auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK(saplingNoteData.size() == 1); // wallet only has key for change output
     wtx.SetSaplingNoteData(saplingNoteData);
     wtx.SetMerkleBranch(block.GetHash(), 0);
@@ -982,7 +982,7 @@ BOOST_AUTO_TEST_CASE(UpdatedSaplingNoteData) {
     BOOST_CHECK(wallet.AddSaplingZKey(sk2));
     BOOST_CHECK(wallet.HaveSaplingSpendingKey(extfvk2));
     CWalletTx wtx2 = wtx;
-    auto saplingNoteData2 = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(wtx2).first;
+    auto saplingNoteData2 = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx2.tx).first;
     BOOST_CHECK(saplingNoteData2.size() == 2);
     wtx2.SetSaplingNoteData(saplingNoteData2);
 
@@ -1080,7 +1080,7 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
     BOOST_CHECK_EQUAL(0, chainActive.Height());
 
     // Simulate SyncTransaction which calls AddToWalletIfInvolvingMe
-    auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(wtx).first;
+    auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK(saplingNoteData.size() > 0);
     wtx.SetSaplingNoteData(saplingNoteData);
     wtx.SetMerkleBranch(block.GetHash(), 0);
@@ -1120,7 +1120,7 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
 
     CWalletTx wtx2 {&wallet, MakeTransactionRef(tx2)};
 
-    wallet.MarkAffectedTransactionsDirty(wtx);
+    wallet.MarkAffectedTransactionsDirty(*wtx.tx);
 
     // After getting a cached value, the first tx should be clean
     wallet.mapWallet[hash].GetDebit(ISMINE_SPENDABLE);
@@ -1128,7 +1128,7 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
 
     // After adding the note spend, the first tx should be dirty
     wallet.LoadToWallet(wtx2);
-    wallet.MarkAffectedTransactionsDirty(wtx2);
+    wallet.MarkAffectedTransactionsDirty(*wtx2.tx);
     BOOST_CHECK(!wallet.mapWallet[hash].IsAmountCached(CWalletTx::AmountType::DEBIT, ISMINE_SPENDABLE));
 
     // Tear down

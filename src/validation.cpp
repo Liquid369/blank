@@ -214,7 +214,7 @@ enum FlushStateMode {
 // See definition for documentation
 bool static FlushStateToDisk(CValidationState &state, FlushStateMode mode);
 
-bool CheckFinalTx(const CTransaction& tx, int flags)
+bool CheckFinalTx(const CTransactionRef& tx, int flags)
 {
     AssertLockHeld(cs_main);
 
@@ -359,12 +359,12 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     // Only accept nLockTime-using transactions that can be mined in the next
     // block; we don't want our mempool filled up with transactions that can't
     // be mined yet.
-    if (!CheckFinalTx(tx, STANDARD_LOCKTIME_VERIFY_FLAGS))
+    if (!CheckFinalTx(_tx, STANDARD_LOCKTIME_VERIFY_FLAGS))
         return state.DoS(0, false, REJECT_NONSTANDARD, "non-final");
 
     // Rather not work on nonstandard transactions
     std::string reason;
-    if (!IsStandardTx(tx, nextBlockHeight, reason))
+    if (!IsStandardTx(_tx, nextBlockHeight, reason))
         return state.DoS(0, false, REJECT_NONSTANDARD, reason);
     // is it already in the memory pool?
     const uint256& hash = tx.GetHash();
@@ -2952,7 +2952,7 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
             return false; // Failure reason has been set in validation state object
         }
 
-        if (!IsFinalTx(*tx, nHeight, block.GetBlockTime())) {
+        if (!IsFinalTx(tx, nHeight, block.GetBlockTime())) {
             return state.DoS(10, false, REJECT_INVALID, "bad-txns-nonfinal", false, "non-final transaction");
         }
     }

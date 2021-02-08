@@ -470,7 +470,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
     // Double check the tx before doing anything
     CWalletTx* newTx = transaction.getTransaction();
     CValidationState state;
-    if (!CheckTransaction(*newTx, true, true, state, true, fColdStakingActive, fSaplingActive)) {
+    if (!CheckTransaction(*newTx->tx, true, true, state, true, fColdStakingActive, fSaplingActive)) {
         return TransactionCheckFailed;
     }
 
