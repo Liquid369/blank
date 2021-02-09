@@ -306,7 +306,7 @@ FakeBlock SimpleFakeMine(CWalletTx& wtx, SaplingMerkleTree& currentTree)
     fakeBlock.pindex->phashBlock = &mapBlockIndex.find(fakeBlock.block.GetHash())->first;
     chainActive.SetTip(fakeBlock.pindex);
     BOOST_CHECK(chainActive.Contains(fakeBlock.pindex));
-    wtx.SetMerkleBranch(fakeBlock.pindex->GetBlockHash(), 0);
+    wtx.SetConf(CWalletTx::Status::CONFIRMED, fakeBlock.pindex->GetBlockHash(), 0);
     return fakeBlock;
 }
 

@@ -332,7 +332,7 @@ CBlockIndex* SimpleFakeMine(CWalletTx& wtx, CBlockIndex* pprev = nullptr)
     fakeIndex->phashBlock = &mapBlockIndex.find(block.GetHash())->first;
     chainActive.SetTip(fakeIndex);
     BOOST_CHECK(chainActive.Contains(fakeIndex));
-    wtx.SetMerkleBranch(fakeIndex->GetBlockHash(), 0);
+    wtx.SetConf(CWalletTx::Status::CONFIRMED, fakeIndex->GetBlockHash(), 0);
     removeTxFromMempool(wtx);
     wtx.fInMempool = false;
     return fakeIndex;

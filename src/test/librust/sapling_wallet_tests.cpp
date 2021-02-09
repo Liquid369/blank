@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(GetConflictedSaplingNotes) {
     auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK(saplingNoteData.size() > 0);
     wtx.SetSaplingNoteData(saplingNoteData);
-    wtx.SetMerkleBranch(block.GetHash(), 0);
+    wtx.SetConf(CWalletTx::Status::CONFIRMED, block.GetHash(), 0);
     BOOST_CHECK(wallet.LoadToWallet(wtx));
 
     // Simulate receiving new block and ChainTip signal
@@ -351,7 +351,7 @@ BOOST_AUTO_TEST_CASE(SaplingNullifierIsSpent) {
     BOOST_CHECK(chainActive.Contains(&fakeIndex));
     BOOST_CHECK_EQUAL(0, chainActive.Height());
 
-    wtx.SetMerkleBranch(block.GetHash(), 0);
+    wtx.SetConf(CWalletTx::Status::CONFIRMED, block.GetHash(), 0);
     wallet.LoadToWallet(wtx);
 
     // Verify note has been spent
@@ -414,7 +414,7 @@ BOOST_AUTO_TEST_CASE(NavigateFromSaplingNullifierToNote) {
     BOOST_CHECK_EQUAL(0, chainActive.Height());
 
     // Simulate SyncTransaction which calls AddToWalletIfInvolvingMe
-    wtx.SetMerkleBranch(block.GetHash(), 0);
+    wtx.SetConf(CWalletTx::Status::CONFIRMED, block.GetHash(), 0);
     auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK(saplingNoteData.size() > 0);
     wtx.SetSaplingNoteData(saplingNoteData);
@@ -512,7 +512,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK(saplingNoteData.size() > 0);
     wtx.SetSaplingNoteData(saplingNoteData);
-    wtx.SetMerkleBranch(block.GetHash(), 0);
+    wtx.SetConf(CWalletTx::Status::CONFIRMED, block.GetHash(), 0);
     wallet.LoadToWallet(wtx);
 
     // Simulate receiving new block and ChainTip signal.
@@ -588,7 +588,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     auto saplingNoteData2 = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx2.tx).first;
     BOOST_CHECK(saplingNoteData2.size() > 0);
     wtx2.SetSaplingNoteData(saplingNoteData2);
-    wtx2.SetMerkleBranch(block2.GetHash(), 0);
+    wtx2.SetConf(CWalletTx::Status::CONFIRMED, block2.GetHash(), 0);
     wallet.LoadToWallet(wtx2);
 
     // Verify note B is spent. AddToWallet invokes AddToSpends which updates mapTxSaplingNullifiers
@@ -967,7 +967,7 @@ BOOST_AUTO_TEST_CASE(UpdatedSaplingNoteData) {
     auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK(saplingNoteData.size() == 1); // wallet only has key for change output
     wtx.SetSaplingNoteData(saplingNoteData);
-    wtx.SetMerkleBranch(block.GetHash(), 0);
+    wtx.SetConf(CWalletTx::Status::CONFIRMED, block.GetHash(), 0);
     wallet.LoadToWallet(wtx);
 
     // Simulate receiving new block and ChainTip signal
@@ -1083,7 +1083,7 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
     auto saplingNoteData = wallet.GetSaplingScriptPubKeyMan()->FindMySaplingNotes(*wtx.tx).first;
     BOOST_CHECK(saplingNoteData.size() > 0);
     wtx.SetSaplingNoteData(saplingNoteData);
-    wtx.SetMerkleBranch(block.GetHash(), 0);
+    wtx.SetConf(CWalletTx::Status::CONFIRMED, block.GetHash(), 0);
     wallet.LoadToWallet(wtx);
 
     // Simulate receiving new block and ChainTip signal

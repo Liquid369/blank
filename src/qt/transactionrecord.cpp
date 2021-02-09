@@ -569,7 +569,7 @@ void TransactionRecord::updateStatus(const CWalletTx& wtx)
 
     CBlockIndex *pindex = nullptr;
     // Find the block the tx is in
-    BlockMap::iterator mi = mapBlockIndex.find(wtx.hashBlock);
+    BlockMap::iterator mi = mapBlockIndex.find(wtx.m_confirm.hashBlock);
     if (mi != mapBlockIndex.end())
         pindex = (*mi).second;
 

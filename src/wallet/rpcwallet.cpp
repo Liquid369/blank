@@ -62,9 +62,9 @@ void WalletTxToJSON(const CWalletTx& wtx, UniValue& entry)
     if (wtx.IsCoinBase() || wtx.IsCoinStake())
         entry.pushKV("generated", true);
     if (confirms > 0) {
-        entry.pushKV("blockhash", wtx.hashBlock.GetHex());
-        entry.pushKV("blockindex", wtx.nIndex);
-        entry.pushKV("blocktime", mapBlockIndex[wtx.hashBlock]->GetBlockTime());
+        entry.pushKV("blockhash", wtx.m_confirm.hashBlock.GetHex());
+        entry.pushKV("blockindex", wtx.m_confirm.nIndex);
+        entry.pushKV("blocktime", mapBlockIndex[wtx.m_confirm.hashBlock]->GetBlockTime());
     } else {
         entry.pushKV("trusted", wtx.IsTrusted());
     }
@@ -2563,9 +2563,9 @@ UniValue listreceivedbyshieldaddress(const JSONRPCRequest& request)
 
         if (pwalletMain->mapWallet.count(entry.op.hash)) {
             const CWalletTx& wtx = pwalletMain->mapWallet.at(entry.op.hash);
-            if (!wtx.hashBlock.IsNull())
-                height = mapBlockIndex[wtx.hashBlock]->nHeight;
-            index = wtx.nIndex;
+            if (!wtx.m_confirm.hashBlock.IsNull())
+                height = mapBlockIndex[wtx.m_confirm.hashBlock]->nHeight;
+            index = wtx.m_confirm.nIndex;
             time = wtx.GetTxTime();
         }
 

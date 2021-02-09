@@ -432,7 +432,7 @@ BOOST_AUTO_TEST_CASE(rpc_shieldsendmany_taddr_to_sapling)
     chainActive.SetTip(&fakeIndex);
     BOOST_CHECK(chainActive.Contains(&fakeIndex));
     BOOST_CHECK_EQUAL(1, chainActive.Height());
-    wtx.SetMerkleBranch(blockHash, 0);
+    wtx.SetConf(CWalletTx::Status::CONFIRMED, blockHash, 0);
     pwalletMain->LoadToWallet(wtx);
     BOOST_CHECK_MESSAGE(pwalletMain->GetAvailableBalance() > 0, "tx not confirmed");
 
