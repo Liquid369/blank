@@ -997,10 +997,10 @@ static UniValue ShieldSendManyTo(const UniValue& sendTo,
     const uint256 txHash(txid);
     assert(pwalletMain->mapWallet.count(txHash));
     if (!commentStr.empty()) {
-        pwalletMain->mapWallet[txHash].mapValue["comment"] = commentStr;
+        pwalletMain->mapWallet.at(txHash).mapValue["comment"] = commentStr;
     }
     if (!toStr.empty()) {
-        pwalletMain->mapWallet[txHash].mapValue["to"] = toStr;
+        pwalletMain->mapWallet.at(txHash).mapValue["to"] = toStr;
     }
 
     return txid;
@@ -1059,7 +1059,7 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
     SendMoney(address, nAmount, tx);
 
     // Wallet comments
-    CWalletTx& wtx = pwalletMain->mapWallet[tx->GetHash()];
+    CWalletTx& wtx = pwalletMain->mapWallet.at(tx->GetHash());
     if (!commentStr.empty())
         wtx.mapValue["comment"] = commentStr;
     if (!toStr.empty())
@@ -1383,7 +1383,7 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
     UniValue entry(UniValue::VOBJ);
     if (!pwalletMain->mapWallet.count(hash))
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid or non-wallet transaction id");
-    const CWalletTx& wtx = pwalletMain->mapWallet[hash];
+    const CWalletTx& wtx = pwalletMain->mapWallet.at(hash);
 
     if (!wtx.tx->IsShieldedTx()) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid transaction, no shield data available");
@@ -2106,7 +2106,7 @@ static UniValue legacy_sendmany(const UniValue& sendTo, int nMinDepth, std::stri
         throw JSONRPCError(RPC_WALLET_ERROR, res.ToString());
 
     // Set comment
-    CWalletTx& wtx = pwalletMain->mapWallet[txNew->GetHash()];
+    CWalletTx& wtx = pwalletMain->mapWallet.at(txNew->GetHash());
     if (!comment.empty()) {
         wtx.mapValue["comment"] = comment;
     }
@@ -2496,7 +2496,7 @@ UniValue listreceivedbyshieldaddress(const JSONRPCRequest& request)
         int64_t time = 0;
 
         if (pwalletMain->mapWallet.count(entry.op.hash)) {
-            const CWalletTx& wtx = pwalletMain->mapWallet[entry.op.hash];
+            const CWalletTx& wtx = pwalletMain->mapWallet.at(entry.op.hash);
             if (!wtx.hashBlock.IsNull())
                 height = mapBlockIndex[wtx.hashBlock]->nHeight;
             index = wtx.nIndex;
@@ -2941,7 +2941,7 @@ UniValue gettransaction(const JSONRPCRequest& request)
     UniValue entry(UniValue::VOBJ);
     if (!pwalletMain->mapWallet.count(hash))
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid or non-wallet transaction id");
-    const CWalletTx& wtx = pwalletMain->mapWallet[hash];
+    const CWalletTx& wtx = pwalletMain->mapWallet.at(hash);
 
     CAmount nCredit = wtx.GetCredit(filter);
     CAmount nDebit = wtx.GetDebit(filter);

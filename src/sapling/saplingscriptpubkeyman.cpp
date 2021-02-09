@@ -38,7 +38,7 @@ void SaplingScriptPubKeyMan::UpdateSaplingNullifierNoteMapForBlock(const CBlock 
         const uint256& hash = tx->GetHash();
         bool txIsOurs = wallet->mapWallet.count(hash);
         if (txIsOurs) {
-            UpdateSaplingNullifierNoteMapWithTx(wallet->mapWallet[hash]);
+            UpdateSaplingNullifierNoteMapWithTx(wallet->mapWallet.at(hash));
         }
     }
 }
@@ -246,7 +246,7 @@ void SaplingScriptPubKeyMan::IncrementNoteWitnesses(const CBlockIndex* pindex,
             // If this is our note, witness it
             if (txIsOurs) {
                 SaplingOutPoint outPoint {hash, i};
-                ::WitnessNoteIfMine(wallet->mapWallet[hash].mapSaplingNoteData, chainHeight, nWitnessCacheSize, outPoint, saplingTree.witness());
+                ::WitnessNoteIfMine(wallet->mapWallet.at(hash).mapSaplingNoteData, chainHeight, nWitnessCacheSize, outPoint, saplingTree.witness());
             }
         }
 
@@ -768,7 +768,7 @@ bool SaplingScriptPubKeyMan::IsNoteSaplingChange(const std::set<std::pair<libzca
     // - Change created by spending fractions of Notes (because
     //   shieldsendmany sends change to the originating shielded address).
     // - Notes sent from one address to itself.
-    const auto& tx = wallet->mapWallet[op.hash];
+    const auto& tx = wallet->mapWallet.at(op.hash);
     if (tx.tx->sapData) {
         for (const SpendDescription& spend : tx.tx->sapData->vShieldedSpend) {
             if (nullifierSet.count(std::make_pair(address, spend.nullifier))) {
@@ -789,9 +789,9 @@ void SaplingScriptPubKeyMan::GetSaplingNoteWitnesses(const std::vector<SaplingOu
     int i = 0;
     for (SaplingOutPoint note : notes) {
         if (wallet->mapWallet.count(note.hash) &&
-            wallet->mapWallet[note.hash].mapSaplingNoteData.count(note) &&
-            wallet->mapWallet[note.hash].mapSaplingNoteData[note].witnesses.size() > 0) {
-            witnesses[i] = wallet->mapWallet[note.hash].mapSaplingNoteData[note].witnesses.front();
+            wallet->mapWallet.at(note.hash).mapSaplingNoteData.count(note) &&
+            wallet->mapWallet.at(note.hash).mapSaplingNoteData[note].witnesses.size() > 0) {
+            witnesses[i] = wallet->mapWallet.at(note.hash).mapSaplingNoteData[note].witnesses.front();
             if (!rt) {
                 rt = witnesses[i]->root();
             } else {

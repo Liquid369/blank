@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(SetSaplingNoteAddrsInCWalletTx) {
 
 // Cannot add note data for an index which does not exist in tx.vShieldedOutput
 BOOST_AUTO_TEST_CASE(SetInvalidSaplingNoteDataInCWalletTx) {
-    CWalletTx wtx;
+    CWalletTx wtx(nullptr /* pwallet */, MakeTransactionRef());
     BOOST_CHECK_EQUAL(0, wtx.mapSaplingNoteData.size());
 
     mapSaplingNoteData_t noteData;
@@ -241,7 +241,7 @@ BOOST_AUTO_TEST_CASE(GetConflictedSaplingNotes) {
 
     // Retrieve the updated wtx from wallet
     const uint256& hash = wtx.GetHash();
-    wtx = wallet.mapWallet[hash];
+    wtx = wallet.mapWallet.at(hash);
 
     // Decrypt output note B
     auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
@@ -437,7 +437,7 @@ BOOST_AUTO_TEST_CASE(NavigateFromSaplingNullifierToNote) {
 
     // Retrieve the updated wtx from wallet
     const uint256& hash = wtx.GetHash();
-    wtx = wallet.mapWallet[hash];
+    wtx = wallet.mapWallet.at(hash);
 
     // Verify Sapling nullifiers map to SaplingOutPoints
     BOOST_CHECK_EQUAL(2, wallet.GetSaplingScriptPubKeyMan()->mapSaplingNullifiersToNotes.size());
@@ -522,7 +522,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     wallet.GetSaplingScriptPubKeyMan()->UpdateSaplingNullifierNoteMapForBlock(&block);
 
     // Retrieve the updated wtx from wallet
-    wtx = wallet.mapWallet[wtx.GetHash()];
+    wtx = wallet.mapWallet.at(wtx.GetHash());
 
     // The test wallet never received the fake note which is being spent, so there
     // is no mapping from nullifier to notedata stored in mapSaplingNullifiersToNotes.
@@ -903,7 +903,7 @@ BOOST_AUTO_TEST_CASE(ClearNoteWitnessCache) {
     GetWitnessesAndAnchors(wallet, saplingNotes, saplingWitnesses);
     BOOST_CHECK((bool) saplingWitnesses[0]);
     BOOST_CHECK(!(bool) saplingWitnesses[1]);
-    BOOST_CHECK_EQUAL(1, wallet.mapWallet[hash].mapSaplingNoteData[saplingNotes[0]].witnessHeight);
+    BOOST_CHECK_EQUAL(1, wallet.mapWallet.at(hash).mapSaplingNoteData[saplingNotes[0]].witnessHeight);
     BOOST_CHECK_EQUAL(1, wallet.GetSaplingScriptPubKeyMan()->nWitnessCacheSize);
 
     // After clearing, we should not have a witness for either note
@@ -911,7 +911,7 @@ BOOST_AUTO_TEST_CASE(ClearNoteWitnessCache) {
     GetWitnessesAndAnchors(wallet, saplingNotes, saplingWitnesses);
     BOOST_CHECK(!(bool) saplingWitnesses[0]);
     BOOST_CHECK(!(bool) saplingWitnesses[1]);
-    BOOST_CHECK_EQUAL(-1, wallet.mapWallet[hash].mapSaplingNoteData[saplingNotes[0]].witnessHeight);
+    BOOST_CHECK_EQUAL(-1, wallet.mapWallet.at(hash).mapSaplingNoteData[saplingNotes[0]].witnessHeight);
     BOOST_CHECK_EQUAL(0, wallet.GetSaplingScriptPubKeyMan()->nWitnessCacheSize);
 }
 
@@ -976,7 +976,7 @@ BOOST_AUTO_TEST_CASE(UpdatedSaplingNoteData) {
 
     // Retrieve the updated wtx from wallet
     const uint256& hash = wtx.GetHash();
-    wtx = wallet.mapWallet[hash];
+    wtx = wallet.mapWallet.at(hash);
 
     // Now lets add key extfvk2 so wallet can find the payment note sent to pa2
     BOOST_CHECK(wallet.AddSaplingZKey(sk2));
@@ -1092,7 +1092,7 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
 
     // Retrieve the updated wtx from wallet
     const uint256& hash = wtx.GetHash();
-    wtx = wallet.mapWallet[hash];
+    wtx = wallet.mapWallet.at(hash);
 
     // Prepare to spend the note that was just created
     auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
@@ -1123,13 +1123,13 @@ BOOST_AUTO_TEST_CASE(MarkAffectedSaplingTransactionsDirty) {
     wallet.MarkAffectedTransactionsDirty(*wtx.tx);
 
     // After getting a cached value, the first tx should be clean
-    wallet.mapWallet[hash].GetDebit(ISMINE_SPENDABLE);
-    BOOST_CHECK(wallet.mapWallet[hash].IsAmountCached(CWalletTx::AmountType::DEBIT, ISMINE_SPENDABLE));
+    wallet.mapWallet.at(hash).GetDebit(ISMINE_SPENDABLE);
+    BOOST_CHECK(wallet.mapWallet.at(hash).IsAmountCached(CWalletTx::AmountType::DEBIT, ISMINE_SPENDABLE));
 
     // After adding the note spend, the first tx should be dirty
     wallet.LoadToWallet(wtx2);
     wallet.MarkAffectedTransactionsDirty(*wtx2.tx);
-    BOOST_CHECK(!wallet.mapWallet[hash].IsAmountCached(CWalletTx::AmountType::DEBIT, ISMINE_SPENDABLE));
+    BOOST_CHECK(!wallet.mapWallet.at(hash).IsAmountCached(CWalletTx::AmountType::DEBIT, ISMINE_SPENDABLE));
 
     // Tear down
     chainActive.SetTip(NULL);

@@ -157,7 +157,7 @@ UniValue preparebudget(const JSONRPCRequest& request)
 
     // Store proposal name as a comment
     assert(pwalletMain->mapWallet.count(wtx->GetHash()));
-    pwalletMain->mapWallet[wtx->GetHash()].SetComment("Proposal: " + strProposalName);
+    pwalletMain->mapWallet.at(wtx->GetHash()).SetComment("Proposal: " + strProposalName);
 
     return wtx->GetHash().ToString();
 }

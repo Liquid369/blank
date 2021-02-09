@@ -353,7 +353,7 @@ CWalletTx& BuildAndLoadTxToWallet(const std::vector<CTxIn>& vin,
     mTx.vout = vout;
     CTransaction tx(mTx);
     wallet.LoadToWallet({&wallet, MakeTransactionRef(tx)});
-    return wallet.mapWallet[tx.GetHash()];
+    return wallet.mapWallet.at(tx.GetHash());
 }
 
 CWalletTx& ReceiveBalanceWith(const std::vector<CTxOut>& vout,
