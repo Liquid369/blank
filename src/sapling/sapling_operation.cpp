@@ -177,13 +177,11 @@ OperationResult SaplingOperation::build()
         if (!opTx) {
             return errorOut("Failed to build transaction: " + txResult.GetError());
         }
-        finalTx.reset();
-        finalTx = MakeTransactionRef(*opTx);
 
         // Now check fee
-        bool isShielded = finalTx->IsShieldedTx();
-        const CAmount& nFeeNeeded = isShielded ? GetShieldedTxMinFee(*finalTx) :
-                                                 GetMinRelayFee(finalTx->GetTotalSize(), false);
+        bool isShielded = opTx->IsShieldedTx();
+        const CAmount& nFeeNeeded = isShielded ? GetShieldedTxMinFee(*opTx) :
+                                                 GetMinRelayFee(opTx->GetTotalSize(), false);
         if (nFeeNeeded <= nFeeRet) {
             // Check that the fee is not too high.
             CAmount nMaxFee = nFeeNeeded * (isShielded ? 100 : 10000);
@@ -223,7 +221,6 @@ OperationResult SaplingOperation::build()
     if (!opTx) {
         return errorOut("Failed to build transaction: " + txResult.GetError());
     }
-    finalTx.reset();
     finalTx = MakeTransactionRef(*opTx);
     return OperationResult(true);
 }

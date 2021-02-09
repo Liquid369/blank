@@ -408,8 +408,9 @@ BOOST_AUTO_TEST_CASE(rpc_shieldsendmany_taddr_to_sapling)
     // Add a fake transaction to the wallet
     CMutableTransaction mtx;
     mtx.vout.emplace_back(5 * COIN, GetScriptForDestination(taddr));
-    CWalletTx wtx(pwalletMain, MakeTransactionRef(mtx));
-    pwalletMain->LoadToWallet(wtx);
+    // Add to wallet and get the updated wtx
+    pwalletMain->LoadToWallet({pwalletMain, MakeTransactionRef(mtx)});
+    CWalletTx& wtx = pwalletMain->mapWallet.at(mtx.GetHash());
 
     // Fake-mine the transaction
     BOOST_CHECK_EQUAL(0, chainActive.Height());
@@ -426,6 +427,7 @@ BOOST_AUTO_TEST_CASE(rpc_shieldsendmany_taddr_to_sapling)
     BOOST_CHECK_EQUAL(1, chainActive.Height());
     wtx.SetMerkleBranch(blockHash, 0);
     pwalletMain->LoadToWallet(wtx);
+    BOOST_CHECK_MESSAGE(pwalletMain->GetAvailableBalance() > 0, "tx not confirmed");
 
     // Context that shieldsendmany requires
     auto builder = TransactionBuilder(consensusParams, nextBlockHeight, pwalletMain);
