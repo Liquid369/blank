@@ -955,7 +955,6 @@ public:
     mutable bool fShieldedChangeCached;
     mutable CAmount nShieldedChangeCached;
 
-    CWalletTx();
     CWalletTx(const CWallet* pwalletIn, CTransactionRef arg);
     void Init(const CWallet* pwalletIn);
 

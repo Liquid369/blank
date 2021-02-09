@@ -4532,11 +4532,6 @@ bool CWallet::LoadSaplingPaymentAddress(
 ///////////////// End Sapling Methods //////////////////////
 ////////////////////////////////////////////////////////////
 
-CWalletTx::CWalletTx() : CMerkleTx()
-{
-    Init(NULL);
-}
-
 CWalletTx::CWalletTx(const CWallet* pwalletIn, CTransactionRef arg) : CMerkleTx(std::move(arg))
 {
     // todo: set tx ref
