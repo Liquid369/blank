@@ -971,8 +971,19 @@ bool CWallet::AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose)
     return true;
 }
 
-bool CWallet::LoadToWallet(const CWalletTx& wtxIn)
+bool CWallet::LoadToWallet(CWalletTx& wtxIn)
 {
+    LOCK2(cs_main, cs_wallet);
+    // If tx hasn't been reorged out of chain while wallet being shutdown
+    // change tx status to UNCONFIRMED and reset hashBlock/nIndex.
+    if (!wtxIn.m_confirm.hashBlock.IsNull()) {
+        CBlockIndex* pindex = mapBlockIndex[wtxIn.m_confirm.hashBlock];
+        if (!pindex || !chainActive.Contains(pindex)) {
+            wtxIn.setUnconfirmed();
+            wtxIn.m_confirm.hashBlock = UINT256_ZERO;
+            wtxIn.m_confirm.nIndex = 0;
+        }
+    }
     const uint256& hash = wtxIn.GetHash();
     CWalletTx& wtx = mapWallet.emplace(hash, wtxIn).first->second;
     wtx.BindWallet(this);
@@ -1948,6 +1959,11 @@ bool CWallet::Verify()
     if (gArgs.GetBoolArg("-salvagewallet", false)) {
         // Recover readable keypairs:
         CWallet dummyWallet;
+        // Even if we don't use this lock in this function, we want to preserve
+        // lock order in LoadToWallet if query of chain state is needed to know
+        // tx status. If lock can't be taken, tx confirmation status may be not
+        // reliable.
+        LOCK(cs_main);
         if (!CWalletDB::Recover(walletFile, (void *)&dummyWallet, CWalletDB::RecoverKeysOnlyFilter))
             return false;
     }

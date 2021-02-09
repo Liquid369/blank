@@ -353,7 +353,8 @@ CWalletTx& BuildAndLoadTxToWallet(const std::vector<CTxIn>& vin,
     mTx.vin = vin;
     mTx.vout = vout;
     CTransaction tx(mTx);
-    wallet.LoadToWallet({&wallet, MakeTransactionRef(tx)});
+    CWalletTx wtx(&wallet, MakeTransactionRef(tx));
+    wallet.LoadToWallet(wtx);
     return wallet.mapWallet.at(tx.GetHash());
 }
 

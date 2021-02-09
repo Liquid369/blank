@@ -902,7 +902,7 @@ public:
 
     void MarkDirty();
     bool AddToWallet(const CWalletTx& wtxIn, bool fFlushOnClose = true);
-    bool LoadToWallet(const CWalletTx& wtxIn);
+    bool LoadToWallet(CWalletTx& wtxIn);
     void TransactionAddedToMempool(const CTransactionRef& tx) override;
     void BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) override;
     void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, int nBlockHeight) override;

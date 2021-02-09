@@ -416,7 +416,8 @@ BOOST_AUTO_TEST_CASE(rpc_shieldsendmany_taddr_to_sapling)
     CMutableTransaction mtx;
     mtx.vout.emplace_back(5 * COIN, GetScriptForDestination(taddr));
     // Add to wallet and get the updated wtx
-    pwalletMain->LoadToWallet({pwalletMain, MakeTransactionRef(mtx)});
+    CWalletTx wtxIn(pwalletMain, MakeTransactionRef(mtx));
+    pwalletMain->LoadToWallet(wtxIn);
     CWalletTx& wtx = pwalletMain->mapWallet.at(mtx.GetHash());
 
     // Fake-mine the transaction
