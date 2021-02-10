@@ -533,6 +533,14 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
 }
 
 Optional<libzcash::SaplingPaymentAddress>
+SaplingScriptPubKeyMan::GetAddressFromInputIfPossible(const uint256& txHash, int index) const
+{
+    const CWalletTx* wtx = wallet->GetWalletTx(txHash);
+    if (!wtx) return nullopt;
+    return GetAddressFromInputIfPossible(wtx, index);
+}
+
+Optional<libzcash::SaplingPaymentAddress>
         SaplingScriptPubKeyMan::GetAddressFromInputIfPossible(const CWalletTx* wtx, int index) const
 {
     if (!wtx->tx->sapData || wtx->tx->sapData->vShieldedSpend.empty()) return nullopt;

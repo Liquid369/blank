@@ -885,7 +885,8 @@ public:
         AvailableCoinsType coin_type = ALL_COINS,
         bool sign = true,
         CAmount nFeePay = 0,
-        bool fIncludeDelegated = false);
+        bool fIncludeDelegated = false,
+        bool* fStakeDelegationVoided = nullptr);
     bool CreateTransaction(CScript scriptPubKey, const CAmount& nValue, CTransactionRef& tx, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl* coinControl = NULL, AvailableCoinsType coin_type = ALL_COINS, CAmount nFeePay = 0, bool fIncludeDelegated = false);
 
     // enumeration for CommitResult (return status of CommitTransaction)

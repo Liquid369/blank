@@ -38,6 +38,7 @@ public:
 
     // Whether should create a +v2 tx or go simple and create a v1.
     bool useV2{false};
+    bool fIsStakeDelegationVoided{false};
 
 private:
     const QList<SendCoinsRecipient> recipients;

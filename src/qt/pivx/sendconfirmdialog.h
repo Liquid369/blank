@@ -57,7 +57,7 @@ private:
     bool inputsLoaded = false;
     bool outputsLoaded = false;
 
-    void setInputsType(const CWalletTx* _tx);
+    void setInputsType(CTransactionRef _tx);
 };
 
 #endif // SENDCONFIRMDIALOG_H

@@ -2725,7 +2725,8 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
     AvailableCoinsType coin_type,
     bool sign,
     CAmount nFeePay,
-    bool fIncludeDelegated)
+    bool fIncludeDelegated,
+    bool* fStakeDelegationVoided)
 {
     CAmount nValue = 0;
     int nChangePosRequest = nChangePosInOut;
@@ -2856,6 +2857,9 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
 
                 // Fill vin
                 for (const std::pair<const CWalletTx*, unsigned int>& coin : setCoins) {
+                    if(coin.first->tx->vout[coin.second].scriptPubKey.IsPayToColdStaking()) {
+                        *fStakeDelegationVoided = true;
+                    }
                     txNew.vin.emplace_back(coin.first->GetHash(), coin.second);
                 }
 

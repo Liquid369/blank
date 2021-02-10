@@ -499,7 +499,7 @@ OperationResult SendWidget::prepareTransparent(WalletModelTransaction* currentTr
 bool SendWidget::sendFinalStep()
 {
     showHideOp(true);
-    const bool fStakeDelegationVoided = ptrModelTx->getTransaction()->fStakeDelegationVoided;
+    const bool fStakeDelegationVoided = ptrModelTx->fIsStakeDelegationVoided;
     QString warningStr = QString();
     if (fStakeDelegationVoided)
         warningStr = tr("WARNING:\nTransaction spends a cold-stake delegation, voiding it.\n"

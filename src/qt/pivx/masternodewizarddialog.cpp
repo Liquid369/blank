@@ -257,11 +257,11 @@ bool MasterNodeWizardDialog::createMN()
         }
 
         // look for the tx index of the collateral
-        CWalletTx* walletTx = currentTransaction.getTransaction();
+        CTransactionRef walletTx = currentTransaction.getTransaction();
         std::string txID = walletTx->GetHash().GetHex();
         int indexOut = -1;
-        for (int i=0; i < (int)walletTx->tx->vout.size(); i++) {
-            const CTxOut& out = walletTx->tx->vout[i];
+        for (int i=0; i < (int)walletTx->vout.size(); i++) {
+            const CTxOut& out = walletTx->vout[i];
             if (out.nValue == 10000 * COIN) {
                 indexOut = i;
                 break;

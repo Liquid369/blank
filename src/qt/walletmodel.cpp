@@ -438,7 +438,8 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
                                                   ALL_COINS,
                                                   true,
                                                   0,
-                                                  fIncludeDelegations);
+                                                  fIncludeDelegations,
+                                                  &transaction->fIsStakeDelegationVoided);
         transaction->setTransactionFee(nFeeRequired);
 
         if (!fCreated) {
@@ -1081,8 +1082,8 @@ bool WalletModel::isUsed(CTxDestination address)
     return wallet->IsUsed(address);
 }
 
-Optional<QString> WalletModel::getShieldedAddressFromSpendDesc(const CWalletTx* wtx, int index)
+Optional<QString> WalletModel::getShieldedAddressFromSpendDesc(const uint256& txHash, int index)
 {
-    Optional<libzcash::SaplingPaymentAddress> opAddr = wallet->GetSaplingScriptPubKeyMan()->GetAddressFromInputIfPossible(wtx, index);
+    Optional<libzcash::SaplingPaymentAddress> opAddr = wallet->GetSaplingScriptPubKeyMan()->GetAddressFromInputIfPossible(txHash, index);
     return opAddr ? Optional<QString>(QString::fromStdString(KeyIO::EncodePaymentAddress(*opAddr))) : nullopt;
 }
