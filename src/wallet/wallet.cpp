@@ -1257,7 +1257,7 @@ void CWallet::SyncTransaction(const CTransactionRef& ptx, CWalletTx::Status stat
 void CWallet::TransactionAddedToMempool(const CTransactionRef& ptx)
 {
     LOCK2(cs_main, cs_wallet);
-    SyncTransaction(ptx, CWalletTx::Status::UNCONFIRMED, nullptr, -1);
+    SyncTransaction(ptx, CWalletTx::Status::UNCONFIRMED, nullptr, 0);
 
     auto it = mapWallet.find(ptx->GetHash());
     if (it != mapWallet.end()) {
@@ -1313,7 +1313,7 @@ void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, int
     // User may have to call abandontransaction again. It may be addressed in the
     // future with a stickier abandoned state or even removing abandontransaction call.
     for (const CTransactionRef& ptx : pblock->vtx) {
-        SyncTransaction(ptx, CWalletTx::Status::UNCONFIRMED, nullptr, -1);
+        SyncTransaction(ptx, CWalletTx::Status::UNCONFIRMED, nullptr, 0);
     }
 
     if (Params().GetConsensus().NetworkUpgradeActive(nBlockHeight, Consensus::UPGRADE_V5_0)) {
