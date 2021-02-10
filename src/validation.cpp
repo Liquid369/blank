@@ -797,7 +797,7 @@ CAmount GetBlockValue(int nHeight)
         return 250 * COIN;
     }
     // Testnet high-inflation blocks [2, 200] with value 250k PIV
-    const bool isTestnet = Params().NetworkID() == CBaseChainParams::TESTNET;
+    const bool isTestnet = Params().IsTestnet();
     if (isTestnet && nHeight < 201 && nHeight > 1) {
         return 250000 * COIN;
     }

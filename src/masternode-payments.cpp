@@ -217,7 +217,7 @@ bool IsBlockValueValid(int nHeight, CAmount& nExpectedValue, CAmount nMinted)
         //there is no budget data to use to check anything
         //super blocks will always be on these blocks, max 100 per budgeting
         if (nHeight % Params().GetConsensus().nBudgetCycleBlocks < 100) {
-            if (Params().NetworkID() == CBaseChainParams::TESTNET) {
+            if (Params().IsTestnet()) {
                 return true;
             }
             nExpectedValue += g_budgetman.GetTotalBudget(nHeight);
@@ -380,7 +380,7 @@ void CMasternodePayments::ProcessMessageMasternodePayments(CNode* pfrom, std::st
         int nCountNeeded;
         vRecv >> nCountNeeded;
 
-        if (Params().NetworkID() == CBaseChainParams::MAIN) {
+        if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
             if (pfrom->HasFulfilledRequest(NetMsgType::GETMNWINNERS)) {
                 LogPrintf("CMasternodePayments::ProcessMessageMasternodePayments() : mnget - peer already asked me for the list\n");
                 LOCK(cs_main);

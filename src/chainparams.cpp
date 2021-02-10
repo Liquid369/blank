@@ -9,7 +9,7 @@
 
 #include "chainparamsseeds.h"
 #include "consensus/merkle.h"
-#include "util.h"
+#include "tinyformat.h"
 #include "utilstrencodings.h"
 
 #include <assert.h>
@@ -33,6 +33,13 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
     genesis.nNonce   = nNonce;
     genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
     return genesis;
+}
+
+void CChainParams::UpdateNetworkUpgradeParameters(Consensus::UpgradeIndex idx, int nActivationHeight)
+{
+    assert(IsRegTestNet()); // only available for regtest
+    assert(idx > Consensus::BASE_NETWORK && idx < Consensus::MAX_NETWORK_UPGRADES);
+    consensus.vUpgrades[idx].nActivationHeight = nActivationHeight;
 }
 
 /**
@@ -85,7 +92,7 @@ static Checkpoints::MapCheckpoints mapCheckpoints = {
     {2153200, uint256S("14e477e597d24549cac5e59d97d32155e6ec2861c1003b42d0566f9bf39b65d5")}, //!< First v7 block
     {2356049, uint256S("62e80d8e193bca84655fb78893b20f54a79f2d71124c4ea37b7ef51a0d5451c4")}, //!< Network split here
     {2365700, uint256S("b5d0beead57735539abc2db2b0b08cd65db3e5928efd3c3bf3182d5bf013f36c")}, //!< PIVX v4.1.1 enforced
-    {2678402, uint256S("580a26ff0a45177a7a6f387f009c5b26140ea48b4790a857d9a796f8b3c25899")}, //!< Network split here}
+    {2678402, uint256S("580a26ff0a45177a7a6f387f009c5b26140ea48b4790a857d9a796f8b3c25899")}, //!< Network split here
 };
 
 static const Checkpoints::CCheckpointData data = {
@@ -119,7 +126,6 @@ class CMainParams : public CChainParams
 public:
     CMainParams()
     {
-        networkID = CBaseChainParams::MAIN;
         strNetworkID = "main";
 
         genesis = CreateGenesisBlock(1454124731, 2402015, 0x1e0ffff0, 1, 250 * COIN);
@@ -248,17 +254,15 @@ public:
     }
 
 };
-static CMainParams mainParams;
 
 /**
  * Testnet (v5)
  */
-class CTestNetParams : public CMainParams
+class CTestNetParams : public CChainParams
 {
 public:
     CTestNetParams()
     {
-        networkID = CBaseChainParams::TESTNET;
         strNetworkID = "test";
 
         genesis = CreateGenesisBlock(1454124731, 2402015, 0x1e0ffff0, 1, 250 * COIN);
@@ -273,6 +277,11 @@ public:
         consensus.nBudgetCycleBlocks = 144;         // approx 10 cycles per day
         consensus.nBudgetFeeConfirmations = 3;      // (only 8-blocks window for finalization on testnet)
         consensus.nCoinbaseMaturity = 15;
+        consensus.nFutureTimeDriftPoW = 7200;
+        consensus.nFutureTimeDriftPoS = 180;
+        consensus.nMasternodeCountDrift = 20;       // num of MN we allow the see-saw payments to be off by
+        consensus.nMaxMoneyOut = 21000000 * COIN;
+        consensus.nPoolMaxTransactions = 3;
         consensus.nProposalEstablishmentTime = 60 * 5;  // at least 5 min old to make it into a budget
         consensus.nStakeMinAge = 60 * 60;
         consensus.nStakeMinDepth = 100;
@@ -285,6 +294,8 @@ public:
         // spork keys
         consensus.strSporkPubKey = "04677c34726c491117265f4b1c83cef085684f36c8df5a97a3a42fc499316d0c4e63959c9eca0dba239d9aaaf72011afffeb3ef9f51b9017811dec686e412eb504";
         consensus.strSporkPubKeyOld = "04E88BB455E2A04E65FCC41D88CD367E9CCE1F5A409BE94D8C2B4B35D223DED9C8E2F4E061349BA3A38839282508066B6DC4DB72DD432AC4067991E6BF20176127";
+        consensus.nTime_EnforceNewSporkKey = 1608512400;    //!> December 21, 2020 01:00:00 AM GMT
+        consensus.nTime_RejectOldSporkKey = 1614560400;     //!> March 1, 2021 01:00:00 AM GMT
 
         // height based activations
         consensus.height_last_ZC_AccumCheckpoint = -1;
@@ -293,6 +304,20 @@ public:
         consensus.height_start_ZC_InvalidSerials = 999999999;
         consensus.height_start_ZC_SerialRangeCheck = 1;
         consensus.height_ZC_RecalcAccumulators = 999999999;
+
+        // Zerocoin-related params
+        consensus.ZC_Modulus = "25195908475657893494027183240048398571429282126204032027777137836043662020707595556264018525880784"
+                "4069182906412495150821892985591491761845028084891200728449926873928072877767359714183472702618963750149718246911"
+                "6507761337985909570009733045974880842840179742910064245869181719511874612151517265463228221686998754918242243363"
+                "7259085141865462043576798423387184774447920739934236584823824281198163815010674810451660377306056201619676256133"
+                "8441436038339044149526344321901146575444541784240209246165157233507787077498171257724679629263863563732899121548"
+                "31438167899885040445364023527381951378636564391212010397122822120720357";
+        consensus.ZC_MaxPublicSpendsPerTx = 637;    // Assume about 220 bytes each input
+        consensus.ZC_MaxSpendsPerTx = 7;            // Assume about 20kb each input
+        consensus.ZC_MinMintConfirmations = 20;
+        consensus.ZC_MinMintFee = 1 * CENT;
+        consensus.ZC_MinStakeDepth = 200;
+        consensus.ZC_TimeStart = 1508214600;        // October 17, 2017 4:30:00 AM
 
         // Network upgrades
         consensus.vUpgrades[Consensus::BASE_NETWORK].nActivationHeight =
@@ -314,15 +339,12 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 4-byte int at any alignment.
          */
-
         pchMessageStart[0] = 0xf5;
         pchMessageStart[1] = 0xe6;
         pchMessageStart[2] = 0xd5;
         pchMessageStart[3] = 0xca;
         nDefaultPort = 51474;
 
-        vFixedSeeds.clear();
-        vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
         vSeeds.emplace_back("fuzzbawls.pw", "pivx-testnet.seed.fuzzbawls.pw", true);
         vSeeds.emplace_back("fuzzbawls.pw", "pivx-testnet.seed2.fuzzbawls.pw", true);
@@ -353,17 +375,15 @@ public:
         return dataTestnet;
     }
 };
-static CTestNetParams testNetParams;
 
 /**
  * Regression test
  */
-class CRegTestParams : public CTestNetParams
+class CRegTestParams : public CChainParams
 {
 public:
     CRegTestParams()
     {
-        networkID = CBaseChainParams::REGTEST;
         strNetworkID = "regtest";
 
         genesis = CreateGenesisBlock(1454124731, 2402015, 0x1e0ffff0, 1, 250 * COIN);
@@ -390,6 +410,7 @@ public:
         consensus.nTargetTimespanV2 = 30 * 60;
         consensus.nTargetSpacing = 1 * 60;
         consensus.nTimeSlotLength = 15;
+        consensus.nMaxProposalPayments = 20;
 
         /* Spork Key for RegTest:
         WIF private key: 932HEevBSujW2ud7RfB1YF91AFygbBRQj3de3LyaCRqNzKKgWXi
@@ -445,70 +466,63 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 4-byte int at any alignment.
          */
-
         pchMessageStart[0] = 0xa1;
         pchMessageStart[1] = 0xcf;
         pchMessageStart[2] = 0x7e;
         pchMessageStart[3] = 0xac;
         nDefaultPort = 51476;
 
-        vFixedSeeds.clear(); //! Testnet mode doesn't have any fixed seeds.
-        vSeeds.clear();      //! Testnet mode doesn't have any DNS seeds.
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 139); // Testnet pivx addresses start with 'x' or 'y'
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 19);  // Testnet pivx script addresses start with '8' or '9'
+        base58Prefixes[STAKING_ADDRESS] = std::vector<unsigned char>(1, 73);     // starting with 'W'
+        base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 239);     // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
+        // Testnet pivx BIP32 pubkeys start with 'DRKV'
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x3a, 0x80, 0x61, 0xa0};
+        // Testnet pivx BIP32 prvkeys start with 'DRKP'
+        base58Prefixes[EXT_SECRET_KEY] = {0x3a, 0x80, 0x58, 0x37};
+        // Testnet pivx BIP44 coin type is '1' (All coin's testnet default)
+        base58Prefixes[EXT_COIN_TYPE] = {0x80, 0x00, 0x00, 0x01};
+
+        // Sapling
+        bech32HRPs[SAPLING_PAYMENT_ADDRESS]      = "ptestsapling";
+        bech32HRPs[SAPLING_FULL_VIEWING_KEY]     = "pviewtestsapling";
+        bech32HRPs[SAPLING_INCOMING_VIEWING_KEY] = "pivktestsapling";
+        bech32HRPs[SAPLING_EXTENDED_SPEND_KEY]   = "p-secret-spending-key-test";
+        bech32HRPs[SAPLING_EXTENDED_FVK]         = "pxviewtestsapling";
     }
 
     const Checkpoints::CCheckpointData& Checkpoints() const
     {
         return dataRegtest;
     }
-
-    void UpdateNetworkUpgradeParameters(Consensus::UpgradeIndex idx, int nActivationHeight)
-    {
-        assert(idx > Consensus::BASE_NETWORK && idx < Consensus::MAX_NETWORK_UPGRADES);
-        consensus.vUpgrades[idx].nActivationHeight = nActivationHeight;
-    }
 };
-static CRegTestParams regTestParams;
 
-static CChainParams* pCurrentParams = 0;
+static std::unique_ptr<CChainParams> globalChainParams;
 
-const CChainParams& Params()
+const CChainParams &Params()
 {
-    assert(pCurrentParams);
-    return *pCurrentParams;
+    assert(globalChainParams);
+    return *globalChainParams;
 }
 
-CChainParams& Params(CBaseChainParams::Network network)
+std::unique_ptr<CChainParams> CreateChainParams(const std::string& chain)
 {
-    switch (network) {
-    case CBaseChainParams::MAIN:
-        return mainParams;
-    case CBaseChainParams::TESTNET:
-        return testNetParams;
-    case CBaseChainParams::REGTEST:
-        return regTestParams;
-    default:
-        assert(false && "Unimplemented network");
-        return mainParams;
-    }
+    if (chain == CBaseChainParams::MAIN)
+        return std::unique_ptr<CChainParams>(new CMainParams());
+    else if (chain == CBaseChainParams::TESTNET)
+        return std::unique_ptr<CChainParams>(new CTestNetParams());
+    else if (chain == CBaseChainParams::REGTEST)
+        return std::unique_ptr<CChainParams>(new CRegTestParams());
+    throw std::runtime_error(strprintf("%s: Unknown chain %s.", __func__, chain));
 }
 
-void SelectParams(CBaseChainParams::Network network)
+void SelectParams(const std::string& network)
 {
     SelectBaseParams(network);
-    pCurrentParams = &Params(network);
-}
-
-bool SelectParamsFromCommandLine()
-{
-    CBaseChainParams::Network network = NetworkIdFromCommandLine();
-    if (network == CBaseChainParams::MAX_NETWORK_TYPES)
-        return false;
-
-    SelectParams(network);
-    return true;
+    globalChainParams = CreateChainParams(network);
 }
 
 void UpdateNetworkUpgradeParameters(Consensus::UpgradeIndex idx, int nActivationHeight)
 {
-    regTestParams.UpdateNetworkUpgradeParameters(idx, nActivationHeight);
+    globalChainParams->UpdateNetworkUpgradeParameters(idx, nActivationHeight);
 }

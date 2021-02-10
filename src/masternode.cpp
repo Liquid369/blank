@@ -419,7 +419,7 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
         return error("%s : Got bad Masternode address signature", __func__);
     }
 
-    if (Params().NetworkID() == CBaseChainParams::MAIN) {
+    if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         if (addr.GetPort() != 51472) return false;
     } else if (addr.GetPort() == 51472)
         return false;

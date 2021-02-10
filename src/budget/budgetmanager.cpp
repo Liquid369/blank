@@ -59,7 +59,7 @@ uint256 CBudgetManager::SubmitFinalBudget()
      // Submit final budget during the last 2 days (2880 blocks) before payment for Mainnet, about 9 minutes (9 blocks) for Testnet
     int finalizationWindow = ((nBlocksPerCycle / 30) * 2);
 
-    if (Params().NetworkID() == CBaseChainParams::TESTNET) {
+    if (Params().IsTestnet()) {
         // NOTE: 9 blocks for testnet is way to short to have any masternode submit an automatic vote on the finalized(!) budget,
         //       because those votes are only submitted/relayed once every 56 blocks in CFinalizedBudget::AutoCheck()
 
@@ -878,7 +878,7 @@ void CBudgetManager::NewBlock(int height)
 
 int CBudgetManager::ProcessBudgetVoteSync(const uint256& nProp, CNode* pfrom)
 {
-    if (Params().NetworkID() == CBaseChainParams::MAIN) {
+    if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         if (nProp.IsNull()) {
             if (pfrom->HasFulfilledRequest("budgetvotesync")) {
                 LogPrint(BCLog::MNBUDGET, "mnvs - peer already asked me for the list\n");

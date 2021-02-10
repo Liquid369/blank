@@ -145,7 +145,7 @@ public:
         try {
             CDataStream ssKey(slKey.data(), slKey.data() + slKey.size(), SER_DISK, CLIENT_VERSION);
             ssKey >> key;
-        } catch(std::exception &e) {
+        } catch(const std::exception& e) {
             return false;
         }
         return true;
@@ -160,7 +160,7 @@ public:
         try {
             CDataStream ssValue(slValue.data(), slValue.data() + slValue.size(), SER_DISK, CLIENT_VERSION);
             ssValue >> value;
-        } catch(std::exception &e) {
+        } catch(const std::exception& e) {
             return false;
         }
         return true;
