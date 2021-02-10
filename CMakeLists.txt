@@ -117,6 +117,14 @@ else()
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endif()
+
+# error out if configure fails
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/config/pivx-config.h")
+else()
+    execute_process(COMMAND cat config.log WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+    message(FATAL_ERROR "configure script didn't finish properly see config.log output above")
+
+endif()
 add_definitions(-DHAVE_CONFIG_H)
 
 ExternalProject_Add (
