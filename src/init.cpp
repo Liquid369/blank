@@ -242,6 +242,11 @@ void PrepareShutdown()
 
     StopTorControl();
 
+    // After everything has been shut down, but before things get flushed, stop the
+    // CScheduler/checkqueue threadGroup
+    threadGroup.interrupt_all();
+    threadGroup.join_all();
+
     DumpMasternodes();
     DumpBudgets(g_budgetman);
     DumpMasternodePayments();
@@ -249,11 +254,6 @@ void PrepareShutdown()
     if (fDumpMempoolLater && gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
         DumpMempool();
     }
-
-    // After everything has been shut down, but before things get flushed, stop the
-    // CScheduler/checkqueue threadGroup
-    threadGroup.interrupt_all();
-    threadGroup.join_all();
 
     if (fFeeEstimatesInitialized) {
         fs::path est_path = GetDataDir() / FEE_ESTIMATES_FILENAME;
