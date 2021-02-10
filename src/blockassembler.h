@@ -100,4 +100,7 @@ int32_t ComputeBlockVersion(const Consensus::Params& consensusParams, int nHeigh
 // Visible for testing purposes only
 bool CreateCoinbaseTx(CBlock* pblock, const CScript& scriptPubKeyIn, CBlockIndex* pindexPrev);
 
+// Visible for testing purposes only
+uint256 CalculateSaplingTreeRoot(CBlock* pblock, int nHeight, const CChainParams& chainparams);
+
 #endif // PIVX_BLOCKASSEMBLER_H

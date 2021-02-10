@@ -125,6 +125,7 @@ set(BITCOIN_TESTS
         ${CMAKE_CURRENT_SOURCE_DIR}/timedata_tests.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/torcontrol_tests.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/transaction_tests.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/txvalidationcache_tests.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/uint256_tests.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/univalue_tests.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/util_tests.cpp
@@ -135,6 +136,7 @@ set(BITCOIN_TESTS
         ${CMAKE_SOURCE_DIR}/src/wallet/test/wallet_tests.cpp
         ${CMAKE_SOURCE_DIR}/src/wallet/test/crypto_tests.cpp
         ${CMAKE_SOURCE_DIR}/src/wallet/test/wallet_shielded_balances_tests.cpp
+        ${CMAKE_SOURCE_DIR}/src/wallet/test/wallet_sapling_transactions_validations_tests.cpp
         )
 
 set(test_test_pivx_SOURCES ${BITCOIN_TEST_SUITE} ${BITCOIN_TESTS} ${JSON_TEST_FILES})

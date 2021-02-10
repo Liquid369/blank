@@ -442,6 +442,12 @@ void BlockAssembler::addPriorityTxs()
 
 void BlockAssembler::appendSaplingTreeRoot()
 {
+    // Update header
+    pblock->hashFinalSaplingRoot = CalculateSaplingTreeRoot(pblock, nHeight, chainparams);
+}
+
+uint256 CalculateSaplingTreeRoot(CBlock* pblock, int nHeight, const CChainParams& chainparams)
+{
     if (NetworkUpgradeActive(nHeight, chainparams.GetConsensus(), Consensus::UPGRADE_V5_0)) {
         SaplingMerkleTree sapling_tree;
         assert(pcoinsTip->GetSaplingAnchorAt(pcoinsTip->GetBestAnchor(), sapling_tree));
@@ -454,9 +460,9 @@ void BlockAssembler::appendSaplingTreeRoot()
                 }
             }
         }
-        // Update header
-        pblock->hashFinalSaplingRoot = sapling_tree.root();
+        return sapling_tree.root();
     }
+    return UINT256_ZERO;
 }
 
 void IncrementExtraNonce(std::shared_ptr<CBlock>& pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce)

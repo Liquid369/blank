@@ -95,6 +95,7 @@ BITCOIN_TESTS =\
   test/timedata_tests.cpp \
   test/torcontrol_tests.cpp \
   test/transaction_tests.cpp \
+  test/txvalidationcache_tests.cpp \
   test/uint256_tests.cpp \
   test/univalue_tests.cpp \
   test/util_tests.cpp \
@@ -121,7 +122,8 @@ BITCOIN_TESTS += \
 SAPLING_TESTS +=\
   test/librust/sapling_rpc_wallet_tests.cpp \
   test/librust/sapling_wallet_tests.cpp \
-  wallet/test/wallet_shielded_balances_tests.cpp
+  wallet/test/wallet_shielded_balances_tests.cpp \
+  wallet/test/wallet_sapling_transactions_validations_tests.cpp
 endif
 
 test_test_pivx_SOURCES = $(BITCOIN_TEST_SUITE) $(BITCOIN_TESTS) $(SAPLING_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
