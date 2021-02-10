@@ -519,7 +519,7 @@
             <item>
              <widget class="QLabel" name="labelMessage">
               <property name="text">
-               <string>Amount of PIV and zPIV staked.</string>
+               <string>Amount of staking rewards received.</string>
               </property>
              </widget>
             </item>
