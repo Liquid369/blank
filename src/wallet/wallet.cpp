@@ -1144,7 +1144,7 @@ bool CWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const CWallet
 
 bool CWallet::AbandonTransaction(const uint256& hashTx)
 {
-    LOCK2(cs_main, cs_wallet);
+    LOCK(cs_wallet);
 
     CWalletDB walletdb(*dbw, "r+");
 
@@ -1590,7 +1590,6 @@ CAmount CWalletTx::GetCredit(const isminefilter& filter, bool recalculate) const
 
 CAmount CWalletTx::GetImmatureCredit(bool fUseCache, const isminefilter& filter) const
 {
-    LOCK(cs_main);
     if (IsInMainChainImmature()) {
         return GetCachableAmount(IMMATURE_CREDIT, filter, !fUseCache);
     }
@@ -1692,7 +1691,6 @@ CAmount CWalletTx::GetLockedCredit() const
 
 CAmount CWalletTx::GetImmatureWatchOnlyCredit(const bool& fUseCache) const
 {
-    LOCK(cs_main);
     if (IsInMainChainImmature()) {
         return GetCachableAmount(IMMATURE_CREDIT, ISMINE_WATCH_ONLY, !fUseCache);
     }
@@ -2059,7 +2057,7 @@ CAmount CWallet::loopTxsBalance(std::function<void(const uint256&, const CWallet
 {
     CAmount nTotal = 0;
     {
-        LOCK2(cs_main, cs_wallet);
+        LOCK(cs_wallet);
         for (const auto& it : mapWallet) {
             method(it.first, it.second, nTotal);
         }
@@ -2193,7 +2191,7 @@ CAmount CWallet::GetImmatureWatchOnlyBalance() const
 // trusted.
 CAmount CWallet::GetLegacyBalance(const isminefilter& filter, int minDepth) const
 {
-    LOCK2(cs_main, cs_wallet);
+    LOCK(cs_wallet);
 
     CAmount balance = 0;
     for (const auto& entry : mapWallet) {
@@ -2240,7 +2238,7 @@ CAmount CWallet::GetUnconfirmedShieldedBalance() const
 void CWallet::GetAvailableP2CSCoins(std::vector<COutput>& vCoins) const {
     vCoins.clear();
     {
-        LOCK2(cs_main, cs_wallet);
+        LOCK(cs_wallet);
         for (const auto& it : mapWallet) {
             const uint256& wtxid = it.first;
             const CWalletTx* pcoin = &it.second;
@@ -2277,7 +2275,6 @@ void CWallet::GetAvailableP2CSCoins(std::vector<COutput>& vCoins) const {
  */
 bool CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth)
 {
-    AssertLockHeld(cs_main);
     if (!CheckFinalTx(pcoin->tx)) return false;
     if (fOnlyConfirmed && !pcoin->IsTrusted()) return false;
     if (pcoin->GetBlocksToMaturity() > 0) return false;
@@ -2333,13 +2330,11 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& 
 
     // Check availability
     int nDepth = 0;
-    {
-        LOCK(cs_main);
-        if (!CheckTXAvailability(wtx, true, nDepth)) {
-            strError = "Not available collateral transaction";
-            return error("%s: tx %s not available", __func__, strTxHash);
-        }
+    if (!CheckTXAvailability(wtx, true, nDepth)) {
+        strError = "Not available collateral transaction";
+        return error("%s: tx %s not available", __func__, strTxHash);
     }
+
     // Skip spent coins
     if (IsSpent(txHash, nOutputIndex)) {
         strError = "Error: collateral already spent";
@@ -2435,7 +2430,7 @@ bool CWallet::AvailableCoins(std::vector<COutput>* pCoins,      // --> populates
         coinsFilter.fIncludeDelegated = true;
 
     {
-        LOCK2(cs_main, cs_wallet);
+        LOCK(cs_wallet);
         for (std::map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); ++it) {
             const uint256& wtxid = it->first;
             const CWalletTx* pcoin = &(*it).second;
@@ -4330,7 +4325,6 @@ int CWalletTx::GetDepthInMainChain() const
 
 int CWalletTx::GetBlocksToMaturity() const
 {
-    LOCK(cs_main);
     if (!(IsCoinBase() || IsCoinStake()))
         return 0;
     return std::max(0, (Params().GetConsensus().nCoinbaseMaturity + 1) - GetDepthInMainChain());
