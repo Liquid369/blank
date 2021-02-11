@@ -333,7 +333,7 @@ CBlockIndex* SimpleFakeMine(CWalletTx& wtx, CWallet &wallet, CBlockIndex* pprev 
     chainActive.SetTip(fakeIndex);
     BOOST_CHECK(chainActive.Contains(fakeIndex));
     WITH_LOCK(wallet.cs_wallet, wallet.SetLastBlockProcessed(fakeIndex));
-    wtx.m_confirm = CWalletTx::Confirmation(CWalletTx::Status::CONFIRMED, fakeIndex->GetBlockHash(), 0);
+    wtx.m_confirm = CWalletTx::Confirmation(CWalletTx::Status::CONFIRMED, fakeIndex->nHeight, fakeIndex->GetBlockHash(), 0);
     removeTxFromMempool(wtx);
     wtx.fInMempool = false;
     return fakeIndex;

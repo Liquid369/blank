@@ -307,7 +307,7 @@ FakeBlock SimpleFakeMine(CWalletTx& wtx, SaplingMerkleTree& currentTree, CWallet
     chainActive.SetTip(fakeBlock.pindex);
     BOOST_CHECK(chainActive.Contains(fakeBlock.pindex));
     WITH_LOCK(wallet.cs_wallet, wallet.SetLastBlockProcessed(fakeBlock.pindex));
-    wtx.m_confirm = CWalletTx::Confirmation(CWalletTx::Status::CONFIRMED, fakeBlock.pindex->GetBlockHash(), 0);
+    wtx.m_confirm = CWalletTx::Confirmation(CWalletTx::Status::CONFIRMED, fakeBlock.pindex->nHeight, fakeBlock.pindex->GetBlockHash(), 0);
     return fakeBlock;
 }
 
