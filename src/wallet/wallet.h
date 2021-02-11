@@ -369,9 +369,10 @@ public:
      * where they instead point to block hash and index of the deepest conflicting tx.
      */
     struct Confirmation {
-        Status status = UNCONFIRMED;
-        uint256 hashBlock = uint256();
-        int nIndex = 0;
+        Status status;
+        uint256 hashBlock;
+        int nIndex;
+        Confirmation(Status s = UNCONFIRMED, uint256 h = uint256(), int i = 0) : status(s), hashBlock(h), nIndex(i) {}
     };
 
     Confirmation m_confirm;
@@ -512,8 +513,6 @@ public:
     void RelayWalletTransaction(CConnman* connman);
     std::set<uint256> GetConflicts() const;
 
-    void SetConf(Status status, const uint256& blockHash, int posInBlock);
-
     /**
      * Return depth of transaction in blockchain:
      * <0  : conflicts with a transaction this deep in the blockchain
@@ -610,7 +609,7 @@ private:
     void ChainTipAdded(const CBlockIndex *pindex, const CBlock *pblock, SaplingMerkleTree saplingTree);
 
     /* Used by TransactionAddedToMemorypool/BlockConnected/Disconnected */
-    void SyncTransaction(const CTransactionRef& tx, CWalletTx::Status status, const CBlockIndex *pindexBlockConnected, int posInBlock);
+    void SyncTransaction(const CTransactionRef& tx, const CWalletTx::Confirmation& confirm);
 
     bool IsKeyUsed(const CPubKey& vchPubKey);
 
@@ -928,7 +927,7 @@ public:
     void TransactionAddedToMempool(const CTransactionRef& tx) override;
     void BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) override;
     void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, const uint256& blockHash, int nBlockHeight, int64_t blockTime) override;
-    bool AddToWalletIfInvolvingMe(const CTransactionRef& tx, CWalletTx::Status status, const uint256& blockHash, int posInBlock, bool fUpdate);
+    bool AddToWalletIfInvolvingMe(const CTransactionRef& tx, const CWalletTx::Confirmation& confirm, bool fUpdate);
     void EraseFromWallet(const uint256& hash);
 
     /**
