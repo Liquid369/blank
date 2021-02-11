@@ -522,7 +522,6 @@ public:
      */
     int GetDepthInMainChain(const CBlockIndex*& pindexRet) const;
     int GetDepthInMainChain() const;
-    bool IsInMainChain() const;
     bool IsInMainChainImmature() const;
     int GetBlocksToMaturity() const;
 

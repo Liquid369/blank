@@ -4337,11 +4337,6 @@ int CWalletTx::GetBlocksToMaturity() const
     return std::max(0, (Params().GetConsensus().nCoinbaseMaturity + 1) - GetDepthInMainChain());
 }
 
-bool CWalletTx::IsInMainChain() const
-{
-    return GetDepthInMainChain() > 0;
-}
-
 bool CWalletTx::IsInMainChainImmature() const
 {
     if (!IsCoinBase() && !IsCoinStake()) return false;
