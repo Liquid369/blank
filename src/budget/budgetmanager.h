@@ -66,6 +66,9 @@ public:
     void AddSeenProposalVote(const CBudgetVote& vote);
     void AddSeenFinalizedBudgetVote(const CFinalizedBudgetVote& vote);
 
+    void RemoveStaleVotesOnProposal(CBudgetProposal* prop);
+    void RemoveStaleVotesOnFinalBudget(CFinalizedBudget* fbud);
+
     // Use const operator std::map::at(), thus existence must be checked before calling.
     CDataStream GetProposalVoteSerialized(const uint256& voteHash) const;
     CDataStream GetProposalSerialized(const uint256& propHash) const;

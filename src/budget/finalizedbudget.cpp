@@ -163,18 +163,6 @@ bool CFinalizedBudget::CheckProposals(const std::map<uint256, CBudgetProposal>& 
     return true;
 }
 
-// Remove votes from masternodes which are not valid/existent anymore
-void CFinalizedBudget::CleanAndRemove()
-{
-    auto it = mapVotes.begin();
-
-    while (it != mapVotes.end()) {
-        CMasternode* pmn = mnodeman.Find(it->first);
-        (*it).second.SetValid(pmn != nullptr);
-        ++it;
-    }
-}
-
 CAmount CFinalizedBudget::GetTotalPayout() const
 {
     CAmount ret = 0;

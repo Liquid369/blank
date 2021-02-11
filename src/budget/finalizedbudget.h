@@ -12,6 +12,7 @@
 #include "streams.h"
 
 class CTxBudgetPayment;
+class CBudgetManager;
 
 static std::map<uint256, std::pair<uint256,int> > mapPayment_History;   // proposal hash --> (block hash, block height)
 
@@ -29,6 +30,8 @@ enum class TrxValidationStatus {
 class CFinalizedBudget
 {
 private:
+    friend class CBudgetManager;
+
     bool fAutoChecked; //If it matches what we see, we'll auto vote for it (masternode only)
     bool fValid;
     std::string strInvalid;
@@ -54,7 +57,6 @@ public:
     CFinalizedBudget();
     CFinalizedBudget(const std::string& name, int blockstart, const std::vector<CTxBudgetPayment>& vecBudgetPaymentsIn, const uint256& nfeetxhash);
 
-    void CleanAndRemove();
     bool AddOrUpdateVote(const CFinalizedBudgetVote& vote, std::string& strError);
     UniValue GetVotesObject() const;
     void SetSynced(bool synced);    // sets fSynced on votes (true only if valid)

@@ -15,6 +15,8 @@ static const CAmount BUDGET_FEE_TX_OLD = (50 * COIN);
 static const CAmount BUDGET_FEE_TX = (5 * COIN);
 static const int64_t BUDGET_VOTE_UPDATE_MIN = 60 * 60;
 
+class CBudgetManager;
+
 //
 // Budget Proposal : Contains the masternode votes for each budget
 //
@@ -22,6 +24,7 @@ static const int64_t BUDGET_VOTE_UPDATE_MIN = 60 * 60;
 class CBudgetProposal
 {
 private:
+    friend class CBudgetManager;
     CAmount nAllotted;
     bool fValid;
     std::string strInvalid;
@@ -89,8 +92,6 @@ public:
     CAmount GetAmount() const { return nAmount; }
     void SetAllotted(CAmount nAllottedIn) { nAllotted = nAllottedIn; }
     CAmount GetAllotted() const { return nAllotted; }
-
-    void CleanAndRemove();
 
     uint256 GetHash() const
     {

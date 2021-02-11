@@ -644,7 +644,7 @@ std::vector<CBudgetProposal*> CBudgetManager::GetAllProposals()
 
     for (auto& it: mapProposals) {
         CBudgetProposal* pbudgetProposal = &(it.second);
-        pbudgetProposal->CleanAndRemove();
+        RemoveStaleVotesOnProposal(pbudgetProposal);
         vBudgetProposalRet.push_back(pbudgetProposal);
     }
 
@@ -664,7 +664,7 @@ std::vector<CBudgetProposal> CBudgetManager::GetBudget()
     // ------- Sort budgets by net Yes Count
     std::vector<CBudgetProposal*> vBudgetPorposalsSort;
     for (auto& it: mapProposals) {
-        it.second.CleanAndRemove();
+        RemoveStaleVotesOnProposal(&it.second);
         vBudgetPorposalsSort.push_back(&it.second);
     }
     std::sort(vBudgetPorposalsSort.begin(), vBudgetPorposalsSort.end(), CBudgetProposal::PtrHigherYes);
@@ -774,6 +774,37 @@ void CBudgetManager::AddSeenFinalizedBudgetVote(const CFinalizedBudgetVote& vote
     mapSeenFinalizedBudgetVotes.emplace(vote.GetHash(), vote);
 }
 
+void CBudgetManager::RemoveStaleVotesOnProposal(CBudgetProposal* prop)
+{
+    AssertLockHeld(cs_proposals);
+    LogPrint(BCLog::MNBUDGET, "Cleaning proposal votes for %s. Before: YES=%d, NO=%d\n",
+            prop->GetName(), prop->GetYeas(), prop->GetNays());
+
+    auto it = prop->mapVotes.begin();
+    while (it != prop->mapVotes.end()) {
+        CMasternode* pmn = mnodeman.Find(it->first);
+        (*it).second.SetValid(pmn && pmn->IsEnabled());
+        ++it;
+    }
+    LogPrint(BCLog::MNBUDGET, "Cleaned proposal votes for %s. After: YES=%d, NO=%d\n",
+            prop->GetName(), prop->GetYeas(), prop->GetNays());
+}
+
+void CBudgetManager::RemoveStaleVotesOnFinalBudget(CFinalizedBudget* fbud)
+{
+    AssertLockHeld(cs_budgets);
+    LogPrint(BCLog::MNBUDGET, "Cleaning finalized budget votes for [%s (%s)]. Before: %d\n",
+            fbud->GetName(), fbud->GetProposalsStr(), fbud->GetVoteCount());
+
+    auto it = fbud->mapVotes.begin();
+    while (it != fbud->mapVotes.end()) {
+        CMasternode* pmn = mnodeman.Find(it->first);
+        (*it).second.SetValid(pmn && pmn->IsEnabled());
+        ++it;
+    }
+    LogPrint(BCLog::MNBUDGET, "Cleaned finalized budget votes for [%s (%s)]. After: %d\n",
+            fbud->GetName(), fbud->GetProposalsStr(), fbud->GetVoteCount());
+}
 
 CDataStream CBudgetManager::GetProposalVoteSerialized(const uint256& voteHash) const
 {
@@ -862,7 +893,7 @@ void CBudgetManager::NewBlock(int height)
         if (!fBudgetNewBlock) return;
         LogPrint(BCLog::MNBUDGET,"%s:  mapProposals cleanup - size: %d\n", __func__, mapProposals.size());
         for (auto& it: mapProposals) {
-            it.second.CleanAndRemove();
+            RemoveStaleVotesOnProposal(&it.second);
         }
     }
     {
@@ -870,7 +901,7 @@ void CBudgetManager::NewBlock(int height)
         if (!fBudgetNewBlock) return;
         LogPrint(BCLog::MNBUDGET,"%s:  mapFinalizedBudgets cleanup - size: %d\n", __func__, mapFinalizedBudgets.size());
         for (auto& it: mapFinalizedBudgets) {
-            it.second.CleanAndRemove();
+            RemoveStaleVotesOnFinalBudget(&it.second);
         }
     }
     LogPrint(BCLog::MNBUDGET,"%s:  PASSED\n", __func__);
