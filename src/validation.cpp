@@ -118,8 +118,6 @@ static void CheckBlockIndex();
 /** Constant stuff for coinbase transactions we create: */
 CScript COINBASE_FLAGS;
 
-const std::string strMessageMagic = "DarkNet Signed Message:\n";
-
 // Internal stuff
 namespace
 {

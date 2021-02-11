@@ -506,7 +506,7 @@ void CBudgetManager::VoteOnFinalizedBudgets()
     // Sign finalized budgets
     for (const uint256& budgetHash: vBudgetHashes) {
         CFinalizedBudgetVote vote(*(activeMasternode.vin), budgetHash);
-        if (!vote.Sign(keyMasternode, pubKeyMasternode)) {
+        if (!vote.Sign(keyMasternode, pubKeyMasternode.GetID())) {
             LogPrintf("%s: Failure to sign budget %s", __func__, budgetHash.ToString());
             continue;
         }
@@ -929,7 +929,7 @@ int CBudgetManager::ProcessProposalVote(CBudgetVote& vote, CNode* pfrom)
 
     AddSeenProposalVote(vote);
 
-    if (!vote.CheckSignature()) {
+    if (!vote.CheckSignature(pmn->pubKeyMasternode.GetID())) {
         if (masternodeSync.IsSynced()) {
             LogPrintf("mvote - signature invalid\n");
             return 20;
@@ -986,7 +986,7 @@ int CBudgetManager::ProcessFinalizedBudgetVote(CFinalizedBudgetVote& vote, CNode
 
     AddSeenFinalizedBudgetVote(vote);
 
-    if (!vote.CheckSignature()) {
+    if (!vote.CheckSignature(pmn->pubKeyMasternode.GetID())) {
         if (masternodeSync.IsSynced()) {
             LogPrint(BCLog::MNBUDGET, "fbvote - signature from masternode %s invalid\n", HexStr(pmn->pubKeyMasternode));
             return 20;

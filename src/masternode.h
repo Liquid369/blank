@@ -65,7 +65,7 @@ public:
     // override CSignedMessage functions
     uint256 GetSignatureHash() const override { return GetHash(); }
     std::string GetStrMessage() const override;
-    const CTxIn GetVin() const override  { return vin; };
+    const CTxIn GetVin() const { return vin; };
     bool IsNull() const { return blockHash.IsNull() || vin.prevout.IsNull(); }
 
     bool CheckAndUpdate(int& nDos, bool fRequireAvailable = true, bool fCheckSigTimeOnly = false);
@@ -119,8 +119,7 @@ public:
     // override CSignedMessage functions
     uint256 GetSignatureHash() const override;
     std::string GetStrMessage() const override;
-    const CTxIn GetVin() const override { return vin; };
-    const CPubKey GetPublicKey(std::string& strErrorRet) const override { return pubKeyCollateralAddress; }
+    const CTxIn GetVin() const { return vin; };
 
     void SetLastPing(const CMasternodePing& _lastPing) { WITH_LOCK(cs, lastPing = _lastPing;); }
 
