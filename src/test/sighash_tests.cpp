@@ -95,11 +95,7 @@ void static RandomScript(CScript &script) {
 
 void static RandomTransaction(CMutableTransaction &tx, bool fSingle) {
     bool isSapling = !(InsecureRand32() % 7);
-    if (isSapling) {
-        tx.nVersion = 2;
-    } else {
-        do tx.nVersion = InsecureRand32(); while (tx.nVersion == 2);
-    }
+    tx.nVersion = isSapling ? CTransaction::TxVersion::SAPLING : CTransaction::TxVersion::LEGACY;
     tx.vin.clear();
     tx.vout.clear();
     tx.sapData->vShieldedSpend.clear();
