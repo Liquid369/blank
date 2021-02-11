@@ -644,8 +644,22 @@ public:
     bool IsHDEnabled() const;
     //! Whether the wallet supports Sapling or not //
     bool IsSaplingUpgradeEnabled() const;
-    //! Return the height of the last processed block
-    int GetLastBlockHeight() const { return m_last_block_processed_height; }
+
+    /** Get last block processed height */
+    int GetLastBlockHeight() const EXCLUSIVE_LOCKS_REQUIRED(cs_wallet)
+    {
+        AssertLockHeld(cs_wallet);
+        assert(m_last_block_processed_height >= 0);
+        return m_last_block_processed_height;
+    };
+    /** Set last block processed height, currently only use in unit test */
+    void SetLastBlockProcessed(const CBlockIndex* pindex) EXCLUSIVE_LOCKS_REQUIRED(cs_wallet)
+    {
+        AssertLockHeld(cs_wallet);
+        m_last_block_processed_height = pindex->nHeight;
+        m_last_block_processed = pindex->GetBlockHash();
+        m_last_block_processed_time = pindex->GetBlockTime();
+    };
 
     /* SPKM Helpers */
     const CKeyingMaterial& GetEncryptionKey() const;

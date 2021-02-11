@@ -320,7 +320,7 @@ void removeTxFromMempool(CWalletTx& wtx)
 /**
  * Mimic block creation.
  */
-CBlockIndex* SimpleFakeMine(CWalletTx& wtx, CBlockIndex* pprev = nullptr)
+CBlockIndex* SimpleFakeMine(CWalletTx& wtx, CWallet &wallet, CBlockIndex* pprev = nullptr)
 {
     CBlock block;
     block.vtx.emplace_back(wtx.tx);
@@ -332,6 +332,7 @@ CBlockIndex* SimpleFakeMine(CWalletTx& wtx, CBlockIndex* pprev = nullptr)
     fakeIndex->phashBlock = &mapBlockIndex.find(block.GetHash())->first;
     chainActive.SetTip(fakeIndex);
     BOOST_CHECK(chainActive.Contains(fakeIndex));
+    WITH_LOCK(wallet.cs_wallet, wallet.SetLastBlockProcessed(fakeIndex));
     wtx.SetConf(CWalletTx::Status::CONFIRMED, fakeIndex->GetBlockHash(), 0);
     removeTxFromMempool(wtx);
     wtx.fInMempool = false;
@@ -442,7 +443,7 @@ BOOST_AUTO_TEST_CASE(cached_balances_tests)
     BOOST_CHECK_EQUAL(wallet.GetUnconfirmedBalance(), nCredit);
 
     // 2) Confirm tx and verify
-    SimpleFakeMine(wtxCredit);
+    SimpleFakeMine(wtxCredit, wallet);
     BOOST_CHECK_EQUAL(wallet.GetUnconfirmedBalance(), 0);
     BOOST_CHECK_EQUAL(wtxCredit.GetAvailableCredit(), nCredit);
 
