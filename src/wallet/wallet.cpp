@@ -1363,12 +1363,9 @@ void CWallet::BlockUntilSyncedToCurrentChain() {
         uint256 last_block_hash = WITH_LOCK(cs_wallet, return m_last_block_processed);
         LOCK(cs_main);
         const CBlockIndex* initialChainTip = chainActive.Tip();
-
-        if (!last_block_hash.IsNull()) {
-            auto it = mapBlockIndex.find(last_block_hash);
-            if (it == mapBlockIndex.end() || it->second->GetAncestor(initialChainTip->nHeight) == initialChainTip) {
+        if (!last_block_hash.IsNull() && initialChainTip &&
+            last_block_hash == initialChainTip->GetBlockHash()) {
                 return;
-            }
         }
     }
 
