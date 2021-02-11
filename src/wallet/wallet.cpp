@@ -1278,6 +1278,9 @@ void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const 
 {
     LOCK2(cs_main, cs_wallet);
 
+    m_last_block_processed = pindex->GetBlockHash();
+    m_last_block_processed_time = pindex->GetBlockTime();
+    m_last_block_processed_height = pindex->nHeight;
     for (size_t i = 0; i < pblock->vtx.size(); i++) {
         SyncTransaction(pblock->vtx[i], CWalletTx::Status::CONFIRMED, pindex, i);
         TransactionRemovedFromMempool(pblock->vtx[i]);
@@ -1301,11 +1304,9 @@ void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const 
 
     // Sapling: Update cached incremental witnesses
     ChainTipAdded(pindex, pblock.get(), oldSaplingTree);
-
-    m_last_block_processed = pindex;
 }
 
-void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, int nBlockHeight)
+void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, const uint256& blockHash, int nBlockHeight, int64_t blockTime)
 {
     LOCK2(cs_main, cs_wallet);
 
@@ -1313,6 +1314,9 @@ void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, int
     // be unconfirmed, whether or not the transaction is added back to the mempool.
     // User may have to call abandontransaction again. It may be addressed in the
     // future with a stickier abandoned state or even removing abandontransaction call.
+    m_last_block_processed_height = nBlockHeight - 1;
+    m_last_block_processed_time = blockTime;
+    m_last_block_processed = blockHash;
     for (const CTransactionRef& ptx : pblock->vtx) {
         SyncTransaction(ptx, CWalletTx::Status::UNCONFIRMED, nullptr, 0);
     }
@@ -1328,17 +1332,21 @@ void CWallet::BlockUntilSyncedToCurrentChain() {
     AssertLockNotHeld(cs_main);
     AssertLockNotHeld(cs_wallet);
 
-    if (m_last_block_processed) {
+    {
         // Skip the queue-draining stuff if we know we're caught up with
         // chainActive.Tip()...
         // We could also take cs_wallet here, and call m_last_block_processed
         // protected by cs_wallet instead of cs_main, but as long as we need
         // cs_main here anyway, its easier to just call it cs_main-protected.
+        uint256 last_block_hash = WITH_LOCK(cs_wallet, return m_last_block_processed);
         LOCK(cs_main);
         const CBlockIndex* initialChainTip = chainActive.Tip();
 
-        if (m_last_block_processed->GetAncestor(initialChainTip->nHeight) == initialChainTip) {
-            return;
+        if (!last_block_hash.IsNull()) {
+            auto it = mapBlockIndex.find(last_block_hash);
+            if (it == mapBlockIndex.end() || it->second->GetAncestor(initialChainTip->nHeight) == initialChainTip) {
+                return;
+            }
         }
     }
 
@@ -4191,7 +4199,15 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
             pindexRescan = FindForkInGlobalIndex(chainActive, locator);
     }
 
-    walletInstance->m_last_block_processed = chainActive.Tip();
+    {
+        LOCK(walletInstance->cs_wallet);
+        const CBlockIndex* tip = chainActive.Tip();
+        if (tip) {
+            walletInstance->m_last_block_processed = tip->GetBlockHash();
+            walletInstance->m_last_block_processed_height = tip->nHeight;
+            walletInstance->m_last_block_processed_time = tip->GetBlockTime();
+        }
+    }
     RegisterValidationInterface(walletInstance);
 
     if (chainActive.Tip() && chainActive.Tip() != pindexRescan) {

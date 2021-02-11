@@ -579,7 +579,15 @@ private:
      *
      * Protected by cs_main (see BlockUntilSyncedToCurrentChain)
      */
-    const CBlockIndex* m_last_block_processed{nullptr};
+    uint256 m_last_block_processed GUARDED_BY(cs_wallet) = UINT256_ZERO;
+
+    /* Height of last block processed is used by wallet to know depth of transactions
+    * without relying on Chain interface beyond asynchronous updates. For safety, we
+    * initialize it to -1. Height is a pointer on node's tip and doesn't imply
+    * that the wallet has scanned sequentially all blocks up to this one.
+    */
+    int m_last_block_processed_height GUARDED_BY(cs_wallet) = -1;
+    int64_t m_last_block_processed_time GUARDED_BY(cs_wallet) = 0;
 
     int64_t nNextResend;
     int64_t nLastResend;
@@ -636,6 +644,8 @@ public:
     bool IsHDEnabled() const;
     //! Whether the wallet supports Sapling or not //
     bool IsSaplingUpgradeEnabled() const;
+    //! Return the height of the last processed block
+    int GetLastBlockHeight() const { return m_last_block_processed_height; }
 
     /* SPKM Helpers */
     const CKeyingMaterial& GetEncryptionKey() const;
@@ -903,7 +913,7 @@ public:
     bool LoadToWallet(CWalletTx& wtxIn);
     void TransactionAddedToMempool(const CTransactionRef& tx) override;
     void BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted) override;
-    void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, int nBlockHeight) override;
+    void BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, const uint256& blockHash, int nBlockHeight, int64_t blockTime) override;
     bool AddToWalletIfInvolvingMe(const CTransactionRef& tx, CWalletTx::Status status, const uint256& blockHash, int posInBlock, bool fUpdate);
     void EraseFromWallet(const uint256& hash);
 

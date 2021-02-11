@@ -1913,7 +1913,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     UpdateTip(pindexDelete->pprev);
     // Let wallets know transactions went from 1-confirmed to
     // 0-confirmed or conflicted:
-    GetMainSignals().BlockDisconnected(pblock, pindexDelete->nHeight);
+    GetMainSignals().BlockDisconnected(pblock, pindexDelete->GetBlockHash(), pindexDelete->nHeight, pindexDelete->GetBlockTime());
 
     return true;
 }
