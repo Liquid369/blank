@@ -4321,24 +4321,11 @@ CWalletKey::CWalletKey(int64_t nExpires)
 
 int CWalletTx::GetDepthInMainChain() const
 {
+    assert(pwallet != nullptr);
+    AssertLockHeld(pwallet->cs_wallet);
     if (isUnconfirmed() || isAbandoned()) return 0;
-    AssertLockHeld(cs_main);
-    int nResult;
 
-    // Find the block it claims to be in
-    BlockMap::iterator mi = mapBlockIndex.find(m_confirm.hashBlock);
-    if (mi == mapBlockIndex.end()) {
-        nResult = 0;
-    } else {
-        CBlockIndex* pindex = (*mi).second;
-        if (!pindex || !chainActive.Contains(pindex)) {
-            nResult = 0;
-        } else {
-            nResult = (isConflicted() ? (-1) : 1) * (chainActive.Height() - pindex->nHeight + 1);
-        }
-    }
-
-    return nResult;
+    return (pwallet->GetLastBlockHeight() - m_confirm.block_height + 1) * (isConflicted() ? -1 : 1);
 }
 
 int CWalletTx::GetBlocksToMaturity() const
