@@ -977,7 +977,8 @@ bool CWallet::LoadToWallet(CWalletTx& wtxIn)
     // If tx hasn't been reorged out of chain while wallet being shutdown
     // change tx status to UNCONFIRMED and reset hashBlock/nIndex.
     if (!wtxIn.m_confirm.hashBlock.IsNull()) {
-        CBlockIndex* pindex = mapBlockIndex[wtxIn.m_confirm.hashBlock];
+        auto it = mapBlockIndex.find(wtxIn.m_confirm.hashBlock);
+        CBlockIndex* pindex = it == mapBlockIndex.end() ? nullptr : it->second;
         if (!pindex || !chainActive.Contains(pindex)) {
             wtxIn.setUnconfirmed();
             wtxIn.m_confirm.hashBlock = UINT256_ZERO;
