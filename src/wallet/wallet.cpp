@@ -2247,26 +2247,20 @@ void CWallet::GetAvailableP2CSCoins(std::vector<COutput>& vCoins) const {
 /**
  * Test if the transaction is spendable.
  */
-bool CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth, const CBlockIndex*& pindexRet)
+bool CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth)
 {
     AssertLockHeld(cs_main);
     if (!CheckFinalTx(pcoin->tx)) return false;
     if (fOnlyConfirmed && !pcoin->IsTrusted()) return false;
     if (pcoin->GetBlocksToMaturity() > 0) return false;
 
-    nDepth = pcoin->GetDepthInMainChain(pindexRet);
+    nDepth = pcoin->GetDepthInMainChain();
 
     // We should not consider coins which aren't at least in our mempool
     // It's possible for these to be conflicted via ancestors which we may never be able to detect
     if (nDepth == 0 && !pcoin->InMempool()) return false;
 
     return true;
-}
-
-bool CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth)
-{
-    const CBlockIndex* pindexRet = nullptr;
-    return CheckTXAvailability(pcoin, fOnlyConfirmed, nDepth, pindexRet);
 }
 
 bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& keyRet, std::string strTxHash, std::string strOutputIndex, std::string& strError)
@@ -2547,13 +2541,13 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
 
         // Check if the tx is selectable
         int nDepth;
-        const CBlockIndex* pindex = nullptr;
-        if (!CheckTXAvailability(pcoin, true, nDepth, pindex))
+        if (!CheckTXAvailability(pcoin, true, nDepth))
             continue;
 
         // Check min depth requirement for stake inputs
         if (nDepth < Params().GetConsensus().nStakeMinDepth) continue;
 
+        const CBlockIndex* pindex = nullptr;
         for (unsigned int index = 0; index < pcoin->tx->vout.size(); index++) {
 
             auto res = CheckOutputAvailability(
@@ -2571,6 +2565,7 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
 
             // found valid coin
             if (!pCoins) return true;
+            if (!pindex) pindex = mapBlockIndex.at(pcoin->m_confirm.hashBlock);
             pCoins->emplace_back(CStakeableOutput(pcoin, (int) index, nDepth, res.spendable, res.solvable, pindex));
         }
     }
@@ -4302,12 +4297,6 @@ void CWalletTx::SetConf(Status status, const uint256& blockHash, int posInBlock)
 
 int CWalletTx::GetDepthInMainChain() const
 {
-    const CBlockIndex* pindexRet = nullptr;
-    return GetDepthInMainChain(pindexRet);
-}
-
-int CWalletTx::GetDepthInMainChain(const CBlockIndex*& pindexRet) const
-{
     if (isUnconfirmed() || isAbandoned()) return 0;
     AssertLockHeld(cs_main);
     int nResult;
@@ -4321,7 +4310,6 @@ int CWalletTx::GetDepthInMainChain(const CBlockIndex*& pindexRet) const
         if (!pindex || !chainActive.Contains(pindex)) {
             nResult = 0;
         } else {
-            pindexRet = pindex;
             nResult = (isConflicted() ? (-1) : 1) * (chainActive.Height() - pindex->nHeight + 1);
         }
     }

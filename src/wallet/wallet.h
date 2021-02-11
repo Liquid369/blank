@@ -520,7 +520,6 @@ public:
      *  0  : in memory pool, waiting to be included in a block
      * >=1 : this many blocks deep in the main chain
      */
-    int GetDepthInMainChain(const CBlockIndex*& pindexRet) const;
     int GetDepthInMainChain() const;
     bool IsInMainChainImmature() const;
     int GetBlocksToMaturity() const;
