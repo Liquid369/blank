@@ -58,6 +58,7 @@ BASE_SCRIPTS= [
     # Longest test should go first, to favor running tests in parallel
     'wallet_basic.py',                          # ~ 498 sec
     'wallet_backup.py',                         # ~ 477 sec
+    'wallet_reorgsrestore.py',                  # ~ 391 sec
     'mempool_persist.py',                       # ~ 417 sec
 
     # vv Tests less than 5m vv
