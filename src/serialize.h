@@ -581,6 +581,7 @@ template<typename Stream, typename T, std::size_t N> void Unserialize(Stream& is
  * optional
  */
 template<typename T> unsigned int GetSerializeSize(const Optional<T> &item);
+template<typename T> unsigned int GetSerializeSizeNetwork(const Optional<T> &item);
 template<typename Stream, typename T> void Serialize(Stream& os, const Optional<T>& item);
 template<typename Stream, typename T> void Unserialize(Stream& is, Optional<T>& item);
 
@@ -605,6 +606,16 @@ unsigned int GetSerializeSize(const Optional<T> &item)
 {
     if (item) {
         return 1 + GetSerializeSize(*item);
+    } else {
+        return 1;
+    }
+}
+
+template<typename T>
+unsigned int GetSerializeSizeNetwork(const Optional<T> &item)
+{
+    if (item) {
+        return 1 + GetSerializeSize(*item, SER_NETWORK, 0);
     } else {
         return 1;
     }
