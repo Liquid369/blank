@@ -283,6 +283,10 @@ public:
             case CT_UPDATED:
                 // Miscellaneous updates -- nothing to do, status update will take care of this, and is only computed for
                 // visible transactions.
+                for (int i = lowerIndex; i < upperIndex; i++) {
+                    TransactionRecord *rec = &cachedWallet[i];
+                    rec->status.needsUpdate = true;
+                }
                 break;
         }
     }
@@ -297,7 +301,7 @@ public:
         return hasZcTxes;
     }
 
-    TransactionRecord* index(int idx)
+    TransactionRecord* index(int cur_block_num, const uint256& cur_block_hash, int idx)
     {
         if (idx >= 0 && idx < cachedWallet.size()) {
             TransactionRecord* rec = &cachedWallet[idx];
@@ -309,15 +313,12 @@ public:
             // If a status update is needed (blocks came in since last check),
             //  update the status of this transaction from the wallet. Otherwise,
             // simply re-use the cached status.
-            TRY_LOCK(cs_main, lockMain);
-            if (lockMain) {
-                TRY_LOCK(wallet->cs_wallet, lockWallet);
-                if (lockWallet && rec->statusUpdateNeeded()) {
-                    std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(rec->hash);
+            TRY_LOCK(wallet->cs_wallet, lockWallet);
+            if (lockWallet && rec->statusUpdateNeeded(cur_block_num)) {
+                std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(rec->hash);
 
-                    if (mi != wallet->mapWallet.end()) {
-                        rec->updateStatus(mi->second);
-                    }
+                if (mi != wallet->mapWallet.end()) {
+                    rec->updateStatus(mi->second, cur_block_num);
                 }
             }
             return rec;
@@ -809,7 +810,9 @@ QVariant TransactionTableModel::headerData(int section, Qt::Orientation orientat
 QModelIndex TransactionTableModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    TransactionRecord* data = priv->index(row);
+    TransactionRecord* data = priv->index(walletModel->getLastBlockProcessedNum(),
+                                          walletModel->getLastBlockProcessed(),
+                                          row);
     if (data) {
         return createIndex(row, column, data);
     }
