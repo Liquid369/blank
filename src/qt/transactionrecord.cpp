@@ -573,7 +573,7 @@ void TransactionRecord::updateStatus(const CWalletTx& wtx, int chainHeight)
     // Sort order, unrecorded transactions sort to the top
     status.sortKey = strprintf("%010d-%01d-%010u-%03d",
         wtx.m_confirm.block_height,
-        (wtx.IsCoinBase() ? 1 : 0),
+        ((wtx.IsCoinBase() || wtx.IsCoinStake()) ? 1 : 0),
         time,
         idx);
 
