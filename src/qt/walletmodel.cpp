@@ -7,6 +7,7 @@
 #include "walletmodel.h"
 
 #include "addresstablemodel.h"
+#include "qt/clientmodel.h"
 #include "guiconstants.h"
 #include "optionsmodel.h"
 #include "recentrequeststablemodel.h"
@@ -208,29 +209,33 @@ void WalletModel::pollBalanceChanged()
         waitLonger = 0;
     }
 
+    // Avoid recomputing wallet balances unless a tx changed or
+    // BlockTip notification was received.
+    if (!fForceCheckBalanceChanged && m_cached_best_block_hash == getLastBlockProcessed()) return;
+
     // Get required locks upfront. This avoids the GUI from getting stuck on
     // periodical polls if the core is holding the locks for a longer time -
     // for example, during a wallet rescan.
-    TRY_LOCK(cs_main, lockMain);
-    if (!lockMain)
-        return;
-    TRY_LOCK(wallet->cs_wallet, lockWallet);
-    if (!lockWallet)
-        return;
+    int chainHeight = m_client_model->getLastBlockProcessedHeight();
+    const uint256& blockHash = m_client_model->getLastBlockProcessed();
+    int64_t blockTime = m_client_model->getLastBlockProcessedTime();
 
     // Don't continue processing if the chain tip time is less than the first
     // key creation time as there is no need to iterate over the transaction
     // table model in this case.
-    auto tip = chainActive.Tip();
-    if (tip->GetBlockTime() < getCreationTime())
+    if (blockTime < getCreationTime())
         return;
 
-    int chainHeight = tip->nHeight;
+    TRY_LOCK(wallet->cs_wallet, lockWallet);
+    if (!lockWallet)
+        return;
+
     if (fForceCheckBalanceChanged || chainHeight != cachedNumBlocks) {
         fForceCheckBalanceChanged = false;
 
         // Balance and number of transactions might have changed
         cachedNumBlocks = chainHeight;
+        m_cached_best_block_hash = blockHash;
 
         checkBalanceChanged(walletWrapper.getBalances());
         if (transactionTableModel) {
@@ -1093,3 +1098,19 @@ Optional<QString> WalletModel::getShieldedAddressFromSpendDesc(const uint256& tx
     Optional<libzcash::SaplingPaymentAddress> opAddr = wallet->GetSaplingScriptPubKeyMan()->GetAddressFromInputIfPossible(txHash, index);
     return opAddr ? Optional<QString>(QString::fromStdString(KeyIO::EncodePaymentAddress(*opAddr))) : nullopt;
 }
+
+void WalletModel::setClientModel(ClientModel* client_model)
+{
+    m_client_model = client_model;
+}
+
+uint256 WalletModel::getLastBlockProcessed() const
+{
+    return m_client_model ? m_client_model->getLastBlockProcessed() : UINT256_ZERO;
+}
+
+int WalletModel::getLastBlockProcessedNum() const
+{
+    return m_client_model ? m_client_model->getLastBlockProcessedHeight() : 0;
+}
+

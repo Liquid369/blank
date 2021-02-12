@@ -486,6 +486,7 @@ void BitcoinApplication::initializeResult(int retval)
 #ifdef ENABLE_WALLET
         if (pwalletMain) {
             walletModel = new WalletModel(pwalletMain, optionsModel);
+            walletModel->setClientModel(clientModel);
 
             window->addWallet(PIVXGUI::DEFAULT_WALLET, walletModel);
             window->setCurrentWallet(PIVXGUI::DEFAULT_WALLET);

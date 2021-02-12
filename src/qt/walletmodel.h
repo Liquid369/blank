@@ -24,6 +24,7 @@
 #include <QObject>
 
 class AddressTableModel;
+class ClientModel;
 class OptionsModel;
 class RecentRequestsTableModel;
 class TransactionTableModel;
@@ -327,6 +328,12 @@ public:
     void loadReceiveRequests(std::vector<std::string>& vReceiveRequests);
     bool saveReceiveRequest(const std::string& sAddress, const int64_t nId, const std::string& sRequest);
 
+    ClientModel& clientModel() const { return *m_client_model; }
+    void setClientModel(ClientModel* client_model);
+
+    uint256 getLastBlockProcessed() const;
+    int getLastBlockProcessedNum() const;
+
 private:
     CWallet* wallet;
     // Simple Wallet interface.
@@ -341,6 +348,7 @@ private:
     std::unique_ptr<interfaces::Handler> m_handler_show_progress;
     std::unique_ptr<interfaces::Handler> m_handler_notify_watch_only_changed;
     std::unique_ptr<interfaces::Handler> m_handler_notify_walletbacked;
+    ClientModel* m_client_model;
 
     bool fHaveWatchOnly;
     bool fForceCheckBalanceChanged;
@@ -358,6 +366,7 @@ private:
 
     EncryptionStatus cachedEncryptionStatus;
     int cachedNumBlocks;
+    uint256 m_cached_best_block_hash;
 
     QTimer* pollTimer;
 

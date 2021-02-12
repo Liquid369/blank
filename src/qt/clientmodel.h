@@ -64,6 +64,9 @@ public:
     int getNumBlocks();
     QDateTime getLastBlockDate() const;
     QString getLastBlockHash() const;
+    uint256 getLastBlockProcessed() const;
+    int getLastBlockProcessedHeight() const;
+    int64_t getLastBlockProcessedTime() const;
     double getVerificationProgress() const;
 
     quint64 getTotalBytesRecv() const;
