@@ -2191,7 +2191,7 @@ CAmount CWallet::GetLegacyBalance(const isminefilter& filter, int minDepth) cons
         const CWalletTx& wtx = entry.second;
         bool fConflicted;
         const int depth = wtx.GetDepthAndMempool(fConflicted);
-        if (!IsFinalTx(wtx.tx) || wtx.GetBlocksToMaturity() > 0 || depth < 0 || fConflicted) {
+        if (!IsFinalTx(wtx.tx, m_last_block_processed_height) || wtx.GetBlocksToMaturity() > 0 || depth < 0 || fConflicted) {
             continue;
         }
 
@@ -3480,7 +3480,7 @@ std::map<CTxDestination, CAmount> CWallet::GetAddressBalances()
         for (std::pair<uint256, CWalletTx> walletEntry : mapWallet) {
             CWalletTx* pcoin = &walletEntry.second;
 
-            if (!IsFinalTx(pcoin->tx) || !pcoin->IsTrusted())
+            if (!IsFinalTx(pcoin->tx, m_last_block_processed_height) || !pcoin->IsTrusted())
                 continue;
 
             if (pcoin->IsCoinBase() && pcoin->GetBlocksToMaturity() > 0)
@@ -4626,9 +4626,12 @@ bool CWalletTx::IsTrusted() const
 
 bool CWalletTx::IsTrusted(int& nDepth, bool& fConflicted) const
 {
-    // Quick answer in most cases
-    if (!IsFinalTx(tx))
-        return false;
+    {
+        LOCK(pwallet->cs_wallet); // future: receive block height instead of locking here.
+        // Quick answer in most cases
+        if (!IsFinalTx(tx, pwallet->GetLastBlockHeight()))
+            return false;
+    }
 
     nDepth = GetDepthAndMempool(fConflicted);
 

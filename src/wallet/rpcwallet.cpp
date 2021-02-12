@@ -1895,6 +1895,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
+    int nBlockHeight = chainActive.Height();
 
     // pivx address
     CTxDestination address = DecodeDestination(request.params[0].get_str());
@@ -1913,7 +1914,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it) {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx, nBlockHeight))
             continue;
 
         for (const CTxOut& txout : wtx.tx->vout)
@@ -1955,6 +1956,7 @@ UniValue getreceivedbylabel(const JSONRPCRequest& request)
     pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
+    int nBlockHeight = chainActive.Height();
 
     // Minimum confirmations
     int nMinDepth = 1;
@@ -1969,7 +1971,7 @@ UniValue getreceivedbylabel(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it) {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx, nBlockHeight))
             continue;
 
         for (const CTxOut& txout : wtx.tx->vout) {
@@ -2302,7 +2304,7 @@ struct tallyitem {
     }
 };
 
-UniValue ListReceived(const UniValue& params, bool by_label)
+UniValue ListReceived(const UniValue& params, bool by_label, int nBlockHeight)
 {
     // Minimum confirmations
     int nMinDepth = 1;
@@ -2335,7 +2337,7 @@ UniValue ListReceived(const UniValue& params, bool by_label)
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it) {
         const CWalletTx& wtx = (*it).second;
 
-        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx, nBlockHeight))
             continue;
 
         int nDepth = wtx.GetDepthInMainChain();
@@ -2477,8 +2479,8 @@ UniValue listreceivedbyaddress(const JSONRPCRequest& request)
     pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
-
-    return ListReceived(request.params, false);
+    int nBlockHeight = chainActive.Height();
+    return ListReceived(request.params, false, nBlockHeight);
 }
 
 UniValue listreceivedbyshieldaddress(const JSONRPCRequest& request)
@@ -2613,8 +2615,8 @@ UniValue listreceivedbylabel(const JSONRPCRequest& request)
     pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
-
-    return ListReceived(request.params, true);
+    int nBlockHeight = chainActive.Height();
+    return ListReceived(request.params, true, nBlockHeight);
 }
 
 UniValue listcoldutxos(const JSONRPCRequest& request)
