@@ -197,7 +197,7 @@ void ThreadScriptCheck();
 /** Check whether we are doing an initial block download (synchronizing from disk or network) */
 bool IsInitialBlockDownload();
 /** Retrieve a transaction (from memory pool, or from disk, if possible) */
-bool GetTransaction(const uint256& hash, CTransaction& tx, uint256& hashBlock, bool fAllowSlow = false, CBlockIndex* blockIndex = nullptr);
+bool GetTransaction(const uint256& hash, CTransactionRef& tx, uint256& hashBlock, bool fAllowSlow = false, CBlockIndex* blockIndex = nullptr);
 /** Retrieve an output (from memory pool, or from disk, if possible) */
 bool GetOutput(const uint256& hash, unsigned int index, CValidationState& state, CTxOut& out);
 
@@ -254,7 +254,7 @@ bool CheckInputs(const CTransaction& tx, CValidationState& state, const CCoinsVi
 /** Apply the effects of this transaction on the UTXO set represented by view */
 void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, int nHeight);
 
-bool IsTransactionInChain(const uint256& txId, int& nHeightTx, CTransaction& tx);
+bool IsTransactionInChain(const uint256& txId, int& nHeightTx, CTransactionRef& tx);
 bool IsTransactionInChain(const uint256& txId, int& nHeightTx);
 bool IsBlockHashInChain(const uint256& hashBlock);
 bool ValidOutPoint(const COutPoint& out, int nHeight);

@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(sighash_from_data)
         std::string raw_tx, raw_script, sigHashHex;
         int nIn, nHashType;
         uint256 sh;
-        CTransaction tx;
+        CTransactionRef tx;
         CScript scriptCode = CScript();
 
         try {
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(sighash_from_data)
           stream >> tx;
 
           CValidationState state;
-          BOOST_CHECK_MESSAGE(CheckTransaction(tx, false, false, state), strTest);
+          BOOST_CHECK_MESSAGE(CheckTransaction(*tx, false, false, state), strTest);
           BOOST_CHECK(state.IsValid());
 
           std::vector<unsigned char> raw = ParseHex(raw_script);
@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE(sighash_from_data)
           continue;
         }
 
-        sh = SignatureHash(scriptCode, tx, nIn, nHashType, 0, tx.GetRequiredSigVersion());
+        sh = SignatureHash(scriptCode, *tx, nIn, nHashType, 0, tx->GetRequiredSigVersion());
         BOOST_CHECK_MESSAGE(sh.GetHex() == sigHashHex, strTest);
 
     }
@@ -386,17 +386,17 @@ BOOST_AUTO_TEST_CASE(malleated_tx)
             mtx = _tx;
             while (mtx.vout[i].nValue == tx.vout[i].nValue)
                 mtx.vout[i].nValue = InsecureRandRange(100000000);
-            tx2 = CTransaction(mtx);
+            CTransaction tx3 = CTransaction(mtx);
             for (int nIn = 0; nIn < (int) tx.vin.size(); nIn++) {
-                BOOST_CHECK(vsh[nIn] != SignatureHash(vScriptCode[nIn], tx2, nIn, SIGHASH_ALL, 0, tx2.GetRequiredSigVersion()));
+                BOOST_CHECK(vsh[nIn] != SignatureHash(vScriptCode[nIn], tx3, nIn, SIGHASH_ALL, 0, tx3.GetRequiredSigVersion()));
             }
 
             mtx = _tx;
             while (mtx.vout[i].scriptPubKey == tx.vout[i].scriptPubKey)
                 RandomScript(mtx.vout[i].scriptPubKey);
-            tx2 = CTransaction(mtx);
+            CTransaction tx4 = CTransaction(mtx);
             for (int nIn = 0; nIn < (int) tx.vin.size(); nIn++) {
-                BOOST_CHECK(vsh[nIn] != SignatureHash(vScriptCode[nIn], tx2, nIn, SIGHASH_ALL, 0, tx2.GetRequiredSigVersion()));
+                BOOST_CHECK(vsh[nIn] != SignatureHash(vScriptCode[nIn], tx4, nIn, SIGHASH_ALL, 0, tx4.GetRequiredSigVersion()));
             }
         }
 

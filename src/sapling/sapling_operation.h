@@ -104,7 +104,8 @@ public:
     SaplingOperation* setCoinControl(const CCoinControl* _coinControl) { coinControl = _coinControl; return this; }
 
     CAmount getFee() { return fee; }
-    CTransaction getFinalTx() { return finalTx; }
+    CTransaction getFinalTx() { return *finalTx; }
+    CTransactionRef getFinalTxRef() { return finalTx; }
 
 private:
     FromAddress fromAddress;
@@ -124,7 +125,7 @@ private:
 
     // Builder
     TransactionBuilder txBuilder;
-    CTransaction finalTx;
+    CTransactionRef finalTx;
 
     OperationResult loadUtxos(TxValues& values);
     OperationResult loadUtxos(TxValues& txValues, const std::vector<COutput>& selectedUTXO, const CAmount selectedUTXOAmount);

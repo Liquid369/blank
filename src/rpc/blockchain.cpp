@@ -1351,11 +1351,11 @@ UniValue getblockindexstats(const JSONRPCRequest& request) {
             // Transparent inputs
             for (unsigned int j = 0; j < tx.vin.size(); j++) {
                 COutPoint prevout = tx.vin[j].prevout;
-                CTransaction txPrev;
+                CTransactionRef txPrev;
                 uint256 hashBlock;
                 if(!GetTransaction(prevout.hash, txPrev, hashBlock, true))
                     throw JSONRPCError(RPC_DATABASE_ERROR, "failed to read tx from disk");
-                nValueIn += txPrev.vout[prevout.n].nValue;
+                nValueIn += txPrev->vout[prevout.n].nValue;
             }
             // Shield inputs
             nValueIn += tx.GetShieldedValueIn();

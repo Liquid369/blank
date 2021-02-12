@@ -221,7 +221,7 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
         in_active_chain = chainActive.Contains(blockindex);
     }
 
-    CTransaction tx;
+    CTransactionRef tx;
     uint256 hash_block;
     if (!GetTransaction(hash, tx, hash_block, true, blockindex)) {
         std::string errmsg;
@@ -239,12 +239,12 @@ UniValue getrawtransaction(const JSONRPCRequest& request)
     }
 
     if (!fVerbose) {
-        return EncodeHexTx(tx);
+        return EncodeHexTx(*tx);
     }
 
     UniValue result(UniValue::VOBJ);
     if (blockindex) result.pushKV("in_active_chain", in_active_chain);
-    TxToJSON(tx, hash_block, result);
+    TxToJSON(*tx, hash_block, result);
     return result;
 }
 
@@ -406,13 +406,13 @@ UniValue decoderawtransaction(const JSONRPCRequest& request)
     LOCK(cs_main);
     RPCTypeCheck(request.params, {UniValue::VSTR});
 
-    CTransaction tx;
+    CMutableTransaction mtx;
 
-    if (!DecodeHexTx(tx, request.params[0].get_str()))
+    if (!DecodeHexTx(mtx, request.params[0].get_str()))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 
     UniValue result(UniValue::VOBJ);
-    TxToJSON(tx, UINT256_ZERO, result);
+    TxToJSON(CTransaction(std::move(mtx)), UINT256_ZERO, result);
 
     return result;
 }
@@ -563,7 +563,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
     }
 
     // parse hex string from parameter
-    CTransaction origTx;
+    CMutableTransaction origTx;
     if (!DecodeHexTx(origTx, request.params[0].get_str()))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
 
@@ -678,11 +678,11 @@ UniValue signrawtransaction(const JSONRPCRequest& request)
     if (Params().IsRegTestNet()) {
         for (const CTxIn &txbase : mergedTx.vin)
         {
-            CTransaction tempTx;
+            CTransactionRef tempTx;
             uint256 hashBlock;
             if (GetTransaction(txbase.prevout.hash, tempTx, hashBlock, true)) {
                 // Copy results into mapPrevOut:
-                mapPrevOut[txbase.prevout] = std::make_pair(tempTx.vout[txbase.prevout.n].scriptPubKey, tempTx.vout[txbase.prevout.n].nValue);
+                mapPrevOut[txbase.prevout] = std::make_pair(tempTx->vout[txbase.prevout.n].scriptPubKey, tempTx->vout[txbase.prevout.n].nValue);
             }
         }
     }
@@ -902,10 +902,10 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
     RPCTypeCheck(request.params, {UniValue::VSTR, UniValue::VBOOL});
 
     // parse hex string from parameter
-    CTransaction tx;
-    if (!DecodeHexTx(tx, request.params[0].get_str()))
+    CMutableTransaction mtx;
+    if (!DecodeHexTx(mtx, request.params[0].get_str()))
         throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "TX decode failed");
-    uint256 hashTx = tx.GetHash();
+    const uint256& hashTx = mtx.GetHash();
 
     bool fOverrideFees = false;
     if (request.params.size() > 1)
@@ -914,7 +914,7 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
     AssertLockNotHeld(cs_main);
     CCoinsViewCache& view = *pcoinsTip;
     bool fHaveChain = false;
-    for (size_t o = 0; !fHaveChain && o < tx.vout.size(); o++) {
+    for (size_t o = 0; !fHaveChain && o < mtx.vout.size(); o++) {
         const Coin& existingCoin = view.AccessCoin(COutPoint(hashTx, o));
         fHaveChain = !existingCoin.IsSpent();
     }
@@ -924,7 +924,7 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
         bool fMissingInputs;
         {
             LOCK(cs_main);
-            if (!AcceptToMemoryPool(mempool, state, MakeTransactionRef(std::move(tx)), true, &fMissingInputs, false, !fOverrideFees)) {
+            if (!AcceptToMemoryPool(mempool, state, MakeTransactionRef(std::move(mtx)), true, &fMissingInputs, false, !fOverrideFees)) {
                 if (state.IsInvalid()) {
                     throw JSONRPCError(RPC_TRANSACTION_REJECTED, strprintf("%i: %s", state.GetRejectCode(), state.GetRejectReason()));
                 } else {

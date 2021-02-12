@@ -130,8 +130,7 @@ BOOST_AUTO_TEST_CASE(tx_valid)
 
             std::string transaction = test[1].get_str();
             CDataStream stream(ParseHex(transaction), SER_NETWORK, PROTOCOL_VERSION);
-            CTransaction tx;
-            stream >> tx;
+            CTransaction tx(deserialize, stream);
 
             CValidationState state;
             BOOST_CHECK_MESSAGE(CheckTransaction(tx, false, false, state), strTest);
@@ -207,8 +206,7 @@ BOOST_AUTO_TEST_CASE(tx_invalid)
 
             std::string transaction = test[1].get_str();
             CDataStream stream(ParseHex(transaction), SER_NETWORK, PROTOCOL_VERSION);
-            CTransaction tx;
-            stream >> tx;
+            CTransaction tx(deserialize, stream);
 
             CValidationState state;
             fValid = CheckTransaction(tx, false, false, state) && state.IsValid();
@@ -362,10 +360,9 @@ BOOST_AUTO_TEST_CASE(test_big_witness_transaction) {
         assert(hashSigned);
     }
 
-    CTransaction tx;
     CDataStream ssout(SER_NETWORK, PROTOCOL_VERSION);
     ssout << mtx;
-    ssout >> tx;
+    CTransaction tx(deserialize, ssout);
 
     // check all inputs concurrently, with the cache
     PrecomputedTransactionData precomTxData(tx);

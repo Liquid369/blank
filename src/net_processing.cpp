@@ -1395,9 +1395,8 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
     else if (strCommand == NetMsgType::TX) {
         std::vector<uint256> vWorkQueue;
         std::vector<uint256> vEraseQueue;
-        CTransactionRef ptx;
-        vRecv >> ptx;
-        const CTransaction& tx = *ptx;
+        CTransaction tx(deserialize, vRecv);
+        CTransactionRef ptx = MakeTransactionRef(tx);
 
         CInv inv(MSG_TX, tx.GetHash());
         pfrom->AddInventoryKnown(inv);

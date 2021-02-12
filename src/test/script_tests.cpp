@@ -15,15 +15,12 @@
 #include "script/script.h"
 #include "script/script_error.h"
 #include "script/sign.h"
-#include "util.h"
 
 #if defined(HAVE_CONSENSUS_LIB)
 #include "script/bitcoinconsensus.h"
 #endif
 
 #include <boost/algorithm/string/classification.hpp>
-#include <boost/algorithm/string/replace.hpp>
-#include <boost/algorithm/string/split.hpp>
 #include <boost/test/unit_test.hpp>
 
 #include <univalue.h>
@@ -183,7 +180,7 @@ class TestBuilder
 {
 private:
     CScript scriptPubKey;
-    CTransaction creditTx;
+    CTransactionRef creditTx;
     CMutableTransaction spendTx;
     bool havePush;
     std::vector<unsigned char> push;
@@ -209,11 +206,11 @@ public:
     TestBuilder(const CScript& redeemScript, const std::string& comment_, int flags_, bool P2SH = false) : scriptPubKey(redeemScript), havePush(false), comment(comment_), flags(flags_)
     {
         if (P2SH) {
-            creditTx = BuildCreditingTransaction(CScript() << OP_HASH160 << ToByteVector(CScriptID(redeemScript)) << OP_EQUAL);
+            creditTx = MakeTransactionRef(BuildCreditingTransaction(CScript() << OP_HASH160 << ToByteVector(CScriptID(redeemScript)) << OP_EQUAL));
         } else {
-            creditTx = BuildCreditingTransaction(redeemScript);
+            creditTx = MakeTransactionRef(BuildCreditingTransaction(redeemScript));
         }
-        spendTx = BuildSpendingTransaction(CScript(), creditTx);
+        spendTx = BuildSpendingTransaction(CScript(), *creditTx);
     }
 
     TestBuilder& Add(const CScript& script)
@@ -290,7 +287,7 @@ public:
     {
         TestBuilder copy = *this; // Make a copy so we can rollback the push.
         DoPush();
-        DoTest(creditTx.vout[0].scriptPubKey, spendTx.vin[0].scriptSig, flags, expect, comment);
+        DoTest(creditTx->vout[0].scriptPubKey, spendTx.vin[0].scriptSig, flags, expect, comment);
         *this = copy;
         return *this;
     }
@@ -300,7 +297,7 @@ public:
         DoPush();
         UniValue array(UniValue::VARR);
         array.push_back(FormatScript(spendTx.vin[0].scriptSig));
-        array.push_back(FormatScript(creditTx.vout[0].scriptPubKey));
+        array.push_back(FormatScript(creditTx->vout[0].scriptPubKey));
         array.push_back(FormatScriptFlags(flags));
         array.push_back(comment);
         return array;
@@ -313,7 +310,7 @@ public:
 
     const CScript& GetScriptPubKey()
     {
-        return creditTx.vout[0].scriptPubKey;
+        return creditTx->vout[0].scriptPubKey;
     }
 };
 }

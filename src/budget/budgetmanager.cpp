@@ -1224,23 +1224,23 @@ bool CheckCollateralConfs(const uint256& nTxCollateralHash, int nCurrentHeight, 
 
 bool CheckCollateral(const uint256& nTxCollateralHash, const uint256& nExpectedHash, std::string& strError, int64_t& nTime, int nCurrentHeight, bool fBudgetFinalization)
 {
-    CTransaction txCollateral;
+    CTransactionRef txCollateral;
     uint256 nBlockHash;
     if (!GetTransaction(nTxCollateralHash, txCollateral, nBlockHash, true)) {
         strError = strprintf("Can't find collateral tx %s", nTxCollateralHash.ToString());
         return false;
     }
 
-    if (txCollateral.vout.size() < 1) return false;
-    if (txCollateral.nLockTime != 0) return false;
+    if (txCollateral->vout.size() < 1) return false;
+    if (txCollateral->nLockTime != 0) return false;
 
     CScript findScript;
     findScript << OP_RETURN << ToByteVector(nExpectedHash);
 
     bool foundOpReturn = false;
-    for (const CTxOut &o : txCollateral.vout) {
+    for (const CTxOut &o : txCollateral->vout) {
         if (!o.scriptPubKey.IsNormalPaymentScript() && !o.scriptPubKey.IsUnspendable()) {
-            strError = strprintf("Invalid Script %s", txCollateral.ToString());
+            strError = strprintf("Invalid Script %s", txCollateral->ToString());
             return false;
         }
         if (fBudgetFinalization) {
@@ -1267,7 +1267,7 @@ bool CheckCollateral(const uint256& nTxCollateralHash, const uint256& nExpectedH
     }
 
     if (!foundOpReturn) {
-        strError = strprintf("Couldn't find opReturn %s in %s", nExpectedHash.ToString(), txCollateral.ToString());
+        strError = strprintf("Couldn't find opReturn %s in %s", nExpectedHash.ToString(), txCollateral->ToString());
         return false;
     }
 

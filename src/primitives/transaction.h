@@ -221,18 +221,35 @@ struct CMutableTransaction;
  * - Optional<SaplingTxData> sapData
  * - Optional<std::vector<uint8_t>> extraPayload
  */
-template<typename Stream, typename Operation, typename TxType>
-inline void SerializeTransaction(TxType& tx, Stream& s, Operation ser_action) {
-    READWRITE(*const_cast<int16_t*>(&tx.nVersion));
-    READWRITE(*const_cast<int16_t*>(&tx.nType));
-    READWRITE(*const_cast<std::vector<CTxIn>*>(&tx.vin));
-    READWRITE(*const_cast<std::vector<CTxOut>*>(&tx.vout));
-    READWRITE(*const_cast<uint32_t*>(&tx.nLockTime));
+template<typename Stream, typename TxType>
+inline void UnserializeTransaction(TxType& tx, Stream& s) {
+    tx.vin.clear();
+    tx.vout.clear();
 
+    s >> tx.nVersion;
+    s >> tx.nType;
+    s >> tx.vin;
+    s >> tx.vout;
+    s >> tx.nLockTime;
     if (tx.isSaplingVersion()) {
-        READWRITE(*const_cast<Optional<SaplingTxData>*>(&tx.sapData));
+        s >> tx.sapData;
         if (!tx.IsNormalType()) {
-            READWRITE(*const_cast<Optional<std::vector<uint8_t>>*>(&tx.extraPayload));
+            s >> tx.extraPayload;
+        }
+    }
+}
+
+template<typename Stream, typename TxType>
+inline void SerializeTransaction(const TxType& tx, Stream& s) {
+    s << tx.nVersion;
+    s << tx.nType;
+    s << tx.vin;
+    s << tx.vout;
+    s << tx.nLockTime;
+    if (tx.isSaplingVersion()) {
+        s << tx.sapData;
+        if (!tx.IsNormalType()) {
+            s << tx.extraPayload;
         }
     }
 }
@@ -242,11 +259,6 @@ inline void SerializeTransaction(TxType& tx, Stream& s, Operation ser_action) {
  */
 class CTransaction
 {
-private:
-    /** Memory only. */
-    const uint256 hash;
-    void UpdateHash() const;
-
 public:
     /** Transaction Versions */
     enum TxVersion: int16_t {
@@ -283,18 +295,14 @@ public:
     CTransaction(CMutableTransaction &&tx);
 
     CTransaction(const CTransaction& tx) = default;
-    CTransaction& operator=(const CTransaction& tx);
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        SerializeTransaction(*this, s, ser_action);
-        if (ser_action.ForRead()) {
-            UpdateHash();
-        }
+    template <typename Stream>
+    inline void Serialize(Stream& s) const {
+        SerializeTransaction(*this, s);
     }
 
+    /** This deserializing constructor is provided instead of an Unserialize method.
+      *  Unserialize is not possible, since it would require overwriting const fields. */
     template <typename Stream>
     CTransaction(deserialize_type, Stream& s) : CTransaction(CMutableTransaction(deserialize, s)) {}
 
@@ -400,6 +408,11 @@ public:
     std::string ToString() const;
 
     size_t DynamicMemoryUsage() const;
+
+private:
+    /** Memory only. */
+    const uint256 hash;
+    uint256 ComputeHash() const;
 };
 
 /** A mutable version of CTransaction. */
@@ -416,11 +429,14 @@ struct CMutableTransaction
     CMutableTransaction();
     CMutableTransaction(const CTransaction& tx);
 
-    ADD_SERIALIZE_METHODS;
+    template <typename Stream>
+    inline void Serialize(Stream& s) const {
+        SerializeTransaction(*this, s);
+    }
 
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        SerializeTransaction(*this, s, ser_action);
+    template <typename Stream>
+    inline void Unserialize(Stream& s) {
+        UnserializeTransaction(*this, s);
     }
 
     template <typename Stream>
