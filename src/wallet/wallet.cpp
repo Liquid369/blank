@@ -1318,6 +1318,12 @@ void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const 
 
     // Sapling: Update cached incremental witnesses
     ChainTipAdded(pindex, pblock.get(), oldSaplingTree);
+
+    // Auto-combine functionality
+    // If turned on Auto Combine will scan wallet for dust to combine
+    if (fCombineDust) {
+        AutoCombineDust(g_connman.get());
+    }
 }
 
 void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, const uint256& blockHash, int nBlockHeight, int64_t blockTime)
