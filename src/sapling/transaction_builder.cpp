@@ -13,11 +13,14 @@
 
 #include <librustzcash.h>
 
-SpendDescriptionInfo::SpendDescriptionInfo(
-    libzcash::SaplingExpandedSpendingKey expsk,
-    libzcash::SaplingNote note,
-    uint256 anchor,
-    SaplingWitness witness) : expsk(expsk), note(note), anchor(anchor), witness(witness)
+SpendDescriptionInfo::SpendDescriptionInfo(const libzcash::SaplingExpandedSpendingKey& _expsk,
+                                           const libzcash::SaplingNote& _note,
+                                           const uint256& _anchor,
+                                           const SaplingWitness& _witness):
+   expsk(_expsk),
+   note(_note),
+   anchor(_anchor),
+   witness(_witness)
 {
     librustzcash_sapling_generate_r(alpha.begin());
 }
@@ -158,10 +161,10 @@ void TransactionBuilder::Clear()
 }
 
 void TransactionBuilder::AddSaplingSpend(
-    libzcash::SaplingExpandedSpendingKey expsk,
-    libzcash::SaplingNote note,
-    uint256 anchor,
-    SaplingWitness witness)
+    const libzcash::SaplingExpandedSpendingKey& expsk,
+    const libzcash::SaplingNote& note,
+    const uint256& anchor,
+    const SaplingWitness& witness)
 {
     // Sanity check: cannot add Sapling spend to pre-Sapling transaction
     if (mtx.nVersion < CTransaction::TxVersion::SAPLING) {
@@ -178,10 +181,10 @@ void TransactionBuilder::AddSaplingSpend(
 }
 
 void TransactionBuilder::AddSaplingOutput(
-    uint256 ovk,
-    libzcash::SaplingPaymentAddress to,
+    const uint256& ovk,
+    const libzcash::SaplingPaymentAddress& to,
     CAmount value,
-    std::array<unsigned char, ZC_MEMO_SIZE> memo)
+    const std::array<unsigned char, ZC_MEMO_SIZE>& memo)
 {
     // Sanity check: cannot add Sapling output to pre-Sapling transaction
     if (mtx.nVersion < CTransaction::TxVersion::SAPLING) {
@@ -193,7 +196,7 @@ void TransactionBuilder::AddSaplingOutput(
     mtx.sapData->valueBalance -= value;
 }
 
-void TransactionBuilder::AddTransparentInput(const COutPoint& utxo, const CScript& scriptPubKey, const CAmount& value)
+void TransactionBuilder::AddTransparentInput(const COutPoint& utxo, const CScript& scriptPubKey, CAmount value)
 {
     if (keystore == nullptr) {
         throw std::runtime_error("Cannot add transparent inputs to a TransactionBuilder without a keystore");
@@ -212,7 +215,7 @@ void TransactionBuilder::AddTransparentOutput(const CTxOut& out)
     mtx.vout.push_back(out);
 }
 
-void TransactionBuilder::AddTransparentOutput(const CTxDestination& dest, const CAmount& value)
+void TransactionBuilder::AddTransparentOutput(const CTxDestination& dest, CAmount value)
 {
     AddTransparentOutput(CTxOut(value, GetScriptForDestination(dest)));
 }
@@ -222,13 +225,13 @@ void TransactionBuilder::SetFee(CAmount _fee)
     this->fee = _fee;
 }
 
-void TransactionBuilder::SendChangeTo(libzcash::SaplingPaymentAddress changeAddr, uint256 ovk)
+void TransactionBuilder::SendChangeTo(const libzcash::SaplingPaymentAddress& changeAddr, const uint256& ovk)
 {
     saplingChangeAddr = std::make_pair(ovk, changeAddr);
     tChangeAddr = nullopt;
 }
 
-void TransactionBuilder::SendChangeTo(CTxDestination& changeAddr)
+void TransactionBuilder::SendChangeTo(const CTxDestination& changeAddr)
 {
     if (!IsValidDestination(changeAddr)) {
         throw std::runtime_error("Invalid change address, not a valid taddr.");
