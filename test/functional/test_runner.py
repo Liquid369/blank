@@ -58,6 +58,7 @@ BASE_SCRIPTS= [
     # Longest test should go first, to favor running tests in parallel
     'wallet_basic.py',                          # ~ 498 sec
     'wallet_backup.py',                         # ~ 477 sec
+    'mempool_persist.py',                       # ~ 417 sec
 
     # vv Tests less than 5m vv
     'wallet_hd.py',                             # ~ 300 sec
@@ -89,7 +90,6 @@ BASE_SCRIPTS= [
     'feature_blockhashcache.py',                # ~ 100 sec
     'wallet_listtransactions.py',               # ~ 97 sec
     'mempool_reorg.py',                         # ~ 92 sec
-    'mempool_persist.py',
     'wallet_encryption.py',                     # ~ 89 sec
     'wallet_keypool.py',                        # ~ 88 sec
     'wallet_dump.py',                           # ~ 83 sec
@@ -111,6 +111,7 @@ BASE_SCRIPTS= [
     'rpc_blockchain.py',                        # ~ 50 sec
     'wallet_disable.py',                        # ~ 50 sec
     'mining_v5_upgrade.py',                     # ~ 48 sec
+    'p2p_mempool.py',                           # ~ 46 sec
     'feature_help.py',                          # ~ 30 sec
 
     # Don't append tests at the end to avoid merge conflicts
@@ -120,7 +121,6 @@ BASE_SCRIPTS= [
     # 'mempool_limit.py', # We currently don't limit our mempool_reorg
     # 'rpc_getchaintips.py',
     # 'rpc_users.py',
-    # 'p2p_mempool.py',
     # 'mining_prioritisetransaction.py',
     # 'p2p_invalid_block.py',
     # 'p2p_invalid_tx.py',
