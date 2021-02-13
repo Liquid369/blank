@@ -3085,8 +3085,8 @@ bool CWallet::CreateCoinStake(
                              outPoint,
                              it->pindex);
 
-        //new block came in, move on
-        if (WITH_LOCK(cs_main, return chainActive.Height()) != pindexPrev->nHeight) return false;
+        // New block came in, move on
+        if (WITH_LOCK(cs_wallet, return m_last_block_processed_height) != pindexPrev->nHeight) return false;
 
         // Make sure the wallet is unlocked and shutdown hasn't been requested
         if (IsLocked() || ShutdownRequested()) return false;
