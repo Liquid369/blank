@@ -2448,6 +2448,11 @@ bool CWallet::AvailableCoins(std::vector<COutput>* pCoins,      // --> populates
             for (unsigned int i = 0; i < pcoin->tx->vout.size(); i++) {
                 const auto& output = pcoin->tx->vout[i];
 
+                // Filter by value if needed
+                if (coinsFilter.nMaxOutValue > 0 && output.nValue > coinsFilter.nMaxOutValue) {
+                    continue;
+                }
+
                 // Filter by specific destinations if needed
                 if (coinsFilter.onlyFilteredDest && !coinsFilter.onlyFilteredDest->empty()) {
                     CTxDestination address;
@@ -2486,26 +2491,27 @@ std::map<CTxDestination , std::vector<COutput> > CWallet::AvailableCoinsByAddres
     coinFilter.fIncludeColdStaking = true;
     coinFilter.fOnlyConfirmed = fConfirmed;
     coinFilter.fIncludeColdStaking = fIncludeColdStaking;
+    coinFilter.nMaxOutValue = maxCoinValue;
     std::vector<COutput> vCoins;
-    // include cold
     AvailableCoins(&vCoins, nullptr, coinFilter);
 
     std::map<CTxDestination, std::vector<COutput> > mapCoins;
-    for (COutput& out : vCoins) {
-        if (maxCoinValue > 0 && out.tx->tx->vout[out.i].nValue > maxCoinValue)
-            continue;
-
+    for (const COutput& out : vCoins) {
         CTxDestination address;
         bool fColdStakeAddr = false;
         if (!ExtractDestination(out.tx->tx->vout[out.i].scriptPubKey, address, fColdStakeAddr)) {
+            bool isP2CS = out.tx->tx->vout[out.i].scriptPubKey.IsPayToColdStaking();
+            if (isP2CS && !fIncludeColdStaking) {
+                // It must never happen as the coin filtering process shouldn't had added the P2CS in the first place
+                assert(false);
+            }
             // if this is a P2CS we don't have the owner key - check if we have the staking key
             fColdStakeAddr = true;
-            if ( !out.tx->tx->vout[out.i].scriptPubKey.IsPayToColdStaking() ||
-                    !ExtractDestination(out.tx->tx->vout[out.i].scriptPubKey, address, fColdStakeAddr) )
+            if (!isP2CS || !ExtractDestination(out.tx->tx->vout[out.i].scriptPubKey, address, fColdStakeAddr) )
                 continue;
         }
 
-        mapCoins[address].push_back(out);
+        mapCoins[address].emplace_back(out);
     }
 
     return mapCoins;
@@ -3207,7 +3213,7 @@ std::string CWallet::CommitResult::ToString() const
 
 CWallet::CommitResult CWallet::CommitTransaction(CTransactionRef tx, CReserveKey& opReservekey, CConnman* connman)
 {
-    return CommitTransaction(tx, &opReservekey, connman);
+    return CommitTransaction(std::move(tx), &opReservekey, connman);
 }
 
 /**

@@ -779,7 +779,8 @@ public:
                              bool _fOnlySpendable,
                              std::set<CTxDestination>* _onlyFilteredDest,
                              int _minDepth,
-                             bool _fIncludeLocked = false) :
+                             bool _fIncludeLocked = false,
+                             CAmount _nMaxOutValue = 0) :
                 fIncludeDelegated(_fIncludeDelegated),
                 fIncludeColdStaking(_fIncludeColdStaking),
                 nCoinType(_nCoinType),
@@ -787,7 +788,8 @@ public:
                 fOnlySpendable(_fOnlySpendable),
                 onlyFilteredDest(_onlyFilteredDest),
                 minDepth(_minDepth),
-                fIncludeLocked(_fIncludeLocked) {}
+                fIncludeLocked(_fIncludeLocked),
+                nMaxOutValue(_nMaxOutValue) {}
 
         bool fIncludeDelegated{true};
         bool fIncludeColdStaking{false};
@@ -797,6 +799,8 @@ public:
         std::set<CTxDestination>* onlyFilteredDest{nullptr};
         int minDepth{0};
         bool fIncludeLocked{false};
+        // Select outputs with value <= nMaxOutValue
+        CAmount nMaxOutValue{0};
     };
 
     //! >> Available coins (generic)
