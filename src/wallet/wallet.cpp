@@ -2480,11 +2480,12 @@ bool CWallet::AvailableCoins(std::vector<COutput>* pCoins,      // --> populates
     }
 }
 
-std::map<CTxDestination , std::vector<COutput> > CWallet::AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue)
+std::map<CTxDestination , std::vector<COutput> > CWallet::AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue, bool fIncludeColdStaking)
 {
     CWallet::AvailableCoinsFilter coinFilter;
     coinFilter.fIncludeColdStaking = true;
     coinFilter.fOnlyConfirmed = fConfirmed;
+    coinFilter.fIncludeColdStaking = fIncludeColdStaking;
     std::vector<COutput> vCoins;
     // include cold
     AvailableCoins(&vCoins, nullptr, coinFilter);
@@ -3829,7 +3830,8 @@ void CWallet::AutoCombineDust(CConnman* connman)
         return;
     }
 
-    std::map<CTxDestination, std::vector<COutput> > mapCoinsByAddress = AvailableCoinsByAddress(true, nAutoCombineThreshold * COIN);
+    std::map<CTxDestination, std::vector<COutput> > mapCoinsByAddress =
+            AvailableCoinsByAddress(true, nAutoCombineThreshold * COIN, false);
 
     //coins are sectioned by address. This combination code only wants to combine inputs that belong to the same address
     for (std::map<CTxDestination, std::vector<COutput> >::iterator it = mapCoinsByAddress.begin(); it != mapCoinsByAddress.end(); it++) {
@@ -3846,10 +3848,6 @@ void CWallet::AutoCombineDust(CConnman* connman)
         CAmount nTotalRewardsValue = 0;
         for (const COutput& out : vCoins) {
             if (!out.fSpendable)
-                continue;
-
-            // no p2cs accepted, those coins are "locked"
-            if (out.tx->tx->vout[out.i].scriptPubKey.IsPayToColdStaking())
                 continue;
 
             COutPoint outpt(out.tx->GetHash(), out.i);
