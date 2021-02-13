@@ -3822,9 +3822,10 @@ bool CWallet::LoadDestData(const CTxDestination& dest, const std::string& key, c
 
 void CWallet::AutoCombineDust(CConnman* connman)
 {
-    LOCK2(cs_main, cs_wallet);
-    const CBlockIndex* tip = chainActive.Tip();
-    if (tip->nTime < (GetAdjustedTime() - 300) || IsLocked()) {
+    LOCK(cs_wallet);
+    if (m_last_block_processed.IsNull() ||
+        m_last_block_processed_time < (GetAdjustedTime() - 300) ||
+        IsLocked()) {
         return;
     }
 
@@ -3845,9 +3846,6 @@ void CWallet::AutoCombineDust(CConnman* connman)
         CAmount nTotalRewardsValue = 0;
         for (const COutput& out : vCoins) {
             if (!out.fSpendable)
-                continue;
-            //no coins should get this far if they dont have proper maturity, this is double checking
-            if (out.tx->IsCoinStake() && out.tx->GetDepthInMainChain() < Params().GetConsensus().nCoinbaseMaturity + 1)
                 continue;
 
             // no p2cs accepted, those coins are "locked"
