@@ -420,7 +420,7 @@ void PIVXGUI::message(const QString& title, const QString& message, unsigned int
         // Append title to "PIVX - "
         if (!msgType.isEmpty())
             strTitle += " - " + msgType;
-        notificator->notify((Notificator::Class) nNotifyIcon, strTitle, message);
+        notificator->notify(static_cast<Notificator::Class>(nNotifyIcon), strTitle, message);
     }
 }
 
