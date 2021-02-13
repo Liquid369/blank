@@ -57,26 +57,25 @@ public:
     // Info: As we don't need to process addresses in here when using
     // payment requests, we can abuse it for displaying an address list.
     // Todo: This is a hack, should be replaced with a cleaner solution!
-    QString address;
-    QString label;
-    AvailableCoinsType inputType;
+    QString address{};
+    QString label{};
 
     // Cold staking.
-    bool isP2CS = false;
-    QString ownerAddress;
+    bool isP2CS{false};
+    QString ownerAddress{};
 
     // Quick flag to not have to check the address type more than once.
     bool isShieldedAddr{false};
 
     // Amount
-    CAmount amount;
+    CAmount amount{0};
     // If from a payment request, this is used for storing the memo
-    QString message;
+    QString message{};
 
     // If from a payment request, paymentRequest.IsInitialized() will be true
-    PaymentRequestPlus paymentRequest;
+    PaymentRequestPlus paymentRequest{};
     // Empty if no authentication or invalid signature/cert/etc.
-    QString authenticatedMerchant;
+    QString authenticatedMerchant{};
 
     static const int CURRENT_VERSION = 1;
     int nVersion;

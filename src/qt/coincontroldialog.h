@@ -66,12 +66,12 @@ public:
     void addPayAmount(const CAmount& amount, bool isShieldedRecipient);
     void setSelectionType(bool isTransparent) { fSelectTransparent = isTransparent; }
 
-    CCoinControl* coinControl;
+    CCoinControl* coinControl{nullptr};
 
 private:
-    Ui::CoinControlDialog* ui;
-    SnackBar *snackBar = nullptr;
-    WalletModel* model;
+    Ui::CoinControlDialog* ui{nullptr};
+    SnackBar *snackBar{nullptr};
+    WalletModel* model{nullptr};
     int sortColumn;
     Qt::SortOrder sortOrder;
     bool forDelegation;
@@ -83,11 +83,11 @@ private:
     // whether should show available utxo or notes.
     bool fSelectTransparent{true};
 
-    QMenu* contextMenu;
-    QTreeWidgetItem* contextMenuItem;
-    QAction* copyTransactionHashAction;
-    QAction* lockAction;
-    QAction* unlockAction;
+    QMenu* contextMenu{nullptr};
+    QTreeWidgetItem* contextMenuItem{nullptr};
+    QAction* copyTransactionHashAction{nullptr};
+    QAction* lockAction{nullptr};
+    QAction* unlockAction{nullptr};
 
     void updatePushButtonSelectAll(bool checked);
     void sortView(int, Qt::SortOrder);

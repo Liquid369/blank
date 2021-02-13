@@ -435,7 +435,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
                                                   nChangePosInOut,
                                                   strFailReason,
                                                   coinControl,
-                                                  recipients[0].inputType,
+                                                  ALL_COINS,
                                                   true,
                                                   0,
                                                   fIncludeDelegations);

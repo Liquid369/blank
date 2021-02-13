@@ -106,11 +106,11 @@ public:
     EditStatus getEditStatus() const { return editStatus; }
 
 private:
-    WalletModel* walletModel;
-    CWallet* wallet;
-    AddressTablePriv* priv;
-    QStringList columns;
-    EditStatus editStatus;
+    WalletModel* walletModel{nullptr};
+    CWallet* wallet{nullptr};
+    AddressTablePriv* priv{nullptr};
+    QStringList columns{};
+    EditStatus editStatus{OK};
 
     /** Notify listeners that data changed. */
     void emitDataChanged(int index);

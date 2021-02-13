@@ -84,14 +84,14 @@ private Q_SLOTS:
     //void on_addressBookButton_clicked();
 
 private:
-    Ui::SendMultiRow *ui;
-    QPushButton *iconNumber;
-    QAction *btnContact;
+    Ui::SendMultiRow *ui{nullptr};
+    QPushButton *iconNumber{nullptr};
+    QAction *btnContact{nullptr};
 
-    int displayUnit;
-    int number = 0;
-    bool isExpanded = false;
-    bool onlyStakingAddressAccepted = false;
+    int displayUnit{0};
+    int number{0};
+    bool isExpanded{false};
+    bool onlyStakingAddressAccepted{false};
 
     SendCoinsRecipient recipient;
 
