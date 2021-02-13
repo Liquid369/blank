@@ -1950,7 +1950,6 @@ void CWalletTx::RelayWalletTransaction(CConnman* connman)
         // Nothing to do. Return early
         return;
     }
-    LOCK(cs_main);
     if (GetDepthInMainChain() == 0 && !isAbandoned()) {
         const uint256& hash = GetHash();
         LogPrintf("Relaying wtx %s\n", hash.ToString());
@@ -2801,7 +2800,7 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool ov
             tx.vin.push_back(txin);
 
             if (lockUnspents) {
-              LOCK2(cs_main, cs_wallet);
+              LOCK(cs_wallet);
               LockCoin(txin.prevout);
             }
         }
