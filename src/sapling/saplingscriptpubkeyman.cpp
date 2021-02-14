@@ -9,6 +9,7 @@
 
 void SaplingScriptPubKeyMan::AddToSaplingSpends(const uint256& nullifier, const uint256& wtxid)
 {
+    AssertLockHeld(wallet->cs_wallet);
     mapTxSaplingNullifiers.emplace(nullifier, wtxid);
 
     std::pair<TxNullifiers::iterator, TxNullifiers::iterator> range;
@@ -17,7 +18,7 @@ void SaplingScriptPubKeyMan::AddToSaplingSpends(const uint256& nullifier, const 
 }
 
 bool SaplingScriptPubKeyMan::IsSaplingSpent(const uint256& nullifier) const {
-    LOCK(cs_main);
+    LOCK(wallet->cs_wallet); // future: move to AssertLockHeld()
     std::pair<TxNullifiers::const_iterator, TxNullifiers::const_iterator> range;
     range = mapTxSaplingNullifiers.equal_range(nullifier);
 
@@ -470,7 +471,7 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
         bool requireSpendingKey,
         bool ignoreLocked) const
 {
-    LOCK2(cs_main, wallet->cs_wallet);
+    LOCK(wallet->cs_wallet);
 
     for (auto& p : wallet->mapWallet) {
         const CWalletTx& wtx = p.second;
