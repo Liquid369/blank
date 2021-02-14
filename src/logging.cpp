@@ -203,7 +203,9 @@ void BCLog::Logger::LogPrintStr(const std::string &str)
         // print to console
         fwrite(strTimestamped.data(), 1, strTimestamped.size(), stdout);
         fflush(stdout);
-    } else if (m_print_to_file) {
+    }
+
+    if (m_print_to_file) {
         std::lock_guard<std::mutex> scoped_lock(m_file_mutex);
 
         // buffer if we haven't opened the log yet
