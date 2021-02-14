@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(pmt_test1)
         CBlock block;
         for (unsigned int j=0; j<nTx; j++) {
             CMutableTransaction tx;
-            tx.nLockTime = rand(); // actual transaction data doesn't matter; just make the nLockTime's unique
+            tx.nLockTime = InsecureRand32(); // actual transaction data doesn't matter; just make the nLockTime's unique
             block.vtx.emplace_back(std::make_shared<const CTransaction>(tx));
         }
 

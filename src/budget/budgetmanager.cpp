@@ -462,7 +462,7 @@ void CBudgetManager::VoteOnFinalizedBudgets()
 
     // Do this 1 in 4 blocks -- spread out the voting activity
     // -- this function is only called every fourteenth block, so this is really 1 in 56 blocks
-    if (rand() % 4 != 0) {
+    if (GetRandInt(4) != 0) {
         LogPrint(BCLog::MNBUDGET,"%s: waiting\n", __func__);
         return;
     }
@@ -832,7 +832,7 @@ void CBudgetManager::NewBlock(int height)
     // incremental sync with our peers
     if (masternodeSync.IsSynced()) {
         LogPrint(BCLog::MNBUDGET,"%s:  incremental sync started\n", __func__);
-        if (rand() % 1440 == 0) {
+        if (GetRandInt(1440) == 0) {
             ClearSeen();
             ResetSync();
         }
@@ -1239,7 +1239,7 @@ bool CheckCollateral(const uint256& nTxCollateralHash, const uint256& nExpectedH
 
     bool foundOpReturn = false;
     for (const CTxOut &o : txCollateral->vout) {
-        if (!o.scriptPubKey.IsNormalPaymentScript() && !o.scriptPubKey.IsUnspendable()) {
+        if (!o.scriptPubKey.IsPayToPublicKeyHash() && !o.scriptPubKey.IsUnspendable()) {
             strError = strprintf("Invalid Script %s", txCollateral->ToString());
             return false;
         }
@@ -1252,6 +1252,7 @@ bool CheckCollateral(const uint256& nTxCollateralHash, const uint256& nExpectedH
                 LogPrint(BCLog::MNBUDGET, "Final Budget: o.nValue(%ld) >= BUDGET_FEE_TX(%ld) ?\n", o.nValue, BUDGET_FEE_TX);
                 if(o.nValue >= BUDGET_FEE_TX) {
                     foundOpReturn = true;
+                    break;
                 }
             }
         } else {
@@ -1261,6 +1262,7 @@ bool CheckCollateral(const uint256& nTxCollateralHash, const uint256& nExpectedH
                 LogPrint(BCLog::MNBUDGET, "Normal Budget: o.nValue(%ld) >= PROPOSAL_FEE_TX(%ld) ?\n", o.nValue, PROPOSAL_FEE_TX);
                 if(o.nValue >= PROPOSAL_FEE_TX) {
                     foundOpReturn = true;
+                    break;
                 }
             }
         }

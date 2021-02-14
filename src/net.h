@@ -329,22 +329,22 @@ private:
     // Network usage totals
     RecursiveMutex cs_totalBytesRecv;
     RecursiveMutex cs_totalBytesSent;
-    uint64_t nTotalBytesRecv;
-    uint64_t nTotalBytesSent;
+    uint64_t nTotalBytesRecv{0};
+    uint64_t nTotalBytesSent{0};
 
     // Whitelisted ranges. Any node connecting from these is automatically
     // whitelisted (as well as those connecting to whitelisted binds).
     std::vector<CSubNet> vWhitelistedRange;
     RecursiveMutex cs_vWhitelistedRange;
 
-    unsigned int nSendBufferMaxSize;
-    unsigned int nReceiveFloodSize;
+    unsigned int nSendBufferMaxSize{0};
+    unsigned int nReceiveFloodSize{0};
 
     std::vector<ListenSocket> vhListenSocket;
     banmap_t setBanned;
     RecursiveMutex cs_setBanned;
-    bool setBannedIsDirty;
-    bool fAddressesInitialized;
+    bool setBannedIsDirty{false};
+    bool fAddressesInitialized{false};
     CAddrMan addrman;
     std::deque<std::string> vOneShots;
     RecursiveMutex cs_vOneShots;
@@ -356,23 +356,23 @@ private:
     std::atomic<NodeId> nLastNodeId;
 
     /** Services this instance offers */
-    ServiceFlags nLocalServices;
+    ServiceFlags nLocalServices{NODE_NONE};
 
     /** Services this instance cares about */
-    ServiceFlags nRelevantServices;
+    ServiceFlags nRelevantServices{NODE_NONE};
 
-    CSemaphore *semOutbound;
-    int nMaxConnections;
-    int nMaxOutbound;
-    int nMaxFeeler;
+    CSemaphore *semOutbound{nullptr};
+    int nMaxConnections{0};
+    int nMaxOutbound{0};
+    int nMaxFeeler{0};
     std::atomic<int> nBestHeight;
-    CClientUIInterface* clientInterface;
+    CClientUIInterface* clientInterface{nullptr};
 
     /** SipHasher seeds for deterministic randomness */
-    const uint64_t nSeed0, nSeed1;
+    const uint64_t nSeed0{0}, nSeed1{0};
 
     /** flag for waking the message processor. */
-    bool fMsgProcWake;
+    bool fMsgProcWake{false};
 
     std::condition_variable condMsgProc;
     std::mutex mutexMsgProc;

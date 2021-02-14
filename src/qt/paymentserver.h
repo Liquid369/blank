@@ -93,7 +93,7 @@ public:
 
 Q_SIGNALS:
     // Fired when a valid payment request is received
-    void receivedPaymentRequest(SendCoinsRecipient);
+    void receivedPaymentRequest(const SendCoinsRecipient& recipient);
 
     // Fired when a valid PaymentACK is received
     void receivedPaymentACK(const QString& paymentACKMsg);
@@ -107,7 +107,7 @@ public Q_SLOTS:
     void uiReady();
 
     // Submit Payment message to a merchant, get back PaymentACK:
-    void fetchPaymentACK(CWallet* wallet, SendCoinsRecipient recipient, QByteArray transaction);
+    void fetchPaymentACK(CWallet* wallet, const SendCoinsRecipient& recipient, const QByteArray& transaction);
 
     // Handle an incoming URI, URI with local file scheme or file
     void handleURIOrFile(const QString& s);

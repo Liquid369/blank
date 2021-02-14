@@ -105,7 +105,7 @@ class BlockIndexStatsTest(PivxTestFramework):
         for _ in range(NUM_BLOCKS):
             # 1...4=(t->t) 5=(t->z) 6=(z->t) 7=(z->z)
             tx_kind = random.randint(1, 7)
-            fee = round(0.0001 * random.randint(2, 50), 8)
+            fee = round(0.0001 * random.randint(3, 50), 8)
             if tx_kind < 5:
                 # transparent tx
                 self.log.info("Sending t->t with fee %.8f" % fee)

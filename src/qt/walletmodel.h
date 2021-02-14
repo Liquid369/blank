@@ -380,7 +380,7 @@ Q_SIGNALS:
     void message(const QString& title, const QString& body, unsigned int style, bool* ret = nullptr);
 
     // Coins sent: from wallet, to recipient, in (serialized) transaction:
-    void coinsSent(CWallet* wallet, SendCoinsRecipient recipient, QByteArray transaction);
+    void coinsSent(CWallet* wallet, const SendCoinsRecipient& recipient, const QByteArray& transaction);
 
     // Show progress dialog e.g. for rescan
     void showProgress(const QString& title, int nProgress);

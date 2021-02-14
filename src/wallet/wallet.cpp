@@ -2297,7 +2297,7 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
     // Check if we should include zero value utxo
     if (output.nValue <= 0) return res;
 
-    if (fCoinsSelected && !coinControl->fAllowOtherInputs && !coinControl->IsSelected(COutPoint(wtxid, outIndex)))
+    if (fCoinsSelected && coinControl && !coinControl->fAllowOtherInputs && !coinControl->IsSelected(COutPoint(wtxid, outIndex)))
         return res;
 
     // --Skip P2CS outputs
@@ -3074,8 +3074,8 @@ bool CWallet::CreateCoinStake(
     // Sign it
     int nIn = 0;
     for (const CTxIn& txIn : txNew.vin) {
-        const CWalletTx *wtx = GetWalletTx(txIn.prevout.hash);
-        if (!SignSignature(*this, *wtx, txNew, nIn++, SIGHASH_ALL, true))
+        const CWalletTx* wtx = GetWalletTx(txIn.prevout.hash);
+        if (!wtx || !SignSignature(*this, *wtx, txNew, nIn++, SIGHASH_ALL, true))
             return error("%s : failed to sign coinstake", __func__);
     }
 

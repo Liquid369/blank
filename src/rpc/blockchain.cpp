@@ -159,8 +159,8 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* blockindex, bool tx
     ////////// Coin stake data ////////////////
     /////////
     if (block.IsProofOfStake()) {
-        uint256 hashProofOfStakeRet;
-        if (!GetStakeKernelHash(hashProofOfStakeRet, block, blockindex->pprev))
+        uint256 hashProofOfStakeRet{UINT256_ZERO};
+        if (blockindex->pprev && !GetStakeKernelHash(hashProofOfStakeRet, block, blockindex->pprev))
             throw JSONRPCError(RPC_INTERNAL_ERROR, "Cannot get proof of stake hash");
 
         std::string stakeModifier = (Params().GetConsensus().NetworkUpgradeActive(blockindex->nHeight, Consensus::UPGRADE_V3_4) ?
@@ -679,15 +679,13 @@ UniValue getsupplyinfo(const JSONRPCRequest& request)
 
 struct CCoinsStats
 {
-    int nHeight;
-    uint256 hashBlock;
-    uint64_t nTransactions;
-    uint64_t nTransactionOutputs;
-    uint256 hashSerialized;
-    uint64_t nDiskSize;
-    CAmount nTotalAmount;
-
-    CCoinsStats() : nHeight(0), nTransactions(0), nTransactionOutputs(0), nTotalAmount(0) {}
+    int nHeight{0};
+    uint256 hashBlock{UINT256_ZERO};
+    uint64_t nTransactions{0};
+    uint64_t nTransactionOutputs{0};
+    uint256 hashSerialized{UINT256_ZERO};
+    uint64_t nDiskSize{0};
+    CAmount nTotalAmount{0};
 };
 
 static void ApplyStats(CCoinsStats &stats, CHashWriter& ss, const uint256& hash, const std::map<uint32_t, Coin>& outputs)
@@ -1020,7 +1018,7 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
     obj.pushKV("verificationprogress", Checkpoints::GuessVerificationProgress(pChainTip));
     obj.pushKV("chainwork", pChainTip ? pChainTip->nChainWork.GetHex() : "");
     // Sapling shield pool value
-    obj.pushKV("shield_pool_value", ValuePoolDesc(pChainTip->nChainSaplingValue, pChainTip->nSaplingValue));
+    obj.pushKV("shield_pool_value", pChainTip ? ValuePoolDesc(pChainTip->nChainSaplingValue, pChainTip->nSaplingValue) : 0);
     obj.pushKV("initial_block_downloading", IsInitialBlockDownload());
     UniValue softforks(UniValue::VARR);
     softforks.push_back(SoftForkDesc("bip65", 5, pChainTip));

@@ -36,10 +36,10 @@ private:
     // The constructed block template
     std::unique_ptr<CBlockTemplate> pblocktemplate;
     // A convenience pointer that always refers to the CBlock in pblocktemplate
-    CBlock* pblock;
+    CBlock* pblock{nullptr};
 
     // Configuration parameters for the block size
-    unsigned int nBlockMaxSize, nBlockMinSize;
+    unsigned int nBlockMaxSize{0}, nBlockMinSize{0};
 
     // Information on the current status of the block
     uint64_t nBlockSize{0};
@@ -57,10 +57,10 @@ private:
     bool blockFinished{false};
 
     // Keep track of block space used for shield txes
-    unsigned int nSizeShielded = 0;
+    unsigned int nSizeShielded{0};
 
     // Whether should print priority by default or not
-    const bool defaultPrintPriority;
+    const bool defaultPrintPriority{false};
 
 public:
     BlockAssembler(const CChainParams& chainparams, const bool defaultPrintPriority);

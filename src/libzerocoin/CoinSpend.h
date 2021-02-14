@@ -148,17 +148,17 @@ public:
     }
 
 protected:
-    CoinDenomination denomination = ZQ_ERROR;
-    CBigNum coinSerialNumber;
-    uint8_t version;
+    CoinDenomination denomination{ZQ_ERROR};
+    CBigNum coinSerialNumber{};
+    uint8_t version{0};
     //As of version 2
     CPubKey pubkey;
     std::vector<unsigned char> vchSig;
-    SpendType spendType;
-    uint256 ptxHash;
+    SpendType spendType{SPEND};
+    uint256 ptxHash{UINT256_ZERO};
 
 private:
-    uint32_t accChecksum;
+    uint32_t accChecksum{0};
     CBigNum accCommitmentToCoinValue;
     CBigNum serialCommitmentToCoinValue;
     AccumulatorProofOfKnowledge accumulatorPoK;

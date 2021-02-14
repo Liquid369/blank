@@ -94,6 +94,9 @@ bool SolveProofOfStake(CBlock* pblock, CBlockIndex* pindexPrev, CWallet* pwallet
 
 bool CreateCoinbaseTx(CBlock* pblock, const CScript& scriptPubKeyIn, CBlockIndex* pindexPrev)
 {
+    assert(pindexPrev);
+    const int nHeight = pindexPrev->nHeight + 1;
+
     // Create coinbase tx
     CMutableTransaction txNew;
     txNew.vin.resize(1);
@@ -102,12 +105,12 @@ bool CreateCoinbaseTx(CBlock* pblock, const CScript& scriptPubKeyIn, CBlockIndex
     txNew.vout[0].scriptPubKey = scriptPubKeyIn;
 
     //Masternode and general budget payments
-    FillBlockPayee(txNew, pindexPrev ? pindexPrev->nHeight + 1 : 0, false);
+    FillBlockPayee(txNew, nHeight, false);
 
-    txNew.vin[0].scriptSig = CScript() << pindexPrev->nHeight + 1 << OP_0;
+    txNew.vin[0].scriptSig = CScript() << nHeight << OP_0;
     // If no payee was detected, then the whole block value goes to the first output.
     if (txNew.vout.size() == 1) {
-        txNew.vout[0].nValue = GetBlockValue(pindexPrev->nHeight + 1);
+        txNew.vout[0].nValue = GetBlockValue(nHeight);
     }
 
     pblock->vtx.emplace_back(
@@ -161,6 +164,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     pblocktemplate->vTxSigOps.push_back(-1); // updated at end
 
     CBlockIndex* pindexPrev = WITH_LOCK(cs_main, return chainActive.Tip());
+    assert(pindexPrev);
     nHeight = pindexPrev->nHeight + 1;
 
     pblock->nVersion = ComputeBlockVersion(chainparams.GetConsensus(), nHeight);
@@ -305,7 +309,7 @@ void BlockAssembler::AddToBlock(CTxMemPool::txiter iter)
     bool fPrintPriority = gArgs.GetBoolArg("-printpriority", defaultPrintPriority);
     if (fPrintPriority) {
         double dPriority = iter->GetPriority(nHeight);
-        CAmount dummy;
+        CAmount dummy{0};
         mempool.ApplyDeltas(iter->GetTx().GetHash(), dPriority, dummy);
         LogPrintf("priority %.1f fee %s txid %s\n",
                   dPriority,
@@ -390,7 +394,7 @@ void BlockAssembler::addPriorityTxs()
     for (CTxMemPool::indexed_transaction_set::iterator mi = mempool.mapTx.begin();
          mi != mempool.mapTx.end(); ++mi) {
         double dPriority = mi->GetPriority(nHeight);
-        CAmount dummy;
+        CAmount dummy{0};
         mempool.ApplyDeltas(mi->GetSharedTx()->GetHash(), dPriority, dummy);
         vecPriority.emplace_back(TxCoinAgePriority(dPriority, mi));
     }

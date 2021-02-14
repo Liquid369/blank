@@ -37,7 +37,7 @@ struct UniValueType {
     UniValueType(UniValue::VType _type) : typeAny(false), type(_type) {}
     UniValueType() : typeAny(true) {}
     bool typeAny;
-    UniValue::VType type;
+    UniValue::VType type{UniValue::VNULL};
 };
 
 class JSONRPCRequest

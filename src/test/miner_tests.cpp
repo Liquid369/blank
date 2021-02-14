@@ -99,6 +99,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>(pblocktemplate->block); // pointer for convenience
     for (unsigned int i = 0; i < sizeof(blockinfo)/sizeof(*blockinfo); ++i) {
         CBlockIndex* pindexPrev = WITH_LOCK(cs_main, return chainActive.Tip());
+        assert(pindexPrev);
         pblock->nTime = pindexPrev->GetMedianTimePast() + 60;
         pblock->vtx.clear(); // Update coinbase input height manually
         CreateCoinbaseTx(pblock.get(), CScript(), pindexPrev);
