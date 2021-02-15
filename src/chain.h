@@ -284,6 +284,9 @@ public:
     const CBlockIndex* GetAncestor(int height) const;
 };
 
+/** Find the forking point between two chain tips. */
+CBlockIndex* LastCommonAncestor(CBlockIndex* pa, CBlockIndex* pb);
+
 /** Used to marshal pointers into hashes for db storage. */
 
 // New serialization introduced with 4.0.99
