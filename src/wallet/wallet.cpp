@@ -2271,9 +2271,8 @@ void CWallet::GetAvailableP2CSCoins(std::vector<COutput>& vCoins) const {
 /**
  * Test if the transaction is spendable.
  */
-bool CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth)
+static bool CheckTXAvailabilityInternal(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth)
 {
-    if (!CheckFinalTx(pcoin->tx)) return false;
     if (fOnlyConfirmed && !pcoin->IsTrusted()) return false;
     if (pcoin->GetBlocksToMaturity() > 0) return false;
 
@@ -2284,6 +2283,25 @@ bool CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDept
     if (nDepth == 0 && !pcoin->InMempool()) return false;
 
     return true;
+}
+
+// cs_main lock required
+static bool CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth)
+{
+    AssertLockHeld(cs_main);
+    if (!CheckFinalTx(pcoin->tx)) return false;
+    return CheckTXAvailabilityInternal(pcoin, fOnlyConfirmed, nDepth);
+}
+
+// cs_main lock NOT required
+static bool CheckTXAvailability(const CWalletTx* pcoin,
+                         bool fOnlyConfirmed,
+                         int& nDepth,
+                         int nBlockHeight)
+{
+    // Mimic CheckFinalTx without cs_main lock
+    if (!IsFinalTx(pcoin->tx, nBlockHeight + 1, GetAdjustedTime())) return false;
+    return CheckTXAvailabilityInternal(pcoin, fOnlyConfirmed, nDepth);
 }
 
 bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& keyRet, std::string strTxHash, std::string strOutputIndex, std::string& strError)
@@ -2326,17 +2344,20 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& 
         return error("%s: tx %s, index %d not a masternode collateral", __func__, strTxHash, nOutputIndex);
     }
 
-    // Check availability
     int nDepth = 0;
-    if (!CheckTXAvailability(wtx, true, nDepth)) {
-        strError = "Not available collateral transaction";
-        return error("%s: tx %s not available", __func__, strTxHash);
-    }
+    {
+        LOCK(cs_wallet);
+        // Check availability
+        if (!CheckTXAvailability(wtx, true, nDepth, m_last_block_processed_height)) {
+            strError = "Not available collateral transaction";
+            return error("%s: tx %s not available", __func__, strTxHash);
+        }
 
-    // Skip spent coins
-    if (IsSpent(txHash, nOutputIndex)) {
-        strError = "Error: collateral already spent";
-        return error("%s: tx %s already spent", __func__, strTxHash);
+        // Skip spent coins
+        if (IsSpent(txHash, nOutputIndex)) {
+            strError = "Error: collateral already spent";
+            return error("%s: tx %s already spent", __func__, strTxHash);
+        }
     }
 
     // Depth must be at least MASTERNODE_MIN_CONFIRMATIONS
@@ -2435,7 +2456,7 @@ bool CWallet::AvailableCoins(std::vector<COutput>* pCoins,      // --> populates
 
             // Check if the tx is selectable
             int nDepth;
-            if (!CheckTXAvailability(pcoin, coinsFilter.fOnlyConfirmed, nDepth))
+            if (!CheckTXAvailability(pcoin, coinsFilter.fOnlyConfirmed, nDepth, m_last_block_processed_height))
                 continue;
 
             // Check min depth requirement for stake inputs
