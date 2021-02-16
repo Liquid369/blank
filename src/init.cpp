@@ -1567,7 +1567,6 @@ bool AppInitMain()
                 pblocktree = new CBlockTreeDB(nBlockTreeDBCache, false, fReindex);
                 pcoinsdbview = new CCoinsViewDB(nCoinDBCache, false, fReindex);
                 pcoinscatcher = new CCoinsViewErrorCatcher(pcoinsdbview);
-                pcoinsTip = new CCoinsViewCache(pcoinscatcher);
 
                 if (fReindex) {
                     pblocktree->WriteReindexing(true);
@@ -1620,7 +1619,7 @@ bool AppInitMain()
                     strLoadError = _("Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.");
                     break;
                 }
-                pcoinsTip->SetBestBlock(pcoinsdbview->GetBestBlock()); // TODO: only initialize pcoinsTip after ReplayBlocks
+                pcoinsTip = new CCoinsViewCache(pcoinscatcher);
                 LoadChainTip(chainparams);
 
                 // Populate list of invalid/fraudulent outpoints that are banned from the chain
