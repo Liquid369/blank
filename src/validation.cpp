@@ -3674,7 +3674,7 @@ static bool RollforwardBlock(const CBlockIndex* pindex, CCoinsViewCache& inputs,
 {
     // TODO: merge with ConnectBlock
     CBlock block;
-    if (!ReadBlockFromDisk(block, pindex, params.GetConsensus())) {
+    if (!ReadBlockFromDisk(block, pindex)) {
         return error("ReplayBlock(): ReadBlockFromDisk failed at %d, hash=%s", pindex->nHeight, pindex->GetBlockHash().ToString());
     }
 
@@ -3703,9 +3703,9 @@ bool ReplayBlocks(const CChainParams& params, CCoinsView* view)
     uiInterface.ShowProgress(_("Replaying blocks..."), 0);
     LogPrintf("Replaying blocks\n");
 
-    const CBlockIndex* pindexOld = nullptr;  // Old tip during the interrupted flush.
-    const CBlockIndex* pindexNew;            // New tip during the interrupted flush.
-    const CBlockIndex* pindexFork = nullptr; // Latest block common to both the old and the new tip.
+    CBlockIndex* pindexOld = nullptr;  // Old tip during the interrupted flush.
+    CBlockIndex* pindexNew;            // New tip during the interrupted flush.
+    CBlockIndex* pindexFork = nullptr; // Latest block common to both the old and the new tip.
 
     if (mapBlockIndex.count(hashHeads[0]) == 0) {
         return error("ReplayBlocks(): reorganization to unknown block requested");
@@ -3725,7 +3725,7 @@ bool ReplayBlocks(const CChainParams& params, CCoinsView* view)
     while (pindexOld != pindexFork) {
         if (pindexOld->nHeight > 0) { // Never disconnect the genesis block.
             CBlock block;
-            if (!ReadBlockFromDisk(block, pindexOld, params.GetConsensus())) {
+            if (!ReadBlockFromDisk(block, pindexOld)) {
                 return error("RollbackBlock(): ReadBlockFromDisk() failed at %d, hash=%s", pindexOld->nHeight, pindexOld->GetBlockHash().ToString());
             }
             LogPrintf("Rolling back %s (%i)\n", pindexOld->GetBlockHash().ToString(), pindexOld->nHeight);
