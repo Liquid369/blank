@@ -210,6 +210,12 @@ public:
     //! Retrieve the block hash whose state this CCoinsView currently represents
     virtual uint256 GetBestBlock() const;
 
+    //! Retrieve the range of blocks that may have been only partially written.
+    //! If the database is in a consistent state, the result is the empty vector.
+    //! Otherwise, a two-element vector is returned consisting of the new and
+    //! the old block hash, in that order.
+    virtual std::vector<uint256> GetHeadBlocks() const;
+
     //! Do a bulk modification (multiple Coin changes + BestBlock change).
     //! The passed mapCoins can be modified.
     virtual bool BatchWrite(CCoinsMap& mapCoins,
@@ -250,6 +256,7 @@ public:
     bool GetCoin(const COutPoint& outpoint, Coin& coin) const override;
     bool HaveCoin(const COutPoint& outpoint) const override;
     uint256 GetBestBlock() const override;
+    std::vector<uint256> GetHeadBlocks() const override;
     void SetBackend(CCoinsView& viewIn);
     CCoinsViewCursor* Cursor() const override;
     size_t EstimateSize() const override;
@@ -438,8 +445,10 @@ private:
 };
 
 //! Utility function to add all of a transaction's outputs to a cache.
-// PIVX: It assumes that overwrites are never possible due to BIP34 always in effect
-void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight);
+// PIVX: When check is false, this assumes that overwrites are never possible due to BIP34 always in effect
+// When check is true, the underlying view may be queried to determine whether an addition is
+// an overwrite.
+void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight, bool check = false);
 
 //! Utility function to find any unspent output with a given txid.
 const Coin& AccessByTxid(const CCoinsViewCache& cache, const uint256& txid);
