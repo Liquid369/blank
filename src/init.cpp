@@ -1933,6 +1933,5 @@ bool AppInitMain()
     }
 #endif
 
-
-    return !fRequestShutdown;
+    return true;
 }
