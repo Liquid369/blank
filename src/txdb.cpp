@@ -6,8 +6,10 @@
 
 #include "txdb.h"
 
+#include "random.h"
 #include "pow.h"
 #include "uint256.h"
+#include "util.h"
 #include "zpiv/zerocoin.h"
 
 #include <stdint.h>
@@ -93,6 +95,7 @@ bool CCoinsViewDB::BatchWrite(CCoinsMap& mapCoins,
     size_t count = 0;
     size_t changed = 0;
     size_t batch_size = (size_t) gArgs.GetArg("-dbbatchsize", nDefaultDbBatchSize);
+    int crash_simulate = gArgs.GetArg("-dbcrashratio", 0);
 
     uint256 old_tip = GetBestBlock();
     if (old_tip.IsNull()) {
@@ -134,6 +137,13 @@ bool CCoinsViewDB::BatchWrite(CCoinsMap& mapCoins,
             LogPrint(BCLog::COINDB, "Writing partial batch of %.2f MiB\n", batch.SizeEstimate() * (1.0 / 1048576.0));
             db.WriteBatch(batch);
             batch.Clear();
+            if (crash_simulate) {
+                static FastRandomContext rng;
+                if (rng.randrange(crash_simulate) == 0) {
+                    LogPrintf("Simulating a crash. Goodbye.\n");
+                    exit(0);
+                }
+            }
         }
     }
 
