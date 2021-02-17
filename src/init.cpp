@@ -155,7 +155,6 @@ CClientUIInterface uiInterface;  // Declared but not defined in guiinterface.h
 //
 
 volatile bool fRequestShutdown = false;
-std::atomic<bool> fDumpMempoolLater(false);
 
 void StartShutdown()
 {
@@ -254,7 +253,7 @@ void PrepareShutdown()
     DumpBudgets(g_budgetman);
     DumpMasternodePayments();
     UnregisterNodeSignals(GetNodeSignals());
-    if (fDumpMempoolLater && gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
+    if (g_is_mempool_loaded && gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
         DumpMempool();
     }
 
@@ -730,8 +729,8 @@ void ThreadImport(std::vector<fs::path> vImportFiles)
 
     if (gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
         LoadMempool();
-        fDumpMempoolLater = !fRequestShutdown;
     }
+    g_is_mempool_loaded = !fRequestShutdown;
 }
 
 /** Sanity checks

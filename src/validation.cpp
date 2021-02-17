@@ -108,6 +108,7 @@ int64_t nMaxTipAge = DEFAULT_MAX_TIP_AGE;
 CFeeRate minRelayTxFee = CFeeRate(10000);
 
 CTxMemPool mempool(::minRelayTxFee);
+std::atomic_bool g_is_mempool_loaded{false};
 
 std::map<uint256, int64_t> mapRejectedBlocks;
 
