@@ -1037,9 +1037,9 @@ void CWallet::AddExternalNotesDataToTx(CWalletTx& wtx) const
 /**
  * Add a transaction to the wallet, or update it. pIndex and posInBlock should
  * be set when the transaction was known to be included in a block.  When
- * posInBlock = SYNC_TRANSACTION_NOT_IN_BLOCK (-1) , then wallet state is not
- * updated in AddToWallet, but notifications happen and cached balances are
- * marked dirty.
+ * pIndex == NULL, then wallet state is not updated in AddToWallet, but
+ * notifications happen and cached balances are marked dirty.
+ *
  * If fUpdate is true, existing transactions will be updated.
  * TODO: One exception to this is that the abandoned state is cleared under the
  * assumption that any further notification of a transaction that was considered
@@ -1053,7 +1053,7 @@ bool CWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const uint256
     {
         AssertLockHeld(cs_wallet);
 
-        if (posInBlock != -1 && !tx.HasZerocoinSpendInputs() && !tx.IsCoinBase()) {
+        if (!blockHash.IsNull() && !tx.HasZerocoinSpendInputs() && !tx.IsCoinBase()) {
             for (const CTxIn& txin : tx.vin) {
                 std::pair<TxSpends::const_iterator, TxSpends::const_iterator> range = mapTxSpends.equal_range(txin.prevout);
                 while (range.first != range.second) {
@@ -1102,8 +1102,9 @@ bool CWallet::AddToWalletIfInvolvingMe(const CTransactionRef& ptx, const uint256
             }
 
             // Get merkle branch if transaction was found in a block
-            if (posInBlock != -1)
+            if (!blockHash.IsNull()) {
                 wtx.SetMerkleBranch(blockHash, posInBlock);
+            }
 
             return AddToWallet(wtx, false);
         }
@@ -3550,20 +3551,6 @@ void CReserveKey::ReturnKey()
         pwallet->ReturnKey(nIndex, internal);
     nIndex = -1;
     vchPubKey = CPubKey();
-}
-
-bool CWallet::UpdatedTransaction(const uint256& hashTx)
-{
-    {
-        LOCK(cs_wallet);
-        // Only notify UI if this transaction is in this wallet
-        std::map<uint256, CWalletTx>::const_iterator mi = mapWallet.find(hashTx);
-        if (mi != mapWallet.end()) {
-            NotifyTransactionChanged(this, hashTx, CT_UPDATED);
-            return true;
-        }
-    }
-    return false;
 }
 
 void CWallet::LockCoin(const COutPoint& output)

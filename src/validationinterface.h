@@ -18,6 +18,7 @@ class CConnman;
 class CValidationInterface;
 class CValidationState;
 class uint256;
+class CScheduler;
 
 // These functions dispatch to one or all registered wallets
 
@@ -29,16 +30,16 @@ void UnregisterValidationInterface(CValidationInterface* pwalletIn);
 void UnregisterAllValidationInterfaces();
 
 class CValidationInterface {
+public:
+    virtual ~CValidationInterface() = default;
 protected:
     /** Notifies listeners of updated block chain tip */
     virtual void UpdatedBlockTip(const CBlockIndex *pindexNew, const CBlockIndex *pindexFork, bool fInitialDownload) {}
     virtual void TransactionAddedToMempool(const CTransactionRef &ptxn) {}
     virtual void BlockConnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindex, const std::vector<CTransactionRef> &txnConflicted) {}
     virtual void BlockDisconnected(const std::shared_ptr<const CBlock> &block, int nBlockHeight) {}
-    virtual void NotifyTransactionLock(const CTransaction &tx) {}
     /** Notifies listeners of the new active block chain on-disk. */
     virtual void SetBestChain(const CBlockLocator &locator) {}
-    virtual bool UpdatedTransaction(const uint256 &hash) { return false;}
     /** Tells listeners to broadcast their data. */
     virtual void ResendWalletTransactions(CConnman* connman) {}
     virtual void BlockChecked(const CBlock&, const CValidationState&) {}
@@ -55,15 +56,19 @@ private:
     friend void ::RegisterValidationInterface(CValidationInterface*);
     friend void ::UnregisterValidationInterface(CValidationInterface*);
     friend void ::UnregisterAllValidationInterfaces();
+
 public:
-    CMainSignals();
+    /** Register a CScheduler to give callbacks which should run in the background (may only be called once) */
+    void RegisterBackgroundSignalScheduler(CScheduler& scheduler);
+    /** Unregister a CScheduler to give callbacks which should run in the background - these callbacks will now be dropped! */
+    void UnregisterBackgroundSignalScheduler();
+    /** Call any remaining callbacks on the calling thread */
+    void FlushBackgroundCallbacks();
 
     void UpdatedBlockTip(const CBlockIndex *, const CBlockIndex *, bool fInitialDownload);
     void TransactionAddedToMempool(const CTransactionRef &ptxn);
     void BlockConnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindex, const std::vector<CTransactionRef> &txnConflicted);
     void BlockDisconnected(const std::shared_ptr<const CBlock> &block, int nBlockHeight);
-    void NotifyTransactionLock(const CTransaction&);
-    void UpdatedTransaction(const uint256 &);
     void SetBestChain(const CBlockLocator &);
     void Broadcast(CConnman* connman);
     void BlockChecked(const CBlock&, const CValidationState&);
