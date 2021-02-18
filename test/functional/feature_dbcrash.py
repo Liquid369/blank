@@ -47,8 +47,9 @@ class ChainstateWriteCrashTest(PivxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 4
-        self.rpc_timeout = 480
+        self.rpc_timewait = 600
         self.setup_clean_chain = False
+        # Need a bit of extra time for the nodes to start up for this test
 
         self.chain_params = ['-nuparams=v5_shield:90000', '-nuparams=PIVX_v4.0:90000',
                              '-nuparams=PIVX_v3.4:90000', '-nuparams=Zerocoin_Public:90000',
@@ -70,8 +71,7 @@ class ChainstateWriteCrashTest(PivxTestFramework):
         self.extra_args = [self.node0_args, self.node1_args, self.node2_args, self.node3_args]
 
     def setup_network(self):
-        # Need a bit of extra time for the nodes to start up for this test
-        self.add_nodes(self.num_nodes, extra_args=self.extra_args, timewait=90)
+        self.add_nodes(self.num_nodes, extra_args=self.extra_args)
         self.start_nodes()
         # Leave them unconnected, we'll use submitblock directly in this test
 

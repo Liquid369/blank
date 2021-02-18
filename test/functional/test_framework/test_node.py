@@ -47,11 +47,7 @@ class TestNode():
         self.index = i
         self.datadir = os.path.join(dirname, "node" + str(i))
         self.rpchost = rpchost
-        if timewait:
-            self.rpc_timeout = timewait
-        else:
-            # Wait for up to 60 seconds for the RPC server to respond
-            self.rpc_timeout = 600
+        self.rpc_timeout = timewait
         if binary is None:
             self.binary = os.getenv("BITCOIND", "pivxd")
         else:
