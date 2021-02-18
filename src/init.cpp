@@ -237,8 +237,6 @@ void PrepareShutdown()
     // using the other before destroying them.
     if (peerLogic) UnregisterValidationInterface(peerLogic.get());
     if (g_connman) g_connman->Stop();
-    peerLogic.reset();
-    g_connman.reset();
 
     StopTorControl();
 
@@ -246,6 +244,11 @@ void PrepareShutdown()
     // CScheduler/checkqueue threadGroup
     threadGroup.interrupt_all();
     threadGroup.join_all();
+
+    // After the threads that potentially access these pointers have been stopped,
+    // destruct and reset all to nullptr.
+    peerLogic.reset();
+    g_connman.reset();
 
     DumpMasternodes();
     DumpBudgets(g_budgetman);
