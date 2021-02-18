@@ -1323,7 +1323,7 @@ void CWallet::BlockUntilSyncedToCurrentChain() {
     AssertLockNotHeld(cs_main);
     AssertLockNotHeld(cs_wallet);
 
-    {
+    if (m_last_block_processed) {
         // Skip the queue-draining stuff if we know we're caught up with
         // chainActive.Tip()...
         // We could also take cs_wallet here, and call m_last_block_processed

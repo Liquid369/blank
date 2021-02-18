@@ -529,7 +529,7 @@ private:
      *
      * Protected by cs_main (see BlockUntilSyncedToCurrentChain)
      */
-    const CBlockIndex* m_last_block_processed;
+    const CBlockIndex* m_last_block_processed{nullptr};
 
     int64_t nNextResend;
     int64_t nLastResend;
