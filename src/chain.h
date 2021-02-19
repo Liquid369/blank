@@ -285,7 +285,7 @@ public:
 };
 
 /** Find the forking point between two chain tips. */
-CBlockIndex* LastCommonAncestor(CBlockIndex* pa, CBlockIndex* pb);
+const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* pb);
 
 /** Used to marshal pointers into hashes for db storage. */
 
