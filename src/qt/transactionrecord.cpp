@@ -533,7 +533,7 @@ void TransactionRecord::loadHotOrColdStakeOrContract(
     }
 
     bool isSpendable = (wallet->IsMine(p2csUtxo) & ISMINE_SPENDABLE_DELEGATED);
-    bool isFromMe = wallet->IsFromMe(wtx);
+    bool isFromMe = wallet->IsFromMe(wtx.tx);
 
     if (isContract) {
         if (isSpendable && isFromMe) {
@@ -611,7 +611,7 @@ void TransactionRecord::updateStatus(const CWalletTx& wtx)
     status.cur_num_blocks = chainHeight;
     status.depth = depth;
 
-    if (!IsFinalTx(wtx, chainHeight + 1)) {
+    if (!IsFinalTx(wtx.tx, chainHeight + 1)) {
         if (wtx.tx->nLockTime < LOCKTIME_THRESHOLD) {
             status.status = TransactionStatus::OpenUntilBlock;
             status.open_for = wtx.tx->nLockTime - chainHeight;

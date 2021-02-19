@@ -95,12 +95,12 @@ bool IsStandard(const CScript& scriptPubKey, txnouttype& whichType)
     return whichType != TX_NONSTANDARD;
 }
 
-bool IsStandardTx(const CTransaction& tx, int nBlockHeight, std::string& reason)
+bool IsStandardTx(const CTransactionRef& tx, int nBlockHeight, std::string& reason)
 {
     AssertLockHeld(cs_main);
     if (!Params().GetConsensus().NetworkUpgradeActive(nBlockHeight, Consensus::UPGRADE_V5_0)) {
         // Before v5, all txes with version other than STANDARD_VERSION (1) are considered non-standard
-        if (tx.nVersion != CTransaction::TxVersion::LEGACY) {
+        if (tx->nVersion != CTransaction::TxVersion::LEGACY) {
             reason = "version";
             return false;
         }
@@ -133,15 +133,15 @@ bool IsStandardTx(const CTransaction& tx, int nBlockHeight, std::string& reason)
     // almost as much to process as they cost the sender in fees, because
     // computing signature hashes is O(ninputs*txsize). Limiting transactions
     // to MAX_STANDARD_TX_SIZE mitigates CPU exhaustion attacks.
-    unsigned int sz = tx.GetTotalSize();
-    unsigned int nMaxSize = tx.IsShieldedTx() ? MAX_TX_SIZE_AFTER_SAPLING :
-            tx.ContainsZerocoins() ? MAX_ZEROCOIN_TX_SIZE : MAX_STANDARD_TX_SIZE;
+    unsigned int sz = tx->GetTotalSize();
+    unsigned int nMaxSize = tx->IsShieldedTx() ? MAX_TX_SIZE_AFTER_SAPLING :
+            tx->ContainsZerocoins() ? MAX_ZEROCOIN_TX_SIZE : MAX_STANDARD_TX_SIZE;
     if (sz >= nMaxSize) {
         reason = "tx-size";
         return false;
     }
 
-    for (const CTxIn& txin : tx.vin) {
+    for (const CTxIn& txin : tx->vin) {
         if (txin.IsZerocoinSpend() || txin.IsZerocoinPublicSpend())
             continue;
         // Biggest 'standard' txin is a 15-of-15 P2SH multisig with compressed
@@ -163,7 +163,7 @@ bool IsStandardTx(const CTransaction& tx, int nBlockHeight, std::string& reason)
 
     unsigned int nDataOut = 0;
     txnouttype whichType;
-    for (const CTxOut& txout : tx.vout) {
+    for (const CTxOut& txout : tx->vout) {
         if (!::IsStandard(txout.scriptPubKey, whichType)) {
             reason = "scriptpubkey";
             return false;

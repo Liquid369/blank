@@ -105,7 +105,7 @@ uint256 CBudgetManager::SubmitFinalBudget()
     // See if collateral tx exists
     if (!mapUnconfirmedFeeTx.count(budgetHash)) {
         // create the collateral tx, send it to the network and return
-        CWalletTx wtx;
+        CTransactionRef wtx;
         // Get our change address
         CReserveKey keyChange(pwalletMain);
         if (!pwalletMain->CreateBudgetFeeTX(wtx, budgetHash, keyChange, true)) {
@@ -115,7 +115,7 @@ uint256 CBudgetManager::SubmitFinalBudget()
         // Send the tx to the network
         const CWallet::CommitResult& res = pwalletMain->CommitTransaction(wtx, keyChange, g_connman.get());
         if (res.status == CWallet::CommitStatus::OK) {
-            const uint256& collateraltxid = wtx.GetHash();
+            const uint256& collateraltxid = wtx->GetHash();
             mapUnconfirmedFeeTx.emplace(budgetHash, collateraltxid);
             LogPrint(BCLog::MNBUDGET,"%s: Collateral sent. txid: %s\n", __func__, collateraltxid.ToString());
             return budgetHash;

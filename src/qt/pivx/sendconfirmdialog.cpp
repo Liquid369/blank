@@ -81,9 +81,9 @@ TxDetailDialog::TxDetailDialog(QWidget *parent, bool _isConfirmDialog, const QSt
     connect(ui->pushOutputs, &QPushButton::clicked, this, &TxDetailDialog::onOutputsClicked);
 }
 
-void TxDetailDialog::setInputsType(const CWalletTx* _tx)
+void TxDetailDialog::setInputsType(CTransactionRef tx)
 {
-    if (_tx->tx->sapData && _tx->tx->sapData->vShieldedSpend.empty()) {
+    if (tx->sapData && tx->sapData->vShieldedSpend.empty()) {
         ui->labelTitlePrevTx->setText(tr("Previous Transaction"));
         ui->labelOutputIndex->setText(tr("Output Index"));
     } else {
@@ -126,7 +126,7 @@ void TxDetailDialog::setData(WalletModel *_model, const QModelIndex &index)
             shieldedInputsExtraMsg = " shielded";
         }
 
-        setInputsType(_tx);
+        setInputsType(_tx->tx);
         int inputsSize = (_tx->tx->sapData && !_tx->tx->sapData->vShieldedSpend.empty()) ? _tx->tx->sapData->vShieldedSpend.size() : _tx->tx->vin.size();
         ui->textInputs->setText(QString::number(inputsSize) + shieldedInputsExtraMsg);
         ui->textConfirmations->setText(QString::number(rec->status.depth));
@@ -186,7 +186,7 @@ void TxDetailDialog::setData(WalletModel *_model, WalletModelTransaction* _tx)
     CAmount totalAmount = tx->getTotalTransactionAmount() + txFee;
 
     // inputs label
-    CWalletTx* walletTx = tx->getTransaction();
+    CTransactionRef walletTx = tx->getTransaction();
     setInputsType(walletTx);
 
     ui->textAmount->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, totalAmount, false, BitcoinUnits::separatorAlways) + " (Fee included)");
@@ -226,7 +226,7 @@ void TxDetailDialog::setData(WalletModel *_model, WalletModelTransaction* _tx)
         ui->labelDividerMemo->setVisible(false);
     }
 
-    int inputsSize = (walletTx->tx->sapData && !walletTx->tx->sapData->vShieldedSpend.empty()) ? walletTx->tx->sapData->vShieldedSpend.size() : walletTx->tx->vin.size();
+    int inputsSize = (walletTx->sapData && !walletTx->sapData->vShieldedSpend.empty()) ? walletTx->sapData->vShieldedSpend.size() : walletTx->vin.size();
     ui->textInputs->setText(QString::number(inputsSize));
     ui->textFee->setText(BitcoinUnits::formatWithUnit(nDisplayUnit, txFee, false, BitcoinUnits::separatorAlways));
 }
@@ -260,13 +260,13 @@ void TxDetailDialog::onInputsClicked()
         if (!inputsLoaded) {
             inputsLoaded = true;
             if (showGrid) {
-                const CWalletTx* walletTx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash);
+                CTransactionRef walletTx = (this->tx) ? this->tx->getTransaction() : model->getTx(this->txHash)->tx;
                 if (walletTx) {
-                    if (walletTx->tx->sapData && walletTx->tx->sapData->vShieldedSpend.empty()) {
+                    if (walletTx->sapData && walletTx->sapData->vShieldedSpend.empty()) {
                         // transparent inputs
-                        ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->tx->vin.size()));
+                        ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->vin.size()));
                         int i = 1;
-                        for (const CTxIn& in : walletTx->tx->vin) {
+                        for (const CTxIn& in : walletTx->vin) {
                             QString hash = QString::fromStdString(in.prevout.hash.GetHex());
                             loadInputs(hash.left(18) + "..." + hash.right(18),
                                        QString::number(in.prevout.n),
@@ -274,10 +274,10 @@ void TxDetailDialog::onInputsClicked()
                             i++;
                         }
                     } else {
-                        ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->tx->sapData->vShieldedSpend.size()));
+                        ui->gridInputs->setMinimumHeight(50 + (50 * walletTx->sapData->vShieldedSpend.size()));
                         bool fInfoAvailable = false;
-                        for (int i = 0; i < (int) walletTx->tx->sapData->vShieldedSpend.size(); ++i) {
-                            Optional<QString> opAddr = model->getShieldedAddressFromSpendDesc(walletTx, i);
+                        for (int i = 0; i < (int) walletTx->sapData->vShieldedSpend.size(); ++i) {
+                            Optional<QString> opAddr = model->getShieldedAddressFromSpendDesc(walletTx->GetHash(), i);
                             if (opAddr) {
                                 QString addr = *opAddr;
                                 loadInputs(addr.left(18) + "..." + addr.right(18),

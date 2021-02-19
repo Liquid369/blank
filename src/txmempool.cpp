@@ -522,11 +522,11 @@ void CTxMemPool::removeForReorg(const CCoinsViewCache *pcoins, unsigned int nMem
     LOCK(cs);
     setEntries txToRemove;
     for (indexed_transaction_set::const_iterator it = mapTx.begin(); it != mapTx.end(); it++) {
-        const CTransaction& tx = it->GetTx();
+        const CTransactionRef& tx = it->GetSharedTx();
         if (!CheckFinalTx(tx, flags)) {
             txToRemove.insert(it);
         } else if (it->GetSpendsCoinbaseOrCoinstake()) {
-            for (const CTxIn& txin : tx.vin) {
+            for (const CTxIn& txin : tx->vin) {
                 indexed_transaction_set::const_iterator it2 = mapTx.find(txin.prevout.hash);
                 if (it2 != mapTx.end())
                     continue;

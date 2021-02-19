@@ -31,12 +31,12 @@ void setupWallet(CWallet& wallet)
 CWalletTx& SetWalletNotesData(CWallet* wallet, CWalletTx& wtx)
 {
     Optional<mapSaplingNoteData_t> saplingNoteData{nullopt};
-    wallet->FindNotesDataAndAddMissingIVKToKeystore(wtx, saplingNoteData);
+    wallet->FindNotesDataAndAddMissingIVKToKeystore(*wtx.tx, saplingNoteData);
     assert(static_cast<bool>(saplingNoteData));
     wtx.SetSaplingNoteData(*saplingNoteData);
     BOOST_CHECK(wallet->AddToWallet(wtx));
     // Updated tx
-    return wallet->mapWallet[wtx.GetHash()];
+    return wallet->mapWallet.at(wtx.GetHash());
 }
 
 /**
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(GetShieldedSimpleCachedCreditAndDebit)
     CTransaction tx = builder.Build().GetTxOrThrow();
     // add tx to wallet and update it.
     wallet.AddToWallet({&wallet, MakeTransactionRef(tx)});
-    CWalletTx& wtxDebit = wallet.mapWallet[tx.GetHash()];
+    CWalletTx& wtxDebit = wallet.mapWallet.at(tx.GetHash());
     // Update tx notes data (shielded change need it)
     CWalletTx& wtxDebitUpdated = SetWalletNotesData(&wallet, wtxDebit);
 
@@ -227,7 +227,7 @@ CWalletTx& buildTxAndLoadToWallet(CWallet& wallet, const libzcash::SaplingExtend
     CTransaction tx = builder.Build().GetTxOrThrow();
     // add tx to wallet and update it.
     wallet.AddToWallet({&wallet, MakeTransactionRef(tx)});
-    CWalletTx& wtx = wallet.mapWallet[tx.GetHash()];
+    CWalletTx& wtx = wallet.mapWallet.at(tx.GetHash());
     // Update tx notes data and return the updated wtx.
     return SetWalletNotesData(&wallet, wtx);
 }
@@ -351,7 +351,7 @@ BOOST_AUTO_TEST_CASE(GetShieldedAvailableCredit)
     // Simulate receiving a new block and updating the witnesses/nullifiers
     wallet.IncrementNoteWitnesses(fakeBlock.pindex, &fakeBlock.block, tree);
     wallet.GetSaplingScriptPubKeyMan()->UpdateSaplingNullifierNoteMapForBlock(&fakeBlock.block);
-    wtxUpdated = wallet.mapWallet[wtxUpdated.GetHash()];
+    wtxUpdated = wallet.mapWallet.at(wtxUpdated.GetHash());
 
     // 3) Now can spend one output and recalculate the shielded credit.
     std::vector<SaplingNoteEntry> saplingEntries;

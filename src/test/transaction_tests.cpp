@@ -29,6 +29,12 @@
 // In script_tests.cpp
 extern UniValue read_json(const std::string& jsondata);
 
+// Helper
+bool IsStandardTx(const CTransaction& tx, int nBlockHeight, std::string& reason)
+{
+    return IsStandardTx(MakeTransactionRef(tx), nBlockHeight, reason);
+}
+
 static std::map<std::string, unsigned int> mapFlagNames = {
     {std::string("NONE"), (unsigned int)SCRIPT_VERIFY_NONE},
     {std::string("P2SH"), (unsigned int)SCRIPT_VERIFY_P2SH},

@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     tx.nLockTime = WITH_LOCK(cs_main, return chainActive.Tip()->nHeight+1);
     hash = tx.GetHash();
     mempool.addUnchecked(hash, entry.Fee(100000000L).Time(GetTime()).SpendsCoinbaseOrCoinstake(true).FromTx(tx));
-    { LOCK(cs_main); BOOST_CHECK(!CheckFinalTx(tx, LOCKTIME_MEDIAN_TIME_PAST)); }
+    { LOCK(cs_main); BOOST_CHECK(!CheckFinalTx(MakeTransactionRef(tx), LOCKTIME_MEDIAN_TIME_PAST)); }
 
     // time locked
     tx2.vin.resize(1);
@@ -259,7 +259,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
     tx2.nLockTime = WITH_LOCK(cs_main, return chainActive.Tip()->GetMedianTimePast()+1);
     hash = tx2.GetHash();
     mempool.addUnchecked(hash, entry.Fee(100000000L).Time(GetTime()).SpendsCoinbaseOrCoinstake(true).FromTx(tx2));
-    { LOCK(cs_main); BOOST_CHECK(!CheckFinalTx(tx2, LOCKTIME_MEDIAN_TIME_PAST)); }
+    { LOCK(cs_main); BOOST_CHECK(!CheckFinalTx(MakeTransactionRef(tx2), LOCKTIME_MEDIAN_TIME_PAST)); }
 
     BOOST_CHECK(pblocktemplate = BlockAssembler(Params(), DEFAULT_PRINTPRIORITY).CreateNewBlock(scriptPubKey, pwalletMain, false));
 
