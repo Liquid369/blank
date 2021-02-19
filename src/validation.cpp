@@ -3698,7 +3698,7 @@ bool ReplayBlocks(const CChainParams& params, CCoinsView* view)
 
     std::vector<uint256> hashHeads = view->GetHeadBlocks();
     if (hashHeads.empty()) return true; // We're already in a consistent state.
-    if (hashHeads.size() != 2) return error("ReplayBlocks(): unknown inconsistent state");
+    if (hashHeads.size() != 2) return error("%s: unknown inconsistent state", __func__);
 
     uiInterface.ShowProgress(_("Replaying blocks..."), 0);
     LogPrintf("Replaying blocks\n");
@@ -3707,16 +3707,18 @@ bool ReplayBlocks(const CChainParams& params, CCoinsView* view)
     const CBlockIndex* pindexNew;            // New tip during the interrupted flush.
     const CBlockIndex* pindexFork = nullptr; // Latest block common to both the old and the new tip.
 
-    if (mapBlockIndex.count(hashHeads[0]) == 0) {
-        return error("ReplayBlocks(): reorganization to unknown block requested");
+    auto itIndexNew = mapBlockIndex.find(hashHeads[0]);
+    if (itIndexNew == mapBlockIndex.end()) {
+        return error("%s: reorganization to unknown block requested", __func__);
     }
-    pindexNew = mapBlockIndex[hashHeads[0]];
+    pindexNew = itIndexNew->second;
 
     if (!hashHeads[1].IsNull()) { // The old tip is allowed to be 0, indicating it's the first flush.
-        if (mapBlockIndex.count(hashHeads[1]) == 0) {
-            return error("ReplayBlocks(): reorganization from unknown block requested");
+        auto it = mapBlockIndex.find(hashHeads[1]);
+        if (it == mapBlockIndex.end()) {
+            return error("%s: reorganization from unknown block requested", __func__);
         }
-        pindexOld = mapBlockIndex[hashHeads[1]];
+        pindexOld = it->second;
         pindexFork = LastCommonAncestor(pindexOld, pindexNew);
         assert(pindexFork != nullptr);
     }

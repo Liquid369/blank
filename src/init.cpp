@@ -1619,7 +1619,7 @@ bool AppInitMain()
                 }
 
                 if (!ReplayBlocks(chainparams, pcoinsdbview)) {
-                    strLoadError = _("Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.");
+                    strLoadError = _("Unable to replay blocks. You will need to rebuild the database using -reindex.");
                     break;
                 }
                 pcoinsTip = new CCoinsViewCache(pcoinscatcher);
