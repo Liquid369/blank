@@ -391,7 +391,7 @@ UniValue getbudgetvotes(const JSONRPCRequest& request)
             "\nResult:\n"
             "[\n"
             "  {\n"
-            "    \"mnId\": \"xxxx\",        (string) Hash of the masternode's collateral transaction\n"
+            "    \"mnId\": \"xxxx-x\",      (string) Masternode's outpoint collateral transaction (hash-n)\n"
             "    \"nHash\": \"xxxx\",       (string) Hash of the vote\n"
             "    \"Vote\": \"YES|NO\",      (string) Vote cast ('YES' or 'NO')\n"
             "    \"nTime\": xxxx,         (numeric) Time in seconds since epoch the vote was cast\n"

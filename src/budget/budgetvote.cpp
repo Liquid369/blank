@@ -53,8 +53,8 @@ std::string CBudgetVote::GetStrMessage() const
 UniValue CBudgetVote::ToJSON() const
 {
     UniValue bObj(UniValue::VOBJ);
-    bObj.pushKV("mnId", vin.prevout.hash.ToString());
-    bObj.pushKV("nHash", vin.prevout.GetHash().ToString());
+    bObj.pushKV("mnId", vin.prevout.ToStringShort());
+    bObj.pushKV("nHash", GetHash().ToString());
     bObj.pushKV("Vote", GetVoteString());
     bObj.pushKV("nTime", nTime);
     bObj.pushKV("fValid", fValid);

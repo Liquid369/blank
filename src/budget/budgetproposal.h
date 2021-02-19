@@ -34,7 +34,7 @@ private:
     bool CheckAddress();
 
 protected:
-    std::map<uint256, CBudgetVote> mapVotes;
+    std::map<COutPoint, CBudgetVote> mapVotes;
     std::string strProposalName;
     std::string strURL;
     int nBlockStart;

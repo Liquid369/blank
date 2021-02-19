@@ -53,12 +53,12 @@ bool CFinalizedBudget::ParseBroadcast(CDataStream& broadcast)
 
 bool CFinalizedBudget::AddOrUpdateVote(const CFinalizedBudgetVote& vote, std::string& strError)
 {
-    const uint256& hash = vote.GetVin().prevout.GetHash();
+    const COutPoint& mnId = vote.GetVin().prevout;
     const int64_t voteTime = vote.GetTime();
     std::string strAction = "New vote inserted:";
 
-    if (mapVotes.count(hash)) {
-        const int64_t oldTime = mapVotes[hash].GetTime();
+    if (mapVotes.count(mnId)) {
+        const int64_t oldTime = mapVotes[mnId].GetTime();
         if (oldTime > voteTime) {
             strError = strprintf("new vote older than existing vote - %s\n", vote.GetHash().ToString());
             LogPrint(BCLog::MNBUDGET, "%s: %s\n", __func__, strError);
@@ -80,7 +80,7 @@ bool CFinalizedBudget::AddOrUpdateVote(const CFinalizedBudgetVote& vote, std::st
         return false;
     }
 
-    mapVotes[hash] = vote;
+    mapVotes[mnId] = vote;
     LogPrint(BCLog::MNBUDGET, "%s: %s %s\n", __func__, strAction.c_str(), vote.GetHash().ToString().c_str());
     return true;
 }
@@ -166,10 +166,10 @@ bool CFinalizedBudget::CheckProposals(const std::map<uint256, CBudgetProposal>& 
 // Remove votes from masternodes which are not valid/existent anymore
 void CFinalizedBudget::CleanAndRemove()
 {
-    std::map<uint256, CFinalizedBudgetVote>::iterator it = mapVotes.begin();
+    auto it = mapVotes.begin();
 
     while (it != mapVotes.end()) {
-        CMasternode* pmn = mnodeman.Find(it->second.GetVin().prevout);
+        CMasternode* pmn = mnodeman.Find(it->first);
         (*it).second.SetValid(pmn != nullptr);
         ++it;
     }
@@ -289,7 +289,7 @@ std::vector<uint256> CFinalizedBudget::GetVotesHashes() const
 {
     std::vector<uint256> vRet;
     for (const auto& it: mapVotes) {
-        vRet.push_back(it.first);
+        vRet.push_back(it.second.GetHash());
     }
     return vRet;
 }
