@@ -33,6 +33,9 @@ void generateBlock(const CScript& scriptPubKey, int expectedBlockHeight)
     CValidationState state;
     BOOST_CHECK_MESSAGE(ProcessNewBlock(state, nullptr, pblock, nullptr), strprintf("Failed creating block at height %d", expectedBlockHeight));
     BOOST_CHECK(state.IsValid());
+
+    // Let the wallet sync the blocks
+    SyncWithValidationInterfaceQueue();
 }
 
 SaplingOperation createOperationAndBuildTx(std::vector<SendManyRecipient> recipients,
