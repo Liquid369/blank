@@ -11,7 +11,6 @@
 #include "wallet/wallet.h"
 
 #include <set>
-#include <stdint.h>
 #include <utility>
 #include <vector>
 
@@ -334,6 +333,7 @@ CBlockIndex* SimpleFakeMine(CWalletTx& wtx, CBlockIndex* pprev = nullptr)
     BOOST_CHECK(chainActive.Contains(fakeIndex));
     wtx.SetMerkleBranch(fakeIndex->GetBlockHash(), 0);
     removeTxFromMempool(wtx);
+    wtx.fInMempool = false;
     return fakeIndex;
 }
 
@@ -436,6 +436,7 @@ BOOST_AUTO_TEST_CASE(cached_balances_tests)
 
     // GetUnconfirmedBalance requires tx in mempool.
     fakeMempoolInsertion(wtxCredit.tx);
+    wtxCredit.fInMempool = true;
     BOOST_CHECK_EQUAL(wallet.GetUnconfirmedBalance(), nCredit);
 
     // 2) Confirm tx and verify
