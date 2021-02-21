@@ -195,21 +195,21 @@ std::string BCLog::Logger::LogTimestampStr(const std::string &str)
     return strStamped;
 }
 
-int BCLog::Logger::LogPrintStr(const std::string &str)
+void BCLog::Logger::LogPrintStr(const std::string &str)
 {
-    int ret = 0; // Returns total number of characters written
+    std::string strTimestamped = LogTimestampStr(str);
+
     if (m_print_to_console) {
         // print to console
-        ret = fwrite(str.data(), 1, str.size(), stdout);
+        fwrite(strTimestamped.data(), 1, strTimestamped.size(), stdout);
         fflush(stdout);
-    } else if (m_print_to_file) {
+    }
+
+    if (m_print_to_file) {
         std::lock_guard<std::mutex> scoped_lock(m_file_mutex);
 
-        std::string strTimestamped = LogTimestampStr(str);
-
         // buffer if we haven't opened the log yet
-        if (m_fileout == NULL) {
-            ret = strTimestamped.length();
+        if (m_fileout == nullptr) {
             m_msgs_before_open.push_back(strTimestamped);
 
         } else {
@@ -226,8 +226,6 @@ int BCLog::Logger::LogPrintStr(const std::string &str)
             FileWriteStr(strTimestamped, m_fileout);
         }
     }
-
-    return ret;
 }
 
 void BCLog::Logger::ShrinkDebugFile()
