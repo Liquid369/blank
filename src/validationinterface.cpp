@@ -126,6 +126,9 @@ void CallFunctionInValidationInterfaceQueue(std::function<void ()> func) {
 
 void SyncWithValidationInterfaceQueue() {
     AssertLockNotHeld(cs_main);
+    // if queue is empty, do not wait for nothing.s
+    if (g_signals.CallbacksPending() == 0) return;
+
     // Block until the validation queue drains
     std::promise<void> promise;
     CallFunctionInValidationInterfaceQueue([&promise] {

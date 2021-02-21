@@ -70,6 +70,10 @@ bool SolveProofOfStake(CBlock* pblock, CBlockIndex* pindexPrev, CWallet* pwallet
 {
     boost::this_thread::interruption_point();
     pblock->nBits = GetNextWorkRequired(pindexPrev, pblock);
+
+    // Sync wallet before create coinstake
+    pwallet->BlockUntilSyncedToCurrentChain();
+
     CMutableTransaction txCoinStake;
     int64_t nTxNewTime = 0;
     if (!pwallet->CreateCoinStake(*pwallet, pindexPrev, pblock->nBits, txCoinStake, nTxNewTime, availableCoins)) {
