@@ -1899,7 +1899,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     LogPrint(BCLog::BENCH, "- Disconnect block: %.2fms\n", (GetTimeMicros() - nStart) * 0.001);
     const uint256& saplingAnchorAfterDisconnect = pcoinsTip->GetBestAnchor();
     // Write the chain state to disk, if necessary.
-    if (!FlushStateToDisk(state, FLUSH_STATE_ALWAYS))
+    if (!FlushStateToDisk(state, FLUSH_STATE_IF_NEEDED))
         return false;
     // Resurrect mempool transactions from the disconnected block.
     std::vector<uint256> vHashUpdate;
