@@ -77,6 +77,7 @@ class SaplingFillBlockTest(PivxTestFramework):
             txids.append(node.shieldsendmany(from_address, shield_to))
             if (i + 1) % 200 == 0:
                 self.log.info("...%d Transactions created..." % (i + 1))
+                sync_mempools(self.nodes)
         return txids
 
 
