@@ -760,7 +760,7 @@ CAmount SaplingScriptPubKeyMan::GetShieldedChange(const CWalletTx& wtx) const
 
 bool SaplingScriptPubKeyMan::IsNoteSaplingChange(const SaplingOutPoint& op, libzcash::SaplingPaymentAddress address) const
 {
-    LOCK(wallet->cs_KeyStore);
+    LOCK2(wallet->cs_wallet, wallet->cs_KeyStore);
     std::set<libzcash::PaymentAddress> shieldedAddresses = {address};
     std::set<std::pair<libzcash::PaymentAddress, uint256>> nullifierSet = GetNullifiersForAddresses(shieldedAddresses);
     return IsNoteSaplingChange(nullifierSet, address, op);
