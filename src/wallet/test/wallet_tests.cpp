@@ -420,6 +420,7 @@ BOOST_AUTO_TEST_CASE(cached_balances_tests)
     LOCK2(cs_main, wallet.cs_wallet);
     wallet.SetMinVersion(FEATURE_PRE_SPLIT_KEYPOOL);
     wallet.SetupSPKM(false);
+    wallet.SetLastBlockProcessed(chainActive.Tip());
 
     // Receive balance from an external source
     CTxDestination receivingAddr;

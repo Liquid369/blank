@@ -351,8 +351,8 @@ BOOST_AUTO_TEST_CASE(SaplingNullifierIsSpent) {
     BOOST_CHECK(chainActive.Contains(&fakeIndex));
     BOOST_CHECK_EQUAL(0, chainActive.Height());
 
-    wtx.m_confirm = CWalletTx::Confirmation(CWalletTx::Status::CONFIRMED, 0, block.GetHash(), 0);
-    wallet.LoadToWallet(wtx);
+    std::vector<CTransactionRef> vtxConflicted;
+    wallet.BlockConnected(std::make_shared<CBlock>(block), mi->second, vtxConflicted);
 
     // Verify note has been spent
     BOOST_CHECK(wallet.GetSaplingScriptPubKeyMan()->IsSaplingSpent(nullifier));
@@ -421,6 +421,7 @@ BOOST_AUTO_TEST_CASE(NavigateFromSaplingNullifierToNote) {
     wallet.LoadToWallet(wtx);
 
     // Verify dummy note is now spent, as AddToWallet invokes AddToSpends()
+    wallet.SetLastBlockProcessed(mi->second);
     BOOST_CHECK(wallet.GetSaplingScriptPubKeyMan()->IsSaplingSpent(nullifier));
 
     // Test invariant: no witnesses means no nullifier.
@@ -520,6 +521,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     // in the output descriptions of wtx.
     wallet.IncrementNoteWitnesses(&fakeIndex, &block, saplingTree);
     wallet.GetSaplingScriptPubKeyMan()->UpdateSaplingNullifierNoteMapForBlock(&block);
+    wallet.SetLastBlockProcessed(mi->second);
 
     // Retrieve the updated wtx from wallet
     wtx = wallet.mapWallet.at(wtx.GetHash());
@@ -590,6 +592,7 @@ BOOST_AUTO_TEST_CASE(SpentSaplingNoteIsFromMe) {
     wtx2.SetSaplingNoteData(saplingNoteData2);
     wtx2.m_confirm = CWalletTx::Confirmation(CWalletTx::Status::CONFIRMED, fakeIndex2.nHeight, block2.GetHash(), 0);
     wallet.LoadToWallet(wtx2);
+    wallet.SetLastBlockProcessed(mi2->second);
 
     // Verify note B is spent. AddToWallet invokes AddToSpends which updates mapTxSaplingNullifiers
     BOOST_CHECK(wallet.GetSaplingScriptPubKeyMan()->IsSaplingSpent(nullifier2));

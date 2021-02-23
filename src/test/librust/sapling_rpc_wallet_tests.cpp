@@ -429,12 +429,13 @@ BOOST_AUTO_TEST_CASE(rpc_shieldsendmany_taddr_to_sapling)
     auto blockHash = block.GetHash();
     CBlockIndex fakeIndex {block};
     fakeIndex.nHeight = 1;
-    mapBlockIndex.insert(std::make_pair(blockHash, &fakeIndex));
+    BlockMap::iterator mi = mapBlockIndex.emplace(blockHash, &fakeIndex).first;
+    fakeIndex.phashBlock = &((*mi).first);
     chainActive.SetTip(&fakeIndex);
     BOOST_CHECK(chainActive.Contains(&fakeIndex));
     BOOST_CHECK_EQUAL(1, chainActive.Height());
-    wtx.m_confirm = CWalletTx::Confirmation(CWalletTx::Status::CONFIRMED, fakeIndex.nHeight, blockHash, 0);
-    pwalletMain->LoadToWallet(wtx);
+    std::vector<CTransactionRef> vtxConflicted;
+    pwalletMain->BlockConnected(std::make_shared<CBlock>(block), mi->second, vtxConflicted);
     BOOST_CHECK_MESSAGE(pwalletMain->GetAvailableBalance() > 0, "tx not confirmed");
 
     // Context that shieldsendmany requires
