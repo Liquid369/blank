@@ -3039,7 +3039,9 @@ bool CWallet::CreateCoinStake(
         if (IsLocked() || ShutdownRequested()) return false;
 
         // Make sure the stake input hasn't been spent since last check
-        if (IsSpent(outPoint)) {
+        // for now, IsSpent() requires cs_main lock due its internal call to GetDepthInMainChain.
+        // This dependency will be completely removed moving forward, in #2209.
+        if (WITH_LOCK(cs_main, return IsSpent(outPoint))) {
             // remove it from the available coins
             it = availableCoins->erase(it);
             continue;
