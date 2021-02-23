@@ -67,7 +67,7 @@ class ChainstateWriteCrashTest(PivxTestFramework):
         self.node2_args = ["-dbcrashratio=24", "-dbcache=16", "-dbbatchsize=200000"] + self.base_args
 
         # Node3 is a normal node with default args, except will mine full blocks
-        self.node3_args = ["-blockmaxweight=4000000"] + self.chain_params # future: back port blockmaxweight
+        self.node3_args = ["-blockmaxsize=1999000"] + self.chain_params # future: back port blockmaxweight
         self.extra_args = [self.node0_args, self.node1_args, self.node2_args, self.node3_args]
 
     def setup_network(self):
