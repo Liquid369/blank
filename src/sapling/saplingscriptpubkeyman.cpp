@@ -203,7 +203,7 @@ void UpdateWitnessHeights(NoteDataMap& noteDataMap, int indexHeight, int64_t nWi
 }
 
 void SaplingScriptPubKeyMan::IncrementNoteWitnesses(const CBlockIndex* pindex,
-                                     const CBlock* pblockIn,
+                                     const CBlock* pblock,
                                      SaplingMerkleTree& saplingTree)
 {
     LOCK(wallet->cs_wallet);
@@ -215,17 +215,6 @@ void SaplingScriptPubKeyMan::IncrementNoteWitnesses(const CBlockIndex* pindex,
     if (nWitnessCacheSize < WITNESS_CACHE_SIZE) {
         nWitnessCacheSize += 1;
         nWitnessCacheNeedsUpdate = true;
-    }
-
-    const CBlock* pblock {pblockIn};
-    CBlock block;
-    if (!pblock) {
-        if (!ReadBlockFromDisk(block, pindex)) {
-            std::string read_failed_str = strprintf("Unable to read block %d (%s) from disk.",
-                    pindex->nHeight, pindex->GetBlockHash().ToString());
-            throw std::runtime_error(read_failed_str);
-        }
-        pblock = &block;
     }
 
     for (const auto& tx : pblock->vtx) {
