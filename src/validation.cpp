@@ -1253,8 +1253,6 @@ DisconnectResult DisconnectBlock(CBlock& block, const CBlockIndex* pindex, CCoin
     bool fClean = true;
 
     CBlockUndo blockUndo;
-    CAmount nValueOut = 0;
-    CAmount nValueIn = 0;
     CDiskBlockPos pos = pindex->GetUndoPos();
     if (pos.IsNull()) {
         error("%s: no undo data available", __func__);
@@ -1274,10 +1272,9 @@ DisconnectResult DisconnectBlock(CBlock& block, const CBlockIndex* pindex, CCoin
     for (int i = block.vtx.size() - 1; i >= 0; i--) {
         const CTransaction& tx = *block.vtx[i];
 
-        if (!DisconnectZerocoinTx(tx, nValueIn, zerocoinDB))
+        if (!DisconnectZerocoinTx(tx, zerocoinDB))
             return DISCONNECT_FAILED;
 
-        nValueOut += tx.GetValueOut();
         const uint256& hash = tx.GetHash();
 
         // if tx is a budget collateral tx, remove relative object
@@ -1317,9 +1314,6 @@ DisconnectResult DisconnectBlock(CBlock& block, const CBlockIndex* pindex, CCoin
             fClean = fClean && res != DISCONNECT_UNCLEAN;
         }
         // At this point, all of txundo.vprevout should have been moved out.
-
-        if (view.HaveInputs(tx))
-            nValueIn += view.GetValueIn(tx);
     }
 
     const Consensus::Params& consensus = Params().GetConsensus();

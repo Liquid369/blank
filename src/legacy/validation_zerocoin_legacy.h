@@ -11,7 +11,7 @@
 #include "validationinterface.h"
 
 bool AcceptToMemoryPoolZerocoin(const CTransaction& tx, CAmount& nValueIn, int chainHeight, CValidationState& state, const Consensus::Params& consensus);
-bool DisconnectZerocoinTx(const CTransaction& tx, CAmount& nValueIn, CZerocoinDB* zerocoinDB);
+bool DisconnectZerocoinTx(const CTransaction& tx, CZerocoinDB* zerocoinDB);
 void DataBaseAccChecksum(const CBlockIndex* pindex, bool fWrite);
 
 #endif //VALIDATION_ZEROCOIN_LEGACY_H
