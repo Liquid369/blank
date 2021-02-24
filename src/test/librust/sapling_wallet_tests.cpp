@@ -614,8 +614,10 @@ BOOST_AUTO_TEST_CASE(CachedWitnessesEmptyChain) {
     auto consensusParams = RegtestActivateSapling();
 
     CWallet& wallet = *pwalletMain;
-    LOCK(wallet.cs_wallet);
-    setupWallet(wallet);
+    {
+        LOCK(wallet.cs_wallet);
+        setupWallet(wallet);
+    }
 
     auto sk = GetTestMasterSaplingSpendingKey();
     CWalletTx wtx = GetValidSaplingReceive(Params().GetConsensus(), wallet, sk, 10, true);
@@ -653,17 +655,18 @@ BOOST_AUTO_TEST_CASE(CachedWitnessesEmptyChain) {
 BOOST_AUTO_TEST_CASE(CachedWitnessesChainTip) {
     auto consensusParams = RegtestActivateSapling();
 
+    libzcash::SaplingExtendedSpendingKey sk = GetTestMasterSaplingSpendingKey();
     CWallet& wallet = *pwalletMain;
-    LOCK(wallet.cs_wallet);
-    setupWallet(wallet);
+    {
+        LOCK(wallet.cs_wallet);
+        setupWallet(wallet);
+        BOOST_CHECK(wallet.AddSaplingZKey(sk));
+        BOOST_CHECK(wallet.HaveSaplingSpendingKey(sk.ToXFVK()));
+    }
 
     uint256 anchors1;
     CBlock block1;
     SaplingMerkleTree saplingTree;
-
-    libzcash::SaplingExtendedSpendingKey sk = GetTestMasterSaplingSpendingKey();
-    BOOST_CHECK(wallet.AddSaplingZKey(sk));
-    BOOST_CHECK(wallet.HaveSaplingSpendingKey(sk.ToXFVK()));
 
     {
         // First block (case tested in _empty_chain)
@@ -731,15 +734,15 @@ BOOST_AUTO_TEST_CASE(CachedWitnessesChainTip) {
 BOOST_AUTO_TEST_CASE(CachedWitnessesDecrementFirst) {
     auto consensusParams = RegtestActivateSapling();
 
+    libzcash::SaplingExtendedSpendingKey sk = GetTestMasterSaplingSpendingKey();
     CWallet& wallet = *pwalletMain;
-    LOCK(wallet.cs_wallet);
-    setupWallet(wallet);
+    {
+        LOCK(wallet.cs_wallet);
+        setupWallet(wallet);
+        BOOST_CHECK(wallet.AddSaplingZKey(sk));
+    }
 
     SaplingMerkleTree saplingTree;
-
-    libzcash::SaplingExtendedSpendingKey sk = GetTestMasterSaplingSpendingKey();
-    BOOST_CHECK(wallet.AddSaplingZKey(sk));
-
     {
         // First block (case tested in _empty_chain)
         CBlock block1;
@@ -799,9 +802,13 @@ BOOST_AUTO_TEST_CASE(CachedWitnessesDecrementFirst) {
 BOOST_AUTO_TEST_CASE(CachedWitnessesCleanIndex) {
     auto consensusParams = RegtestActivateSapling();
 
+    libzcash::SaplingExtendedSpendingKey sk = GetTestMasterSaplingSpendingKey();
     CWallet& wallet = *pwalletMain;
-    LOCK(wallet.cs_wallet);
-    setupWallet(wallet);
+    {
+        LOCK(wallet.cs_wallet);
+        setupWallet(wallet);
+        BOOST_CHECK(wallet.AddSaplingZKey(sk));
+    }
 
     std::vector<CBlock> blocks;
     std::vector<CBlockIndex> indices;
@@ -810,9 +817,6 @@ BOOST_AUTO_TEST_CASE(CachedWitnessesCleanIndex) {
     SaplingMerkleTree saplingTree;
     SaplingMerkleTree saplingRiTree = saplingTree;
     std::vector<Optional<SaplingWitness>> saplingWitnesses;
-
-    libzcash::SaplingExtendedSpendingKey sk = GetTestMasterSaplingSpendingKey();
-    BOOST_CHECK(wallet.AddSaplingZKey(sk));
 
     // Generate a chain
     size_t numBlocks = WITNESS_CACHE_SIZE + 10;
@@ -874,12 +878,13 @@ BOOST_AUTO_TEST_CASE(CachedWitnessesCleanIndex) {
 BOOST_AUTO_TEST_CASE(ClearNoteWitnessCache) {
     auto consensusParams = RegtestActivateSapling();
 
-    CWallet& wallet = *pwalletMain;
-    LOCK(wallet.cs_wallet);
-    setupWallet(wallet);
-
     libzcash::SaplingExtendedSpendingKey sk = GetTestMasterSaplingSpendingKey();
-    BOOST_CHECK(wallet.AddSaplingZKey(sk));
+    CWallet& wallet = *pwalletMain;
+    {
+        LOCK(wallet.cs_wallet);
+        setupWallet(wallet);
+        BOOST_CHECK(wallet.AddSaplingZKey(sk));
+    }
 
     CWalletTx wtx = GetValidSaplingReceive(Params().GetConsensus(),
                                            wallet, sk, 10, true);
@@ -922,7 +927,8 @@ BOOST_AUTO_TEST_CASE(UpdatedSaplingNoteData) {
     auto consensusParams = RegtestActivateSapling();
 
     CWallet& wallet = *pwalletMain;
-    LOCK(wallet.cs_wallet);
+    // Need to lock cs_main for now due the lock ordering. future: revamp all of this function to only lock where is needed.
+    LOCK2(cs_main, wallet.cs_wallet);
     setupWallet(wallet);
 
     auto m = GetTestMasterSaplingSpendingKey();
