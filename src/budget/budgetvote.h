@@ -50,7 +50,7 @@ public:
     // override CSignedMessage functions
     uint256 GetSignatureHash() const override { return GetHash(); }
     std::string GetStrMessage() const override;
-    const CTxIn GetVin() const override { return vin; };
+    CTxIn GetVin() const { return vin; };
 
     UniValue ToJSON() const;
 

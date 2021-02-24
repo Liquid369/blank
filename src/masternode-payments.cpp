@@ -430,7 +430,8 @@ void CMasternodePayments::ProcessMessageMasternodePayments(CNode* pfrom, std::st
             return;
         }
 
-        if (!winner.CheckSignature()) {
+        const CMasternode* pmn = mnodeman.Find(winner.vinMasternode.prevout);
+        if (!pmn || !winner.CheckSignature(pmn->pubKeyMasternode.GetID())) {
             if (masternodeSync.IsSynced()) {
                 LogPrintf("CMasternodePayments::ProcessMessageMasternodePayments() : mnw - invalid signature\n");
                 LOCK(cs_main);
@@ -676,7 +677,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     activeMasternode.GetKeys(keyMasternode, pubKeyMasternode);
 
     LogPrint(BCLog::MASTERNODE,"CMasternodePayments::ProcessBlock() - Signing Winner\n");
-    if (newWinner.Sign(keyMasternode, pubKeyMasternode)) {
+    if (newWinner.Sign(keyMasternode, pubKeyMasternode.GetID())) {
         LogPrint(BCLog::MASTERNODE,"CMasternodePayments::ProcessBlock() - AddWinningMasternode\n");
 
         if (AddWinningMasternode(newWinner)) {

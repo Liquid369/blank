@@ -23,9 +23,9 @@ bool CheckSpecialTx(const CTransaction& tx, CValidationState& state, bool fIsSap
     }
 
     // After Sapling activation.
-    // v1 can only be Type=0
+    // v1/v2 can only be Type=0
     if (!tx.isSaplingVersion() && tx.nType != CTransaction::TxType::NORMAL) {
-        return state.DoS(100, error("%s: Type %d not supported with version 0", __func__, tx.nType),
+        return state.DoS(100, error("%s: Type %d not supported with version %d", __func__, tx.nType, tx.nVersion),
                          REJECT_INVALID, "bad-txns-type-version");
     }
     if (tx.nType == CTransaction::TxType::NORMAL) {

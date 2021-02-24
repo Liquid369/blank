@@ -182,7 +182,7 @@ public:
     // override CSignedMessage functions
     uint256 GetSignatureHash() const override { return GetHash(); }
     std::string GetStrMessage() const override;
-    const CTxIn GetVin() const override { return vinMasternode; };
+    CTxIn GetVin() const { return vinMasternode; };
 
     bool IsValid(CNode* pnode, std::string& strError);
     void Relay();

@@ -176,7 +176,7 @@ bool CActiveMasternode::SendMasternodePing(std::string& errorMessage)
 
     const uint256& nBlockHash = mnodeman.GetBlockHashToPing();
     CMasternodePing mnp(*vin, nBlockHash, GetAdjustedTime());
-    if (!mnp.Sign(privKeyMasternode, pubKeyMasternode)) {
+    if (!mnp.Sign(privKeyMasternode, pubKeyMasternode.GetID())) {
         errorMessage = "Couldn't sign Masternode Ping";
         return false;
     }

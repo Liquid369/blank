@@ -928,7 +928,7 @@ UniValue decodemasternodebroadcast(const JSONRPCRequest& request)
     lastPingObj.pushKV("vin", mnb.lastPing.vin.prevout.ToString());
     lastPingObj.pushKV("blockhash", mnb.lastPing.blockHash.ToString());
     lastPingObj.pushKV("sigtime", mnb.lastPing.sigTime);
-    lastPingObj.pushKV("sigvalid", mnb.lastPing.CheckSignature(mnb.pubKeyMasternode) ? "true" : "false");
+    lastPingObj.pushKV("sigvalid", mnb.lastPing.CheckSignature(mnb.pubKeyMasternode.GetID()) ? "true" : "false");
     lastPingObj.pushKV("vchsig", mnb.lastPing.GetSignatureBase64());
     lastPingObj.pushKV("nMessVersion", mnb.lastPing.nMessVersion);
 

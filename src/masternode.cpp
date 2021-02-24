@@ -193,8 +193,8 @@ bool CMasternode::IsInputAssociatedWithPubkey() const
     CTransactionRef txVin;
     uint256 hash;
     if(GetTransaction(vin.prevout.hash, txVin, hash, true)) {
-        for (CTxOut out : txVin->vout) {
-            if (out.nValue == 10000 * COIN && out.scriptPubKey == payee) return true;
+        for (const CTxOut& out : txVin->vout) {
+            if (out.nValue == MN_COLL_AMT && out.scriptPubKey == payee) return true;
         }
     }
 
@@ -288,7 +288,7 @@ bool CMasternodeBroadcast::Create(const CTxIn& txin,
     // Get block hash to ping (TODO: move outside of this function)
     const uint256& nBlockHashToPing = mnodeman.GetBlockHashToPing();
     CMasternodePing mnp(txin, nBlockHashToPing, GetAdjustedTime());
-    if (!mnp.Sign(keyMasternodeNew, pubKeyMasternodeNew)) {
+    if (!mnp.Sign(keyMasternodeNew, pubKeyMasternodeNew.GetID())) {
         strErrorRet = strprintf("Failed to sign ping, masternode=%s", txin.prevout.hash.ToString());
         LogPrint(BCLog::MASTERNODE,"CMasternodeBroadcast::Create -- %s\n", strErrorRet);
         mnbRet = CMasternodeBroadcast();
@@ -595,7 +595,7 @@ bool CMasternodePing::CheckAndUpdate(int& nDos, bool fRequireAvailable, bool fCh
     // see if we have this Masternode
     CMasternode* pmn = mnodeman.Find(vin.prevout);
     const bool isMasternodeFound = (pmn != nullptr);
-    const bool isSignatureValid = (isMasternodeFound && CheckSignature(pmn->pubKeyMasternode));
+    const bool isSignatureValid = (isMasternodeFound && CheckSignature(pmn->pubKeyMasternode.GetID()));
 
     if(fCheckSigTimeOnly) {
         if (isMasternodeFound && !isSignatureValid) {

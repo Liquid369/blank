@@ -46,12 +46,11 @@ BOOST_AUTO_TEST_CASE(special_tx_validation_test)
     BOOST_CHECK(state.GetRejectReason().find("without extra payload"));
 
     // Size limits
-    mtx.extraPayload = std::vector<uint8_t>(10001, 1);
+    mtx.extraPayload = std::vector<uint8_t>(MAX_SPECIALTX_EXTRAPAYLOAD + 1, 1);
     BOOST_CHECK(!CheckSpecialTx(CTransaction(mtx), state, true));
     BOOST_CHECK(state.GetRejectReason().find("Special tx payload oversize"));
 
-    // Remove two elements, so now it passes the size check
-    mtx.extraPayload->pop_back();
+    // Remove one element, so now it passes the size check
     mtx.extraPayload->pop_back();
     BOOST_CHECK(!CheckSpecialTx(CTransaction(mtx), state, true));
     BOOST_CHECK(state.GetRejectReason().find("with invalid type"));

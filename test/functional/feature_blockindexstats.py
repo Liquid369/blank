@@ -138,8 +138,6 @@ class BlockIndexStatsTest(PivxTestFramework):
         assert_equal(count_tx + NUM_BLOCKS, alice_stats['txcount_all'])
         assert_equal(count_bytes, alice_stats['txbytes'])
         assert_equal(count_fees, float(alice_stats['ttlfee']))
-        # 1 sat rounding error
-        assert(abs(feePerK - float(alice_stats['feeperkb'])) <= 0.00000001)
 
 
 

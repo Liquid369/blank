@@ -9,6 +9,8 @@
 #include "key.h"
 #include "primitives/transaction.h" // for CTxIn
 
+extern const std::string strMessageMagic;
+
 enum MessageVersion {
         MESS_VER_STRMESS    = 0,
         MESS_VER_HASH       = 1,
@@ -61,20 +63,14 @@ public:
     virtual ~CSignedMessage() {};
 
     // Sign-Verify message
-    bool Sign(const CKey& key, const CPubKey& pubKey);
+    bool Sign(const CKey& key, const CKeyID& keyID);
     bool Sign(const std::string strSignKey);
-    bool CheckSignature(const CPubKey& pubKey) const;
-    bool CheckSignature() const;
+    bool CheckSignature(const CKeyID& keyID) const;
 
     // Pure virtual functions (used in Sign-Verify functions)
     // Must be implemented in child classes
     virtual uint256 GetSignatureHash() const = 0;
     virtual std::string GetStrMessage() const = 0;
-    virtual const CTxIn GetVin() const = 0;
-
-    // GetPublicKey defaults to public key of masternode with vin from GetVin.
-    // Child classes can override if public key is directly accessible.
-    virtual const CPubKey GetPublicKey(std::string& strErrorRet) const;
 
     // Setters and getters
     void SetVchSig(const std::vector<unsigned char>& vchSigIn) { vchSig = vchSigIn; }

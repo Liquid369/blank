@@ -238,7 +238,7 @@ bool voteProposal(CPubKey& pubKeyMasternode, CKey& keyMasternode, const std::str
     }
 
     CBudgetVote vote(pmn->vin, propHash, nVote);
-    if (!vote.Sign(keyMasternode, pubKeyMasternode)) {
+    if (!vote.Sign(keyMasternode, pubKeyMasternode.GetID())) {
         resultsObj.push_back(packErrorRetStatus(mnAlias, "Failure to sign."));
         return false;
     }
@@ -591,10 +591,10 @@ UniValue mnbudgetrawvote(const JSONRPCRequest& request)
     vote.SetTime(nTime);
     vote.SetVchSig(vchSig);
 
-    if (!vote.CheckSignature()) {
+    if (!vote.CheckSignature(pmn->pubKeyMasternode.GetID())) {
         // try old message version
         vote.nMessVersion = MessageVersion::MESS_VER_STRMESS;
-        if (!vote.CheckSignature()) return "Failure to verify signature.";
+        if (!vote.CheckSignature(pmn->pubKeyMasternode.GetID())) return "Failure to verify signature.";
     }
 
     std::string strError;
@@ -681,7 +681,7 @@ UniValue mnfinalbudget(const JSONRPCRequest& request)
 
 
             CFinalizedBudgetVote vote(pmn->vin, hash);
-            if (!vote.Sign(keyMasternode, pubKeyMasternode)) {
+            if (!vote.Sign(keyMasternode, pubKeyMasternode.GetID())) {
                 failed++;
                 statusObj.pushKV("result", "failed");
                 statusObj.pushKV("errorMessage", "Failure to sign.");
@@ -732,7 +732,7 @@ UniValue mnfinalbudget(const JSONRPCRequest& request)
         }
 
         CFinalizedBudgetVote vote(*(activeMasternode.vin), hash);
-        if (!vote.Sign(keyMasternode, pubKeyMasternode)) {
+        if (!vote.Sign(keyMasternode, pubKeyMasternode.GetID())) {
             return "Failure to sign.";
         }
 
