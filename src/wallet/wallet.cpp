@@ -1290,38 +1290,43 @@ void CWallet::TransactionRemovedFromMempool(const CTransactionRef &ptx) {
 
 void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted)
 {
-    LOCK(cs_wallet);
+    {
+        LOCK(cs_wallet);
 
-    m_last_block_processed = pindex->GetBlockHash();
-    m_last_block_processed_time = pindex->GetBlockTime();
-    m_last_block_processed_height = pindex->nHeight;
-    for (size_t index = 0; index < pblock->vtx.size(); index++) {
-        CWalletTx::Confirmation confirm(CWalletTx::Status::CONFIRMED, m_last_block_processed_height, m_last_block_processed->GetBlockHash(), index);
-        SyncTransaction(pblock->vtx[index], confirm);
-        TransactionRemovedFromMempool(pblock->vtx[index]);
-    }
-    for (const CTransactionRef& ptx : vtxConflicted) {
-        TransactionRemovedFromMempool(ptx);
-    }
+        m_last_block_processed = pindex->GetBlockHash();
+        m_last_block_processed_time = pindex->GetBlockTime();
+        m_last_block_processed_height = pindex->nHeight;
+        for (size_t index = 0; index < pblock->vtx.size(); index++) {
+            CWalletTx::Confirmation confirm(CWalletTx::Status::CONFIRMED, m_last_block_processed_height,
+                                            m_last_block_processed, index);
+            SyncTransaction(pblock->vtx[index], confirm);
+            TransactionRemovedFromMempool(pblock->vtx[index]);
+        }
+        for (const CTransactionRef& ptx : vtxConflicted) {
+            TransactionRemovedFromMempool(ptx);
+        }
 
-    // Sapling: notify about the connected block
-    // Get prev block tree anchor
-    CBlockIndex* pprev = pindex->pprev;
-    SaplingMerkleTree oldSaplingTree;
-    bool isSaplingActive = (pprev) != nullptr &&
-                           Params().GetConsensus().NetworkUpgradeActive(pprev->nHeight,
-                                                                        Consensus::UPGRADE_V5_0);
-    if (isSaplingActive) {
-        assert(pcoinsTip->GetSaplingAnchorAt(pprev->hashFinalSaplingRoot, oldSaplingTree));
-    } else {
-        assert(pcoinsTip->GetSaplingAnchorAt(SaplingMerkleTree::empty_root(), oldSaplingTree));
-    }
+        // Sapling: notify about the connected block
+        // Get prev block tree anchor
+        CBlockIndex* pprev = pindex->pprev;
+        SaplingMerkleTree oldSaplingTree;
+        bool isSaplingActive = (pprev) != nullptr &&
+                               Params().GetConsensus().NetworkUpgradeActive(pprev->nHeight,
+                                                                            Consensus::UPGRADE_V5_0);
+        if (isSaplingActive) {
+            assert(pcoinsTip->GetSaplingAnchorAt(pprev->hashFinalSaplingRoot, oldSaplingTree));
+        } else {
+            assert(pcoinsTip->GetSaplingAnchorAt(SaplingMerkleTree::empty_root(), oldSaplingTree));
+        }
 
-    // Sapling: Update cached incremental witnesses
-    ChainTipAdded(pindex, pblock.get(), oldSaplingTree);
+        // Sapling: Update cached incremental witnesses
+        ChainTipAdded(pindex, pblock.get(), oldSaplingTree);
+    } // cs_wallet lock end
 
     // Auto-combine functionality
     // If turned on Auto Combine will scan wallet for dust to combine
+    // Outside of the cs_wallet lock because requires cs_main for now
+    // due CreateTransaction/CommitTransaction dependency.
     if (fCombineDust) {
         AutoCombineDust(g_connman.get());
     }
@@ -3848,11 +3853,13 @@ bool CWallet::LoadDestData(const CTxDestination& dest, const std::string& key, c
 
 void CWallet::AutoCombineDust(CConnman* connman)
 {
-    AssertLockHeld(cs_wallet);
-    if (m_last_block_processed.IsNull() ||
-        m_last_block_processed_time < (GetAdjustedTime() - 300) ||
-        IsLocked()) {
-        return;
+    {
+        LOCK(cs_wallet);
+        if (m_last_block_processed.IsNull() ||
+            m_last_block_processed_time < (GetAdjustedTime() - 300) ||
+            IsLocked()) {
+            return;
+        }
     }
 
     std::map<CTxDestination, std::vector<COutput> > mapCoinsByAddress =
@@ -3922,9 +3929,14 @@ void CWallet::AutoCombineDust(CConnman* connman)
         // 10% safety margin to avoid "Insufficient funds" errors
         vecSend[0].nAmount = nTotalRewardsValue - (nTotalRewardsValue / 10);
 
-        if (!CreateTransaction(vecSend, wtx, keyChange, nFeeRet, nChangePosInOut, strErr, coinControl, ALL_COINS, true, false, CAmount(0))) {
-            LogPrintf("AutoCombineDust createtransaction failed, reason: %s\n", strErr);
-            continue;
+        {
+            // For now, CreateTransaction requires cs_main lock.
+            LOCK2(cs_main, cs_wallet);
+            if (!CreateTransaction(vecSend, wtx, keyChange, nFeeRet, nChangePosInOut, strErr, coinControl, ALL_COINS,
+                                   true, false, CAmount(0))) {
+                LogPrintf("AutoCombineDust createtransaction failed, reason: %s\n", strErr);
+                continue;
+            }
         }
 
         //we don't combine below the threshold unless the fees are 0 to avoid paying fees over fees over fees
