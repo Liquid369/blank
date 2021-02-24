@@ -331,8 +331,8 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     int chainHeight = chainActive.Height();
     bool fSaplingActive = consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_V5_0);
 
-    // If v5 is active, bye bye zerocoin
-    if (fSaplingActive && hasTxZerocoins) {
+    // Zerocoin txes are not longer accepted in the mempool.
+    if (hasTxZerocoins) {
         return state.DoS(100, error("%s : v5 upgrade enforced, zerocoin disabled", __func__));
     }
 
@@ -371,10 +371,6 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     const uint256& hash = tx.GetHash();
     if (pool.exists(hash)) {
         return state.Invalid(false, REJECT_ALREADY_KNOWN, "txn-already-in-mempool");
-    }
-
-    if (tx.ContainsZerocoins()) { // zc txes are not longer accepted.
-        return state.Invalid(false, REJECT_CONFLICT, "bad-txn-zc");
     }
 
     // Check for conflicts with in-memory transactions
@@ -436,11 +432,6 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
             if (!ValidOutPoint(txin.prevout, chainHeight))
                 return state.Invalid(false, REJECT_INVALID, "bad-txns-invalid-inputs");
         }
-
-        // Reject legacy zPIV mints
-        if (!Params().IsRegTestNet() && tx.HasZerocoinMintOutputs())
-            return state.Invalid(error("%s : tried to include zPIV mint output in tx %s",
-                    __func__, tx.GetHash().GetHex()), REJECT_INVALID, "bad-zc-spend-mint");
 
         // Sapling: are the sapling spends' requirements met in tx(valid anchors/nullifiers)?
         if (!view.HaveShieldedRequirements(tx))
