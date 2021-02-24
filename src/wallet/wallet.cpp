@@ -1270,7 +1270,7 @@ void CWallet::SyncTransaction(const CTransactionRef& ptx, const CWalletTx::Confi
 
 void CWallet::TransactionAddedToMempool(const CTransactionRef& ptx)
 {
-    LOCK2(cs_main, cs_wallet);
+    LOCK(cs_wallet);
     CWalletTx::Confirmation confirm(CWalletTx::Status::UNCONFIRMED, /* block_height */ 0, {}, /* nIndex */ 0);
     SyncTransaction(ptx, confirm);
 
@@ -1290,7 +1290,7 @@ void CWallet::TransactionRemovedFromMempool(const CTransactionRef &ptx) {
 
 void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const CBlockIndex *pindex, const std::vector<CTransactionRef>& vtxConflicted)
 {
-    LOCK2(cs_main, cs_wallet);
+    LOCK(cs_wallet);
 
     m_last_block_processed = pindex->GetBlockHash();
     m_last_block_processed_time = pindex->GetBlockTime();
@@ -1329,7 +1329,7 @@ void CWallet::BlockConnected(const std::shared_ptr<const CBlock>& pblock, const 
 
 void CWallet::BlockDisconnected(const std::shared_ptr<const CBlock>& pblock, const uint256& blockHash, int nBlockHeight, int64_t blockTime)
 {
-    LOCK2(cs_main, cs_wallet);
+    LOCK(cs_wallet);
 
     // At block disconnection, this will change an abandoned transaction to
     // be unconfirmed, whether or not the transaction is added back to the mempool.
@@ -3848,7 +3848,7 @@ bool CWallet::LoadDestData(const CTxDestination& dest, const std::string& key, c
 
 void CWallet::AutoCombineDust(CConnman* connman)
 {
-    LOCK(cs_wallet);
+    AssertLockHeld(cs_wallet);
     if (m_last_block_processed.IsNull() ||
         m_last_block_processed_time < (GetAdjustedTime() - 300) ||
         IsLocked()) {
