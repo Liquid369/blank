@@ -6,7 +6,6 @@
 
 #include "chain.h"
 #include "txdb.h"
-#include "zpiv/deterministicmint.h"
 #include "wallet/wallet.h"
 
 CPivStake* CPivStake::NewPivStake(const CTxIn& txin)

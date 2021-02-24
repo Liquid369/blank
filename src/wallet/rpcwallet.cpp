@@ -31,7 +31,6 @@
 #include <stdint.h>
 
 #include "spork.h"
-#include "zpiv/deterministicmint.h"
 
 #include <univalue.h>
 #include <iostream>

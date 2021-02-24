@@ -294,7 +294,6 @@ BITCOIN_CORE_H = \
   wallet/walletdb.h \
   warnings.h \
   zpivchain.h \
-  zpiv/deterministicmint.h \
   zpiv/mintpool.h \
   zpiv/zerocoin.h \
   zpiv/zpos.h \
@@ -404,7 +403,6 @@ libbitcoin_wallet_a_SOURCES = \
   destination_io.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
-  zpiv/deterministicmint.cpp \
   zpiv/zerocoin.cpp \
   zpiv/mintpool.cpp \
   stakeinput.cpp \
@@ -497,7 +495,6 @@ libbitcoin_common_a_SOURCES = \
   compressor.cpp \
   consensus/merkle.cpp \
   primitives/block.cpp \
-  zpiv/deterministicmint.cpp \
   primitives/transaction.cpp \
   zpiv/zerocoin.cpp \
   core_read.cpp \

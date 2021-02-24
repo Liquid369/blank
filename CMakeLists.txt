@@ -283,7 +283,6 @@ set(WALLET_SOURCES
         ./src/zpiv/mintpool.cpp
         ./src/wallet/hdchain.cpp
         ./src/wallet/rpcdump.cpp
-        ./src/zpiv/deterministicmint.cpp
         ./src/zpiv/zerocoin.cpp
         ./src/wallet/scriptpubkeyman.cpp
         ./src/wallet/rpcwallet.cpp
@@ -389,7 +388,6 @@ set(COMMON_SOURCES
         ./src/consensus/tx_verify.cpp
         ./src/consensus/zerocoin_verify.cpp
         ./src/primitives/block.cpp
-        ./src/zpiv/deterministicmint.cpp
         ./src/primitives/transaction.cpp
         ./src/zpiv/zerocoin.cpp
         ./src/core_read.cpp

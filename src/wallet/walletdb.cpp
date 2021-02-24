@@ -17,7 +17,6 @@
 #include "util.h"
 #include "utiltime.h"
 #include "wallet/wallet.h"
-#include <zpiv/deterministicmint.h>
 
 #include <atomic>
 #include <string>
