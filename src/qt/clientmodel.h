@@ -117,7 +117,7 @@ private:
     QString cachedMasternodeCountString;
     bool cachedReindexing;
     bool cachedImporting;
-    bool cachedInitialSync;
+    std::atomic<bool> cachedInitialSync{false};
 
     int numBlocksAtStartup;
 
