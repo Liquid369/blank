@@ -1971,11 +1971,9 @@ bool AppInitMain()
 
     // ********************************************************* Step 12: finished
 
-    SetRPCWarmupFinished();
-    uiInterface.InitMessage(_("Done loading"));
-
 #ifdef ENABLE_WALLET
     if (pwalletMain) {
+        uiInterface.InitMessage(_("Reaccepting wallet transactions..."));
         pwalletMain->postInitProcess(scheduler);
 
         // StakeMiner thread disabled by default on regtest
@@ -1984,6 +1982,9 @@ bool AppInitMain()
         }
     }
 #endif
+
+    SetRPCWarmupFinished();
+    uiInterface.InitMessage(_("Done loading"));
 
     return true;
 }
