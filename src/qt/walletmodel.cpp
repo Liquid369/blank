@@ -49,7 +49,7 @@ WalletModel::WalletModel(CWallet* wallet, OptionsModel* optionsModel, QObject* p
     // This timer will be fired repeatedly to update the balance
     pollTimer = new QTimer(this);
     connect(pollTimer, &QTimer::timeout, this, &WalletModel::pollBalanceChanged);
-    pollTimer->start(MODEL_UPDATE_DELAY);
+    pollTimer->start(MODEL_UPDATE_DELAY * 5);
 
     subscribeToCoreSignals();
 }
@@ -241,7 +241,7 @@ void WalletModel::pollBalanceChanged()
     if (IsImportingOrReindexing() || m_client_model->inInitialBlockDownload()) {
         static uint8_t waitLonger = 0;
         waitLonger++;
-        if (waitLonger < 30) // 30 seconds
+        if (waitLonger < 6) // 30 seconds
             return;
         waitLonger = 0;
     }
