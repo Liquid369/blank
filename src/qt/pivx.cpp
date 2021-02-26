@@ -25,6 +25,7 @@
 #ifdef ENABLE_WALLET
 #include "paymentserver.h"
 #include "walletmodel.h"
+#include "interfaces/wallet.h"
 #endif
 #include "masternodeconfig.h"
 
@@ -69,6 +70,8 @@ Q_IMPORT_PLUGIN(QGifPlugin);
 // Declare meta types used for QMetaObject::invokeMethod
 Q_DECLARE_METATYPE(bool*)
 Q_DECLARE_METATYPE(CAmount)
+Q_DECLARE_METATYPE(interfaces::WalletBalances);
+Q_DECLARE_METATYPE(uint256)
 
 static void InitMessage(const std::string& message)
 {
@@ -571,6 +574,8 @@ int main(int argc, char* argv[])
     //   Need to pass name here as CAmount is a typedef (see http://qt-project.org/doc/qt-5/qmetatype.html#qRegisterMetaType)
     //   IMPORTANT if it is no longer a typedef use the normal variant above
     qRegisterMetaType<CAmount>("CAmount");
+    qRegisterMetaType<CAmount>("interfaces::WalletBalances");
+    qRegisterMetaType<size_t>("size_t");
 
     /// 3. Application identification
     // must be set before OptionsModel is initialized or translations are loaded,
