@@ -361,7 +361,9 @@ void DashboardWidget::tryChartRefresh()
         } else {
             // Check for min update time to not reload the UI so often if the node is syncing.
             int64_t now = GetTime();
-            if (lastRefreshTime + CHART_LOAD_MIN_TIME_INTERVAL < now) {
+            int chartLoadIntervalTime = CHART_LOAD_MIN_TIME_INTERVAL;
+            if (clientModel->inInitialBlockDownload()) chartLoadIntervalTime *= 6; // 90 seconds update
+            if (lastRefreshTime + chartLoadIntervalTime < now) {
                 lastRefreshTime = now;
                 refreshChart();
             }
