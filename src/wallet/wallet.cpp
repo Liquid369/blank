@@ -2129,10 +2129,20 @@ CAmount CWallet::GetLockedCoins() const
 {
     if (fLiteMode) return 0;
 
-    return loopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
-            if (pcoin.IsTrusted() && pcoin.GetDepthInMainChain() > 0)
-                nTotal += pcoin.GetLockedCredit();
-    });
+    LOCK(cs_wallet);
+    if (setLockedCoins.empty()) return 0;
+
+    CAmount ret = 0;
+    for (const auto& coin : setLockedCoins) {
+        auto it = mapWallet.find(coin.hash);
+        if (it != mapWallet.end()) {
+            const CWalletTx& pcoin = it->second;
+            if (pcoin.IsTrusted() && pcoin.GetDepthInMainChain() > 0) {
+                ret += it->second.tx->vout.at(coin.n).nValue;
+            }
+        }
+    }
+    return ret;
 }
 
 CAmount CWallet::GetUnconfirmedBalance(isminetype filter) const
