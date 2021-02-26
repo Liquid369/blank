@@ -521,7 +521,10 @@ void DashboardWidget::updateStakeFilter()
 // pair PIV, zPIV
 const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
 {
-    updateStakeFilter();
+    if (filterUpdateNeeded) {
+        filterUpdateNeeded = false;
+        updateStakeFilter();
+    }
     const int size = stakesFilter->rowCount();
     QMap<int, std::pair<qint64, qint64>> amountBy;
     // Get all of the stakes
@@ -617,6 +620,7 @@ void DashboardWidget::onChartYearChanged(const QString& yearStr)
         int newYear = yearStr.toInt();
         if (newYear != yearFilter) {
             yearFilter = newYear;
+            filterUpdateNeeded = true;
             refreshChart();
         }
     }
@@ -628,6 +632,7 @@ void DashboardWidget::onChartMonthChanged(const QString& monthStr)
         int newMonth = ui->comboBoxMonths->currentData().toInt();
         if (newMonth != monthFilter) {
             monthFilter = newMonth;
+            filterUpdateNeeded = true;
             refreshChart();
 #ifndef Q_OS_MAC
         // quick hack to re paint the chart view.
@@ -820,7 +825,7 @@ void DashboardWidget::onChartArrowClicked(bool goLeft)
             }
         }
     }
-
+    filterUpdateNeeded = true;
     refreshChart();
     //Check if data end day is current date and monthfilter is current month
     bool fEndDayisCurrent = dataenddate  == currentDate.day() && monthFilter == currentDate.month();
