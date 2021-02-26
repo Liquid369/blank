@@ -192,7 +192,6 @@ void SendWidget::loadClientModel()
 void SendWidget::loadWalletModel()
 {
     if (walletModel) {
-        coinControlDialog->setModel(walletModel);
         if (walletModel->getOptionsModel()) {
             // display unit
             nDisplayUnit = walletModel->getOptionsModel()->getDisplayUnit();
@@ -254,13 +253,13 @@ void SendWidget::onResetCustomOptions(bool fRefreshAmounts)
 
 void SendWidget::resetCoinControl()
 {
-    coinControlDialog->coinControl->SetNull();
+    if (coinControlDialog) coinControlDialog->coinControl->SetNull();
     ui->btnCoinControl->setActive(false);
 }
 
 void SendWidget::resetChangeAddress()
 {
-    coinControlDialog->coinControl->destChange = CNoDestination();
+    if (coinControlDialog) coinControlDialog->coinControl->destChange = CNoDestination();
     ui->btnChangeAddress->setActive(false);
     ui->btnChangeAddress->setVisible(isTransparent);
 }
@@ -343,7 +342,7 @@ void SendWidget::showHideCheckBoxDelegations()
 {
     // Show checkbox only when there is any available owned delegation and
     // coincontrol is not selected, and we are trying to spend transparent PIVs.
-    const bool isCControl = coinControlDialog->coinControl->HasSelected();
+    const bool isCControl = coinControlDialog ? coinControlDialog->coinControl->HasSelected() : false;
     const bool hasDel = cachedDelegatedBalance > 0;
 
     const bool showCheckBox = isTransparent && !isCControl && hasDel;
@@ -471,7 +470,9 @@ OperationResult SendWidget::prepareTransparent(WalletModelTransaction* currentTr
     if (!walletModel) return errorOut("Error, no wallet model loaded");
     // prepare transaction for getting txFee earlier
     WalletModel::SendCoinsReturn prepareStatus;
-    prepareStatus = walletModel->prepareTransaction(currentTransaction, coinControlDialog->coinControl, fDelegationsChecked);
+    prepareStatus = walletModel->prepareTransaction(currentTransaction,
+                                                    coinControlDialog ? coinControlDialog->coinControl : nullptr,
+                                                    fDelegationsChecked);
 
     // process prepareStatus and on error generate message shown to user
     CClientUIInterface::MessageBoxFlags informType;
@@ -676,6 +677,8 @@ void SendWidget::onChangeCustomFeeClicked()
 void SendWidget::onCoinControlClicked()
 {
     if (walletModel->getBalance() > 0) {
+        // future: move coin control initialization and refresh to a worker thread.
+        if (!coinControlDialog->hasModel()) coinControlDialog->setModel(walletModel);
         coinControlDialog->setSelectionType(isTransparent);
         coinControlDialog->refreshDialog();
         setCoinControlPayAmounts();
