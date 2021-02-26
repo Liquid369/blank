@@ -223,6 +223,7 @@ void DashboardWidget::loadWalletModel()
 void DashboardWidget::onTxArrived(const QString& hash, const bool& isCoinStake, const bool& isCSAnyType)
 {
     showList();
+    if (!isVisible()) return;
 #ifdef USE_QTCHARTS
     if (isCoinStake) {
         // Update value if this is our first stake
@@ -333,6 +334,7 @@ void DashboardWidget::walletSynced(bool sync)
         this->isSync = sync;
         ui->layoutWarning->setVisible(!this->isSync);
 #ifdef USE_QTCHARTS
+        if (!isVisible()) return;
         tryChartRefresh();
 #endif
     }

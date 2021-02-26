@@ -224,8 +224,6 @@ void ColdStakingWidget::loadWalletModel()
         ui->containerHistoryLabel->setVisible(false);
         ui->emptyContainer->setVisible(false);
         ui->listView->setVisible(false);
-
-        tryRefreshDelegations();
     }
 
 }
@@ -245,8 +243,14 @@ void ColdStakingWidget::walletSynced(bool sync)
     }
 }
 
+void ColdStakingWidget::showEvent(QShowEvent *event)
+{
+    tryRefreshDelegations();
+}
+
 void ColdStakingWidget::tryRefreshDelegations()
 {
+    if (!isVisible()) return;
     // Check for min update time to not reload the UI so often if the node is syncing.
     int64_t now = GetTime();
     if (lastRefreshTime + LOAD_MIN_TIME_INTERVAL < now) {
