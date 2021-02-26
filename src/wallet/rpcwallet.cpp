@@ -34,8 +34,6 @@
 #include "zpiv/deterministicmint.h"
 
 #include <univalue.h>
-#include <iostream>
-
 
 int64_t nWalletUnlockTime;
 static RecursiveMutex cs_nWalletUnlockTime;
@@ -439,6 +437,10 @@ UniValue sethdseed(const JSONRPCRequest& request)
     if (IsInitialBlockDownload()) {
         throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Cannot set a new HD seed while still in Initial Block Download");
     }
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwallet->cs_wallet);
 
@@ -1033,6 +1035,10 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked();
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     bool isStaking = false, isShielded = false;
     const std::string addrStr = request.params[0].get_str();
     const CWDestination& destination = Standard::DecodeDestination(addrStr, isStaking, isShielded);
@@ -1209,6 +1215,10 @@ UniValue delegatestake(const JSONRPCRequest& request)
             HelpExampleCli("delegatestake", "\"S1t2a3kab9c8c71VA78xxxy4MxZg6vgeS6\" 1000 \"DMJRSsuU9zfyrvxVaAEFQqK4MxZg34fk\"") +
             HelpExampleRpc("delegatestake", "\"S1t2a3kab9c8c71VA78xxxy4MxZg6vgeS6\", 1000, \"DMJRSsuU9zfyrvxVaAEFQqK4MxZg34fk\""));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     CTransactionRef wtx;
@@ -1250,6 +1260,10 @@ UniValue rawdelegatestake(const JSONRPCRequest& request)
             HelpExampleCli("rawdelegatestake", "\"S1t2a3kab9c8c71VA78xxxy4MxZg6vgeS6\" 100") +
             HelpExampleCli("rawdelegatestake", "\"S1t2a3kab9c8c71VA78xxxy4MxZg6vgeS6\" 1000 \"DMJRSsuU9zfyrvxVaAEFQqK4MxZg34fk\"") +
             HelpExampleRpc("rawdelegatestake", "\"S1t2a3kab9c8c71VA78xxxy4MxZg6vgeS6\", 1000, \"DMJRSsuU9zfyrvxVaAEFQqK4MxZg34fk\""));
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -1375,6 +1389,11 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
     }
 
     EnsureWalletIsUnlocked();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     uint256 hash;
@@ -1687,6 +1706,10 @@ UniValue shieldsendmany(const JSONRPCRequest& request)
                                  "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", [{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]")
         );
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     SaplingOperation operation = CreateShieldedTransaction(request);
     std::string txHash;
     auto res = operation.send(txHash);
@@ -1731,6 +1754,10 @@ UniValue rawshieldsendmany(const JSONRPCRequest& request)
                                  "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", [{\"address\": \"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\" ,\"amount\": 5.0}]")
         );
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     CTransaction tx = CreateShieldedTransaction(request).getFinalTx();
     return EncodeHexTx(tx);
 }
@@ -1759,6 +1786,10 @@ UniValue listaddressgroupings(const JSONRPCRequest& request)
 
             "\nExamples:\n" +
             HelpExampleCli("listaddressgroupings", "") + HelpExampleRpc("listaddressgroupings", ""));
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -1860,6 +1891,10 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
             "\nAs a json rpc call\n" +
             HelpExampleRpc("getreceivedbyaddress", "\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\", 6"));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     // pivx address
@@ -1916,6 +1951,10 @@ UniValue getreceivedbylabel(const JSONRPCRequest& request)
             "\nAs a json rpc call\n" +
             HelpExampleRpc("getreceivedbylabel", "\"tabby\", 6"));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     // Minimum confirmations
@@ -1971,6 +2010,10 @@ UniValue getbalance(const JSONRPCRequest& request)
             "\nAs a json rpc call\n" +
             HelpExampleRpc("getbalance", "6"));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     const int paramsSize = request.params.size();
@@ -2002,6 +2045,10 @@ UniValue getcoldstakingbalance(const JSONRPCRequest& request)
             "\nAs a json rpc call\n" +
             HelpExampleRpc("getcoldstakingbalance", "\"*\""));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     return ValueFromAmount(pwalletMain->GetColdStakingBalance());
@@ -2024,6 +2071,10 @@ UniValue getdelegatedbalance(const JSONRPCRequest& request)
             "\nAs a json rpc call\n" +
             HelpExampleRpc("getdelegatedbalance", "\"*\""));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     return ValueFromAmount(pwalletMain->GetDelegatedBalance());
@@ -2035,6 +2086,10 @@ UniValue getunconfirmedbalance(const JSONRPCRequest& request)
         throw std::runtime_error(
             "getunconfirmedbalance\n"
             "Returns the server's total unconfirmed balance\n");
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -2155,6 +2210,10 @@ UniValue sendmany(const JSONRPCRequest& request)
         );
 
     EnsureWalletIsUnlocked();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     // Read Params
     if (!request.params[0].isNull() && !request.params[0].get_str().empty()) {
@@ -2414,6 +2473,10 @@ UniValue listreceivedbyaddress(const JSONRPCRequest& request)
             HelpExampleRpc("listreceivedbyaddress", "6, true, true") +
             HelpExampleRpc("listreceivedbyaddress", "6, true, true, \"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\""));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     return ListReceived(request.params, false);
@@ -2447,6 +2510,10 @@ UniValue listreceivedbyshieldaddress(const JSONRPCRequest& request)
                 + HelpExampleCli("listreceivedbyshieldaddress", "\"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\"")
                 + HelpExampleRpc("listreceivedbyshieldaddress", "\"ps1ra969yfhvhp73rw5ak2xvtcm9fkuqsnmad7qln79mphhdrst3lwu9vvv03yuyqlh42p42st47qd\"")
         );
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -2542,6 +2609,10 @@ UniValue listreceivedbylabel(const JSONRPCRequest& request)
             "\nExamples:\n" +
             HelpExampleCli("listreceivedbylabel", "") + HelpExampleCli("listreceivedbylabel", "6 true") + HelpExampleRpc("listreceivedbylabel", "6, true, true"));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     return ListReceived(request.params, true);
@@ -2573,6 +2644,10 @@ UniValue listcoldutxos(const JSONRPCRequest& request)
 
             "\nExamples:\n" +
             HelpExampleCli("listcoldutxos", "") + HelpExampleCli("listcoldutxos", "true"));
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -2740,6 +2815,10 @@ UniValue listtransactions(const JSONRPCRequest& request)
             HelpExampleRpc("listtransactions", "\"*\", 20, 100")
         );
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     if (!request.params[0].isNull() && request.params[0].get_str() != "*") {
@@ -2841,6 +2920,10 @@ UniValue listsinceblock(const JSONRPCRequest& request)
             HelpExampleCli("listsinceblock", "\"000000000000000bacf66f7497b7dc45ef753ee9a7d38571037cdb1a57f663ad\" 6") +
             HelpExampleRpc("listsinceblock", "\"000000000000000bacf66f7497b7dc45ef753ee9a7d38571037cdb1a57f663ad\", 6"));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     CBlockIndex* pindex = NULL;
@@ -2928,6 +3011,10 @@ UniValue gettransaction(const JSONRPCRequest& request)
             HelpExampleCli("gettransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\" true") +
             HelpExampleRpc("gettransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\""));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     uint256 hash;
@@ -2984,6 +3071,10 @@ UniValue abandontransaction(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked();
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     uint256 hash;
@@ -3010,6 +3101,10 @@ UniValue backupwallet(const JSONRPCRequest& request)
 
             "\nExamples:\n" +
             HelpExampleCli("backupwallet", "\"backup.dat\"") + HelpExampleRpc("backupwallet", "\"backup.dat\""));
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -3199,6 +3294,10 @@ UniValue walletlock(const JSONRPCRequest& request)
             "\nAs json rpc call\n" +
             HelpExampleRpc("walletlock", ""));
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     if (request.fHelp)
@@ -3315,6 +3414,10 @@ UniValue listunspent(const JSONRPCRequest& request)
 
     RPCTypeCheck(request.params, {UniValue::VNUM, UniValue::VNUM, UniValue::VARR, UniValue::VNUM});
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     int nMinDepth = 1;
     if (request.params.size() > 0)
         nMinDepth = request.params[0].get_int();
@@ -3350,7 +3453,6 @@ UniValue listunspent(const JSONRPCRequest& request)
 
     UniValue results(UniValue::VARR);
     std::vector<COutput> vecOutputs;
-    assert(pwalletMain != NULL);
     LOCK2(cs_main, pwalletMain->cs_wallet);
     CWallet::AvailableCoinsFilter coinFilter;
     coinFilter.fOnlyConfirmed = false;
@@ -3359,7 +3461,7 @@ UniValue listunspent(const JSONRPCRequest& request)
         if (out.nDepth < nMinDepth || out.nDepth > nMaxDepth)
             continue;
 
-        if (destinations.size()) {
+        if (!destinations.empty()) {
             CTxDestination address;
             if (!ExtractDestination(out.tx->tx->vout[out.i].scriptPubKey, address))
                 continue;
@@ -3438,6 +3540,10 @@ UniValue lockunspent(const JSONRPCRequest& request)
             HelpExampleCli("lockunspent", "true \"[{\\\"txid\\\":\\\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\\\",\\\"vout\\\":1}]\"") +
             "\nAs a json rpc call\n" +
             HelpExampleRpc("lockunspent", "false, \"[{\\\"txid\\\":\\\"a08e6907dbbd3d809776dbfc5d82e371b764ed838b5655e72f463568df1aadf0\\\",\\\"vout\\\":1}]\""));
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -3621,6 +3727,10 @@ UniValue getwalletinfo(const JSONRPCRequest& request)
 
             "\nExamples:\n" +
             HelpExampleCli("getwalletinfo", "") + HelpExampleRpc("getwalletinfo", ""));
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
@@ -4051,6 +4161,10 @@ UniValue getsaplingnotescount(const JSONRPCRequest& request)
                 + HelpExampleCli("getsaplingnotescount", "0")
                 + HelpExampleRpc("getsaplingnotescount", "0")
         );
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 

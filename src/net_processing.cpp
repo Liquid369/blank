@@ -757,176 +757,215 @@ static void RelayAddress(const CAddress& addr, bool fReachable, CConnman& connma
     connman.ForEachNodeThen(std::move(sortfunc), std::move(pushfunc));
 }
 
-void static ProcessGetData(CNode* pfrom, CConnman& connman, std::atomic<bool>& interruptMsgProc)
+bool static PushTierTwoGetDataRequest(const CInv& inv,
+                                      CNode* pfrom,
+                                      CConnman& connman,
+                                      CNetMsgMaker& msgMaker)
+{
+    if (inv.type == MSG_SPORK) {
+        if (mapSporks.count(inv.hash)) {
+            CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+            ss.reserve(1000);
+            ss << mapSporks[inv.hash];
+            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::SPORK, ss));
+            return true;
+        }
+    }
+
+    if (inv.type == MSG_MASTERNODE_WINNER) {
+        if (masternodePayments.mapMasternodePayeeVotes.count(inv.hash)) {
+            CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+            ss.reserve(1000);
+            ss << masternodePayments.mapMasternodePayeeVotes[inv.hash];
+            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::MNWINNER, ss));
+            return true;
+        }
+    }
+
+    if (inv.type == MSG_BUDGET_VOTE) {
+        if (g_budgetman.HaveSeenProposalVote(inv.hash)) {
+            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::BUDGETVOTE, g_budgetman.GetProposalVoteSerialized(inv.hash)));
+            return true;
+        }
+    }
+
+    if (inv.type == MSG_BUDGET_PROPOSAL) {
+        if (g_budgetman.HaveProposal(inv.hash)) {
+            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::BUDGETPROPOSAL, g_budgetman.GetProposalSerialized(inv.hash)));
+            return true;
+        }
+    }
+
+    if (inv.type == MSG_BUDGET_FINALIZED_VOTE) {
+        if (g_budgetman.HaveSeenFinalizedBudgetVote(inv.hash)) {
+            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::FINALBUDGETVOTE, g_budgetman.GetFinalizedBudgetVoteSerialized(inv.hash)));
+            return true;
+        }
+    }
+
+    if (inv.type == MSG_BUDGET_FINALIZED) {
+        if (g_budgetman.HaveFinalizedBudget(inv.hash)) {
+            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::FINALBUDGET, g_budgetman.GetFinalizedBudgetSerialized(inv.hash)));
+            return true;
+        }
+    }
+
+    if (inv.type == MSG_MASTERNODE_ANNOUNCE) {
+        if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
+            CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+            ss.reserve(1000);
+            ss << mnodeman.mapSeenMasternodeBroadcast[inv.hash];
+            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::MNBROADCAST, ss));
+            return true;
+        }
+    }
+
+    if (inv.type == MSG_MASTERNODE_PING) {
+        if (mnodeman.mapSeenMasternodePing.count(inv.hash)) {
+            CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+            ss.reserve(1000);
+            ss << mnodeman.mapSeenMasternodePing[inv.hash];
+            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::MNPING, ss));
+            return true;
+        }
+    }
+
+    // nothing was pushed.
+    return false;
+}
+
+void static ProcessGetBlockData(CNode* pfrom, const CInv& inv, CConnman& connman, const std::atomic<bool>& interruptMsgProc)
+{
+    LOCK(cs_main);
+    CNetMsgMaker msgMaker(pfrom->GetSendVersion());
+
+    bool send = false;
+    BlockMap::iterator mi = mapBlockIndex.find(inv.hash);
+    if (mi != mapBlockIndex.end()) {
+        if (chainActive.Contains(mi->second)) {
+            send = true;
+        } else {
+            // To prevent fingerprinting attacks, only send blocks outside of the active
+            // chain if they are valid, and no more than a max reorg depth than the best header
+            // chain we know about.
+            send = mi->second->IsValid(BLOCK_VALID_SCRIPTS) && (pindexBestHeader != NULL) &&
+                   (chainActive.Height() - mi->second->nHeight < gArgs.GetArg("-maxreorg", DEFAULT_MAX_REORG_DEPTH));
+            if (!send) {
+                LogPrint(BCLog::NET, "ProcessGetData(): ignoring request from peer=%i for old block that isn't in the main chain\n", pfrom->GetId());
+            }
+        }
+    }
+    // Don't send not-validated blocks
+    if (send && (mi->second->nStatus & BLOCK_HAVE_DATA)) {
+        // Send block from disk
+        CBlock block;
+        if (!ReadBlockFromDisk(block, (*mi).second))
+            assert(!"cannot load block from disk");
+        if (inv.type == MSG_BLOCK)
+            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::BLOCK, block));
+        else // MSG_FILTERED_BLOCK)
+        {
+            bool send_ = false;
+            CMerkleBlock merkleBlock;
+            {
+                LOCK(pfrom->cs_filter);
+                if (pfrom->pfilter) {
+                    send_ = true;
+                    merkleBlock = CMerkleBlock(block, *pfrom->pfilter);
+                }
+            }
+            if (send_) {
+                connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::MERKLEBLOCK, merkleBlock));
+                // CMerkleBlock just contains hashes, so also push any transactions in the block the client did not see
+                // This avoids hurting performance by pointlessly requiring a round-trip
+                // Note that there is currently no way for a node to request any single transactions we didnt send here -
+                // they must either disconnect and retry or request the full block.
+                // Thus, the protocol spec specified allows for us to provide duplicate txn here,
+                // however we MUST always provide at least what the remote peer needs
+                for (std::pair<unsigned int, uint256>& pair : merkleBlock.vMatchedTxn)
+                    connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::TX, *block.vtx[pair.first]));
+            }
+            // else
+            // no response
+        }
+
+        // Trigger them to send a getblocks request for the next batch of inventory
+        if (inv.hash == pfrom->hashContinue) {
+            // Bypass PushInventory, this must send even if redundant,
+            // and we want it right after the last block so they don't
+            // wait for other stuff first.
+            std::vector<CInv> vInv;
+            vInv.emplace_back(MSG_BLOCK, chainActive.Tip()->GetBlockHash());
+            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::INV, vInv));
+            pfrom->hashContinue.SetNull();
+        }
+    }
+}
+
+// Only return true if the inv type can be answered, not supported types return false.
+bool static IsTierTwoInventoryTypeKnown(int type)
+{
+    return type == MSG_SPORK ||
+           type == MSG_MASTERNODE_WINNER ||
+           type == MSG_BUDGET_VOTE ||
+           type == MSG_BUDGET_PROPOSAL ||
+           type == MSG_BUDGET_FINALIZED ||
+           type == MSG_BUDGET_FINALIZED_VOTE ||
+           type == MSG_MASTERNODE_ANNOUNCE ||
+           type == MSG_MASTERNODE_PING;
+}
+
+void static ProcessGetData(CNode* pfrom, CConnman& connman, const std::atomic<bool>& interruptMsgProc)
 {
     AssertLockNotHeld(cs_main);
 
     std::deque<CInv>::iterator it = pfrom->vRecvGetData.begin();
     std::vector<CInv> vNotFound;
     CNetMsgMaker msgMaker(pfrom->GetSendVersion());
-    LOCK(cs_main);
+    {
+        LOCK(cs_main);
 
-    while (it != pfrom->vRecvGetData.end()) {
-        // Don't bother if send buffer is too full to respond anyway
-        if (pfrom->fPauseSend)
-            break;
-
-        const CInv& inv = *it;
-        {
+        while (it != pfrom->vRecvGetData.end() && (it->type == MSG_TX || IsTierTwoInventoryTypeKnown(it->type))) {
             if (interruptMsgProc)
                 return;
+            // Don't bother if send buffer is too full to respond anyway
+            if (pfrom->fPauseSend)
+                break;
+
+            const CInv &inv = *it;
             it++;
 
-            if (inv.type == MSG_BLOCK || inv.type == MSG_FILTERED_BLOCK) {
-                bool send = false;
-                BlockMap::iterator mi = mapBlockIndex.find(inv.hash);
-                if (mi != mapBlockIndex.end()) {
-                    if (chainActive.Contains(mi->second)) {
-                        send = true;
-                    } else {
-                        // To prevent fingerprinting attacks, only send blocks outside of the active
-                        // chain if they are valid, and no more than a max reorg depth than the best header
-                        // chain we know about.
-                        send = mi->second->IsValid(BLOCK_VALID_SCRIPTS) && (pindexBestHeader != NULL) &&
-                               (chainActive.Height() - mi->second->nHeight < gArgs.GetArg("-maxreorg", DEFAULT_MAX_REORG_DEPTH));
-                        if (!send) {
-                            LogPrint(BCLog::NET, "ProcessGetData(): ignoring request from peer=%i for old block that isn't in the main chain\n", pfrom->GetId());
-                        }
-                    }
-                }
-                // Don't send not-validated blocks
-                if (send && (mi->second->nStatus & BLOCK_HAVE_DATA)) {
-                    // Send block from disk
-                    CBlock block;
-                    if (!ReadBlockFromDisk(block, (*mi).second))
-                        assert(!"cannot load block from disk");
-                    if (inv.type == MSG_BLOCK)
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::BLOCK, block));
-                    else // MSG_FILTERED_BLOCK)
-                    {
-                        bool send = false;
-                        CMerkleBlock merkleBlock;
-                        {
-                            LOCK(pfrom->cs_filter);
-                            if (pfrom->pfilter) {
-                                send = true;
-                                merkleBlock = CMerkleBlock(block, *pfrom->pfilter);
-                            }
-                        }
-                        if (send) {
-                            connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::MERKLEBLOCK, merkleBlock));
-                            // CMerkleBlock just contains hashes, so also push any transactions in the block the client did not see
-                            // This avoids hurting performance by pointlessly requiring a round-trip
-                            // Note that there is currently no way for a node to request any single transactions we didnt send here -
-                            // they must either disconnect and retry or request the full block.
-                            // Thus, the protocol spec specified allows for us to provide duplicate txn here,
-                            // however we MUST always provide at least what the remote peer needs
-                            for (std::pair<unsigned int, uint256>& pair : merkleBlock.vMatchedTxn)
-                                connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::TX, *block.vtx[pair.first]));
-                        }
-                        // else
-                        // no response
-                    }
-
-                    // Trigger them to send a getblocks request for the next batch of inventory
-                    if (inv.hash == pfrom->hashContinue) {
-                        // Bypass PushInventory, this must send even if redundant,
-                        // and we want it right after the last block so they don't
-                        // wait for other stuff first.
-                        std::vector<CInv> vInv;
-                        vInv.emplace_back(MSG_BLOCK, chainActive.Tip()->GetBlockHash());
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::INV, vInv));
-                        pfrom->hashContinue.SetNull();
-                    }
-                }
-            } else if (inv.IsKnownType()) {
-                // Send stream from relay memory
-                bool pushed = false;
-
-                if (inv.type == MSG_TX) {
-                    auto txinfo = mempool.info(inv.hash);
-                    if (txinfo.tx) { // future: add timeLastMempoolReq check
-                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-                        ss.reserve(1000);
-                        ss << *txinfo.tx;
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::TX, ss));
-                        pushed = true;
-                    }
-                }
-
-                if (!pushed && inv.type == MSG_SPORK) {
-                    if (mapSporks.count(inv.hash)) {
-                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-                        ss.reserve(1000);
-                        ss << mapSporks[inv.hash];
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::SPORK, ss));
-                        pushed = true;
-                    }
-                }
-                if (!pushed && inv.type == MSG_MASTERNODE_WINNER) {
-                    if (masternodePayments.mapMasternodePayeeVotes.count(inv.hash)) {
-                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-                        ss.reserve(1000);
-                        ss << masternodePayments.mapMasternodePayeeVotes[inv.hash];
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::MNWINNER, ss));
-                        pushed = true;
-                    }
-                }
-                if (!pushed && inv.type == MSG_BUDGET_VOTE) {
-                    if (g_budgetman.HaveSeenProposalVote(inv.hash)) {
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::BUDGETVOTE, g_budgetman.GetProposalVoteSerialized(inv.hash)));
-                        pushed = true;
-                    }
-                }
-
-                if (!pushed && inv.type == MSG_BUDGET_PROPOSAL) {
-                    if (g_budgetman.HaveProposal(inv.hash)) {
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::BUDGETPROPOSAL, g_budgetman.GetProposalSerialized(inv.hash)));
-                        pushed = true;
-                    }
-                }
-
-                if (!pushed && inv.type == MSG_BUDGET_FINALIZED_VOTE) {
-                    if (g_budgetman.HaveSeenFinalizedBudgetVote(inv.hash)) {
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::FINALBUDGETVOTE, g_budgetman.GetFinalizedBudgetVoteSerialized(inv.hash)));
-                        pushed = true;
-                    }
-                }
-
-                if (!pushed && inv.type == MSG_BUDGET_FINALIZED) {
-                    if (g_budgetman.HaveFinalizedBudget(inv.hash)) {
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::FINALBUDGET, g_budgetman.GetFinalizedBudgetSerialized(inv.hash)));
-                        pushed = true;
-                    }
-                }
-
-                if (!pushed && inv.type == MSG_MASTERNODE_ANNOUNCE) {
-                    if (mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
-                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-                        ss.reserve(1000);
-                        ss << mnodeman.mapSeenMasternodeBroadcast[inv.hash];
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::MNBROADCAST, ss));
-                        pushed = true;
-                    }
-                }
-
-                if (!pushed && inv.type == MSG_MASTERNODE_PING) {
-                    if (mnodeman.mapSeenMasternodePing.count(inv.hash)) {
-                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-                        ss.reserve(1000);
-                        ss << mnodeman.mapSeenMasternodePing[inv.hash];
-                        connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::MNPING, ss));
-                        pushed = true;
-                    }
-                }
-
-                if (!pushed) {
-                    vNotFound.push_back(inv);
+            // Send stream from relay memory
+            bool pushed = false;
+            if (inv.type == MSG_TX) {
+                auto txinfo = mempool.info(inv.hash);
+                if (txinfo.tx) { // future: add timeLastMempoolReq check
+                    CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+                    ss.reserve(1000);
+                    ss << *txinfo.tx;
+                    connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::TX, ss));
+                    pushed = true;
                 }
             }
 
-            if (inv.type == MSG_BLOCK || inv.type == MSG_FILTERED_BLOCK)
-                break;
+            if (!pushed) {
+                // Now check if it's a tier two data request and push it.
+                pushed = PushTierTwoGetDataRequest(inv, pfrom, connman, msgMaker);
+            }
+
+            if (!pushed) {
+                vNotFound.push_back(inv);
+            }
+
+            // todo: inventory signal
+        }
+    } // release cs_main
+
+    if (it != pfrom->vRecvGetData.end()) {
+        const CInv &inv = *it;
+        it++;
+        if (inv.type == MSG_BLOCK || inv.type == MSG_FILTERED_BLOCK) {
+            ProcessGetBlockData(pfrom, inv, connman, interruptMsgProc);
         }
     }
 

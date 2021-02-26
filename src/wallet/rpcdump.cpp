@@ -468,6 +468,10 @@ UniValue dumpwallet(const JSONRPCRequest& request)
             throw JSONRPCError(RPC_MISC_ERROR, "Scam attempt detected!");
     }
 
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwalletMain->BlockUntilSyncedToCurrentChain();
+
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
     EnsureWalletIsUnlocked();
