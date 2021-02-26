@@ -21,6 +21,7 @@ struct WalletBalances
     CAmount watch_only_balance{0};
     CAmount unconfirmed_watch_only_balance{0};
     CAmount immature_watch_only_balance{0};
+    bool have_coldstaking{false};
     CAmount delegate_balance{0};
     CAmount coldstaked_balance{0};
     CAmount shielded_balance{0};
