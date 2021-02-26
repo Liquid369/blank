@@ -181,7 +181,6 @@ void DashboardWidget::loadWalletModel()
         filter->setSortCaseSensitivity(Qt::CaseInsensitive);
         filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
         filter->setSortRole(Qt::EditRole);
-        filter->setSourceModel(txModel);
 
         // Read filter settings
         QSettings settings;
@@ -190,10 +189,10 @@ void DashboardWidget::loadWalletModel()
         filterByType = (filterIndex == -1) ? TransactionFilterProxy::ALL_TYPES : filterByType;
         filter->setTypeFilter(filterByType); // Set filter
         ui->comboBoxSortType->setCurrentIndex(filterIndex); // Set item in ComboBox
-
         // Read sort settings
         changeSort(settings.value("transactionSort", SortTx::DATE_DESC).toInt());
 
+        filter->setSourceModel(txModel);
         txHolder->setFilter(filter);
         ui->listTransactions->setModel(filter);
         ui->listTransactions->setModelColumn(TransactionTableModel::ToAddress);
@@ -212,15 +211,9 @@ void DashboardWidget::loadWalletModel()
         // Notification pop-up for new transaction
         connect(txModel, &TransactionTableModel::rowsInserted, this, &DashboardWidget::processNewTransaction);
 #ifdef USE_QTCHARTS
-        // chart filter
-        stakesFilter = new TransactionFilterProxy();
-        stakesFilter->setDynamicSortFilter(true);
-        stakesFilter->setOnlyStakes(true);
-        stakesFilter->setSourceModel(txModel);
-        hasStakes = stakesFilter->rowCount() > 0;
-
         onHideChartsChanged(walletModel->getOptionsModel()->isHideCharts());
-        connect(walletModel->getOptionsModel(), &OptionsModel::hideChartsChanged, this, &DashboardWidget::onHideChartsChanged);
+        connect(walletModel->getOptionsModel(), &OptionsModel::hideChartsChanged, this,
+                &DashboardWidget::onHideChartsChanged);
 #endif
     }
     // update the display unit, to not use the default ("PIV")
@@ -233,7 +226,7 @@ void DashboardWidget::onTxArrived(const QString& hash, const bool& isCoinStake, 
 #ifdef USE_QTCHARTS
     if (isCoinStake) {
         // Update value if this is our first stake
-        if (!hasStakes)
+        if (!hasStakes && stakesFilter)
             hasStakes = stakesFilter->rowCount() > 0;
         tryChartRefresh();
     }
@@ -307,7 +300,6 @@ void DashboardWidget::changeSort(int nSortIndex)
 
     ui->comboBoxSort->setCurrentIndex(nSortIndex);
     filter->sort(nColumnIndex, order);
-    ui->listTransactions->update();
 
     // Store settings
     QSettings settings;
@@ -415,7 +407,7 @@ void DashboardWidget::loadChart()
 
 void DashboardWidget::showHideEmptyChart(bool showEmpty, bool loading, bool forceView)
 {
-    if (stakesFilter->rowCount() > SHOW_EMPTY_CHART_VIEW_THRESHOLD || forceView) {
+    if ((stakesFilter && stakesFilter->rowCount() > SHOW_EMPTY_CHART_VIEW_THRESHOLD) || forceView) {
         ui->layoutChart->setVisible(!showEmpty);
         ui->emptyContainerChart->setVisible(showEmpty);
     }
@@ -487,6 +479,7 @@ void DashboardWidget::changeChartColors()
 
 void DashboardWidget::updateStakeFilter()
 {
+    if (!stakesFilter) return;
     if (chartShow != ALL) {
         bool filterByMonth = false;
         if (monthFilter != 0 && chartShow == MONTH) {
@@ -874,6 +867,23 @@ void DashboardWidget::windowResizeEvent(QResizeEvent* event)
 void DashboardWidget::onHideChartsChanged(bool fHide)
 {
     fShowCharts = !fHide;
+
+    if (fShowCharts) {
+        if (!stakesFilter) {
+            stakesFilter = new TransactionFilterProxy(this);
+            stakesFilter->setDynamicSortFilter(false);
+            stakesFilter->setSortCaseSensitivity(Qt::CaseInsensitive);
+            stakesFilter->setFilterCaseSensitivity(Qt::CaseInsensitive);
+            stakesFilter->setOnlyStakes(true);
+        }
+        stakesFilter->setSourceModel(txModel);
+        hasStakes = stakesFilter->rowCount() > 0;
+    } else {
+        if (stakesFilter) {
+            stakesFilter->setSourceModel(nullptr);
+        }
+    }
+
     // Hide charts if requested
     ui->right->setVisible(fShowCharts);
     if (fShowCharts) tryChartRefresh();
