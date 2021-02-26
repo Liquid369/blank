@@ -1855,6 +1855,7 @@ bool AppInitMain()
     //get the mode of budget voting for this masternode
     strBudgetMode = gArgs.GetArg("-budgetvotemode", "auto");
 
+#ifdef ENABLE_WALLET
     if (gArgs.GetBoolArg("-mnconflock", DEFAULT_MNCONFLOCK) && pwalletMain) {
         LOCK(pwalletMain->cs_wallet);
         LogPrintf("Locking Masternodes:\n");
@@ -1866,6 +1867,7 @@ bool AppInitMain()
             pwalletMain->LockCoin(outpoint);
         }
     }
+#endif
 
     //lite mode disables all Masternode related functionality
     fLiteMode = gArgs.GetBoolArg("-litemode", false);
