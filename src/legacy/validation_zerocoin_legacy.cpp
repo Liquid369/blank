@@ -42,7 +42,7 @@ bool AcceptToMemoryPoolZerocoin(const CTransaction& tx, CAmount& nValueIn, int c
     return true;
 }
 
-bool DisconnectZerocoinTx(const CTransaction& tx, CAmount& nValueIn, CZerocoinDB* zerocoinDB)
+bool DisconnectZerocoinTx(const CTransaction& tx, CZerocoinDB* zerocoinDB)
 {
     /** UNDO ZEROCOIN DATABASING
          * note we only undo zerocoin databasing in the following statement, value to and from PIVX
@@ -63,11 +63,9 @@ bool DisconnectZerocoinTx(const CTransaction& tx, CAmount& nValueIn, CZerocoinDB
                             return error("Failed to parse public spend");
                         }
                         serial = publicSpend.getCoinSerialNumber();
-                        nValueIn += publicSpend.getDenomination() * COIN;
                     } else {
                         libzerocoin::CoinSpend spend = TxInToZerocoinSpend(txin);
                         serial = spend.getCoinSerialNumber();
-                        nValueIn += spend.getDenomination() * COIN;
                     }
 
                     if (!zerocoinDB->EraseCoinSpend(serial))

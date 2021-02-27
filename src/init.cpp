@@ -55,14 +55,9 @@
 #include "validationinterface.h"
 #include "zpivchain.h"
 
-// Sapling
-#include "sapling/sapling_util.h"
-#include <librustzcash.h>
-
 #ifdef ENABLE_WALLET
 #include "wallet/db.h"
 #include "wallet/wallet.h"
-#include "wallet/walletdb.h"
 #include "wallet/rpcwallet.h"
 
 #endif
@@ -154,8 +149,7 @@ CClientUIInterface uiInterface;  // Declared but not defined in guiinterface.h
 // shutdown thing.
 //
 
-volatile bool fRequestShutdown = false;
-std::atomic<bool> fDumpMempoolLater(false);
+std::atomic<bool> fRequestShutdown{false};
 
 void StartShutdown()
 {
@@ -254,7 +248,7 @@ void PrepareShutdown()
     DumpBudgets(g_budgetman);
     DumpMasternodePayments();
     UnregisterNodeSignals(GetNodeSignals());
-    if (fDumpMempoolLater && gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
+    if (g_is_mempool_loaded && gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
         DumpMempool();
     }
 
@@ -369,7 +363,7 @@ void HandleSIGHUP(int)
 #ifndef WIN32
 static void registerSignalHandler(int signal, void(*handler)(int))
 {
-    struct sigaction sa;
+    struct sigaction sa{};
     sa.sa_handler = handler;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
@@ -407,7 +401,7 @@ void OnRPCPreCommand(const CRPCCommand& cmd)
 {
     // Observe safe mode
     std::string strWarning = GetWarnings("rpc");
-    if (strWarning != "" && !gArgs.GetBoolArg("-disablesafemode", DEFAULT_DISABLE_SAFEMODE) &&
+    if (!strWarning.empty() && !gArgs.GetBoolArg("-disablesafemode", DEFAULT_DISABLE_SAFEMODE) &&
         !cmd.okSafeMode)
         throw JSONRPCError(RPC_FORBIDDEN_BY_SAFE_MODE, std::string("Safe mode: ") + strWarning);
 }
@@ -670,9 +664,10 @@ struct CImportingNow {
     }
 };
 
-void ThreadImport(std::vector<fs::path> vImportFiles)
+void ThreadImport(const std::vector<fs::path>& vImportFiles)
 {
     util::ThreadRename("pivx-loadblk");
+    ScheduleBatchPriority();
 
     // -reindex
     if (fReindex) {
@@ -712,7 +707,7 @@ void ThreadImport(std::vector<fs::path> vImportFiles)
     }
 
     // -loadblock=
-    for (fs::path& path : vImportFiles) {
+    for (const fs::path& path : vImportFiles) {
         FILE* file = fsbridge::fopen(path, "rb");
         if (file) {
             CImportingNow imp;
@@ -730,8 +725,8 @@ void ThreadImport(std::vector<fs::path> vImportFiles)
 
     if (gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
         LoadMempool();
-        fDumpMempoolLater = !fRequestShutdown;
     }
+    g_is_mempool_loaded = !fRequestShutdown;
 }
 
 /** Sanity checks
@@ -758,9 +753,9 @@ bool InitSanityCheck(void)
 
 static void LoadSaplingParams()
 {
-    struct timeval tv_start, tv_end;
+    struct timeval tv_start{}, tv_end{};
     float elapsed;
-    gettimeofday(&tv_start, 0);
+    gettimeofday(&tv_start, nullptr);
 
     try {
         initZKSNARKS();
@@ -775,7 +770,7 @@ static void LoadSaplingParams()
         return;
     }
 
-    gettimeofday(&tv_end, 0);
+    gettimeofday(&tv_end, nullptr);
     elapsed = float(tv_end.tv_sec-tv_start.tv_sec) + (tv_end.tv_usec-tv_start.tv_usec)/float(1000000);
     LogPrintf("Loaded Sapling parameters in %fs seconds.\n", elapsed);
 }
@@ -809,7 +804,7 @@ bool AppInitServers()
 
     // The log was successful, terminate now.
     std::terminate();
-};
+}
 
 namespace { // Variables internal to initialization process only
 
@@ -1453,7 +1448,7 @@ bool AppInitMain()
     // -noproxy (or -proxy=0) as well as the empty string can be used to not set a proxy, this is the default
     std::string proxyArg = gArgs.GetArg("-proxy", "");
     SetLimited(NET_TOR);
-    if (proxyArg != "" && proxyArg != "0") {
+    if (!proxyArg.empty() && proxyArg != "0") {
         CService proxyAddr;
         if (!Lookup(proxyArg.c_str(), proxyAddr, 9050, fNameLookup)) {
             return UIError(strprintf(_("Lookup(): Invalid -proxy address or hostname: '%s'"), proxyArg));
@@ -1474,7 +1469,7 @@ bool AppInitMain()
     // -noonion (or -onion=0) disables connecting to .onion entirely
     // An empty string is used to not override the onion proxy (in which case it defaults to -proxy set above, or none)
     std::string onionArg = gArgs.GetArg("-onion", "");
-    if (onionArg != "") {
+    if (!onionArg.empty()) {
         if (onionArg == "0") { // Handle -noonion/-onion=0
             SetLimited(NET_TOR); // set onions as unreachable
         } else {
@@ -1608,7 +1603,7 @@ bool AppInitMain()
                 sporkManager.LoadSporksFromDB();
 
                 uiInterface.InitMessage(_("Loading block index..."));
-                std::string strBlockIndexError = "";
+                std::string strBlockIndexError;
                 if (!LoadBlockIndex(strBlockIndexError)) {
                     if (ShutdownRequested()) break;
                     strLoadError = _("Error loading block database");
@@ -1783,7 +1778,7 @@ bool AppInitMain()
 
     std::vector<fs::path> vImportFiles;
     for (const std::string& strFile : gArgs.GetArgs("-loadblock")) {
-        vImportFiles.push_back(strFile);;
+        vImportFiles.emplace_back(strFile);
     }
     threadGroup.create_thread(std::bind(&ThreadImport, vImportFiles));
 
@@ -1864,10 +1859,10 @@ bool AppInitMain()
         LOCK(pwalletMain->cs_wallet);
         LogPrintf("Locking Masternodes:\n");
         uint256 mnTxHash;
-        for (CMasternodeConfig::CMasternodeEntry mne : masternodeConfig.getEntries()) {
+        for (const CMasternodeConfig::CMasternodeEntry& mne : masternodeConfig.getEntries()) {
             LogPrintf("  %s %s\n", mne.getTxHash(), mne.getOutputIndex());
             mnTxHash.SetHex(mne.getTxHash());
-            COutPoint outpoint = COutPoint(mnTxHash, (unsigned int) std::stoul(mne.getOutputIndex().c_str()));
+            COutPoint outpoint = COutPoint(mnTxHash, (unsigned int) std::stoul(mne.getOutputIndex()));
             pwalletMain->LockCoin(outpoint);
         }
     }
