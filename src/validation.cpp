@@ -331,8 +331,8 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     int chainHeight = chainActive.Height();
     bool fSaplingActive = consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_V5_0);
 
-    // If v5 is active, bye bye zerocoin
-    if (fSaplingActive && hasTxZerocoins) {
+    // Zerocoin txes are not longer accepted in the mempool.
+    if (hasTxZerocoins) {
         return state.DoS(100, error("%s : v5 upgrade enforced, zerocoin disabled", __func__));
     }
 
@@ -373,12 +373,11 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         return state.Invalid(false, REJECT_ALREADY_KNOWN, "txn-already-in-mempool");
     }
 
-    bool hasZcSpendInputs = tx.HasZerocoinSpendInputs();
-
     // Check for conflicts with in-memory transactions
-    if (!hasZcSpendInputs) {
+
+    {
         LOCK(pool.cs); // protect pool.mapNextTx
-        for (const auto &in : tx.vin) {
+        for (const auto& in : tx.vin) {
             COutPoint outpoint = in.prevout;
             if (pool.mapNextTx.count(outpoint)) {
                 // Disable replacement feature for now
@@ -400,62 +399,52 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         CCoinsViewCache view(&dummy);
 
         CAmount nValueIn = 0;
-        if (hasZcSpendInputs) {
-            if (!AcceptToMemoryPoolZerocoin(tx, nValueIn, chainHeight, state, consensus)) {
-                return false;
-            }
-        } else {
-            LOCK(pool.cs);
-            CCoinsViewMemPool viewMemPool(pcoinsTip, pool);
-            view.SetBackend(viewMemPool);
 
-            // do we already have it?
-            for (size_t out = 0; out < tx.vout.size(); out++) {
-                COutPoint outpoint(hash, out);
-                bool had_coin_in_cache = pcoinsTip->HaveCoinInCache(outpoint);
-                if (view.HaveCoin(outpoint)) {
-                    if (!had_coin_in_cache) {
-                        coins_to_uncache.push_back(outpoint);
-                    }
-                    return state.Invalid(false, REJECT_ALREADY_KNOWN, "txn-already-known");
+        LOCK(pool.cs);
+        CCoinsViewMemPool viewMemPool(pcoinsTip, pool);
+        view.SetBackend(viewMemPool);
+
+        // do we already have it?
+        for (size_t out = 0; out < tx.vout.size(); out++) {
+            COutPoint outpoint(hash, out);
+            bool had_coin_in_cache = pcoinsTip->HaveCoinInCache(outpoint);
+            if (view.HaveCoin(outpoint)) {
+                if (!had_coin_in_cache) {
+                    coins_to_uncache.push_back(outpoint);
                 }
+                return state.Invalid(false, REJECT_ALREADY_KNOWN, "txn-already-known");
             }
-
-            // do all inputs exist?
-            for (const CTxIn& txin : tx.vin) {
-                if (!pcoinsTip->HaveCoinInCache(txin.prevout)) {
-                    coins_to_uncache.push_back(txin.prevout);
-                }
-                if (!view.HaveCoin(txin.prevout)) {
-                    if (pfMissingInputs) {
-                        *pfMissingInputs = true;
-                    }
-                    return false; // fMissingInputs and !state.IsInvalid() is used to detect this condition, don't set state.Invalid()
-                }
-
-                //Check for invalid/fraudulent inputs
-                if (!ValidOutPoint(txin.prevout, chainHeight))
-                    return state.Invalid(false, REJECT_INVALID, "bad-txns-invalid-inputs");
-            }
-
-            // Reject legacy zPIV mints
-            if (!Params().IsRegTestNet() && tx.HasZerocoinMintOutputs())
-                return state.Invalid(error("%s : tried to include zPIV mint output in tx %s",
-                        __func__, tx.GetHash().GetHex()), REJECT_INVALID, "bad-zc-spend-mint");
-
-            // Sapling: are the sapling spends' requirements met in tx(valid anchors/nullifiers)?
-            if (!view.HaveShieldedRequirements(tx))
-                return state.Invalid(error("AcceptToMemoryPool: shielded requirements not met"),
-                                     REJECT_DUPLICATE, "bad-txns-shielded-requirements-not-met");
-
-            // Bring the best block into scope
-            view.GetBestBlock();
-
-            nValueIn = view.GetValueIn(tx);
-
-            // we have all inputs cached now, so switch back to dummy, so we don't need to keep lock on mempool
-            view.SetBackend(dummy);
         }
+
+        // do all inputs exist?
+        for (const CTxIn& txin : tx.vin) {
+            if (!pcoinsTip->HaveCoinInCache(txin.prevout)) {
+                coins_to_uncache.push_back(txin.prevout);
+            }
+            if (!view.HaveCoin(txin.prevout)) {
+                if (pfMissingInputs) {
+                    *pfMissingInputs = true;
+                }
+                return false; // fMissingInputs and !state.IsInvalid() is used to detect this condition, don't set state.Invalid()
+            }
+
+            //Check for invalid/fraudulent inputs
+            if (!ValidOutPoint(txin.prevout, chainHeight))
+                return state.Invalid(false, REJECT_INVALID, "bad-txns-invalid-inputs");
+        }
+
+        // Sapling: are the sapling spends' requirements met in tx(valid anchors/nullifiers)?
+        if (!view.HaveShieldedRequirements(tx))
+            return state.Invalid(error("AcceptToMemoryPool: shielded requirements not met"),
+                                 REJECT_DUPLICATE, "bad-txns-shielded-requirements-not-met");
+
+        // Bring the best block into scope
+        view.GetBestBlock();
+
+        nValueIn = view.GetValueIn(tx);
+
+        // we have all inputs cached now, so switch back to dummy, so we don't need to keep lock on mempool
+        view.SetBackend(dummy);
 
         // Check for non-standard pay-to-script-hash in inputs
         if (!Params().IsRegTestNet() && !AreInputsStandard(tx, view))
@@ -466,32 +455,26 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         // itself can contain sigops MAX_TX_SIGOPS is less than
         // MAX_BLOCK_SIGOPS; we still consider this an invalid rather than
         // merely non-standard transaction.
-        unsigned int nSigOps = 0;
-        if (!hasZcSpendInputs) {
-            nSigOps = GetLegacySigOpCount(tx);
-            unsigned int nMaxSigOps = MAX_TX_SIGOPS_CURRENT;
-            nSigOps += GetP2SHSigOpCount(tx, view);
-            if(nSigOps > nMaxSigOps)
-                return state.DoS(0, false, REJECT_NONSTANDARD, "bad-txns-too-many-sigops", false,
-                    strprintf("%d > %d", nSigOps, nMaxSigOps));
-        }
+        unsigned int nSigOps = GetLegacySigOpCount(tx);
+        unsigned int nMaxSigOps = MAX_TX_SIGOPS_CURRENT;
+        nSigOps += GetP2SHSigOpCount(tx, view);
+        if(nSigOps > nMaxSigOps)
+            return state.DoS(0, false, REJECT_NONSTANDARD, "bad-txns-too-many-sigops", false,
+                strprintf("%d > %d", nSigOps, nMaxSigOps));
 
         CAmount nValueOut = tx.GetValueOut();
         CAmount nFees = nValueIn - nValueOut;
         CAmount inChainInputValue = 0;
-        double dPriority = 0;
         bool fSpendsCoinbaseOrCoinstake = false;
-        if (!hasZcSpendInputs) {
-            dPriority = view.GetPriority(tx, chainHeight, inChainInputValue);
+        double dPriority = view.GetPriority(tx, chainHeight, inChainInputValue);
 
-            // Keep track of transactions that spend a coinbase, which we re-scan
-            // during reorgs to ensure COINBASE_MATURITY is still met.
-            for (const CTxIn &txin : tx.vin) {
-                const Coin &coin = view.AccessCoin(txin.prevout);
-                if (coin.IsCoinBase() || coin.IsCoinStake()) {
-                    fSpendsCoinbaseOrCoinstake = true;
-                    break;
-                }
+        // Keep track of transactions that spend a coinbase, which we re-scan
+        // during reorgs to ensure COINBASE_MATURITY is still met.
+        for (const CTxIn &txin : tx.vin) {
+            const Coin &coin = view.AccessCoin(txin.prevout);
+            if (coin.IsCoinBase() || coin.IsCoinStake()) {
+                fSpendsCoinbaseOrCoinstake = true;
+                break;
             }
         }
 
@@ -501,19 +484,19 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         // Don't accept it if it can't get into a block
         if (!ignoreFees) {
             const CAmount txMinFee = GetMinRelayFee(tx, pool, nSize, false);
-            if (fLimitFree && nFees < txMinFee && !hasZcSpendInputs)
+            if (fLimitFree && nFees < txMinFee)
                 return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "insufficient fee", false,
                     strprintf("%d < %d", nFees, txMinFee));
 
             // Require that free transactions have sufficient priority to be mined in the next block.
-            if (!hasZcSpendInputs && gArgs.GetBoolArg("-relaypriority", DEFAULT_RELAYPRIORITY) && nFees < ::minRelayTxFee.GetFee(nSize) && !AllowFree(entry.GetPriority(chainHeight + 1))) {
+            if (gArgs.GetBoolArg("-relaypriority", DEFAULT_RELAYPRIORITY) && nFees < ::minRelayTxFee.GetFee(nSize) && !AllowFree(entry.GetPriority(chainHeight + 1))) {
                 return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "insufficient priority");
             }
 
             // Continuously rate-limit free (really, very-low-fee) transactions
             // This mitigates 'penny-flooding' -- sending thousands of free transactions just to
             // be annoying or make others' transactions take longer to confirm.
-            if (fLimitFree && nFees < ::minRelayTxFee.GetFee(nSize) && !hasZcSpendInputs) {
+            if (fLimitFree && nFees < ::minRelayTxFee.GetFee(nSize)) {
                 static RecursiveMutex csFreeLimiter;
                 static double dFreeCount;
                 static int64_t nLastTime;
@@ -544,7 +527,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         // As zero fee transactions are not going to be accepted in the near future (4.0) and the code will be fully refactored soon.
         // This is just a quick inline towards that goal, the mempool by default will not accept them. Blocking
         // any subsequent network relay.
-        if (!Params().IsRegTestNet() && nFees == 0 && !hasZcSpendInputs) {
+        if (!Params().IsRegTestNet() && nFees == 0) {
             return error("%s : zero fees not accepted %s, %d > %d",
                     __func__, hash.ToString(), nFees, ::minRelayTxFee.GetFee(nSize) * 10000);
         }
