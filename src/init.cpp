@@ -1855,19 +1855,22 @@ bool AppInitMain()
     //get the mode of budget voting for this masternode
     strBudgetMode = gArgs.GetArg("-budgetvotemode", "auto");
 
+#ifdef ENABLE_WALLET
     if (gArgs.GetBoolArg("-mnconflock", DEFAULT_MNCONFLOCK) && pwalletMain) {
         LOCK(pwalletMain->cs_wallet);
-        LogPrintf("Locking Masternodes:\n");
+        LogPrintf("Locking Masternodes collateral utxo:\n");
         uint256 mnTxHash;
-        for (const CMasternodeConfig::CMasternodeEntry& mne : masternodeConfig.getEntries()) {
-            LogPrintf("  %s %s\n", mne.getTxHash(), mne.getOutputIndex());
+        for (const auto& mne : masternodeConfig.getEntries()) {
             mnTxHash.SetHex(mne.getTxHash());
             COutPoint outpoint = COutPoint(mnTxHash, (unsigned int) std::stoul(mne.getOutputIndex()));
             pwalletMain->LockCoin(outpoint);
+            LogPrintf("Locked collateral, MN: %s, tx hash: %s, output index: %s\n",
+                      mne.getAlias(), mne.getTxHash(), mne.getOutputIndex());
         }
     }
+#endif
 
-    //lite mode disables all Masternode related functionality
+    // lite mode disables all Masternode related functionality
     fLiteMode = gArgs.GetBoolArg("-litemode", false);
     if (fMasterNode && fLiteMode) {
         return UIError("You can not start a masternode in litemode");
