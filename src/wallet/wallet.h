@@ -954,6 +954,15 @@ public:
     void ReacceptWalletTransactions(bool fFirstLoad = false);
     void ResendWalletTransactions(CConnman* connman) override;
 
+    struct Balance {
+        CAmount m_mine_trusted{0};               //!< Trusted, at depth=GetBalance.min_depth or more
+        CAmount m_mine_untrusted_pending{0};     //!< Untrusted, but in mempool (pending)
+        CAmount m_mine_immature{0};              //!< Immature coinbases/coinstakes in the main chain
+        CAmount m_mine_trusted_shield{0};        //!< Trusted shield, at depth=GetBalance.min_depth or more
+        CAmount m_mine_untrusted_shielded_balance{0}; //!< Untrusted shield, but in mempool (pending)
+    };
+    Balance GetBalance(int min_depth = 0) const;
+
     CAmount loopTxsBalance(std::function<void(const uint256&, const CWalletTx&, CAmount&)>method) const;
     CAmount GetAvailableBalance(bool fIncludeDelegated = true, bool fIncludeShielded = true) const;
     CAmount GetAvailableBalance(isminefilter& filter, bool useCache = false, int minDepth = 1) const;

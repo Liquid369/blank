@@ -2055,6 +2055,32 @@ void CWallet::ResendWalletTransactions(CConnman* connman)
  * @{
  */
 
+CWallet::Balance CWallet::GetBalance(const int min_depth) const
+{
+    Balance ret;
+    {
+        LOCK(cs_wallet);
+        std::set<uint256> trusted_parents;
+        for (const auto& entry : mapWallet) {
+            const CWalletTx& wtx = entry.second;
+            const bool is_trusted{wtx.IsTrusted()};
+            const int tx_depth{wtx.GetDepthInMainChain()};
+            const CAmount tx_credit_mine{wtx.GetAvailableCredit(/* fUseCache */ true, ISMINE_SPENDABLE_TRANSPARENT)};
+            const CAmount tx_credit_shield_mine{wtx.GetAvailableCredit(/* fUseCache */ true, ISMINE_SPENDABLE_SHIELDED)};
+            if (is_trusted && tx_depth >= min_depth) {
+                ret.m_mine_trusted += tx_credit_mine;
+                ret.m_mine_trusted_shield += tx_credit_shield_mine;
+            }
+            if (!is_trusted && tx_depth == 0 && wtx.InMempool()) {
+                ret.m_mine_untrusted_pending += tx_credit_mine;
+                ret.m_mine_untrusted_shielded_balance += tx_credit_shield_mine;
+            }
+            ret.m_mine_immature += wtx.GetImmatureCredit();
+        }
+    }
+    return ret;
+}
+
 CAmount CWallet::loopTxsBalance(std::function<void(const uint256&, const CWalletTx&, CAmount&)> method) const
 {
     CAmount nTotal = 0;

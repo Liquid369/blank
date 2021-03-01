@@ -10,9 +10,10 @@ namespace interfaces {
 
     WalletBalances Wallet::getBalances() {
         WalletBalances result;
-        result.balance = m_wallet.GetAvailableBalance();
-        result.unconfirmed_balance = m_wallet.GetUnconfirmedBalance(ISMINE_SPENDABLE_TRANSPARENT);
-        result.immature_balance = m_wallet.GetImmatureBalance();
+        CWallet::Balance balance = m_wallet.GetBalance();
+        result.balance = balance.m_mine_trusted + balance.m_mine_trusted_shield;
+        result.unconfirmed_balance = balance.m_mine_untrusted_pending;
+        result.immature_balance = balance.m_mine_immature;
         result.have_watch_only = m_wallet.HaveWatchOnly();
         if (result.have_watch_only) {
             result.watch_only_balance = m_wallet.GetWatchOnlyBalance();
@@ -23,8 +24,8 @@ namespace interfaces {
             result.delegate_balance = m_wallet.GetDelegatedBalance();
             result.coldstaked_balance = m_wallet.GetColdStakingBalance();
         }
-        result.shielded_balance = m_wallet.GetAvailableShieldedBalance();
-        result.unconfirmed_shielded_balance = m_wallet.GetUnconfirmedShieldedBalance();
+        result.shielded_balance = balance.m_mine_trusted_shield;
+        result.unconfirmed_shielded_balance = balance.m_mine_untrusted_shielded_balance;
         return result;
     }
 
