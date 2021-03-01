@@ -13,13 +13,11 @@
 #include "bitcoinunits.h"
 #include "qt/pivx/balancebubble.h"
 #include "clientmodel.h"
-#include "qt/guiconstants.h"
 #include "qt/guiutil.h"
 #include "optionsmodel.h"
 #include "qt/platformstyle.h"
 #include "walletmodel.h"
 #include "addresstablemodel.h"
-#include "guiinterface.h"
 
 #include "masternode-sync.h"
 #include "wallet/wallet.h"
@@ -476,7 +474,7 @@ void TopBar::setNumBlocks(int count)
 
     std::string text;
     bool needState = true;
-    if (masternodeSync.IsBlockchainSynced()) {
+    if (masternodeSync.IsBlockchainSyncedReadOnly()) {
         // chain synced
         Q_EMIT walletSynced(true);
         if (masternodeSync.IsSynced()) {
