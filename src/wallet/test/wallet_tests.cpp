@@ -23,6 +23,7 @@
 // we repeat those tests this many times and only complain if all iterations of the test fail
 #define RANDOM_REPEATS 5
 
+std::vector<std::unique_ptr<CWalletTx>> wtxn;
 
 typedef std::set<std::pair<const CWalletTx*,unsigned int> > CoinSet;
 
@@ -42,19 +43,19 @@ static void add_coin(const CAmount& nValue, int nAge = 6*24, bool fIsFromMe = fa
         // so stop vin being empty, and cache a non-zero Debit to fake out IsFromMe()
         tx.vin.resize(1);
     }
-    CWalletTx* wtx = new CWalletTx(pwalletMain, MakeTransactionRef(tx));
+    std::unique_ptr<CWalletTx> wtx(new CWalletTx(pwalletMain, MakeTransactionRef(std::move(tx))));
     if (fIsFromMe) {
         wtx->m_amounts[CWalletTx::DEBIT].Set(ISMINE_SPENDABLE, 1);
     }
-    COutput output(wtx, nInput, nAge, true, true);
+    COutput output(wtx.get(), nInput, nAge, true, true);
     vCoins.push_back(output);
+    wtxn.emplace_back(std::move(wtx));
 }
 
 static void empty_wallet(void)
 {
-    for (COutput output : vCoins)
-        delete output.tx;
     vCoins.clear();
+    wtxn.clear();
 }
 
 static bool equal_sets(CoinSet a, CoinSet b)
