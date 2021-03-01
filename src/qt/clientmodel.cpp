@@ -150,6 +150,11 @@ int64_t ClientModel::getLastBlockProcessedTime() const
     return cacheTip == nullptr ? Params().GenesisBlock().GetBlockTime() : cacheTip->GetBlockTime();
 }
 
+bool ClientModel::isTipCached() const
+{
+    return cacheTip;
+}
+
 double ClientModel::getVerificationProgress() const
 {
     return Checkpoints::GuessVerificationProgress(cacheTip);

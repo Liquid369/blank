@@ -474,26 +474,7 @@ void TopBar::setNumBlocks(int count)
     if (!clientModel)
         return;
 
-    // Acquire current block source
-    enum BlockSource blockSource = clientModel->getBlockSource();
-    std::string text = "";
-    switch (blockSource) {
-        case BLOCK_SOURCE_NETWORK:
-            text = "Synchronizing..";
-            break;
-        case BLOCK_SOURCE_DISK:
-            text = "Importing blocks from disk..";
-            break;
-        case BLOCK_SOURCE_REINDEX:
-            text = "Reindexing blocks on disk..";
-            break;
-        case BLOCK_SOURCE_NONE:
-            // Case: not Importing, not Reindexing and no network connection
-            text = "No block source available..";
-            ui->pushButtonSync->setChecked(false);
-            break;
-    }
-
+    std::string text;
     bool needState = true;
     if (masternodeSync.IsBlockchainSynced()) {
         // chain synced
@@ -523,7 +504,7 @@ void TopBar::setNumBlocks(int count)
         Q_EMIT walletSynced(false);
     }
 
-    if (needState) {
+    if (needState && clientModel->isTipCached()) {
         // Represent time from last generated block in human readable text
         QDateTime lastBlockDate = clientModel->getLastBlockDate();
         QDateTime currentDate = QDateTime::currentDateTime();

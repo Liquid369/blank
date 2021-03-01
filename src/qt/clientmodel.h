@@ -68,6 +68,7 @@ public:
     int getLastBlockProcessedHeight() const;
     int64_t getLastBlockProcessedTime() const;
     double getVerificationProgress() const;
+    bool isTipCached() const;
 
     quint64 getTotalBytesRecv() const;
     quint64 getTotalBytesSent() const;
