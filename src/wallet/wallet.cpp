@@ -1786,23 +1786,31 @@ int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, b
 
     CBlockIndex* pindex = pindexStart;
     {
-        LOCK2(cs_main, cs_wallet);
-
+        LOCK(cs_main);
         // no need to read and scan block, if block was created before
         // our wallet birthday (as adjusted for block time variability)
         while (pindex && nTimeFirstKey && (pindex->GetBlockTime() < (nTimeFirstKey - 7200)))
             pindex = chainActive.Next(pindex);
+    }
 
+    {
         ShowProgress(_("Rescanning..."), 0); // show rescan progress in GUI as dialog or on splashscreen, if -rescan on startup
-        double dProgressStart = Checkpoints::GuessVerificationProgress(pindex, false);
-        double dProgressTip = Checkpoints::GuessVerificationProgress(chainActive.Tip(), false);
+        const double dProgressStart = Checkpoints::GuessVerificationProgress(pindex, false);
+        const CBlockIndex* tip = nullptr;
+        double dProgressTip = 0.0;
         std::vector<uint256> myTxHashes;
+
+        double gvp = dProgressStart;
         while (pindex) {
-            if (pindex->nHeight % 100 == 0 && dProgressTip - dProgressStart > 0.0)
-                ShowProgress(_("Rescanning..."), std::max(1, std::min(99, (int)((Checkpoints::GuessVerificationProgress(pindex, false) - dProgressStart) / (dProgressTip - dProgressStart) * 100))));
+            gvp = Checkpoints::GuessVerificationProgress(pindex, false);
+            if (pindex->nHeight % 100 == 0 && dProgressTip - dProgressStart > 0.0) {
+                ShowProgress(_("Rescanning..."), std::max(1, std::min(99, (int) ((gvp - dProgressStart) /
+                                                                                 (dProgressTip - dProgressStart) *
+                                                                                 100))));
+            }
             if (GetTime() >= nNow + 60) {
                 nNow = GetTime();
-                LogPrintf("Still rescanning. At block %d. Progress=%f\n", pindex->nHeight, Checkpoints::GuessVerificationProgress(pindex));
+                LogPrintf("Still rescanning. At block %d. Progress=%f\n", pindex->nHeight, gvp);
             }
             if (fromStartup && ShutdownRequested()) {
                 return -1;
@@ -1813,27 +1821,42 @@ int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, b
                 LogPrintf("Unable to read block %d (%s) from disk.", pindex->nHeight, pindex->GetBlockHash().ToString());
                 return -1;
             }
-            for (int posInBlock = 0; posInBlock < (int)block.vtx.size(); posInBlock++) {
-                const auto& tx = block.vtx[posInBlock];
-                if (AddToWalletIfInvolvingMe(tx, pindex->GetBlockHash(), posInBlock, fUpdate)) {
-                    myTxHashes.push_back(tx->GetHash());
-                    ret++;
-                }
-            }
 
-            // Sapling
-            // This should never fail: we should always be able to get the tree
-            // state on the path to the tip of our chain
-            if (pindex->pprev) {
-                if (Params().GetConsensus().NetworkUpgradeActive(pindex->pprev->nHeight,  Consensus::UPGRADE_V5_0)) {
-                    SaplingMerkleTree saplingTree;
-                    assert(pcoinsTip->GetSaplingAnchorAt(pindex->pprev->hashFinalSaplingRoot, saplingTree));
-                    // Increment note witness caches
-                    ChainTipAdded(pindex, &block, saplingTree);
+            {
+                LOCK2(cs_main, cs_wallet);
+                if (tip != chainActive.Tip()) {
+                    tip = chainActive.Tip();
+                    // in case the tip has changed, update progress max
+                    dProgressTip = Checkpoints::GuessVerificationProgress(tip, false);
                 }
-            }
 
-            pindex = chainActive.Next(pindex);
+                if (!chainActive.Contains(pindex)) {
+                    // Abort scan if current block is no longer active, to prevent
+                    // marking transactions as coming from the wrong block.
+                    break;
+                }
+                for (int posInBlock = 0; posInBlock < (int) block.vtx.size(); posInBlock++) {
+                    const auto& tx = block.vtx[posInBlock];
+                    if (AddToWalletIfInvolvingMe(tx, pindex->GetBlockHash(), posInBlock, fUpdate)) {
+                        myTxHashes.push_back(tx->GetHash());
+                        ret++;
+                    }
+                }
+
+                // Sapling
+                // This should never fail: we should always be able to get the tree
+                // state on the path to the tip of our chain
+                if (pindex->pprev) {
+                    if (Params().GetConsensus().NetworkUpgradeActive(pindex->pprev->nHeight, Consensus::UPGRADE_V5_0)) {
+                        SaplingMerkleTree saplingTree;
+                        assert(pcoinsTip->GetSaplingAnchorAt(pindex->pprev->hashFinalSaplingRoot, saplingTree));
+                        // Increment note witness caches
+                        ChainTipAdded(pindex, &block, saplingTree);
+                    }
+                }
+
+                pindex = chainActive.Next(pindex);
+            }
         }
 
         // Sapling
