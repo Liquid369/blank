@@ -43,7 +43,11 @@ void ScriptPubKeyToJSON(const CScript& scriptPubKey, UniValue& out, bool fInclud
         out.pushKV("hex", HexStr(scriptPubKey.begin(), scriptPubKey.end()));
 
     if (!ExtractDestinations(scriptPubKey, type, addresses, nRequired)) {
-        out.pushKV("type", GetTxnOutputType(type));
+        if (!scriptPubKey.empty() && scriptPubKey.IsZerocoinMint()) {
+            out.pushKV("type", "zerocoinmint"); // unsupported type.
+        } else {
+            out.pushKV("type", GetTxnOutputType(type));
+        }
         return;
     }
 
