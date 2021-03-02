@@ -55,7 +55,7 @@ unsigned int GetP2SHSigOpCount(const CTransaction& tx, const CCoinsViewCache& in
     return nSigOps;
 }
 
-bool CheckTransaction(const CTransaction& tx, bool fZerocoinActive, bool fRejectBadUTXO, CValidationState& state, bool fFakeSerialAttack, bool fColdStakingActive, bool fSaplingActive)
+bool CheckTransaction(const CTransaction& tx, bool fZerocoinActive, CValidationState& state, bool fFakeSerialAttack, bool fColdStakingActive, bool fSaplingActive)
 {
     // Basic checks that don't depend on any context
     // Transactions containing empty `vin` must have non-empty `vShieldedSpend`.

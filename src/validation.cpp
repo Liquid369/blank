@@ -339,7 +339,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     // Check transaction
     bool fColdStakingActive = !sporkManager.IsSporkActive(SPORK_19_COLDSTAKING_MAINTENANCE);
     if (!CheckTransaction(tx, consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_ZC),
-            true, state, isBlockBetweenFakeSerialAttackRange(chainHeight), fColdStakingActive, fSaplingActive))
+            state, isBlockBetweenFakeSerialAttackRange(chainHeight), fColdStakingActive, fSaplingActive))
         return error("%s : transaction checks for %s failed with %s", __func__, tx.GetHash().ToString(), FormatStateMessage(state));
 
     // Sapling
@@ -2738,7 +2738,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         if (!CheckTransaction(
                 tx,
                 fZerocoinActive,
-                blockHeight >= consensus.height_start_ZC_SerialRangeCheck,
                 state,
                 isBlockBetweenFakeSerialAttackRange(blockHeight),
                 fColdStakingActive,
