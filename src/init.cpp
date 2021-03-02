@@ -688,7 +688,7 @@ void ThreadImport(const std::vector<fs::path>& vImportFiles)
         fReindex = false;
         LogPrintf("Reindexing finished\n");
         // To avoid ending up in a situation without genesis block, re-try initializing (no-op if reindexing worked):
-        InitBlockIndex();
+        LoadGenesisBlock();
     }
 
     // hardcoded $DATADIR/bootstrap.dat
@@ -1620,7 +1620,7 @@ bool AppInitMain()
                     return UIError(_("Incorrect or no genesis block found. Wrong datadir for network?"));
 
                 // Initialize the block index (no-op if non-empty database was already loaded)
-                if (!InitBlockIndex()) {
+                if (!LoadGenesisBlock()) {
                     strLoadError = _("Error initializing block database");
                     break;
                 }

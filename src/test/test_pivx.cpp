@@ -72,7 +72,7 @@ TestingSetup::TestingSetup()
         pblocktree = new CBlockTreeDB(1 << 20, true);
         pcoinsdbview = new CCoinsViewDB(1 << 23, true);
         pcoinsTip = new CCoinsViewCache(pcoinsdbview);
-        InitBlockIndex();
+        LoadGenesisBlock();
         {
             CValidationState state;
             bool ok = ActivateBestChain(state);
