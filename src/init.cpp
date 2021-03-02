@@ -690,7 +690,9 @@ void ThreadImport(const std::vector<fs::path>& vImportFiles)
         fReindex = false;
         LogPrintf("Reindexing finished\n");
         // To avoid ending up in a situation without genesis block, re-try initializing (no-op if reindexing worked):
-        LoadGenesisBlock();
+        if (!LoadGenesisBlock()) {
+            throw std::runtime_error("Error initializing block database");
+        }
     }
 
     // hardcoded $DATADIR/bootstrap.dat
