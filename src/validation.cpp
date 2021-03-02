@@ -427,10 +427,6 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
                 }
                 return false; // fMissingInputs and !state.IsInvalid() is used to detect this condition, don't set state.Invalid()
             }
-
-            //Check for invalid/fraudulent inputs
-            if (!ValidOutPoint(txin.prevout, chainHeight))
-                return state.Invalid(false, REJECT_INVALID, "bad-txns-invalid-inputs");
         }
 
         // Sapling: are the sapling spends' requirements met in tx(valid anchors/nullifiers)?
@@ -988,12 +984,6 @@ bool CScriptCheck::operator()()
 {
     const CScript& scriptSig = ptxTo->vin[nIn].scriptSig;
     return VerifyScript(scriptSig, scriptPubKey, nFlags, CachingTransactionSignatureChecker(ptxTo, nIn, amount, cacheStore, *precomTxData), ptxTo->GetRequiredSigVersion(), &error);
-}
-
-bool ValidOutPoint(const COutPoint& out, int nHeight)
-{
-    bool isInvalid = nHeight >= Params().GetConsensus().height_start_InvalidUTXOsCheck && invalid_out::ContainsOutPoint(out);
-    return !isInvalid;
 }
 
 int GetSpendHeight(const CCoinsViewCache& inputs)
@@ -1559,14 +1549,6 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
             if (!view.HaveShieldedRequirements(tx))
                 return state.DoS(100, error("%s: spends requirements not met", __func__),
                                  REJECT_INVALID, "bad-txns-sapling-requirements-not-met");
-
-            // Check that the inputs are not marked as invalid/fraudulent
-            for (const CTxIn& in : tx.vin) {
-                if (!ValidOutPoint(in.prevout, pindex->nHeight)) {
-                    return state.DoS(100, error("%s : tried to spend invalid input %s in tx %s", __func__, in.prevout.ToString(),
-                                  tx.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-inputs");
-                }
-            }
 
             // Add in sigops done by pay-to-script-hash inputs;
             // this is to prevent a "rogue miner" from creating

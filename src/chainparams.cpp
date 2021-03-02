@@ -164,7 +164,6 @@ public:
         consensus.height_last_invalid_UTXO = 894538;
         consensus.height_last_ZC_AccumCheckpoint = 1686240;
         consensus.height_last_ZC_WrappedSerials = 1686229;
-        consensus.height_start_InvalidUTXOsCheck = 902850;
         consensus.height_ZC_RecalcAccumulators = 908000;
 
         // validation by-pass
@@ -300,7 +299,6 @@ public:
         consensus.height_last_invalid_UTXO = -1;
         consensus.height_last_ZC_AccumCheckpoint = -1;
         consensus.height_last_ZC_WrappedSerials = -1;
-        consensus.height_start_InvalidUTXOsCheck = 999999999;
         consensus.height_ZC_RecalcAccumulators = 999999999;
 
         // Zerocoin-related params
@@ -424,7 +422,6 @@ public:
         consensus.height_last_invalid_UTXO = -1;
         consensus.height_last_ZC_AccumCheckpoint = 310;     // no checkpoints on regtest
         consensus.height_last_ZC_WrappedSerials = -1;
-        consensus.height_start_InvalidUTXOsCheck = 999999999;
         consensus.height_ZC_RecalcAccumulators = 999999999;
 
         // Zerocoin-related params
