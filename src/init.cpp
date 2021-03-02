@@ -1685,7 +1685,7 @@ bool AppInitMain()
                         }
                     } else {
                         // Populate list of invalid/fraudulent outpoints that are banned from the chain
-                        // They will not be added to coins view (!TODO)
+                        // They will not be added to coins view
                         invalid_out::LoadOutpoints();
                     }
                 }

@@ -114,14 +114,20 @@ void CCoinsViewCache::AddCoin(const COutPoint& outpoint, Coin&& coin, bool possi
     cachedCoinsUsage += it->second.coin.DynamicMemoryUsage();
 }
 
-void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight, bool check)
+void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight, bool check, bool fSkipInvalid)
 {
     bool fCoinbase = tx.IsCoinBase();
     bool fCoinstake = tx.IsCoinStake();
     const uint256& txid = tx.GetHash();
     for (size_t i = 0; i < tx.vout.size(); ++i) {
-        bool overwrite = check && cache.HaveCoin(COutPoint(txid, i));
-        cache.AddCoin(COutPoint(txid, i), Coin(tx.vout[i], nHeight, fCoinbase, fCoinstake), overwrite);
+        const COutPoint out(txid, i);
+        // Don't add fraudulent/banned outputs
+        if (fSkipInvalid && invalid_out::ContainsOutPoint(out)) {
+            cache.SpendCoin(out);   // no-op if the coin is not in the cache
+            continue;
+        }
+        bool overwrite = check && cache.HaveCoin(out);
+        cache.AddCoin(out, Coin(tx.vout[i], nHeight, fCoinbase, fCoinstake), overwrite);
     }
 }
 

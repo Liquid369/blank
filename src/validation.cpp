@@ -952,7 +952,15 @@ void static InvalidBlockFound(CBlockIndex* pindex, const CValidationState& state
     }
 }
 
-void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo& txundo, int nHeight)
+static bool SkipInvalidUTXOS(int nHeight)
+{
+    const Consensus::Params& consensus = Params().GetConsensus();
+    return Params().NetworkIDString() == CBaseChainParams::MAIN &&
+           consensus.NetworkUpgradeActive(nHeight, Consensus::UPGRADE_ZC) &&
+           nHeight <= consensus.height_last_invalid_UTXO;
+}
+
+void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo& txundo, int nHeight, bool fSkipInvalid)
 {
     // mark inputs spent
     if (!tx.IsCoinBase() && !tx.HasZerocoinSpendInputs()) {
@@ -967,13 +975,13 @@ void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo& txund
     inputs.SetNullifiers(tx, true);
 
     // add outputs
-    AddCoins(inputs, tx, nHeight);
+    AddCoins(inputs, tx, nHeight, false, fSkipInvalid);
 }
 
-void UpdateCoins(const CTransaction& tx, CCoinsViewCache &inputs, int nHeight)
+void UpdateCoins(const CTransaction& tx, CCoinsViewCache &inputs, int nHeight, bool fSkipInvalid)
 {
     CTxUndo txundo;
-    UpdateCoins(tx, inputs, txundo, nHeight);
+    UpdateCoins(tx, inputs, txundo, nHeight, fSkipInvalid);
 }
 
 bool CScriptCheck::operator()()
@@ -1593,7 +1601,8 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
         if (i > 0) {
             blockundo.vtxundo.emplace_back();
         }
-        UpdateCoins(tx, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight);
+        const bool fSkipInvalid = SkipInvalidUTXOS(pindex->nHeight);
+        UpdateCoins(tx, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight, fSkipInvalid);
 
         // Sapling update tree
         if (tx.IsShieldedTx() && !tx.sapData->vShieldedOutput.empty()) {
@@ -1695,6 +1704,11 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     } else if (pindex->nHeight == consensus.height_last_ZC_AccumCheckpoint) {
         // After last Checkpoint block, wipe the checksum database
         zerocoinDB->WipeAccChecksums();
+    }
+
+    // 100 blocks after the last invalid out, clean the map contents
+    if (pindex->nHeight == consensus.height_last_invalid_UTXO + 100) {
+        invalid_out::setInvalidOutPoints.clear();
     }
 
     return true;
@@ -3649,14 +3663,17 @@ static bool RollforwardBlock(const CBlockIndex* pindex, CCoinsViewCache& inputs,
         return error("ReplayBlock(): ReadBlockFromDisk failed at %d, hash=%s", pindex->nHeight, pindex->GetBlockHash().ToString());
     }
 
+    const bool fSkipInvalid = SkipInvalidUTXOS(pindex->nHeight);
+
     for (const CTransactionRef& tx : block.vtx) {
         if (!tx->IsCoinBase()) {
             for (const CTxIn &txin : tx->vin) {
                 inputs.SpendCoin(txin.prevout);
             }
         }
+
         // Pass check = true as every addition may be an overwrite.
-        AddCoins(inputs, *tx, pindex->nHeight, true);
+        AddCoins(inputs, *tx, pindex->nHeight, true, fSkipInvalid);
     }
     return true;
 }
