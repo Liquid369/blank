@@ -31,35 +31,6 @@
 
 #include <univalue.h>
 
-
-void ScriptPubKeyToJSON(const CScript& scriptPubKey, UniValue& out, bool fIncludeHex)
-{
-    txnouttype type;
-    std::vector<CTxDestination> addresses;
-    int nRequired;
-
-    out.pushKV("asm", ScriptToAsmStr(scriptPubKey));
-    if (fIncludeHex)
-        out.pushKV("hex", HexStr(scriptPubKey.begin(), scriptPubKey.end()));
-
-    if (!ExtractDestinations(scriptPubKey, type, addresses, nRequired)) {
-        if (!scriptPubKey.empty() && scriptPubKey.IsZerocoinMint()) {
-            out.pushKV("type", "zerocoinmint"); // unsupported type.
-        } else {
-            out.pushKV("type", GetTxnOutputType(type));
-        }
-        return;
-    }
-
-    out.pushKV("reqSigs", nRequired);
-    out.pushKV("type", GetTxnOutputType(type));
-
-    UniValue a(UniValue::VARR);
-    for (const CTxDestination& addr : addresses)
-        a.push_back(EncodeDestination(addr));
-    out.pushKV("addresses", a);
-}
-
 void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry)
 {
     // Call into TxToUniv() in bitcoin-common to decode the transaction hex.
@@ -460,7 +431,7 @@ UniValue decodescript(const JSONRPCRequest& request)
     } else {
         // Empty scripts are valid
     }
-    ScriptPubKeyToJSON(script, r, false);
+    ScriptPubKeyToUniv(script, r, false);
 
     r.pushKV("p2sh", EncodeDestination(CScriptID(script)));
     return r;

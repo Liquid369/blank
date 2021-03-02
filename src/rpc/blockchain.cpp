@@ -9,11 +9,11 @@
 #include "budget/budgetmanager.h"
 #include "checkpoints.h"
 #include "clientversion.h"
+#include "core_io.h"
 #include "consensus/upgrades.h"
 #include "kernel.h"
 #include "masternodeman.h"
 #include "policy/feerate.h"
-#include "policy/policy.h"
 #include "rpc/server.h"
 #include "sync.h"
 #include "txdb.h"
@@ -23,14 +23,9 @@
 #include "hash.h"
 #include "validationinterface.h"
 #include "wallet/wallet.h"
-#include "zpiv/zpivmodule.h"
-#include "zpivchain.h"
 
 #include <stdint.h>
-#include <fstream>
-#include <iostream>
 #include <univalue.h>
-#include <mutex>
 #include <numeric>
 #include <condition_variable>
 
@@ -47,7 +42,6 @@ static std::condition_variable cond_blockchange;
 static CUpdatedBlock latestblock;
 
 extern void TxToJSON(const CTransaction& tx, const uint256 hashBlock, UniValue& entry);
-void ScriptPubKeyToJSON(const CScript& scriptPubKey, UniValue& out, bool fIncludeHex);
 
 UniValue syncwithvalidationinterfacequeue(const JSONRPCRequest& request)
 {
@@ -870,7 +864,7 @@ UniValue gettxout(const JSONRPCRequest& request)
     }
     ret.pushKV("value", ValueFromAmount(coin.out.nValue));
     UniValue o(UniValue::VOBJ);
-    ScriptPubKeyToJSON(coin.out.scriptPubKey, o, true);
+    ScriptPubKeyToUniv(coin.out.scriptPubKey, o, true);
     ret.pushKV("scriptPubKey", o);
     ret.pushKV("coinbase", (bool)coin.fCoinBase);
 
