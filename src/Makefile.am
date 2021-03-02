@@ -195,7 +195,6 @@ BITCOIN_CORE_H = \
   interfaces/wallet.h \
   invalid.h \
   invalid_outpoints.json.h \
-  invalid_serials.json.h \
   legacy/stakemodifier.h \
   kernel.h \
   key.h \

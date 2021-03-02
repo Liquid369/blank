@@ -1668,7 +1668,6 @@ bool AppInitMain()
 
                 // Populate list of invalid/fraudulent outpoints that are banned from the chain
                 invalid_out::LoadOutpoints();
-                invalid_out::LoadSerials();
 
                 int chainHeight;
                 bool fZerocoinActive;
