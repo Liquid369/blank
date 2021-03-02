@@ -8,6 +8,7 @@
 #include "consensus/consensus.h"
 #include "policy/fees.h"
 #include "invalid.h"
+#include "logging.h"
 #include "memusage.h"
 #include "random.h"
 
@@ -408,19 +409,18 @@ CAmount CCoinsViewCache::GetTotalAmount() const
     return nTotal;
 }
 
-void CCoinsViewCache::PruneInvalidEntries()
+bool CCoinsViewCache::PruneInvalidEntries()
 {
     // Prune zerocoin Mints and fraudulent/frozen outputs
-    std::unique_ptr<CCoinsViewCursor> pcursor(Cursor());
-    while (pcursor->Valid()) {
-        COutPoint key;
-        Coin coin;
-        if (pcursor->GetKey(key) && pcursor->GetValue(coin)) {
-            if (coin.out.IsZerocoinMint() || invalid_out::ContainsOutPoint(key))
-                SpendCoin(key);
+    bool loaded = invalid_out::LoadOutpoints();
+    assert(loaded);
+    for (const COutPoint& out: invalid_out::setInvalidOutPoints) {
+        if (HaveCoin(out)) {
+            LogPrintf("Pruning invalid output %s\n", out.ToString());
+            SpendCoin(out);
         }
-        pcursor->Next();
     }
+    return Flush();
 }
 
 static const size_t MAX_OUTPUTS_PER_BLOCK = MAX_BLOCK_SIZE_CURRENT /  ::GetSerializeSize(CTxOut(), SER_NETWORK, PROTOCOL_VERSION); // TODO: merge with similar definition in undo.h.

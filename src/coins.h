@@ -409,7 +409,7 @@ public:
     /*
      * Prune zerocoin mints and frozen outputs - do it once, after initialization
      */
-    void PruneInvalidEntries();
+    bool PruneInvalidEntries();
 
 
 private:

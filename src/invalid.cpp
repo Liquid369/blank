@@ -5,6 +5,10 @@
 #include "invalid.h"
 #include "invalid_outpoints.json.h"
 
+#include "primitives/transaction.h"
+
+#include <univalue.h>
+
 namespace invalid_out
 {
     std::set<COutPoint> setInvalidOutPoints;

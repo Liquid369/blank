@@ -5,11 +5,11 @@
 #ifndef PIVX_INVALID_H
 #define PIVX_INVALID_H
 
-#endif //PIVX_INVALID_H
+#include <set>
+#include <string>
 
-#include <libzerocoin/bignum.h>
-#include <univalue/include/univalue.h>
-#include <primitives/transaction.h>
+class COutPoint;
+class UniValue;
 
 namespace invalid_out
 {
@@ -20,3 +20,5 @@ namespace invalid_out
     bool ContainsOutPoint(const COutPoint& out);
     bool LoadOutpoints();
 }
+
+#endif //PIVX_INVALID_H
