@@ -1581,18 +1581,9 @@ bool AppInitMain()
                 pSporkDB = new CSporkDB(0, false, false);
 
                 pblocktree = new CBlockTreeDB(nBlockTreeDBCache, false, fReindex);
-                pcoinsdbview = new CCoinsViewDB(nCoinDBCache, false, fReindex);
-                pcoinscatcher = new CCoinsViewErrorCatcher(pcoinsdbview);
 
                 if (fReindex) {
                     pblocktree->WriteReindexing(true);
-                } else {
-                    uiInterface.InitMessage(_("Upgrading coins database..."));
-                    // If necessary, upgrade from older database format.
-                    if (!pcoinsdbview->Upgrade()) {
-                        strLoadError = _("Error upgrading chainstate database");
-                        break;
-                    }
                 }
 
                 // End loop if shutdown was requested
@@ -1602,6 +1593,9 @@ bool AppInitMain()
                 uiInterface.InitMessage(_("Loading sporks..."));
                 sporkManager.LoadSporksFromDB();
 
+                // LoadBlockIndex will load fTxIndex from the db, or set it if
+                // we're reindexing. It will also load fHavePruned if we've
+                // ever removed a block file from disk.
                 uiInterface.InitMessage(_("Loading block index..."));
                 std::string strBlockIndexError;
                 if (!LoadBlockIndex(strBlockIndexError)) {
@@ -1619,22 +1613,42 @@ bool AppInitMain()
                 if (!mapBlockIndex.empty() && mapBlockIndex.count(consensus.hashGenesisBlock) == 0)
                     return UIError(_("Incorrect or no genesis block found. Wrong datadir for network?"));
 
-                // Initialize the block index (no-op if non-empty database was already loaded)
-                if (!LoadGenesisBlock()) {
-                    strLoadError = _("Error initializing block database");
-                    break;
-                }
-
                 // Check for changed -txindex state
                 if (fTxIndex != gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)) {
                     strLoadError = _("You need to rebuild the database using -reindex to change -txindex");
                     break;
                 }
 
+                // At this point blocktree args are consistent with what's on disk.
+                // If we're not mid-reindex (based on disk + args), add a genesis block on disk.
+                // This is called again in ThreadImport in the reindex completes.
+                if (!fReindex && !LoadGenesisBlock()) {
+                    strLoadError = _("Error initializing block database");
+                    break;
+                }
+
+                // At this point we're either in reindex or we've loaded a useful
+                // block tree into mapBlockIndex!
+
+                pcoinsdbview = new CCoinsViewDB(nCoinDBCache, false, fReindex);
+                pcoinscatcher = new CCoinsViewErrorCatcher(pcoinsdbview);
+
+                // If necessary, upgrade from older database format.
+                // This is a no-op if we cleared the coinsviewdb with -reindex (or -reindex-chainstate !TODO)
+                uiInterface.InitMessage(_("Upgrading coins database if needed..."));
+                // If necessary, upgrade from older database format.
+                if (!pcoinsdbview->Upgrade()) {
+                    strLoadError = _("Error upgrading chainstate database");
+                    break;
+                }
+
+                // ReplayBlocks is a no-op if we cleared the coinsviewdb with -reindex (or -reindex-chainstate !TODO)
                 if (!ReplayBlocks(chainparams, pcoinsdbview)) {
                     strLoadError = _("Unable to replay blocks. You will need to rebuild the database using -reindex.");
                     break;
                 }
+
+                // The on-disk coinsdb is now in a good state, create the cache
                 pcoinsTip = new CCoinsViewCache(pcoinscatcher);
 
                 // !TODO: after enabling reindex-chainstate
@@ -1674,6 +1688,8 @@ bool AppInitMain()
                     }
                 }
 
+                // !TODO: after enabling reindex-chainstate
+                // if (!fReindex && !fReindexChainState) {
                 if (!fReindex) {
                     uiInterface.InitMessage(_("Verifying blocks..."));
 
