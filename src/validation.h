@@ -183,12 +183,13 @@ FILE* OpenUndoFile(const CDiskBlockPos& pos, bool fReadOnly = false);
 fs::path GetBlockPosFilename(const CDiskBlockPos& pos, const char* prefix);
 /** Import blocks from an external file */
 bool LoadExternalBlockFile(FILE* fileIn, CDiskBlockPos* dbp = NULL);
-/** Initialize a new block tree database + block data on disk */
-bool InitBlockIndex();
-/** Load the block tree and coins database from disk */
+/** Ensures we have a genesis block in the block tree, possibly writing one to disk. */
+bool LoadGenesisBlock();
+/** Load the block tree and coins database from disk,
+ * initializing state if we're running with -reindex. */
 bool LoadBlockIndex(std::string& strError);
 /** Update the chain tip based on database information. */
-void LoadChainTip(const CChainParams& chainparams);
+bool LoadChainTip(const CChainParams& chainparams);
 /** Unload database information */
 void UnloadBlockIndex();
 /** See whether the protocol update is enforced for connected nodes */
