@@ -176,9 +176,6 @@ public:
     /** Whether the transaction was sent/received with a watch-only address */
     bool involvesWatchAddress{false};
 
-    /** Return the unique identifier for this transaction (part) */
-    QString getTxID() const;
-
     /** Return the output index of the subtransaction  */
     int getOutputIndex() const;
 
