@@ -9,7 +9,6 @@
 #include "base58.h"
 #include "sapling/key_io_sapling.h"
 #include "wallet/wallet.h"
-#include "zpivchain.h"
 
 #include <algorithm>
 #include <stdint.h>
@@ -561,21 +560,6 @@ void TransactionRecord::loadHotOrColdStakeOrContract(
 
     // Extract and set the owner address
     ExtractAddress(p2csUtxo.scriptPubKey, false, record.address);
-}
-
-bool IsZPIVType(TransactionRecord::Type type)
-{
-    switch (type) {
-        case TransactionRecord::StakeZPIV:
-        case TransactionRecord::ZerocoinMint:
-        case TransactionRecord::ZerocoinSpend:
-        case TransactionRecord::RecvFromZerocoinSpend:
-        case TransactionRecord::ZerocoinSpend_Change_zPiv:
-        case TransactionRecord::ZerocoinSpend_FromMe:
-            return true;
-        default:
-            return false;
-    }
 }
 
 void TransactionRecord::updateStatus(const CWalletTx& wtx)
