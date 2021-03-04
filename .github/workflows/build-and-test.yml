@@ -282,7 +282,7 @@ jobs:
             unit_tests: true
             functional_tests: true
             goal: install
-            test_runner_extra: "--coverage --all"
+            test_runner_extra: "--coverage --all  --exclude feature_dbcrash"
             BITCOIN_CONFIG: "--enable-zmq --with-gui=qt5 --enable-glibc-back-compat --enable-reduce-exports --disable-online-rust"
 
           - name: x86_64 Linux  [GOAL:install]  [bionic] [no GUI no unit tests - only functional tests on legacy pre-HD wallets]
@@ -303,7 +303,7 @@ jobs:
             functional_tests: true
             no_depends: 1
             goal: install
-            test_runner_extra: "--all"
+            test_runner_extra: "--all --exclude feature_dbcrash"
             BITCOIN_CONFIG: "--enable-zmq --with-incompatible-bdb --with-gui=qt5 CPPFLAGS=-DDEBUG_LOCKORDER --disable-hardening --disable-asm"
 
           - name: x86_64 Linux  [GOAL:install]  [bionic]  [no depends only system libs]
