@@ -1793,8 +1793,11 @@ bool AppInitMain()
 
     // scan for better chains in the block chain database, that are not yet connected in the active best chain
     CValidationState state;
-    if (!ActivateBestChain(state))
+    if (!ActivateBestChain(state)) {
         strErrors << "Failed to connect best block";
+        StartShutdown();
+        return false;
+    }
     // update g_best_block if needed
     {
         LOCK(g_best_block_mutex);
