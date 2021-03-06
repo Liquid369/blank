@@ -766,8 +766,6 @@ QVariant TransactionTableModel::data(const QModelIndex& index, int role) const
         return qint64(rec->credit + rec->debit);
     case ShieldedCreditAmountRole:
         return  rec->shieldedCredit ? qint64(*rec->shieldedCredit) : 0;
-    case TxIDRole:
-        return rec->getTxID();
     case TxHashRole:
         return QString::fromStdString(rec->hash.ToString());
     case ConfirmedRole:

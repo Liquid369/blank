@@ -9,7 +9,6 @@
 #include "base58.h"
 #include "sapling/key_io_sapling.h"
 #include "wallet/wallet.h"
-#include "zpivchain.h"
 
 #include <algorithm>
 #include <stdint.h>
@@ -563,21 +562,6 @@ void TransactionRecord::loadHotOrColdStakeOrContract(
     ExtractAddress(p2csUtxo.scriptPubKey, false, record.address);
 }
 
-bool IsZPIVType(TransactionRecord::Type type)
-{
-    switch (type) {
-        case TransactionRecord::StakeZPIV:
-        case TransactionRecord::ZerocoinMint:
-        case TransactionRecord::ZerocoinSpend:
-        case TransactionRecord::RecvFromZerocoinSpend:
-        case TransactionRecord::ZerocoinSpend_Change_zPiv:
-        case TransactionRecord::ZerocoinSpend_FromMe:
-            return true;
-        default:
-            return false;
-    }
-}
-
 void TransactionRecord::updateStatus(const CWalletTx& wtx)
 {
     AssertLockHeld(cs_main);
@@ -656,11 +640,6 @@ bool TransactionRecord::statusUpdateNeeded()
 {
     AssertLockHeld(cs_main);
     return status.cur_num_blocks != chainActive.Height();
-}
-
-QString TransactionRecord::getTxID() const
-{
-    return QString::fromStdString(hash.ToString());
 }
 
 int TransactionRecord::getOutputIndex() const
