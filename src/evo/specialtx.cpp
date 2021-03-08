@@ -12,7 +12,7 @@
 #include "consensus/validation.h"
 #include "primitives/block.h"
 
-bool CheckSpecialTx(const CTransaction& tx, CValidationState& state)
+bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state)
 {
     bool hasExtraPayload = tx.hasExtraPayload();
 
@@ -32,6 +32,14 @@ bool CheckSpecialTx(const CTransaction& tx, CValidationState& state)
     }
 
     // --- From here on, tx has nVersion>=2 and nType!=0
+
+    // !TODO: Add enforcement-height check
+
+    // Cannot be coinbase/coinstake tx
+    if (tx.IsCoinBase() || tx.IsCoinStake()) {
+        return state.DoS(10, error("%s: Special tx is coinbase or coinstake", __func__),
+                         REJECT_INVALID, "bad-txns-special-coinbase");
+    }
 
     // Special txes must have a non-empty payload
     if (!hasExtraPayload) {
@@ -53,9 +61,16 @@ bool CheckSpecialTx(const CTransaction& tx, CValidationState& state)
             __func__, tx.GetHash().ToString(), tx.nType), REJECT_INVALID, "bad-tx-type");
 }
 
-bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindexPrev, CValidationState& state)
+bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindex, CValidationState& state)
 {
-    /* process special txes in batches */
+    // check special txes
+    for (const CTransactionRef& tx: block.vtx) {
+        if (!CheckSpecialTx(*tx, pindex->pprev, state)) {
+            // pass the state returned by the function above
+            return false;
+        }
+    }
+    // !TODO: Process batch of special txes in deterministic manager
     return true;
 }
 

@@ -83,11 +83,6 @@ bool CheckTransaction(const CTransaction& tx, CValidationState& state, bool fCol
         return false;
     }
 
-    // Dispatch to SpecialTx validator
-    if (!CheckSpecialTx(tx, state)) {
-        return false;
-    }
-
     // Check for negative or overflow output values
     const Consensus::Params& consensus = Params().GetConsensus();
     for (const CTxOut& txout : tx.vout) {
