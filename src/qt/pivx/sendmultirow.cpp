@@ -149,6 +149,10 @@ bool SendMultiRow::addressChanged(const QString& str, bool fOnlyValidate)
         updateStyle(ui->lineEditAddress);
         return valid;
     }
+
+    setCssProperty(ui->lineEditAddress, "edit-primary-multi-book");
+    updateStyle(ui->lineEditAddress);
+
     return false;
 }
 
