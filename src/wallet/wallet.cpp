@@ -1775,11 +1775,14 @@ bool CWallet::Upgrade(std::string& error, const int& prevVersion)
  * Scan the block chain (starting in pindexStart) for transactions
  * from or to us. If fUpdate is true, found transactions that already
  * exist in the wallet will be updated.
- * @returns -1 if process was cancelled or the number of tx added to the wallet.
+ *
+ * Returns null if scan was successful. Otherwise, if a complete rescan was not
+ * possible (due to pruning or corruption), returns pointer to the most recent
+ * block that could not be scanned.
  */
-int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, bool fromStartup)
+CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, bool fromStartup)
 {
-    int ret = 0;
+    CBlockIndex* ret = nullptr;
     int64_t nNow = GetTime();
 
     const Consensus::Params& consensus = Params().GetConsensus();
@@ -1813,13 +1816,14 @@ int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, b
                 LogPrintf("Still rescanning. At block %d. Progress=%f\n", pindex->nHeight, gvp);
             }
             if (fromStartup && ShutdownRequested()) {
-                return -1;
+                break;
             }
 
             CBlock block;
             if (!ReadBlockFromDisk(block, pindex)) {
                 LogPrintf("Unable to read block %d (%s) from disk.", pindex->nHeight, pindex->GetBlockHash().ToString());
-                return -1;
+                ret = pindex;
+                break; // failed, try to save txs and return the failed index
             }
 
             {
@@ -1833,13 +1837,13 @@ int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, b
                 if (!chainActive.Contains(pindex)) {
                     // Abort scan if current block is no longer active, to prevent
                     // marking transactions as coming from the wrong block.
+                    ret = pindex;
                     break;
                 }
                 for (int posInBlock = 0; posInBlock < (int) block.vtx.size(); posInBlock++) {
                     const auto& tx = block.vtx[posInBlock];
                     if (AddToWalletIfInvolvingMe(tx, pindex->GetBlockHash(), posInBlock, fUpdate)) {
                         myTxHashes.push_back(tx->GetHash());
-                        ret++;
                     }
                 }
 
@@ -1854,7 +1858,6 @@ int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, b
                         ChainTipAdded(pindex, &block, saplingTree);
                     }
                 }
-
                 pindex = chainActive.Next(pindex);
             }
         }
@@ -4198,7 +4201,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
         uiInterface.InitMessage(_("Rescanning..."));
         LogPrintf("Rescanning last %i blocks (from block %i)...\n", chainActive.Height() - pindexRescan->nHeight, pindexRescan->nHeight);
         const int64_t nWalletRescanTime = GetTimeMillis();
-        if (walletInstance->ScanForWalletTransactions(pindexRescan, true, true) == -1) {
+        if (walletInstance->ScanForWalletTransactions(pindexRescan, true, true) != nullptr) {
             UIError(_("Shutdown requested over the txs scan. Exiting."));
             return nullptr;
         }

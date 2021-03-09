@@ -863,7 +863,7 @@ public:
     bool Upgrade(std::string& error, const int& prevVersion);
     bool ActivateSaplingWallet(bool memOnly = false);
 
-    int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false, bool fromStartup = false);
+    CBlockIndex* ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false, bool fromStartup = false);
     void TransactionRemovedFromMempool(const CTransactionRef &ptx) override;
     void ReacceptWalletTransactions(bool fFirstLoad = false);
     void ResendWalletTransactions(CConnman* connman) override;
