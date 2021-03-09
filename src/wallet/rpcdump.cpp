@@ -144,7 +144,7 @@ UniValue importprivkey(const JSONRPCRequest& request)
                 // cold staking was activated after nBlockTimeProtocolV2 (PIVX v4.0). No need to scan the whole chain
                 pindex = chainActive[Params().GetConsensus().vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight];
             }
-            pwalletMain->ScanForWalletTransactions(pindex, true);
+            pwalletMain->ScanForWalletTransactions(pindex, nullptr, true);
         }
     }
 
@@ -231,7 +231,7 @@ UniValue importaddress(const JSONRPCRequest& request)
     }
 
     if (fRescan) {
-        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), true);
+        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), nullptr, true);
         pwalletMain->ReacceptWalletTransactions();
     }
 
@@ -275,7 +275,7 @@ UniValue importpubkey(const JSONRPCRequest& request)
     ImportScript(GetScriptForRawPubKey(pubKey), strLabel, false);
 
     if (fRescan) {
-        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), true);
+        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), nullptr, true);
         pwalletMain->ReacceptWalletTransactions();
     }
 
@@ -697,7 +697,7 @@ UniValue bip38decrypt(const JSONRPCRequest& request)
 
         // whenever a key is imported, we need to scan the whole chain
         pwalletMain->nTimeFirstKey = 1; // 0 would be considered 'no value'
-        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), true);
+        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), nullptr, true);
     }
 
     return result;
@@ -791,7 +791,7 @@ UniValue importsaplingkey(const JSONRPCRequest& request)
 
     // We want to scan for transactions and notes
     if (fRescan) {
-        pwalletMain->ScanForWalletTransactions(chainActive[nRescanHeight], true);
+        pwalletMain->ScanForWalletTransactions(chainActive[nRescanHeight], nullptr, true);
     }
 
     return result;
@@ -884,7 +884,7 @@ UniValue importsaplingviewingkey(const JSONRPCRequest& request)
 
     // We want to scan for transactions and notes
     if (fRescan) {
-        pwalletMain->ScanForWalletTransactions(chainActive[nRescanHeight], true);
+        pwalletMain->ScanForWalletTransactions(chainActive[nRescanHeight], nullptr, true);
     }
 
     return result;

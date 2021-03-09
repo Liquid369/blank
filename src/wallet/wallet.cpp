@@ -1776,16 +1776,22 @@ bool CWallet::Upgrade(std::string& error, const int& prevVersion)
  * from or to us. If fUpdate is true, found transactions that already
  * exist in the wallet will be updated.
  *
+ * If pindexStop is not a nullptr, the scan will stop at the block-index
+ * defined by pindexStop
+ *
  * Returns null if scan was successful. Otherwise, if a complete rescan was not
  * possible (due to pruning or corruption), returns pointer to the most recent
  * block that could not be scanned.
  */
-CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, bool fromStartup)
+CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlockIndex* pindexStop, bool fUpdate, bool fromStartup)
 {
     CBlockIndex* ret = nullptr;
     int64_t nNow = GetTime();
-
     const Consensus::Params& consensus = Params().GetConsensus();
+
+    if (pindexStop) {
+        assert(pindexStop->nHeight >= pindexStart->nHeight);
+    }
 
     CBlockIndex* pindex = pindexStart;
     {
@@ -1857,6 +1863,9 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool f
                         // Increment note witness caches
                         ChainTipAdded(pindex, &block, saplingTree);
                     }
+                }
+                if (pindex == pindexStop) {
+                    break;
                 }
                 pindex = chainActive.Next(pindex);
             }
@@ -4201,7 +4210,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
         uiInterface.InitMessage(_("Rescanning..."));
         LogPrintf("Rescanning last %i blocks (from block %i)...\n", chainActive.Height() - pindexRescan->nHeight, pindexRescan->nHeight);
         const int64_t nWalletRescanTime = GetTimeMillis();
-        if (walletInstance->ScanForWalletTransactions(pindexRescan, true, true) != nullptr) {
+        if (walletInstance->ScanForWalletTransactions(pindexRescan, nullptr, true, true) != nullptr) {
             UIError(_("Shutdown requested over the txs scan. Exiting."));
             return nullptr;
         }

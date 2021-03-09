@@ -312,7 +312,7 @@ void SettingsBitToolWidget::importAddressFromDecKey()
 
         // whenever a key is imported, we need to scan the whole chain
         pwalletMain->nTimeFirstKey = 1; // 0 would be considered 'no value'
-        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), true);
+        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), nullptr, true);
     }
 
     ui->statusLabel_DEC->setStyleSheet("QLabel { color: green; }");
