@@ -2854,8 +2854,7 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool ov
 
     // Turn the txout set into a CRecipient vector
     for (const CTxOut& txOut : tx.vout) {
-        CRecipient recipient = {txOut.scriptPubKey, txOut.nValue, false};
-        vecSend.push_back(recipient);
+        vecSend.emplace_back(txOut.scriptPubKey, txOut.nValue, false);
     }
 
     CCoinControl coinControl;
@@ -2865,26 +2864,31 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool ov
     coinControl.fOverrideFeeRate = overrideEstimatedFeeRate;
     coinControl.nFeeRate = specificFeeRate;
 
-    for (const CTxIn& txin : tx.vin)
+    for (const CTxIn& txin : tx.vin) {
         coinControl.Select(txin.prevout);
+    }
+
+    // Acquire the locks to prevent races to the new locked unspents between the
+    // CreateTransaction call and LockCoin calls (when lockUnspents is true).
+    LOCK2(cs_main, cs_wallet);
 
     CReserveKey reservekey(this);
     CTransactionRef wtx;
     if (!CreateTransaction(vecSend, wtx, reservekey, nFeeRet, nChangePosInOut, strFailReason, &coinControl, ALL_COINS, false))
         return false;
 
-    if (nChangePosInOut != -1)
+    if (nChangePosInOut != -1) {
         tx.vout.insert(tx.vout.begin() + nChangePosInOut, wtx->vout[nChangePosInOut]);
+        // We don't have the normal Create/Commit cycle, and don't want to risk
+        // reusing change, so just remove the key from the keypool here.
+        reservekey.KeepKey();
+    }
 
-    // Add new txins (keeping original txin scriptSig/order)
+    // Add new txins while keeping original txin scriptSig/order.
     for (const CTxIn& txin : wtx->vin) {
         if (!coinControl.IsSelected(txin.prevout)) {
-            tx.vin.push_back(txin);
-
-            if (lockUnspents) {
-              LOCK(cs_wallet);
-              LockCoin(txin.prevout);
-            }
+            tx.vin.emplace_back(txin);
+            if (lockUnspents) LockCoin(txin.prevout);
         }
     }
 
