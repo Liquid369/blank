@@ -1793,6 +1793,8 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
         assert(pindexStop->nHeight >= pindexStart->nHeight);
     }
 
+    fAbortRescan = false;
+    fScanningWallet = true;
     CBlockIndex* pindex = pindexStart;
     {
         LOCK(cs_main);
@@ -1810,7 +1812,7 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
         std::vector<uint256> myTxHashes;
 
         double gvp = dProgressStart;
-        while (pindex) {
+        while (pindex && !fAbortRescan) {
             gvp = Checkpoints::GuessVerificationProgress(pindex, false);
             if (pindex->nHeight % 100 == 0 && dProgressTip - dProgressStart > 0.0) {
                 ShowProgress(_("Rescanning..."), std::max(1, std::min(99, (int) ((gvp - dProgressStart) /
@@ -1884,7 +1886,11 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
             }
         }
 
+        if (pindex && fAbortRescan) {
+            LogPrintf("Rescan aborted at block %d. Progress=%f\n", pindex->nHeight, Checkpoints::GuessVerificationProgress(pindex, false));
+        }
         ShowProgress(_("Rescanning..."), 100); // hide progress dialog in GUI
+        fScanningWallet = false;
     }
     return ret;
 }
@@ -4406,6 +4412,8 @@ void CWallet::SetNull()
     nNextResend = 0;
     nLastResend = 0;
     nTimeFirstKey = 0;
+    fAbortRescan = false;
+    fScanningWallet = false;
     fWalletUnlockStaking = false;
 
     // Staker status (last hashed block and time)

@@ -4223,10 +4223,9 @@ UniValue rescanblockchain(const JSONRPCRequest& request)
 
     CBlockIndex *stopBlock = pwalletMain->ScanForWalletTransactions(pindexStart, pindexStop, true);
     if (!stopBlock) {
-        // future: backport abort rescan
-        //if (pwalletMain->IsAbortingRescan()) {
-        //    throw JSONRPCError(RPC_MISC_ERROR, "Rescan aborted.");
-        //}
+        if (pwalletMain->IsAbortingRescan()) {
+            throw JSONRPCError(RPC_MISC_ERROR, "Rescan aborted.");
+        }
         // if we got a nullptr returned, ScanForWalletTransactions did rescan up to the requested stopindex
         stopBlock = pindexStop ? pindexStop : chainActive.Tip();
     }
