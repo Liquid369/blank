@@ -151,6 +151,27 @@ UniValue importprivkey(const JSONRPCRequest& request)
     return NullUniValue;
 }
 
+UniValue abortrescan(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() > 0)
+        throw std::runtime_error(
+                "abortrescan\n"
+                "\nStops current wallet rescan triggered e.g. by an importprivkey call.\n"
+                "\nExamples:\n"
+                "\nImport a private key\n"
+                + HelpExampleCli("importprivkey", "\"mykey\"") +
+                "\nAbort the running wallet rescan\n"
+                + HelpExampleCli("abortrescan", "") +
+                "\nAs a JSON-RPC call\n"
+                + HelpExampleRpc("abortrescan", "")
+        );
+
+    EnsureWallet();
+    if (!pwalletMain->IsScanning() || pwalletMain->IsAbortingRescan()) return false;
+    pwalletMain->AbortRescan();
+    return true;
+}
+
 void ImportAddress(const CTxDestination& dest, const std::string& strLabel, const std::string& strPurpose);
 
 void ImportScript(const CScript& script, const std::string& strLabel, bool isRedeemScript)

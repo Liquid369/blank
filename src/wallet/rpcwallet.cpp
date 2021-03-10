@@ -4239,6 +4239,7 @@ UniValue rescanblockchain(const JSONRPCRequest& request)
     return response;
 }
 
+extern UniValue abortrescan(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue dumpprivkey(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue importprivkey(const JSONRPCRequest& request);
 extern UniValue importaddress(const JSONRPCRequest& request);
@@ -4259,6 +4260,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "getaddressinfo",           &getaddressinfo,           true  },
     { "wallet",             "autocombinerewards",       &autocombinerewards,       false },
     { "wallet",             "abandontransaction",       &abandontransaction,       false },
+    { "wallet",             "abortrescan",              &abortrescan,              false },
     { "wallet",             "addmultisigaddress",       &addmultisigaddress,       true  },
     { "wallet",             "backupwallet",             &backupwallet,             true  },
     { "wallet",             "delegatestake",            &delegatestake,            false },
