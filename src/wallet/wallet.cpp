@@ -1821,7 +1821,6 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
 {
     CBlockIndex* ret = nullptr;
     int64_t nNow = GetTime();
-    const Consensus::Params& consensus = Params().GetConsensus();
 
     if (pindexStop) {
         assert(pindexStop->nHeight >= pindexStart->nHeight);
@@ -1829,6 +1828,7 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
 
     fAbortRescan = false;
     fScanningWallet = true;
+
     CBlockIndex* pindex = pindexStart;
     {
         LOCK(cs_main);
