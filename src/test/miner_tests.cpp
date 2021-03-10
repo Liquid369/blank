@@ -110,6 +110,7 @@ BOOST_AUTO_TEST_CASE(CreateNewBlock_validity)
         CValidationState state;
         BOOST_CHECK(ProcessNewBlock(state, nullptr, pblock, nullptr));
         BOOST_CHECK(state.IsValid());
+        SyncWithValidationInterfaceQueue();
         pblock->hashPrevBlock = pblock->GetHash();
     }
 
