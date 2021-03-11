@@ -2070,6 +2070,9 @@ CWallet::Balance CWallet::GetBalance(const int min_depth) const
             if (is_trusted && tx_depth >= min_depth) {
                 ret.m_mine_trusted += tx_credit_mine;
                 ret.m_mine_trusted_shield += tx_credit_shield_mine;
+                if (wtx.tx->HasP2CSOutputs()) {
+                    ret.m_mine_cs_delegated_trusted += wtx.GetStakeDelegationCredit();
+                }
             }
             if (!is_trusted && tx_depth == 0 && wtx.InMempool()) {
                 ret.m_mine_untrusted_pending += tx_credit_mine;

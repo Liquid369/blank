@@ -960,6 +960,7 @@ public:
         CAmount m_mine_immature{0};              //!< Immature coinbases/coinstakes in the main chain
         CAmount m_mine_trusted_shield{0};        //!< Trusted shield, at depth=GetBalance.min_depth or more
         CAmount m_mine_untrusted_shielded_balance{0}; //!< Untrusted shield, but in mempool (pending)
+        CAmount m_mine_cs_delegated_trusted{0};  //!< Trusted, at depth=GetBalance.min_depth or more. Part of m_mine_trusted as well
     };
     Balance GetBalance(int min_depth = 0) const;
 

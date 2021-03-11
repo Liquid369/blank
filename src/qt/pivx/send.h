@@ -57,7 +57,10 @@ public Q_SLOTS:
     void onValueChanged();
     void refreshAmounts();
     void changeTheme(bool isLightTheme, QString &theme) override;
-    void updateAmounts(const QString& titleTotalRemaining, const QString& labelAmountSend, const QString& labelAmountRemaining);
+    void updateAmounts(const QString& titleTotalRemaining,
+                       const QString& labelAmountSend,
+                       const QString& labelAmountRemaining,
+                       CAmount _delegationBalance);
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
@@ -88,7 +91,6 @@ private:
     SendCustomFeeDialog* customFeeDialog = nullptr;
     bool isCustomFeeSelected = false;
     bool fDelegationsChecked = false;
-    CAmount cachedDelegatedBalance{0};
 
     int nDisplayUnit;
     QList<SendMultiRow*> entries;
@@ -117,7 +119,7 @@ private:
     OperationResult prepareTransparent(WalletModelTransaction* tx);
     bool sendFinalStep();
     void setFocusOnLastEntry();
-    void showHideCheckBoxDelegations();
+    void showHideCheckBoxDelegations(CAmount delegationBalance);
     void updateEntryLabels(const QList<SendCoinsRecipient>& recipients);
     void setCustomFeeSelected(bool isSelected, const CAmount& customFee = DEFAULT_TRANSACTION_FEE);
     void setCoinControlPayAmounts();

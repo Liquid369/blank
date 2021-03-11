@@ -145,6 +145,7 @@ void SendWidget::refreshAmounts()
     nDisplayUnit = walletModel->getOptionsModel()->getDisplayUnit();
 
     CAmount totalAmount = 0;
+    CAmount delegatedBalance = 0;
     QString titleTotalRemaining;
     if (coinControlDialog->coinControl->HasSelected()) {
         // Set remaining balance to the sum of the coinControl selected inputs
@@ -157,9 +158,17 @@ void SendWidget::refreshAmounts()
         totalAmount = selectedBalance - total;
         titleTotalRemaining = tr("Total remaining from the selected UTXO");
     } else {
-        // Wallet's unlocked balance.
-        totalAmount = isTransparent ? (walletModel->getUnlockedBalance(nullptr, fDelegationsChecked, false) - total)
-                                    : (walletModel->GetWalletBalances().shielded_balance - total);
+        interfaces::WalletBalances balances = walletModel->GetWalletBalances();
+        if (isTransparent) {
+            totalAmount = balances.balance - balances.shielded_balance - walletModel->getLockedBalance() - total;
+            if (!fDelegationsChecked) {
+                totalAmount -= balances.delegate_balance;
+            }
+            // show delegated balance if exist
+            delegatedBalance = balances.delegate_balance;
+        } else {
+            totalAmount = balances.shielded_balance - total;
+        }
         titleTotalRemaining = tr("Unlocked remaining");
     }
 
@@ -168,16 +177,20 @@ void SendWidget::refreshAmounts()
     QMetaObject::invokeMethod(this, "updateAmounts", Qt::QueuedConnection,
                               Q_ARG(QString, titleTotalRemaining),
                               Q_ARG(QString, GUIUtil::formatBalance(total, nDisplayUnit, false)),
-                              Q_ARG(QString, labelAmountRemaining));
+                              Q_ARG(QString, labelAmountRemaining),
+                              Q_ARG(CAmount, delegatedBalance));
 }
 
-void SendWidget::updateAmounts(const QString& _titleTotalRemaining, const QString& _labelAmountSend, const QString& _labelAmountRemaining)
+void SendWidget::updateAmounts(const QString& _titleTotalRemaining,
+                               const QString& _labelAmountSend,
+                               const QString& _labelAmountRemaining,
+                               CAmount _delegationBalance)
 {
     ui->labelTitleTotalRemaining->setText(_titleTotalRemaining);
     ui->labelAmountSend->setText(_labelAmountSend);
     ui->labelAmountRemaining->setText(_labelAmountRemaining);
     // show or hide delegations checkbox if need be
-    showHideCheckBoxDelegations();
+    showHideCheckBoxDelegations(_delegationBalance);
 }
 
 void SendWidget::loadClientModel()
@@ -338,19 +351,19 @@ void SendWidget::setFocusOnLastEntry()
     if (!entries.isEmpty()) entries.last()->setFocus();
 }
 
-void SendWidget::showHideCheckBoxDelegations()
+void SendWidget::showHideCheckBoxDelegations(CAmount delegationBalance)
 {
     // Show checkbox only when there is any available owned delegation and
     // coincontrol is not selected, and we are trying to spend transparent PIVs.
     const bool isCControl = coinControlDialog ? coinControlDialog->coinControl->HasSelected() : false;
-    const bool hasDel = cachedDelegatedBalance > 0;
+    const bool hasDel = delegationBalance > 0;
 
     const bool showCheckBox = isTransparent && !isCControl && hasDel;
     ui->checkBoxDelegations->setVisible(showCheckBox);
     if (showCheckBox)
         ui->checkBoxDelegations->setToolTip(
                 tr("Possibly spend coins delegated for cold-staking (currently available: %1").arg(
-                        GUIUtil::formatBalance(cachedDelegatedBalance, nDisplayUnit, false))
+                        GUIUtil::formatBalance(delegationBalance, nDisplayUnit, false))
         );
 }
 
@@ -521,9 +534,6 @@ bool SendWidget::sendFinalStep()
         );
 
         if (sendStatus.status == WalletModel::OK) {
-            // if delegations were spent, update cachedBalance
-            if (fStakeDelegationVoided)
-                cachedDelegatedBalance = walletModel->getDelegatedBalance();
             clearAll(false);
             inform(tr("Transaction sent"));
             dialog->deleteLater();

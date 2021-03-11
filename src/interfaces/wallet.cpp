@@ -20,8 +20,8 @@ namespace interfaces {
             result.unconfirmed_watch_only_balance = m_wallet.GetUnconfirmedWatchOnlyBalance();
             result.immature_watch_only_balance = m_wallet.GetImmatureWatchOnlyBalance();
         }
-        if (result.have_coldstaking) { // At the moment, the GUI is not using these two balances.
-            result.delegate_balance = m_wallet.GetDelegatedBalance();
+        result.delegate_balance = balance.m_mine_cs_delegated_trusted;
+        if (result.have_coldstaking) { // At the moment, the GUI is not using the cold staked balance.
             result.coldstaked_balance = m_wallet.GetColdStakingBalance();
         }
         result.shielded_balance = balance.m_mine_trusted_shield;
