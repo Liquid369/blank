@@ -35,8 +35,7 @@ QT_TRANSLATE_NOOP("pivx-core", ""
 "Please run 'sapling-fetch-params' or './util/fetch-params.sh' and then "
 "restart."),
 QT_TRANSLATE_NOOP("pivx-core", ""
-"Cannot obtain a lock on data directory %s. PIVX Core is probably already "
-"running."),
+"Cannot obtain a lock on data directory %s. %s is probably already running."),
 QT_TRANSLATE_NOOP("pivx-core", ""
 "Cannot upgrade to Sapling wallet (already running Sapling support). Version: "
 "%d"),
@@ -80,9 +79,6 @@ QT_TRANSLATE_NOOP("pivx-core", ""
 QT_TRANSLATE_NOOP("pivx-core", ""
 "Enable spork administration functionality with the appropriate private key."),
 QT_TRANSLATE_NOOP("pivx-core", ""
-"Enter regression test mode, which uses a special chain in which blocks can "
-"be solved instantly."),
-QT_TRANSLATE_NOOP("pivx-core", ""
 "Error: Listening for incoming connections failed (listen returned error %s)"),
 QT_TRANSLATE_NOOP("pivx-core", ""
 "Error: Unsupported argument -checklevel found. Checklevel must be level 4."),
@@ -117,9 +113,6 @@ QT_TRANSLATE_NOOP("pivx-core", ""
 QT_TRANSLATE_NOOP("pivx-core", ""
 "If paytxfee is not set, include enough fee so transactions begin "
 "confirmation on average within n blocks (default: %u)"),
-QT_TRANSLATE_NOOP("pivx-core", ""
-"In this mode -genproclimit controls how many blocks are generated "
-"immediately."),
 QT_TRANSLATE_NOOP("pivx-core", ""
 "Invalid amount for -maxtxfee=<amount>: '%s' (must be at least the minrelay "
 "fee of %s to prevent stuck transactions)"),
@@ -177,6 +170,9 @@ QT_TRANSLATE_NOOP("pivx-core", ""
 QT_TRANSLATE_NOOP("pivx-core", ""
 "Support filtering of blocks and transaction with bloom filters (default: %u)"),
 QT_TRANSLATE_NOOP("pivx-core", ""
+"System error while flushing the chainstate after pruning invalid entries. "
+"Possible corrupt database."),
+QT_TRANSLATE_NOOP("pivx-core", ""
 "The block database contains a block which appears to be from the future. "
 "This may be due to your computer's date and time being set incorrectly. Only "
 "rebuild the block database if you are sure that your computer's date and "
@@ -196,6 +192,9 @@ QT_TRANSLATE_NOOP("pivx-core", ""
 "Reduce the number or size of uacomments."),
 QT_TRANSLATE_NOOP("pivx-core", ""
 "Unable to bind to %s on this computer. PIVX Core is probably already running."),
+QT_TRANSLATE_NOOP("pivx-core", ""
+"Unable to replay blocks. You will need to rebuild the database using -"
+"reindex."),
 QT_TRANSLATE_NOOP("pivx-core", ""
 "Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: "
 "%s)"),
@@ -220,6 +219,8 @@ QT_TRANSLATE_NOOP("pivx-core", ""
 QT_TRANSLATE_NOOP("pivx-core", ""
 "Warning: error reading %s! All keys read correctly, but transaction data or "
 "address book entries might be missing or incorrect."),
+QT_TRANSLATE_NOOP("pivx-core", ""
+"Whether to save the mempool on shutdown and load on restart (default: %u)"),
 QT_TRANSLATE_NOOP("pivx-core", ""
 "Whitelist peers connecting from the given netmask or IP address. Can be "
 "specified multiple times."),
@@ -246,6 +247,7 @@ QT_TRANSLATE_NOOP("pivx-core", "Calculating money supply..."),
 QT_TRANSLATE_NOOP("pivx-core", "Can't generate a change-address key. Please call keypoolrefill first."),
 QT_TRANSLATE_NOOP("pivx-core", "Cannot resolve -%s address: '%s'"),
 QT_TRANSLATE_NOOP("pivx-core", "Cannot set -bind or -whitebind together with -listen=0"),
+QT_TRANSLATE_NOOP("pivx-core", "Chain selection options:"),
 QT_TRANSLATE_NOOP("pivx-core", "Change index out of range"),
 QT_TRANSLATE_NOOP("pivx-core", "Connect through SOCKS5 proxy"),
 QT_TRANSLATE_NOOP("pivx-core", "Connect to a node to retrieve peer addresses, and disconnect"),
@@ -298,7 +300,7 @@ QT_TRANSLATE_NOOP("pivx-core", "Imports blocks from external blk000??.dat file")
 QT_TRANSLATE_NOOP("pivx-core", "Include IP addresses in debug output (default: %u)"),
 QT_TRANSLATE_NOOP("pivx-core", "Incorrect or no genesis block found. Wrong datadir for network?"),
 QT_TRANSLATE_NOOP("pivx-core", "Information"),
-QT_TRANSLATE_NOOP("pivx-core", "Initialization sanity check failed. PIVX Core is shutting down."),
+QT_TRANSLATE_NOOP("pivx-core", "Initialization sanity check failed. %s is shutting down."),
 QT_TRANSLATE_NOOP("pivx-core", "Insufficient funds."),
 QT_TRANSLATE_NOOP("pivx-core", "Invalid -masternodeaddr address: %s"),
 QT_TRANSLATE_NOOP("pivx-core", "Invalid -masternodeaddr port %d, isn't the same as the peer port %d"),
@@ -355,6 +357,7 @@ QT_TRANSLATE_NOOP("pivx-core", "Randomly fuzz 1 of every <n> network messages"),
 QT_TRANSLATE_NOOP("pivx-core", "Rebuild block chain index from current blk000??.dat files"),
 QT_TRANSLATE_NOOP("pivx-core", "Relay and mine data carrier transactions (default: %u)"),
 QT_TRANSLATE_NOOP("pivx-core", "Relay non-P2SH multisig (default: %u)"),
+QT_TRANSLATE_NOOP("pivx-core", "Replaying blocks..."),
 QT_TRANSLATE_NOOP("pivx-core", "Rescan the block chain for missing wallet transactions"),
 QT_TRANSLATE_NOOP("pivx-core", "Rescanning..."),
 QT_TRANSLATE_NOOP("pivx-core", "Run a thread to flush wallet periodically (default: %u)"),
@@ -391,7 +394,6 @@ QT_TRANSLATE_NOOP("pivx-core", "Synchronizing sporks..."),
 QT_TRANSLATE_NOOP("pivx-core", "The threshold value cannot be less than %s"),
 QT_TRANSLATE_NOOP("pivx-core", "This help message"),
 QT_TRANSLATE_NOOP("pivx-core", "This is experimental software."),
-QT_TRANSLATE_NOOP("pivx-core", "This is intended for regression testing tools and app development."),
 QT_TRANSLATE_NOOP("pivx-core", "This is not a masternode. 'local' option disabled."),
 QT_TRANSLATE_NOOP("pivx-core", "This is not a masternode."),
 QT_TRANSLATE_NOOP("pivx-core", "Threshold for disconnecting misbehaving peers (default: %u)"),
@@ -409,10 +411,10 @@ QT_TRANSLATE_NOOP("pivx-core", "Unable to start HTTP server. See debug log for d
 QT_TRANSLATE_NOOP("pivx-core", "Unknown network specified in -onlynet: '%s'"),
 QT_TRANSLATE_NOOP("pivx-core", "Unsupported logging category %s=%s."),
 QT_TRANSLATE_NOOP("pivx-core", "Upgrade wallet to latest format"),
-QT_TRANSLATE_NOOP("pivx-core", "Upgrading coins database..."),
+QT_TRANSLATE_NOOP("pivx-core", "Upgrading coins database if needed..."),
 QT_TRANSLATE_NOOP("pivx-core", "Use UPnP to map the listening port (default: %u)"),
 QT_TRANSLATE_NOOP("pivx-core", "Use block spam filter (default: %u)"),
-QT_TRANSLATE_NOOP("pivx-core", "Use the test network"),
+QT_TRANSLATE_NOOP("pivx-core", "Use the test chain"),
 QT_TRANSLATE_NOOP("pivx-core", "User Agent comment (%s) contains unsafe characters."),
 QT_TRANSLATE_NOOP("pivx-core", "Username for JSON-RPC connections"),
 QT_TRANSLATE_NOOP("pivx-core", "Verifying blocks..."),
