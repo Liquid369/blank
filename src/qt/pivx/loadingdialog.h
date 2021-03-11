@@ -25,6 +25,7 @@ public:
         runnable = nullptr;
     }
     virtual void clean() {};
+    void setType(int _type) { type = _type; }
 public Q_SLOTS:
     void process();
 Q_SIGNALS:
