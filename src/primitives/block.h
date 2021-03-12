@@ -23,7 +23,7 @@ class CBlockHeader
 {
 public:
     // header
-    static const int32_t CURRENT_VERSION=8;     //!> Version 8 Sapling feature and tx v2
+    static const int32_t CURRENT_VERSION=9;
     int32_t nVersion;
     uint256 hashPrevBlock;
     uint256 hashMerkleRoot;
@@ -31,7 +31,7 @@ public:
     uint32_t nBits;
     uint32_t nNonce;
     uint256 nAccumulatorCheckpoint;             // only for version 4, 5 and 6.
-    uint256 hashFinalSaplingRoot;               // only for version 8
+    uint256 hashFinalSaplingRoot;               // only for version 8+
 
     CBlockHeader()
     {
