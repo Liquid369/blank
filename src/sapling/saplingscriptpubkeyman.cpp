@@ -9,6 +9,7 @@
 
 void SaplingScriptPubKeyMan::AddToSaplingSpends(const uint256& nullifier, const uint256& wtxid)
 {
+    AssertLockHeld(wallet->cs_wallet);
     mapTxSaplingNullifiers.emplace(nullifier, wtxid);
 
     std::pair<TxNullifiers::iterator, TxNullifiers::iterator> range;
@@ -17,7 +18,7 @@ void SaplingScriptPubKeyMan::AddToSaplingSpends(const uint256& nullifier, const 
 }
 
 bool SaplingScriptPubKeyMan::IsSaplingSpent(const uint256& nullifier) const {
-    LOCK(cs_main);
+    LOCK(wallet->cs_wallet); // future: move to AssertLockHeld()
     std::pair<TxNullifiers::const_iterator, TxNullifiers::const_iterator> range;
     range = mapTxSaplingNullifiers.equal_range(nullifier);
 
@@ -202,7 +203,7 @@ void UpdateWitnessHeights(NoteDataMap& noteDataMap, int indexHeight, int64_t nWi
 }
 
 void SaplingScriptPubKeyMan::IncrementNoteWitnesses(const CBlockIndex* pindex,
-                                     const CBlock* pblockIn,
+                                     const CBlock* pblock,
                                      SaplingMerkleTree& saplingTree)
 {
     LOCK(wallet->cs_wallet);
@@ -214,17 +215,6 @@ void SaplingScriptPubKeyMan::IncrementNoteWitnesses(const CBlockIndex* pindex,
     if (nWitnessCacheSize < WITNESS_CACHE_SIZE) {
         nWitnessCacheSize += 1;
         nWitnessCacheNeedsUpdate = true;
-    }
-
-    const CBlock* pblock {pblockIn};
-    CBlock block;
-    if (!pblock) {
-        if (!ReadBlockFromDisk(block, pindex)) {
-            std::string read_failed_str = strprintf("Unable to read block %d (%s) from disk.",
-                    pindex->nHeight, pindex->GetBlockHash().ToString());
-            throw std::runtime_error(read_failed_str);
-        }
-        pblock = &block;
     }
 
     for (const auto& tx : pblock->vtx) {
@@ -470,7 +460,7 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
         bool requireSpendingKey,
         bool ignoreLocked) const
 {
-    LOCK2(cs_main, wallet->cs_wallet);
+    LOCK(wallet->cs_wallet);
 
     for (auto& p : wallet->mapWallet) {
         const CWalletTx& wtx = p.second;
@@ -481,7 +471,7 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
         }
 
         // Filter the transactions before checking for notes
-        if (!CheckFinalTx(wtx.tx) ||
+        if (!IsFinalTx(wtx.tx, wallet->GetLastBlockHeight() + 1, GetAdjustedTime()) ||
             wtx.GetDepthInMainChain() < minDepth ||
             wtx.GetDepthInMainChain() > maxDepth) {
             continue;

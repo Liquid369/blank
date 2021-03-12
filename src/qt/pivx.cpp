@@ -25,6 +25,7 @@
 #ifdef ENABLE_WALLET
 #include "paymentserver.h"
 #include "walletmodel.h"
+#include "interfaces/wallet.h"
 #endif
 #include "masternodeconfig.h"
 
@@ -69,6 +70,8 @@ Q_IMPORT_PLUGIN(QGifPlugin);
 // Declare meta types used for QMetaObject::invokeMethod
 Q_DECLARE_METATYPE(bool*)
 Q_DECLARE_METATYPE(CAmount)
+Q_DECLARE_METATYPE(interfaces::WalletBalances);
+Q_DECLARE_METATYPE(uint256)
 
 static void InitMessage(const std::string& message)
 {
@@ -449,16 +452,17 @@ void BitcoinApplication::requestShutdown()
     qDebug() << __func__ << ": Requesting shutdown";
     startThread();
     window->hide();
-    window->setClientModel(0);
+    if (walletModel) walletModel->stop();
+    window->setClientModel(nullptr);
     pollShutdownTimer->stop();
 
 #ifdef ENABLE_WALLET
     window->removeAllWallets();
     delete walletModel;
-    walletModel = 0;
+    walletModel = nullptr;
 #endif
     delete clientModel;
-    clientModel = 0;
+    clientModel = nullptr;
 
     // Show a simple window indicating shutdown status
     ShutdownWindow::showShutdownWindow(window);
@@ -486,6 +490,7 @@ void BitcoinApplication::initializeResult(int retval)
 #ifdef ENABLE_WALLET
         if (pwalletMain) {
             walletModel = new WalletModel(pwalletMain, optionsModel);
+            walletModel->setClientModel(clientModel);
 
             window->addWallet(PIVXGUI::DEFAULT_WALLET, walletModel);
             window->setCurrentWallet(PIVXGUI::DEFAULT_WALLET);
@@ -569,6 +574,8 @@ int main(int argc, char* argv[])
     //   Need to pass name here as CAmount is a typedef (see http://qt-project.org/doc/qt-5/qmetatype.html#qRegisterMetaType)
     //   IMPORTANT if it is no longer a typedef use the normal variant above
     qRegisterMetaType<CAmount>("CAmount");
+    qRegisterMetaType<CAmount>("interfaces::WalletBalances");
+    qRegisterMetaType<size_t>("size_t");
 
     /// 3. Application identification
     // must be set before OptionsModel is initialized or translations are loaded,

@@ -43,6 +43,11 @@ CKey AddTestCKeyToKeyStore(CBasicKeyStore& keyStore, bool genNewKey) {
     return tsk;
 }
 
+CKey AddTestCKeyToWallet(CWallet& wallet, bool genNewKey) {
+    LOCK(wallet.cs_wallet);
+    return AddTestCKeyToKeyStore(wallet, genNewKey);
+}
+
 TestSaplingNote GetTestSaplingNote(const libzcash::SaplingPaymentAddress& pa, CAmount value) {
     // Generate dummy Sapling note
     libzcash::SaplingNote note(pa, value);
@@ -80,13 +85,13 @@ CWalletTx GetValidSaplingReceive(const Consensus::Params& consensusParams,
 
 // Two dummy input (to trick coinbase check), one or many shielded outputs
 CWalletTx GetValidSaplingReceive(const Consensus::Params& consensusParams,
-                                 CBasicKeyStore& keyStoreFrom,
+                                 CWallet& keyStoreFrom,
                                  CAmount inputAmount,
                                  std::vector<ShieldedDestination> vDest,
                                  bool genNewKey,
                                  const CWallet* pwalletIn) {
     // From taddr
-    CKey tsk = AddTestCKeyToKeyStore(keyStoreFrom, genNewKey);
+    CKey tsk = AddTestCKeyToWallet(keyStoreFrom, genNewKey);
     auto scriptPubKey = GetScriptForDestination(tsk.GetPubKey().GetID());
 
     // Two equal dummy inputs to by-pass the coinbase check.
@@ -97,7 +102,7 @@ CWalletTx GetValidSaplingReceive(const Consensus::Params& consensusParams,
 
 // Single input, single shielded output
 CWalletTx GetValidSaplingReceive(const Consensus::Params& consensusParams,
-                                 CBasicKeyStore& keyStore,
+                                 CWallet& keyStore,
                                  const libzcash::SaplingExtendedSpendingKey &sk,
                                  CAmount value,
                                  bool genNewKey,

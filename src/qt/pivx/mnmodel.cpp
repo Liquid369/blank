@@ -22,7 +22,7 @@ void MNModel::updateMNList()
     int end = nodes.size();
     nodes.clear();
     collateralTxAccepted.clear();
-    for (CMasternodeConfig::CMasternodeEntry mne : masternodeConfig.getEntries()) {
+    for (const CMasternodeConfig::CMasternodeEntry& mne : masternodeConfig.getEntries()) {
         int nIndex;
         if (!mne.castOutputIndex(nIndex))
             continue;
@@ -35,14 +35,9 @@ void MNModel::updateMNList()
         }
         nodes.insert(QString::fromStdString(mne.getAlias()), std::make_pair(QString::fromStdString(mne.getIp()), pmn));
         if (pwalletMain) {
-            bool txAccepted = false;
-            {
-                LOCK2(cs_main, pwalletMain->cs_wallet);
-                const CWalletTx *walletTx = pwalletMain->GetWalletTx(txHash);
-                if (walletTx && walletTx->GetDepthInMainChain() >= MasternodeCollateralMinConf()) {
-                    txAccepted = true;
-                }
-            }
+            const CWalletTx *walletTx = pwalletMain->GetWalletTx(txHash);
+            bool txAccepted = walletTx &&
+                    WITH_LOCK(pwalletMain->cs_wallet, return walletTx->GetDepthInMainChain()) >= MasternodeCollateralMinConf();
             collateralTxAccepted.insert(mne.getTxHash(), txAccepted);
         }
     }
@@ -115,13 +110,8 @@ QVariant MNModel::data(const QModelIndex &index, int role) const
                 if (!isAvailable) return false;
                 std::string txHash = rec->vin.prevout.hash.GetHex();
                 if (!collateralTxAccepted.value(txHash)) {
-                    bool txAccepted = false;
-                    {
-                        LOCK2(cs_main, pwalletMain->cs_wallet);
-                        const CWalletTx *walletTx = pwalletMain->GetWalletTx(rec->vin.prevout.hash);
-                        txAccepted = walletTx && walletTx->GetDepthInMainChain() > 0;
-                    }
-                    return txAccepted;
+                    const CWalletTx *walletTx = pwalletMain->GetWalletTx(rec->vin.prevout.hash);
+                    return walletTx && WITH_LOCK(pwalletMain->cs_wallet, return walletTx->GetDepthInMainChain()) > 0;
                 }
                 return true;
             }

@@ -95,7 +95,7 @@ class ListReceivedTest (PivxTestFramework):
         assert_false(r[0]['change'], "Note should not be change")
         assert_equal(my_memo_hex, r[0]['memo'])
         assert_equal(0, r[0]['confirmations'])
-        assert_equal(-1, r[0]['blockindex'])
+        assert_equal(0, r[0]['blockindex'])
         assert_equal(0, r[0]['blockheight'])
 
         c = self.nodes[1].getsaplingnotescount(0)

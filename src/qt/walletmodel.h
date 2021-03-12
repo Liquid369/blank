@@ -22,8 +22,10 @@
 #include <vector>
 
 #include <QObject>
+#include <QFuture>
 
 class AddressTableModel;
+class ClientModel;
 class OptionsModel;
 class RecentRequestsTableModel;
 class TransactionTableModel;
@@ -327,6 +329,22 @@ public:
     void loadReceiveRequests(std::vector<std::string>& vReceiveRequests);
     bool saveReceiveRequest(const std::string& sAddress, const int64_t nId, const std::string& sRequest);
 
+    ClientModel& clientModel() const { return *m_client_model; }
+    void setClientModel(ClientModel* client_model);
+
+    uint256 getLastBlockProcessed() const;
+    int getLastBlockProcessedNum() const;
+
+    interfaces::WalletBalances getBalances() { return walletWrapper.getBalances(); };
+    bool hasForceCheckBalance() { return fForceCheckBalanceChanged; }
+    void setCacheNumBlocks(int _cachedNumBlocks) { cachedNumBlocks = _cachedNumBlocks; }
+    int getCacheNumBLocks() { return cachedNumBlocks; }
+    void setCacheBlockHash(const uint256& _blockHash) { m_cached_best_block_hash = _blockHash; }
+    void setfForceCheckBalanceChanged(bool _fForceCheckBalanceChanged) { fForceCheckBalanceChanged = _fForceCheckBalanceChanged; }
+    Q_INVOKABLE void checkBalanceChanged(const interfaces::WalletBalances& new_balances);
+
+    void stop();
+
 private:
     CWallet* wallet;
     // Simple Wallet interface.
@@ -341,6 +359,7 @@ private:
     std::unique_ptr<interfaces::Handler> m_handler_show_progress;
     std::unique_ptr<interfaces::Handler> m_handler_notify_watch_only_changed;
     std::unique_ptr<interfaces::Handler> m_handler_notify_walletbacked;
+    ClientModel* m_client_model;
 
     bool fHaveWatchOnly;
     bool fForceCheckBalanceChanged;
@@ -358,12 +377,13 @@ private:
 
     EncryptionStatus cachedEncryptionStatus;
     int cachedNumBlocks;
+    uint256 m_cached_best_block_hash;
 
     QTimer* pollTimer;
+    QFuture<void> pollFuture;
 
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();
-    Q_INVOKABLE void checkBalanceChanged(const interfaces::WalletBalances& new_balances);
 
 Q_SIGNALS:
     // Signal that balance in wallet changed
@@ -393,6 +413,12 @@ Q_SIGNALS:
     void notifyReceiveAddressChanged();
 
 public Q_SLOTS:
+    /* Wallet balances changes */
+    void balanceNotify();
+    /* Update transaction model after wallet changes */
+    void updateTxModelData();
+    /* Balance polling process finished */
+    void pollFinished();
     /* Wallet status might have changed */
     void updateStatus();
     /* New transaction, or transaction changed status */

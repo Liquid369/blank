@@ -48,6 +48,8 @@ public:
     void run(int type) override;
     void onError(QString error, int type) override;
 
+    void showEvent(QShowEvent *event) override;
+
 public Q_SLOTS:
     void walletSynced(bool sync);
 

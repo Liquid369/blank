@@ -39,6 +39,6 @@ unsigned int GetP2SHSigOpCount(const CTransaction& tx, const CCoinsViewCache& ma
  * Check if transaction is final and can be included in a block with the
  * specified height and time. Consensus critical.
  */
-bool IsFinalTx(const CTransactionRef& tx, int nBlockHeight = 0, int64_t nBlockTime = 0);
+bool IsFinalTx(const CTransactionRef& tx, int nBlockHeight, int64_t nBlockTime = 0);
 
 #endif // BITCOIN_CONSENSUS_TX_VERIFY_H

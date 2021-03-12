@@ -12,12 +12,9 @@
 
 bool IsFinalTx(const CTransactionRef& tx, int nBlockHeight, int64_t nBlockTime)
 {
-    AssertLockHeld(cs_main);
     // Time based nLockTime implemented in 0.1.6
     if (tx->nLockTime == 0)
         return true;
-    if (nBlockHeight == 0)
-        nBlockHeight = chainActive.Height();
     if (nBlockTime == 0)
         nBlockTime = GetAdjustedTime();
     if ((int64_t)tx->nLockTime < ((int64_t)tx->nLockTime < LOCKTIME_THRESHOLD ? (int64_t)nBlockHeight : nBlockTime))

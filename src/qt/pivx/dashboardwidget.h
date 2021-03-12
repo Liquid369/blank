@@ -170,6 +170,7 @@ private:
     ChartData* chartData{nullptr};
     bool hasStakes{false};
     bool fShowCharts{true};
+    std::atomic<bool> filterUpdateNeeded{false};
 
     void initChart();
     void showHideEmptyChart(bool show, bool loading, bool forceView = false);

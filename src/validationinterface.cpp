@@ -37,7 +37,7 @@ struct MainSignalsInstance {
      */
     boost::signals2::signal<void (const std::shared_ptr<const CBlock> &, const CBlockIndex *pindex, const std::vector<CTransactionRef> &)> BlockConnected;
     /** Notifies listeners of a block being disconnected */
-    boost::signals2::signal<void (const std::shared_ptr<const CBlock> &, int nBlockHeight)> BlockDisconnected;
+    boost::signals2::signal<void (const std::shared_ptr<const CBlock> &, const uint256& blockHash, int nBlockHeight, int64_t blockTime)> BlockDisconnected;
     /** Notifies listeners of a transaction removal from the mempool */
     boost::signals2::signal<void (const CTransactionRef &)> TransactionRemovedFromMempool;
     /** Notifies listeners of a new active block chain. */
@@ -98,7 +98,7 @@ void RegisterValidationInterface(CValidationInterface* pwalletIn)
     conns.UpdatedBlockTip = g_signals.m_internals->UpdatedBlockTip.connect(std::bind(&CValidationInterface::UpdatedBlockTip, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
     conns.TransactionAddedToMempool = g_signals.m_internals->TransactionAddedToMempool.connect(std::bind(&CValidationInterface::TransactionAddedToMempool, pwalletIn, std::placeholders::_1));
     conns.BlockConnected = g_signals.m_internals->BlockConnected.connect(std::bind(&CValidationInterface::BlockConnected, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-    conns.BlockDisconnected = g_signals.m_internals->BlockDisconnected.connect(std::bind(&CValidationInterface::BlockDisconnected, pwalletIn, std::placeholders::_1, std::placeholders::_2));
+    conns.BlockDisconnected = g_signals.m_internals->BlockDisconnected.connect(std::bind(&CValidationInterface::BlockDisconnected, pwalletIn, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
     conns.TransactionRemovedFromMempool = g_signals.m_internals->TransactionRemovedFromMempool.connect(std::bind(&CValidationInterface::TransactionRemovedFromMempool, pwalletIn, std::placeholders::_1));
     conns.SetBestChain = g_signals.m_internals->SetBestChain.connect(std::bind(&CValidationInterface::SetBestChain, pwalletIn, std::placeholders::_1));
     conns.Broadcast = g_signals.m_internals->Broadcast.connect(std::bind(&CValidationInterface::ResendWalletTransactions, pwalletIn, std::placeholders::_1));
@@ -163,9 +163,9 @@ void CMainSignals::BlockConnected(const std::shared_ptr<const CBlock> &pblock, c
     });
 }
 
-void CMainSignals::BlockDisconnected(const std::shared_ptr<const CBlock> &pblock, int nBlockHeight) {
-    m_internals->m_schedulerClient.AddToProcessQueue([pblock, nBlockHeight, this] {
-        m_internals->BlockDisconnected(pblock, nBlockHeight);
+void CMainSignals::BlockDisconnected(const std::shared_ptr<const CBlock> &pblock, const uint256& blockHash, int nBlockHeight, int64_t blockTime) {
+    m_internals->m_schedulerClient.AddToProcessQueue([pblock, blockHash, nBlockHeight, blockTime, this] {
+        m_internals->BlockDisconnected(pblock, blockHash, nBlockHeight, blockTime);
     });
 }
 

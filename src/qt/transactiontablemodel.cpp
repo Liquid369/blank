@@ -239,24 +239,22 @@ public:
                     break;
                 }
                 if (showTransaction) {
-                    LOCK2(cs_main, wallet->cs_wallet);
                     // Find transaction in wallet
-                    auto mi = wallet->mapWallet.find(hash);
-                    if (mi == wallet->mapWallet.end()) {
+                    const CWalletTx* wtx = wallet->GetWalletTx(hash);
+                    if (!wtx) {
                         qWarning() << "TransactionTablePriv::updateWallet : Warning: Got CT_NEW, but transaction is not in wallet";
                         break;
                     }
-                    const CWalletTx& wtx = mi->second;
 
                     // As old transactions are still getting updated (+20k range),
                     // do not add them if we deliberately didn't load them at startup.
-                    if (cachedWallet.size() >= MAX_AMOUNT_LOADED_RECORDS && wtx.GetTxTime() < nFirstLoadedTxTime) {
+                    if (cachedWallet.size() >= MAX_AMOUNT_LOADED_RECORDS && wtx->GetTxTime() < nFirstLoadedTxTime) {
                         return;
                     }
 
                     // Added -- insert at the right position
                     QList<TransactionRecord> toInsert =
-                        TransactionRecord::decomposeTransaction(wallet, wtx);
+                        TransactionRecord::decomposeTransaction(wallet, *wtx);
                     if (!toInsert.isEmpty()) { /* only if something to insert */
                         parent->beginInsertRows(QModelIndex(), lowerIndex, lowerIndex + toInsert.size() - 1);
                         int insert_idx = lowerIndex;
@@ -283,6 +281,10 @@ public:
             case CT_UPDATED:
                 // Miscellaneous updates -- nothing to do, status update will take care of this, and is only computed for
                 // visible transactions.
+                for (int i = lowerIndex; i < upperIndex; i++) {
+                    TransactionRecord *rec = &cachedWallet[i];
+                    rec->status.needsUpdate = true;
+                }
                 break;
         }
     }
@@ -297,32 +299,25 @@ public:
         return hasZcTxes;
     }
 
-    TransactionRecord* index(int idx)
+    TransactionRecord* index(int cur_block_num, const uint256& cur_block_hash, int idx)
     {
         if (idx >= 0 && idx < cachedWallet.size()) {
             TransactionRecord* rec = &cachedWallet[idx];
-
-            // Get required locks upfront. This avoids the GUI from getting
-            // stuck if the core is holding the locks for a longer time - for
-            // example, during a wallet rescan.
-            //
-            // If a status update is needed (blocks came in since last check),
-            //  update the status of this transaction from the wallet. Otherwise,
-            // simply re-use the cached status.
-            TRY_LOCK(cs_main, lockMain);
-            if (lockMain) {
+            if (!cur_block_hash.IsNull() && rec->statusUpdateNeeded(cur_block_num)) {
+                // If a status update is needed (blocks came in since last check),
+                // update the status of this transaction from the wallet. Otherwise,
+                // simply re-use the cached status.
                 TRY_LOCK(wallet->cs_wallet, lockWallet);
-                if (lockWallet && rec->statusUpdateNeeded()) {
-                    std::map<uint256, CWalletTx>::iterator mi = wallet->mapWallet.find(rec->hash);
-
+                if (lockWallet) {
+                    auto mi = wallet->mapWallet.find(rec->hash);
                     if (mi != wallet->mapWallet.end()) {
-                        rec->updateStatus(mi->second);
+                        rec->updateStatus(mi->second, cur_block_num);
                     }
                 }
             }
             return rec;
         }
-        return 0;
+        return nullptr;
     }
 };
 
@@ -809,7 +804,9 @@ QVariant TransactionTableModel::headerData(int section, Qt::Orientation orientat
 QModelIndex TransactionTableModel::index(int row, int column, const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    TransactionRecord* data = priv->index(row);
+    TransactionRecord* data = priv->index(walletModel->getLastBlockProcessedNum(),
+                                          walletModel->getLastBlockProcessed(),
+                                          row);
     if (data) {
         return createIndex(row, column, data);
     }

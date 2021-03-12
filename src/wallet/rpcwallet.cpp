@@ -62,9 +62,9 @@ void WalletTxToJSON(const CWalletTx& wtx, UniValue& entry)
     if (wtx.IsCoinBase() || wtx.IsCoinStake())
         entry.pushKV("generated", true);
     if (confirms > 0) {
-        entry.pushKV("blockhash", wtx.hashBlock.GetHex());
-        entry.pushKV("blockindex", wtx.nIndex);
-        entry.pushKV("blocktime", mapBlockIndex[wtx.hashBlock]->GetBlockTime());
+        entry.pushKV("blockhash", wtx.m_confirm.hashBlock.GetHex());
+        entry.pushKV("blockindex", wtx.m_confirm.nIndex);
+        entry.pushKV("blocktime", mapBlockIndex[wtx.m_confirm.hashBlock]->GetBlockTime());
     } else {
         entry.pushKV("trusted", wtx.IsTrusted());
     }
@@ -1895,6 +1895,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
+    int nBlockHeight = chainActive.Height();
 
     // pivx address
     CTxDestination address = DecodeDestination(request.params[0].get_str());
@@ -1913,7 +1914,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it) {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx, nBlockHeight))
             continue;
 
         for (const CTxOut& txout : wtx.tx->vout)
@@ -1955,6 +1956,7 @@ UniValue getreceivedbylabel(const JSONRPCRequest& request)
     pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
+    int nBlockHeight = chainActive.Height();
 
     // Minimum confirmations
     int nMinDepth = 1;
@@ -1969,7 +1971,7 @@ UniValue getreceivedbylabel(const JSONRPCRequest& request)
     CAmount nAmount = 0;
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it) {
         const CWalletTx& wtx = (*it).second;
-        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx, nBlockHeight))
             continue;
 
         for (const CTxOut& txout : wtx.tx->vout) {
@@ -2302,7 +2304,7 @@ struct tallyitem {
     }
 };
 
-UniValue ListReceived(const UniValue& params, bool by_label)
+UniValue ListReceived(const UniValue& params, bool by_label, int nBlockHeight)
 {
     // Minimum confirmations
     int nMinDepth = 1;
@@ -2335,7 +2337,7 @@ UniValue ListReceived(const UniValue& params, bool by_label)
     for (std::map<uint256, CWalletTx>::iterator it = pwalletMain->mapWallet.begin(); it != pwalletMain->mapWallet.end(); ++it) {
         const CWalletTx& wtx = (*it).second;
 
-        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx))
+        if (wtx.IsCoinBase() || !IsFinalTx(wtx.tx, nBlockHeight))
             continue;
 
         int nDepth = wtx.GetDepthInMainChain();
@@ -2477,8 +2479,8 @@ UniValue listreceivedbyaddress(const JSONRPCRequest& request)
     pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
-
-    return ListReceived(request.params, false);
+    int nBlockHeight = chainActive.Height();
+    return ListReceived(request.params, false, nBlockHeight);
 }
 
 UniValue listreceivedbyshieldaddress(const JSONRPCRequest& request)
@@ -2563,9 +2565,9 @@ UniValue listreceivedbyshieldaddress(const JSONRPCRequest& request)
 
         if (pwalletMain->mapWallet.count(entry.op.hash)) {
             const CWalletTx& wtx = pwalletMain->mapWallet.at(entry.op.hash);
-            if (!wtx.hashBlock.IsNull())
-                height = mapBlockIndex[wtx.hashBlock]->nHeight;
-            index = wtx.nIndex;
+            if (!wtx.m_confirm.hashBlock.IsNull())
+                height = mapBlockIndex[wtx.m_confirm.hashBlock]->nHeight;
+            index = wtx.m_confirm.nIndex;
             time = wtx.GetTxTime();
         }
 
@@ -2613,8 +2615,8 @@ UniValue listreceivedbylabel(const JSONRPCRequest& request)
     pwalletMain->BlockUntilSyncedToCurrentChain();
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
-
-    return ListReceived(request.params, true);
+    int nBlockHeight = chainActive.Height();
+    return ListReceived(request.params, true, nBlockHeight);
 }
 
 UniValue listcoldutxos(const JSONRPCRequest& request)
@@ -3054,20 +3056,23 @@ UniValue abandontransaction(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 1)
         throw std::runtime_error(
-            "abandontransaction \"txid\"\n"
-            "\nMark in-wallet transaction \"txid\" as abandoned\n"
-            "This will mark this transaction and all its in-wallet descendants as abandoned which will allow\n"
-            "for their inputs to be respent.  It can be used to replace \"stuck\" or evicted transactions.\n"
-            "It only works on transactions which are not included in a block and are not currently in the mempool.\n"
-            "It has no effect on transactions which are already conflicted or abandoned.\n"
-            "\nArguments:\n"
-            "1. \"txid\"    (string, required) The transaction id\n"
-            "\nResult:\n"
-            "\nExamples:\n"
-            + HelpExampleCli("abandontransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
-            + HelpExampleRpc("abandontransaction", "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
+                "abandontransaction \"txid\"\n"
+                "\nMark in-wallet transaction \"txid\" as abandoned\n"
+                "This will mark this transaction and all its in-wallet descendants as abandoned which will allow\n"
+                "for their inputs to be respent.  It can be used to replace \"stuck\" or evicted transactions.\n"
+                "It only works on transactions which are not included in a block and are not currently in the mempool.\n"
+                "It has no effect on transactions which are already abandoned.\n"
+                "\nArguments:\n"
+                "1. \"txid\"    (string, required) The transaction id\n"
+                "\nResult:\n"
+                "\nExamples:\n"
+                + HelpExampleCli("abandontransaction",
+                                 "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
+                + HelpExampleRpc("abandontransaction",
+                                 "\"1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d\"")
         );
 
+    EnsureWallet();
     EnsureWalletIsUnlocked();
 
     // Make sure the results are valid at least up to the most recent block

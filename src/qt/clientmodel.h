@@ -64,7 +64,11 @@ public:
     int getNumBlocks();
     QDateTime getLastBlockDate() const;
     QString getLastBlockHash() const;
+    uint256 getLastBlockProcessed() const;
+    int getLastBlockProcessedHeight() const;
+    int64_t getLastBlockProcessedTime() const;
     double getVerificationProgress() const;
+    bool isTipCached() const;
 
     quint64 getTotalBytesRecv() const;
     quint64 getTotalBytesSent() const;
@@ -114,7 +118,7 @@ private:
     QString cachedMasternodeCountString;
     bool cachedReindexing;
     bool cachedImporting;
-    bool cachedInitialSync;
+    std::atomic<bool> cachedInitialSync{false};
 
     int numBlocksAtStartup;
 

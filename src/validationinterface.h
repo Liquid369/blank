@@ -93,7 +93,7 @@ protected:
      *
      * Called on a background thread.
      */
-    virtual void BlockDisconnected(const std::shared_ptr<const CBlock> &block, int nBlockHeight) {}
+    virtual void BlockDisconnected(const std::shared_ptr<const CBlock> &block, const uint256& blockHash, int nBlockHeight, int64_t blockTime) {}
     /**
      * Notifies listeners of the new active block chain on-disk.
      *
@@ -138,7 +138,7 @@ public:
     void UpdatedBlockTip(const CBlockIndex *, const CBlockIndex *, bool fInitialDownload);
     void TransactionAddedToMempool(const CTransactionRef &ptxn);
     void BlockConnected(const std::shared_ptr<const CBlock> &block, const CBlockIndex *pindex, const std::shared_ptr<const std::vector<CTransactionRef>> &);
-    void BlockDisconnected(const std::shared_ptr<const CBlock> &block, int nBlockHeight);
+    void BlockDisconnected(const std::shared_ptr<const CBlock> &block, const uint256& blockHash, int nBlockHeight, int64_t blockTime);
     void SetBestChain(const CBlockLocator &);
     void Broadcast(CConnman* connman);
     void BlockChecked(const CBlock&, const CValidationState&);

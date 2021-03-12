@@ -13,13 +13,11 @@
 #include "bitcoinunits.h"
 #include "qt/pivx/balancebubble.h"
 #include "clientmodel.h"
-#include "qt/guiconstants.h"
 #include "qt/guiutil.h"
 #include "optionsmodel.h"
 #include "qt/platformstyle.h"
 #include "walletmodel.h"
 #include "addresstablemodel.h"
-#include "guiinterface.h"
 
 #include "masternode-sync.h"
 #include "wallet/wallet.h"
@@ -474,28 +472,9 @@ void TopBar::setNumBlocks(int count)
     if (!clientModel)
         return;
 
-    // Acquire current block source
-    enum BlockSource blockSource = clientModel->getBlockSource();
-    std::string text = "";
-    switch (blockSource) {
-        case BLOCK_SOURCE_NETWORK:
-            text = "Synchronizing..";
-            break;
-        case BLOCK_SOURCE_DISK:
-            text = "Importing blocks from disk..";
-            break;
-        case BLOCK_SOURCE_REINDEX:
-            text = "Reindexing blocks on disk..";
-            break;
-        case BLOCK_SOURCE_NONE:
-            // Case: not Importing, not Reindexing and no network connection
-            text = "No block source available..";
-            ui->pushButtonSync->setChecked(false);
-            break;
-    }
-
+    std::string text;
     bool needState = true;
-    if (masternodeSync.IsBlockchainSynced()) {
+    if (masternodeSync.IsBlockchainSyncedReadOnly()) {
         // chain synced
         Q_EMIT walletSynced(true);
         if (masternodeSync.IsSynced()) {
@@ -523,7 +502,7 @@ void TopBar::setNumBlocks(int count)
         Q_EMIT walletSynced(false);
     }
 
-    if (needState) {
+    if (needState && clientModel->isTipCached()) {
         // Represent time from last generated block in human readable text
         QDateTime lastBlockDate = clientModel->getLastBlockDate();
         QDateTime currentDate = QDateTime::currentDateTime();

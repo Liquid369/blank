@@ -98,6 +98,8 @@ public:
     bool IsBlockchainSynced();
     void ClearFulfilledRequest();
 
+    bool IsBlockchainSyncedReadOnly() const;
+
     // Sync message dispatcher
     bool MessageDispatcher(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
 

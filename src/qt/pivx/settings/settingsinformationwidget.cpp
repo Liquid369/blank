@@ -14,7 +14,7 @@
 
 #include <QDir>
 
-#define REQUEST_UPDATE_MN_COUNT 0
+#define REQUEST_UPDATE_COUNTS 0
 
 SettingsInformationWidget::SettingsInformationWidget(PIVXGUI* _window,QWidget *parent) :
     PWidget(_window,parent),
@@ -141,6 +141,7 @@ void SettingsInformationWidget::setNumConnections(int count)
 
 void SettingsInformationWidget::setNumBlocks(int count)
 {
+    if (!isVisible()) return;
     ui->labelInfoBlockNumber->setText(QString::number(count));
     if (clientModel) {
         ui->labelInfoBlockTime->setText(clientModel->getLastBlockDate().toString());
@@ -168,7 +169,7 @@ void SettingsInformationWidget::showEvent(QShowEvent *event)
     if (clientModel) {
         clientModel->startMasternodesTimer();
         // Initial masternodes count value, running in a worker thread to not lock mnmanager mutex in the main thread.
-        execute(REQUEST_UPDATE_MN_COUNT);
+        execute(REQUEST_UPDATE_COUNTS);
     }
 }
 
@@ -181,15 +182,17 @@ void SettingsInformationWidget::hideEvent(QHideEvent *event) {
 
 void SettingsInformationWidget::run(int type)
 {
-    if (type == REQUEST_UPDATE_MN_COUNT) {
+    if (type == REQUEST_UPDATE_COUNTS) {
         QMetaObject::invokeMethod(this, "setMasternodeCount",
                                   Qt::QueuedConnection, Q_ARG(QString, clientModel->getMasternodesCount()));
+        QMetaObject::invokeMethod(this, "setNumBlocks",
+                                  Qt::QueuedConnection, Q_ARG(int, clientModel->getLastBlockProcessedHeight()));
     }
 }
 
 void SettingsInformationWidget::onError(QString error, int type)
 {
-    if (type == REQUEST_UPDATE_MN_COUNT) {
+    if (type == REQUEST_UPDATE_COUNTS) {
         setMasternodeCount(tr("No available data"));
     }
 }

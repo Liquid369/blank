@@ -7,6 +7,7 @@
 from test_framework.test_framework import PivxTestFramework
 from test_framework.util import (
     assert_equal,
+    assert_raises_rpc_error,
     connect_nodes,
     Decimal,
     disconnect_nodes,
@@ -31,6 +32,11 @@ class AbandonConflictTest(PivxTestFramework):
         txC = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), 10)
         sync_mempools(self.nodes)
         self.nodes[1].generate(1)
+
+        # Can not abandon non-wallet transaction
+        assert_raises_rpc_error(-5, 'Invalid or non-wallet transaction id', lambda: self.nodes[0].abandontransaction('ff' * 32))
+        # Can not abandon confirmed transaction
+        assert_raises_rpc_error(-5, 'Transaction not eligible for abandonment', lambda: self.nodes[0].abandontransaction(txA))
 
         sync_blocks(self.nodes)
         newbalance = self.nodes[0].getbalance()

@@ -65,6 +65,7 @@ public:
     void clearPayAmounts();
     void addPayAmount(const CAmount& amount, bool isShieldedRecipient);
     void setSelectionType(bool isTransparent) { fSelectTransparent = isTransparent; }
+    bool hasModel() { return model; }
 
     CCoinControl* coinControl{nullptr};
 
