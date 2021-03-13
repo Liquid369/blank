@@ -114,11 +114,9 @@ struct Params {
     int64_t nTime_RejectOldSporkKey;
 
     // height-based activations
+    int height_last_invalid_UTXO;
     int height_last_ZC_AccumCheckpoint;
     int height_last_ZC_WrappedSerials;
-    int height_start_InvalidUTXOsCheck;
-    int height_start_ZC_InvalidSerials;
-    int height_start_ZC_SerialRangeCheck;
     int height_ZC_RecalcAccumulators;
 
     // validation by-pass

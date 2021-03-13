@@ -409,7 +409,7 @@ public:
     /*
      * Prune zerocoin mints and frozen outputs - do it once, after initialization
      */
-    void PruneInvalidEntries();
+    bool PruneInvalidEntries();
 
 
 private:
@@ -448,7 +448,8 @@ private:
 // PIVX: When check is false, this assumes that overwrites are never possible due to BIP34 always in effect
 // When check is true, the underlying view may be queried to determine whether an addition is
 // an overwrite.
-void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight, bool check = false);
+// When fSkipInvalid is true, the invalid_out list is checked before adding the coin.
+void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight, bool check = false, bool fSkipInvalid = false);
 
 //! Utility function to find any unspent output with a given txid.
 const Coin& AccessByTxid(const CCoinsViewCache& cache, const uint256& txid);

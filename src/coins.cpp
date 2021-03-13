@@ -8,6 +8,7 @@
 #include "consensus/consensus.h"
 #include "policy/fees.h"
 #include "invalid.h"
+#include "logging.h"
 #include "memusage.h"
 #include "random.h"
 
@@ -113,14 +114,20 @@ void CCoinsViewCache::AddCoin(const COutPoint& outpoint, Coin&& coin, bool possi
     cachedCoinsUsage += it->second.coin.DynamicMemoryUsage();
 }
 
-void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight, bool check)
+void AddCoins(CCoinsViewCache& cache, const CTransaction& tx, int nHeight, bool check, bool fSkipInvalid)
 {
     bool fCoinbase = tx.IsCoinBase();
     bool fCoinstake = tx.IsCoinStake();
     const uint256& txid = tx.GetHash();
     for (size_t i = 0; i < tx.vout.size(); ++i) {
-        bool overwrite = check && cache.HaveCoin(COutPoint(txid, i));
-        cache.AddCoin(COutPoint(txid, i), Coin(tx.vout[i], nHeight, fCoinbase, fCoinstake), overwrite);
+        const COutPoint out(txid, i);
+        // Don't add fraudulent/banned outputs
+        if (fSkipInvalid && invalid_out::ContainsOutPoint(out)) {
+            cache.SpendCoin(out);   // no-op if the coin is not in the cache
+            continue;
+        }
+        bool overwrite = check && cache.HaveCoin(out);
+        cache.AddCoin(out, Coin(tx.vout[i], nHeight, fCoinbase, fCoinstake), overwrite);
     }
 }
 
@@ -408,19 +415,18 @@ CAmount CCoinsViewCache::GetTotalAmount() const
     return nTotal;
 }
 
-void CCoinsViewCache::PruneInvalidEntries()
+bool CCoinsViewCache::PruneInvalidEntries()
 {
     // Prune zerocoin Mints and fraudulent/frozen outputs
-    std::unique_ptr<CCoinsViewCursor> pcursor(Cursor());
-    while (pcursor->Valid()) {
-        COutPoint key;
-        Coin coin;
-        if (pcursor->GetKey(key) && pcursor->GetValue(coin)) {
-            if (coin.out.IsZerocoinMint() || invalid_out::ContainsOutPoint(key))
-                SpendCoin(key);
+    bool loaded = invalid_out::LoadOutpoints();
+    assert(loaded);
+    for (const COutPoint& out: invalid_out::setInvalidOutPoints) {
+        if (HaveCoin(out)) {
+            LogPrintf("Pruning invalid output %s\n", out.ToString());
+            SpendCoin(out);
         }
-        pcursor->Next();
     }
+    return Flush();
 }
 
 static const size_t MAX_OUTPUTS_PER_BLOCK = MAX_BLOCK_SIZE_CURRENT /  ::GetSerializeSize(CTxOut(), SER_NETWORK, PROTOCOL_VERSION); // TODO: merge with similar definition in undo.h.

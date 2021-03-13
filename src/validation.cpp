@@ -340,7 +340,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     // Check transaction
     bool fColdStakingActive = !sporkManager.IsSporkActive(SPORK_19_COLDSTAKING_MAINTENANCE);
     if (!CheckTransaction(tx, consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_ZC),
-            true, state, isBlockBetweenFakeSerialAttackRange(chainHeight), fColdStakingActive, fSaplingActive))
+            state, isBlockBetweenFakeSerialAttackRange(chainHeight), fColdStakingActive, fSaplingActive))
         return error("%s : transaction checks for %s failed with %s", __func__, tx.GetHash().ToString(), FormatStateMessage(state));
 
     // Sapling
@@ -428,10 +428,6 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
                 }
                 return false; // fMissingInputs and !state.IsInvalid() is used to detect this condition, don't set state.Invalid()
             }
-
-            //Check for invalid/fraudulent inputs
-            if (!ValidOutPoint(txin.prevout, chainHeight))
-                return state.Invalid(false, REJECT_INVALID, "bad-txns-invalid-inputs");
         }
 
         // Sapling: are the sapling spends' requirements met in tx(valid anchors/nullifiers)?
@@ -953,7 +949,15 @@ void static InvalidBlockFound(CBlockIndex* pindex, const CValidationState& state
     }
 }
 
-void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo& txundo, int nHeight)
+static bool SkipInvalidUTXOS(int nHeight)
+{
+    const Consensus::Params& consensus = Params().GetConsensus();
+    return Params().NetworkIDString() == CBaseChainParams::MAIN &&
+           consensus.NetworkUpgradeActive(nHeight, Consensus::UPGRADE_ZC) &&
+           nHeight <= consensus.height_last_invalid_UTXO;
+}
+
+void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo& txundo, int nHeight, bool fSkipInvalid)
 {
     // mark inputs spent
     if (!tx.IsCoinBase() && !tx.HasZerocoinSpendInputs()) {
@@ -968,25 +972,19 @@ void UpdateCoins(const CTransaction& tx, CCoinsViewCache& inputs, CTxUndo& txund
     inputs.SetNullifiers(tx, true);
 
     // add outputs
-    AddCoins(inputs, tx, nHeight);
+    AddCoins(inputs, tx, nHeight, false, fSkipInvalid);
 }
 
-void UpdateCoins(const CTransaction& tx, CCoinsViewCache &inputs, int nHeight)
+void UpdateCoins(const CTransaction& tx, CCoinsViewCache &inputs, int nHeight, bool fSkipInvalid)
 {
     CTxUndo txundo;
-    UpdateCoins(tx, inputs, txundo, nHeight);
+    UpdateCoins(tx, inputs, txundo, nHeight, fSkipInvalid);
 }
 
 bool CScriptCheck::operator()()
 {
     const CScript& scriptSig = ptxTo->vin[nIn].scriptSig;
     return VerifyScript(scriptSig, scriptPubKey, nFlags, CachingTransactionSignatureChecker(ptxTo, nIn, amount, cacheStore, *precomTxData), ptxTo->GetRequiredSigVersion(), &error);
-}
-
-bool ValidOutPoint(const COutPoint& out, int nHeight)
-{
-    bool isInvalid = nHeight >= Params().GetConsensus().height_start_InvalidUTXOsCheck && invalid_out::ContainsOutPoint(out);
-    return !isInvalid;
 }
 
 int GetSpendHeight(const CCoinsViewCache& inputs)
@@ -1553,14 +1551,6 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                 return state.DoS(100, error("%s: spends requirements not met", __func__),
                                  REJECT_INVALID, "bad-txns-sapling-requirements-not-met");
 
-            // Check that the inputs are not marked as invalid/fraudulent
-            for (const CTxIn& in : tx.vin) {
-                if (!ValidOutPoint(in.prevout, pindex->nHeight)) {
-                    return state.DoS(100, error("%s : tried to spend invalid input %s in tx %s", __func__, in.prevout.ToString(),
-                                  tx.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-inputs");
-                }
-            }
-
             // Add in sigops done by pay-to-script-hash inputs;
             // this is to prevent a "rogue miner" from creating
             // an incredibly-expensive-to-validate block.
@@ -1594,7 +1584,8 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
         if (i > 0) {
             blockundo.vtxundo.emplace_back();
         }
-        UpdateCoins(tx, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight);
+        const bool fSkipInvalid = SkipInvalidUTXOS(pindex->nHeight);
+        UpdateCoins(tx, view, i == 0 ? undoDummy : blockundo.vtxundo.back(), pindex->nHeight, fSkipInvalid);
 
         // Sapling update tree
         if (tx.IsShieldedTx() && !tx.sapData->vShieldedOutput.empty()) {
@@ -1696,6 +1687,11 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     } else if (pindex->nHeight == consensus.height_last_ZC_AccumCheckpoint) {
         // After last Checkpoint block, wipe the checksum database
         zerocoinDB->WipeAccChecksums();
+    }
+
+    // 100 blocks after the last invalid out, clean the map contents
+    if (pindex->nHeight == consensus.height_last_invalid_UTXO + 100) {
+        invalid_out::setInvalidOutPoints.clear();
     }
 
     return true;
@@ -2739,7 +2735,6 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         if (!CheckTransaction(
                 tx,
                 fZerocoinActive,
-                blockHeight >= consensus.height_start_ZC_SerialRangeCheck,
                 state,
                 isBlockBetweenFakeSerialAttackRange(blockHeight),
                 fColdStakingActive,
@@ -3639,14 +3634,17 @@ static bool RollforwardBlock(const CBlockIndex* pindex, CCoinsViewCache& inputs,
         return error("ReplayBlock(): ReadBlockFromDisk failed at %d, hash=%s", pindex->nHeight, pindex->GetBlockHash().ToString());
     }
 
+    const bool fSkipInvalid = SkipInvalidUTXOS(pindex->nHeight);
+
     for (const CTransactionRef& tx : block.vtx) {
         if (!tx->IsCoinBase()) {
             for (const CTxIn &txin : tx->vin) {
                 inputs.SpendCoin(txin.prevout);
             }
         }
+
         // Pass check = true as every addition may be an overwrite.
-        AddCoins(inputs, *tx, pindex->nHeight, true);
+        AddCoins(inputs, *tx, pindex->nHeight, true, fSkipInvalid);
     }
     return true;
 }

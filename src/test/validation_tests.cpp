@@ -65,7 +65,7 @@ void test_simple_sapling_invalidity(CMutableTransaction& tx)
         CMutableTransaction newTx(tx);
         CValidationState state;
 
-        BOOST_CHECK(!CheckTransaction(newTx, false, false, state, false));
+        BOOST_CHECK(!CheckTransaction(newTx, false, state, false));
         BOOST_CHECK(state.GetRejectReason() == "bad-txns-vin-empty");
     }
     {
@@ -75,7 +75,7 @@ void test_simple_sapling_invalidity(CMutableTransaction& tx)
         newTx.sapData->vShieldedSpend.emplace_back();
         newTx.sapData->vShieldedSpend[0].nullifier = GetRandHash();
 
-        BOOST_CHECK(!CheckTransaction(newTx, false, false, state, false));
+        BOOST_CHECK(!CheckTransaction(newTx, false, state, false));
         BOOST_CHECK(state.GetRejectReason() == "bad-txns-vout-empty");
     }
     {
@@ -112,7 +112,7 @@ void test_simple_sapling_invalidity(CMutableTransaction& tx)
 
         newTx.sapData->vShieldedSpend.emplace_back();
 
-        BOOST_CHECK(!CheckTransaction(newTx, false, false, state, false, false, true));
+        BOOST_CHECK(!CheckTransaction(newTx, false, state, false, false, true));
         BOOST_CHECK(state.GetRejectReason() == "bad-txns-invalid-sapling");
     }
     {
@@ -131,7 +131,7 @@ void test_simple_sapling_invalidity(CMutableTransaction& tx)
 
         newTx.sapData->vShieldedSpend.emplace_back();
 
-        BOOST_CHECK(!CheckTransaction(newTx, false, false, state, false, false, true));
+        BOOST_CHECK(!CheckTransaction(newTx, false, state, false, false, true));
         BOOST_CHECK(state.GetRejectReason() == "bad-txns-invalid-sapling");
     }
 }

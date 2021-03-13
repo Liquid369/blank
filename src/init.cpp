@@ -1563,6 +1563,9 @@ bool AppInitMain()
     LogPrintf("* Using %.1fMiB for chain state database\n", nCoinDBCache * (1.0 / 1024 / 1024));
     LogPrintf("* Using %.1fMiB for in-memory UTXO set\n", nCoinCacheUsage * (1.0 / 1024 / 1024));
 
+    const CChainParams& chainparams = Params();
+    const Consensus::Params& consensus = chainparams.GetConsensus();
+
     bool fLoaded = false;
     while (!fLoaded && !ShutdownRequested()) {
         bool fReset = fReindex;
@@ -1608,9 +1611,6 @@ bool AppInitMain()
                     strLoadError = strprintf("%s : %s", strLoadError, strBlockIndexError);
                     break;
                 }
-
-                const CChainParams& chainparams = Params();
-                const Consensus::Params& consensus = chainparams.GetConsensus();
 
                 // If the loaded chain has a wrong genesis, bail out immediately
                 // (we're likely using a testnet datadir, or the other way around).
@@ -1666,29 +1666,27 @@ bool AppInitMain()
                     assert(chainActive.Tip() != NULL);
                 }
 
-                // Populate list of invalid/fraudulent outpoints that are banned from the chain
-                invalid_out::LoadOutpoints();
-                invalid_out::LoadSerials();
-
-                int chainHeight;
-                bool fZerocoinActive;
-                {
+                if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
+                    // Prune zerocoin invalid outs if they were improperly stored in the coins database
                     LOCK(cs_main);
-                    chainHeight = chainActive.Height();
-                    fZerocoinActive = consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_ZC);
+                    int chainHeight = chainActive.Height();
+                    bool fZerocoinActive = chainHeight > 0 && consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_ZC);
 
-                    // Prune zerocoin mints that were improperly stored in the coins database
-                    // Do it only once, when removing money supply (key 'M') from the DB. Can be skipped in future versions.
-                    int64_t nDummySupply;
-                    if (fZerocoinActive && pblocktree->Read('M', nDummySupply)) {
-                        LogPrintf("Pruning zerocoin mints / invalid outs, at height %d\n", chainHeight);
-                        pcoinsTip->PruneInvalidEntries();
-                        if (!pcoinsTip->Flush()) {
+                    uiInterface.InitMessage(_("Loading/Pruning invalid outputs..."));
+                    if (fZerocoinActive) {
+                        if (!pcoinsTip->PruneInvalidEntries()) {
                             strLoadError = _("System error while flushing the chainstate after pruning invalid entries. Possible corrupt database.");
                             break;
                         }
                         MoneySupply.Update(pcoinsTip->GetTotalAmount(), chainHeight);
-                        pblocktree->Erase('M');
+                        // No need to keep the invalid outs in memory. Clear the map 100 blocks after the last invalid UTXO
+                        if (chainHeight > consensus.height_last_invalid_UTXO + 100) {
+                            invalid_out::setInvalidOutPoints.clear();
+                        }
+                    } else {
+                        // Populate list of invalid/fraudulent outpoints that are banned from the chain
+                        // They will not be added to coins view
+                        invalid_out::LoadOutpoints();
                     }
                 }
 
@@ -1702,7 +1700,7 @@ bool AppInitMain()
 
                     {
                         LOCK(cs_main);
-                        CBlockIndex *tip = chainActive[chainHeight];
+                        CBlockIndex *tip = chainActive.Tip();
                         RPCNotifyBlockChange(true, tip);
                         if (tip && tip->nTime > GetAdjustedTime() + 2 * 60 * 60) {
                             strLoadError = _("The block database contains a block which appears to be from the future. "
