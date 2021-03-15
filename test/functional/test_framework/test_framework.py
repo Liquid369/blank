@@ -337,6 +337,7 @@ class PivxTestFramework():
         with tempfile.SpooledTemporaryFile(max_size=2**16) as log_stderr:
             try:
                 self.start_node(i, extra_args, stderr=log_stderr, *args, **kwargs)
+                self.nodes[i].wait_for_rpc_connection()
                 self.stop_node(i)
             except Exception as e:
                 assert 'pivxd exited' in str(e)  # node must have shutdown
