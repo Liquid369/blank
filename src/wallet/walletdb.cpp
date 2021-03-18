@@ -36,7 +36,6 @@ namespace DBKeys {
     const std::string MASTER_KEY{"mkey"};
     const std::string MINVERSION{"minversion"};
     const std::string NAME{"name"};
-    const std::string OLD_KEY{"wkey"};
     const std::string ORDERPOSNEXT{"orderposnext"};
     const std::string POOL{"pool"};
     const std::string PURPOSE{"purpose"};
@@ -137,7 +136,6 @@ bool CWalletDB::WriteCryptedKey(const CPubKey& vchPubKey,
         return false;
     if (fEraseUnencryptedKey) {
         batch.Erase(std::make_pair(std::string(DBKeys::KEY), vchPubKey));
-        batch.Erase(std::make_pair(std::string(DBKeys::OLD_KEY), vchPubKey));
     }
     return true;
 }
@@ -518,7 +516,7 @@ bool ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue, CW
             // Watch-only addresses have no birthday information for now,
             // so set the wallet birthday to the beginning of time.
             pwallet->nTimeFirstKey = 1;
-        } else if (strType == DBKeys::KEY || strType == DBKeys::OLD_KEY) {
+        } else if (strType == DBKeys::KEY) {
             CPubKey vchPubKey;
             ssKey >> vchPubKey;
             if (!vchPubKey.IsValid()) {
@@ -528,15 +526,8 @@ bool ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue, CW
             CKey key;
             CPrivKey pkey;
             uint256 hash;
-
-            if (strType == DBKeys::KEY) {
-                wss.nKeys++;
-                ssValue >> pkey;
-            } else {
-                CWalletKey wkey;
-                ssValue >> wkey;
-                pkey = wkey.vchPrivKey;
-            }
+            wss.nKeys++;
+            ssValue >> pkey;
 
             // Old wallets store keys as "key" [pubkey] => [privkey]
             // ... which was slow for wallets with lots of keys, because the public key is re-derived from the private key
@@ -752,7 +743,7 @@ bool ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue, CW
 
 bool CWalletDB::IsKeyType(const std::string& strType)
 {
-    return (strType == DBKeys::KEY || strType == DBKeys::OLD_KEY ||
+    return (strType == DBKeys::KEY ||
             strType == DBKeys::MASTER_KEY || strType == DBKeys::CRYPTED_KEY ||
             strType == DBKeys::SAP_KEY || strType == DBKeys::SAP_KEY_CRIPTED);
 }
