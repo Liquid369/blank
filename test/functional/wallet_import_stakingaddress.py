@@ -15,7 +15,6 @@ from test_framework.test_framework import PivxTestFramework
 from test_framework.util import (
     assert_equal,
     DecimalAmt,
-    sync_blocks,
 )
 
 class ImportStakingTest(PivxTestFramework):
@@ -45,7 +44,7 @@ class ImportStakingTest(PivxTestFramework):
             # mine a block and check staking balance
             self.nodes[0].generate(1)
             assert_equal(self.nodes[0].getdelegatedbalance(), DecimalAmt(10 * (i+1)))
-            sync_blocks(self.nodes)
+            self.sync_blocks()
 
         # Export keys
         self.log.info("Exporting keys and importing in node 1")

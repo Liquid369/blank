@@ -12,8 +12,6 @@ from test_framework.util import (
     Decimal,
     ROUND_DOWN,
     JSONRPCException,
-    sync_blocks,
-    sync_mempools
 )
 
 def satoshi_round(amount):
@@ -141,7 +139,7 @@ class MempoolPackagesTest(PivxTestFramework):
         # Test reorg handling
         # First, the basics:
         self.nodes[0].generate(1)
-        sync_blocks(self.nodes)
+        self.sync_blocks()
         self.nodes[1].invalidateblock(self.nodes[0].getbestblockhash())
         self.nodes[1].reconsiderblock(self.nodes[0].getbestblockhash())
 
@@ -196,12 +194,12 @@ class MempoolPackagesTest(PivxTestFramework):
         rawtx = self.nodes[0].createrawtransaction(inputs, outputs)
         signedtx = self.nodes[0].signrawtransaction(rawtx)
         txid = self.nodes[0].sendrawtransaction(signedtx['hex'])
-        sync_mempools(self.nodes)
+        self.sync_mempools()
 
         # Now try to disconnect the tip on each node...
         self.nodes[1].invalidateblock(self.nodes[1].getbestblockhash())
         self.nodes[0].invalidateblock(self.nodes[0].getbestblockhash())
-        sync_blocks(self.nodes)
+        self.sync_blocks()
 
 if __name__ == '__main__':
     MempoolPackagesTest().main()

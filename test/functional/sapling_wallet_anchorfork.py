@@ -63,7 +63,7 @@ class WalletAnchorForkTest(PivxTestFramework):
 
         # Partition B, node 1 mines an empty block
         self.nodes[1].generate(1)
-        sync_blocks(self.nodes[1:3])
+        self.sync_blocks(self.nodes[1:3])
 
         # Check partition
         assert_equal(self.nodes[1].getblockcount(), self.nodes[2].getblockcount())
@@ -77,7 +77,7 @@ class WalletAnchorForkTest(PivxTestFramework):
 
         # Partition A, node 0 mines a block with the transaction
         self.nodes[0].generate(1)
-        self.sync_all([self.nodes[1:3]])
+        self.sync_all(self.nodes[1:3])
 
         # Partition B, node 1 mines the same shield transaction
         txid2 = self.nodes[1].sendrawtransaction(rawhex)

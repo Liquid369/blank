@@ -23,7 +23,6 @@ from test_framework.util import (
         assert_equal,
         connect_nodes,
         disconnect_nodes,
-        sync_blocks,
 )
 
 class ReorgsRestoreTest(PivxTestFramework):
@@ -37,7 +36,7 @@ class ReorgsRestoreTest(PivxTestFramework):
         # Send a tx from which to conflict outputs later
         txid_conflict_from = self.nodes[0].sendtoaddress(self.nodes[0].getnewaddress(), Decimal("10"))
         self.nodes[0].generate(1)
-        sync_blocks(self.nodes)
+        self.sync_blocks()
 
         # Disconnect node1 from others to reorg its chain later
         disconnect_nodes(self.nodes[0], 1)
@@ -72,7 +71,7 @@ class ReorgsRestoreTest(PivxTestFramework):
 
         # Reconnect node0 and node2 and check that conflicted_txid is effectively conflicted
         connect_nodes(self.nodes[0], 2)
-        sync_blocks([self.nodes[0], self.nodes[2]])
+        self.sync_blocks([self.nodes[0], self.nodes[2]])
         conflicted = self.nodes[0].gettransaction(conflicted_txid)
         conflicting = self.nodes[0].gettransaction(conflicting_txid)
         assert_equal(conflicted["confirmations"], -9)
