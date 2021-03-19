@@ -121,8 +121,25 @@ class TestNode():
             assert self.process.poll() is None, "pivxd exited with status %i during initialization" % self.process.returncode
             try:
                 self.rpc = get_rpc_proxy(rpc_url(self.datadir, self.index, self.rpchost), self.index, timeout=self.rpc_timeout, coveragedir=self.coverage_dir)
-                while self.rpc.getblockcount() < 0:
-                    time.sleep(1)
+                self.rpc.getblockcount()
+                wait_until(lambda: self.rpc.getmempoolinfo()['loaded'])
+                # Wait for the node to finish reindex, block import, and
+                # loading the mempool. Usually importing happens fast or
+                # even "immediate" when the node is started. However, there
+                # is no guarantee and sometimes ThreadImport might finish
+                # later. This is going to cause intermittent test failures,
+                # because generally the tests assume the node is fully
+                # ready after being started.
+                #
+                # For example, the node will reject block messages from p2p
+                # when it is still importing with the error "Unexpected
+                # block message received"
+                #
+                # The wait is done here to make tests as robust as possible
+                # and prevent racy tests and intermittent failures as much
+                # as possible. Some tests might not need this, but the
+                # overhead is trivial, and the added gurantees are worth
+                # the minimal performance cost.
                 # If the call to getblockcount() succeeds then the RPC connection is up
                 self.rpc_connected = True
                 self.url = self.rpc.url

@@ -70,9 +70,8 @@ class MempoolPersistTest(PivxTestFramework):
         self.start_node(1, extra_args=["-persistmempool=0"])
         self.start_node(0)
         self.start_node(2)
-
-        wait_until(lambda: self.nodes[0].getmempoolinfo()["loaded"], timeout=1)
-        wait_until(lambda: self.nodes[2].getmempoolinfo()["loaded"], timeout=1)
+        assert self.nodes[0].getmempoolinfo()["loaded"]  # start_node is blocking on the mempool being loaded
+        assert self.nodes[2].getmempoolinfo()["loaded"]
         assert_equal(len(self.nodes[0].getrawmempool()), 5)
         assert_equal(len(self.nodes[2].getrawmempool()), 5)
         # The others have loaded their mempool. If node_1 loaded anything, we'd probably notice by now:
@@ -85,13 +84,13 @@ class MempoolPersistTest(PivxTestFramework):
         self.log.debug("Stop-start node0 with -persistmempool=0. Verify that it doesn't load its mempool.dat file.")
         self.stop_nodes()
         self.start_node(0, extra_args=["-persistmempool=0"])
-        wait_until(lambda: self.nodes[0].getmempoolinfo()["loaded"])
+        assert self.nodes[0].getmempoolinfo()["loaded"]
         assert_equal(len(self.nodes[0].getrawmempool()), 0)
 
         self.log.debug("Stop-start node0. Verify that it has the transactions in its mempool.")
         self.stop_nodes()
         self.start_node(0)
-        wait_until(lambda: self.nodes[0].getmempoolinfo()["loaded"])
+        assert self.nodes[0].getmempoolinfo()["loaded"]
         assert_equal(len(self.nodes[0].getrawmempool()), 5)
 
         # Following code is ahead of our current repository state. Future back port.
@@ -107,7 +106,7 @@ class MempoolPersistTest(PivxTestFramework):
         os.rename(mempooldat0, mempooldat1)
         self.stop_nodes()
         self.start_node(1, extra_args=[])
-        wait_until(lambda: self.nodes[1].getmempoolinfo()["loaded"])
+        assert self.nodes[0].getmempoolinfo()["loaded"]
         assert_equal(len(self.nodes[1].getrawmempool()), 5)
 
         self.log.debug("Prevent bitcoind from writing mempool.dat to disk. Verify that `savemempool` fails")
