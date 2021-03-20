@@ -123,6 +123,7 @@ void SendCustomFeeDialog::accept()
     // Check insane fee
     const CAmount insaneFee = ::minRelayTxFee.GetFeePerK() * 10000;
     if (customFee >= insaneFee) {
+        ui->lineEditCustomFee->setText(BitcoinUnits::format(walletModel->getOptionsModel()->getDisplayUnit(), insaneFee - CWallet::GetRequiredFee(1000)));
         inform(tr("Fee too high. Must be below: %1").arg(
                 BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), insaneFee)));
     } else if (customFee < CWallet::GetRequiredFee(1000)) {
