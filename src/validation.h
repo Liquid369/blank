@@ -124,7 +124,6 @@ struct BlockHasher {
 extern CScript COINBASE_FLAGS;
 extern RecursiveMutex cs_main;
 extern CTxMemPool mempool;
-extern std::atomic_bool g_is_mempool_loaded;
 typedef std::unordered_map<uint256, CBlockIndex*, BlockHasher> BlockMap;
 extern BlockMap mapBlockIndex;
 extern uint64_t nLastBlockTx;
@@ -401,9 +400,9 @@ static const unsigned int REJECT_ALREADY_KNOWN = 0x101;
 static const unsigned int REJECT_CONFLICT = 0x102;
 
 /** Dump the mempool to disk. */
-void DumpMempool();
+bool DumpMempool(const CTxMemPool& pool);
 
 /** Load the mempool from disk. */
-bool LoadMempool();
+bool LoadMempool(CTxMemPool& pool);
 
 #endif // BITCOIN_MAIN_H

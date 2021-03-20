@@ -9,8 +9,6 @@ from test_framework.util import (
     connect_nodes_clique,
     disconnect_nodes,
     satoshi_round,
-    sync_blocks,
-    sync_mempools,
     wait_until,
 )
 
@@ -56,7 +54,7 @@ class MasternodeActivationTest(PivxTier2TestFramework):
         rawtx = self.ownerOne.createrawtransaction(inputs, outputs)
         signedtx = self.ownerOne.signrawtransaction(rawtx)
         txid = self.miner.sendrawtransaction(signedtx['hex'])
-        sync_mempools(self.nodes)
+        self.sync_mempools()
         self.log.info("Collateral spent in %s" % txid)
         self.send_pings([self.remoteTwo])
         self.stake(1, [self.remoteTwo])
@@ -111,7 +109,7 @@ class MasternodeActivationTest(PivxTier2TestFramework):
         self.advance_mocktime(30)
         self.log.info("spending the collateral now..")
         self.spend_collateral()
-        sync_blocks(self.nodes)
+        self.sync_blocks()
         self.log.info("checking mn status..")
         time.sleep(3)           # wait a little bit
         self.wait_until_mn_vinspent(self.mnOneTxHash, 30, [self.remoteTwo])

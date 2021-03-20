@@ -69,7 +69,7 @@ class TxnMallTest(PivxTestFramework):
         # Have node0 mine a block:
         if (self.options.mine_block):
             self.nodes[0].generate(1)
-            sync_blocks(self.nodes[0:2])
+            self.sync_blocks(self.nodes[0:2])
 
         tx1 = self.nodes[0].gettransaction(txid1)
         tx2 = self.nodes[0].gettransaction(txid2)
@@ -105,7 +105,7 @@ class TxnMallTest(PivxTestFramework):
         connect_nodes(self.nodes[2], 0)
         connect_nodes(self.nodes[2], 1)
         self.nodes[2].generate(1)  # Mine another block to make sure we sync
-        sync_blocks(self.nodes)
+        self.sync_blocks()
         assert_equal(self.nodes[0].gettransaction(doublespend_txid)["confirmations"], 2)
 
         # Re-fetch transaction info:

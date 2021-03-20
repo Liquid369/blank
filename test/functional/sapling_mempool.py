@@ -7,7 +7,6 @@ from test_framework.test_framework import PivxTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
-    sync_mempools,
 )
 
 from decimal import Decimal
@@ -53,7 +52,7 @@ class SaplingMempoolTest(PivxTestFramework):
 
         # Miner receives tx_B and accepts it in the mempool
         assert (txid_B in alice.getrawmempool())
-        sync_mempools(self.nodes)
+        self.sync_mempools()
         assert(txid_B in miner.getrawmempool())
         self.log.info("tx_B accepted in the memory pool.")
 
@@ -87,7 +86,7 @@ class SaplingMempoolTest(PivxTestFramework):
         txid_C = alice.sendrawtransaction(txC_hex)
 
         # Miner receives tx_C and accepts it in the mempool
-        sync_mempools(self.nodes)
+        self.sync_mempools()
         assert(txid_C in miner.getrawmempool())
         self.log.info("tx_C accepted in the memory pool.")
 

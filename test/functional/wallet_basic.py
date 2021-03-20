@@ -27,7 +27,7 @@ class WalletTest(PivxTestFramework):
         connect_nodes(self.nodes[0], 1)
         connect_nodes(self.nodes[1], 2)
         connect_nodes(self.nodes[0], 2)
-        self.sync_all([self.nodes[0:3]])
+        self.sync_all(self.nodes[0:3])
 
     def get_vsize(self, txn):
         return self.nodes[0].decoderawtransaction(txn)['size']
@@ -46,9 +46,9 @@ class WalletTest(PivxTestFramework):
         assert_equal(walletinfo['immature_balance'], 250)
         assert_equal(walletinfo['balance'], 0)
 
-        self.sync_all([self.nodes[0:3]])
+        self.sync_all(self.nodes[0:3])
         self.nodes[1].generate(101)
-        self.sync_all([self.nodes[0:3]])
+        self.sync_all(self.nodes[0:3])
 
         assert_equal(self.nodes[0].getbalance(), 250)
         assert_equal(self.nodes[1].getbalance(), 250)
@@ -75,7 +75,7 @@ class WalletTest(PivxTestFramework):
         # Send 21 PIV from 1 to 0 using sendtoaddress call.
         self.nodes[1].sendtoaddress(self.nodes[0].getnewaddress(), 21)
         self.nodes[1].generate(1)
-        self.sync_all([self.nodes[0:3]])
+        self.sync_all(self.nodes[0:3])
 
         # Node0 should have two unspent outputs.
         # Create a couple of transactions to send them to node2, submit them through
@@ -100,7 +100,7 @@ class WalletTest(PivxTestFramework):
 
         # Have node1 mine a block to confirm transactions:
         self.nodes[1].generate(1)
-        self.sync_all([self.nodes[0:3]])
+        self.sync_all(self.nodes[0:3])
 
         assert_equal(self.nodes[0].getbalance(), 0)
         node_2_expected_bal = Decimal('250') + Decimal('21') - 2 * fee_per_kbyte
@@ -115,7 +115,7 @@ class WalletTest(PivxTestFramework):
         node_2_bal -= (Decimal('10') - fee)
         assert_equal(self.nodes[2].getbalance(), node_2_bal)
         self.nodes[2].generate(1)
-        self.sync_all([self.nodes[0:3]])
+        self.sync_all(self.nodes[0:3])
         node_0_bal = self.nodes[0].getbalance()
         assert_equal(node_0_bal, Decimal('10'))
 
@@ -123,7 +123,7 @@ class WalletTest(PivxTestFramework):
         txid = self.nodes[2].sendmany('', {address: 10}, 0, "")
         fee = self.nodes[2].gettransaction(txid)["fee"]
         self.nodes[2].generate(1)
-        self.sync_all([self.nodes[0:3]])
+        self.sync_all(self.nodes[0:3])
         node_0_bal += Decimal('10')
         node_2_bal -= (Decimal('10') - fee)
         assert_equal(self.nodes[2].getbalance(), node_2_bal)
@@ -138,7 +138,7 @@ class WalletTest(PivxTestFramework):
         address_to_import = self.nodes[2].getnewaddress()
         self.nodes[0].sendtoaddress(address_to_import, 1)
         self.nodes[0].generate(1)
-        self.sync_all([self.nodes[0:3]])
+        self.sync_all(self.nodes[0:3])
 
         # 2. Import address from node2 to node1
         self.nodes[1].importaddress(address_to_import)
@@ -162,9 +162,9 @@ class WalletTest(PivxTestFramework):
                            {"spendable": True})
 
         # check if wallet or blochchain maintenance changes the balance
-        self.sync_all([self.nodes[0:3]])
+        self.sync_all(self.nodes[0:3])
         blocks = self.nodes[0].generate(2)
-        self.sync_all([self.nodes[0:3]])
+        self.sync_all(self.nodes[0:3])
         balance_nodes = [self.nodes[i].getbalance() for i in range(3)]
         block_count = self.nodes[0].getblockcount()
 

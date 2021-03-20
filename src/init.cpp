@@ -248,8 +248,8 @@ void PrepareShutdown()
     DumpBudgets(g_budgetman);
     DumpMasternodePayments();
     UnregisterNodeSignals(GetNodeSignals());
-    if (g_is_mempool_loaded && gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
-        DumpMempool();
+    if (::mempool.IsLoaded() && gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
+        DumpMempool(::mempool);
     }
 
     if (fFeeEstimatesInitialized) {
@@ -728,9 +728,9 @@ void ThreadImport(const std::vector<fs::path>& vImportFiles)
     }
 
     if (gArgs.GetBoolArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
-        LoadMempool();
+        LoadMempool(::mempool);
     }
-    g_is_mempool_loaded = !fRequestShutdown;
+    ::mempool.SetIsLoaded(!ShutdownRequested());
 }
 
 /** Sanity checks

@@ -9,7 +9,6 @@ from test_framework.util import (
     assert_greater_than,
     Decimal,
     p2p_port,
-    sync_blocks,
 )
 
 import os
@@ -38,7 +37,7 @@ class MasternodePingTest(PivxTestFramework):
 
         self.log.info("generating 141 blocks...")
         miner.generate(141)
-        sync_blocks(self.nodes)
+        self.sync_blocks()
 
         # Create collateral
         self.log.info("funding masternode controller...")
@@ -46,7 +45,7 @@ class MasternodePingTest(PivxTestFramework):
         mnAddress = owner.getnewaddress(masternodeAlias)
         collateralTxId = miner.sendtoaddress(mnAddress, Decimal('10000'))
         miner.generate(2)
-        sync_blocks(self.nodes)
+        self.sync_blocks()
         time.sleep(1)
         collateral_rawTx = owner.getrawtransaction(collateralTxId, 1)
         assert_equal(owner.getbalance(), Decimal('10000'))
@@ -88,14 +87,14 @@ class MasternodePingTest(PivxTestFramework):
         self.wait_until_mnsync_finished()
         self.log.info("MnSync completed in %d seconds" % (time.time() - start_time))
         miner.generate(1)
-        sync_blocks(self.nodes)
+        self.sync_blocks()
         time.sleep(1)
 
         # Send Start message
         self.log.info("sending masternode broadcast...")
         self.controller_start_masternode(owner, masternodeAlias)
         miner.generate(1)
-        sync_blocks(self.nodes)
+        self.sync_blocks()
         time.sleep(1)
 
         # Wait until masternode is enabled everywhere (max 180 secs)
@@ -106,7 +105,7 @@ class MasternodePingTest(PivxTestFramework):
         self.log.info("Masternode enabled in %d seconds" % (time.time() - start_time))
         self.log.info("Good. Masternode enabled")
         miner.generate(1)
-        sync_blocks(self.nodes)
+        self.sync_blocks()
         time.sleep(1)
 
         last_seen = [self.get_mn_lastseen(node, collateralTxId) for node in self.nodes]
