@@ -155,8 +155,7 @@ enum {
     SER_GETHASH = (1 << 2),
 };
 
-#define READWRITE(obj) (::SerReadWrite(s, (obj), ser_action))
-#define READWRITEMANY(...)      (::SerReadWriteMany(s, ser_action, __VA_ARGS__))
+#define READWRITE(...)      (::SerReadWriteMany(s, ser_action, __VA_ARGS__))
 
 /**
  * Implement three methods for serializable objects. These are actually wrappers over
@@ -1003,19 +1002,6 @@ struct CSerActionUnserialize {
     constexpr bool ForRead() const { return true; }
 };
 
-template <typename Stream, typename T>
-inline void SerReadWrite(Stream& s, const T& obj, CSerActionSerialize ser_action)
-{
-    ::Serialize(s, obj);
-}
-
-template <typename Stream, typename T>
-inline void SerReadWrite(Stream& s, T& obj, CSerActionUnserialize ser_action)
-{
-    ::Unserialize(s, obj);
-}
-
-
 
 /* ::GetSerializeSize implementations
  *
@@ -1071,12 +1057,6 @@ void SerializeMany(Stream& s)
 {
 }
 
-template<typename Stream, typename Arg>
-void SerializeMany(Stream& s, Arg&& arg)
-{
-    ::Serialize(s, std::forward<Arg>(arg));
-}
-
 template<typename Stream, typename Arg, typename... Args>
 void SerializeMany(Stream& s, Arg&& arg, Args&&... args)
 {
@@ -1087,12 +1067,6 @@ void SerializeMany(Stream& s, Arg&& arg, Args&&... args)
 template<typename Stream>
 inline void UnserializeMany(Stream& s)
 {
-}
-
-template<typename Stream, typename Arg>
-inline void UnserializeMany(Stream& s, Arg& arg)
-{
-    ::Unserialize(s, arg);
 }
 
 template<typename Stream, typename Arg, typename... Args>
