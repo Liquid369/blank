@@ -61,7 +61,7 @@ bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVali
             __func__, tx.GetHash().ToString(), tx.nType), REJECT_INVALID, "bad-tx-type");
 }
 
-bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindex, CValidationState& state)
+bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindex, CValidationState& state, bool fJustCheck)
 {
     // check special txes
     for (const CTransactionRef& tx: block.vtx) {
