@@ -11,9 +11,9 @@
 
 #include "util.h"
 
-#include "allocators.h"
 #include "chainparamsbase.h"
 #include "random.h"
+#include "support/allocators/zeroafterfree.h"
 #include "utilstrencodings.h"
 #include "utiltime.h"
 

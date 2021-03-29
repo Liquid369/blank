@@ -148,7 +148,6 @@ BITCOIN_CORE_H = \
   activemasternode.h \
   addrdb.h \
   addrman.h \
-  allocators.h \
   arith_uint256.h \
   amount.h \
   base58.h \
@@ -260,7 +259,10 @@ BITCOIN_CORE_H = \
   stakeinput.h \
   script/ismine.h \
   streams.h \
+  support/allocators/secure.h \
+  support/allocators/zeroafterfree.h \
   support/cleanse.h \
+  support/pagelocker.h \
   sync.h \
   threadsafety.h \
   threadinterrupt.h \
@@ -485,7 +487,6 @@ endif
 libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_common_a_SOURCES = \
-  allocators.cpp \
   base58.cpp \
   bip38.cpp \
   chainparams.cpp \
@@ -526,7 +527,6 @@ libbitcoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_util_a_SOURCES = \
   arith_uint256.cpp \
-  allocators.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
   compat/glibc_sanity.cpp \
@@ -538,6 +538,7 @@ libbitcoin_util_a_SOURCES = \
   random.cpp \
   rpc/protocol.cpp \
   support/cleanse.cpp \
+  support/pagelocker.cpp \
   sync.cpp \
   threadinterrupt.cpp \
   uint256.cpp \
@@ -670,7 +671,6 @@ if BUILD_BITCOIN_LIBS
 include_HEADERS = script/bitcoinconsensus.h
 libbitcoinconsensus_la_SOURCES = \
   arith_uint256.cpp \
-  allocators.cpp \
   primitives/transaction.cpp \
   crypto/hmac_sha512.cpp \
   crypto/scrypt.cpp \

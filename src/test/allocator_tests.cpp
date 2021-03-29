@@ -4,7 +4,7 @@
 
 #include "util.h"
 
-#include "allocators.h"
+#include "support/allocators/zeroafterfree.h"
 #include "test/test_pivx.h"
 
 #include <boost/test/unit_test.hpp>
