@@ -612,7 +612,7 @@ UniValue dumpwallet(const JSONRPCRequest& request)
     return reply;
 }
 
-UniValue processImport(const UniValue& data)
+UniValue processImport(const UniValue& data, const int64_t timestamp)
 {
     try {
         bool success = false;
@@ -632,7 +632,6 @@ UniValue processImport(const UniValue& data)
         const bool& internal = data.exists("internal") ? data["internal"].get_bool() : false;
         const bool& watchOnly = data.exists("watchonly") ? data["watchonly"].get_bool() : false;
         const std::string& label = data.exists("label") && !internal ? data["label"].get_str() : "";
-        const int64_t& timestamp = data.exists("timestamp") && data["timestamp"].get_int64() > 1 ? data["timestamp"].get_int64() : 1;
 
         bool isScript = scriptPubKey.getType() == UniValue::VSTR;
         bool isP2SH = strRedeemScript.length() > 0;
@@ -907,6 +906,20 @@ UniValue processImport(const UniValue& data)
     }
 }
 
+static int64_t GetImportTimestamp(const UniValue& data, int64_t now)
+{
+    if (data.exists("timestamp")) {
+        const UniValue& timestamp = data["timestamp"];
+        if (timestamp.isNum()) {
+            return timestamp.get_int64();
+        } else if (timestamp.isStr() && timestamp.get_str() == "now") {
+            return now;
+        }
+        throw JSONRPCError(RPC_TYPE_ERROR, strprintf("Expected number or \"now\" timestamp value for key. got type %s", uvTypeName(timestamp.type())));
+    }
+    throw JSONRPCError(RPC_TYPE_ERROR, "Missing required timestamp field for key");
+}
+
 UniValue importmulti(const JSONRPCRequest& mainRequest)
 {
     if (mainRequest.fHelp || mainRequest.params.size() < 1 || mainRequest.params.size() > 2)
@@ -959,6 +972,12 @@ UniValue importmulti(const JSONRPCRequest& mainRequest)
     LOCK2(cs_main, pwalletMain->cs_wallet);
     EnsureWalletIsUnlocked();
 
+    // Verify all timestamps are present before importing any keys.
+    int64_t now = chainActive.Tip() ? chainActive.Tip()->GetMedianTimePast() : 0;
+    for (const UniValue& data : requests.getValues()) {
+        GetImportTimestamp(data, now);
+    }
+
     bool fRunScan = false;
     const int64_t minimumTimestamp = 1;
     int64_t nLowestTimestamp = 0;
@@ -972,7 +991,8 @@ UniValue importmulti(const JSONRPCRequest& mainRequest)
     UniValue response(UniValue::VARR);
 
     for (const UniValue& data: requests.getValues()) {
-        const UniValue result = processImport(data);
+        const int64_t timestamp = std::max(GetImportTimestamp(data, now), minimumTimestamp);
+        const UniValue result = processImport(data, timestamp);
         response.push_back(result);
 
         if (!fRescan) {
@@ -985,8 +1005,6 @@ UniValue importmulti(const JSONRPCRequest& mainRequest)
         }
 
         // Get the lowest timestamp.
-        const int64_t& timestamp = data.exists("timestamp") && data["timestamp"].get_int64() > minimumTimestamp ? data["timestamp"].get_int64() : minimumTimestamp;
-
         if (timestamp < nLowestTimestamp) {
             nLowestTimestamp = timestamp;
         }
