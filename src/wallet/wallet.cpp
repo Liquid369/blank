@@ -2468,9 +2468,6 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
     // Check If not mine
     if (mine == ISMINE_NO) return res;
 
-    // Check if watch only utxo are allowed
-    if (mine == ISMINE_WATCH_ONLY && coinControl && !coinControl->fAllowWatchOnly) return res;
-
     // Skip locked utxo
     if (!fIncludeLocked && IsLockedCoin(wtxid, outIndex) && nCoinType != ONLY_10000) return res;
 
@@ -2923,6 +2920,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
     CScript scriptChange;
 
     CWallet::AvailableCoinsFilter coinFilter;
+    coinFilter.fOnlySpendable = true;
     coinFilter.fIncludeDelegated = fIncludeDelegated;
     coinFilter.nCoinType = coin_type;
 
