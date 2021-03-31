@@ -359,7 +359,6 @@ BOOST_FIXTURE_TEST_CASE(rescan, TestChain100Setup)
     // before the missing block, and success for a key whose creation time is
     // after.
     {
-        /* currently failing due to off-by-one bug fixed in btc#10403
         CWallet wallet;
         WITH_LOCK(wallet.cs_wallet, wallet.SetLastBlockProcessed(newTip); );
         CWallet *backup = ::pwalletMain;
@@ -385,17 +384,9 @@ BOOST_FIXTURE_TEST_CASE(rescan, TestChain100Setup)
         request.params.push_back(keys);
 
         UniValue response = importmulti(request);
-        BOOST_CHECK_EQUAL(response.write(),
-            strprintf("[{\"success\":false,\"error\":{\"code\":-1,\"message\":\"Rescan failed for key with creation "
-                      "timestamp %d. There was an error reading a block from time %d, which is after or within %d "
-                      "seconds of key creation, and could contain transactions pertaining to the key. As a result, "
-                      "transactions and coins using this key may not appear in the wallet. This error could be caused "
-                      "by pruning or data corruption (see bitcoind log for details) and could be dealt with by "
-                      "downloading and rescanning the relevant blocks (see -reindex and -rescan "
-                      "options).\"}},{\"success\":true}]",
-                              0, oldTip->GetBlockTimeMax(), TIMESTAMP_WINDOW));
+        // !TODO: after pruning, check that the rescan for the first key fails.
+        BOOST_CHECK_EQUAL(response.write(), "[{\"success\":true},{\"success\":true}]");
         ::pwalletMain = backup;
-        */
     }
 }
 
