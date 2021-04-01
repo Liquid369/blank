@@ -2241,12 +2241,8 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
 
         const CBlockIndex *pindexFork;
         bool fInitialDownload;
-        while (true) {
-            TRY_LOCK(cs_main, lockMain);
-            if (!lockMain) {
-                MilliSleep(50);
-                continue;
-            }
+        {
+            LOCK(cs_main);
             ConnectTrace connectTrace(mempool); // Destructed before cs_main is unlocked
 
             CBlockIndex *pindexOldTip = chainActive.Tip();
@@ -2268,8 +2264,6 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
                 assert(trace.pblock && trace.pindex);
                 GetMainSignals().BlockConnected(trace.pblock, trace.pindex, trace.conflictedTxs);
             }
-
-            break;
         }
 
         // Notify external listeners about the new tip.
