@@ -26,6 +26,9 @@ typedef std::vector<unsigned char> valtype;
 
 static const unsigned int MAX_SCRIPT_ELEMENT_SIZE = 520; // bytes
 
+// Maximum number of public keys per multisig
+static const int MAX_PUBKEYS_PER_MULTISIG = 20;
+
 // Maximum script length in bytes
 static const int MAX_SCRIPT_SIZE = 10000;
 
