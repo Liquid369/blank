@@ -2949,8 +2949,10 @@ bool GetPrevIndex(const CBlock& block, CBlockIndex** pindexPrevRet, CValidationS
     pindexPrev = nullptr;
     if (block.GetHash() != Params().GetConsensus().hashGenesisBlock) {
         BlockMap::iterator mi = mapBlockIndex.find(block.hashPrevBlock);
-        if (mi == mapBlockIndex.end())
-            return state.DoS(0, error("%s : prev block %s not found", __func__, block.hashPrevBlock.GetHex()), 0, "bad-prevblk");
+        if (mi == mapBlockIndex.end()) {
+            return state.DoS(0, error("%s : prev block %s not found", __func__, block.hashPrevBlock.GetHex()), 0,
+                             "prevblk-not-found");
+        }
         pindexPrev = (*mi).second;
         if (pindexPrev->nStatus & BLOCK_FAILED_MASK) {
             //If this "invalid" block is an exact match from the checkpoints, then reconsider it
