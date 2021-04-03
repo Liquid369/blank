@@ -226,7 +226,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
         if (chainActive.Tip() != pindexPrev) return nullptr; // new block came in, move on
 
         CValidationState state;
-        if (!TestBlockValidity(state, *pblock, pindexPrev, false, false)) {
+        if (!TestBlockValidity(state, *pblock, pindexPrev, false, false, false)) {
             throw std::runtime_error(
                     strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
         }

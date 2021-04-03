@@ -1429,7 +1429,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
 {
     AssertLockHeld(cs_main);
     // Check it again in case a previous version let a bad block in
-    if (!fAlreadyChecked && !CheckBlock(block, state, !fJustCheck, !fJustCheck)) {
+    if (!fAlreadyChecked && !CheckBlock(block, state, !fJustCheck, !fJustCheck, !fJustCheck)) {
         if (state.CorruptionPossible()) {
             // We don't write down blocks to disk if they may have been
             // corrupted, so this should be impossible unless we're having hardware
@@ -2853,6 +2853,12 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         return state.DoS(100, error("%s : out-of-bounds SigOpCount", __func__),
             REJECT_INVALID, "bad-blk-sigops", true);
 
+    // Check PoS signature.
+    if (fCheckSig && !CheckBlockSignature(block)) {
+        return state.DoS(100, error("%s : bad proof-of-stake block signature", __func__),
+                         REJECT_INVALID, "bad-PoS-sig", true);
+    }
+
     if (fCheckPOW && fCheckMerkleRoot && fCheckSig)
         block.fChecked = true;
 
@@ -3345,9 +3351,6 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, const std::shared_pt
     // check block
     bool checked = CheckBlock(*pblock, state);
 
-    if (!CheckBlockSignature(*pblock))
-        return error("%s : bad proof-of-stake block signature", __func__);
-
     if (pblock->GetHash() != consensus.hashGenesisBlock && pfrom != NULL) {
         //if we get this far, check if the prev block is our prev block, if not then request sync and return false
         BlockMap::iterator mi = mapBlockIndex.find(pblock->hashPrevBlock);
@@ -3392,7 +3395,7 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, const std::shared_pt
     return true;
 }
 
-bool TestBlockValidity(CValidationState& state, const CBlock& block, CBlockIndex* const pindexPrev, bool fCheckPOW, bool fCheckMerkleRoot)
+bool TestBlockValidity(CValidationState& state, const CBlock& block, CBlockIndex* const pindexPrev, bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckBlockSig)
 {
     AssertLockHeld(cs_main);
     assert(pindexPrev);
@@ -3409,7 +3412,7 @@ bool TestBlockValidity(CValidationState& state, const CBlock& block, CBlockIndex
     // NOTE: CheckBlockHeader is called by CheckBlock
     if (!ContextualCheckBlockHeader(block, state, pindexPrev))
         return error("%s: ContextualCheckBlockHeader failed: %s", __func__, FormatStateMessage(state));
-    if (!CheckBlock(block, state, fCheckPOW, fCheckMerkleRoot))
+    if (!CheckBlock(block, state, fCheckPOW, fCheckMerkleRoot, fCheckBlockSig))
         return error("%s: CheckBlock failed: %s", __func__, FormatStateMessage(state));
     if (!ContextualCheckBlock(block, state, pindexPrev))
         return error("%s: ContextualCheckBlock failed: %s", __func__, FormatStateMessage(state));
