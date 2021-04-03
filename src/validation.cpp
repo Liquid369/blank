@@ -2241,12 +2241,8 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
 
         const CBlockIndex *pindexFork;
         bool fInitialDownload;
-        while (true) {
-            TRY_LOCK(cs_main, lockMain);
-            if (!lockMain) {
-                MilliSleep(50);
-                continue;
-            }
+        {
+            LOCK(cs_main);
             ConnectTrace connectTrace(mempool); // Destructed before cs_main is unlocked
 
             CBlockIndex *pindexOldTip = chainActive.Tip();
@@ -2268,8 +2264,6 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
                 assert(trace.pblock && trace.pindex);
                 GetMainSignals().BlockConnected(trace.pblock, trace.pindex, trace.conflictedTxs);
             }
-
-            break;
         }
 
         // Notify external listeners about the new tip.
@@ -2277,17 +2271,8 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
 
         // Always notify the UI if a new block tip was connected
         if (pindexFork != pindexNewTip) {
-
             // Notify the UI
             uiInterface.NotifyBlockTip(fInitialDownload, pindexNewTip);
-
-            unsigned size = 0;
-            if (pblock)
-                size = GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION);
-            // If the size is over 1 MB notify external listeners, and it is within the last 5 minutes
-            if (size > MAX_BLOCK_SIZE_LEGACY && pblock->GetBlockTime() > GetAdjustedTime() - 300) {
-                uiInterface.NotifyBlockSize(static_cast<int>(size), pindexNewTip->GetBlockHash());
-            }
         }
 
     } while (pindexMostWork != chainActive.Tip());
