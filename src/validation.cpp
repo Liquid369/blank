@@ -3343,23 +3343,21 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, const std::shared_pt
     const Consensus::Params& consensus = Params().GetConsensus();
     int newHeight = 0;
 
-    // check block
-    bool checked = CheckBlock(*pblock, state);
-
-    if (pblock->GetHash() != consensus.hashGenesisBlock && pfrom != NULL) {
-        //if we get this far, check if the prev block is our prev block, if not then request sync and return false
-        BlockMap::iterator mi = mapBlockIndex.find(pblock->hashPrevBlock);
-        if (mi == mapBlockIndex.end()) {
-            g_connman->PushMessage(pfrom, CNetMsgMaker(pfrom->GetSendVersion()).Make(NetMsgType::GETBLOCKS, chainActive.GetLocator(), UINT256_ZERO));
-            return false;
-        }
-    }
-
     {
+        // CheckBlock requires cs_main lock
         LOCK(cs_main);
-
-        if (!checked) {
+        if (!CheckBlock(*pblock, state)) {
             return error ("%s : CheckBlock FAILED for block %s, %s", __func__, pblock->GetHash().GetHex(), FormatStateMessage(state));
+        }
+
+        // Request sync if needed
+        if (pblock->GetHash() != consensus.hashGenesisBlock && !pfrom) {
+            // if we get this far, check if the prev block is our prev block, if not then request sync and return false
+            BlockMap::iterator mi = mapBlockIndex.find(pblock->hashPrevBlock);
+            if (mi == mapBlockIndex.end()) {
+                g_connman->PushMessage(pfrom, CNetMsgMaker(pfrom->GetSendVersion()).Make(NetMsgType::GETBLOCKS, chainActive.GetLocator(), UINT256_ZERO));
+                return false;
+            }
         }
 
         // Store to disk
