@@ -3093,7 +3093,7 @@ bool AcceptBlockHeader(const CBlock& block, CValidationState& state, CBlockIndex
     return true;
 }
 
-bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppindex, CDiskBlockPos* dbp, bool fAlreadyCheckedBlock)
+bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppindex, CDiskBlockPos* dbp)
 {
     AssertLockHeld(cs_main);
 
@@ -3126,7 +3126,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         return true;
     }
 
-    if ((!fAlreadyCheckedBlock && !CheckBlock(block, state)) || !ContextualCheckBlock(block, state, pindex->pprev)) {
+    if (!CheckBlock(block, state) || !ContextualCheckBlock(block, state, pindex->pprev)) {
         if (state.IsInvalid() && !state.CorruptionPossible()) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
             setDirtyBlockIndex.insert(pindex);
@@ -3369,7 +3369,7 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, const std::shared_pt
 
         // Store to disk
         CBlockIndex* pindex = nullptr;
-        bool ret = AcceptBlock(*pblock, state, &pindex, dbp, checked);
+        bool ret = AcceptBlock(*pblock, state, &pindex, dbp);
         if (fAccepted) *fAccepted = ret;
         CheckBlockIndex();
         if (!ret) {
