@@ -3340,15 +3340,12 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, const std::shared_pt
     // Preliminary checks
     int64_t nStartTime = GetTimeMillis();
     const Consensus::Params& consensus = Params().GetConsensus();
+    int newHeight = 0;
 
     // check block
     bool checked = CheckBlock(*pblock, state);
 
-    // For now, we need the tip to know whether p2pkh block signatures are accepted or not.
-    // After 5.0, this can be removed and replaced by the enforcement block time.
-    const int newHeight = chainActive.Height() + 1;
-    const bool enableP2PKH = consensus.NetworkUpgradeActive(newHeight, Consensus::UPGRADE_V5_0);
-    if (!CheckBlockSignature(*pblock, enableP2PKH))
+    if (!CheckBlockSignature(*pblock))
         return error("%s : bad proof-of-stake block signature", __func__);
 
     if (pblock->GetHash() != consensus.hashGenesisBlock && pfrom != NULL) {
@@ -3375,6 +3372,7 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, const std::shared_pt
         if (!ret) {
             return error("%s : AcceptBlock FAILED", __func__);
         }
+        newHeight = pindex->nHeight;
     }
 
     if (!ActivateBestChain(state, pblock, checked))

@@ -72,14 +72,9 @@ CBlock CreateDummyBlockWithSignature(CKey stakingKey, BlockSignatureType type, b
     return block;
 }
 
-bool TestBlockSignaturePreEnforcementV5(const CBlock& block)
+bool TestBlockSignature(const CBlock& block)
 {
-    return CheckBlockSignature(block, false);
-}
-
-bool TestBlockSignaturePostEnforcementV5(const CBlock& block)
-{
-    return CheckBlockSignature(block, true);
+    return CheckBlockSignature(block);
 }
 
 BOOST_AUTO_TEST_CASE(block_signature_test)
@@ -89,27 +84,19 @@ BOOST_AUTO_TEST_CASE(block_signature_test)
         stakingKey.MakeNewKey(true);
         bool useInputP2PK = i % 2 == 0;
 
-        // Test P2PK block signature pre enforcement.
+        // Test P2PK block signature
         CBlock block = CreateDummyBlockWithSignature(stakingKey, BlockSignatureType::P2PK, useInputP2PK);
-        BOOST_CHECK(TestBlockSignaturePreEnforcementV5(block));
+        BOOST_CHECK(TestBlockSignature(block));
 
-        // Test P2PK block signature post enforcement
-        block = CreateDummyBlockWithSignature(stakingKey, BlockSignatureType::P2PK, useInputP2PK);
-        BOOST_CHECK(TestBlockSignaturePostEnforcementV5(block));
-
-        // Test P2PKH block signature pre enforcement ---> must fail.
-        block = CreateDummyBlockWithSignature(stakingKey, BlockSignatureType::P2PKH, useInputP2PK);
-        BOOST_CHECK(!TestBlockSignaturePreEnforcementV5(block));
-
-        // Test P2PKH block signature post enforcement
+        // Test P2PKH block signature
         block = CreateDummyBlockWithSignature(stakingKey, BlockSignatureType::P2PKH, useInputP2PK);
         if (useInputP2PK) {
             // If it's using a P2PK scriptsig as input and a P2PKH output
             // The block doesn't contain the public key to verify the sig anywhere.
             // Must fail.
-            BOOST_CHECK(!TestBlockSignaturePostEnforcementV5(block));
+            BOOST_CHECK(!TestBlockSignature(block));
         } else {
-            BOOST_CHECK(TestBlockSignaturePostEnforcementV5(block));
+            BOOST_CHECK(TestBlockSignature(block));
         }
     }
 }
