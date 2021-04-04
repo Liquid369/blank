@@ -149,6 +149,8 @@ static const CRPCConvertParam vRPCConvertParams[] = {
     { "getblockindexstats", 1 },
     { "getfeeinfo", 0 },
     { "getsupplyinfo", 0 },
+    { "rescanblockchain", 0},
+    { "rescanblockchain", 1},
 };
 
 class CRPCConvertTable

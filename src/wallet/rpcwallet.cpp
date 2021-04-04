@@ -4184,6 +4184,67 @@ UniValue getsaplingnotescount(const JSONRPCRequest& request)
     return count;
 }
 
+UniValue rescanblockchain(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() > 2) {
+        throw std::runtime_error(
+                "rescanblockchain (start_height) (stop_height)\n"
+                "\nRescan the local blockchain for wallet related transactions.\n"
+                "\nArguments:\n"
+                "1. start_height    (numeric, optional) block height where the rescan should start\n"
+                "2. stop_height     (numeric, optional) the last block height that should be scanned\n"
+                "\nResult:\n"
+                "{\n"
+                "  start_height     (numeric) The block height where the rescan has started. If omitted, rescan started from the genesis block.\n"
+                "  stop_height      (numeric) The height of the last rescanned block. If omitted, rescan stopped at the chain tip.\n"
+                "}\n"
+                "\nExamples:\n"
+                + HelpExampleCli("rescanblockchain", "100000 120000")
+                + HelpExampleRpc("rescanblockchain", "100000 120000")
+        );
+    }
+
+    EnsureWallet();
+    LOCK2(cs_main, pwalletMain->cs_wallet);
+
+    CBlockIndex *pindexStart = chainActive.Genesis();
+    CBlockIndex *pindexStop = nullptr;
+    if (!request.params[0].isNull()) {
+        pindexStart = chainActive[request.params[0].get_int()];
+        if (!pindexStart) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid start_height");
+        }
+    }
+
+    if (!request.params[1].isNull()) {
+        pindexStop = chainActive[request.params[1].get_int()];
+        if (!pindexStop) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid stop_height");
+        }
+        else if (pindexStop->nHeight < pindexStart->nHeight) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "stop_height must be greater then start_height");
+        }
+    }
+
+    CBlockIndex *stopBlock = pwalletMain->ScanForWalletTransactions(pindexStart, pindexStop, true);
+    if (!stopBlock) {
+        if (pwalletMain->IsAbortingRescan()) {
+            throw JSONRPCError(RPC_MISC_ERROR, "Rescan aborted.");
+        }
+        // if we got a nullptr returned, ScanForWalletTransactions did rescan up to the requested stopindex
+        stopBlock = pindexStop ? pindexStop : chainActive.Tip();
+    }
+    else {
+        throw JSONRPCError(RPC_MISC_ERROR, "Rescan failed. Potentially corrupted data files.");
+    }
+
+    UniValue response(UniValue::VOBJ);
+    response.pushKV("start_height", pindexStart->nHeight);
+    response.pushKV("stop_height", stopBlock->nHeight);
+    return response;
+}
+
+extern UniValue abortrescan(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue dumpprivkey(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue importprivkey(const JSONRPCRequest& request);
 extern UniValue importaddress(const JSONRPCRequest& request);
@@ -4204,6 +4265,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "getaddressinfo",           &getaddressinfo,           true  },
     { "wallet",             "autocombinerewards",       &autocombinerewards,       false },
     { "wallet",             "abandontransaction",       &abandontransaction,       false },
+    { "wallet",             "abortrescan",              &abortrescan,              false },
     { "wallet",             "addmultisigaddress",       &addmultisigaddress,       true  },
     { "wallet",             "backupwallet",             &backupwallet,             true  },
     { "wallet",             "delegatestake",            &delegatestake,            false },
@@ -4248,6 +4310,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "walletlock",               &walletlock,               true  },
     { "wallet",             "walletpassphrasechange",   &walletpassphrasechange,   true  },
     { "wallet",             "walletpassphrase",         &walletpassphrase,         true  },
+    { "wallet",             "rescanblockchain",         &rescanblockchain,         true  },
     { "wallet",             "delegatoradd",             &delegatoradd,             true  },
     { "wallet",             "delegatorremove",          &delegatorremove,          true  },
     { "wallet",             "bip38encrypt",             &bip38encrypt,             true  },
