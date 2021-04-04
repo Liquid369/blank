@@ -66,8 +66,8 @@ public:
     BlockAssembler(const CChainParams& chainparams, const bool defaultPrintPriority);
     /** Construct a new block template with coinbase to scriptPubKeyIn */
     std::unique_ptr<CBlockTemplate> CreateNewBlock(const CScript& scriptPubKeyIn,
-                                   CWallet* pwallet,
-                                   bool fProofOfStake,
+                                   CWallet* pwallet = nullptr,
+                                   bool fProofOfStake = false,
                                    std::vector<CStakeableOutput>* availableCoins = nullptr);
 
 private:
