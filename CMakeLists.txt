@@ -374,7 +374,6 @@ target_include_directories(ZEROCOIN_A PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
         )
 
 set(COMMON_SOURCES
-        ./src/allocators.cpp
         ./src/base58.cpp
         ./src/bip38.cpp
         ./src/consensus/params.cpp
@@ -421,7 +420,6 @@ target_include_directories(COMMON_A PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
         )
 
 set(UTIL_SOURCES
-        ./src/allocators.cpp
         ./src/compat/strnlen.cpp
         ./src/compat/glibc_sanity.cpp
         ./src/compat/glibcxx_sanity.cpp
@@ -441,6 +439,7 @@ set(UTIL_SOURCES
         ./src/utilstrencodings.cpp
         ./src/utilmoneystr.cpp
         ./src/utiltime.cpp
+        ./src/support/lockedpool.cpp
         ./src/support/cleanse.cpp
         )
 add_library(UTIL_A STATIC ${BitcoinHeaders} ${UTIL_SOURCES})

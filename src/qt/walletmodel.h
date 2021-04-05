@@ -13,8 +13,8 @@
 
 #include "interfaces/wallet.h"
 
-#include "allocators.h" /* for SecureString */
 #include "operationresult.h"
+#include "support/allocators/zeroafterfree.h"
 #include "wallet/wallet.h"
 #include "pairresult.h"
 

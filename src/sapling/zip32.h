@@ -5,12 +5,12 @@
 #ifndef PIVX_ZIP32_H
 #define PIVX_ZIP32_H
 
-#include "serialize.h"
-#include "allocators.h"
 #include "blob_uint256.h"
 #include "key.h"
-#include "uint256.h"
 #include "sapling/address.h"
+#include "serialize.h"
+#include "support/allocators/zeroafterfree.h"
+#include "uint256.h"
 
 #include <boost/optional.hpp>
 
