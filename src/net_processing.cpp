@@ -1599,16 +1599,17 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
         CInv inv(MSG_BLOCK, hashBlock);
         LogPrint(BCLog::NET, "received block %s peer=%d\n", inv.hash.ToString(), pfrom->id);
 
-        //sometimes we will be sent their most recent block and its not the one we want, in that case tell where we are
+        // sometimes we will be sent their most recent block and its not the one we want, in that case tell where we are
         if (!mapBlockIndex.count(pblock->hashPrevBlock)) {
+            CBlockLocator locator = WITH_LOCK(cs_main, return chainActive.GetLocator(););
             if (find(pfrom->vBlockRequested.begin(), pfrom->vBlockRequested.end(), hashBlock) != pfrom->vBlockRequested.end()) {
-                //we already asked for this block, so lets work backwards and ask for the previous block
-                connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::GETBLOCKS, chainActive.GetLocator(), pblock->hashPrevBlock));
-                pfrom->vBlockRequested.push_back(pblock->hashPrevBlock);
+                // we already asked for this block, so lets work backwards and ask for the previous block
+                connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::GETBLOCKS, locator, pblock->hashPrevBlock));
+                pfrom->vBlockRequested.emplace_back(pblock->hashPrevBlock);
             } else {
-                //ask to sync to this block
-                connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::GETBLOCKS, chainActive.GetLocator(), hashBlock));
-                pfrom->vBlockRequested.push_back(hashBlock);
+                // ask to sync to this block
+                connman.PushMessage(pfrom, msgMaker.Make(NetMsgType::GETBLOCKS, locator, hashBlock));
+                pfrom->vBlockRequested.emplace_back(hashBlock);
             }
         } else {
             pfrom->AddInventoryKnown(inv);
