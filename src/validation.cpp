@@ -3350,16 +3350,6 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, const std::shared_pt
             return error ("%s : CheckBlock FAILED for block %s, %s", __func__, pblock->GetHash().GetHex(), FormatStateMessage(state));
         }
 
-        // Request sync if needed
-        if (pblock->GetHash() != consensus.hashGenesisBlock && !pfrom) {
-            // if we get this far, check if the prev block is our prev block, if not then request sync and return false
-            BlockMap::iterator mi = mapBlockIndex.find(pblock->hashPrevBlock);
-            if (mi == mapBlockIndex.end()) {
-                g_connman->PushMessage(pfrom, CNetMsgMaker(pfrom->GetSendVersion()).Make(NetMsgType::GETBLOCKS, chainActive.GetLocator(), UINT256_ZERO));
-                return false;
-            }
-        }
-
         // Store to disk
         CBlockIndex* pindex = nullptr;
         bool ret = AcceptBlock(*pblock, state, &pindex, dbp);
