@@ -125,7 +125,7 @@ if BUILD_BITCOIN_UTILS
 endif
 
 .PHONY: FORCE check-symbols check-security
-# __decenomy__ core #
+# Rubus Core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrdb.h \
