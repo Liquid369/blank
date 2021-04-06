@@ -203,7 +203,7 @@ target_include_directories(qt_stuff PUBLIC ${CMAKE_SOURCE_DIR}/src
         ${OPENSSL_INCLUDE_DIR}
         ${BerkeleyDB_INCLUDE_DIRS}
         )
-set_property(TARGET qt_stuff PROPERTY CXX_STANDARD 11)
+set_property(TARGET qt_stuff PROPERTY CXX_STANDARD 14)
 
 file(GLOB QT_TRANSLATIONS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/locale/*.ts)
 
