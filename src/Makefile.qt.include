@@ -95,6 +95,7 @@ QT_MOC_CPP = \
   qt/moc_qvaluecombobox.cpp \
   qt/moc_recentrequeststablemodel.cpp \
   qt/moc_rpcconsole.cpp \
+  qt/moc_rpcexecutor.cpp \
   qt/moc_trafficgraphwidget.cpp \
   qt/moc_transactionfilterproxy.cpp \
   qt/moc_transactiontablemodel.cpp \
@@ -162,9 +163,7 @@ BITCOIN_MM = \
 
 QT_MOC = \
   qt/pivx.moc \
-  qt/intro.moc \
-  qt/rpcconsole.moc \
-  qt/pivx/settings/moc_settingsconsolewidget.cpp
+  qt/intro.moc
 
 QT_QRC_CPP = qt/qrc_pivx.cpp
 QT_QRC = qt/pivx.qrc
@@ -206,6 +205,7 @@ BITCOIN_QT_H = \
   qt/qvaluecombobox.h \
   qt/recentrequeststablemodel.h \
   qt/rpcconsole.h \
+  qt/rpcexecutor.h \
   qt/trafficgraphwidget.h \
   qt/transactionfilterproxy.h \
   qt/transactionrecord.h \
@@ -518,6 +518,7 @@ BITCOIN_QT_BASE_CPP = \
   qt/qvalidatedlineedit.cpp \
   qt/qvaluecombobox.cpp \
   qt/rpcconsole.cpp \
+  qt/rpcexecutor.cpp \
   qt/trafficgraphwidget.cpp \
   qt/utilitydialog.cpp
 
