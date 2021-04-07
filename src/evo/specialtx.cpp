@@ -12,16 +12,11 @@
 #include "consensus/validation.h"
 #include "primitives/block.h"
 
-bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state)
+bool CheckSpecialTxNoContext(const CTransaction& tx, CValidationState& state)
 {
     bool hasExtraPayload = tx.hasExtraPayload();
 
-    // v1/v2 can only be Type=0
-    if (!tx.isSaplingVersion() && tx.nType != CTransaction::TxType::NORMAL) {
-        return state.DoS(100, error("%s: Type %d not supported with version %d", __func__, tx.nType, tx.nVersion),
-                         REJECT_INVALID, "bad-txns-type-version");
-    }
-    if (tx.nType == CTransaction::TxType::NORMAL) {
+    if (tx.IsNormalType()) {
         // Type-0 txes don't have extra payload
         if (hasExtraPayload) {
             return state.DoS(100, error("%s: Type 0 doesn't support extra payload", __func__),
@@ -31,9 +26,13 @@ bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVali
         return true;
     }
 
-    // --- From here on, tx has nVersion>=2 and nType!=0
+    // Special txes need at least version 2
+    if (!tx.isSaplingVersion()) {
+        return state.DoS(100, error("%s: Type %d not supported with version %d", __func__, tx.nType, tx.nVersion),
+                         REJECT_INVALID, "bad-txns-type-version");
+    }
 
-    // !TODO: Add enforcement-height check
+    // --- From here on, tx has nVersion>=2 and nType!=0
 
     // Cannot be coinbase/coinstake tx
     if (tx.IsCoinBase() || tx.IsCoinStake()) {
@@ -54,11 +53,36 @@ bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CVali
     }
 
     switch (tx.nType) {
-    /* per-tx-type checking */
+    /* per-tx-type non-contextual checking */
     }
 
-    return state.DoS(10, error("%s : special tx %s with invalid type %d",
-            __func__, tx.GetHash().ToString(), tx.nType), REJECT_INVALID, "bad-tx-type");
+    return state.DoS(10, error("%s: special tx %s with invalid type %d", __func__, tx.GetHash().ToString(), tx.nType),
+                     REJECT_INVALID, "bad-tx-type");
+}
+
+bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state)
+{
+    assert(pindexPrev != nullptr);
+
+    if (!CheckSpecialTxNoContext(tx, state)) {
+        // pass the state returned by the function above
+        return false;
+    }
+
+    if (tx.IsNormalType()) {
+        // nothing to check
+        return true;
+    }
+
+    // !TODO: Add enforcement-height check
+
+    switch (tx.nType) {
+    /* per-tx-type contextual checking */
+    }
+
+    // should never get here, as we already checked the type in CheckSpecialTxNoContext
+    return state.DoS(10, error("%s: special tx %s with invalid type %d", __func__, tx.GetHash().ToString(), tx.nType),
+                     REJECT_INVALID, "bad-tx-type");
 }
 
 bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindex, CValidationState& state, bool fJustCheck)

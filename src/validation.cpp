@@ -2851,6 +2851,12 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                     strprintf("Transaction check failed (tx hash %s) %s", tx.GetHash().ToString(), state.GetDebugMessage()));
         }
 
+        // Non-contextual checks for special txes
+        if (!CheckSpecialTxNoContext(tx, state)) {
+            // pass the state returned by the function above
+            return false;
+        }
+
         // No need to check for zerocoin anymore after sapling, they are networkely disabled
         // and checkpoints are preventing the chain for any massive reorganization.
         if (fSaplingActive && tx.ContainsZerocoins()) {
