@@ -18,7 +18,7 @@
 #include "zpiv/zpivmodule.h"
 
 
-bool CheckZerocoinSpend(const CTransactionRef _tx, bool fVerifySignature, CValidationState& state, bool fFakeSerialAttack)
+static bool CheckZerocoinSpend(const CTransactionRef _tx, CValidationState& state)
 {
     const CTransaction& tx = *_tx;
     //max needed non-mint outputs should be 2 - one for redemption address and a possible 2nd for change
@@ -30,7 +30,7 @@ bool CheckZerocoinSpend(const CTransactionRef _tx, bool fVerifySignature, CValid
             outs++;
         }
         if (outs > 2 && !tx.IsCoinStake())
-            return state.DoS(100, error("CheckZerocoinSpend(): over two non-mint outputs in a zerocoinspend transaction"));
+            return state.DoS(100, error("%s: over two non-mint outputs in a zerocoinspend transaction", __func__));
     }
 
     //compute the txout hash that is used for the zerocoinspend signatures
@@ -55,12 +55,12 @@ bool CheckZerocoinSpend(const CTransactionRef _tx, bool fVerifySignature, CValid
         CTxOut prevOut;
         if (isPublicSpend) {
             if(!GetOutput(txin.prevout.hash, txin.prevout.n, state, prevOut)){
-                return state.DoS(100, error("CheckZerocoinSpend(): public zerocoin spend prev output not found, prevTx %s, index %d", txin.prevout.hash.GetHex(), txin.prevout.n));
+                return state.DoS(100, error("%s: public zerocoin spend prev output not found, prevTx %s, index %d", __func__, txin.prevout.hash.GetHex(), txin.prevout.n));
             }
             libzerocoin::ZerocoinParams* params = consensus.Zerocoin_Params(false);
             PublicCoinSpend publicSpend(params);
             if (!ZPIVModule::parseCoinSpend(txin, tx, prevOut, publicSpend)){
-                return state.DoS(100, error("CheckZerocoinSpend(): public zerocoin spend parse failed"));
+                return state.DoS(100, error("%s: public zerocoin spend parse failed", __func__));
             }
             newSpend = publicSpend;
         } else {
@@ -69,26 +69,26 @@ bool CheckZerocoinSpend(const CTransactionRef _tx, bool fVerifySignature, CValid
 
         //check that the denomination is valid
         if (newSpend.getDenomination() == libzerocoin::ZQ_ERROR)
-            return state.DoS(100, error("Zerocoinspend does not have the correct denomination"));
+            return state.DoS(100, error("%s: Zerocoinspend does not have the correct denomination", __func__));
 
         //check that denomination is what it claims to be in nSequence
         if (newSpend.getDenomination() != txin.nSequence)
-            return state.DoS(100, error("Zerocoinspend nSequence denomination does not match CoinSpend"));
+            return state.DoS(100, error("%s: Zerocoinspend nSequence denomination does not match CoinSpend", __func__));
 
         //make sure the txout has not changed
         if (newSpend.getTxOutHash() != hashTxOut)
-            return state.DoS(100, error("Zerocoinspend does not use the same txout that was used in the SoK"));
+            return state.DoS(100, error("%s: Zerocoinspend does not use the same txout that was used in the SoK", __func__));
 
         if (isPublicSpend) {
             libzerocoin::ZerocoinParams* params = consensus.Zerocoin_Params(false);
             PublicCoinSpend ret(params);
             if (!ZPIVModule::validateInput(txin, prevOut, tx, ret)){
-                return state.DoS(100, error("CheckZerocoinSpend(): public zerocoin spend did not verify"));
+                return state.DoS(100, error("%s: public zerocoin spend did not verify", __func__));
             }
         }
 
         if (serials.count(newSpend.getCoinSerialNumber()))
-            return state.DoS(100, error("Zerocoinspend serial is used twice in the same tx"));
+            return state.DoS(100, error("%s: Zerocoinspend serial is used twice in the same tx", __func__));
         serials.insert(newSpend.getCoinSerialNumber());
 
         //make sure that there is no over redemption of coins
@@ -97,8 +97,8 @@ bool CheckZerocoinSpend(const CTransactionRef _tx, bool fVerifySignature, CValid
     }
 
     if (!tx.IsCoinStake() && nTotalRedeemed < tx.GetValueOut()) {
-        LogPrintf("redeemed = %s , spend = %s \n", FormatMoney(nTotalRedeemed), FormatMoney(tx.GetValueOut()));
-        return state.DoS(100, error("Transaction spend more than was redeemed in zerocoins"));
+        LogPrintf("%s: redeemed = %s , spend = %s \n", __func__, FormatMoney(nTotalRedeemed), FormatMoney(tx.GetValueOut()));
+        return state.DoS(100, error("%s: Transaction spend more than was redeemed in zerocoins", __func__));
     }
 
     return fValidated;
@@ -181,7 +181,7 @@ bool ContextualCheckZerocoinTx(const CTransactionRef& tx, CValidationState& stat
     }
 
     if (hasPrivateSpendInputs || hasPublicSpendInputs) {
-        if (!CheckZerocoinSpend(tx, false, state, false))
+        if (!CheckZerocoinSpend(tx, state))
             return false;   // failure reason logged in validation state
     }
 

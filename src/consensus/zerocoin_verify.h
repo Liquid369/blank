@@ -9,8 +9,6 @@
 #include "script/interpreter.h"
 #include "zpivchain.h"
 
-/** Context-independent validity checks */
-bool CheckZerocoinSpend(const CTransactionRef _tx, bool fVerifySignature, CValidationState& state, bool fFakeSerialAttack = false);
 // Fake Serial attack Range
 bool isBlockBetweenFakeSerialAttackRange(int nHeight);
 // Public coin spend
