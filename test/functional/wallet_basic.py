@@ -32,6 +32,9 @@ class WalletTest(PivxTestFramework):
     def get_vsize(self, txn):
         return self.nodes[0].decoderawtransaction(txn)['size']
 
+    def check_wallet_processed_blocks(self, nodeid, walletinfo):
+        assert_equal(self.nodes[nodeid].getblockcount(), walletinfo['last_processed_block'])
+
     def run_test(self):
         # Check that there's no UTXO on none of the nodes
         assert_equal(len(self.nodes[0].listunspent()), 0)
@@ -43,6 +46,7 @@ class WalletTest(PivxTestFramework):
         self.nodes[0].generate(1)
 
         walletinfo = self.nodes[0].getwalletinfo()
+        self.check_wallet_processed_blocks(0, walletinfo)
         assert_equal(walletinfo['immature_balance'], 250)
         assert_equal(walletinfo['balance'], 0)
 
@@ -54,13 +58,17 @@ class WalletTest(PivxTestFramework):
         assert_equal(self.nodes[1].getbalance(), 250)
         assert_equal(self.nodes[2].getbalance(), 0)
 
+        walletinfo = self.nodes[0].getwalletinfo()
+        self.check_wallet_processed_blocks(0, walletinfo)
+        self.check_wallet_processed_blocks(1, self.nodes[1].getwalletinfo())
+        self.check_wallet_processed_blocks(2, self.nodes[2].getwalletinfo())
+
         # Check that only first and second nodes have UTXOs
         utxos = self.nodes[0].listunspent()
         assert_equal(len(utxos), 1)
         assert_equal(len(self.nodes[1].listunspent()), 1)
         assert_equal(len(self.nodes[2].listunspent()), 0)
 
-        walletinfo = self.nodes[0].getwalletinfo()
         assert_equal(walletinfo['immature_balance'], 0)
 
         # Exercise locking of unspent outputs
@@ -185,6 +193,7 @@ class WalletTest(PivxTestFramework):
             assert_equal(balance_nodes, [self.nodes[i].getbalance() for i in range(3)])
 
         # Exercise listsinceblock with the last two blocks
+        self.check_wallet_processed_blocks(0, self.nodes[0].getwalletinfo())
         coinbase_tx_1 = self.nodes[0].listsinceblock(blocks[0])
         assert_equal(coinbase_tx_1["lastblock"], blocks[1])
         assert_equal(len(coinbase_tx_1["transactions"]), 1)
