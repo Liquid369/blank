@@ -2668,7 +2668,7 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
                     false,
                     false);   // fIncludeLocked
 
-            if (!res.available) continue;
+            if (!res.available || !res.spendable) continue;
 
             // found valid coin
             if (!pCoins) return true;
