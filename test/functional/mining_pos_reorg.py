@@ -47,6 +47,7 @@ class ReorgStakeTest(PivxTestFramework):
 
     def get_tot_balance(self, nodeid):
         wi = self.nodes[nodeid].getwalletinfo()
+        assert_equal(self.nodes[nodeid].getblockcount(), wi['last_processed_block'])
         return wi['balance'] + wi['immature_balance']
 
     def check_money_supply(self, expected_piv):

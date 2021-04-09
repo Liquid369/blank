@@ -421,6 +421,7 @@ class PIVX_ColdStakingTest(PivxTestFramework):
 
     def checkBalances(self):
         w_info = self.nodes[0].getwalletinfo()
+        assert_equal(self.nodes[0].getblockcount(), w_info['last_processed_block'])
         self.log.info("OWNER - Delegated %f / Cold %f   [%f / %f]" % (
             float(w_info["delegated_balance"]), w_info["cold_staking_balance"],
             float(w_info["immature_delegated_balance"]), w_info["immature_cold_staking_balance"]))
@@ -428,6 +429,7 @@ class PIVX_ColdStakingTest(PivxTestFramework):
         assert_equal(float(w_info["immature_delegated_balance"]), self.expected_immature_balance)
         assert_equal(float(w_info["cold_staking_balance"]), 0)
         w_info = self.nodes[1].getwalletinfo()
+        assert_equal(self.nodes[1].getblockcount(), w_info['last_processed_block'])
         self.log.info("STAKER - Delegated %f / Cold %f   [%f / %f]" % (
             float(w_info["delegated_balance"]), w_info["cold_staking_balance"],
             float(w_info["immature_delegated_balance"]), w_info["immature_cold_staking_balance"]))

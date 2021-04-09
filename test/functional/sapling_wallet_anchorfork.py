@@ -24,6 +24,7 @@ class WalletAnchorForkTest(PivxTestFramework):
         self.sync_all()
 
         walletinfo = self.nodes[0].getwalletinfo()
+        assert_equal(self.nodes[0].getblockcount(), walletinfo['last_processed_block'])
         assert_equal(walletinfo['immature_balance'], 1000)
         assert_equal(walletinfo['balance'], 0)
 
