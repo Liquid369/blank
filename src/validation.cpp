@@ -1926,7 +1926,7 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>();
     CBlock& block = *pblock;
     if (!ReadBlockFromDisk(block, pindexDelete))
-        return AbortNode(state, "Failed to read block");
+        return error("%s: Failed to read block", __func__);
     // Apply the block atomically to the chain state.
     const uint256& saplingAnchorBeforeDisconnect = pcoinsTip->GetBestAnchor();
     int64_t nStart = GetTimeMicros();
@@ -2222,7 +2222,11 @@ static bool ActivateBestChainStep(CValidationState& state, CBlockIndex* pindexMo
             // This is likely a fatal error, but keep the mempool consistent,
             // just in case. Only remove from the mempool in this case.
             UpdateMempoolForReorg(disconnectpool, false);
-            return false;
+
+            // If we're unable to disconnect a block during normal operation,
+            // then that is a failure of our local system -- we should abort
+            // rather than stay on a less work chain.
+            return AbortNode(state, "Failed to disconnect block; see debug.log for details");
         }
         fBlocksDisconnected = true;
     }
