@@ -127,8 +127,12 @@ void SendCustomFeeDialog::accept()
         inform(tr("Fee too high. Must be below: %1").arg(
                 BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), insaneFee)));
     } else if (customFee < CWallet::GetRequiredFee(1000)) {
-        CAmount nFee;
-        walletModel->getWalletCustomFee(nFee);
+        CAmount nFee = 0;
+        if (walletModel->hasWalletCustomFee()) {
+            walletModel->getWalletCustomFee(nFee);
+        } else {
+            nFee = CWallet::GetRequiredFee(1000);
+        }
         ui->lineEditCustomFee->setText(BitcoinUnits::format(walletModel->getOptionsModel()->getDisplayUnit(), nFee));
         inform(tr("Fee too low. Must be at least: %1").arg(
                 BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), CWallet::GetRequiredFee(1000))));
