@@ -224,18 +224,6 @@ bool CWalletDB::EraseWatchOnly(const CScript& dest)
     return batch.Erase(std::make_pair(std::string(DBKeys::WATCHS), dest));
 }
 
-bool CWalletDB::WriteMultiSig(const CScript& dest)
-{
-    nWalletDBUpdateCounter++;
-    return batch.Write(std::make_pair(std::string("multisig"), dest), '1');
-}
-
-bool CWalletDB::EraseMultiSig(const CScript& dest)
-{
-    nWalletDBUpdateCounter++;
-    return batch.Erase(std::make_pair(std::string("multisig"), dest));
-}
-
 bool CWalletDB::WriteBestBlock(const CBlockLocator& locator)
 {
     nWalletDBUpdateCounter++;
