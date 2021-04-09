@@ -94,7 +94,7 @@ public:
     std::vector<unsigned char> vchBlockSig;
 
     // memory only
-    mutable bool fChecked;
+    mutable bool fChecked{false};
 
     CBlock()
     {

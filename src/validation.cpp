@@ -1425,11 +1425,11 @@ static int64_t nTimeTotal = 0;
 /** Apply the effects of this block (with given index) on the UTXO set represented by coins.
  *  Validity checks that depend on the UTXO set are also done; ConnectBlock()
  *  can fail if those validity checks fail (among other reasons). */
-static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pindex, CCoinsViewCache& view, bool fJustCheck = false, bool fAlreadyChecked = false)
+static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pindex, CCoinsViewCache& view, bool fJustCheck = false)
 {
     AssertLockHeld(cs_main);
     // Check it again in case a previous version let a bad block in
-    if (!fAlreadyChecked && !CheckBlock(block, state, !fJustCheck, !fJustCheck)) {
+    if (!CheckBlock(block, state, !fJustCheck, !fJustCheck, !fJustCheck)) {
         if (state.CorruptionPossible()) {
             // We don't write down blocks to disk if they may have been
             // corrupted, so this should be impossible unless we're having hardware
@@ -2055,14 +2055,11 @@ public:
  *
  * The block is added to connectTrace if connection succeeds.
  */
-bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const std::shared_ptr<const CBlock>& pblock, bool fAlreadyChecked, ConnectTrace& connectTrace, DisconnectedBlockTransactions &disconnectpool)
+bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const std::shared_ptr<const CBlock>& pblock, ConnectTrace& connectTrace, DisconnectedBlockTransactions &disconnectpool)
 {
     AssertLockHeld(cs_main);
     AssertLockHeld(mempool.cs);
     assert(pindexNew->pprev == chainActive.Tip());
-
-    if (pblock == NULL)
-        fAlreadyChecked = false;
 
     // Read block from disk.
     int64_t nTime1 = GetTimeMicros();
@@ -2084,7 +2081,7 @@ bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const st
     LogPrint(BCLog::BENCH, "  - Load block from disk: %.2fms [%.2fs]\n", (nTime2 - nTime1) * 0.001, nTimeReadFromDisk * 0.000001);
     {
         CCoinsViewCache view(pcoinsTip);
-        bool rv = ConnectBlock(blockConnecting, state, pindexNew, view, false, fAlreadyChecked);
+        bool rv = ConnectBlock(blockConnecting, state, pindexNew, view, false);
         GetMainSignals().BlockChecked(blockConnecting, state);
         if (!rv) {
             if (state.IsInvalid())
@@ -2205,12 +2202,10 @@ static void PruneBlockIndexCandidates()
  * Try to make some progress towards making pindexMostWork the active block.
  * pblock is either NULL or a pointer to a CBlock corresponding to pindexMostWork.
  */
-static bool ActivateBestChainStep(CValidationState& state, CBlockIndex* pindexMostWork, const std::shared_ptr<const CBlock>& pblock, bool fAlreadyChecked, bool& fInvalidFound, ConnectTrace& connectTrace)
+static bool ActivateBestChainStep(CValidationState& state, CBlockIndex* pindexMostWork, const std::shared_ptr<const CBlock>& pblock, bool& fInvalidFound, ConnectTrace& connectTrace)
 {
     AssertLockHeld(cs_main);
     AssertLockHeld(mempool.cs);
-    if (pblock == NULL)
-        fAlreadyChecked = false;
     const CBlockIndex* pindexOldTip = chainActive.Tip();
     const CBlockIndex* pindexFork = chainActive.FindFork(pindexMostWork);
 
@@ -2250,7 +2245,7 @@ static bool ActivateBestChainStep(CValidationState& state, CBlockIndex* pindexMo
 
         // Connect new blocks.
         for (CBlockIndex* pindexConnect : reverse_iterate(vpindexToConnect)) {
-            if (!ConnectTip(state, pindexConnect, (pindexConnect == pindexMostWork) ? pblock : std::shared_ptr<const CBlock>(), fAlreadyChecked, connectTrace, disconnectpool)) {
+            if (!ConnectTip(state, pindexConnect, (pindexConnect == pindexMostWork) ? pblock : std::shared_ptr<const CBlock>(), connectTrace, disconnectpool)) {
                 if (state.IsInvalid()) {
                     // The block violates a consensus rule.
                     if (!state.CorruptionPossible())
@@ -2299,7 +2294,7 @@ static bool ActivateBestChainStep(CValidationState& state, CBlockIndex* pindexMo
  * that is already loaded (to avoid loading it again from disk).
  */
 
-bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pblock, bool fAlreadyChecked)
+bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pblock)
 {
     // Note that while we're often called here from ProcessNewBlock, this is
     // far from a guarantee. Things in the P2P/RPC will often end up calling
@@ -2346,7 +2341,7 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
 
                 bool fInvalidFound = false;
                 std::shared_ptr<const CBlock> nullBlockPtr;
-                if (!ActivateBestChainStep(state, pindexMostWork, pblock && pblock->GetHash() == pindexMostWork->GetBlockHash() ? pblock : nullBlockPtr, fAlreadyChecked, fInvalidFound, connectTrace))
+                if (!ActivateBestChainStep(state, pindexMostWork, pblock && pblock->GetHash() == pindexMostWork->GetBlockHash() ? pblock : nullBlockPtr, fInvalidFound, connectTrace))
                     return false;
                 blocks_connected = true;
 
@@ -2857,6 +2852,12 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
         return state.DoS(100, error("%s : out-of-bounds SigOpCount", __func__),
             REJECT_INVALID, "bad-blk-sigops", true);
 
+    // Check PoS signature.
+    if (fCheckSig && !CheckBlockSignature(block)) {
+        return state.DoS(100, error("%s : bad proof-of-stake block signature", __func__),
+                         REJECT_INVALID, "bad-PoS-sig", true);
+    }
+
     if (fCheckPOW && fCheckMerkleRoot && fCheckSig)
         block.fChecked = true;
 
@@ -3091,7 +3092,7 @@ bool AcceptBlockHeader(const CBlock& block, CValidationState& state, CBlockIndex
     return true;
 }
 
-bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppindex, CDiskBlockPos* dbp, bool fAlreadyCheckedBlock)
+bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppindex, CDiskBlockPos* dbp)
 {
     AssertLockHeld(cs_main);
 
@@ -3124,7 +3125,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         return true;
     }
 
-    if ((!fAlreadyCheckedBlock && !CheckBlock(block, state)) || !ContextualCheckBlock(block, state, pindex->pprev)) {
+    if (!CheckBlock(block, state) || !ContextualCheckBlock(block, state, pindex->pprev)) {
         if (state.IsInvalid() && !state.CorruptionPossible()) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
             setDirtyBlockIndex.insert(pindex);
@@ -3344,44 +3345,27 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, const std::shared_pt
     // Preliminary checks
     int64_t nStartTime = GetTimeMillis();
     const Consensus::Params& consensus = Params().GetConsensus();
-
-    // check block
-    bool checked = CheckBlock(*pblock, state);
-
-    // For now, we need the tip to know whether p2pkh block signatures are accepted or not.
-    // After 5.0, this can be removed and replaced by the enforcement block time.
-    const int newHeight = chainActive.Height() + 1;
-    const bool enableP2PKH = consensus.NetworkUpgradeActive(newHeight, Consensus::UPGRADE_V5_0);
-    if (!CheckBlockSignature(*pblock, enableP2PKH))
-        return error("%s : bad proof-of-stake block signature", __func__);
-
-    if (pblock->GetHash() != consensus.hashGenesisBlock && pfrom != NULL) {
-        //if we get this far, check if the prev block is our prev block, if not then request sync and return false
-        BlockMap::iterator mi = mapBlockIndex.find(pblock->hashPrevBlock);
-        if (mi == mapBlockIndex.end()) {
-            g_connman->PushMessage(pfrom, CNetMsgMaker(pfrom->GetSendVersion()).Make(NetMsgType::GETBLOCKS, chainActive.GetLocator(), UINT256_ZERO));
-            return false;
-        }
-    }
+    int newHeight = 0;
 
     {
+        // CheckBlock requires cs_main lock
         LOCK(cs_main);
-
-        if (!checked) {
+        if (!CheckBlock(*pblock, state)) {
             return error ("%s : CheckBlock FAILED for block %s, %s", __func__, pblock->GetHash().GetHex(), FormatStateMessage(state));
         }
 
         // Store to disk
         CBlockIndex* pindex = nullptr;
-        bool ret = AcceptBlock(*pblock, state, &pindex, dbp, checked);
+        bool ret = AcceptBlock(*pblock, state, &pindex, dbp);
         if (fAccepted) *fAccepted = ret;
         CheckBlockIndex();
         if (!ret) {
             return error("%s : AcceptBlock FAILED", __func__);
         }
+        newHeight = pindex->nHeight;
     }
 
-    if (!ActivateBestChain(state, pblock, checked))
+    if (!ActivateBestChain(state, pblock))
         return error("%s : ActivateBestChain failed", __func__);
 
     if (!fLiteMode) {
@@ -3398,7 +3382,7 @@ bool ProcessNewBlock(CValidationState& state, CNode* pfrom, const std::shared_pt
     return true;
 }
 
-bool TestBlockValidity(CValidationState& state, const CBlock& block, CBlockIndex* const pindexPrev, bool fCheckPOW, bool fCheckMerkleRoot)
+bool TestBlockValidity(CValidationState& state, const CBlock& block, CBlockIndex* const pindexPrev, bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckBlockSig)
 {
     AssertLockHeld(cs_main);
     assert(pindexPrev);
@@ -3415,7 +3399,7 @@ bool TestBlockValidity(CValidationState& state, const CBlock& block, CBlockIndex
     // NOTE: CheckBlockHeader is called by CheckBlock
     if (!ContextualCheckBlockHeader(block, state, pindexPrev))
         return error("%s: ContextualCheckBlockHeader failed: %s", __func__, FormatStateMessage(state));
-    if (!CheckBlock(block, state, fCheckPOW, fCheckMerkleRoot))
+    if (!CheckBlock(block, state, fCheckPOW, fCheckMerkleRoot, fCheckBlockSig))
         return error("%s: CheckBlock failed: %s", __func__, FormatStateMessage(state));
     if (!ContextualCheckBlock(block, state, pindexPrev))
         return error("%s: ContextualCheckBlock failed: %s", __func__, FormatStateMessage(state));

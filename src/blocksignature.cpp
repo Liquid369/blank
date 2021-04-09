@@ -40,7 +40,7 @@ bool SignBlock(CBlock& block, const CKeyStore& keystore)
     return SignBlockWithKey(block, key);
 }
 
-bool CheckBlockSignature(const CBlock& block, const bool enableP2PKH)
+bool CheckBlockSignature(const CBlock& block)
 {
     if (block.IsProofOfWork())
         return block.vchBlockSig.empty();
@@ -63,13 +63,6 @@ bool CheckBlockSignature(const CBlock& block, const bool enableP2PKH)
         const CTxOut& txout = block.vtx[1]->vout[1];
         if (!Solver(txout.scriptPubKey, whichType, vSolutions))
             return false;
-
-        if (!enableP2PKH) {
-            // Before v5 activation, P2PKH was always failing.
-            if (whichType == TX_PUBKEYHASH) {
-                return false;
-            }
-        }
 
         if (whichType == TX_PUBKEY) {
             valtype& vchPubKey = vSolutions[0];
