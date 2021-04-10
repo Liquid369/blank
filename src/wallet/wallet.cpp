@@ -4396,12 +4396,6 @@ CKeyPool::CKeyPool(const CPubKey& vchPubKeyIn, const uint8_t& _type)
     m_pre_split = false;
 }
 
-CWalletKey::CWalletKey(int64_t nExpires)
-{
-    nTimeCreated = (nExpires ? GetTime() : 0);
-    nTimeExpires = nExpires;
-}
-
 int CWalletTx::GetDepthInMainChain() const
 {
     assert(pwallet != nullptr);
