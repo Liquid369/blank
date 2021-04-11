@@ -909,12 +909,12 @@ UniValue sendrawtransaction(const JSONRPCRequest& request)
         {
             if (!AcceptToMemoryPool(mempool, state, MakeTransactionRef(std::move(mtx)), true, &fMissingInputs, false, !fOverrideFees)) {
                 if (state.IsInvalid()) {
-                    throw JSONRPCError(RPC_TRANSACTION_REJECTED, strprintf("%i: %s", state.GetRejectCode(), state.GetRejectReason()));
+                    throw JSONRPCError(RPC_TRANSACTION_REJECTED, strprintf("%s: %s", state.GetRejectReason(), state.GetDebugMessage()));
                 } else {
                     if (fMissingInputs) {
                         throw JSONRPCError(RPC_TRANSACTION_ERROR, "Missing inputs");
                     }
-                    throw JSONRPCError(RPC_TRANSACTION_ERROR, state.GetRejectReason());
+                    throw JSONRPCError(RPC_TRANSACTION_ERROR, strprintf("%s: %s", state.GetRejectReason(), state.GetDebugMessage()));
                 }
             } else {
                 // If wallet is enabled, ensure that the wallet has been made aware

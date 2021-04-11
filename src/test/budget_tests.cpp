@@ -22,7 +22,7 @@ public:
         mapFeeTxToBudget.emplace(finalizedBudget.GetFeeTXHash(), nHash);
     }
 
-    bool IsBlockValueValid(int nHeight, CAmount& nExpectedValue, CAmount nMinted, bool fSporkActive = true)
+    bool IsBlockValueValid(int nHeight, CAmount nExpectedValue, CAmount nMinted, bool fSporkActive = true)
     {
         // suppose masternodeSync is complete
         if (fSporkActive) {
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(block_value)
 
     // regular block
     int nHeight = 100;
-    CAmount nExpected = GetBlockValue(nHeight);
+    volatile CAmount nExpected = GetBlockValue(nHeight);
     BOOST_CHECK(t_budgetman.IsBlockValueValid(nHeight, nExpected, nExpected-1));
     BOOST_CHECK(t_budgetman.IsBlockValueValid(nHeight, nExpected, nExpected));
     BOOST_CHECK(!t_budgetman.IsBlockValueValid(nHeight, nExpected, nExpected+1));

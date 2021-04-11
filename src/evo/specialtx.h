@@ -18,13 +18,17 @@ class uint256;
 /** The maximum allowed size of the extraPayload (for any TxType) */
 static const unsigned int MAX_SPECIALTX_EXTRAPAYLOAD = 10000;
 
-/** Context-independent validity checks */
+/** Payload validity checks (including duplicate unique properties against list at pindexPrev)*/
 // Note: for +v2, if the tx is not a special tx, this method returns true.
 // Note2: This function only performs extra payload related checks, it does NOT checks regular inputs and outputs.
-bool CheckSpecialTx(const CTransaction& tx, CValidationState& state, bool fIsSaplingActive);
+bool CheckSpecialTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state);
+
+// Basic non-contextual checks for special txes
+// Note: for +v2, if the tx is not a special tx, this method returns true.
+bool CheckSpecialTxNoContext(const CTransaction& tx, CValidationState& state);
 
 // Update internal tiertwo data when blocks containing special txes get connected/disconnected
-bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindexPrev, CValidationState& state);
+bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindex, CValidationState& state, bool fJustCheck);
 bool UndoSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindexPrev);
 
-#endif //PIVX_SAPLING_VALIDATION_H
+#endif // PIVX_SPECIALTX_H

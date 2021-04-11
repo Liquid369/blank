@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(tx_valid)
             CTransaction tx(deserialize, stream);
 
             CValidationState state;
-            BOOST_CHECK_MESSAGE(CheckTransaction(tx, false, state), strTest);
+            BOOST_CHECK_MESSAGE(CheckTransaction(tx, state, false), strTest);
             BOOST_CHECK(state.IsValid());
 
             PrecomputedTransactionData precomTxData(tx);
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(tx_invalid)
             CTransaction tx(deserialize, stream);
 
             CValidationState state;
-            fValid = CheckTransaction(tx, false, state) && state.IsValid();
+            fValid = CheckTransaction(tx, state, false) && state.IsValid();
 
             PrecomputedTransactionData precomTxData(tx);
             for (unsigned int i = 0; i < tx.vin.size() && fValid; i++)
@@ -246,11 +246,11 @@ BOOST_AUTO_TEST_CASE(basic_transaction_tests)
     CMutableTransaction tx;
     stream >> tx;
     CValidationState state;
-    BOOST_CHECK_MESSAGE(CheckTransaction(tx, false, state) && state.IsValid(), "Simple deserialized transaction should be valid.");
+    BOOST_CHECK_MESSAGE(CheckTransaction(tx, state, false) && state.IsValid(), "Simple deserialized transaction should be valid.");
 
     // Check that duplicate txins fail
     tx.vin.push_back(tx.vin[0]);
-    BOOST_CHECK_MESSAGE(!CheckTransaction(tx, false, state) || !state.IsValid(), "Transaction with duplicate txins should be invalid.");
+    BOOST_CHECK_MESSAGE(!CheckTransaction(tx, state, false) || !state.IsValid(), "Transaction with duplicate txins should be invalid.");
 }
 
 //
@@ -327,7 +327,7 @@ BOOST_AUTO_TEST_CASE(test_Get)
 
 BOOST_AUTO_TEST_CASE(test_big_witness_transaction) {
     CMutableTransaction mtx;
-    mtx.nVersion = 2; // Sapling future version
+    mtx.nVersion = CTransaction::TxVersion::SAPLING;
 
     CKey key;
     key.MakeNewKey(false);

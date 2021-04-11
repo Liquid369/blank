@@ -271,6 +271,12 @@ bool IsBlockHashInChain(const uint256& hashBlock);
  */
 bool CheckFinalTx(const CTransactionRef& tx, int flags = -1);
 
+/*
+ * Retrieve an unspent coin in pcoinsTip. Lock cs_main.
+ */
+bool GetUTXOCoin(const COutPoint& outpoint, Coin& coin);
+Optional<int> GetUTXOHeight(const COutPoint& outpoint);
+
 /**
  * Closure representing one script verification
  * Note that this stores references to the spending transaction
