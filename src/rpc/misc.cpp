@@ -607,17 +607,15 @@ UniValue setmocktime(const JSONRPCRequest& request)
     if (!Params().IsRegTestNet())
         throw std::runtime_error("setmocktime for regression testing (-regtest mode) only");
 
+    // For now, don't change mocktime if we're in the middle of validation, as
+    // this could have an effect on mempool time-based eviction, as well as
+    // IsCurrentForFeeEstimation() and IsInitialBlockDownload().
+    // TODO: figure out the right way to synchronize around mocktime, and
+    // ensure all callsites of GetTime() are accessing this safely.
     LOCK(cs_main);
 
     RPCTypeCheck(request.params, {UniValue::VNUM});
     SetMockTime(request.params[0].get_int64());
-
-    uint64_t t = GetTime();
-    if(g_connman) {
-        g_connman->ForEachNode([t](CNode* pnode) {
-            pnode->nLastSend = pnode->nLastRecv = t;
-        });
-    }
 
     return NullUniValue;
 }

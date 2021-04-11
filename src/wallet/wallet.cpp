@@ -1834,7 +1834,7 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
         LOCK(cs_main);
         // no need to read and scan block, if block was created before
         // our wallet birthday (as adjusted for block time variability)
-        while (pindex && nTimeFirstKey && (pindex->GetBlockTime() < (nTimeFirstKey - 7200)))
+        while (pindex && nTimeFirstKey && (pindex->GetBlockTime() < (nTimeFirstKey - TIMESTAMP_WINDOW)))
             pindex = chainActive.Next(pindex);
     }
 
@@ -2468,9 +2468,6 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
     // Check If not mine
     if (mine == ISMINE_NO) return res;
 
-    // Check if watch only utxo are allowed
-    if (mine == ISMINE_WATCH_ONLY && coinControl && !coinControl->fAllowWatchOnly) return res;
-
     // Skip locked utxo
     if (!fIncludeLocked && IsLockedCoin(wtxid, outIndex) && nCoinType != ONLY_10000) return res;
 
@@ -2671,7 +2668,7 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
                     false,
                     false);   // fIncludeLocked
 
-            if (!res.available) continue;
+            if (!res.available || !res.spendable) continue;
 
             // found valid coin
             if (!pCoins) return true;
@@ -2932,6 +2929,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
     CScript scriptChange;
 
     CWallet::AvailableCoinsFilter coinFilter;
+    coinFilter.fOnlySpendable = true;
     coinFilter.fIncludeDelegated = fIncludeDelegated;
     coinFilter.nCoinType = coin_type;
 
@@ -3891,7 +3889,7 @@ void CWallet::GetKeyBirthTimes(std::map<CKeyID, int64_t>& mapKeyBirth) const
 
     // Extract block timestamps for those keys
     for (std::map<CKeyID, CBlockIndex*>::const_iterator it = mapKeyFirstBlock.begin(); it != mapKeyFirstBlock.end(); it++)
-        mapKeyBirth[it->first] = it->second->GetBlockTime() - 7200; // block times can be 2h off
+        mapKeyBirth[it->first] = it->second->GetBlockTime() - TIMESTAMP_WINDOW; // block times can be 2h off
 }
 
 bool CWallet::AddDestData(const CTxDestination& dest, const std::string& key, const std::string& value)

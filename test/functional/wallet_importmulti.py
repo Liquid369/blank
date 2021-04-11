@@ -247,7 +247,7 @@ class ImportMultiTest (PivxTestFramework):
         assert_equal(address_assert['isscript'], True)
         assert_equal(address_assert['iswatchonly'], True)
         #assert_equal(address_assert['timestamp'], timestamp)
-        p2shunspent = self.nodes[1].listunspent(0, 999999, [multi_sig_script['address']], 2)[0]
+        p2shunspent = self.nodes[1].listunspent(0, 999999, [multi_sig_script['address']])[0]
         assert_equal(p2shunspent['spendable'], False)
         assert_equal(p2shunspent['solvable'], False)
 
@@ -272,8 +272,8 @@ class ImportMultiTest (PivxTestFramework):
         assert_equal(result[0]['success'], True)
         address_assert = self.nodes[1].validateaddress(multi_sig_script['address'])
         #assert_equal(address_assert['timestamp'], timestamp)
-        p2shunspent = self.nodes[1].listunspent(0, 999999, [multi_sig_script['address']], 2)[0]
-        assert_equal(p2shunspent['spendable'], True)
+        p2shunspent = self.nodes[1].listunspent(0, 999999, [multi_sig_script['address']])[0]
+        assert_equal(p2shunspent['spendable'], False)
         assert_equal(p2shunspent['solvable'], True)
 
         # P2SH + Redeem script + Private Keys + !Watchonly
@@ -301,8 +301,8 @@ class ImportMultiTest (PivxTestFramework):
         assert_equal(result[0]['success'], True)
         address_assert = self.nodes[1].validateaddress(multi_sig_script['address'])
         #assert_equal(address_assert['timestamp'], timestamp)
-        p2shunspent = self.nodes[1].listunspent(0, 999999, [multi_sig_script['address']], 2)[0]
-        assert_equal(p2shunspent['spendable'], True)
+        p2shunspent = self.nodes[1].listunspent(0, 999999, [multi_sig_script['address']])[0]
+        assert_equal(p2shunspent['spendable'], False)
         assert_equal(p2shunspent['solvable'], True)
 
         # P2SH + Redeem script + Private Keys + Watchonly

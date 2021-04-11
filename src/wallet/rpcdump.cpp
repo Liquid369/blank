@@ -413,7 +413,7 @@ UniValue importwallet(const JSONRPCRequest& request)
     pwalletMain->ShowProgress("", 100); // hide progress dialog in GUI
 
     CBlockIndex* pindex = chainActive.Tip();
-    while (pindex && pindex->pprev && pindex->GetBlockTime() > nTimeBegin - 7200)
+    while (pindex && pindex->pprev && pindex->GetBlockTime() > nTimeBegin - TIMESTAMP_WINDOW)
         pindex = pindex->pprev;
 
     if (!pwalletMain->nTimeFirstKey || nTimeBegin < pwalletMain->nTimeFirstKey)
@@ -933,13 +933,18 @@ UniValue importmulti(const JSONRPCRequest& mainRequest)
             "  [     (array of json objects)\n"
             "    {\n"
             "      \"scriptPubKey\": \"script\" | { \"address\":\"address\" }, (string / JSON, required) Type of scriptPubKey (string for script, json for address)\n"
+            "      \"timestamp\": timestamp | \"now\"                      (integer / string, required) Creation time of the key in seconds since epoch (Jan 1 1970 GMT),\n"
+            "                                                                 or the string \"now\" to substitute the current synced blockchain time. The timestamp of the oldest\n"
+            "                                                                 key will determine how far back blockchain rescans need to begin for missing wallet transactions.\n"
+            "                                                                 \"now\" can be specified to bypass scanning, for keys which are known to never have been used, and\n"
+            "                                                                 0 can be specified to scan the entire blockchain. Blocks up to 2 hours before the earliest key\n"
+            "                                                                 creation time of all keys being imported by the importmulti call will be scanned.\n"
             "      \"redeemscript\": \"script\",                           (string, optional) Allowed only if the scriptPubKey is a P2SH address or a P2SH scriptPubKey\n"
             "      \"pubkeys\": [\"pubKey\", ... ],                        (array, optional) Array of strings giving pubkeys that must occur in the output or redeemscript\n"
             "      \"keys\": [\"key\", ... ],                              (array, optional) Array of strings giving private keys whose corresponding public keys must occur in the output or redeemscript\n"
             "      \"internal\": true|false,                               (boolean, optional, default: false) Stating whether matching outputs should be be treated as not incoming payments\n"
             "      \"watchonly\": true|false,                              (boolean, optional, default: false) Stating whether matching outputs should be considered watched even when they're not spendable, only allowed if keys are empty\n"
             "      \"label\": label,                                       (string, optional, default: '') Label to assign to the address, only allowed with internal=false\n"
-            "      \"timestamp\": 1454686740,                              (integer, optional, default now) Timestamp\n"
             "    }\n"
             "  ,...\n"
             "  ]\n"
@@ -1023,11 +1028,42 @@ UniValue importmulti(const JSONRPCRequest& mainRequest)
     }
 
     if (fRescan && fRunScan && requests.size() && nLowestTimestamp <= chainActive.Tip()->GetBlockTimeMax()) {
-        CBlockIndex* pindex = nLowestTimestamp > minimumTimestamp ? chainActive.FindEarliestAtLeast(nLowestTimestamp) : chainActive.Genesis();
-
+        CBlockIndex* pindex = nLowestTimestamp > minimumTimestamp ? chainActive.FindEarliestAtLeast(std::max<int64_t>(nLowestTimestamp - TIMESTAMP_WINDOW, 0))
+                                                                  : chainActive.Genesis();
+        CBlockIndex* scanFailed = nullptr;
         if (pindex) {
-            pwalletMain->ScanForWalletTransactions(pindex, nullptr, true);
+            scanFailed = pwalletMain->ScanForWalletTransactions(pindex, nullptr, true);
             pwalletMain->ReacceptWalletTransactions();
+        }
+
+        if (scanFailed) {
+            const std::vector<UniValue>& results = response.getValues();
+            response.clear();
+            response.setArray();
+            size_t i = 0;
+            for (const UniValue& request : requests.getValues()) {
+                // If key creation date is within the successfully scanned
+                // range, or if the import result already has an error set, let
+                // the result stand unmodified. Otherwise replace the result
+                // with an error message.
+                if (GetImportTimestamp(request, now) - TIMESTAMP_WINDOW >= scanFailed->GetBlockTimeMax() || results.at(i).exists("error")) {
+                    response.push_back(results.at(i));
+                } else {
+                    UniValue result = UniValue(UniValue::VOBJ);
+                    result.pushKV("success", UniValue(false));
+                    result.pushKV("error", JSONRPCError(RPC_MISC_ERROR,
+                                                strprintf("Rescan failed for key with creation timestamp %d. There was an error reading a "
+                                                          "block from time %d, which is after or within %d seconds of key creation, and "
+                                                          "could contain transactions pertaining to the key. As a result, transactions "
+                                                          "and coins using this key may not appear in the wallet. This error could be "
+                                                          "caused by pruning or data corruption (see pivxd log for details) and could "
+                                                          "be dealt with by downloading and rescanning the relevant blocks (see -reindex "
+                                                          "and -rescan options).",
+                                                          GetImportTimestamp(request, now), scanFailed->GetBlockTimeMax(), TIMESTAMP_WINDOW)));
+                    response.push_back(std::move(result));
+                }
+                ++i;
+            }
         }
     }
 

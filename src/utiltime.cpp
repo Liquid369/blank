@@ -43,6 +43,11 @@ int64_t GetTimeMillis()
     return now;
 }
 
+int64_t GetSystemTimeInSeconds()
+{
+    return GetTimeMicros()/1000000;
+}
+
 int64_t GetTimeMicros()
 {
     int64_t now = (boost::posix_time::microsec_clock::universal_time() -

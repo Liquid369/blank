@@ -22,6 +22,13 @@
 
 #include <vector>
 
+/**
+ * Timestamp window used as a grace period by code that compares external
+ * timestamps (such as timestamps passed to RPCs, or wallet key creation times)
+ * to block timestamps.
+ */
+static constexpr int64_t TIMESTAMP_WINDOW = 2 * 60 * 60;
+
 class CBlockFileInfo
 {
 public:
