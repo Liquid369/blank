@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_ZIP32_H
-#define PIVX_ZIP32_H
+#ifndef fls_ZIP32_H
+#define fls_ZIP32_H
 
 #include "blob_uint256.h"
 #include "key.h"
@@ -145,4 +145,4 @@ bool IsValidSpendingKey(const libzcash::SpendingKey& zkey);
 /** Check whether a ViewingKey is not an InvalidEncoding. */
 bool IsValidViewingKey(const libzcash::ViewingKey& vk);
 
-#endif // PIVX_ZIP32_H
+#endif // fls_ZIP32_H

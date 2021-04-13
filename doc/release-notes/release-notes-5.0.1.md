@@ -1,5 +1,5 @@
-PIVX Core version v5.0.1 is now available from: https://github.com/pivx-project/pivx/releases
-Please report bugs using the issue tracker at github: https://github.com/pivx-project/pivx/issues
+fls Core version v5.0.1 is now available from: https://github.com/fls-project/fls/releases
+Please report bugs using the issue tracker at github: https://github.com/fls-project/fls/issues
 
 Mandatory Update
 ----

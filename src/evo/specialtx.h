@@ -1,10 +1,10 @@
     // Copyright (c) 2017 The Dash Core developers
-// Copyright (c) 2020 The PIVX Core developers
+// Copyright (c) 2020 The fls Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_SPECIALTX_H
-#define PIVX_SPECIALTX_H
+#ifndef fls_SPECIALTX_H
+#define fls_SPECIALTX_H
 
 #include "streams.h"
 #include "version.h"
@@ -31,4 +31,4 @@ bool CheckSpecialTxNoContext(const CTransaction& tx, CValidationState& state);
 bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindex, CValidationState& state, bool fJustCheck);
 bool UndoSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindexPrev);
 
-#endif // PIVX_SPECIALTX_H
+#endif // fls_SPECIALTX_H

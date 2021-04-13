@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-# Copyright (c) 2019-2020 The PIVX developers
+# Copyright (c) 2019-2020 The PIVX Developers
+Copyright (c) 2020-2021 The Flits Developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -48,7 +49,7 @@ from time import sleep
 
 from test_framework.authproxy import JSONRPCException
 from test_framework.messages import COutPoint
-from test_framework.test_framework import PivxTestFramework
+from test_framework.test_framework import flsTestFramework
 from test_framework.util import (
     assert_equal,
     bytes_to_hex_str,
@@ -56,7 +57,7 @@ from test_framework.util import (
 )
 
 
-class FakeStakeTest(PivxTestFramework):
+class FakeStakeTest(flsTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         # nodes[0] moves the chain and checks the spam blocks, nodes[1] sends them

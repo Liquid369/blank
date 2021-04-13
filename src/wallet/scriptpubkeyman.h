@@ -1,10 +1,11 @@
 // Copyright (c) 2019 The Bitcoin Core developers
-// Copyright (c) 2020 The PIVX developers
+// Copyright (c) 2020 The PIVX Developers
+Copyright (c) 2020 The Flits Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_SCRIPTPUBKEYMAN_H
-#define PIVX_SCRIPTPUBKEYMAN_H
+#ifndef fls_SCRIPTPUBKEYMAN_H
+#define fls_SCRIPTPUBKEYMAN_H
 
 #include "wallet/hdchain.h"
 #include "wallet/wallet.h"
@@ -160,4 +161,4 @@ private:
 };
 
 
-#endif //PIVX_SCRIPTPUBKEYMAN_H
+#endif //fls_SCRIPTPUBKEYMAN_H

@@ -1,9 +1,10 @@
-// Copyright (c) 2019 The PIVX developers
+// Copyright (c) 2019 The PIVX Developers
+Copyright (c) 2019 The Flits Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_PAIRRESULT_H
-#define PIVX_PAIRRESULT_H
+#ifndef fls_PAIRRESULT_H
+#define fls_PAIRRESULT_H
 
 
 class PairResult {
@@ -17,4 +18,4 @@ public:
 };
 
 
-#endif //PIVX_PAIRRESULT_H
+#endif //fls_PAIRRESULT_H

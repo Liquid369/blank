@@ -7,7 +7,7 @@ from decimal import Decimal
 from io import BytesIO
 
 from test_framework.mininode import CTransaction
-from test_framework.test_framework import PivxTestFramework
+from test_framework.test_framework import flsTestFramework
 from test_framework.util import (
     assert_array_result,
     hex_str_to_bytes,
@@ -19,7 +19,7 @@ def txFromHex(hexstring):
     tx.deserialize(f)
     return tx
 
-class ListTransactionsTest(PivxTestFramework):
+class ListTransactionsTest(flsTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.enable_mocktime()

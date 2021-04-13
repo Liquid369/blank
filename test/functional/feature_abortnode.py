@@ -10,11 +10,11 @@
 - Verify that bitcoind AbortNode's.
 """
 
-from test_framework.test_framework import PivxTestFramework
+from test_framework.test_framework import flsTestFramework
 from test_framework.util import wait_until, get_datadir_path, connect_nodes
 import os
 
-class AbortNodeTest(PivxTestFramework):
+class AbortNodeTest(flsTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True

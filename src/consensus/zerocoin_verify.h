@@ -1,9 +1,10 @@
-// Copyright (c) 2020 The PIVX developers
+// Copyright (c) 2020 The PIVX Developers
+Copyright (c) 2020 The Flits Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_CONSENSUS_ZEROCOIN_VERIFY_H
-#define PIVX_CONSENSUS_ZEROCOIN_VERIFY_H
+#ifndef fls_CONSENSUS_ZEROCOIN_VERIFY_H
+#define fls_CONSENSUS_ZEROCOIN_VERIFY_H
 
 #include "consensus/consensus.h"
 #include "script/interpreter.h"
@@ -19,4 +20,4 @@ bool ContextualCheckZerocoinTx(const CTransactionRef& tx, CValidationState& stat
 bool ContextualCheckZerocoinSpend(const CTransaction& tx, const libzerocoin::CoinSpend* spend, int nHeight, const uint256& hashBlock);
 bool ContextualCheckZerocoinSpendNoSerialCheck(const CTransaction& tx, const libzerocoin::CoinSpend* spend, int nHeight, const uint256& hashBlock);
 
-#endif //PIVX_CONSENSUS_ZEROCOIN_VERIFY_H
+#endif //fls_CONSENSUS_ZEROCOIN_VERIFY_H

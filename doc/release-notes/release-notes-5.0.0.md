@@ -1,14 +1,14 @@
-PIVX Core version *v5.0.0* is now available from:  <https://github.com/pivx-project/pivx/releases>
+fls Core version *v5.0.0* is now available from:  <https://github.com/fls-project/fls/releases>
 
 This is a new major version release, including various bug fixes and performance improvements, as well as updated translations.
 
-Please report bugs using the issue tracker at github: <https://github.com/pivx-project/pivx/issues>
+Please report bugs using the issue tracker at github: <https://github.com/fls-project/fls/issues>
 
 
 Mandatory Update
 ==============
 
-PIVX Core v5.0.0 is a mandatory update for all users. This release contains a protocol upgrade (to `70920`), new consensus rules and improvements that are not backwards compatible with older versions. Users will need to update their clients before enforcement of this update goes into effect.
+fls Core v5.0.0 is a mandatory update for all users. This release contains a protocol upgrade (to `70920`), new consensus rules and improvements that are not backwards compatible with older versions. Users will need to update their clients before enforcement of this update goes into effect.
 
 Update enforcement is currently scheduled to go into effect at the following block height:
 ```
@@ -21,19 +21,19 @@ Note: In preparation for the enforcement, upgraded peers will start rejecting no
 How to Upgrade
 ==============
 
-If you are running an older version, shut it down. Wait until it has completely shut down (which might take a few minutes for older versions), then run the installer (on Windows) or just copy over /Applications/PIVX-Qt (on Mac) or pivxd/pivx-qt (on Linux).
+If you are running an older version, shut it down. Wait until it has completely shut down (which might take a few minutes for older versions), then run the installer (on Windows) or just copy over /Applications/fls-Qt (on Mac) or flsd/fls-qt (on Linux).
 
 #### Sapling Parameters
-In order to run, PIVX Core now requires two files, `sapling-output.params` and `sapling-spend.params` (with total size ~50 MB), to be saved in a specific location.
+In order to run, fls Core now requires two files, `sapling-output.params` and `sapling-spend.params` (with total size ~50 MB), to be saved in a specific location.
 
 For the following packages, no action is required by the user:
 - macOS release `dmg` binaries will use the params that are bundled into the .app bundle.
 - Windows installer `.exe` will automatically copy the files in the proper location.
 - Linux `PPA/Snap/Copr` installs will automatically copy the files in the proper location.
 
-For the other packages, the user must save the param files in the proper location, before being able to run PIVX v5.0.0:
+For the other packages, the user must save the param files in the proper location, before being able to run fls v5.0.0:
 - macOS/Linux `tar.gz` tarballs include a bash script (`install-params.sh`) to copy the parameters in the appropriate location.
-- Windows `.zip` users need to manually copy the files from the `share/pivx` folder to the `%APPDATA%\PIVXParams` directory.
+- Windows `.zip` users need to manually copy the files from the `share/fls` folder to the `%APPDATA%\flsParams` directory.
 - self compilers can run the script from the repository sources (`params/install-params.sh`), or copy the files directly from the `params` subdirectory.
 
 
@@ -41,13 +41,13 @@ For the other packages, the user must save the param files in the proper locatio
 Compatibility
 ==============
 
-PIVX Core is extensively tested on multiple operating systems using the Linux kernel, macOS 10.10+, and Windows 7 and later.
+fls Core is extensively tested on multiple operating systems using the Linux kernel, macOS 10.10+, and Windows 7 and later.
 
 Microsoft ended support for Windows XP on [April 8th, 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support), No attempt is made to prevent installing or running the software on Windows XP, you can still do so at your own risk but be aware that there are known instabilities and issues. Please do not report issues about Windows XP to the issue tracker.
 
-Apple released it's last Mountain Lion update August 13, 2015, and officially ended support on [December 14, 2015](http://news.fnal.gov/2015/10/mac-os-x-mountain-lion-10-8-end-of-life-december-14/). PIVX Core software starting with v3.2.0 will no longer run on MacOS versions prior to Yosemite (10.10). Please do not report issues about MacOS versions prior to Yosemite to the issue tracker.
+Apple released it's last Mountain Lion update August 13, 2015, and officially ended support on [December 14, 2015](http://news.fnal.gov/2015/10/mac-os-x-mountain-lion-10-8-end-of-life-december-14/). fls Core software starting with v3.2.0 will no longer run on MacOS versions prior to Yosemite (10.10). Please do not report issues about MacOS versions prior to Yosemite to the issue tracker.
 
-PIVX Core should also work on most other Unix-like systems but is not frequently tested on them.
+fls Core should also work on most other Unix-like systems but is not frequently tested on them.
 
 
 Notable Changes
@@ -58,14 +58,14 @@ New SHIELD Protocol Implemented!
 
 #### Overview
 Users will be able to protect their financial information by sending and receiving PIVs privately, as well as sending and receiving encrypted messages attached to the shield transactions.
-More visual information about the protocol can be found at https://pivx.org .
+More visual information about the protocol can be found at https://fls.org .
 
 #### GUI features
 New set of functionalities for the interaction with the SHIELD protocol:
 
 * Receive screen modified to show, generate and set label of wallet's shield addresses.
 * Dashboard transactions list including shield transactions.
-* Top bar showing shield PIV balances.
+* Top bar showing shield FLS balances.
 * Send screen modified, implementing shield transaction crafting and broadcast.
 * New encrypted memo functionality.
 * Transaction detail dialog presenting shield transaction information.
@@ -76,7 +76,7 @@ New set of functionalities for the interaction with the SHIELD protocol:
 A brand new manager encapsulating all Sapling related capabilities inside the wallet has been implemented:
 
 * New address type: shield addresses (using bech32 format).
-* New derivation path for Sapling keys: Shield addresses are derived from the same wallet master seed used for the deterministic derivation of all other keys. The same seed, therefore, can be used to restore both transparent and Shield addresses, recovering both transparent and Shield PIV balance.
+* New derivation path for Sapling keys: Shield addresses are derived from the same wallet master seed used for the deterministic derivation of all other keys. The same seed, therefore, can be used to restore both transparent and Shield addresses, recovering both transparent and Shield FLS balance.
 * Support for Sapling extended full viewing keys, incoming viewing keys, outgoing viewing keys and spending keys.
 * Sapling notes management:
     - Notes decryption.
@@ -158,7 +158,7 @@ Account API Removed
 The 'account' API was deprecated in v4.2.0, and has been fully removed in v5.0.0.
 The 'label' API was introduced in v4.2.0 as a replacement for accounts.
 
-See the release notes from [v4.2.0](https://github.com/PIVX-Project/PIVX/blob/master/doc/release-notes/release-notes-4.2.0.md#label-and-account-apis-for-wallet) for a full description of the changes from the 'account' API to the 'label' API.
+See the release notes from [v4.2.0](https://github.com/fls-Project/fls/blob/master/doc/release-notes/release-notes-4.2.0.md#label-and-account-apis-for-wallet) for a full description of the changes from the 'account' API to the 'label' API.
 
 SwiftX Removed
 --------------
@@ -231,7 +231,7 @@ Several new RPC commands have been introduced to support SHIELD address and tran
 | `rawshieldsendmany` | Creates a transaction sending to many recipients (without committing it), and returns the hex string. | Yes |
 | `shieldsendmany` | Send to many recipients (Either transparent or SHIELD) | Yes |
 | `viewshieldtransaction` | Get detailed SHIELD information about an in-wallet transaction | Yes |
-| `getsupplyinfo` | Returns detailed PIV supply information | No |
+| `getsupplyinfo` | Returns detailed FLS supply information | No |
 | `initmasternode` | Manually initialize the client as a masternode | No |
 | `getcachedblockhashes` | Return the block hashes cached in the masternode manager | No |
 
@@ -415,7 +415,7 @@ Each new command is detailed below:
   2. "amounts"            (array, required) An array of json objects representing the amounts to send.
      [{
        "address":address  (string, required) The address is a transparent addr or shield addr
-       "amount":amount    (numeric, required) The numeric amount in PIV is the value
+       "amount":amount    (numeric, required) The numeric amount in FLS is the value
        "memo":memo        (string, optional) If the address is a shield addr, message string of max 512 bytes
      }, ... ]
   3. minconf              (numeric, optional, default=1) Only use funds confirmed at least this many times.
@@ -442,7 +442,7 @@ Each new command is detailed below:
   2. "amounts"             (array, required) An array of json objects representing the amounts to send.
      [{
        "address":address  (string, required) The address is a transparent addr or shield addr
-       "amount":amount    (numeric, required) The numeric amount in PIV is the value
+       "amount":amount    (numeric, required) The numeric amount in FLS is the value
        "memo":memo        (string, optional) If the address is a shield addr, message string of max 512 bytes
      }, ... ]
   3. minconf               (numeric, optional, default=1) Only use funds confirmed at least this many times.
@@ -465,14 +465,14 @@ Each new command is detailed below:
   Result:
   {
     "txid" : "transactionid",   (string) The transaction id
-    "fee"  : x.xxx,             (numeric) The transaction fee in PIV
+    "fee"  : x.xxx,             (numeric) The transaction fee in FLS
     "spends" : [
       {
         "spend" : n,                    (numeric, sapling) the index of the spend within vShieldedSpend
         "txidPrev" : "transactionid",   (string) The id for the transaction this note was created in
         "outputPrev" : n,               (numeric, sapling) the index of the output within the vShieldedOutput
-        "address" : "pivxaddress",      (string) The PIVX address involved in the transaction
-        "value" : x.xxx                 (numeric) The amount in PIV
+        "address" : "flsaddress",      (string) The fls address involved in the transaction
+        "value" : x.xxx                 (numeric) The amount in FLS
         "valueSat" : xxxx               (numeric) The amount in satoshis
       }
       ,...
@@ -480,9 +480,9 @@ Each new command is detailed below:
     "outputs" : [
       {
         "output" : n,                   (numeric, sapling) the index of the output within the vShieldedOutput
-        "address" : "pivxaddress",      (string) The PIVX address involved in the transaction
+        "address" : "flsaddress",      (string) The fls address involved in the transaction
         "outgoing" : true|false         (boolean, sapling) True if the output is not for an address in the wallet
-        "value" : x.xxx                 (numeric) The amount in PIV
+        "value" : x.xxx                 (numeric) The amount in FLS
         "valueSat" : xxxx               (numeric) The amount in satoshis
         "memo" : "hexmemo",             (string) Hexademical string representation of the memo field
         "memoStr" : "memo",             (string) Only returned if memo contains valid UTF-8 text.
@@ -592,8 +592,8 @@ Several RPC commands have had changes to their input arguments or output fields 
 
 * `getinfo`
   The `zerocoinbalance` JSON return entry and the `zPIVsupply` return JSON object have been removed due to zerocoin deprecation.
-  The `balance` JSON return entry is now all inclusive (the sum of all transparent and shield PIV)
-  The `moneysupply` JSON return entry is the total PIV supply (the sum of all transparent and shield PIV)
+  The `balance` JSON return entry is now all inclusive (the sum of all transparent and shield FLS)
+  The `moneysupply` JSON return entry is the total FLS supply (the sum of all transparent and shield FLS)
   A new JSON return entry (`transparentsupply`) has been added to return the sum of the value of all unspent outputs when the chainstate was last flushed to disk.
   A new JSON return entry (`shieldsupply`) has been added to return the shield supply at the chain tip.
   Integrators should switch to the newly added `getsupplyinfo` RPC command for the purpose of obtaining supply information as it is more robust and does not rely on information caching.
@@ -660,35 +660,35 @@ The table below details RPC commands that have now been fully removed. These com
 | ------------ | ---------------- | ------------------ |
 | `findserial` | Searches the zerocoin database for a zerocoin spend transaction that contains the specified serial | Zerocoin deprecation |
 | `getserials` | Look at the inputs of any tx in a range of blocks and returns the serial numbers for any coinspend | Zerocoin deprecation |
-| `getaccountaddress` | Returned the current PIVX address associated with an internal account | Account system removal |
-| `setaccount` | Associate a PIVX address with an internal account name | Account system removal |
-| `getaccount` | Returned the internal account associated with a given PIVX address | Account system removal |
-| `getaddressesbyaccount` | Returned a list of PIVX addresses associated with an internal account | Account system removal |
+| `getaccountaddress` | Returned the current fls address associated with an internal account | Account system removal |
+| `setaccount` | Associate a fls address with an internal account name | Account system removal |
+| `getaccount` | Returned the internal account associated with a given fls address | Account system removal |
+| `getaddressesbyaccount` | Returned a list of fls addresses associated with an internal account | Account system removal |
 | `sendtoaddressix` | Send an amount to a given address using SwiftX | SwiftX disabled |
 | `getreceivedbyaccount` | Returned the total amount received by addresses associated with an internal account | Account system removal |
 | `move` | Move funds from one internal account to another internal account | Account system removal |
-| `sendfrom` | Send an amount from an internal account to a PIVX address | Account system removal |
+| `sendfrom` | Send an amount from an internal account to a fls address | Account system removal |
 | `listreceivedbyaccount` | List received transactions by account | Account system removal |
 | `listaccounts` | List internal account names and balances | Account system removal |
-| `multisend` | Configure sending a portion of stake rewards to a PIVX address | Pending a full rewrite |
-| `getzerocoinbalance` | Returned the wallet's total zPIV balance | Zerocoin deprecation |
-| `listmintedzerocoins` | List all zPIV mints in the wallet | Zerocoin deprecation |
+| `multisend` | Configure sending a portion of stake rewards to a fls address | Pending a full rewrite |
+| `getzerocoinbalance` | Returned the wallet's total zFLS balance | Zerocoin deprecation |
+| `listmintedzerocoins` | List all zFLS mints in the wallet | Zerocoin deprecation |
 | `listzerocoinamounts` | List information about your zerocoin amounts | Zerocoin deprecation |
-| `listspentzerocoins` | List all the spent zPIV mints in the wallet | Zerocoin deprecation |
-| `mintzerocoin` | Mint the specified zPIV amount | Zerocoin deprecation |
-| `spendzerocoin` | Spend zPIV to a PIV address | Zerocoin deprecation |
-| `spendzerocoinmints` | Spend specific zPIV mints to a PIV address | Zerocoin deprecation |
+| `listspentzerocoins` | List all the spent zFLS mints in the wallet | Zerocoin deprecation |
+| `mintzerocoin` | Mint the specified zFLS amount | Zerocoin deprecation |
+| `spendzerocoin` | Spend zFLS to a FLS address | Zerocoin deprecation |
+| `spendzerocoinmints` | Spend specific zFLS mints to a FLS address | Zerocoin deprecation |
 | `resetmintzerocoin` | Scan the chain for zerocoin mints held in the wallet DB and refresh their status | Zerocoin deprecation |
 | `resetspentzerocoin` | Scan the chain for all zerocoin spends held in the wallet DB and refresh their status | Zerocoin deprecation |
 | `getarchivedzerocoin` | Display zerocoins that were archived because they were believed to be orphans | Zerocoin deprecation |
 | `exportzerocoins` | Export zerocoin mints that are held in the wallet DB | Zerocoin deprecation |
 | `importzerocoins` | Import zerocoin mints | Zerocoin deprecation |
 | `reconsiderzerocoins` | Check archived zPIVs to see if any mints were added to the chain | Zerocoin deprecation |
-| `setzpivseed` | Set the wallet's deterministic zPIV seed to a specific value | Zerocoin deprecation |
-| `getzpivseed` | Return the current deterministic zPIV seed | Zerocoin deprecation |
-| `generatemintlist` | Show mints that are derived from the deterministic zPIV seed | Zerocoin deprecation |
+| `setzpivseed` | Set the wallet's deterministic zFLS seed to a specific value | Zerocoin deprecation |
+| `getzpivseed` | Return the current deterministic zFLS seed | Zerocoin deprecation |
+| `generatemintlist` | Show mints that are derived from the deterministic zFLS seed | Zerocoin deprecation |
 | `dzpivstate` | Show the current state of the mintpool of the wallet | Zerocoin deprecation |
-| `searchdzpiv` | Do a search for deterministically generated zPIV that have not yet added to the wallet | Zerocoin deprecation |
+| `searchdzpiv` | Do a search for deterministically generated zFLS that have not yet added to the wallet | Zerocoin deprecation |
 | `spendrawzerocoin` | Create and broadcast a TX spending the provided zericoin | Zerocoin deprecation |
 
 
@@ -878,7 +878,7 @@ Detailed release notes follow. This overview includes changes that affect behavi
 - #2112 `e7283dec9e` [Consensus] Set v5 enforcement height for mainnet (furszy)
 
 ### Build Systems
-- #1856 `1bbb906059` [CMake] Add test_pivx unit test target (Fuzzbawls)
+- #1856 `1bbb906059` [CMake] Add test_fls unit test target (Fuzzbawls)
 - #1877 `a59e8273fb` [Misc] Fixing recurrent compiler warnings (furszy)
 - #1882 `5bd7d52c2c` [Build][Doc] Post branch-off/release maintenance (Fuzzbawls)
 - #1883 `e7d78bd2c2` [Build] Clean lcov artifacts from all paths (Fuzzbawls)
@@ -891,7 +891,7 @@ Detailed release notes follow. This overview includes changes that affect behavi
 - #2021 `3845c18723` [GA] Reduce number of concurrent jobs (Fuzzbawls)
 - #2022 `8385a96f94` [Build] Package sapling params in repo/release (Fuzzbawls)
 - #2036 `a3e75c2afa` [Build] Proper coverage for ppa (Fuzzbawls)
-- #2041 `a15dc3417d` [Build] CMake pivxd and unit tests: fixing missing MacOS framework. (furszy)
+- #2041 `a15dc3417d` [Build] CMake flsd and unit tests: fixing missing MacOS framework. (furszy)
 - #2087 `869b621c2c` [Build] Unify header file extensions (Fuzzbawls)
 
 ### P2P/Network
@@ -970,4 +970,4 @@ Thanks to everyone who directly contributed to this release:
 - practicalswift
 - random-zebra
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/pivx-project-translations/), the QA team during Testing and the Node hosts supporting our Testnet.
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/fls-project-translations/), the QA team during Testing and the Node hosts supporting our Testnet.

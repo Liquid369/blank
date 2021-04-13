@@ -1,6 +1,6 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2015-2020 The fls developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,7 +22,7 @@ BitcoinUnits::BitcoinUnits(QObject* parent) : QAbstractListModel(parent),
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(PIV);
+    unitlist.append(FLS);
     unitlist.append(mPIV);
     unitlist.append(uPIV);
     return unitlist;
@@ -31,7 +31,7 @@ QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 bool BitcoinUnits::valid(int unit)
 {
     switch (unit) {
-    case PIV:
+    case FLS:
     case mPIV:
     case uPIV:
         return true;
@@ -43,12 +43,12 @@ bool BitcoinUnits::valid(int unit)
 QString BitcoinUnits::id(int unit)
 {
     switch (unit) {
-    case PIV:
-        return QString("pivx");
+    case FLS:
+        return QString("fls");
     case mPIV:
-        return QString("mpivx");
+        return QString("mfls");
     case uPIV:
-        return QString::fromUtf8("upivx");
+        return QString::fromUtf8("ufls");
     default:
         return QString("???");
     }
@@ -61,7 +61,7 @@ QString BitcoinUnits::name(int unit, bool isZpiv)
     if(isZpiv) z = "z";
     if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         switch (unit) {
-        case PIV:
+        case FLS:
             return z + CURR_UNIT;
         case mPIV:
             return z + QString("m") + CURR_UNIT;
@@ -72,7 +72,7 @@ QString BitcoinUnits::name(int unit, bool isZpiv)
         }
     } else {
         switch (unit) {
-        case PIV:
+        case FLS:
             return z + QString("t") + CURR_UNIT;
         case mPIV:
             return z + QString("mt") + CURR_UNIT;
@@ -89,7 +89,7 @@ QString BitcoinUnits::description(int unit)
     const QString CURR_UNIT = QString(CURRENCY_UNIT.c_str());
     if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         switch (unit) {
-        case PIV:
+        case FLS:
             return CURR_UNIT;
         case mPIV:
             return QString("Milli-") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000)");
@@ -100,7 +100,7 @@ QString BitcoinUnits::description(int unit)
         }
     } else {
         switch (unit) {
-        case PIV:
+        case FLS:
             return QString("Test") + CURR_UNIT;
         case mPIV:
             return QString("Milli-Test") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000)");
@@ -115,7 +115,7 @@ QString BitcoinUnits::description(int unit)
 qint64 BitcoinUnits::factor(int unit)
 {
     switch (unit) {
-    case PIV:
+    case FLS:
         return 100000000;
     case mPIV:
         return 100000;
@@ -129,7 +129,7 @@ qint64 BitcoinUnits::factor(int unit)
 int BitcoinUnits::decimals(int unit)
 {
     switch (unit) {
-    case PIV:
+    case FLS:
         return 8;
     case mPIV:
         return 5;
