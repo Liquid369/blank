@@ -1,8 +1,8 @@
 package=native_rust
 $(package)_version=1.42.0
-$(package)_download_path=https://depends.pivx.org
+$(package)_download_path=https://fuzzbawls.pw/depends-cache
 $(package)_file_name_x86_64_linux=rust-$($(package)_version)-x86_64-unknown-linux-gnu.tar.gz
-$(package)_sha256_hash_x86_64_linux=face97f81c746b884ac9a6062b2ac99b1f4c314199d0a90c57a0adb0a01dcdc8
+$(package)_sha256_hash_x86_64_linux=fce33280b344ab0fecc55be24632a3c0086fd763f4df1d59013dfc0e49f0356c
 $(package)_file_name_arm_linux=rust-$($(package)_version)-arm-unknown-linux-gnueabihf.tar.gz
 $(package)_sha256_hash_arm_linux=a19a1d46fa08681429d888ec06e127ce94ac16d7d95d3f1ee586a0cac63ffe5b
 $(package)_file_name_armv7l_linux=rust-$($(package)_version)-armv7-unknown-linux-gnueabihf.tar.gz
