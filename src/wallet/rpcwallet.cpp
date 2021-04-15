@@ -22,7 +22,7 @@
 #include "utilmoneystr.h"
 #include "wallet.h"
 #include "walletdb.h"
-#include "zpivchain.h"
+#include "zflschain.h"
 
 #include "sapling/sapling_operation.h"
 #include "sapling/transaction_builder.h"

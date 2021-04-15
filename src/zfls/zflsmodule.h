@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 //
-#ifndef fls_ZPIVMODULE_H
-#define fls_ZPIVMODULE_H
+#ifndef fls_ZFLSMODULE_H
+#define fls_ZFLSMODULE_H
 
 #include "libzerocoin/bignum.h"
 #include "libzerocoin/Denominations.h"
@@ -18,7 +18,7 @@
 #include "uint256.h"
 #include <streams.h>
 #include <utilstrencodings.h>
-#include "zpiv/zerocoin.h"
+#include "zfls/zerocoin.h"
 #include "chainparams.h"
 
 static int const PUBSPEND_SCHNORR = 4;
@@ -75,7 +75,7 @@ public:
 
 class CValidationState;
 
-namespace ZPIVModule {
+namespace ZFLSModule {
     CDataStream ScriptSigToSerializedSpend(const CScript& scriptSig);
     PublicCoinSpend parseCoinSpend(const CTxIn &in);
     bool parseCoinSpend(const CTxIn &in, const CTransaction& tx, const CTxOut &prevOut, PublicCoinSpend& publicCoinSpend);
@@ -93,4 +93,4 @@ namespace ZPIVModule {
 };
 
 
-#endif //fls_ZPIVMODULE_H
+#endif //fls_ZFLSMODULE_H

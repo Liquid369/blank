@@ -1860,7 +1860,7 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
     </message>
     <message>
         <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>보상받은 PIV를 zPIV로 자동변환 활성화</translation>
+        <translation>보상받은 PIV를 zFLS로 자동변환 활성화</translation>
     </message>
     <message>
         <source>Enable zFLS Automint</source>

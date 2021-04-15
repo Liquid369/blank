@@ -116,7 +116,7 @@ Layer 2 network messages (MN, Budget, Spork, etc) are now signed based on the ha
 Two new SPORKS are introduced, `SPORK_17` ([#PR975](https://github.com/fls-Project/fls/pull/975)) and `SPORK_18` ([#PR995](https://github.com/fls-Project/fls/pull/995)).<br>
 `SPORK_17` (off by default) is used to activate the [Cold Staking](#cold-staking) protocol. When this spork is off, no cold-staked block is accepted by the network and new delegations are rejected, but coin-owners are still able to spend previously created pay-to-cold-stake delegations.
 
-`SPORK_18` (off by default) is used to switch between Version 3 and [Version 4 Public Spends](#v1-zpiv-spending-public-spends-version-4). When this spork is active, only version 4 spends are accepted by the network. When it's not, only version 3 spends are accepted.
+`SPORK_18` (off by default) is used to switch between Version 3 and [Version 4 Public Spends](#v1-zfls-spending-public-spends-version-4). When this spork is active, only version 4 spends are accepted by the network. When it's not, only version 3 spends are accepted.
 
 RPC Changes
 --------------

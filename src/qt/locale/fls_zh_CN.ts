@@ -1700,15 +1700,15 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
     </message>
     <message>
         <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>启动自动铸造PIV到zPIV</translation>
+        <translation>启动自动铸造PIV到zFLS</translation>
     </message>
     <message>
         <source>Enable zFLS Automint</source>
-        <translation>启动自动铸造zPIV</translation>
+        <translation>启动自动铸造zFLS</translation>
     </message>
     <message>
         <source>Enable automatic zFLS minting from specific addresses</source>
-        <translation>启用从特定地址自动生成zPIV</translation>
+        <translation>启用从特定地址自动生成zFLS</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
@@ -1716,11 +1716,11 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
     </message>
     <message>
         <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
-        <translation>通过零币协议自动转换为zPIV的传入PIV的百分比(最小:10%)</translation>
+        <translation>通过零币协议自动转换为zFLS的传入PIV的百分比(最小:10%)</translation>
     </message>
     <message>
         <source>Percentage of autominted zFLS</source>
-        <translation>自动铸造的zPIV百分比</translation>
+        <translation>自动铸造的zFLS百分比</translation>
     </message>
     <message>
         <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
@@ -1728,7 +1728,7 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
     </message>
     <message>
         <source>Preferred Automint zFLS Denomination</source>
-        <translation>首选自动铸造zPIV面额</translation>
+        <translation>首选自动铸造zFLS面额</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -2463,7 +2463,7 @@ Address: %4
     </message>
     <message>
         <source>Custom zFLS Backup Path:</source>
-        <translation>自定义zPIV备份路径:</translation>
+        <translation>自定义zFLS备份路径:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>

@@ -92,7 +92,7 @@
         <file alias="ic-close-white">fls/res/img/ic-close-white.svg</file>
         <file alias="ic-close">fls/res/img/ic-close.svg</file>
         <file alias="ic-coin-piv">fls/res/img/ic-coin-piv.svg</file>
-        <file alias="ic-coin-zpiv">fls/res/img/ic-coin-zpiv.svg</file>
+        <file alias="ic-coin-zfls">fls/res/img/ic-coin-zfls.svg</file>
         <file alias="ic-combo-box">fls/res/img/ic-combo-box.svg</file>
         <file alias="ic-connect">fls/res/img/ic-connect.svg</file>
         <file alias="ic-copy-liliac">fls/res/img/ic-copy-liliac.svg</file>

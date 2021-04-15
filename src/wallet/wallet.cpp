@@ -20,7 +20,7 @@
 #include "spork.h"
 #include "util.h"
 #include "utilmoneystr.h"
-#include "zpivchain.h"
+#include "zflschain.h"
 
 #include <future>
 #include <boost/algorithm/string/replace.hpp>
@@ -3188,7 +3188,7 @@ bool CWallet::CreateCoinStake(
         }
 
         // This should never happen
-        if (stakeInput.IsZPIV()) {
+        if (stakeInput.IsZFLS()) {
             LogPrintf("%s: ERROR - zPOS is disabled\n", __func__);
             it++;
             continue;

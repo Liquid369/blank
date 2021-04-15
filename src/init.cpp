@@ -53,7 +53,7 @@
 #include "util/threadnames.h"
 #include "validation.h"
 #include "validationinterface.h"
-#include "zpivchain.h"
+#include "zflschain.h"
 
 #ifdef ENABLE_WALLET
 #include "wallet/db.h"

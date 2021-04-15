@@ -6,8 +6,8 @@
 
 #include "libzerocoin/CoinSpend.h"
 #include "wallet/wallet.h"
-#include "zpivchain.h"
-#include "zpiv/zpivmodule.h"
+#include "zflschain.h"
+#include "zfls/zflsmodule.h"
 
 bool DisconnectZerocoinTx(const CTransaction& tx, CZerocoinDB* zerocoinDB)
 {
@@ -26,7 +26,7 @@ bool DisconnectZerocoinTx(const CTransaction& tx, CZerocoinDB* zerocoinDB)
                     if (isPublicSpend) {
                         PublicCoinSpend publicSpend(params);
                         CValidationState state;
-                        if (!ZPIVModule::ParseZerocoinPublicSpend(txin, tx, state, publicSpend)) {
+                        if (!ZFLSModule::ParseZerocoinPublicSpend(txin, tx, state, publicSpend)) {
                             return error("Failed to parse public spend");
                         }
                         serial = publicSpend.getCoinSerialNumber();

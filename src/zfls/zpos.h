@@ -9,7 +9,7 @@
 #include "stakeinput.h"
 #include "txdb.h"
 
-class CLegacyZPivStake : public CStakeInput
+class CLegacyZFlsStake : public CStakeInput
 {
 private:
     uint32_t nChecksum{0};
@@ -17,11 +17,11 @@ private:
     uint256 hashSerial{UINT256_ZERO};
 
 public:
-    CLegacyZPivStake() : CStakeInput(nullptr) {}
+    CLegacyZFlsStake() : CStakeInput(nullptr) {}
 
-    explicit CLegacyZPivStake(const libzerocoin::CoinSpend& spend);
+    explicit CLegacyZFlsStake(const libzerocoin::CoinSpend& spend);
     bool InitFromTxIn(const CTxIn& txin) override;
-    bool IsZPIV() const override { return true; }
+    bool IsZFLS() const override { return true; }
     uint32_t GetChecksum() const { return nChecksum; }
     const CBlockIndex* GetIndexFrom() const override;
     CAmount GetValue() const override;

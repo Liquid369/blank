@@ -131,8 +131,8 @@
         </spacer>
        </item>
        <item>
-        <widget class="QWidget" name="verticalZpivOptionsWidget" native="true">
-         <layout class="QVBoxLayout" name="verticalZpivOptionsLayout">
+        <widget class="QWidget" name="verticalZflsOptionsWidget" native="true">
+         <layout class="QVBoxLayout" name="verticalZflsOptionsLayout">
           <property name="margin">
            <number>0</number>
           </property>
@@ -561,8 +561,8 @@ https://www.transifex.com/fls-project/fls-project-translations</string>
         </layout>
        </item>
        <item>
-        <widget class="QWidget" name="verticalZpivDisplayWidget" native="true">
-         <layout class="QVBoxLayout" name="verticalZpivDisplayLayout">
+        <widget class="QWidget" name="verticalZflsDisplayWidget" native="true">
+         <layout class="QVBoxLayout" name="verticalZflsDisplayLayout">
           <property name="margin">
            <number>0</number>
           </property>

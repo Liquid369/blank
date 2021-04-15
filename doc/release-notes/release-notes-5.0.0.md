@@ -591,7 +591,7 @@ Several RPC commands have had changes to their input arguments or output fields 
   The `nlastdsq` JSON return entry has been removed. This was a remnant from pre-zerocoin "CoinJoin" mixing.
 
 * `getinfo`
-  The `zerocoinbalance` JSON return entry and the `zPIVsupply` return JSON object have been removed due to zerocoin deprecation.
+  The `zerocoinbalance` JSON return entry and the `zFLSsupply` return JSON object have been removed due to zerocoin deprecation.
   The `balance` JSON return entry is now all inclusive (the sum of all transparent and shield FLS)
   The `moneysupply` JSON return entry is the total FLS supply (the sum of all transparent and shield FLS)
   A new JSON return entry (`transparentsupply`) has been added to return the sum of the value of all unspent outputs when the chainstate was last flushed to disk.
@@ -683,12 +683,12 @@ The table below details RPC commands that have now been fully removed. These com
 | `getarchivedzerocoin` | Display zerocoins that were archived because they were believed to be orphans | Zerocoin deprecation |
 | `exportzerocoins` | Export zerocoin mints that are held in the wallet DB | Zerocoin deprecation |
 | `importzerocoins` | Import zerocoin mints | Zerocoin deprecation |
-| `reconsiderzerocoins` | Check archived zPIVs to see if any mints were added to the chain | Zerocoin deprecation |
-| `setzpivseed` | Set the wallet's deterministic zFLS seed to a specific value | Zerocoin deprecation |
-| `getzpivseed` | Return the current deterministic zFLS seed | Zerocoin deprecation |
+| `reconsiderzerocoins` | Check archived zFLSs to see if any mints were added to the chain | Zerocoin deprecation |
+| `setzflsseed` | Set the wallet's deterministic zFLS seed to a specific value | Zerocoin deprecation |
+| `getzflsseed` | Return the current deterministic zFLS seed | Zerocoin deprecation |
 | `generatemintlist` | Show mints that are derived from the deterministic zFLS seed | Zerocoin deprecation |
-| `dzpivstate` | Show the current state of the mintpool of the wallet | Zerocoin deprecation |
-| `searchdzpiv` | Do a search for deterministically generated zFLS that have not yet added to the wallet | Zerocoin deprecation |
+| `dzflsstate` | Show the current state of the mintpool of the wallet | Zerocoin deprecation |
+| `searchdzfls` | Do a search for deterministically generated zFLS that have not yet added to the wallet | Zerocoin deprecation |
 | `spendrawzerocoin` | Create and broadcast a TX spending the provided zericoin | Zerocoin deprecation |
 
 

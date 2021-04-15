@@ -393,11 +393,11 @@ RES_ICONS = \
   qt/fls/res/img/ic-receive-off.svg \
   qt/fls/res/img/img-empty-staking-on.svg \
   qt/fls/res/img/ic-arrow-drop-up-white.svg \
-  qt/fls/res/img/ic-coin-zpiv.png \
+  qt/fls/res/img/ic-coin-zfls.png \
   qt/fls/res/img/ic-receive-on.svg \
   qt/fls/res/img/img-empty-transactions.svg \
   qt/fls/res/img/ic-arrow-drop-up.svg \
-  qt/fls/res/img/ic-coin-zpiv.svg \
+  qt/fls/res/img/ic-coin-zfls.svg \
   qt/fls/res/img/ic-received.svg \
   qt/fls/res/img/img-logo-fls.png \
   qt/fls/res/img/ic-arrow-drop-white-down.svg \

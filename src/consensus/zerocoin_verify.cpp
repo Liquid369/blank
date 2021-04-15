@@ -16,7 +16,7 @@
 #include "upgrades.h"            // for IsActivationHeight
 #include "utilmoneystr.h"        // for FormatMoney
 #include "../validation.h"
-#include "zpiv/zpivmodule.h"
+#include "zfls/zflsmodule.h"
 
 
 static bool CheckZerocoinSpend(const CTransactionRef _tx, CValidationState& state)
@@ -60,7 +60,7 @@ static bool CheckZerocoinSpend(const CTransactionRef _tx, CValidationState& stat
             }
             libzerocoin::ZerocoinParams* params = consensus.Zerocoin_Params(false);
             PublicCoinSpend publicSpend(params);
-            if (!ZPIVModule::parseCoinSpend(txin, tx, prevOut, publicSpend)){
+            if (!ZFLSModule::parseCoinSpend(txin, tx, prevOut, publicSpend)){
                 return state.DoS(100, error("%s: public zerocoin spend parse failed", __func__));
             }
             newSpend = publicSpend;
@@ -83,7 +83,7 @@ static bool CheckZerocoinSpend(const CTransactionRef _tx, CValidationState& stat
         if (isPublicSpend) {
             libzerocoin::ZerocoinParams* params = consensus.Zerocoin_Params(false);
             PublicCoinSpend ret(params);
-            if (!ZPIVModule::validateInput(txin, prevOut, tx, ret)){
+            if (!ZFLSModule::validateInput(txin, prevOut, tx, ret)){
                 return state.DoS(100, error("%s: public zerocoin spend did not verify", __func__));
             }
         }

@@ -740,7 +740,7 @@ QWidget#PrivacyDialog QLabel {
 border:0px solid #000;
 }
 
-QWidget#PrivacyDialog QLabel#zPIVLabel {
+QWidget#PrivacyDialog QLabel#zFLSLabel {
 font-size:14px;
 color:#ffffff;
 background-color:#5c4c7c;
@@ -1556,7 +1556,7 @@ QDialog#CoinControlDialog .CoinControlTreeWidget#treeWidget::indicator { /* Coin
 
 }
 
-QDialog#ZPivControlDialog .QTreeWidget#treeWidget { /* zFLS Control Widget Container */
+QDialog#ZFlsControlDialog .QTreeWidget#treeWidget { /* zFLS Control Widget Container */
 outline:0;
 background-color:#ffffff;
 border:1px solid #333;

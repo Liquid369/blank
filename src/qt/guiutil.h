@@ -58,8 +58,8 @@ QFont bitcoinAddressFont();
 CAmount parseValue(const QString& text, int displayUnit, bool* valid_out = 0);
 
 // Format an amount
-QString formatBalance(CAmount amount, int nDisplayUnit = 0, bool isZpiv = false);
-QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit = 0, bool isZpiv = false);
+QString formatBalance(CAmount amount, int nDisplayUnit = 0, bool isZfls = false);
+QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit = 0, bool isZfls = false);
 
 
 // Set up widgets for address and amounts
