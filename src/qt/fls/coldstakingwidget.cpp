@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -72,7 +73,7 @@ private:
     CSRow *cachedRow = nullptr;
 };
 
-ColdStakingWidget::ColdStakingWidget(flsGUI* parent) :
+ColdStakingWidget::ColdStakingWidget(FLSGUI* parent) :
     PWidget(parent),
     ui(new Ui::ColdStakingWidget),
     isLoading(false)
@@ -213,10 +214,10 @@ void ColdStakingWidget::loadWalletModel()
 
         addressTableModel = walletModel->getAddressTableModel();
         addressesFilter = new AddressFilterProxyModel(AddressTableModel::ColdStaking, this);
-        addressesFilter->sort(sortType, sortOrder);
         addressesFilter->setSourceModel(addressTableModel);
-        ui->listViewStakingAddress->setModelColumn(AddressTableModel::Address);
+        addressesFilter->sort(sortType, sortOrder);
         ui->listViewStakingAddress->setModel(addressesFilter);
+        ui->listViewStakingAddress->setModelColumn(AddressTableModel::Address);
 
         connect(txModel, &TransactionTableModel::txArrived, this, &ColdStakingWidget::onTxArrived);
 

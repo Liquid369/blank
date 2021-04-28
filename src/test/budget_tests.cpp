@@ -1,4 +1,6 @@
-// Copyright (c) 2018-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,7 +24,7 @@ public:
         mapFeeTxToBudget.emplace(finalizedBudget.GetFeeTXHash(), nHash);
     }
 
-    bool IsBlockValueValid(int nHeight, CAmount nExpectedValue, CAmount nMinted, bool fSporkActive = true)
+    bool IsBlockValueValid(int nHeight, CAmount& nExpectedValue, CAmount nMinted, bool fSporkActive = true)
     {
         // suppose masternodeSync is complete
         if (fSporkActive) {
@@ -66,7 +68,7 @@ BOOST_AUTO_TEST_CASE(block_value)
 
     // regular block
     int nHeight = 100;
-    volatile CAmount nExpected = GetBlockValue(nHeight);
+    CAmount nExpected = GetBlockValue(nHeight);
     BOOST_CHECK(t_budgetman.IsBlockValueValid(nHeight, nExpected, nExpected-1));
     BOOST_CHECK(t_budgetman.IsBlockValueValid(nHeight, nExpected, nExpected));
     BOOST_CHECK(!t_budgetman.IsBlockValueValid(nHeight, nExpected, nExpected+1));

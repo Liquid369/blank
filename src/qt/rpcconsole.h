@@ -1,5 +1,6 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
-// Copyright (c) 2017-2019 The fls developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2020 The Flits Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -37,6 +38,14 @@ public:
     ~RPCConsole();
 
     void setClientModel(ClientModel* model);
+
+    enum MessageClass {
+        MC_ERROR,
+        MC_DEBUG,
+        CMD_REQUEST,
+        CMD_REPLY,
+        CMD_ERROR
+    };
 
 protected:
     virtual bool eventFilter(QObject* obj, QEvent* event);

@@ -746,7 +746,7 @@ color:#ffffff;
 background-color:#5c4c7c;
 }
 
-QWidget#PrivacyDialog QLabel#oPIVLabel {
+QWidget#PrivacyDialog QLabel#oFLSLabel {
 font-size:14px;
 color:#ffffff;
 background-color:#5c4c7c;
@@ -881,12 +881,12 @@ QDialog#HelpMessageDialog QScrollBar:vertical, QDialog#HelpMessageDialog QScroll
 border:0;
 }
 
-/* About fls Dialog */
-QDialog#AboutDialog QLabel#label, QDialog#AboutDialog QLabel#copyrightLabel, QDialog#AboutDialog QLabel#label_2 { /* About fls Contents */
+/* About Fls Dialog */
+QDialog#AboutDialog QLabel#label, QDialog#AboutDialog QLabel#copyrightLabel, QDialog#AboutDialog QLabel#label_2 { /* About Fls Contents */
 margin-left:10px;
 }
 
-QDialog#AboutDialog QLabel#label_2 { /* Margin for About fls text */
+QDialog#AboutDialog QLabel#label_2 { /* Margin for About Fls text */
 margin-right:10px;
 }
 
@@ -917,7 +917,7 @@ background-image: url(':/images/fls_logo_horizontal');
 background-repeat: no-repeat;
 }
 
-QWidget .QFrame#frame_Header { /* Header with Page-Title and fls-image */
+QWidget .QFrame#frame_Header { /* Header with Page-Title and FLS-image */
 min-width:400px;
 background-color:#ffffff;
 }

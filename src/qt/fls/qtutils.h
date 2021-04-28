@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -34,11 +35,11 @@ const QString RESYNC("-resync");
 extern Qt::Modifier SHORT_KEY;
 
 bool openDialog(QDialog* widget, QWidget* gui);
-void closeDialog(QDialog* widget, flsGUI* gui);
+void closeDialog(QDialog* widget, FLSGUI* gui);
 void openDialogFullScreen(QWidget* parent, QWidget* dialog);
-bool openDialogWithOpaqueBackgroundY(QDialog* widget, flsGUI* gui, double posX = 3, int posY = 5);
-bool openDialogWithOpaqueBackground(QDialog* widget, flsGUI* gui, double posX = 3);
-bool openDialogWithOpaqueBackgroundFullScreen(QDialog* widget, flsGUI* gui);
+bool openDialogWithOpaqueBackgroundY(QDialog* widget, FLSGUI* gui, double posX = 3, int posY = 5);
+bool openDialogWithOpaqueBackground(QDialog* widget, FLSGUI* gui, double posX = 3);
+bool openDialogWithOpaqueBackgroundFullScreen(QDialog* widget, FLSGUI* gui);
 
 //
 QPixmap encodeToQr(QString str, QString& errorStr, QColor qrColor = Qt::black);

@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -16,7 +17,7 @@
 
 class AddressViewDelegate;
 class TooltipMenu;
-class flsGUI;
+class FLSGUI;
 class WalletModel;
 
 namespace Ui {
@@ -32,7 +33,7 @@ class AddressesWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit AddressesWidget(flsGUI* parent);
+    explicit AddressesWidget(FLSGUI* parent);
     ~AddressesWidget();
 
     void loadWalletModel() override;

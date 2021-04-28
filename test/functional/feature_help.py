@@ -5,10 +5,10 @@
 """Verify that starting fls with -h works as expected."""
 import subprocess
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import assert_equal
 
-class HelpTest(flsTestFramework):
+class HelpTest(FlsTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

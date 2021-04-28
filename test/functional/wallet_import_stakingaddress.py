@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # Copyright (c) 2020 The PIVX Developers
+# Copyright (c) 2020 The PIVX developers
 # Copyright (c) 2020 The Flits Developers
+
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,13 +14,13 @@ Node1 imports and rescans. The test checks that cold utxos and staking balance i
 
 from time import sleep
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import (
     assert_equal,
     DecimalAmt,
 )
 
-class ImportStakingTest(flsTestFramework):
+class ImportStakingTest(FlsTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 2

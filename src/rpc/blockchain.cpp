@@ -1,7 +1,9 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
@@ -704,16 +706,16 @@ static void ApplyStats(CCoinsStats &stats, CHashWriter& ss, const uint256& hash,
     assert(!outputs.empty());
     ss << hash;
     const Coin& coin = outputs.begin()->second;
-    ss << VARINT(coin.nHeight * 4 + (coin.fCoinBase ? 2u : 0u) + (coin.fCoinStake ? 1u : 0u));
+    ss << VARINT(coin.nHeight * 4 + (coin.fCoinBase ? 2 : 0) + (coin.fCoinStake ? 1 : 0));
     stats.nTransactions++;
     for (const auto& output : outputs) {
         ss << VARINT(output.first + 1);
         ss << output.second.out.scriptPubKey;
-        ss << VARINT(output.second.out.nValue, VarIntMode::NONNEGATIVE_SIGNED);
+        ss << VARINT(output.second.out.nValue);
         stats.nTransactionOutputs++;
         stats.nTotalAmount += output.second.out.nValue;
     }
-    ss << VARINT(0u);
+    ss << VARINT(0);
 }
 
 //! Calculate statistics about the unspent transaction output set
@@ -929,7 +931,7 @@ static UniValue SoftForkMajorityDesc(int version, const CBlockIndex* pindex, con
         rv.pushKV("status", false);
         return rv;
     }
-    rv.pushKV("status", pindex && consensusParams.NetworkUpgradeActive(pindex->nHeight, idx));
+    rv.pushKV("status", consensusParams.NetworkUpgradeActive(pindex->nHeight, idx));
     return rv;
 }
 

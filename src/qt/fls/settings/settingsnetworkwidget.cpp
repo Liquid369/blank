@@ -1,5 +1,8 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,7 +11,7 @@
 #include "optionsmodel.h"
 #include "qt/fls/qtutils.h"
 
-SettingsNetworkWidget::SettingsNetworkWidget(flsGUI* _window, QWidget *parent) :
+SettingsNetworkWidget::SettingsNetworkWidget(FLSGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsNetworkWidget)
 {

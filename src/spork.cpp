@@ -1,5 +1,7 @@
 // Copyright (c) 2014-2016 The Dash developers
-// Copyright (c) 2016-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -27,7 +29,6 @@ std::vector<CSporkDef> sporkDefs = {
     MAKE_SPORK_DEF(SPORK_18_ZEROCOIN_PUBLICSPEND_V4,        4070908800ULL), // OFF
     MAKE_SPORK_DEF(SPORK_19_COLDSTAKING_MAINTENANCE,        4070908800ULL), // OFF
     MAKE_SPORK_DEF(SPORK_20_SAPLING_MAINTENANCE,            4070908800ULL), // OFF
-    MAKE_SPORK_DEF(SPORK_21_LEGACY_MNS_MAX_HEIGHT,          4070908800ULL), // OFF
 };
 
 CSporkManager sporkManager;
@@ -47,7 +48,7 @@ void CSporkManager::Clear()
     mapSporksActive.clear();
 }
 
-// fls: on startup load spork values from previous session if they exist in the sporkDB
+// FLS: on startup load spork values from previous session if they exist in the sporkDB
 void CSporkManager::LoadSporksFromDB()
 {
     for (const auto& sporkDef : sporkDefs) {
@@ -180,7 +181,7 @@ int CSporkManager::ProcessSporkMsg(CSporkMessage& spork)
     }
     spork.Relay();
 
-    // fls: add to spork database.
+    // FLS: add to spork database.
     pSporkDB->WriteSpork(spork.nSporkID, spork);
     // All good.
     return 0;

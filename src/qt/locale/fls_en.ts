@@ -152,12 +152,12 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>These are your fls addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your FLITS addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <source>These are your fls addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <source>These are your FLITS addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -448,7 +448,7 @@ for staking</source>
     </message>
     <message>
         <location line="+161"/>
-        <source>fls will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your PIVs from being stolen by malware infecting your computer.</source>
+        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -926,18 +926,18 @@ for staking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/coldstakingwidget.cpp" line="+797"/>
+        <location filename="../fls/coldstakingwidget.cpp" line="+801"/>
         <source>Total Staking: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-507"/>
+        <location line="-508"/>
         <source>Error loading delegations: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../fls/forms/coldstakingwidget.ui" line="-603"/>
-        <source>You can delegate your PIVs, letting a hot node (24/7 online node)
+        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -977,7 +977,7 @@ stake on your behalf, while you keep the keys securely offline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-290"/>
+        <location line="-293"/>
         <source>Coin Control</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1008,7 +1008,7 @@ and stake them on their owner&apos;s behalf.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+254"/>
+        <location line="+257"/>
         <source>Invalid entry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1054,7 +1054,7 @@ Do you wish to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+27"/>
         <source>You don&apos;t have any %1 to select.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1243,23 +1243,23 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location filename="../fls/dashboardwidget.cpp" line="+36"/>
-        <location line="+278"/>
+        <location line="+274"/>
         <source>You have no staking rewards</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-276"/>
+        <location line="-272"/>
         <source>No charts library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+276"/>
+        <location line="+272"/>
         <source>Loading chart..</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+123"/>
-        <location line="+220"/>
+        <location line="+127"/>
+        <location line="+222"/>
         <location line="+88"/>
         <source>Error loading chart, invalid show option</source>
         <translation type="unfinished"></translation>
@@ -1270,7 +1270,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+133"/>
+        <location line="+150"/>
         <source>Error loading chart: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1342,7 +1342,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+67"/>
-        <source>The entered address &quot;%1&quot; is not a valid fls address.</source>
+        <source>The entered address &quot;%1&quot; is not a valid FLITS address.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1406,7 +1406,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+0"/>
-        <source>fls Core</source>
+        <source>FLITS Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1417,7 +1417,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+6"/>
-        <source>About fls Core</source>
+        <source>About FLITS Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1485,17 +1485,17 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+90"/>
-        <source>Welcome to fls Core.</source>
+        <source>Welcome to FLITS Core.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+35"/>
-        <source>As this is the first time the program is launched, you can choose where fls Core will store its data.</source>
+        <source>As this is the first time the program is launched, you can choose where FLITS Core will store its data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
-        <source>fls Core will download and store a copy of the fls block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <source>FLITS Core will download and store a copy of the FLITS block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1520,7 +1520,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location filename="../intro.cpp" line="+100"/>
-        <source>fls Core</source>
+        <source>FLITS Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1652,7 +1652,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+23"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a fls Masternode you must dedicate 10,000 FLS (the unit of fls) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2198,7 +2198,7 @@ STAKING</source>
     </message>
     <message>
         <location line="+33"/>
-        <source>Automatically open the fls client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <source>Automatically open the FLITS client port on the router. This only works when your router supports UPnP and it is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2223,12 +2223,12 @@ STAKING</source>
     </message>
     <message>
         <location line="-236"/>
-        <source>Automatically start fls after logging in to the system.</source>
+        <source>Automatically start FLITS after logging in to the system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>&amp;Start fls on system login</source>
+        <source>&amp;Start FLITS on system login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2263,13 +2263,13 @@ STAKING</source>
     </message>
     <message>
         <location line="+192"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting fls.</source>
+        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/fls-project/fls-project-translations</source>
+https://www.transifex.com/flitsnode/flits-core-project-translations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2325,7 +2325,7 @@ https://www.transifex.com/fls-project/fls-project-translations</source>
     </message>
     <message>
         <location line="+98"/>
-        <source>Connect to the fls network through a SOCKS5 proxy.</source>
+        <source>Connect to the FLITS network through a SOCKS5 proxy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2508,12 +2508,12 @@ https://www.transifex.com/fls-project/fls-project-translations</source>
     </message>
 </context>
 <context>
-    <name>flsGUI</name>
+    <name>FLSGUI</name>
     <message>
         <location filename="../fls/flsgui.cpp" line="+69"/>
         <location line="+301"/>
         <location line="+69"/>
-        <source>fls Core</source>
+        <source>FLITS Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2548,7 +2548,7 @@ https://www.transifex.com/fls-project/fls-project-translations</source>
     </message>
     <message>
         <location line="+39"/>
-        <source>fls Core client</source>
+        <source>FLITS Core client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2646,7 +2646,7 @@ Address: %4
     </message>
     <message>
         <location line="+107"/>
-        <source>URI cannot be parsed! This can be caused by an invalid fls address or malformed URI parameters.</source>
+        <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2759,7 +2759,7 @@ Address: %4
     </message>
     <message>
         <location filename="../guiutil.cpp" line="+141"/>
-        <source>Enter fls address (e.g. %1)</source>
+        <source>Enter FLITS address (e.g. %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2814,16 +2814,16 @@ Address: %4
         <translation>%1 ms</translation>
     </message>
     <message>
-        <location filename="../fls.cpp" line="+530"/>
-        <source>A fatal error occurred. fls can no longer continue safely and will quit.</source>
+        <location filename="../fls.cpp" line="+535"/>
+        <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+73"/>
+        <location line="+75"/>
         <location line="+7"/>
         <location line="+15"/>
         <location line="+19"/>
-        <source>fls Core</source>
+        <source>FLITS Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3022,7 +3022,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/dashboardwidget.cpp" line="-507"/>
+        <location filename="../fls/dashboardwidget.cpp" line="-530"/>
         <source>Jan</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3082,7 +3082,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/coldstakingwidget.cpp" line="-707"/>
+        <location filename="../fls/coldstakingwidget.cpp" line="-711"/>
         <source>Address with no label</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3208,7 +3208,7 @@ Address: %4
     </message>
     <message>
         <location line="+93"/>
-        <source>Open the fls debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <source>Open the FLITS debug log file from the current data directory. This can take a few seconds for large log files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3490,7 +3490,7 @@ Address: %4
     </message>
     <message>
         <location line="-39"/>
-        <source>Welcome to the fls RPC console.</source>
+        <source>Welcome to the FLITS RPC console.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3851,7 +3851,7 @@ try unlocking the wallet</source>
     </message>
     <message>
         <location line="-117"/>
-        <source>Instead of sharing only a fls address, you can create a payment request, bundling up more information</source>
+        <source>Instead of sharing only a FLITS address, you can create a payment request, bundling up more information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3965,7 +3965,7 @@ try unlocking the wallet</source>
     </message>
     <message>
         <location line="+72"/>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the &quot;change&quot; fls address</source>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the &quot;change&quot; FLITS address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4052,12 +4052,12 @@ try unlocking the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/sendcustomfeedialog.cpp" line="+89"/>
+        <location filename="../fls/sendcustomfeedialog.cpp" line="+90"/>
         <source>Fee too high. Must be below: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+10"/>
         <source>Fee too low. Must be at least: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4140,13 +4140,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SendWidget</name>
     <message>
-        <location filename="../fls/send.cpp" line="+157"/>
+        <location filename="../fls/send.cpp" line="+159"/>
         <source>Total remaining from the selected UTXO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+219"/>
-        <location line="+227"/>
+        <location line="+228"/>
+        <location line="+239"/>
         <source>Warning!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4158,12 +4158,12 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+368"/>
+        <location line="+370"/>
         <source>Customize Fee</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-688"/>
+        <location line="-696"/>
         <source>Maximum amount of outputs reached</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4173,7 +4173,7 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+36"/>
         <source>Possibly spend coins delegated for cold-staking (currently available: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4193,19 +4193,19 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+86"/>
         <source>WARNING:
 Transaction spends a cold-stake delegation, voiding it.
 These coins will no longer be cold-staked.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+20"/>
         <source>Transaction sent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+50"/>
+        <location line="+63"/>
         <source>Address label update failed for address: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4220,7 +4220,7 @@ These coins will no longer be cold-staked.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+290"/>
+        <location line="+292"/>
         <source>Memo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4230,7 +4230,7 @@ These coins will no longer be cold-staked.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-905"/>
+        <location line="-929"/>
         <source>Coin Control</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4261,22 +4261,22 @@ These coins will no longer be cold-staked.</source>
     </message>
     <message>
         <location line="+3"/>
-        <location line="+637"/>
+        <location line="+661"/>
         <source>Shield Coins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-636"/>
+        <location line="-660"/>
         <source>Convert all transparent coins into shielded coins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+92"/>
         <source>Unlocked remaining</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+215"/>
+        <location line="+216"/>
         <source>Cannot send memo to address
 %1
 
@@ -4288,13 +4288,13 @@ Do you wish to proceed without memo?
     </message>
     <message>
         <location line="+31"/>
-        <location line="+273"/>
+        <location line="+287"/>
         <location line="+92"/>
         <source>Cannot perform shielded operations, v5 upgrade isn&apos;t being enforced yet!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-360"/>
+        <location line="-374"/>
         <source>Sapling Protocol temporarily in maintenance. Shielded transactions disabled (SPORK 20)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4309,7 +4309,12 @@ Do you wish to proceed without memo?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="+135"/>
+        <source>Processing full, refreshing amounts later</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+115"/>
         <source>You don&apos;t have any %1 to select.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4328,12 +4333,12 @@ Do you want to continue?
     </message>
     <message>
         <location line="+14"/>
-        <source>Error generating address to shield PIVs</source>
+        <source>Error generating address to shield FLSs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>You don&apos;t have any transparent PIVs to shield.</source>
+        <source>You don&apos;t have any transparent FLSs to shield.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4473,7 +4478,7 @@ Remember to write it down and store it safely, otherwise you might lose access t
     </message>
     <message>
         <location line="+7"/>
-        <source>Encrypt your fls addresses (key pair actually) using BIP38 encryption.
+        <source>Encrypt your FLITS addresses (key pair actually) using BIP38 encryption.
 Using this mechanism you can share your keys without middle-man risk, only need to store your passphrase safely</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4520,7 +4525,7 @@ Using this mechanism you can share your keys without middle-man risk, only need 
     </message>
     <message>
         <location line="+77"/>
-        <source>fls address</source>
+        <source>FLITS address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4687,7 +4692,7 @@ Verify that you have installed a predetermined text editor.</source>
     </message>
     <message>
         <location line="+151"/>
-        <source>Welcome to the fls RPC console.</source>
+        <source>Welcome to the FLITS RPC console.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4827,12 +4832,12 @@ Verify that you have installed a predetermined text editor.</source>
     </message>
     <message>
         <location line="+1"/>
-        <source>fls_tx_csv_export(*.csv)</source>
+        <source>FLS_tx_csv_export(*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>fls_addresses_csv_export(*.csv)</source>
+        <source>FLS_addresses_csv_export(*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4915,7 +4920,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+152"/>
-        <source>1) What is fls?</source>
+        <source>1) What is FLS?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4925,7 +4930,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+148"/>
-        <source>https://fls.org/</source>
+        <source>https://flitswallet.app/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4935,7 +4940,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+18"/>
-        <source>What is fls?</source>
+        <source>What is FLS?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4952,10 +4957,10 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <location line="+26"/>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
-                           Newly received fls requires 6 confirmations on the network
+                           Newly received FLITS requires 6 confirmations on the network
                            to become eligible for spending which can take ~6 minutes.
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
-                           Your fls wallet also needs to be completely synchronized
+                           Your FLITS wallet also needs to be completely synchronized
                            to see and spend balances on the network.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
@@ -4973,7 +4978,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+26"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You must have a balance of fls with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (fls-cli); the command &lt;span style=&quot; font-style:italic;&quot;&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You must have a balance of FLITS with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (fls-cli); the command &lt;span style=&quot; font-style:italic;&quot;&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4986,7 +4991,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
                            We have support channels in most of our official chat groups, for example
-                           &lt;a style=&apos;color: #b088ff&apos; href=&apos;https://discord.fls.org&apos;&gt;
+                           &lt;a style=&apos;color: #b088ff&apos; href=&apos;https://discord.flitswallet.app&apos;&gt;
                            #support in our Discord&lt;/a&gt;.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
@@ -5001,7 +5006,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <location line="+44"/>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
-                           A masternode is a computer running a full node fls core wallet with a
+                           A masternode is a computer running a full node FLITS core wallet with a
                            requirement of 10,000 FLS secured collateral to provide extra services
                            to the network and in return, receive a portion of the block reward
                            regularly.  These services include:
@@ -5023,10 +5028,10 @@ There was an error trying to save the address list to %1. Please try again.</sou
                            Masternode Perks:
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
                            &lt;ul&gt;
-                           &lt;li&gt;Participate in fls Governance&lt;/li&gt;
+                           &lt;li&gt;Participate in FLITS Governance&lt;/li&gt;
                            &lt;li&gt;Earn Masternode Rewards&lt;/li&gt;
                            &lt;li&gt;Commodity option for future sale&lt;/li&gt;
-                           &lt;li&gt;Help secure the fls network&lt;/li&gt;
+                           &lt;li&gt;Help secure the FLITS network&lt;/li&gt;
                            &lt;/ul&gt;
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
 
@@ -5056,14 +5061,14 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <location line="-268"/>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
-                           fls is a form of digital online money using blockchain technology
+                           FLITS is a form of digital online money using blockchain technology
                            that can be easily transferred globally, instantly, and with near
-                           zero fees.  fls incorporates market leading security &amp;
+                           zero fees.  FLITS incorporates market leading security &amp;
                            privacy and is also the first PoS (Proof of Stake) Cryptocurrency
                            to implement Sapling(SHIELD), a zk-SNARKs based privacy protocol.
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
-                           fls utilizes a Proof of Stake (PoS) consensus system algorithm,
-                           allowing all owners of fls to participate in earning block rewards
+                           FLITS utilizes a Proof of Stake (PoS) consensus system algorithm,
+                           allowing all owners of FLITS to participate in earning block rewards
                            while securing the network with full node wallets, as well as to
                            run Masternodes to create and vote on proposals.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
@@ -5259,7 +5264,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation type="unfinished">Out:</translation>
     </message>
     <message>
-        <location line="+56"/>
+        <location line="+59"/>
         <source>No available data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5318,7 +5323,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location filename="../fls/settings/settingsmainoptionswidget.cpp" line="+54"/>
-        <source>Start fls on system login</source>
+        <source>Start FLITS on system login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5426,7 +5431,7 @@ Are you sure?
     </message>
     <message>
         <location filename="../fls/settings/settingsmultisendwidget.cpp" line="+164"/>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other fls addresses after it matures.</source>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5581,7 +5586,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
     </message>
     <message>
         <location line="-62"/>
-        <source>fls address or contact label</source>
+        <source>FLITS address or contact label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5991,7 +5996,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
     </message>
     <message>
         <location line="+31"/>
-        <source>About fls</source>
+        <source>About FLS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6073,7 +6078,7 @@ Are you sure?
     <name>ShutdownWindow</name>
     <message>
         <location filename="../utilitydialog.cpp" line="+71"/>
-        <source>fls Core is shutting down...</source>
+        <source>FLITS Core is shutting down...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6109,7 +6114,7 @@ Are you sure?
     </message>
     <message>
         <location filename="../fls/splash.cpp" line="+31"/>
-        <source>fls Core</source>
+        <source>FLITS Core</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6168,7 +6173,7 @@ Are you sure?
     </message>
     <message>
         <location line="+213"/>
-        <location filename="../fls/topbar.cpp" line="+689"/>
+        <location filename="../fls/topbar.cpp" line="+668"/>
         <source>Available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6183,13 +6188,13 @@ Are you sure?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/topbar.cpp" line="-388"/>
-        <location line="+360"/>
+        <location filename="../fls/topbar.cpp" line="-369"/>
+        <location line="+341"/>
         <source>Wallet Unlocked for staking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-330"/>
+        <location line="-311"/>
         <source>Error generating address</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6217,7 +6222,7 @@ Are you sure?
         </translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+15"/>
         <source>Synchronized - Block: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6291,13 +6296,13 @@ backup will be created.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-527"/>
-        <location line="+532"/>
+        <location line="-508"/>
+        <location line="+513"/>
         <source>Tor Disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-542"/>
+        <location line="-523"/>
         <source>FAQ</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6345,13 +6350,13 @@ backup will be created.
     </message>
     <message>
         <location line="+119"/>
-        <location line="+395"/>
+        <location line="+376"/>
         <source>Wallet Locked</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-379"/>
-        <location line="+387"/>
+        <location line="-360"/>
+        <location line="+368"/>
         <source>Wallet Unlocked</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6450,7 +6455,7 @@ backup will be created.
 <context>
     <name>TransactionTableModel</name>
     <message>
-        <location filename="../transactiontablemodel.cpp" line="+335"/>
+        <location filename="../transactiontablemodel.cpp" line="+330"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
@@ -6619,7 +6624,7 @@ backup will be created.
     </message>
     <message>
         <location line="+2"/>
-        <source>Burned PIVs</source>
+        <source>Burned FLSs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6850,7 +6855,7 @@ backup will be created.
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+456"/>
+        <location filename="../walletmodel.cpp" line="+500"/>
         <source>Send Coins</source>
         <translation>Send Coins</translation>
     </message>
@@ -6917,27 +6922,27 @@ Select fewer inputs with coin control.</source>
     <message>
         <location line="+89"/>
         <source>Welcome to
-fls Core Wallet</source>
+FLITS Core Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
-        <source>fls is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <source>FLITS is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+93"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - fls believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - FLITS believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+83"/>
-        <source>The masternode network is fls&apos;s second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <source>The masternode network is FLS&apos;s second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-103"/>
-        <source>How fls respects your privacy?</source>
+        <source>How FLITS respects your privacy?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6952,7 +6957,7 @@ fls Core Wallet</source>
     </message>
 </context>
 <context>
-    <name>flits-core</name>
+    <name>fls-core</name>
     <message>
         <location filename="../flsstrings.cpp" line="+18"/>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
@@ -7039,7 +7044,7 @@ fls Core Wallet</source>
         <translation type="unfinished">Execute command when the best block changes (%s in cmd is replaced by block hash)</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+9"/>
         <source>Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</source>
         <translation type="unfinished">Flush database activity from memory pool to disk log every &lt;n&gt; megabytes (default: %u)</translation>
     </message>
@@ -7145,7 +7150,7 @@ fls Core Wallet</source>
     </message>
     <message>
         <location line="+3"/>
-        <source>Unable to bind to %s on this computer. fls Core is probably already running.</source>
+        <source>Unable to bind to %s on this computer. FLITS Core is probably already running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7165,7 +7170,7 @@ fls Core Wallet</source>
     </message>
     <message>
         <location line="+3"/>
-        <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong fls Core will not work properly.</source>
+        <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7255,7 +7260,7 @@ fls Core Wallet</source>
     </message>
     <message>
         <location line="+1"/>
-        <source>Copyright (C) 2015-%i The fls Core Developers</source>
+        <source>Copyright (C) 2015-%i The FLITS Core Developers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7434,17 +7439,12 @@ fls Core Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-100"/>
+        <location line="-97"/>
         <source>Error: Unsupported argument -checklevel found. Checklevel must be level 4.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
-        <source>Execute command when the best block changes and its size is over (%s in cmd is replaced by block hash, %d with the block size)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+62"/>
+        <location line="+77"/>
         <source>Specify custom backup path to add a copy of any wallet backup. If set as dir, every backup generates a timestamped file. If set as file, will rewrite to that file every backup.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7499,7 +7499,7 @@ fls Core Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-275"/>
+        <location line="-272"/>
         <source>(1 = keep tx meta data e.g. payment request information, 2 = drop tx meta data)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7522,11 +7522,11 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+18"/>
-        <source>Disable all fls specific functionality (Masternodes, Budgeting) (0-1, default: %u)</source>
+        <source>Disable all FLITS specific functionality (Masternodes, Budgeting) (0-1, default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+120"/>
         <source>This file contains all of your private keys in plain text. DO NOT send this file to anyone!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7567,7 +7567,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+1"/>
-        <source>Error loading %s: Wallet requires newer version of fls Core</source>
+        <source>Error loading %s: Wallet requires newer version of FLITS Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7652,7 +7652,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
         <translation type="unfinished">Loading wallet...</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+2"/>
         <source>Location of the auth cookie (default: data dir)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7697,12 +7697,12 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+48"/>
         <source>Specify zk params directory (default: %s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-46"/>
+        <location line="-47"/>
         <source>Need to specify a port with -whitebind: &apos;%s&apos;</source>
         <translation type="unfinished">Need to specify a port with -whitebind: &apos;%s&apos;</translation>
     </message>
@@ -7752,7 +7752,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+65"/>
         <source>Upgrading coins database if needed...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7777,12 +7777,12 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-82"/>
+        <location line="-83"/>
         <source>Preparing for resync...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-314"/>
+        <location line="-312"/>
         <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7817,7 +7817,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+26"/>
         <source>Fees (in %s/Kb) smaller than this are considered zero fee for relaying, mining and transaction creation (default: %s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7833,7 +7833,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+7"/>
-        <source>Please check that your computer&apos;s date and time are correct! If your clock is wrong fls Core will not work properly.</source>
+        <source>Please check that your computer&apos;s date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7963,7 +7963,12 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+12"/>
+        <source>Loading/Pruning invalid outputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>No error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7996,6 +8001,11 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
         <location line="+1"/>
         <source>Randomly fuzz 1 of every &lt;n&gt; network messages</source>
         <translation type="unfinished">Randomly fuzz 1 of every &lt;n&gt; network messages</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Reaccepting wallet transactions...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
@@ -8304,7 +8314,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+2"/>
-        <source>Wallet needed to be rewritten: restart fls Core to complete</source>
+        <source>Wallet needed to be rewritten: restart FLITS Core to complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8393,7 +8403,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+53"/>
-        <source>fls address or contact label</source>
+        <source>FLITS address or contact label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

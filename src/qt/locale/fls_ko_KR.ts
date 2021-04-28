@@ -122,12 +122,12 @@
         <translation>받을 주소</translation>
     </message>
     <message>
-        <source>These are your fls addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>이 주소들은 송금할 fls 주소입니다. 송금하기 전 항상 금액과 주소를 확인해주세요.</translation>
+        <source>These are your FLITS addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>이 주소들은 송금할 FLITS 주소입니다. 송금하기 전 항상 금액과 주소를 확인해주세요.</translation>
     </message>
     <message>
-        <source>These are your fls addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>이 주소들은 입금 받을 fls 주소입니다. 매 거래마다 새로운 입금 주소를 사용하는 것이 좋습니다.</translation>
+        <source>These are your FLITS addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>이 주소들은 입금 받을 FLITS 주소입니다. 매 거래마다 새로운 입금 주소를 사용하는 것이 좋습니다.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -361,8 +361,8 @@ for staking</source>
         <translation>취소</translation>
     </message>
     <message>
-        <source>fls will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your PIVs from being stolen by malware infecting your computer.</source>
-        <translation>fls는 이제 암호화 프로세스를 마치기 위해 닫힐것입니다. 지갑을 암호화하더라도 맬웨어로 인한 PIVs 의 도난당하는 것을 완벽하게 보호 할 수는 없습니다.</translation>
+        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
+        <translation>FLS는 이제 암호화 프로세스를 마치기 위해 닫힐것입니다. 지갑을 암호화하더라도 맬웨어로 인한 FLSs 의 도난당하는 것을 완벽하게 보호 할 수는 없습니다.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -739,7 +739,7 @@ for staking</source>
         <translation>위임 데이터 로딩 에러: %1</translation>
     </message>
     <message>
-        <source>You can delegate your PIVs, letting a hot node (24/7 online node)
+        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation>안전히 개인 프라이빗 키를 오프라인으로 보관한 상태로, 가지고 계신 FLS 를 매일 24시간 온라인으로 돌아가는 핫 노드로 위임하여, 대신 스테이킹을 하게 할수 있습니다. </translation>
     </message>
@@ -954,7 +954,7 @@ address</source>
     </message>
     <message>
         <source>How to get FLS</source>
-        <translation>PIV를 얻을 수 있는 방법</translation>
+        <translation>FLS를 얻을 수 있는 방법</translation>
     </message>
     <message>
         <source>Sort by</source>
@@ -975,10 +975,6 @@ address</source>
     <message>
         <source>Filter by</source>
         <translation>Filter by</translation>
-    </message>
-    <message>
-        <source>Amount of FLS and zFLS staked.</source>
-        <translation>스테이킹 된 PIV와 zFLS 양</translation>
     </message>
     <message>
         <source>Please wait until the wallet is fully synced to see your correct balance</source>
@@ -1072,8 +1068,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>보내는 주소 수정</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid fls address.</source>
-        <translation>입력된 주소 "%1"는 올바른 fls 주소가 아닙니다.</translation>
+        <source>The entered address "%1" is not a valid FLITS address.</source>
+        <translation>입력된 주소 "%1"는 올바른 FLITS 주소가 아닙니다.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1125,16 +1121,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>버전</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-bit)</translation>
     </message>
     <message>
-        <source>About fls Core</source>
-        <translation>fls Core 정보</translation>
+        <source>About FLITS Core</source>
+        <translation>FLITS Core 정보</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1188,16 +1184,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>환영합니다</translation>
     </message>
     <message>
-        <source>Welcome to fls Core.</source>
-        <translation>fls Core에 오신 것을 환영합니다.</translation>
+        <source>Welcome to FLITS Core.</source>
+        <translation>FLITS Core에 오신 것을 환영합니다.</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where fls Core will store its data.</source>
-        <translation>이 프로그램이 처음 실행되었으므로 fls Core가 데이터를 저장할 위치를 선택할 수 있습니다.</translation>
+        <source>As this is the first time the program is launched, you can choose where FLITS Core will store its data.</source>
+        <translation>이 프로그램이 처음 실행되었으므로 FLITS Core가 데이터를 저장할 위치를 선택할 수 있습니다.</translation>
     </message>
     <message>
-        <source>fls Core will download and store a copy of the fls block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>fls Core는 fls 블록체인을 다운로드하여 저장합니다. 최소 %1GB의 데이터가 디렉토리에 저장되며 시간이 지날수록 증가합니다. 또한 지갑도 해당 디렉토리에 저장됩니다.</translation>
+        <source>FLITS Core will download and store a copy of the FLITS block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>FLITS Core는 FLITS 블록체인을 다운로드하여 저장합니다. 최소 %1GB의 데이터가 디렉토리에 저장되며 시간이 지날수록 증가합니다. 또한 지갑도 해당 디렉토리에 저장됩니다.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1216,8 +1212,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>선택</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1324,8 +1320,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>새로운 마스터노드 컨트롤러 만들기</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a fls Masternode you must dedicate 10,000 FLS (the unit of fls) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;fls 마스터노드를 생성하기 위해서는 10,000 FLS (fls 단위)를 네트워크에 예치해야 합니다. (예치한 코인은 계속 본인의 소유입니다.) &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;언제든지 노드를 비활성화 시키고 코인을 잠금해제할 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FLITS 마스터노드를 생성하기 위해서는 10,000 FLS (FLITS 단위)를 네트워크에 예치해야 합니다. (예치한 코인은 계속 본인의 소유입니다.) &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;언제든지 노드를 비활성화 시키고 코인을 잠금해제할 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1345,7 +1341,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 FLS will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10,000 PIV의 트랜잭션은&lt;/p&gt;&lt;p&gt;지갑의 새로운 빈 주소로 만들어질 것입니다.&lt;/p&gt;&lt;p&gt;그 주소는 마스터노드 이름에 따라 레이블링됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10,000 FLS의 트랜잭션은&lt;/p&gt;&lt;p&gt;지갑의 새로운 빈 주소로 만들어질 것입니다.&lt;/p&gt;&lt;p&gt;그 주소는 마스터노드 이름에 따라 레이블링됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1531,7 +1527,7 @@ Please wait few more minutes (masternode collaterals require %1 confirmations).<
     </message>
     <message>
         <source>What is a Masternode?</source>
-        <translation>마스터로드란?</translation>
+        <translation>마스터노드란 무엇인가요?</translation>
     </message>
     <message>
         <source>FAQ explaining what Masternodes are</source>
@@ -1793,8 +1789,8 @@ STAKING</source>
         <translation>확인되지 않은 잔엑을 사용하지 않도록 설정하면 해당 트랜잭션에 하나 이상의 컨펌이 진행되야&lt;br/&gt;트랜잭션의 잔액을 전송할 수 있습니다.&lt;br/&gt;또한 이것은 잔액 계산 방식에도 영향을 줍니다.</translation>
     </message>
     <message>
-        <source>Automatically open the fls client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>라우터에서 fls 클라이언트 포트를 자동으로 엽니다. 이 기능은 라우터가 UPnP를 지원하고 활성화 된 경우에만 사용할 수 있습니다.</translation>
+        <source>Automatically open the FLITS client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>라우터에서 FLITS 클라이언트 포트를 자동으로 엽니다. 이 기능은 라우터가 UPnP를 지원하고 활성화 된 경우에만 사용할 수 있습니다.</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1813,12 +1809,12 @@ STAKING</source>
         <translation>전문적</translation>
     </message>
     <message>
-        <source>Automatically start fls after logging in to the system.</source>
-        <translation>시스템 로그인 후 fls을 자동으로 시작합니다.</translation>
+        <source>Automatically start FLITS after logging in to the system.</source>
+        <translation>시스템 로그인 후 FLS을 자동으로 시작합니다.</translation>
     </message>
     <message>
-        <source>&amp;Start fls on system login</source>
-        <translation>&amp;시스템 로그인시 fls 시작</translation>
+        <source>&amp;Start FLITS on system login</source>
+        <translation>&amp;시스템 로그인시 FLITS 시작</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1845,14 +1841,14 @@ STAKING</source>
         <translation>&amp;네트워크</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting fls.</source>
-        <translation>사용자 인터페이스 언어를 설정할 수 있습니다. 이 설정은 fls을 다시 시작한 후에 적용됩니다.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
+        <translation>사용자 인터페이스 언어를 설정할 수 있습니다. 이 설정은 FLS을 다시 시작한 후에 적용됩니다.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/fls-project/fls-project-translations</source>
+https://www.transifex.com/flitsnode/flits-core-project-translations</source>
         <translation>지원 언어가 없거나 번역이 불완전한가요? 번역을 도와주세요 :
-https://www.transifex.com/fls-project/fls-project-translations</translation>
+https://www.transifex.com/flitsnode/flits-core-project-translations</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1860,7 +1856,7 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
     </message>
     <message>
         <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>보상받은 PIV를 zFLS로 자동변환 활성화</translation>
+        <translation>보상받은 FLS를 zFLS로 자동변환 활성화</translation>
     </message>
     <message>
         <source>Enable zFLS Automint</source>
@@ -1876,7 +1872,7 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
     </message>
     <message>
         <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
-        <translation>PIV수신시 자동변환 zFLS 비율 (최소값:10%)</translation>
+        <translation>FLS수신시 자동변환 zFLS 비율 (최소값:10%)</translation>
     </message>
     <message>
         <source>Percentage of autominted zFLS</source>
@@ -1884,7 +1880,7 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
     </message>
     <message>
         <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
-        <translation>이 디노미네이션의 PIV가 충분해질 때까지 Zerocoin으로 자동전환은 보류됩니다.</translation>
+        <translation>이 디노미네이션의 FLS가 충분해질 때까지 Zerocoin으로 자동전환은 보류됩니다.</translation>
     </message>
     <message>
         <source>Preferred Automint zFLS Denomination</source>
@@ -1895,8 +1891,8 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
         <translation>Stake split threshold:</translation>
     </message>
     <message>
-        <source>Connect to the fls network through a SOCKS5 proxy.</source>
-        <translation>SOCKS5 프록시를 통해 fls 네트워크에 연결해주세요.</translation>
+        <source>Connect to the FLITS network through a SOCKS5 proxy.</source>
+        <translation>SOCKS5 프록시를 통해 FLITS 네트워크에 연결해주세요.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -2040,10 +2036,10 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
     </message>
 </context>
 <context>
-    <name>flsGUI</name>
+    <name>FLSGUI</name>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -2070,8 +2066,8 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
         <translation>어플리케이션 종료</translation>
     </message>
     <message>
-        <source>fls Core client</source>
-        <translation>fls Core 클라이언트</translation>
+        <source>FLITS Core client</source>
+        <translation>FLITS Core 클라이언트</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2138,11 +2134,11 @@ Address: %4
     </message>
     <message>
         <source>Cannot start fls: click-to-pay handler</source>
-        <translation>fls을 시작할 수 없습니다: 결제하기 위한 클릭 처리</translation>
+        <translation>FLS을 시작할 수 없습니다: 결제하기 위한 클릭 처리</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid fls address or malformed URI parameters.</source>
-        <translation>URI를 분석할 수 없습니다! 이는 잘못된 fls 주소 또는 URI 매개변수 손상으로 인해 발생할 수 있습니다.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
+        <translation>URI를 분석할 수 없습니다! 이는 잘못된 FLITS 주소 또는 URI 매개변수 손상으로 인해 발생할 수 있습니다.</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -2231,8 +2227,8 @@ Address: %4
         <translation>금액</translation>
     </message>
     <message>
-        <source>Enter fls address (e.g. %1)</source>
-        <translation>fls 주소 입력(예 : %1)</translation>
+        <source>Enter FLITS address (e.g. %1)</source>
+        <translation>FLITS 주소 입력(예 : %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2275,12 +2271,12 @@ Address: %4
         <translation>%1 ms</translation>
     </message>
     <message>
-        <source>A fatal error occurred. fls can no longer continue safely and will quit.</source>
-        <translation>치명적인 오류가 발생하였습니다. fls는 더 이상 안전하게 계속될 수 없으며, 곧 종료됩니다.</translation>
+        <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
+        <translation>치명적인 오류가 발생하였습니다. FLS는 더 이상 안전하게 계속될 수 없으며, 곧 종료됩니다.</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -2291,16 +2287,8 @@ Address: %4
         <translation>오류: 설정 파일을 분석할 수 없습니다: %1. 항상 key=value 문법을 사용해 주세요.</translation>
     </message>
     <message>
-        <source>Error: Invalid combination of -regtest and -testnet.</source>
-        <translation>오류: -regtest와 -testnet은 함께 사용할 수 없습니다.</translation>
-    </message>
-    <message>
         <source>Error reading masternode configuration file: %1</source>
         <translation>마스터노드 설정 파일 읽기 오류: %1</translation>
-    </message>
-    <message>
-        <source>fls Core didn't yet exit safely...</source>
-        <translation>fls Core가 아직 안전하게 종료되지 않았습니다....</translation>
     </message>
     <message>
         <source>Contact</source>
@@ -2518,8 +2506,8 @@ Address: %4
         <translation>블록체인</translation>
     </message>
     <message>
-        <source>Open the fls debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>현재 데이터 디렉토리에서 fls 디버그 로그 파일을 엽니다. 로그 파일이 클 경우, 약간의 시간이 걸릴 수 있습니다.</translation>
+        <source>Open the FLITS debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>현재 데이터 디렉토리에서 FLITS 디버그 로그 파일을 엽니다. 로그 파일이 클 경우, 약간의 시간이 걸릴 수 있습니다.</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -2743,8 +2731,8 @@ Address: %4
         <translation>출력:</translation>
     </message>
     <message>
-        <source>Welcome to the fls RPC console.</source>
-        <translation>fls RPC 콘솔에 오신 것을 환영합니다.</translation>
+        <source>Welcome to the FLITS RPC console.</source>
+        <translation>FLITS RPC 콘솔에 오신 것을 환영합니다.</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -3254,7 +3242,7 @@ Do you wish to proceed without memo?
         <translation>선택할 수 있는 %1을 가지고 있지 않습니다.</translation>
     </message>
     <message>
-        <source>You don't have any transparent PIVs to shield.</source>
+        <source>You don't have any transparent FLSs to shield.</source>
         <translation>Shield 가 가능한 Transparent FLS 가 없습니다.</translation>
     </message>
     <message>
@@ -3384,8 +3372,8 @@ Do you wish to proceed without memo?
         <translation>키 암호 해재</translation>
     </message>
     <message>
-        <source>fls address</source>
-        <translation>fls 주소</translation>
+        <source>FLITS address</source>
+        <translation>FLITS 주소</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3501,8 +3489,8 @@ Verify that you have installed a predetermined text editor.</source>
 미리 결정된 텍스트 에디터를 인스톨했는지 확인하세요.</translation>
     </message>
     <message>
-        <source>Welcome to the fls RPC console.</source>
-        <translation>fls RPC 콘솔에 오신 것을 환영합니다.</translation>
+        <source>Welcome to the FLITS RPC console.</source>
+        <translation>FLITS RPC 콘솔에 오신 것을 환영합니다.</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
@@ -3667,7 +3655,7 @@ Verify that you have installed a predetermined text editor.</source>
     </message>
     <message>
         <source>What is a Masternode?</source>
-        <translation>마스터로드란?</translation>
+        <translation>마스터노드란 무엇인가요?</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
@@ -3812,8 +3800,8 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>스크립트 검증 스레드 개수</translation>
     </message>
     <message>
-        <source>Start fls on system login</source>
-        <translation>시스템 로그인시 fls 지갑 시작</translation>
+        <source>Start FLITS on system login</source>
+        <translation>시스템 로그인시 FLITS 지갑 시작</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -3900,7 +3888,7 @@ Are you sure?
         <translation>체크박스</translation>
     </message>
     <message>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other fls addresses after it matures.</source>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures.</source>
         <translation>멀티 전송 기능은 확인된 새로 받은 스테이킹 혹은 마스터노드 보상을 100% 전부 까지 지정된 다른 주소로 자동 전송할수 있는 기능입니다.</translation>
     </message>
     <message>
@@ -3993,8 +3981,8 @@ Please check the address and try again.</source>
         <translation>메세지</translation>
     </message>
     <message>
-        <source>fls address or contact label</source>
-        <translation>fls 주소 / 연락처 라벨</translation>
+        <source>FLITS address or contact label</source>
+        <translation>FLITS 주소 / 연락처 라벨</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -4262,8 +4250,8 @@ Please check the address and try again.</source>
         <translation>FAQ</translation>
     </message>
     <message>
-        <source>About fls</source>
-        <translation>fls 정보</translation>
+        <source>About FLS</source>
+        <translation>FLITS 정보</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4329,8 +4317,8 @@ Are you sure?
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>fls Core is shutting down...</source>
-        <translation>fls Core가 종료됩니다...</translation>
+        <source>FLITS Core is shutting down...</source>
+        <translation>FLITS Core가 종료됩니다...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -4359,8 +4347,8 @@ Are you sure?
         <translation>로딩중...</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
 </context>
 <context>
@@ -4817,25 +4805,25 @@ NOTE: 업그레이드 이후에는
     </message>
     <message>
         <source>Welcome to
-fls Core Wallet</source>
+FLITS Core Wallet</source>
         <translation>환영합니다.
-fls Core Wallet</translation>
+FLITS Core Wallet</translation>
     </message>
     <message>
-        <source>fls is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>fls 는 많은 경험과 뛰어난 실력을 겸비한 개발자와 암호학자로 구성된 팀이 개발하고 있으며, 혁신적인 지분증명 (Proof of Stake) 블록체인 기반의 오픈소스 프로젝트입니다.</translation>
+        <source>FLITS is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <translation>FLITS 는 많은 경험과 뛰어난 실력을 겸비한 개발자와 암호학자로 구성된 팀이 개발하고 있으며, 혁신적인 지분증명 (Proof of Stake) 블록체인 기반의 오픈소스 프로젝트입니다.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - fls believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;fls 선언서(manifesto) 내용: 프라이버시는 타협할 수 없는 인간의 기본적인 인권입니다. 사용자가 원한다면 언제든 누구에게든 정보를 공유할 수 있는 자유를 보장합니다. fls는 자기 주권(self sovereignty)을 추구합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - FLITS believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FLITS 선언서(manifesto) 내용: 프라이버시는 타협할 수 없는 인간의 기본적인 인권입니다. 사용자가 원한다면 언제든 누구에게든 정보를 공유할 수 있는 자유를 보장합니다. FLS는 자기 주권(self sovereignty)을 추구합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is fls's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>마스터노드 네트워크는 fls 블록체인의 상위의 2nd 레이어 네트워크입니다. 이를 통해 탈중앙화 거버넌스 및 예산 관리가 가능한 DAO를 구현합니다.</translation>
+        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <translation>마스터노드 네트워크는 FLITS 블록체인의 상위의 2nd 레이어 네트워크입니다. 이를 통해 탈중앙화 거버넌스 및 예산 관리가 가능한 DAO를 구현합니다.</translation>
     </message>
     <message>
-        <source>How fls respects your privacy?</source>
-        <translation>fls는 프라이버시를 얼마나 중요하게 생각하나요?</translation>
+        <source>How FLITS respects your privacy?</source>
+        <translation>FLS는 프라이버시를 얼마나 중요하게 생각하나요?</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -4847,7 +4835,7 @@ fls Core Wallet</translation>
     </message>
 </context>
 <context>
-    <name>flits-core</name>
+    <name>fls-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>지정된 소스에서 JSON-RPC 연결을 허용하십시오. 단일 IP (예 : 1.2.3.4), 네트워크/넷마스크 (예 : 1.2.3.4/255.255.255.0) 또는 네트워크 / CIDR (예 : 1.2.3.4/24)에 대해 &lt;ip&gt; 가 유효합니다. 이 옵션은 여러번 지정할 수 있습니다.</translation>
@@ -4863,10 +4851,6 @@ fls Core Wallet</translation>
     <message>
         <source>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</source>
         <translation>JSON-RPC연결 수신을 위해 주어진 주소를 지정합니다. [host]: IPv6 포트 표기법 사용. 이 옵션은 여러번 지정할 수 있습니다. (기본값 : 모든 인터페이스에 지정)</translation>
-    </message>
-    <message>
-        <source>Cannot obtain a lock on data directory %s. fls Core is probably already running.</source>
-        <translation>        &lt;translation&gt;잠겨진 데이터 디렉토리 %s 를 가져올 수 없습니다. fls Core는 이미 실행 중입니다.</translation>
     </message>
     <message>
         <source>Change automatic finalized budget voting behavior. mode=auto: Vote for only exact finalized budget match to my generated budget. (string, default: auto)</source>
@@ -4891,10 +4875,6 @@ fls Core Wallet</translation>
     <message>
         <source>Enable spork administration functionality with the appropriate private key.</source>
         <translation>올바른 개인키로 spork 관리 기능을 사용 가능</translation>
-    </message>
-    <message>
-        <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
-        <translation>리그레션 테스트에 들어갑니다. 특수 체인을 사용하며 블록들을 바로 푸는 것이 가능합니다.</translation>
     </message>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
@@ -4923,10 +4903,6 @@ fls Core Wallet</translation>
     <message>
         <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
         <translation>paytxfee가 설정되어 있지 않는 경우 충분한 수수료를 넣어야만 평균이내 n블록들을 확인하고 트랜잭션를 시작합니다 (기본값: %u)</translation>
-    </message>
-    <message>
-        <source>In this mode -genproclimit controls how many blocks are generated immediately.</source>
-        <translation>이 모드에서 -genproclimit는 즉시 생성되는 블록 수를 제어합니다.</translation>
     </message>
     <message>
         <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
@@ -4989,8 +4965,8 @@ fls Core Wallet</translation>
         <translation>이 제품은 OpenSSL이 개발한 Open SSL 툴킷 &lt;https://www.openssl.org/&gt; 에서 사용하기 위한 프로젝트 소프트웨어, Eric Young이 개발한 암호화 소프트웨어, Thomas Bernard가 개발한 UPnP 소프트웨어가 포함되어 있습니다.</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. fls Core is probably already running.</source>
-        <translation>이 컴퓨터를 %s 로 지정하는것은 불가능합니다. fls Core는 이미 실행 중입니다.</translation>
+        <source>Unable to bind to %s on this computer. FLITS Core is probably already running.</source>
+        <translation>이 컴퓨터를 %s 로 지정하는것은 불가능합니다. FLITS Core는 이미 실행 중입니다.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -5005,8 +4981,8 @@ fls Core Wallet</translation>
         <translation>경고 : -paytxfee가 매우 높게 설정되었습니다! 이것은 전송할 경우 지불 할 트랜잭션 수수료입니다.</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong fls Core will not work properly.</source>
-        <translation>경고: 컴퓨터의 날짜와 시간이 올바르게 설정되어 있는지 확인해 주세요! 만일 시계가 잘못되어 있다면 fls 코어는 정상적으로 작동하지 않을 수 있습니다.</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
+        <translation>경고: 컴퓨터의 날짜와 시간이 올바르게 설정되어 있는지 확인해 주세요! 만일 시계가 잘못되어 있다면 FLITS 코어는 정상적으로 작동하지 않을 수 있습니다.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -5073,8 +5049,8 @@ fls Core Wallet</translation>
         <translation>Copyright (C) 2014-%i The Dash Core 개발자들</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The fls Core Developers</source>
-        <translation>Copyright (C) 2015-%i The fls Core 개발자</translation>
+        <source>Copyright (C) 2015-%i The FLITS Core Developers</source>
+        <translation>Copyright (C) 2015-%i The FLITS Core 개발자</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -5193,10 +5169,6 @@ fls Core Wallet</translation>
         <translation>정보</translation>
     </message>
     <message>
-        <source>Initialization sanity check failed. fls Core is shutting down.</source>
-        <translation>초기화 정확성 검사에 실패 했습니다. fls Core가 종료됩니다.</translation>
-    </message>
-    <message>
         <source>Insufficient funds.</source>
         <translation>충분하지 않은 금액.</translation>
     </message>
@@ -5219,10 +5191,6 @@ fls Core Wallet</translation>
     <message>
         <source>Error: Unsupported argument -checklevel found. Checklevel must be level 4.</source>
         <translation>에러 : 지원하지않는 argument -checklevel 발견된.  Checklevel는 레벨 4이어야 합니다.</translation>
-    </message>
-    <message>
-        <source>Execute command when the best block changes and its size is over (%s in cmd is replaced by block hash, %d with the block size)</source>
-        <translation>Execute command when the best block changes and its size is over (%s in cmd is replaced by block hash, %d with the block size)</translation>
     </message>
     <message>
         <source>Specify custom backup path to add a copy of any wallet backup. If set as dir, every backup generates a timestamped file. If set as file, will rewrite to that file every backup.</source>
@@ -5393,8 +5361,8 @@ fls Core Wallet</translation>
         <translation>재동기화 준비중...</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong fls Core will not work properly.</source>
-        <translation>컴퓨터의 날짜와 시간이 올바르게 설정되어 있는지 확인해 주세요! 만일 시계가 잘못되어 있다면 fls 코어는 정상적으로 작동하지 않을 수 있습니다.</translation>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
+        <translation>컴퓨터의 날짜와 시간이 올바르게 설정되어 있는지 확인해 주세요! 만일 시계가 잘못되어 있다면 FLITS 코어는 정상적으로 작동하지 않을 수 있습니다.</translation>
     </message>
     <message>
         <source>Cannot resolve -%s address: '%s'</source>
@@ -5565,10 +5533,6 @@ fls Core Wallet</translation>
         <translation>이것은 실험용 소프트웨어입니다.</translation>
     </message>
     <message>
-        <source>This is intended for regression testing tools and app development.</source>
-        <translation>이것은 리그레션 테스팅 및 앱 개발을 위해 만들어졌습니다.</translation>
-    </message>
-    <message>
         <source>Threshold for disconnecting misbehaving peers (default: %u)</source>
         <translation>제대로 동작하지 않는 피어와 연결을 끊을 임계값 (기본값: %u)</translation>
     </message>
@@ -5625,10 +5589,6 @@ fls Core Wallet</translation>
         <translation>수신 포트를 매핑하려면 UPnP를 사용하십시오 (기본값: %u)</translation>
     </message>
     <message>
-        <source>Use the test network</source>
-        <translation>테스트 네트워크를 사용합니다</translation>
-    </message>
-    <message>
         <source>Username for JSON-RPC connections</source>
         <translation>JSON-RPC 연결 사용자 이름</translation>
     </message>
@@ -5641,8 +5601,8 @@ fls Core Wallet</translation>
         <translation>지갑 인증 중...</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart fls Core to complete</source>
-        <translation>지갑을 다시 작성해야 합니다: 완료하려면 fls 코어를 재시작해야 합니다</translation>
+        <source>Wallet needed to be rewritten: restart FLITS Core to complete</source>
+        <translation>지갑을 다시 작성해야 합니다: 완료하려면 FLITS 코어를 재시작해야 합니다</translation>
     </message>
     <message>
         <source>Wallet options:</source>
@@ -5712,8 +5672,8 @@ fls Core Wallet</translation>
         <translation>전송할 투명 / 쉴드 코인 선택 </translation>
     </message>
     <message>
-        <source>fls address or contact label</source>
-        <translation>fls 주소 / 연락처 라벨</translation>
+        <source>FLITS address or contact label</source>
+        <translation>FLITS 주소 / 연락처 라벨</translation>
     </message>
     <message>
         <source>Amount</source>

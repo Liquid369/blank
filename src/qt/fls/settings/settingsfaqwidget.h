@@ -1,5 +1,8 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,7 +11,7 @@
 
 #include <QDialog>
 
-class flsGUI;
+class FLSGUI;
 
 namespace Ui {
 class SettingsFaqWidget;
@@ -27,7 +30,7 @@ public:
         MNCONTROLLER
     };
 
-    explicit SettingsFaqWidget(flsGUI *parent = nullptr);
+    explicit SettingsFaqWidget(FLSGUI *parent = nullptr);
     ~SettingsFaqWidget();
 
     void showEvent(QShowEvent *event) override;

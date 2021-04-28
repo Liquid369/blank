@@ -3,7 +3,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet."""
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import (
     assert_array_result,
     assert_equal,
@@ -14,7 +14,7 @@ from test_framework.util import (
     wait_until,
 )
 
-class WalletTest(flsTestFramework):
+class WalletTest(FlsTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
         self.setup_clean_chain = True

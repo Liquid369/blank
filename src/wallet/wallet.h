@@ -1,7 +1,9 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -104,7 +106,7 @@ enum WalletFeature {
     FEATURE_WALLETCRYPT = 40000, // wallet encryption
     FEATURE_COMPRPUBKEY = 60000, // compressed public keys
 
-    FEATURE_PRE_fls = 61000, // inherited version..
+    FEATURE_PRE_FLITS = 61000, // inherited version..
 
     // The following features were implemented in BTC but not in our wallet, we can simply skip them.
     // FEATURE_HD = 130000,  Hierarchical key derivation after BIP32 (HD Wallet)
@@ -450,16 +452,15 @@ public:
 
     void BindWallet(CWallet* pwalletIn);
 
-    void SetSaplingNoteData(mapSaplingNoteData_t &noteData);
+    void SetSaplingNoteData(mapSaplingNoteData_t& noteData);
 
     Optional<std::pair<
             libzcash::SaplingNotePlaintext,
-            libzcash::SaplingPaymentAddress>> DecryptSaplingNote(SaplingOutPoint op) const;
+            libzcash::SaplingPaymentAddress>> DecryptSaplingNote(const SaplingOutPoint& op) const;
 
     Optional<std::pair<
             libzcash::SaplingNotePlaintext,
-            libzcash::SaplingPaymentAddress>> RecoverSaplingNote(
-            SaplingOutPoint op, std::set<uint256>& ovks) const;
+            libzcash::SaplingPaymentAddress>> RecoverSaplingNote(const SaplingOutPoint& op, const std::set<uint256>& ovks) const;
 
     //! checks whether a tx has P2CS inputs or not
     bool HasP2CSInputs() const;
@@ -561,8 +562,6 @@ class CWallet : public CCryptoKeyStore, public CValidationInterface
 {
 private:
     static std::atomic<bool> fFlushScheduled;
-    std::atomic<bool> fAbortRescan;
-    std::atomic<bool> fScanningWallet;
 
     //! keeps track of whether Unlock has run a thorough check before
     bool fDecryptionThoroughlyChecked{false};
@@ -835,13 +834,6 @@ public:
     void UnlockAllCoins();
     std::set<COutPoint> ListLockedCoins();
 
-    /*
-     * Rescan abort properties
-     */
-    void AbortRescan() { fAbortRescan = true; }
-    bool IsAbortingRescan() { return fAbortRescan; }
-    bool IsScanning() { return fScanningWallet; }
-
     //  keystore implementation
     PairResult getNewAddress(CTxDestination& ret, const std::string addressLabel, const std::string purpose,
                                            const CChainParams::Base58Type addrType = CChainParams::PUBKEY_ADDRESS);
@@ -958,7 +950,7 @@ public:
     bool Upgrade(std::string& error, const int& prevVersion);
     bool ActivateSaplingWallet(bool memOnly = false);
 
-    CBlockIndex* ScanForWalletTransactions(CBlockIndex* pindexStart, CBlockIndex* pindexStop = nullptr, bool fUpdate = false, bool fromStartup = false);
+    int ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate = false, bool fromStartup = false);
     void TransactionRemovedFromMempool(const CTransactionRef &ptx) override;
     void ReacceptWalletTransactions(bool fFirstLoad = false);
     void ResendWalletTransactions(CConnman* connman) override;
@@ -1005,9 +997,7 @@ public:
         bool sign = true,
         CAmount nFeePay = 0,
         bool fIncludeDelegated = false,
-        bool* fStakeDelegationVoided = nullptr,
-        int nExtraSize = 0);
-
+        bool* fStakeDelegationVoided = nullptr);
     bool CreateTransaction(CScript scriptPubKey, const CAmount& nValue, CTransactionRef& tx, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl* coinControl = NULL, AvailableCoinsType coin_type = ALL_COINS, CAmount nFeePay = 0, bool fIncludeDelegated = false);
 
     // enumeration for CommitResult (return status of CommitTransaction)
@@ -1224,6 +1214,34 @@ public:
     CStakeableOutput(const CWalletTx* txIn, int iIn, int nDepthIn, bool fSpendableIn, bool fSolvableIn,
                      const CBlockIndex*& pindex);
 
+};
+
+/** Private key that includes an expiration date in case it never gets used. */
+class CWalletKey
+{
+public:
+    CPrivKey vchPrivKey;
+    int64_t nTimeCreated;
+    int64_t nTimeExpires;
+    std::string strComment;
+    //! todo: add something to note what created it (user, getnewaddress, change)
+    //!   maybe should have a map<string, string> property map
+
+    CWalletKey(int64_t nExpires = 0);
+
+    ADD_SERIALIZE_METHODS;
+
+    template <typename Stream, typename Operation>
+    inline void SerializationOp(Stream& s, Operation ser_action)
+    {
+        int nVersion = s.GetVersion();
+        if (!(s.GetType() & SER_GETHASH))
+            READWRITE(nVersion);
+        READWRITE(vchPrivKey);
+        READWRITE(nTimeCreated);
+        READWRITE(nTimeExpires);
+        READWRITE(LIMITED_STRING(strComment, 65536));
+    }
 };
 
 #endif // BITCOIN_WALLET_H

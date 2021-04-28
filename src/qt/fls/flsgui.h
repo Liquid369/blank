@@ -1,10 +1,11 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_CORE_NEW_GUI_flsGUI_H
-#define fls_CORE_NEW_GUI_flsGUI_H
+#ifndef FLS_CORE_NEW_GUI_FLSGUI_H
+#define FLS_CORE_NEW_GUI_FLSGUI_H
 
 #if defined(HAVE_CONFIG_H)
 #include "config/fls-config.h"
@@ -39,18 +40,18 @@ class WalletModel;
 
 
 /**
-  fls GUI main class. This class represents the main window of the fls UI. It communicates with both the client and
+  FLITS GUI main class. This class represents the main window of the FLITS UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
 */
-class flsGUI : public QMainWindow
+class FLSGUI : public QMainWindow
 {
     Q_OBJECT
 
 public:
     static const QString DEFAULT_WALLET;
 
-    explicit flsGUI(const NetworkStyle* networkStyle, QWidget* parent = 0);
-    ~flsGUI();
+    explicit FLSGUI(const NetworkStyle* networkStyle, QWidget* parent = 0);
+    ~FLSGUI();
 
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
@@ -196,4 +197,4 @@ Q_SIGNALS:
 };
 
 
-#endif //fls_CORE_NEW_GUI_flsGUI_H
+#endif //FLS_CORE_NEW_GUI_FLSGUI_H

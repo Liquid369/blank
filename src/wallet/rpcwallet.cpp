@@ -1,7 +1,9 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -136,7 +138,7 @@ UniValue getaddressinfo(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
                 "getaddressinfo ( \"address\" )\n"
-                "\nReturn information about the given fls address.\n"
+                "\nReturn information about the given FLITS address.\n"
                 "Some of the information will only be present if the address is in the active wallet.\n"
                 "Metadata for shield addresses is available only if the wallet is unlocked.\n"
                 "{Result:\n"
@@ -477,7 +479,7 @@ UniValue getnewaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
             "getnewaddress ( \"label\" )\n"
-            "\nReturns a new fls address for receiving payments.\n"
+            "\nReturns a new FLITS address for receiving payments.\n"
             "If 'label' is specified, it is added to the address book \n"
             "so payments received with the address will be associated with 'label'.\n"
 
@@ -499,7 +501,7 @@ UniValue getnewstakingaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
             "getnewstakingaddress ( \"label\" )\n"
-            "\nReturns a new fls cold staking address for receiving delegated cold stakes.\n"
+            "\nReturns a new FLITS cold staking address for receiving delegated cold stakes.\n"
 
             "\nArguments:\n"
             "1. \"label\"        (string, optional) The label name for the address to be linked to. if not provided, the default label \"\" is used. It can also be set to the empty string \"\" to represent the default label. The label does not need to exist, it will be created if there is no label by the given name.\n"
@@ -692,13 +694,13 @@ UniValue delegatoradd(const JSONRPCRequest& request)
     bool isStakingAddress = false;
     CTxDestination dest = DecodeDestination(request.params[0].get_str(), isStakingAddress);
     if (!IsValidDestination(dest) || isStakingAddress)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid fls address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
 
     const std::string strLabel = (request.params.size() > 1 ? request.params[1].get_str() : "");
 
     const CKeyID* keyID = boost::get<CKeyID>(&dest);
     if (!keyID)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get KeyID from fls address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get KeyID from FLITS address");
 
     return pwalletMain->SetAddressBook(*keyID, strLabel, AddressBook::AddressBookPurpose::DELEGATOR);
 }
@@ -724,14 +726,14 @@ UniValue delegatorremove(const JSONRPCRequest& request)
     bool isStakingAddress = false;
     CTxDestination dest = DecodeDestination(request.params[0].get_str(), isStakingAddress);
     if (!IsValidDestination(dest) || isStakingAddress)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid fls address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
 
     const CKeyID* keyID = boost::get<CKeyID>(&dest);
     if (!keyID)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get KeyID from fls address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get KeyID from FLITS address");
 
     if (!pwalletMain->HasAddressBook(*keyID))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get fls address from addressBook");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get FLITS address from addressBook");
 
     std::string label = "";
     auto optAdd = pwalletMain->GetAddressBookEntry(dest);
@@ -781,7 +783,7 @@ UniValue listdelegators(const JSONRPCRequest& request)
             "[\n"
             "   {\n"
             "   \"label\": \"yyy\",    (string) Address label\n"
-            "   \"address\": \"xxx\",  (string) fls address string\n"
+            "   \"address\": \"xxx\",  (string) FLITS address string\n"
             "   }\n"
             "  ...\n"
             "]\n"
@@ -807,7 +809,7 @@ UniValue liststakingaddresses(const JSONRPCRequest& request)
             "[\n"
             "   {\n"
             "   \"label\": \"yyy\",  (string) Address label\n"
-            "   \"address\": \"xxx\",  (string) fls address string\n"
+            "   \"address\": \"xxx\",  (string) FLITS address string\n"
             "   }\n"
             "  ...\n"
             "]\n"
@@ -867,7 +869,7 @@ UniValue getrawchangeaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
             "getrawchangeaddress\n"
-            "\nReturns a new fls address, for receiving change.\n"
+            "\nReturns a new FLITS address, for receiving change.\n"
             "This is for use with raw transactions, NOT normal use.\n"
 
             "\nResult:\n"
@@ -912,7 +914,7 @@ UniValue setlabel(const JSONRPCRequest& request)
 
     CTxDestination dest = DecodeDestination(request.params[0].get_str());
     if (!IsValidDestination(dest))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid fls address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
 
     std::string old_label = pwalletMain->GetNameForAddressBookEntry(dest);
     std::string label = LabelFromValue(request.params[1]);
@@ -941,7 +943,7 @@ void SendMoney(const CTxDestination& address, CAmount nValue, CTransactionRef& t
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
     }
 
-    // Parse fls address
+    // Parse FLITS address
     CScript scriptPubKey = GetScriptForDestination(address);
 
     // Create and send the transaction
@@ -1042,7 +1044,7 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
     const std::string addrStr = request.params[0].get_str();
     const CWDestination& destination = Standard::DecodeDestination(addrStr, isStaking, isShielded);
     if (!Standard::IsValidDestination(destination) || isStaking)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid fls address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
     const std::string commentStr = (request.params.size() > 2 && !request.params[2].isNull()) ?
                                    request.params[2].get_str() : "";
     const std::string toStr = (request.params.size() > 3 && !request.params[3].isNull()) ?
@@ -1093,7 +1095,7 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CTransactionRef& txNe
     bool isStaking = false;
     CTxDestination stakeAddr = DecodeDestination(params[0].get_str(), isStaking);
     if (!IsValidDestination(stakeAddr) || !isStaking)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid fls staking address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS staking address");
 
     CKeyID* stakeKey = boost::get<CKeyID>(&stakeAddr);
     if (!stakeKey)
@@ -1126,7 +1128,7 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CTransactionRef& txNe
         bool isStaking = false;
         CTxDestination dest = DecodeDestination(params[2].get_str(), isStaking);
         if (!IsValidDestination(dest) || isStaking)
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid fls spending address");
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS spending address");
         ownerKey = *boost::get<CKeyID>(&dest);
         // Check that the owner address belongs to this wallet, or fForceExternalAddr is true
         bool fForceExternalAddr = params.size() > 3 && !params[3].isNull() ? params[3].get_bool() : false;
@@ -1358,7 +1360,7 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
                 "      \"spend\" : n,                    (numeric, sapling) the index of the spend within vShieldedSpend\n"
                 "      \"txidPrev\" : \"transactionid\",   (string) The id for the transaction this note was created in\n"
                 "      \"outputPrev\" : n,               (numeric, sapling) the index of the output within the vShieldedOutput\n"
-                "      \"address\" : \"flsaddress\",     (string) The fls address involved in the transaction\n"
+                "      \"address\" : \"flsaddress\",     (string) The FLITS address involved in the transaction\n"
                 "      \"value\" : x.xxx                 (numeric) The amount in " + CURRENCY_UNIT + "\n"
                 "      \"valueSat\" : xxxx               (numeric) The amount in satoshis\n"
                 "    }\n"
@@ -1367,7 +1369,7 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
                 "  \"outputs\" : [\n"
                 "    {\n"
                 "      \"output\" : n,                   (numeric, sapling) the index of the output within the vShieldedOutput\n"
-                "      \"address\" : \"flsaddress\",     (string) The fls address involved in the transaction\n"
+                "      \"address\" : \"flsaddress\",     (string) The FLITS address involved in the transaction\n"
                 "      \"outgoing\" : true|false         (boolean, sapling) True if the output is not for an address in the wallet\n"
                 "      \"value\" : x.xxx                 (numeric) The amount in " + CURRENCY_UNIT + "\n"
                 "      \"valueSat\" : xxxx               (numeric) The amount in satoshis\n"
@@ -1900,7 +1902,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     // fls address
     CTxDestination address = DecodeDestination(request.params[0].get_str());
     if (!IsValidDestination(address))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid fls address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
     CScript scriptPubKey = GetScriptForDestination(address);
     if (!IsMine(*pwalletMain, scriptPubKey))
         throw JSONRPCError(RPC_WALLET_ERROR, "Address not found in wallet");
@@ -2119,7 +2121,7 @@ static UniValue legacy_sendmany(const UniValue& sendTo, int nMinDepth, std::stri
         bool isStaking = false;
         CTxDestination dest = DecodeDestination(name_,isStaking);
         if (!IsValidDestination(dest) || isStaking)
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid fls address: ")+name_);
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid FLITS address: ")+name_);
 
         if (setAddress.count(dest))
             throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ")+name_);
@@ -2179,7 +2181,7 @@ UniValue sendmany(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 5)
         throw std::runtime_error(
             "sendmany \"\" {\"address\":amount,...} ( minconf \"comment\" includeDelegated )\n"
-            "\nSend to multiple destinations. Recipients are transparent or shield fls addresses.\n"
+            "\nSend to multiple destinations. Recipients are transparent or shield FLITS addresses.\n"
             "\nAmounts are double-precision floating point numbers.\n"
             + HelpRequiringPassphrase() + "\n"
 
@@ -2254,7 +2256,7 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
         throw std::runtime_error(
             "addmultisigaddress nrequired [\"key\",...] ( \"label\" )\n"
             "\nAdd a nrequired-to-sign multisignature address to the wallet.\n"
-            "Each key is a fls address or hex-encoded public key.\n"
+            "Each key is a FLITS address or hex-encoded public key.\n"
             "If 'label' is specified, assign address to that label.\n"
 
             "\nArguments:\n"
@@ -3168,7 +3170,7 @@ UniValue walletpassphrase(const JSONRPCRequest& request)
         throw std::runtime_error(
             "walletpassphrase \"passphrase\" timeout ( stakingonly )\n"
             "\nStores the wallet decryption key in memory for 'timeout' seconds.\n"
-            "This is needed prior to performing transactions related to private keys such as sending PIVs\n"
+            "This is needed prior to performing transactions related to private keys such as sending FLSs\n"
 
             "\nArguments:\n"
             "1. \"passphrase\"     (string, required) The wallet passphrase\n"
@@ -3337,7 +3339,7 @@ UniValue encryptwallet(const JSONRPCRequest& request)
             "\nExamples:\n"
             "\nEncrypt you wallet\n" +
             HelpExampleCli("encryptwallet", "\"my pass phrase\"") +
-            "\nNow set the passphrase to use the wallet, such as for signing or sending PIVs\n" +
+            "\nNow set the passphrase to use the wallet, such as for signing or sending FLSs\n" +
             HelpExampleCli("walletpassphrase", "\"my pass phrase\"") +
             "\nNow we can so something like sign\n" +
             HelpExampleCli("signmessage", "\"flsaddress\" \"test message\"") +
@@ -3437,7 +3439,7 @@ UniValue listunspent(const JSONRPCRequest& request)
             const UniValue& input = inputs[inx];
             CTxDestination dest = DecodeDestination(input.get_str());
             if (!IsValidDestination(dest))
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid fls address: ") + input.get_str());
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid FLITS address: ") + input.get_str());
             if (destinations.count(dest))
                 throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ") + input.get_str());
             destinations.insert(dest);
@@ -3514,7 +3516,7 @@ UniValue lockunspent(const JSONRPCRequest& request)
             "lockunspent unlock [{\"txid\":\"txid\",\"vout\":n},...]\n"
             "\nUpdates list of temporarily unspendable outputs.\n"
             "Temporarily lock (unlock=false) or unlock (unlock=true) specified transaction outputs.\n"
-            "A locked transaction output will not be chosen by automatic coin selection, when spending PIVs.\n"
+            "A locked transaction output will not be chosen by automatic coin selection, when spending FLSs.\n"
             "Locks are stored in memory only. Nodes start with zero locked outputs, and the locked output list\n"
             "is always cleared (by virtue of process exit) when a node stops or fails.\n"
             "Also see the listunspent call\n"
@@ -3904,7 +3906,7 @@ UniValue autocombinerewards(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() < 1 || (fEnable && request.params.size() != 2) || request.params.size() > 2)
         throw std::runtime_error(
             "autocombinerewards enable ( threshold )\n"
-            "\nWallet will automatically monitor for any coins with value below the threshold amount, and combine them if they reside with the same fls address\n"
+            "\nWallet will automatically monitor for any coins with value below the threshold amount, and combine them if they reside with the same FLITS address\n"
             "When autocombinerewards runs it will create a transaction, and therefore will be subject to transaction fees.\n"
 
             "\nArguments:\n"
@@ -4186,74 +4188,12 @@ UniValue getsaplingnotescount(const JSONRPCRequest& request)
     return count;
 }
 
-UniValue rescanblockchain(const JSONRPCRequest& request)
-{
-    if (request.fHelp || request.params.size() > 2) {
-        throw std::runtime_error(
-                "rescanblockchain (start_height) (stop_height)\n"
-                "\nRescan the local blockchain for wallet related transactions.\n"
-                "\nArguments:\n"
-                "1. start_height    (numeric, optional) block height where the rescan should start\n"
-                "2. stop_height     (numeric, optional) the last block height that should be scanned\n"
-                "\nResult:\n"
-                "{\n"
-                "  start_height     (numeric) The block height where the rescan has started. If omitted, rescan started from the genesis block.\n"
-                "  stop_height      (numeric) The height of the last rescanned block. If omitted, rescan stopped at the chain tip.\n"
-                "}\n"
-                "\nExamples:\n"
-                + HelpExampleCli("rescanblockchain", "100000 120000")
-                + HelpExampleRpc("rescanblockchain", "100000 120000")
-        );
-    }
-
-    EnsureWallet();
-    LOCK2(cs_main, pwalletMain->cs_wallet);
-
-    CBlockIndex *pindexStart = chainActive.Genesis();
-    CBlockIndex *pindexStop = nullptr;
-    if (!request.params[0].isNull()) {
-        pindexStart = chainActive[request.params[0].get_int()];
-        if (!pindexStart) {
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid start_height");
-        }
-    }
-
-    if (!request.params[1].isNull()) {
-        pindexStop = chainActive[request.params[1].get_int()];
-        if (!pindexStop) {
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid stop_height");
-        }
-        else if (pindexStop->nHeight < pindexStart->nHeight) {
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "stop_height must be greater then start_height");
-        }
-    }
-
-    CBlockIndex *stopBlock = pwalletMain->ScanForWalletTransactions(pindexStart, pindexStop, true);
-    if (!stopBlock) {
-        if (pwalletMain->IsAbortingRescan()) {
-            throw JSONRPCError(RPC_MISC_ERROR, "Rescan aborted.");
-        }
-        // if we got a nullptr returned, ScanForWalletTransactions did rescan up to the requested stopindex
-        stopBlock = pindexStop ? pindexStop : chainActive.Tip();
-    }
-    else {
-        throw JSONRPCError(RPC_MISC_ERROR, "Rescan failed. Potentially corrupted data files.");
-    }
-
-    UniValue response(UniValue::VOBJ);
-    response.pushKV("start_height", pindexStart->nHeight);
-    response.pushKV("stop_height", stopBlock->nHeight);
-    return response;
-}
-
-extern UniValue abortrescan(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue dumpprivkey(const JSONRPCRequest& request); // in rpcdump.cpp
 extern UniValue importprivkey(const JSONRPCRequest& request);
 extern UniValue importaddress(const JSONRPCRequest& request);
 extern UniValue importpubkey(const JSONRPCRequest& request);
 extern UniValue dumpwallet(const JSONRPCRequest& request);
 extern UniValue importwallet(const JSONRPCRequest& request);
-extern UniValue importmulti(const JSONRPCRequest& request);
 extern UniValue bip38encrypt(const JSONRPCRequest& request);
 extern UniValue bip38decrypt(const JSONRPCRequest& request);
 
@@ -4268,7 +4208,6 @@ static const CRPCCommand commands[] =
     { "wallet",             "getaddressinfo",           &getaddressinfo,           true  },
     { "wallet",             "autocombinerewards",       &autocombinerewards,       false },
     { "wallet",             "abandontransaction",       &abandontransaction,       false },
-    { "wallet",             "abortrescan",              &abortrescan,              false },
     { "wallet",             "addmultisigaddress",       &addmultisigaddress,       true  },
     { "wallet",             "backupwallet",             &backupwallet,             true  },
     { "wallet",             "delegatestake",            &delegatestake,            false },
@@ -4293,7 +4232,6 @@ static const CRPCCommand commands[] =
     { "wallet",             "importwallet",             &importwallet,             true  },
     { "wallet",             "importaddress",            &importaddress,            true  },
     { "wallet",             "importpubkey",             &importpubkey,             true  },
-    { "wallet",             "importmulti",              &importmulti,              true  },
     { "wallet",             "keypoolrefill",            &keypoolrefill,            true  },
     { "wallet",             "listaddressgroupings",     &listaddressgroupings,     false },
     { "wallet",             "listdelegators",           &listdelegators,           false },
@@ -4314,7 +4252,6 @@ static const CRPCCommand commands[] =
     { "wallet",             "walletlock",               &walletlock,               true  },
     { "wallet",             "walletpassphrasechange",   &walletpassphrasechange,   true  },
     { "wallet",             "walletpassphrase",         &walletpassphrase,         true  },
-    { "wallet",             "rescanblockchain",         &rescanblockchain,         true  },
     { "wallet",             "delegatoradd",             &delegatoradd,             true  },
     { "wallet",             "delegatorremove",          &delegatorremove,          true  },
     { "wallet",             "bip38encrypt",             &bip38encrypt,             true  },

@@ -1,9 +1,10 @@
-// Copyright (c) 2017-2018 The fls developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2020 The Flits Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_MINTPOOL_H
-#define fls_MINTPOOL_H
+#ifndef FLS_MINTPOOL_H
+#define FLS_MINTPOOL_H
 
 #include <map>
 #include <list>
@@ -50,4 +51,4 @@ public:
 };
 
 
-#endif //fls_MINTPOOL_H
+#endif //FLS_MINTPOOL_H

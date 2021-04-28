@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,7 +21,7 @@
 #include <vector>
 
 
-SettingsBitToolWidget::SettingsBitToolWidget(flsGUI* _window, QWidget *parent) :
+SettingsBitToolWidget::SettingsBitToolWidget(FLSGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsBitToolWidget)
 {
@@ -313,7 +314,7 @@ void SettingsBitToolWidget::importAddressFromDecKey()
 
         // whenever a key is imported, we need to scan the whole chain
         pwalletMain->nTimeFirstKey = 1; // 0 would be considered 'no value'
-        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), nullptr, true);
+        pwalletMain->ScanForWalletTransactions(chainActive.Genesis(), true);
     }
 
     ui->statusLabel_DEC->setStyleSheet("QLabel { color: green; }");

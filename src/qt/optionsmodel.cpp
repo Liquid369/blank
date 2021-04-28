@@ -1,6 +1,8 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -191,8 +193,8 @@ void OptionsModel::setDisplayDefaultOptions(QSettings& settings, bool reset)
     if (!gArgs.SoftSetArg("-lang", settings.value("language").toString().toStdString()))
         addOverriddenOption("-lang");
 
-    if (settings.contains("nAnonymizeflsAmount") || reset)
-        gArgs.SoftSetArg("-anonymizeflsamount", settings.value("nAnonymizeflsAmount").toString().toStdString());
+    if (settings.contains("nAnonymizeFlsAmount") || reset)
+        gArgs.SoftSetArg("-anonymizeflsamount", settings.value("nAnonymizeFlsAmount").toString().toStdString());
 
     if (!settings.contains("strThirdPartyTxUrls") || reset)
         settings.setValue("strThirdPartyTxUrls", "");
@@ -247,12 +249,12 @@ QVariant OptionsModel::data(const QModelIndex& index, int role) const
             return settings.value("fUseProxy", false);
         case ProxyIP: {
             // contains IP at index 0 and port at index 1
-            QStringList strlIpPort = GUIUtil::SplitSkipEmptyParts(settings.value("addrProxy").toString(), ":");
+            QStringList strlIpPort = settings.value("addrProxy").toString().split(":", QString::SkipEmptyParts);
             return strlIpPort.at(0);
         }
         case ProxyPort: {
             // contains IP at index 0 and port at index 1
-            QStringList strlIpPort = GUIUtil::SplitSkipEmptyParts(settings.value("addrProxy").toString(), ":");
+            QStringList strlIpPort = settings.value("addrProxy").toString().split(":", QString::SkipEmptyParts);
             return strlIpPort.at(1);
         }
 
@@ -342,7 +344,7 @@ bool OptionsModel::setData(const QModelIndex& index, const QVariant& value, int 
             break;
         case ProxyIP: {
             // contains current IP at index 0 and current port at index 1
-            QStringList strlIpPort = GUIUtil::SplitSkipEmptyParts(settings.value("addrProxy").toString(), ":");
+            QStringList strlIpPort = settings.value("addrProxy").toString().split(":", QString::SkipEmptyParts);
             // if that key doesn't exist or has a changed IP
             if (!settings.contains("addrProxy") || strlIpPort.at(0) != value.toString()) {
                 // construct new value from new IP and current port
@@ -353,7 +355,7 @@ bool OptionsModel::setData(const QModelIndex& index, const QVariant& value, int 
         } break;
         case ProxyPort: {
             // contains current IP at index 0 and current port at index 1
-            QStringList strlIpPort = GUIUtil::SplitSkipEmptyParts(settings.value("addrProxy").toString(), ":");
+            QStringList strlIpPort = settings.value("addrProxy").toString().split(":", QString::SkipEmptyParts);
             // if that key doesn't exist or has a changed port
             if (!settings.contains("addrProxy") || strlIpPort.at(1) != value.toString()) {
                 // construct new value from current IP and new port

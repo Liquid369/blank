@@ -1,11 +1,13 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2016 The Dash developers
-// Copyright (c) 2017-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_QT_WALLETMODEL_H
-#define fls_QT_WALLETMODEL_H
+#ifndef FLS_QT_WALLETMODEL_H
+#define FLS_QT_WALLETMODEL_H
 
 #include "askpassphrasedialog.h"
 #include "paymentrequestplus.h"
@@ -13,8 +15,8 @@
 
 #include "interfaces/wallet.h"
 
+#include "allocators.h" /* for SecureString */
 #include "operationresult.h"
-#include "support/allocators/zeroafterfree.h"
 #include "wallet/wallet.h"
 #include "pairresult.h"
 
@@ -114,7 +116,7 @@ public:
     }
 };
 
-/** Interface to fls wallet from Qt view code. */
+/** Interface to FLITS wallet from Qt view code. */
 class WalletModel : public QObject
 {
     Q_OBJECT
@@ -433,4 +435,4 @@ public Q_SLOTS:
     bool updateAddressBookLabels(const CWDestination& address, const std::string& strName, const std::string& strPurpose);
 };
 
-#endif // fls_QT_WALLETMODEL_H
+#endif // FLS_QT_WALLETMODEL_H

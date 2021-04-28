@@ -12,13 +12,13 @@ Two nodes. Node1 is under test. Node0 is providing transactions and generating b
 - connect node1 to node0. Verify that they sync and node1 receives its funds."""
 import shutil
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import (
     assert_equal,
     connect_nodes,
 )
 
-class KeypoolRestoreTest(flsTestFramework):
+class KeypoolRestoreTest(FlsTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2

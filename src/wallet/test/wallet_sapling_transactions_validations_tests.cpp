@@ -1,5 +1,6 @@
 // Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
@@ -54,7 +55,7 @@ SaplingOperation createOperationAndBuildTx(std::vector<SendManyRecipient> recipi
 
     CValidationState state;
     BOOST_ASSERT_MSG(
-            CheckTransaction(operation.getFinalTx(), state, true),
+            CheckTransaction(operation.getFinalTx(), true, state, true, false, true),
             "Invalid Sapling transaction");
     return operation;
 }
@@ -87,7 +88,7 @@ BOOST_AUTO_TEST_CASE(test_in_block_and_mempool_notes_double_spend)
     BOOST_CHECK_EQUAL(pwalletMain->GetAvailableBalance(), CAmount(250 * COIN * 10)); // 10 blocks available
     BOOST_CHECK_EQUAL(pwalletMain->GetImmatureBalance(), CAmount(250 * COIN * 100)); // 100 blocks immature
 
-    // Now that we have the chain, let's shield 100 PIVs
+    // Now that we have the chain, let's shield 100 FLSs
     // single recipient
     std::vector<SendManyRecipient> recipients;
     libzcash::SaplingPaymentAddress pa = pwalletMain->GenerateNewSaplingZKey("sapling1");
@@ -101,8 +102,8 @@ BOOST_AUTO_TEST_CASE(test_in_block_and_mempool_notes_double_spend)
 
     // Generate a five blocks to fully confirm the tx and test balance
     for (int i = 0; i < 5; ++i) { generateBlock(scriptPubKey, WITH_LOCK(cs_main, return chainActive.Tip()->nHeight + 1)); }
-    BOOST_CHECK_EQUAL(pwalletMain->GetAvailableShieldedBalance(), CAmount(100 * COIN)); // 100 shield PIVs
-    BOOST_CHECK_EQUAL(pwalletMain->GetUnconfirmedShieldedBalance(), CAmount(0)); // 0 shield PIVs
+    BOOST_CHECK_EQUAL(pwalletMain->GetAvailableShieldedBalance(), CAmount(100 * COIN)); // 100 shield FLSs
+    BOOST_CHECK_EQUAL(pwalletMain->GetUnconfirmedShieldedBalance(), CAmount(0)); // 0 shield FLSs
 
     // ##############################################
     // Context set!

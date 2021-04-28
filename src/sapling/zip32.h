@@ -2,15 +2,15 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_ZIP32_H
-#define fls_ZIP32_H
+#ifndef FLS_ZIP32_H
+#define FLS_ZIP32_H
 
+#include "serialize.h"
+#include "allocators.h"
 #include "blob_uint256.h"
 #include "key.h"
-#include "sapling/address.h"
-#include "serialize.h"
-#include "support/allocators/zeroafterfree.h"
 #include "uint256.h"
+#include "sapling/address.h"
 
 #include <boost/optional.hpp>
 
@@ -145,4 +145,4 @@ bool IsValidSpendingKey(const libzcash::SpendingKey& zkey);
 /** Check whether a ViewingKey is not an InvalidEncoding. */
 bool IsValidViewingKey(const libzcash::ViewingKey& vk);
 
-#endif // fls_ZIP32_H
+#endif // FLS_ZIP32_H

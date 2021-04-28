@@ -1,5 +1,7 @@
 // Copyright (c) 2014-2016 The Dash developers
-// Copyright (c) 2016-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -25,7 +27,6 @@ enum SporkId : int32_t {
     SPORK_18_ZEROCOIN_PUBLICSPEND_V4            = 10018,
     SPORK_19_COLDSTAKING_MAINTENANCE            = 10019,
     SPORK_20_SAPLING_MAINTENANCE                = 10020,
-    SPORK_21_LEGACY_MNS_MAX_HEIGHT              = 10021,
 
     SPORK_INVALID                               = -1
 };

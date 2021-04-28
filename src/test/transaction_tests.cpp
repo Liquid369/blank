@@ -1,5 +1,6 @@
 // Copyright (c) 2011-2014 The Bitcoin Core developers
-// Copyright (c) 2017-2019 The fls developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2020 The Flits Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -139,7 +140,7 @@ BOOST_AUTO_TEST_CASE(tx_valid)
             CTransaction tx(deserialize, stream);
 
             CValidationState state;
-            BOOST_CHECK_MESSAGE(CheckTransaction(tx, state, false), strTest);
+            BOOST_CHECK_MESSAGE(CheckTransaction(tx, false, state), strTest);
             BOOST_CHECK(state.IsValid());
 
             PrecomputedTransactionData precomTxData(tx);
@@ -215,7 +216,7 @@ BOOST_AUTO_TEST_CASE(tx_invalid)
             CTransaction tx(deserialize, stream);
 
             CValidationState state;
-            fValid = CheckTransaction(tx, state, false) && state.IsValid();
+            fValid = CheckTransaction(tx, false, state) && state.IsValid();
 
             PrecomputedTransactionData precomTxData(tx);
             for (unsigned int i = 0; i < tx.vin.size() && fValid; i++)
@@ -246,11 +247,11 @@ BOOST_AUTO_TEST_CASE(basic_transaction_tests)
     CMutableTransaction tx;
     stream >> tx;
     CValidationState state;
-    BOOST_CHECK_MESSAGE(CheckTransaction(tx, state, false) && state.IsValid(), "Simple deserialized transaction should be valid.");
+    BOOST_CHECK_MESSAGE(CheckTransaction(tx, false, state) && state.IsValid(), "Simple deserialized transaction should be valid.");
 
     // Check that duplicate txins fail
     tx.vin.push_back(tx.vin[0]);
-    BOOST_CHECK_MESSAGE(!CheckTransaction(tx, state, false) || !state.IsValid(), "Transaction with duplicate txins should be invalid.");
+    BOOST_CHECK_MESSAGE(!CheckTransaction(tx, false, state) || !state.IsValid(), "Transaction with duplicate txins should be invalid.");
 }
 
 //
@@ -327,7 +328,7 @@ BOOST_AUTO_TEST_CASE(test_Get)
 
 BOOST_AUTO_TEST_CASE(test_big_witness_transaction) {
     CMutableTransaction mtx;
-    mtx.nVersion = CTransaction::TxVersion::SAPLING;
+    mtx.nVersion = 2; // Sapling future version
 
     CKey key;
     key.MakeNewKey(false);

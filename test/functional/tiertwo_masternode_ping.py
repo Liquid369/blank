@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # Copyright (c) 2020 The PIVX Developers
+# Copyright (c) 2020 The PIVX developers
 # Copyright (c) 2020 The Flits Developers
+
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import (
     assert_equal,
     assert_greater_than,
@@ -17,12 +19,12 @@ import time
 
 """
 Test checking masternode ping thread
-Does not use functions of flsTier2TestFramework as we don't want to send
+Does not use functions of FlsTier2TestFramework as we don't want to send
 pings on demand. Here, instead, mocktime is disabled, and we just wait with
 time.sleep to verify that masternodes send pings correctly.
 """
 
-class MasternodePingTest(flsTestFramework):
+class MasternodePingTest(FlsTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True

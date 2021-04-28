@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2016-2019 The fls developers
+// Copyright (c) 2016-2019 The PIVX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,49 +11,36 @@
 #include "tinyformat.h"
 #include "utiltime.h"
 
-#include <atomic>
-
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread.hpp>
 
 
-static std::atomic<int64_t> nMockTime(0); //!< For unit testing
-
+static int64_t nMockTime = 0; //! For unit testing
 
 int64_t GetTime()
 {
-    int64_t mocktime = nMockTime.load(std::memory_order_relaxed);
-    if (mocktime) return mocktime;
+    if (nMockTime) return nMockTime;
 
-    time_t now = time(nullptr);
-    assert(now > 0);
-    return now;
+    return time(NULL);
 }
 
 void SetMockTime(int64_t nMockTimeIn)
 {
-    nMockTime.store(nMockTimeIn, std::memory_order_relaxed);
+    nMockTime = nMockTimeIn;
 }
 
 int64_t GetTimeMillis()
 {
-    int64_t now = (boost::posix_time::microsec_clock::universal_time() -
-                   boost::posix_time::ptime(boost::gregorian::date(1970,1,1))).total_milliseconds();
-    assert(now > 0);
-    return now;
-}
-
-int64_t GetSystemTimeInSeconds()
-{
-    return GetTimeMicros()/1000000;
+    return (boost::posix_time::ptime(boost::posix_time::microsec_clock::universal_time()) -
+            boost::posix_time::ptime(boost::gregorian::date(1970, 1, 1)))
+        .total_milliseconds();
 }
 
 int64_t GetTimeMicros()
 {
-    int64_t now = (boost::posix_time::microsec_clock::universal_time() -
-                   boost::posix_time::ptime(boost::gregorian::date(1970,1,1))).total_microseconds();
-    assert(now > 0);
-    return now;
+    return (boost::posix_time::ptime(boost::posix_time::microsec_clock::universal_time()) -
+            boost::posix_time::ptime(boost::gregorian::date(1970, 1, 1)))
+        .total_microseconds();
 }
 
 void MilliSleep(int64_t n)

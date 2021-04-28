@@ -1,10 +1,11 @@
 // Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_HDCHAIN_H
-#define fls_HDCHAIN_H
+#ifndef FLS_HDCHAIN_H
+#define FLS_HDCHAIN_H
 
 #include "key.h"
 
@@ -73,4 +74,4 @@ public:
     }
 };
 
-#endif // fls_HDCHAIN_H
+#endif // FLS_HDCHAIN_H

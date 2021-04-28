@@ -6,10 +6,10 @@
 
 import os
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import get_datadir_path
 
-class ConfArgsTest(flsTestFramework):
+class ConfArgsTest(FlsTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

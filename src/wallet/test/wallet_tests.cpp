@@ -1,13 +1,13 @@
 // Copyright (c) 2012-2014 The Bitcoin Core developers
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "wallet/test/wallet_test_fixture.h"
 
 #include "consensus/merkle.h"
-#include "rpc/server.h"
 #include "txmempool.h"
 #include "validation.h"
 #include "wallet/wallet.h"
@@ -17,12 +17,6 @@
 #include <vector>
 
 #include <boost/test/unit_test.hpp>
-#include <univalue.h>
-
-extern UniValue importmulti(const JSONRPCRequest& request);
-extern UniValue dumpwallet(const JSONRPCRequest& request);
-extern UniValue importwallet(const JSONRPCRequest& request);
-
 
 // how many times to run all the tests to have a chance to catch errors that only show up with particular random shuffles
 #define RUN_TESTS 100
@@ -312,142 +306,6 @@ BOOST_AUTO_TEST_CASE(coin_selection_tests)
         }
     }
     empty_wallet();
-}
-
-static void AddKey(CWallet& wallet, const CKey& key)
-{
-    LOCK(wallet.cs_wallet);
-    wallet.AddKeyPubKey(key, key.GetPubKey());
-}
-
-BOOST_FIXTURE_TEST_CASE(rescan, TestChain100Setup)
-{
-    // Cap last block file size, and mine new block in a new block file.
-    CBlockIndex* const nullBlock = nullptr;
-    CBlockIndex* oldTip = chainActive.Tip();
-    GetBlockFileInfo(oldTip->GetBlockPos().nFile)->nSize = MAX_BLOCKFILE_SIZE;
-    CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey()));
-    CBlockIndex* newTip = chainActive.Tip();
-
-    LOCK(cs_main);
-
-    // Verify ScanForWalletTransactions picks up transactions in both the old
-    // and new block files.
-    {
-        CWallet wallet;
-        WITH_LOCK(wallet.cs_wallet, wallet.SetLastBlockProcessed(newTip); );
-        AddKey(wallet, coinbaseKey);
-        BOOST_CHECK_EQUAL(nullBlock, wallet.ScanForWalletTransactions(oldTip, nullptr));
-        BOOST_CHECK_EQUAL(wallet.GetImmatureBalance(), 500 * COIN);
-    }
-
-    // !TODO: Prune the older block file.
-    /*
-    PruneOneBlockFile(oldTip->GetBlockPos().nFile);
-    UnlinkPrunedFiles({oldTip->GetBlockPos().nFile});
-
-    // Verify ScanForWalletTransactions only picks transactions in the new block
-    // file.
-    {
-        CWallet wallet;
-        AddKey(wallet, coinbaseKey);
-        BOOST_CHECK_EQUAL(oldTip, wallet.ScanForWalletTransactions(oldTip, nullptr));
-        BOOST_CHECK_EQUAL(wallet.GetImmatureBalance(), 50 * COIN);
-    }
-    */
-
-    // Verify importmulti RPC returns failure for a key whose creation time is
-    // before the missing block, and success for a key whose creation time is
-    // after.
-    {
-        CWallet wallet;
-        WITH_LOCK(wallet.cs_wallet, wallet.SetLastBlockProcessed(newTip); );
-        CWallet *backup = ::pwalletMain;
-        ::pwalletMain = &wallet;
-        UniValue keys;
-        keys.setArray();
-        UniValue key;
-        key.setObject();
-        key.pushKV("scriptPubKey", HexStr(GetScriptForRawPubKey(coinbaseKey.GetPubKey())));
-        key.pushKV("timestamp", 0);
-        key.pushKV("internal", UniValue(true));
-        keys.push_back(key);
-        key.clear();
-        key.setObject();
-        CKey futureKey;
-        futureKey.MakeNewKey(true);
-        key.pushKV("scriptPubKey", HexStr(GetScriptForRawPubKey(futureKey.GetPubKey())));
-        key.pushKV("timestamp", newTip->GetBlockTimeMax() + TIMESTAMP_WINDOW + 1);
-        key.pushKV("internal", UniValue(true));
-        keys.push_back(key);
-        JSONRPCRequest request;
-        request.params.setArray();
-        request.params.push_back(keys);
-
-        UniValue response = importmulti(request);
-        // !TODO: after pruning, check that the rescan for the first key fails.
-        BOOST_CHECK_EQUAL(response.write(), "[{\"success\":true},{\"success\":true}]");
-        ::pwalletMain = backup;
-    }
-}
-
-// Verify importwallet RPC starts rescan at earliest block with timestamp
-// greater or equal than key birthday. Previously there was a bug where
-// importwallet RPC would start the scan at the latest block with timestamp less
-// than or equal to key birthday.
-BOOST_FIXTURE_TEST_CASE(importwallet_rescan, TestChain100Setup)
-{
-    CWallet *pwalletMainBackup = ::pwalletMain;
-    // Create one block
-    const int64_t BLOCK_TIME = chainActive.Tip()->GetBlockTimeMax() + 15;
-    SetMockTime(BLOCK_TIME);
-    coinbaseTxns.emplace_back(*CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
-
-    // Set key birthday to block time increased by the timestamp window, so
-    // rescan will start at the block time.
-    const int64_t KEY_TIME = BLOCK_TIME + TIMESTAMP_WINDOW;
-    SetMockTime(KEY_TIME);
-    coinbaseTxns.emplace_back(*CreateAndProcessBlock({}, GetScriptForRawPubKey(coinbaseKey.GetPubKey())).vtx[0]);
-
-    // Import key into wallet and call dumpwallet to create backup file.
-    {
-        CWallet wallet;
-        {
-            LOCK(wallet.cs_wallet);
-            wallet.mapKeyMetadata[coinbaseKey.GetPubKey().GetID()].nCreateTime = KEY_TIME;
-            wallet.AddKeyPubKey(coinbaseKey, coinbaseKey.GetPubKey());
-        }
-
-        JSONRPCRequest request;
-        request.params.setArray();
-        request.params.push_back((pathTemp / "wallet.backup").string());
-        ::pwalletMain = &wallet;
-        ::dumpwallet(request);
-    }
-
-    // Call importwallet RPC and verify all blocks with timestamps >= BLOCK_TIME
-    // were scanned, and no prior blocks were scanned.
-    {
-        CWallet wallet;
-
-        JSONRPCRequest request;
-        request.params.setArray();
-        request.params.push_back((pathTemp / "wallet.backup").string());
-        ::pwalletMain = &wallet;
-        ::importwallet(request);
-
-        LOCK(wallet.cs_wallet);
-        BOOST_CHECK_EQUAL(wallet.mapWallet.size(), 2);
-        BOOST_CHECK_EQUAL(coinbaseTxns.size(), 102);
-        for (size_t i = 0; i < coinbaseTxns.size(); ++i) {
-            bool found = wallet.GetWalletTx(coinbaseTxns[i].GetHash());
-            bool expected = i >= 100;
-            BOOST_CHECK_EQUAL(found, expected);
-        }
-    }
-
-    SetMockTime(0);
-    ::pwalletMain = pwalletMainBackup;
 }
 
 void removeTxFromMempool(CWalletTx& wtx)

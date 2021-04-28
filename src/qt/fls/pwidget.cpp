@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,13 +10,13 @@
 #include <QRunnable>
 #include <QThreadPool>
 
-PWidget::PWidget(flsGUI* _window, QWidget *parent) : QWidget((parent) ? parent : _window), window(_window) { init(); }
+PWidget::PWidget(FLSGUI* _window, QWidget *parent) : QWidget((parent) ? parent : _window), window(_window) { init(); }
 PWidget::PWidget(PWidget* parent) : QWidget(parent), window(parent->getWindow()) { init(); }
 
 void PWidget::init()
 {
     if (window)
-        connect(window, &flsGUI::themeChanged, this, &PWidget::onChangeTheme);
+        connect(window, &FLSGUI::themeChanged, this, &PWidget::onChangeTheme);
 }
 
 void PWidget::setClientModel(ClientModel* model)

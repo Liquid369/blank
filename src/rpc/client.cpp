@@ -1,7 +1,9 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -116,8 +118,6 @@ static const CRPCConvertParam vRPCConvertParams[] = {
     { "importaddress", 2 },
     { "importaddress", 3 },
     { "importpubkey", 2 },
-    { "importmulti", 0 },
-    { "importmulti", 1 },
     { "exportsaplingkey", 1 },
     { "importsaplingkey", 2 },
     { "importsaplingviewingkey", 2 },
@@ -151,8 +151,6 @@ static const CRPCConvertParam vRPCConvertParams[] = {
     { "getblockindexstats", 1 },
     { "getfeeinfo", 0 },
     { "getsupplyinfo", 0 },
-    { "rescanblockchain", 0},
-    { "rescanblockchain", 1},
 };
 
 class CRPCConvertTable

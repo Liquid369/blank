@@ -122,12 +122,12 @@
         <translation>Adrese za primanje</translation>
     </message>
     <message>
-        <source>These are your fls addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>To su vaše fls adrese za slanje plaćanja. Uvijek provjerite iznos i adresu primatelja prije slanja novca.</translation>
+        <source>These are your FLITS addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>To su vaše FLITS adrese za slanje plaćanja. Uvijek provjerite iznos i adresu primatelja prije slanja novca.</translation>
     </message>
     <message>
-        <source>These are your fls addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>To su vaše fls adrese za primanje uplata. Preporuča se upotreba nove adrese primatelja za svaku transakciju.</translation>
+        <source>These are your FLITS addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>To su vaše FLITS adrese za primanje uplata. Preporuča se upotreba nove adrese primatelja za svaku transakciju.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -364,8 +364,8 @@ za staking</translation>
         <translation>PONIŠTI</translation>
     </message>
     <message>
-        <source>fls will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your PIVs from being stolen by malware infecting your computer.</source>
-        <translation>fls će se sada zatvoriti kako bi se dovršio proces šifriranja. Ne zaboravite da šifriranje Vašeg novčanika ne može u potpunosti zaštititi vaše FLS od krađje zlonamjernog softvera koji zarazi vaše računalo.</translation>
+        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
+        <translation>FLITS će se sada zatvoriti kako bi se dovršio proces šifriranja. Ne zaboravite da šifriranje Vašeg novčanika ne može u potpunosti zaštititi vaše FLS od krađje zlonamjernog softvera koji zarazi vaše računalo.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -651,6 +651,10 @@ za staking</translation>
         <translation>da</translation>
     </message>
     <message>
+        <source>This label turns red, if recipient receives an amount smaller than %1 (transparent) / %2 (shield).</source>
+        <translation>Ova oznaka postaje crvena ako primatelj primi iznos manji od %1 (transparentan) / %2 (zaštićeni).</translation>
+    </message>
+    <message>
         <source>Can vary +/- %1 u%2 per input.</source>
         <translation>Može varirati +/- %1 u%2 po unosu.</translation>
     </message>
@@ -668,7 +672,7 @@ za staking</translation>
     </message>
     <message>
         <source>no</source>
-        <translation>ne</translation>
+        <translation>nema</translation>
     </message>
     <message>
         <source>This label turns red, if the transaction size is greater than 1000 bytes.</source>
@@ -742,9 +746,10 @@ za staking</translation>
         <translation>Greška pri učitavanju delegacija: %1</translation>
     </message>
     <message>
-        <source>You can delegate your PIVs, letting a hot node (24/7 online node)
+        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>Možete delegirati vaše novčiće, dozvoljavajući drugom novčaniku (koji radi 24/7) staking u vaše ime, dok su vaši novčići spremljeni na sigurnom.</translation>
+        <translation>Možete delegirati vaše novčiće, dozvoljavajući drugom novčaniku (koji radi 24/7)
+staking u vaše ime, dok su vaši novčići spremljeni na sigurnom.</translation>
     </message>
     <message>
         <source>Enter owner address</source>
@@ -780,7 +785,7 @@ stake on your behalf, while you keep the keys securely offline.</source>
     </message>
     <message>
         <source>Select %1 outputs to delegate.</source>
-        <translation>Označi %1 izlaze za delegirati.</translation>
+        <translation>Označi %1 novčiće za delegirati.</translation>
     </message>
     <message>
         <source>Create Cold Staking Address</source>
@@ -953,7 +958,7 @@ vlasnika</translation>
     </message>
     <message>
         <source>View your account's history</source>
-        <translation>Pogledajte vašu povijest računa</translation>
+        <translation>Pogledajte povijest vašeg novčanika</translation>
     </message>
     <message>
         <source>How to get FLS</source>
@@ -978,10 +983,6 @@ vlasnika</translation>
     <message>
         <source>Filter by</source>
         <translation>Filtriraj prema</translation>
-    </message>
-    <message>
-        <source>Amount of FLS and zFLS staked.</source>
-        <translation>Iznos FLS i zFLS koji se stake-a.</translation>
     </message>
     <message>
         <source>Please wait until the wallet is fully synced to see your correct balance</source>
@@ -1076,8 +1077,8 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>Uredi adresu pošiljatelja</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid fls address.</source>
-        <translation>Unesena adresa "%1" nije ispravna fls adresa.</translation>
+        <source>The entered address "%1" is not a valid FLITS address.</source>
+        <translation>Unesena adresa "%1" nije ispravna FLITS adresa.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1129,16 +1130,16 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>verzija</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-bit)</translation>
     </message>
     <message>
-        <source>About fls Core</source>
-        <translation>O fls Core-u</translation>
+        <source>About FLITS Core</source>
+        <translation>O FLITS Core-u</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1192,16 +1193,16 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>Dobrodošli</translation>
     </message>
     <message>
-        <source>Welcome to fls Core.</source>
-        <translation>Dobrodošli u fls Core.</translation>
+        <source>Welcome to FLITS Core.</source>
+        <translation>Dobrodošli u FLITS Core.</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where fls Core will store its data.</source>
-        <translation>Budući da je prvi put pokrenut program, možete odabrati gdje će fls Core pohraniti svoje podatke.</translation>
+        <source>As this is the first time the program is launched, you can choose where FLITS Core will store its data.</source>
+        <translation>Budući da je prvi put pokrenut program, možete odabrati gdje će FLITS Core pohraniti svoje podatke.</translation>
     </message>
     <message>
-        <source>fls Core will download and store a copy of the fls block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>fls Core preuzima i pohranjuje kopiju fls blok-lanca. Barem će %1GB podataka biti pohranjeno u ovom direktoriju i to će s vremenom rasti. Novčanik će također biti pohranjena u ovom direktoriju.</translation>
+        <source>FLITS Core will download and store a copy of the FLITS block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>FLITS Core preuzima i pohranjuje kopiju FLITS blok-lanca. Barem će %1GB podataka biti pohranjeno u ovom direktoriju i to će s vremenom rasti. Novčanik će također biti pohranjena u ovom direktoriju.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1220,8 +1221,8 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>OK</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1328,8 +1329,8 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>Stvori novi Masternode Controller</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a fls Masternode you must dedicate 10,000 FLS (the unit of fls) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Da biste stvoriti fls Masternode, morate odvojiti 10,000 FLS (jedinica fls-a) prema mreži (međjutim, ti novčići su i dalje vaši i nikad neće napustiti vaše vlasništvo). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt; Možete isključiti node i otključati novčiće u bilo kojem trenutku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Da biste stvoriti FLITS Masternode, morate odvojiti 10,000 FLS (jedinica FLS-a) prema mreži (međjutim, ti novčići su i dalje vaši i nikad neće napustiti vaše vlasništvo). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt; Možete isključiti node i otključati novčiće u bilo kojem trenutku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1799,8 +1800,8 @@ STAKING</translation>
         <translation>Ako onemogućite potrošnju nepotvrđjenog ostatka, ostatak od transakcije &lt;br/&gt;ne može se koristiti dok ta transakcija nema barem jednu potvrdu. &lt;br/&gt;Ovo takođjer utječe na izračun vašeg salda.</translation>
     </message>
     <message>
-        <source>Automatically open the fls client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automatski otvorite fls klijentski ulaz na ruteru. To funkcionira samo kada vaš ruter podržava UPnP i omogućen je.</translation>
+        <source>Automatically open the FLITS client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatski otvorite FLITS klijentski ulaz na ruteru. To funkcionira samo kada vaš ruter podržava UPnP i omogućen je.</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1819,12 +1820,12 @@ STAKING</translation>
         <translation>Stručnjak</translation>
     </message>
     <message>
-        <source>Automatically start fls after logging in to the system.</source>
-        <translation>Automatski pokrenite fls nakon prijave u sustav.</translation>
+        <source>Automatically start FLITS after logging in to the system.</source>
+        <translation>Automatski pokrenite FLITS nakon prijave u sustav.</translation>
     </message>
     <message>
-        <source>&amp;Start fls on system login</source>
-        <translation>&amp;Pokrenite fls pri pokretanju sustava</translation>
+        <source>&amp;Start FLITS on system login</source>
+        <translation>&amp;Pokrenite FLITS pri pokretanju sustava</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1851,14 +1852,14 @@ STAKING</translation>
         <translation>&amp;Mreža</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting fls.</source>
-        <translation>Jezik korisničkog sučelja možete postaviti ovdje. Postavke će stupiti na snagu nakon ponovnog pokretanja fls novčanika.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
+        <translation>Jezik korisničkog sučelja možete postaviti ovdje. Postavke će stupiti na snagu nakon ponovnog pokretanja FLITS novčanika.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/fls-project/fls-project-translations</source>
+https://www.transifex.com/flitsnode/flits-core-project-translations</source>
         <translation>Jezik nedostaje ili prijevod nije potpun? Pomozite s prijevodom ovdje:
-https://www.transifex.com/fls-project/fls-project-translations</translation>
+https://www.transifex.com/flitsnode/flits-core-project-translations</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1901,8 +1902,8 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
         <translation>Prag dijeljenja Stake-a:</translation>
     </message>
     <message>
-        <source>Connect to the fls network through a SOCKS5 proxy.</source>
-        <translation>Povežite se s fls mrežom putem SOCKS5 proxy poslužitelja.</translation>
+        <source>Connect to the FLITS network through a SOCKS5 proxy.</source>
+        <translation>Povežite se s FLITS mrežom putem SOCKS5 proxy poslužitelja.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -2046,10 +2047,10 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
     </message>
 </context>
 <context>
-    <name>flsGUI</name>
+    <name>FLSGUI</name>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -2076,8 +2077,12 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
         <translation>Napusti aplikaciju</translation>
     </message>
     <message>
-        <source>fls Core client</source>
-        <translation>PIVIX Core Klijent</translation>
+        <source>FLITS Core client</source>
+        <translation>FLSIX Core Klijent</translation>
+    </message>
+    <message>
+        <source>Alert!</source>
+        <translation>Oprez!</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2147,8 +2152,8 @@ Adresa: %4
         <translation>Ne može se pokrenuti fls: clik-to-pay handler</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid fls address or malformed URI parameters.</source>
-        <translation>URI se ne može analizirati! To može biti uzrokovana nevažećom fls adresom ili nepravilnim URI parametrima.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
+        <translation>URI se ne može analizirati! To može biti uzrokovana nevažećom FLITS adresom ili nepravilnim URI parametrima.</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -2237,8 +2242,8 @@ Adresa: %4
         <translation>Iznos</translation>
     </message>
     <message>
-        <source>Enter fls address (e.g. %1)</source>
-        <translation>Upišite fls adresu (npr. %1)</translation>
+        <source>Enter FLITS address (e.g. %1)</source>
+        <translation>Upišite FLITS adresu (npr. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2281,12 +2286,12 @@ Adresa: %4
         <translation>%1 ms</translation>
     </message>
     <message>
-        <source>A fatal error occurred. fls can no longer continue safely and will quit.</source>
-        <translation>Dogodila se fatalna pogreška. fls ne može sigurno nastaviti i izaći će.</translation>
+        <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
+        <translation>Dogodila se fatalna pogreška. FLITS ne može sigurno nastaviti i izaći će.</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -2297,16 +2302,8 @@ Adresa: %4
         <translation>Greška: Ne mogu parsirati konfiguracijsku datoteku: %1. Koristite samo sintaksu key=value.</translation>
     </message>
     <message>
-        <source>Error: Invalid combination of -regtest and -testnet.</source>
-        <translation>Greška: Neispravna kombinacija -regtest i -testnet.</translation>
-    </message>
-    <message>
         <source>Error reading masternode configuration file: %1</source>
         <translation>Greška pri čitanju masternode konfiguracijske datoteke: %1</translation>
-    </message>
-    <message>
-        <source>fls Core didn't yet exit safely...</source>
-        <translation>fls Core nije ugašen sigurno...</translation>
     </message>
     <message>
         <source>Contact</source>
@@ -2564,8 +2561,8 @@ Adresa: %4
         <translation>Block chain</translation>
     </message>
     <message>
-        <source>Open the fls debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Otvorite fls debug log datoteku iz aktualnog direktorija podataka. To može potrajati nekoliko sekundi za velike datoteke zapisnika.</translation>
+        <source>Open the FLITS debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Otvorite FLITS debug log datoteku iz aktualnog direktorija podataka. To može potrajati nekoliko sekundi za velike datoteke zapisnika.</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -2788,8 +2785,8 @@ Adresa: %4
         <translation>Iz:</translation>
     </message>
     <message>
-        <source>Welcome to the fls RPC console.</source>
-        <translation>Dobrodošli na fls RPC konzolu.</translation>
+        <source>Welcome to the FLITS RPC console.</source>
+        <translation>Dobrodošli na FLITS RPC konzolu.</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -2993,7 +2990,7 @@ pokušajte otključati novčanik</translation>
     </message>
     <message>
         <source>Address label saved</source>
-        <translation>Naziv adrese spremljen</translation>
+        <translation>Oznaka adrese spremljena</translation>
     </message>
     <message>
         <source>Error storing address label</source>
@@ -3048,7 +3045,7 @@ pokušajte otključati novčanik</translation>
     </message>
     <message>
         <source>(no label)</source>
-        <translation>(bez oznake)</translation>
+        <translation>(nema oznake)</translation>
     </message>
     <message>
         <source>(no message)</source>
@@ -3074,8 +3071,8 @@ pokušajte otključati novčanik</translation>
         <translation>FLS</translation>
     </message>
     <message>
-        <source>Instead of sharing only a fls address, you can create a payment request, bundling up more information</source>
-        <translation>Umjesto da dijelite samo fls adresu, možete stvoriti zahtjev za plaćanjem, skupljajući više informacija</translation>
+        <source>Instead of sharing only a FLITS address, you can create a payment request, bundling up more information</source>
+        <translation>Umjesto da dijelite samo FLITS adresu, možete stvoriti zahtjev za plaćanjem, skupljajući više informacija</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -3165,8 +3162,8 @@ pokušajte otključati novčanik</translation>
         <translation>Prilagođjena adresa za ostatak</translation>
     </message>
     <message>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" fls address</source>
-        <translation>Ostatak vrijednosti koja proizlazi iz ulaza umanjen za izlaznu vrijednost ide na fls adresu za "ostatak"</translation>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" FLITS address</source>
+        <translation>Ostatak vrijednosti koja proizlazi iz ulaza umanjen za izlaznu vrijednost ide na FLITS adresu za "ostatak"</translation>
     </message>
     <message>
         <source>SAVE</source>
@@ -3480,11 +3477,11 @@ Uz naknadu %2
 </translation>
     </message>
     <message>
-        <source>Error generating address to shield PIVs</source>
+        <source>Error generating address to shield FLSs</source>
         <translation>Pogreška pri generiranju adrese za zaštićene FLS-ove</translation>
     </message>
     <message>
-        <source>You don't have any transparent PIVs to shield.</source>
+        <source>You don't have any transparent FLSs to shield.</source>
         <translation>Nemate nikakvih transparentnih FLS za zaštititi.</translation>
     </message>
     <message>
@@ -3546,7 +3543,7 @@ Uz naknadu %2
         <source>Keep your wallet safe by doing regular backups and storing your backup file externally.
 This option creates a wallet.dat file that can be used to recover your whole balance (transactions and addresses) on another device</source>
         <translation>Čuvajte svoj novčanik redovitim sigurnosnim kopijama i vanjskom pohranom sigurnosne kopije.
-Ova opcija stvara datoteku wallet.dat koja se može koristiti za oporavak cijelog stanja (transakcija i adresa) na drugom uređaju</translation>
+Ova opcija stvara datoteku wallet.dat koja se može koristiti za oporavak cijelog stanja (transakcija i adresa) na drugom računalu</translation>
     </message>
     <message>
         <source>Select folder...</source>
@@ -3556,7 +3553,7 @@ Ova opcija stvara datoteku wallet.dat koja se može koristiti za oporavak cijelo
         <source>This will decrypt the whole wallet data and encrypt it back with the new passphrase.
 Remember to write it down and store it safely, otherwise you might lose access to your funds</source>
         <translation>Ovo će dekriptirati cijele podatke novčanika i kriptirati ih nazad s novom lozinkom.
-Ne zaboravite zapisati i sigurno pohraniti lozinku, jer u protivnom možete izgubiti pristup svojim sredstvima</translation>
+Ne zaboravite zapisati i sigurno pohraniti novu lozinku, jer u protivnom ćete izgubiti pristup svojim sredstvima</translation>
     </message>
     <message>
         <source>Change Passphrase</source>
@@ -3598,9 +3595,9 @@ Ne zaboravite zapisati i sigurno pohraniti lozinku, jer u protivnom možete izgu
         <translation>BIP38 alat</translation>
     </message>
     <message>
-        <source>Encrypt your fls addresses (key pair actually) using BIP38 encryption.
+        <source>Encrypt your FLITS addresses (key pair actually) using BIP38 encryption.
 Using this mechanism you can share your keys without middle-man risk, only need to store your passphrase safely</source>
-        <translation>Kriptirajte vašu fls adresu (odnosno par ključeva) koristeći BIP38 enkripciju.
+        <translation>Kriptirajte vašu FLITS adresu (odnosno par ključeva) koristeći BIP38 enkripciju.
 Korištenjem ovog mehanizma možete dijeliti vaše ključeve bez rizika posredništva, samo trebate sigurno pohraniti lozinku</translation>
     </message>
     <message>
@@ -3636,8 +3633,8 @@ Korištenjem ovog mehanizma možete dijeliti vaše ključeve bez rizika posredni
         <translation>DEŠIFRIRAJ KLJUČ</translation>
     </message>
     <message>
-        <source>fls address</source>
-        <translation>fls adresa</translation>
+        <source>FLITS address</source>
+        <translation>FLITS adresa</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3769,8 +3766,8 @@ Verify that you have installed a predetermined text editor.</source>
 Provjerite jeste li instalirali unaprijed određjeni uređjivač teksta.</translation>
     </message>
     <message>
-        <source>Welcome to the fls RPC console.</source>
-        <translation>Dobrodošli na fls RPC konzolu.</translation>
+        <source>Welcome to the FLITS RPC console.</source>
+        <translation>Dobrodošli na FLITS RPC konzolu.</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
@@ -3852,7 +3849,8 @@ Provjerite jeste li instalirali unaprijed određjeni uređjivač teksta.</transl
     </message>
     <message>
         <source>Export Accounting</source>
-        <translation>Izvezi računovodstvene podatke</translation>
+        <translation>Izvezi računovodstvene
+podatke</translation>
     </message>
     <message>
         <source>Export your wallet's accounting data to a csv file.</source>
@@ -3879,12 +3877,12 @@ Provjerite jeste li instalirali unaprijed određjeni uređjivač teksta.</transl
         <translation>Izvezi popis adresa</translation>
     </message>
     <message>
-        <source>fls_tx_csv_export(*.csv)</source>
-        <translation>fls_transakcije_csv_izvoz(*.csv)</translation>
+        <source>FLS_tx_csv_export(*.csv)</source>
+        <translation>FLS_transakcije_csv_izvoz(*.csv)</translation>
     </message>
     <message>
-        <source>fls_addresses_csv_export(*.csv)</source>
-        <translation>fls_adrese_csv_izvoz(*.csv)</translation>
+        <source>FLS_addresses_csv_export(*.csv)</source>
+        <translation>FLS_adrese_csv_izvoz(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -3954,24 +3952,24 @@ Došlo je do greške prilikom spremanja popisa adresa u %1. Molimo pokušajte po
         <translation>Obrazac</translation>
     </message>
     <message>
-        <source>1) What is fls?</source>
-        <translation>1) Što je fls?</translation>
+        <source>1) What is FLS?</source>
+        <translation>1) Što je FLS?</translation>
     </message>
     <message>
         <source>2) Why are my FLS unspendable?</source>
         <translation>2) Zašto se moji FLS ne mogu potrošiti?</translation>
     </message>
     <message>
-        <source>https://fls.org/</source>
-        <translation>https://fls.org/</translation>
+        <source>https://flitswallet.app/</source>
+        <translation>https://flitswallet.app/</translation>
     </message>
     <message>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <source>What is fls?</source>
-        <translation>Što je fls?</translation>
+        <source>What is FLS?</source>
+        <translation>Što je FLS?</translation>
     </message>
     <message>
         <source>2</source>
@@ -3984,19 +3982,19 @@ Došlo je do greške prilikom spremanja popisa adresa u %1. Molimo pokušajte po
     <message>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Newly received fls requires 6 confirmations on the network
+                           Newly received FLITS requires 6 confirmations on the network
                            to become eligible for spending which can take ~6 minutes.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           Your fls wallet also needs to be completely synchronized
+                           Your FLITS wallet also needs to be completely synchronized
                            to see and spend balances on the network.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
         <translation>
 &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-Novoprimljeni fls zahtjeva 6 potvrda na mreži
+Novoprimljeni FLITS zahtjeva 6 potvrda na mreži
 da bi se mogao potrošiti što može potrajati ~6 minuta.
 &lt;/p&gt;&lt;p align="justify"&gt;
-Vaš fls novčanik takođjer treba biti u potpunosti sinkroniziran
+Vaš FLITS novčanik takođjer treba biti u potpunosti sinkroniziran
 da biste vidjeli i mogli potrošiti sredstva na mreži.
 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </translation>
@@ -4010,8 +4008,8 @@ da biste vidjeli i mogli potrošiti sredstva na mreži.
         <translation>Kako stakeat FLS?</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You must have a balance of fls with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (fls-cli); the command &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Provjerite da je vaš novčanik u potpunosti sinkroniziran i da koristite najnoviju verziju novčanika. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Morate imati iznos fls novčića s najmanje 600 potvrda na blockchainu. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Novčanik mora biti upaljen i otključan za staking. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Kada se prate svi ti koraci, staking bi trebao biti omogućen. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Status stakinga možete vidjeti prolaskom miša preko staking ikonice u gornjem desnom kutu. Staking ikona (kutija) će svijetliti i prikazivati &amp;quot;Staking omogućen&amp;quot; i naznačiti da se aktivno stake-a. Koristeći sučelje naredbene trake (fls-cli); naredba &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; će potvrditi da je staking aktivan. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You must have a balance of FLITS with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (fls-cli); the command &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Provjerite da je vaš novčanik u potpunosti sinkroniziran i da koristite najnoviju verziju novčanika. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Morate imati iznos FLITS novčića s najmanje 600 potvrda na blockchainu. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Novčanik mora biti upaljen i otključan za staking. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Kada se prate svi ti koraci, staking bi trebao biti omogućen. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Status stakinga možete vidjeti prolaskom miša preko staking ikonice u gornjem desnom kutu. Staking ikona (kutija) će svijetliti i prikazivati &amp;quot;Staking omogućen&amp;quot; i naznačiti da se aktivno stake-a. Koristeći sučelje naredbene trake (fls-cli); naredba &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; će potvrditi da je staking aktivan. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>4</source>
@@ -4032,14 +4030,14 @@ da biste vidjeli i mogli potrošiti sredstva na mreži.
     <message>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           fls is a form of digital online money using blockchain technology
+                           FLITS is a form of digital online money using blockchain technology
                            that can be easily transferred globally, instantly, and with near
-                           zero fees.  fls incorporates market leading security &amp;
+                           zero fees.  FLITS incorporates market leading security &amp;
                            privacy and is also the first PoS (Proof of Stake) Cryptocurrency
                            to implement Sapling(SHIELD), a zk-SNARKs based privacy protocol.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           fls utilizes a Proof of Stake (PoS) consensus system algorithm,
-                           allowing all owners of fls to participate in earning block rewards
+                           FLITS utilizes a Proof of Stake (PoS) consensus system algorithm,
+                           allowing all owners of FLITS to participate in earning block rewards
                            while securing the network with full node wallets, as well as to
                            run Masternodes to create and vote on proposals.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
@@ -4047,38 +4045,16 @@ da biste vidjeli i mogli potrošiti sredstva na mreži.
         <translation>
 
 &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-fls je oblik digitalnog online novca koji koristi blockchain tehnologiju
+FLITS je oblik digitalnog online novca koji koristi blockchain tehnologiju
 koji se lako može slati i primati globalno, trenutno, i gotovo bez naknade.
-fls uključuje vodeću sigurnost  i privatnost na tržištu
+FLITS uključuje vodeću sigurnost  i privatnost na tržištu
 i takođjer je prva PoS (Proof of Stake) kriptovaluta
 koja je implementirala Sapling (SHIELD) i anoniman zk-SNARKs baziran protokol.
 &lt;/p&gt;&lt;p align="justify"&gt;
-fls koristi algoritam konsenzusa Proof of Stake (PoS),
-omogućujući svim vlasnicima fls-a sudjelovanje u zarađi blokovih nagrada
+FLITS koristi algoritam konsenzusa Proof of Stake (PoS),
+omogućujući svim vlasnicima FLS-a sudjelovanje u zarađi blokovih nagrada
 dok osiguravaju mrežu full node novčanicima, kao i
 vodjenje Masternode-ova za stvaranje i glasanje o prijedlozima.
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-</translation>
-    </message>
-    <message>
-        <source>
-                           &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           We have support channels in most of our official chat groups, for example
-                           &lt;a style='color: #b088ff' href='https://discord.fls.org'&gt;
-                           #support in our Discord&lt;/a&gt;.
-                           If you prefer to submit a ticket, You can do so at
-                           &lt;a style='color: #b088ff' href='https://fls.freshdesk.com'&gt;
-                           our Freshdesk support site&lt;/a&gt;.
-                           &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-                         </source>
-        <translation>
-&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-Imamo korisničku podršku u većini naših službenih chat grupa, na primjer
-&lt;a style='color: #b088ff' href='https://discord.fls.org'&gt;
-#support na Discordu&lt;/a&gt;.
-Možete i podnijeti zahtjev, a to možete
-&lt;a style='color: #b088ff' href='https://fls.freshdesk.com'&gt;
-na našoj Freshdesk stranici za podršku&lt;/a&gt;.
 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </translation>
     </message>
@@ -4095,94 +4071,9 @@ na našoj Freshdesk stranici za podršku&lt;/a&gt;.
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Masternode Controller novčanik je mjesto gdje zalog od 10,000 FLS može stajati tijekom Controller-Remote podešavanja masternode-a. To je novčanik koji može aktivirati Remote masternode novčanik(e) i omogućiti Vam držanje zaloga novčića offline dok Remote masternode novčanik ostaje online.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>
-                           &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           A masternode is a computer running a full node fls core wallet with a
-                           requirement of 10,000 FLS secured collateral to provide extra services
-                           to the network and in return, receive a portion of the block reward
-                           regularly.  These services include:
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-
-                           &lt;ul&gt;
-                           &lt;li&gt;Instant transactions (SwiftX)&lt;/li&gt;
-                           &lt;li&gt;A decentralized governance (Proposal Voting)&lt;/li&gt;
-                           &lt;li&gt;A decentralized budgeting system (Treasury)&lt;/li&gt;
-                           &lt;li&gt;Validation of transactions within each block&lt;/li&gt;
-                           &lt;li&gt;Act as an additional full node in the network&lt;/li&gt;
-                           &lt;/ul&gt;
-
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-                           For providing such services, masternodes are also paid a certain portion
-                           of reward for each block. This can serve as a passive income to the
-                           masternode owners minus their running cost.
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-
-                           Masternode Perks:
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-                           &lt;ul&gt;
-                           &lt;li&gt;Participate in fls Governance&lt;/li&gt;
-                           &lt;li&gt;Earn Masternode Rewards&lt;/li&gt;
-                           &lt;li&gt;Commodity option for future sale&lt;/li&gt;
-                           &lt;li&gt;Help secure the fls network&lt;/li&gt;
-                           &lt;/ul&gt;
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-
-                           Requirements:
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-                           &lt;ul&gt;
-                           &lt;li&gt;10,000 FLS per single Masternode instance&lt;/li&gt;
-                           &lt;li&gt;Must be stored in a core wallet&lt;/li&gt;
-                           &lt;li&gt;Need dedicated IP address&lt;/li&gt;
-                           &lt;li&gt;Masternode wallet to remain online&lt;/li&gt;
-                           &lt;/ul&gt;
-                           &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-                         </source>
-        <translation>
-&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-Masternode je računalo koje pokreće full node fls Core novčanik sa
-zahtjevanih 10,000 FLS-a osiguranog zaloga da pruži dodatne usluge
-mreži, i zauzvrat redovito primi dio nagrade blokova.
-Te usluge uključuju:
-&lt;/p&gt;&lt;p align="justify"&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Trenutne transakcije (SwiftX)&lt;/li&gt;
-&lt;li&gt;Decentralizirano upravljanje (glasanje o zahtjevima)&lt;/li&gt;
-&lt;li&gt;Decentralizirani sustav proračuna (riznica)&lt;/li&gt;
-&lt;li&gt;Validacija transakcija unutar svakog bloka&lt;/li&gt;
-&lt;li&gt;Djeluje kao dodatni full node u mreži&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;/p&gt;&lt;p align="justify"&gt;
-Za pružanje takvih usluga, masternode-ovi bivaju plaćeni odredjenim
-dijelom nagrade za svaki blok. To može služiti kao pasivan dohodak
-vlasnicima masternode-ova umanjeno za troškove održavanja.
-&lt;/p&gt;&lt;p align="justify"&gt;
-
-Povlastice masternode-ova:
-&lt;/p&gt;&lt;p align="justify"&gt;
-&lt;ul&gt;
-&lt;li&gt;Sudjelovanje u upravljanju fls-a&lt;/li&gt;
-&lt;li&gt;Zaradjivanje Masternode nagrada&lt;/li&gt;
-&lt;li&gt;Robna opcija za buduću prodaju&lt;/li&gt;
-&lt;li&gt;Pomaže u osiguravanju fls mreže&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/p&gt;&lt;p align="justify"&gt;
-
-Zahtjevi:
-&lt;/p&gt;&lt;p align="justify"&gt;
-&lt;ul&gt;
-&lt;li&gt;10,000 FLS po svakom Masternode-u&lt;/li&gt;
-&lt;li&gt;Mora biti pohranjem u Core novčaniku&lt;/li&gt;
-&lt;li&gt;Mora biti jedinstvena IP adresa&lt;/li&gt;
-&lt;li&gt;Masternode novčanik treba ostati online&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-</translation>
-    </message>
-    <message>
         <source>Frequently Asked Questions</source>
-        <translation>Najčešće postavljena pitanja</translation>
+        <translation>Najčešće postavljena
+pitanja</translation>
     </message>
     <message>
         <source>Close FAQ</source>
@@ -4319,7 +4210,11 @@ Zahtjevi:
         <source>Out:</source>
         <translation>Iz:</translation>
     </message>
-    </context>
+    <message>
+        <source>No available data</source>
+        <translation>Nema dostupnih podataka</translation>
+    </message>
+</context>
 <context>
     <name>SettingsMainOptionsWidget</name>
     <message>
@@ -4363,8 +4258,8 @@ Zahtjevi:
         <translation>Number of script verification threads</translation>
     </message>
     <message>
-        <source>Start fls on system login</source>
-        <translation>Pokrenite fls pri pokretanju računala</translation>
+        <source>Start FLITS on system login</source>
+        <translation>Pokrenite FLITS pri pokretanju računala</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -4451,8 +4346,8 @@ Jeste li sigurni?
         <translation>PotvrdniOkvir</translation>
     </message>
     <message>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other fls addresses after it matures.</source>
-        <translation>MultiSend vam omogućuje da automatski pošaljete do 100% svog uloga ili nagrade masternode na popis drugih fls adresa nakon što sazriju.</translation>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures.</source>
+        <translation>MultiSend vam omogućuje da automatski pošaljete do 100% svog uloga ili nagrade masternode na popis drugih FLITS adresa nakon što sazriju.</translation>
     </message>
     <message>
         <source>Active</source>
@@ -4555,7 +4450,7 @@ Označite jedan ili oba polja za potvrdu da biste poslali staking i/ili masterno
     </message>
     <message>
         <source>Sign/Verify Message</source>
-        <translation>Potpiši/Ovjeri poruku</translation>
+        <translation>Potpiši/Ovjeri Poruku</translation>
     </message>
     <message>
         <source>Sign</source>
@@ -4578,8 +4473,8 @@ Označite jedan ili oba polja za potvrdu da biste poslali staking i/ili masterno
         <translation>Poruka</translation>
     </message>
     <message>
-        <source>fls address or contact label</source>
-        <translation>fls adresa ili naziv kontakta</translation>
+        <source>FLITS address or contact label</source>
+        <translation>FLITS adresa ili naziv kontakta</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -4765,7 +4660,7 @@ Označite jedan ili oba polja za potvrdu da biste poslali staking i/ili masterno
     </message>
     <message>
         <source>Rescan blockchain file</source>
-        <translation>Preskenirajte blockchain datoteku</translation>
+        <translation>Pretraži blockchain datoteku</translation>
     </message>
     <message>
         <source>Rescan the blockchain for missing wallet transactions</source>
@@ -4848,7 +4743,8 @@ Označite jedan ili oba polja za potvrdu da biste poslali staking i/ili masterno
     </message>
     <message>
         <source>Export Accounting</source>
-        <translation>Izvezi računovodstvene podatke</translation>
+        <translation>Izvezi računovodstvene
+podatke</translation>
     </message>
     <message>
         <source>Tools</source>
@@ -4899,8 +4795,8 @@ Označite jedan ili oba polja za potvrdu da biste poslali staking i/ili masterno
         <translation>Najčešće postavljena pitanja</translation>
     </message>
     <message>
-        <source>About fls</source>
-        <translation>O fls-u</translation>
+        <source>About FLS</source>
+        <translation>O FLS-u</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4938,7 +4834,7 @@ Označite jedan ili oba polja za potvrdu da biste poslali staking i/ili masterno
     </message>
     <message>
         <source>Restart Later</source>
-        <translation>Ponovno pokreni kasnije</translation>
+        <translation>Pokreni kasnije</translation>
     </message>
     <message>
         <source>Options will be applied on next wallet restart</source>
@@ -4970,8 +4866,8 @@ Jeste li sigurni?
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>fls Core is shutting down...</source>
-        <translation>fls Core se zatvara...</translation>
+        <source>FLITS Core is shutting down...</source>
+        <translation>FLITS Core se zatvara...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -5000,8 +4896,8 @@ Jeste li sigurni?
         <translation>Učitavanje...</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
 </context>
 <context>
@@ -5080,33 +4976,13 @@ Jeste li sigurni?
         <source>Staking not active</source>
         <translation>Staking nije aktivan</translation>
     </message>
-    <message numerus="yes">
-        <source>%n active connection(s)</source>
-        <translation><numerusform>%n aktivna veza</numerusform><numerusform>%n aktivnih veza</numerusform><numerusform>%n aktivnih veza</numerusform></translation>
-    </message>
     <message>
         <source>Synchronized - Block: %1</source>
         <translation>Sinkronizirano - Blok: %1</translation>
     </message>
-    <message numerus="yes">
-        <source>%n hour(s)</source>
-        <translation><numerusform>%n sat</numerusform><numerusform>%n sati</numerusform><numerusform>%n sati</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n day(s)</source>
-        <translation><numerusform>%n dan</numerusform><numerusform>%n dana</numerusform><numerusform>%n dana</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n week(s)</source>
-        <translation><numerusform>%n tjedan</numerusform><numerusform>%n tjedana</numerusform><numerusform>%n tjedana</numerusform></translation>
-    </message>
     <message>
         <source>%1 and %2</source>
         <translation>%1 i %2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n year(s)</source>
-        <translation><numerusform>%n godina</numerusform><numerusform>%n godina</numerusform><numerusform>%n godina</numerusform></translation>
     </message>
     <message>
         <source>Wallet Upgrade</source>
@@ -5213,7 +5089,7 @@ stvorit će se nova sigurnosna kopija.
     </message>
     <message>
         <source>Available (Locked included)</source>
-        <translation>Raspoloživo (Zaključani uključeni)</translation>
+        <translation>Raspoloživo (Uključujući zaključane)</translation>
     </message>
     <message>
         <source>The wallet has been successfully upgraded to HD.</source>
@@ -5280,10 +5156,6 @@ stvorit će se nova sigurnosna kopija.
     <message>
         <source>Address</source>
         <translation>Adresa</translation>
-    </message>
-    <message numerus="yes">
-        <source>Open for %n more block(s)</source>
-        <translation><numerusform>Otvoreno još %n blok</numerusform><numerusform>Otvoreno još %n blokova</numerusform><numerusform>Otvoreno još %n blokova</numerusform></translation>
     </message>
     <message>
         <source>Open until %1</source>
@@ -5400,6 +5272,10 @@ stvorit će se nova sigurnosna kopija.
     <message>
         <source>Shielded send to</source>
         <translation>Zaštićeno slanje na</translation>
+    </message>
+    <message>
+        <source>Burned FLSs</source>
+        <translation>Uništeni FLSovi</translation>
     </message>
     <message>
         <source>watch-only</source>
@@ -5639,25 +5515,25 @@ Odaberite manje ulaza pomoću Upravljanja novčićima.</translation>
     </message>
     <message>
         <source>Welcome to
-fls Core Wallet</source>
+FLITS Core Wallet</source>
         <translation>Dobrodošli u
-fls temeljni novčanik</translation>
+FLITS temeljni novčanik</translation>
     </message>
     <message>
-        <source>fls is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>fls je najinovativnija blockchain tehnologija na svijetu bazirana na Proof of Stake tehnologiji. Razvijena je od strane vrlo iskusnih programera i kriptografa.</translation>
+        <source>FLITS is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <translation>FLITS je najinovativnija blockchain tehnologija na svijetu bazirana na Proof of Stake tehnologiji. Razvijena je od strane vrlo iskusnih programera i kriptografa.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - fls believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kao što naš manifest kaže: Privatnost je osnovno ljudsko pravo o kojemu se ne pregovara; korisnicima daje slobodu dijeljenja svojih podataka kad god i s kim god žele - fls vjeruje u suverenitet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - FLITS believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kao što naš manifest kaže: Privatnost je osnovno ljudsko pravo o kojemu se ne pregovara; korisnicima daje slobodu dijeljenja svojih podataka kad god i s kim god žele - FLITS vjeruje u suverenitet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is fls's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>Masternode mreža je mreža drugog sloja fls-a na vrhu blockchaina koja omogućuje našem DAO-u pružanje decentraliziranog upravljanja i riznice.</translation>
+        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <translation>Masternode mreža je mreža drugog sloja FLS-a na vrhu blockchaina koja omogućuje našem DAO-u pružanje decentraliziranog upravljanja i riznice.</translation>
     </message>
     <message>
-        <source>How fls respects your privacy?</source>
-        <translation>Kako fls poštuje Vašu privatnost?</translation>
+        <source>How FLITS respects your privacy?</source>
+        <translation>Kako FLITS poštuje Vašu privatnost?</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -5669,7 +5545,7 @@ fls temeljni novčanik</translation>
     </message>
 </context>
 <context>
-    <name>flits-core</name>
+    <name>fls-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>Dopusti JSON-RPC veze od određenog izvora. Vrijedi za jednu IP (npr. 1.2.3.4), mrežu / mrežnu masku (npr. 1.2.3.4/255.255.255.0) ili mrežu / CIDR (npr. 1.2.3.4/24). Ova se opcija može odrediti više puta</translation>
@@ -5685,10 +5561,6 @@ fls temeljni novčanik</translation>
     <message>
         <source>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</source>
         <translation>Pridržavajte se na navedenu adresu da biste slušali veze JSON-RPC. Koristite [host]: port notation za IPv6. Ova se opcija može odrediti više puta (zadano: vezati se na sva sučelja)</translation>
-    </message>
-    <message>
-        <source>Cannot obtain a lock on data directory %s. fls Core is probably already running.</source>
-        <translation>Nije moguće dobiti zaključavanje na direktoriju podataka %s. fls Core vjerojatno već radi.</translation>
     </message>
     <message>
         <source>Change automatic finalized budget voting behavior. mode=auto: Vote for only exact finalized budget match to my generated budget. (string, default: auto)</source>
@@ -5717,10 +5589,6 @@ fls temeljni novčanik</translation>
     <message>
         <source>Enable spork administration functionality with the appropriate private key.</source>
         <translation>Omogućite funkcionalnost administracije s odgovarajućim privatnim ključem.</translation>
-    </message>
-    <message>
-        <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
-        <translation>Unesite način rada regresije, koji koristi poseban lanac u kojem blokovi mogu biti riješeni odmah.</translation>
     </message>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
@@ -5753,10 +5621,6 @@ fls temeljni novčanik</translation>
     <message>
         <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
         <translation>Ako paytxfee nije postavljen, uključite dovoljnu naknadu kako bi transakcije započele potvrdu u prosjeku unutar n blokova (zadana vrijednost: %u)</translation>
-    </message>
-    <message>
-        <source>In this mode -genproclimit controls how many blocks are generated immediately.</source>
-        <translation>U ovom načinu rada -genproclimit kontrolira koliko blokova se generiraju odmah.</translation>
     </message>
     <message>
         <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
@@ -5835,8 +5699,8 @@ fls temeljni novčanik</translation>
         <translation>Ukupna duljina teksta mrežne verzije (%i) prelazi maksimalnu duljinu (%i). Smanjite broj ili veličinu uacommentsa.</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. fls Core is probably already running.</source>
-        <translation>Nije moguće vezati se na %s na ovom računalu. fls Core vjerojatno već radi.</translation>
+        <source>Unable to bind to %s on this computer. FLITS Core is probably already running.</source>
+        <translation>Nije moguće vezati se na %s na ovom računalu. FLITS Core vjerojatno već radi.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -5851,8 +5715,8 @@ fls temeljni novčanik</translation>
         <translation>Upozorenje: -paytxfee je vrlo visoka! To je transakcijska naknada koju ćete platiti ako šaljete transakciju.</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong fls Core will not work properly.</source>
-        <translation>Upozorenje: Provjerite jesu li datum i vrijeme vašeg računala točni! Ako je vaš sat pogrešan, fls Core neće raditi ispravno.</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
+        <translation>Upozorenje: Provjerite jesu li datum i vrijeme vašeg računala točni! Ako je vaš sat pogrešan, FLITS Core neće raditi ispravno.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -5923,8 +5787,8 @@ fls temeljni novčanik</translation>
         <translation>Autorska prava (C) 2014-%i The Dash Core Developers</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The fls Core Developers</source>
-        <translation>Autorska prava (C) 2015-%i The fls Core Developers</translation>
+        <source>Copyright (C) 2015-%i The FLITS Core Developers</source>
+        <translation>Autorska prava (C) 2015-%i The FLITS Core Developers</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -6044,12 +5908,12 @@ fls temeljni novčanik</translation>
         <translation>Informacije</translation>
     </message>
     <message>
-        <source>Initialization sanity check failed. fls Core is shutting down.</source>
-        <translation>Provjera ispravnosti inicijalizacije nije uspjela. fls Core se zatvara.</translation>
-    </message>
-    <message>
         <source>Insufficient funds.</source>
         <translation>Nedovoljna sredstva.</translation>
+    </message>
+    <message>
+        <source>Invalid -masternodeaddr port %d, isn't the same as the peer port %d</source>
+        <translation>Neispravan -masternodeaddr port %d, nije isti kao peer port %d</translation>
     </message>
     <message>
         <source>Invalid -onion address or hostname: '%s'</source>
@@ -6070,10 +5934,6 @@ fls temeljni novčanik</translation>
     <message>
         <source>Error: Unsupported argument -checklevel found. Checklevel must be level 4.</source>
         <translation>Pogreška: pronađen je nepotpuni argument. Checklevel mora biti razina 4.</translation>
-    </message>
-    <message>
-        <source>Execute command when the best block changes and its size is over (%s in cmd is replaced by block hash, %d with the block size)</source>
-        <translation>Izvrši naredbu kada se najbolji blok promjeni i kada njegova veličina premaši (%s u cmd je zamijenjen s blok hashom, %d s veličinom bloka)</translation>
     </message>
     <message>
         <source>Specify custom backup path to add a copy of any wallet backup. If set as dir, every backup generates a timestamped file. If set as file, will rewrite to that file every backup.</source>
@@ -6140,8 +6000,8 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Nije moguće nadograditi na novčanik Sapling (već ima Sapling podršku). Verzija: %d</translation>
     </message>
     <message>
-        <source>Disable all fls specific functionality (Masternodes, Budgeting) (0-1, default: %u)</source>
-        <translation>Onemogućite sve fls specifične funkcionalnosti (Masternode, proračun) (0-1, zadano: %u)</translation>
+        <source>Disable all FLITS specific functionality (Masternodes, Budgeting) (0-1, default: %u)</source>
+        <translation>Onemogućite sve FLITS specifične funkcionalnosti (Masternode, proračun) (0-1, zadano: %u)</translation>
     </message>
     <message>
         <source>This file contains all of your private keys in plain text. DO NOT send this file to anyone!</source>
@@ -6176,8 +6036,8 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Greška pri učitavanju %s: Novčanik oštećen</translation>
     </message>
     <message>
-        <source>Error loading %s: Wallet requires newer version of fls Core</source>
-        <translation>Pogreška pri učitavanju %s: Novčanik zahtijeva noviju verziju fls Core</translation>
+        <source>Error loading %s: Wallet requires newer version of FLITS Core</source>
+        <translation>Pogreška pri učitavanju %s: Novčanik zahtijeva noviju verziju FLITS Core</translation>
     </message>
     <message>
         <source>Error loading %s
@@ -6378,8 +6238,8 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Najmanji dozvoljeni iznos (u FLS) kroz GUI RPC za prag dijeljenja stake-a (default: %s)</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong fls Core will not work properly.</source>
-        <translation>Provjerite jesu li datum i vrijeme vašeg računala točni! Ako je vaš sat pogrešan, fls Core neće raditi ispravno.</translation>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
+        <translation>Provjerite jesu li datum i vrijeme vašeg računala točni! Ako je vaš sat pogrešan, FLITS Core neće raditi ispravno.</translation>
     </message>
     <message>
         <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect/-noconnect)</source>
@@ -6644,10 +6504,6 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Ovo je eksperimentalni softver.</translation>
     </message>
     <message>
-        <source>This is intended for regression testing tools and app development.</source>
-        <translation>To je namijenjeno alatima za test regresije i razvoju aplikacija.</translation>
-    </message>
-    <message>
         <source>This is not a masternode. 'local' option disabled.</source>
         <translation>Ovo nije masternode. 'lokalna' opcija isključena.</translation>
     </message>
@@ -6716,16 +6572,8 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Nadogradnja novčanika u najnoviji format</translation>
     </message>
     <message>
-        <source>Upgrading coins database...</source>
-        <translation>Nadograđjujem novčanu bazu podataka...</translation>
-    </message>
-    <message>
         <source>Use UPnP to map the listening port (default: %u)</source>
         <translation>Koristite UPnP za mapiranje priključka za slušanje (zadano: %u)</translation>
-    </message>
-    <message>
-        <source>Use the test network</source>
-        <translation>Koristi testnu mrežu</translation>
     </message>
     <message>
         <source>User Agent comment (%s) contains unsafe characters.</source>
@@ -6744,8 +6592,8 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Provjera novčanika...</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart fls Core to complete</source>
-        <translation>Potrebno je prepisati novčanik: ponovo pokrenite fls Core</translation>
+        <source>Wallet needed to be rewritten: restart FLITS Core to complete</source>
+        <translation>Potrebno je prepisati novčanik: ponovo pokrenite FLITS Core</translation>
     </message>
     <message>
         <source>Wallet options:</source>
@@ -6815,8 +6663,8 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Odaberi koje novčiće ćeš trošiti</translation>
     </message>
     <message>
-        <source>fls address or contact label</source>
-        <translation>fls adresa ili naziv kontakta</translation>
+        <source>FLITS address or contact label</source>
+        <translation>FLITS adresa ili naziv kontakta</translation>
     </message>
     <message>
         <source>Amount</source>

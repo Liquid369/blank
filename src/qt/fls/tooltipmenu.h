@@ -1,5 +1,8 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,7 +13,7 @@
 #include <QWidget>
 #include <QModelIndex>
 
-class flsGUI;
+class FLSGUI;
 class WalletModel;
 
 namespace Ui {
@@ -26,7 +29,7 @@ class TooltipMenu : public PWidget
     Q_OBJECT
 
 public:
-    explicit TooltipMenu(flsGUI* _window, QWidget *parent = nullptr);
+    explicit TooltipMenu(FLSGUI* _window, QWidget *parent = nullptr);
     ~TooltipMenu() override;
 
     void setIndex(const QModelIndex &index);

@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
@@ -17,7 +18,7 @@
 
 #define REQUEST_UPDATE_COUNTS 0
 
-SettingsInformationWidget::SettingsInformationWidget(flsGUI* _window,QWidget *parent) :
+SettingsInformationWidget::SettingsInformationWidget(FLSGUI* _window,QWidget *parent) :
     PWidget(_window,parent),
     ui(new Ui::SettingsInformationWidget)
 {

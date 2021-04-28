@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # Copyright (c) 2020 The PIVX Developers
+# Copyright (c) 2020 The PIVX developers
 # Copyright (c) 2020 The Flits Developers
+
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 
 from test_framework.util import (
     assert_greater_than,
@@ -24,7 +26,7 @@ def timed(f):
 
 MAX_SHIELDED_BLOCKSIZE = 750000
 
-class SaplingFillBlockTest(flsTestFramework):
+class SaplingFillBlockTest(FlsTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 2

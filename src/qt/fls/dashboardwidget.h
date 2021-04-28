@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -38,7 +39,7 @@ using namespace QtCharts;
 
 #endif
 
-class flsGUI;
+class FLSGUI;
 class WalletModel;
 
 namespace Ui {
@@ -81,9 +82,9 @@ public:
 
     QMap<int, std::pair<qint64, qint64>> amountsByCache;
     qreal maxValue = 0;
-    qint64 totalPiv = 0;
+    qint64 totalFls = 0;
     qint64 totalZfls = 0;
-    QList<qreal> valuesPiv;
+    QList<qreal> valuesFls;
     QList<qreal> valueszFls;
     QStringList xLabels;
 };
@@ -97,7 +98,7 @@ class DashboardWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit DashboardWidget(flsGUI* _window);
+    explicit DashboardWidget(FLSGUI* _window);
     ~DashboardWidget();
 
     void loadWalletModel() override;

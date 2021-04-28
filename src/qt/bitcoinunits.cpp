@@ -1,6 +1,8 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -23,8 +25,8 @@ QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
     unitlist.append(FLS);
-    unitlist.append(mPIV);
-    unitlist.append(uPIV);
+    unitlist.append(mFLS);
+    unitlist.append(uFLS);
     return unitlist;
 }
 
@@ -32,8 +34,8 @@ bool BitcoinUnits::valid(int unit)
 {
     switch (unit) {
     case FLS:
-    case mPIV:
-    case uPIV:
+    case mFLS:
+    case uFLS:
         return true;
     default:
         return false;
@@ -45,9 +47,9 @@ QString BitcoinUnits::id(int unit)
     switch (unit) {
     case FLS:
         return QString("fls");
-    case mPIV:
+    case mFLS:
         return QString("mfls");
-    case uPIV:
+    case uFLS:
         return QString::fromUtf8("ufls");
     default:
         return QString("???");
@@ -63,9 +65,9 @@ QString BitcoinUnits::name(int unit, bool isZfls)
         switch (unit) {
         case FLS:
             return z + CURR_UNIT;
-        case mPIV:
+        case mFLS:
             return z + QString("m") + CURR_UNIT;
-        case uPIV:
+        case uFLS:
             return z + QString::fromUtf8("μ") + CURR_UNIT;
         default:
             return QString("???");
@@ -74,9 +76,9 @@ QString BitcoinUnits::name(int unit, bool isZfls)
         switch (unit) {
         case FLS:
             return z + QString("t") + CURR_UNIT;
-        case mPIV:
+        case mFLS:
             return z + QString("mt") + CURR_UNIT;
-        case uPIV:
+        case uFLS:
             return z + QString::fromUtf8("μt") + CURR_UNIT;
         default:
             return QString("???");
@@ -91,9 +93,9 @@ QString BitcoinUnits::description(int unit)
         switch (unit) {
         case FLS:
             return CURR_UNIT;
-        case mPIV:
+        case mFLS:
             return QString("Milli-") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000)");
-        case uPIV:
+        case uFLS:
             return QString("Micro-") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
         default:
             return QString("???");
@@ -102,9 +104,9 @@ QString BitcoinUnits::description(int unit)
         switch (unit) {
         case FLS:
             return QString("Test") + CURR_UNIT;
-        case mPIV:
+        case mFLS:
             return QString("Milli-Test") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000)");
-        case uPIV:
+        case uFLS:
             return QString("Micro-Test") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
         default:
             return QString("???");
@@ -117,9 +119,9 @@ qint64 BitcoinUnits::factor(int unit)
     switch (unit) {
     case FLS:
         return 100000000;
-    case mPIV:
+    case mFLS:
         return 100000;
-    case uPIV:
+    case uFLS:
         return 100;
     default:
         return 100000000;
@@ -131,9 +133,9 @@ int BitcoinUnits::decimals(int unit)
     switch (unit) {
     case FLS:
         return 8;
-    case mPIV:
+    case mFLS:
         return 5;
-    case uPIV:
+    case uFLS:
         return 2;
     default:
         return 0;

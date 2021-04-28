@@ -1,11 +1,12 @@
 // Copyright (c) 2016-2020 The ZCash developers
 // Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_SAPLING_VALIDATION_H
-#define fls_SAPLING_VALIDATION_H
+#ifndef FLS_SAPLING_VALIDATION_H
+#define FLS_SAPLING_VALIDATION_H
 
 #include "chainparams.h"
 
@@ -17,7 +18,7 @@ namespace SaplingValidation {
 /** Context-independent validity checks */
 // Note: for v3+, if the tx has no shielded data, this method returns true.
 // Note2: This function only performs shielded data related checks, it does NOT checks regular inputs and outputs.
-bool CheckTransaction(const CTransaction& tx, CValidationState& state, CAmount& nValueOut);
+bool CheckTransaction(const CTransaction& tx, CValidationState& state, CAmount& nValueOut, bool fIsSaplingActive);
 bool CheckTransactionWithoutProofVerification(const CTransaction& tx, CValidationState &state, CAmount& nValueOut);
 
 /** Check a transaction contextually against a set of consensus rules */
@@ -28,4 +29,4 @@ bool ContextualCheckTransaction(const CTransaction &tx, CValidationState &state,
 
 }; // End SaplingValidation namespace
 
-#endif //fls_SAPLING_VALIDATION_H
+#endif //FLS_SAPLING_VALIDATION_H

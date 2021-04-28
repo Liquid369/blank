@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2018-2019 The fls developers
+// Copyright (c) 2018-2019 The PIVX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -40,7 +40,7 @@ public:
     }
 
     template<typename T>
-    TxInputStream& operator>>(T&& obj)
+    TxInputStream& operator>>(T& obj)
     {
         ::Unserialize(*this, obj);
         return *this;

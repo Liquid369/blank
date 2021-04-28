@@ -1,10 +1,11 @@
 // Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_BALANCEBUBBLE_H
-#define fls_BALANCEBUBBLE_H
+#ifndef FLS_BALANCEBUBBLE_H
+#define FLS_BALANCEBUBBLE_H
 
 #include <QWidget>
 #include <QString>
@@ -33,4 +34,4 @@ private:
     QTimer* hideTimer{nullptr};
 };
 
-#endif //fls_BALANCEBUBBLE_H
+#endif //FLS_BALANCEBUBBLE_H

@@ -1,7 +1,9 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -43,12 +45,12 @@ public:
     boost::signals2::signal<std::string (const char* psz)> Translate;
 };
 
-extern const char * const fls_CONF_FILENAME;
-extern const char * const fls_PID_FILENAME;
-extern const char * const fls_MASTERNODE_CONF_FILENAME;
+extern const char * const FLS_CONF_FILENAME;
+extern const char * const FLS_PID_FILENAME;
+extern const char * const FLS_MASTERNODE_CONF_FILENAME;
 extern const char * const DEFAULT_DEBUGLOGFILE;
 
-//fls only features
+//FLITS only features
 
 extern std::atomic<bool> fMasterNode;
 extern bool fLiteMode;

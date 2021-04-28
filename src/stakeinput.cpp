@@ -1,4 +1,6 @@
-// Copyright (c) 2017-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
@@ -8,10 +10,10 @@
 #include "txdb.h"
 #include "wallet/wallet.h"
 
-CPivStake* CPivStake::NewPivStake(const CTxIn& txin)
+CFlsStake* CFlsStake::NewFlsStake(const CTxIn& txin)
 {
     if (txin.IsZerocoinSpend()) {
-        error("%s: unable to initialize CPivStake from zerocoin spend", __func__);
+        error("%s: unable to initialize CFlsStake from zerocoin spend", __func__);
         return nullptr;
     }
 
@@ -35,29 +37,29 @@ CPivStake* CPivStake::NewPivStake(const CTxIn& txin)
         return nullptr;
     }
 
-    return new CPivStake(txPrev->vout[txin.prevout.n],
+    return new CFlsStake(txPrev->vout[txin.prevout.n],
                          txin.prevout,
                          pindexFrom);
 }
 
-bool CPivStake::GetTxOutFrom(CTxOut& out) const
+bool CFlsStake::GetTxOutFrom(CTxOut& out) const
 {
     out = outputFrom;
     return true;
 }
 
-bool CPivStake::CreateTxIn(CWallet* pwallet, CTxIn& txIn, uint256 hashTxOut)
+bool CFlsStake::CreateTxIn(CWallet* pwallet, CTxIn& txIn, uint256 hashTxOut)
 {
     txIn = CTxIn(outpointFrom.hash, outpointFrom.n);
     return true;
 }
 
-CAmount CPivStake::GetValue() const
+CAmount CFlsStake::GetValue() const
 {
     return outputFrom.nValue;
 }
 
-bool CPivStake::CreateTxOuts(CWallet* pwallet, std::vector<CTxOut>& vout, CAmount nTotal, const bool onlyP2PK)
+bool CFlsStake::CreateTxOuts(CWallet* pwallet, std::vector<CTxOut>& vout, CAmount nTotal, const bool onlyP2PK)
 {
     std::vector<valtype> vSolutions;
     txnouttype whichType;
@@ -106,7 +108,7 @@ bool CPivStake::CreateTxOuts(CWallet* pwallet, std::vector<CTxOut>& vout, CAmoun
     return true;
 }
 
-CDataStream CPivStake::GetUniqueness() const
+CDataStream CFlsStake::GetUniqueness() const
 {
     //The unique identifier for a FLS stake is the outpoint
     CDataStream ss(SER_NETWORK, 0);
@@ -115,15 +117,15 @@ CDataStream CPivStake::GetUniqueness() const
 }
 
 //The block that the UTXO was added to the chain
-const CBlockIndex* CPivStake::GetIndexFrom() const
+const CBlockIndex* CFlsStake::GetIndexFrom() const
 {
     // Sanity check, pindexFrom is set on the constructor.
-    if (!pindexFrom) throw std::runtime_error("CPivStake: uninitialized pindexFrom");
+    if (!pindexFrom) throw std::runtime_error("CFlsStake: uninitialized pindexFrom");
     return pindexFrom;
 }
 
 // Verify stake contextual checks
-bool CPivStake::ContextCheck(int nHeight, uint32_t nTime)
+bool CFlsStake::ContextCheck(int nHeight, uint32_t nTime)
 {
     const Consensus::Params& consensus = Params().GetConsensus();
     // Get Stake input block time/height

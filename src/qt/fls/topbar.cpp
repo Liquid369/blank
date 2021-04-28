@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
@@ -50,7 +51,7 @@ public:
     }
 };
 
-TopBar::TopBar(flsGUI* _mainWindow, QWidget *parent) :
+TopBar::TopBar(FLSGUI* _mainWindow, QWidget *parent) :
     PWidget(_mainWindow, parent),
     ui(new Ui::TopBar)
 {
@@ -75,9 +76,9 @@ TopBar::TopBar(flsGUI* _mainWindow, QWidget *parent) :
 
     // Amount information top
     ui->widgetTopAmount->setVisible(false);
-    setCssProperty({ui->labelAmountTopPiv, ui->labelAmountTopShieldedPiv}, "amount-small-topbar");
-    setCssProperty({ui->labelAmountPiv}, "amount-topbar");
-    setCssProperty({ui->labelPendingPiv, ui->labelImmaturePiv}, "amount-small-topbar");
+    setCssProperty({ui->labelAmountTopFls, ui->labelAmountTopShieldedFls}, "amount-small-topbar");
+    setCssProperty({ui->labelAmountFls}, "amount-topbar");
+    setCssProperty({ui->labelPendingFls, ui->labelImmatureFls}, "amount-small-topbar");
 
     // Progress Sync
     progressBar = new QProgressBar(ui->layoutSync);
@@ -581,7 +582,7 @@ void TopBar::loadWalletModel()
     connect(walletModel, &WalletModel::encryptionStatusChanged, this, &TopBar::refreshStatus);
     // Ask for passphrase if needed
     connect(walletModel, &WalletModel::requireUnlock, this, &TopBar::unlockWallet);
-    // update the display unit, to not use the default ("fls")
+    // update the display unit, to not use the default ("FLS")
     updateDisplayUnit();
 
     refreshStatus();
@@ -669,18 +670,18 @@ void TopBar::updateBalances(const interfaces::WalletBalances& newBalance)
     ui->labelTitle1->setText(nLockedBalance > 0 ? tr("Available (Locked included)") : tr("Available"));
 
     // FLS Total
-    QString totalPiv = GUIUtil::formatBalance(newBalance.balance, nDisplayUnit);
+    QString totalFls = GUIUtil::formatBalance(newBalance.balance, nDisplayUnit);
     QString totalTransparent = GUIUtil::formatBalance(newBalance.balance - newBalance.shielded_balance);
     QString totalShielded = GUIUtil::formatBalance(newBalance.shielded_balance);
 
     // FLS
     // Top
-    ui->labelAmountTopPiv->setText(totalTransparent);
-    ui->labelAmountTopShieldedPiv->setText(totalShielded);
+    ui->labelAmountTopFls->setText(totalTransparent);
+    ui->labelAmountTopShieldedFls->setText(totalShielded);
     // Expanded
-    ui->labelAmountPiv->setText(totalPiv);
-    ui->labelPendingPiv->setText(GUIUtil::formatBalance(newBalance.unconfirmed_balance + newBalance.unconfirmed_shielded_balance, nDisplayUnit));
-    ui->labelImmaturePiv->setText(GUIUtil::formatBalance(newBalance.immature_balance, nDisplayUnit));
+    ui->labelAmountFls->setText(totalFls);
+    ui->labelPendingFls->setText(GUIUtil::formatBalance(newBalance.unconfirmed_balance + newBalance.unconfirmed_shielded_balance, nDisplayUnit));
+    ui->labelImmatureFls->setText(GUIUtil::formatBalance(newBalance.immature_balance, nDisplayUnit));
 }
 
 void TopBar::resizeEvent(QResizeEvent *event)

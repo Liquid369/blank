@@ -1,7 +1,9 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -39,7 +41,7 @@ bool bSpendZeroConfChange = DEFAULT_SPEND_ZEROCONF_CHANGE;
 const char * DEFAULT_WALLET_DAT = "wallet.dat";
 
 /**
- * Fees smaller than this (in upiv) are considered zero fee (for transaction creation)
+ * Fees smaller than this (in ufls) are considered zero fee (for transaction creation)
  * We are ~100 times smaller then bitcoin now (2015-06-23), set minTxFee 10 times higher
  * so it's still 10 times lower comparing to bitcoin.
  * Override with -mintxfee
@@ -1809,32 +1811,21 @@ bool CWallet::Upgrade(std::string& error, const int& prevVersion)
  * Scan the block chain (starting in pindexStart) for transactions
  * from or to us. If fUpdate is true, found transactions that already
  * exist in the wallet will be updated.
- *
- * If pindexStop is not a nullptr, the scan will stop at the block-index
- * defined by pindexStop
- *
- * Returns null if scan was successful. Otherwise, if a complete rescan was not
- * possible (due to pruning or corruption), returns pointer to the most recent
- * block that could not be scanned.
+ * @returns -1 if process was cancelled or the number of tx added to the wallet.
  */
-CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlockIndex* pindexStop, bool fUpdate, bool fromStartup)
+int CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, bool fUpdate, bool fromStartup)
 {
-    CBlockIndex* ret = nullptr;
+    int ret = 0;
     int64_t nNow = GetTime();
 
-    if (pindexStop) {
-        assert(pindexStop->nHeight >= pindexStart->nHeight);
-    }
-
-    fAbortRescan = false;
-    fScanningWallet = true;
+    const Consensus::Params& consensus = Params().GetConsensus();
 
     CBlockIndex* pindex = pindexStart;
     {
         LOCK(cs_main);
         // no need to read and scan block, if block was created before
         // our wallet birthday (as adjusted for block time variability)
-        while (pindex && nTimeFirstKey && (pindex->GetBlockTime() < (nTimeFirstKey - TIMESTAMP_WINDOW)))
+        while (pindex && nTimeFirstKey && (pindex->GetBlockTime() < (nTimeFirstKey - 7200)))
             pindex = chainActive.Next(pindex);
     }
 
@@ -1846,7 +1837,7 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
         std::vector<uint256> myTxHashes;
 
         double gvp = dProgressStart;
-        while (pindex && !fAbortRescan) {
+        while (pindex) {
             gvp = Checkpoints::GuessVerificationProgress(pindex, false);
             if (pindex->nHeight % 100 == 0 && dProgressTip - dProgressStart > 0.0) {
                 ShowProgress(_("Rescanning..."), std::max(1, std::min(99, (int) ((gvp - dProgressStart) /
@@ -1858,14 +1849,13 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
                 LogPrintf("Still rescanning. At block %d. Progress=%f\n", pindex->nHeight, gvp);
             }
             if (fromStartup && ShutdownRequested()) {
-                break;
+                return -1;
             }
 
             CBlock block;
             if (!ReadBlockFromDisk(block, pindex)) {
                 LogPrintf("Unable to read block %d (%s) from disk.", pindex->nHeight, pindex->GetBlockHash().ToString());
-                ret = pindex;
-                break; // failed, try to save txs and return the failed index
+                return -1;
             }
 
             {
@@ -1879,7 +1869,6 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
                 if (!chainActive.Contains(pindex)) {
                     // Abort scan if current block is no longer active, to prevent
                     // marking transactions as coming from the wrong block.
-                    ret = pindex;
                     break;
                 }
                 for (int posInBlock = 0; posInBlock < (int) block.vtx.size(); posInBlock++) {
@@ -1887,6 +1876,7 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
                     CWalletTx::Confirmation confirm(CWalletTx::Status::CONFIRMED, pindex->nHeight, pindex->GetBlockHash(), posInBlock);
                     if (AddToWalletIfInvolvingMe(tx, confirm, fUpdate)) {
                         myTxHashes.push_back(tx->GetHash());
+                        ret++;
                     }
                 }
 
@@ -1901,9 +1891,7 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
                         ChainTipAdded(pindex, &block, saplingTree);
                     }
                 }
-                if (pindex == pindexStop) {
-                    break;
-                }
+
                 pindex = chainActive.Next(pindex);
             }
         }
@@ -1921,11 +1909,7 @@ CBlockIndex* CWallet::ScanForWalletTransactions(CBlockIndex* pindexStart, CBlock
             }
         }
 
-        if (pindex && fAbortRescan) {
-            LogPrintf("Rescan aborted at block %d. Progress=%f\n", pindex->nHeight, Checkpoints::GuessVerificationProgress(pindex, false));
-        }
         ShowProgress(_("Rescanning..."), 100); // hide progress dialog in GUI
-        fScanningWallet = false;
     }
     return ret;
 }
@@ -2468,6 +2452,9 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
     // Check If not mine
     if (mine == ISMINE_NO) return res;
 
+    // Check if watch only utxo are allowed
+    if (mine == ISMINE_WATCH_ONLY && coinControl && !coinControl->fAllowWatchOnly) return res;
+
     // Skip locked utxo
     if (!fIncludeLocked && IsLockedCoin(wtxid, outIndex) && nCoinType != ONLY_10000) return res;
 
@@ -2668,7 +2655,7 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
                     false,
                     false);   // fIncludeLocked
 
-            if (!res.available || !res.spendable) continue;
+            if (!res.available) continue;
 
             // found valid coin
             if (!pCoins) return true;
@@ -2851,7 +2838,8 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool ov
 
     // Turn the txout set into a CRecipient vector
     for (const CTxOut& txOut : tx.vout) {
-        vecSend.emplace_back(txOut.scriptPubKey, txOut.nValue, false);
+        CRecipient recipient = {txOut.scriptPubKey, txOut.nValue, false};
+        vecSend.push_back(recipient);
     }
 
     CCoinControl coinControl;
@@ -2861,35 +2849,26 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool ov
     coinControl.fOverrideFeeRate = overrideEstimatedFeeRate;
     coinControl.nFeeRate = specificFeeRate;
 
-    const int nExtraSize = tx.isSaplingVersion() ?
-            (int)(GetSerializeSizeNetwork(tx.sapData) + GetSerializeSizeNetwork(tx.extraPayload)) : 0;
-
-    for (const CTxIn& txin : tx.vin) {
+    for (const CTxIn& txin : tx.vin)
         coinControl.Select(txin.prevout);
-    }
-
-    // Acquire the locks to prevent races to the new locked unspents between the
-    // CreateTransaction call and LockCoin calls (when lockUnspents is true).
-    LOCK2(cs_main, cs_wallet);
 
     CReserveKey reservekey(this);
     CTransactionRef wtx;
-    if (!CreateTransaction(vecSend, wtx, reservekey, nFeeRet, nChangePosInOut, strFailReason, &coinControl, ALL_COINS, false, 0, false, nullptr, nExtraSize)) {
+    if (!CreateTransaction(vecSend, wtx, reservekey, nFeeRet, nChangePosInOut, strFailReason, &coinControl, ALL_COINS, false))
         return false;
-    }
 
-    if (nChangePosInOut != -1) {
+    if (nChangePosInOut != -1)
         tx.vout.insert(tx.vout.begin() + nChangePosInOut, wtx->vout[nChangePosInOut]);
-        // We don't have the normal Create/Commit cycle, and don't want to risk
-        // reusing change, so just remove the key from the keypool here.
-        reservekey.KeepKey();
-    }
 
-    // Add new txins while keeping original txin scriptSig/order.
+    // Add new txins (keeping original txin scriptSig/order)
     for (const CTxIn& txin : wtx->vin) {
         if (!coinControl.IsSelected(txin.prevout)) {
-            tx.vin.emplace_back(txin);
-            if (lockUnspents) LockCoin(txin.prevout);
+            tx.vin.push_back(txin);
+
+            if (lockUnspents) {
+              LOCK(cs_wallet);
+              LockCoin(txin.prevout);
+            }
         }
     }
 
@@ -2907,8 +2886,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
     bool sign,
     CAmount nFeePay,
     bool fIncludeDelegated,
-    bool* fStakeDelegationVoided,
-    int nExtraSize)
+    bool* fStakeDelegationVoided)
 {
     CAmount nValue = 0;
     int nChangePosRequest = nChangePosInOut;
@@ -2929,7 +2907,6 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
     CScript scriptChange;
 
     CWallet::AvailableCoinsFilter coinFilter;
-    coinFilter.fOnlySpendable = true;
     coinFilter.fIncludeDelegated = fIncludeDelegated;
     coinFilter.nCoinType = coin_type;
 
@@ -3060,8 +3037,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                     nIn++;
                 }
 
-                // account for additional payloads in fee calculation
-                const unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION) + nExtraSize;
+                const unsigned int nBytes = ::GetSerializeSize(txNew, SER_NETWORK, PROTOCOL_VERSION);
                 CAmount nFeeNeeded = std::max(nFeePay, GetMinimumFee(nBytes, nTxConfirmTarget, mempool));
 
                 // Remove scriptSigs to eliminate the fee calculation dummy signatures
@@ -3170,7 +3146,7 @@ bool CWallet::CreateCoinStake(
     int nAttempts = 0;
     for (auto it = availableCoins->begin(); it != availableCoins->end();) {
         COutPoint outPoint = COutPoint(it->tx->GetHash(), it->i);
-        CPivStake stakeInput(it->tx->tx->vout[it->i],
+        CFlsStake stakeInput(it->tx->tx->vout[it->i],
                              outPoint,
                              it->pindex);
 
@@ -3889,7 +3865,7 @@ void CWallet::GetKeyBirthTimes(std::map<CKeyID, int64_t>& mapKeyBirth) const
 
     // Extract block timestamps for those keys
     for (std::map<CKeyID, CBlockIndex*>::const_iterator it = mapKeyFirstBlock.begin(); it != mapKeyFirstBlock.end(); it++)
-        mapKeyBirth[it->first] = it->second->GetBlockTime() - TIMESTAMP_WINDOW; // block times can be 2h off
+        mapKeyBirth[it->first] = it->second->GetBlockTime() - 7200; // block times can be 2h off
 }
 
 bool CWallet::AddDestData(const CTxDestination& dest, const std::string& key, const std::string& value)
@@ -4216,10 +4192,10 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
             UIWarning(strprintf(_("Warning: error reading %s! All keys read correctly, but transaction data"
                          " or address book entries might be missing or incorrect."), walletFile));
         } else if (nLoadWalletRet == DB_TOO_NEW) {
-            UIError(strprintf(_("Error loading %s: Wallet requires newer version of fls Core"), walletFile));
+            UIError(strprintf(_("Error loading %s: Wallet requires newer version of FLITS Core"), walletFile));
             return nullptr;
         } else if (nLoadWalletRet == DB_NEED_REWRITE) {
-            UIError(_("Wallet needed to be rewritten: restart fls Core to complete"));
+            UIError(_("Wallet needed to be rewritten: restart FLITS Core to complete"));
             return nullptr;
         } else {
             UIError(strprintf(_("Error loading %s\n"), walletFile));
@@ -4240,7 +4216,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
     const bool fLegacyWallet = gArgs.GetBoolArg("-legacywallet", false);
     if (gArgs.GetBoolArg("-upgradewallet", fFirstRun && !fLegacyWallet) ||
             (!walletInstance->IsLocked() && prev_version == FEATURE_PRE_SPLIT_KEYPOOL)) {
-        if (prev_version <= FEATURE_PRE_fls && walletInstance->IsLocked()) {
+        if (prev_version <= FEATURE_PRE_FLITS && walletInstance->IsLocked()) {
             // Cannot upgrade a locked wallet
             UIError("Cannot upgrade a locked wallet.");
             return nullptr;
@@ -4286,7 +4262,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
             }
             // Create legacy wallet
             LogPrintf("Creating Pre-HD Wallet\n");
-            walletInstance->SetMaxVersion(FEATURE_PRE_fls);
+            walletInstance->SetMaxVersion(FEATURE_PRE_FLITS);
         }
 
         // Top up the keypool
@@ -4325,7 +4301,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
         uiInterface.InitMessage(_("Rescanning..."));
         LogPrintf("Rescanning last %i blocks (from block %i)...\n", chainActive.Height() - pindexRescan->nHeight, pindexRescan->nHeight);
         const int64_t nWalletRescanTime = GetTimeMillis();
-        if (walletInstance->ScanForWalletTransactions(pindexRescan, nullptr, true, true) != nullptr) {
+        if (walletInstance->ScanForWalletTransactions(pindexRescan, true, true) == -1) {
             UIError(_("Shutdown requested over the txs scan. Exiting."));
             return nullptr;
         }
@@ -4404,6 +4380,12 @@ CKeyPool::CKeyPool(const CPubKey& vchPubKeyIn, const uint8_t& _type)
     m_pre_split = false;
 }
 
+CWalletKey::CWalletKey(int64_t nExpires)
+{
+    nTimeCreated = (nExpires ? GetTime() : 0);
+    nTimeExpires = nExpires;
+}
+
 int CWalletTx::GetDepthInMainChain() const
 {
     assert(pwallet != nullptr);
@@ -4479,8 +4461,6 @@ void CWallet::SetNull()
     nNextResend = 0;
     nLastResend = 0;
     nTimeFirstKey = 0;
-    fAbortRescan = false;
-    fScanningWallet = false;
     fWalletUnlockStaking = false;
 
     // Staker status (last hashed block and time)
@@ -4805,7 +4785,7 @@ void CWalletTx::SetSaplingNoteData(mapSaplingNoteData_t &noteData)
 
 Optional<std::pair<
         libzcash::SaplingNotePlaintext,
-        libzcash::SaplingPaymentAddress>> CWalletTx::DecryptSaplingNote(SaplingOutPoint op) const
+        libzcash::SaplingPaymentAddress>> CWalletTx::DecryptSaplingNote(const SaplingOutPoint& op) const
 {
     // Check whether we can decrypt this SaplingOutPoint with the ivk
     auto it = this->mapSaplingNoteData.find(op);
@@ -4833,8 +4813,7 @@ Optional<std::pair<
 
 Optional<std::pair<
         libzcash::SaplingNotePlaintext,
-        libzcash::SaplingPaymentAddress>> CWalletTx::RecoverSaplingNote(
-        SaplingOutPoint op, std::set<uint256>& ovks) const
+        libzcash::SaplingPaymentAddress>> CWalletTx::RecoverSaplingNote(const SaplingOutPoint& op, const std::set<uint256>& ovks) const
 {
     auto output = this->tx->sapData->vShieldedOutput[op.n];
 

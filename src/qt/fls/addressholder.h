@@ -1,10 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_ADDRESSHOLDER_H
-#define fls_ADDRESSHOLDER_H
+#ifndef FLS_ADDRESSHOLDER_H
+#define FLS_ADDRESSHOLDER_H
 
 #include <QWidget>
 #include <QColor>
@@ -39,4 +42,4 @@ public:
 };
 
 
-#endif //fls_ADDRESSHOLDER_H
+#endif //FLS_ADDRESSHOLDER_H
