@@ -1,7 +1,6 @@
 FLITS Core integration/staging repository
 =====================================
 
-[![master Actions Status](https://github.com/flitsnode/flits-core/workflows/CI%20Actions%20for%20FLS/badge.svg)](https://github.com/flitsnode/flits-core/actions)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/flitsnode/flits-core?color=%235c4b7d&cacheSeconds=3600)](https://github.com/flitsnode/flits-core/releases)
 [![GitHub Release Date](https://img.shields.io/github/release-date/flitsnode/flits-core?color=%235c4b7d&cacheSeconds=3600)](https://github.com/flitsnode/flits-core/releases)
 
@@ -9,7 +8,7 @@ FLITS Core integration/staging repository
 
 FLITS is an open source community-driven cryptocurrency, focused on five main aspects:
 
-(1) User Data Protection: Through the use of SHIELD, a zk-SNARKs based privacy protocol.
+(1) User Data Protection: Through the use of pur non custodial services, the FLITS Mobile App.
 
 (2) Low environmental footprint and network participation equality: Through the use of a highly developed Proof of Stake protocol.
 
