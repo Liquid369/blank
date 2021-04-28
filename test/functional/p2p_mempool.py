@@ -9,10 +9,10 @@ filters are not enabled.
 """
 
 from test_framework.mininode import *
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import *
 
-class P2PMempoolTests(flsTestFramework):
+class P2PMempoolTests(FlsTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

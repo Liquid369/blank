@@ -1,5 +1,8 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,7 +13,7 @@
 #include "clientmodel.h"
 #include "qt/fls/qtutils.h"
 
-SettingsWalletOptionsWidget::SettingsWalletOptionsWidget(flsGUI* _window, QWidget *parent) :
+SettingsWalletOptionsWidget::SettingsWalletOptionsWidget(FLSGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsWalletOptionsWidget)
 {

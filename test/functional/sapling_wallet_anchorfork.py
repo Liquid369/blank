@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 # Copyright (c) 2018 The Zcash developers
 # Copyright (c) 2020 The PIVX Developers
+# Copyright (c) 2020 The PIVX developers
 # Copyright (c) 2020 The Flits Developers
+
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import *
 from decimal import Decimal
 
-class WalletAnchorForkTest(flsTestFramework):
+class WalletAnchorForkTest(FlsTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 3

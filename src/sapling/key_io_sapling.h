@@ -1,11 +1,12 @@
 // Copyright (c) 2016-2018 The Zcash developers
 // Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_KEY_IO_SAPLING_H
-#define fls_KEY_IO_SAPLING_H
+#ifndef FLS_KEY_IO_SAPLING_H
+#define FLS_KEY_IO_SAPLING_H
 
 #include "chainparams.h"
 #include "sapling/zip32.h"
@@ -24,4 +25,4 @@ namespace KeyIO {
     libzcash::SpendingKey DecodeSpendingKey(const std::string& str);
 }
 
-#endif //fls_KEY_IO_SAPLING_H
+#endif //FLS_KEY_IO_SAPLING_H

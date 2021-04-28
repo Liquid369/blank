@@ -1,10 +1,11 @@
 // Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_SAPLING_TEST_FIXTURE_H
-#define fls_SAPLING_TEST_FIXTURE_H
+#ifndef FLS_SAPLING_TEST_FIXTURE_H
+#define FLS_SAPLING_TEST_FIXTURE_H
 
 #include "test/test_fls.h"
 
@@ -17,4 +18,4 @@ struct SaplingTestingSetup : public TestingSetup {
 };
 
 
-#endif //fls_SAPLING_TEST_FIXTURE_H
+#endif //FLS_SAPLING_TEST_FIXTURE_H

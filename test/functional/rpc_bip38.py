@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-# Copyright (c) 2018-2020 The fls developers
+# Copyright (c) 2019-2020 The PIVX developers
+# Copyright (c) 2019-2020 The Flits Developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test RPC commands for BIP38 encrypting and decrypting addresses."""
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import assert_equal
 
-class Bip38Test(flsTestFramework):
+class Bip38Test(FlsTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2

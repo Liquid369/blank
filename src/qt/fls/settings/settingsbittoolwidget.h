@@ -1,5 +1,8 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,7 +23,7 @@ class SettingsBitToolWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsBitToolWidget(flsGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsBitToolWidget(FLSGUI* _window, QWidget *parent = nullptr);
     ~SettingsBitToolWidget();
 protected:
     void resizeEvent(QResizeEvent *event) override;

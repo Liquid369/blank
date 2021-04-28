@@ -1,9 +1,11 @@
-// Copyright (c) 2018-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_ZFLSCHAIN_H
-#define fls_ZFLSCHAIN_H
+#ifndef FLS_ZFLSCHAIN_H
+#define FLS_ZFLSCHAIN_H
 
 #include "chain.h"
 #include "libzerocoin/Coin.h"
@@ -25,4 +27,4 @@ bool IsSerialInBlockchain(const CBigNum& bnSerial, int& nHeightTx);
 libzerocoin::CoinSpend TxInToZerocoinSpend(const CTxIn& txin);
 bool TxOutToPublicCoin(const CTxOut& txout, libzerocoin::PublicCoin& pubCoin, CValidationState& state);
 
-#endif //fls_ZFLSCHAIN_H
+#endif //FLS_ZFLSCHAIN_H

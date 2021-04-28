@@ -1,5 +1,8 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,7 +14,7 @@
 #include "qt/fls/pwidget.h"
 #include "qt/fls/furabstractlistitemdelegate.h"
 
-class flsGUI;
+class FLSGUI;
 
 namespace Ui {
 class SettingsMultisendWidget;

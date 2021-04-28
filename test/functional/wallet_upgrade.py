@@ -13,7 +13,7 @@
 """
 import os
 import shutil
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -66,7 +66,7 @@ def copyPreHDWallet(tmpdir, createFolder):
     sourcePath = os.path.join("test", "util", "data", "pre_hd_wallet.dat")
     shutil.copyfile(sourcePath, destPath)
 
-class WalletUpgradeTest (flsTestFramework):
+class WalletUpgradeTest (FlsTestFramework):
 
     def setup_chain(self):
         self._initialize_chain_clean()

@@ -1,6 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin Core developers
-// Copyright (c) 2017-2019 The fls developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2020 The Flits Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -99,6 +100,15 @@ static std::string AvailableDataFormatsString()
         return formats.substr(0, formats.length() - 2);
 
     return formats;
+}
+
+static bool ParseHashStr(const std::string& strReq, uint256& v)
+{
+    if (!IsHex(strReq) || (strReq.size() != 64))
+        return false;
+
+    v.SetHex(strReq);
+    return true;
 }
 
 static bool CheckWarmup(HTTPRequest* req)

@@ -1,6 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2017-2019 The fls developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2020 The Flits Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,8 +11,7 @@
 #ifndef BITCOIN_UTILSTRENCODINGS_H
 #define BITCOIN_UTILSTRENCODINGS_H
 
-#include "support/allocators/secure.h"
-#include <algorithm>
+#include "allocators.h"
 #include <stdint.h>
 #include <string>
 #include <vector>

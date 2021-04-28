@@ -73,7 +73,7 @@ TEST_EXIT_SKIPPED = 77
 TMPDIR_PREFIX = "fls_func_test_"
 
 
-class flsTestFramework():
+class FlsTestFramework():
     """Base class for a fls test script.
 
     Individual fls test scripts should subclass this class and override the set_test_params() and run_test() methods.
@@ -337,7 +337,6 @@ class flsTestFramework():
         with tempfile.SpooledTemporaryFile(max_size=2**16) as log_stderr:
             try:
                 self.start_node(i, extra_args, stderr=log_stderr, *args, **kwargs)
-                self.nodes[i].wait_for_rpc_connection()
                 self.stop_node(i)
             except Exception as e:
                 assert 'flsd exited' in str(e)  # node must have shutdown
@@ -627,7 +626,7 @@ class flsTestFramework():
             initialize_datadir(self.options.tmpdir, i)
 
 
-    ### fls Specific TestFramework ###
+    ### FLITS Specific TestFramework ###
     ###################################
     def init_dummy_key(self):
         self.DUMMY_KEY = CECKey()
@@ -1107,7 +1106,7 @@ class flsTestFramework():
 
 ### ------------------------------------------------------
 
-class ComparisonTestFramework(flsTestFramework):
+class ComparisonTestFramework(FlsTestFramework):
     """Test framework for doing p2p comparison testing
 
     Sets up some flsd binaries:
@@ -1143,10 +1142,10 @@ class SkipTest(Exception):
 
 
 '''
-flsTestFramework extensions
+FlsTestFramework extensions
 '''
 
-class flsTier2TestFramework(flsTestFramework):
+class FlsTier2TestFramework(FlsTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True

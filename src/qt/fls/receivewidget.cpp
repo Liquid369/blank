@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,7 +23,7 @@
 #define DECORATION_SIZE 70
 #define NUM_ITEMS 3
 
-ReceiveWidget::ReceiveWidget(flsGUI* parent) :
+ReceiveWidget::ReceiveWidget(FLSGUI* parent) :
     PWidget(parent),
     ui(new Ui::ReceiveWidget)
 {

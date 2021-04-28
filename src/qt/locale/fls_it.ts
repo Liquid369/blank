@@ -122,12 +122,12 @@
         <translation>Indirizzi di ricezione</translation>
     </message>
     <message>
-        <source>These are your fls addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Questi sono gli indirizzi fls per l'invio di pagamenti. Controlla sempre l'importo e l'indirizzo di ricezione prima di inviare valuta.</translation>
+        <source>These are your FLITS addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Questi sono gli indirizzi FLITS per l'invio di pagamenti. Controlla sempre l'importo e l'indirizzo di ricezione prima di inviare valuta.</translation>
     </message>
     <message>
-        <source>These are your fls addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Questi sono gli indirizzi fls per la ricezione di pagamenti. Si raccomanda di utilizzare un indirizzo diverso per ogni transazione.</translation>
+        <source>These are your FLITS addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Questi sono gli indirizzi FLITS per la ricezione di pagamenti. Si raccomanda di utilizzare un indirizzo diverso per ogni transazione.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -364,8 +364,8 @@ per lo staking</translation>
         <translation>CANCELLA</translation>
     </message>
     <message>
-        <source>fls will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your PIVs from being stolen by malware infecting your computer.</source>
-        <translation>fls verrà ora chiuso per completare il processo di cifratura. Ricorda che crittografare il tuo portafoglio non protegge completamente i tuoi FLS dal furto da parte di software malevoli che potrebbero infettare il tuo computer.</translation>
+        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
+        <translation>FLITS verrà ora chiuso per completare il processo di cifratura. Ricorda che crittografare il tuo portafoglio non protegge completamente i tuoi FLS dal furto da parte di software malevoli che potrebbero infettare il tuo computer.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -726,7 +726,7 @@ per lo staking</translation>
         <translation>Errore durante il caricamento delle deleghe: %1</translation>
     </message>
     <message>
-        <source>You can delegate your PIVs, letting a hot node (24/7 online node)
+        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation>Puoi delegare i tuoi FLS, delegando ad un nodo attivo (online 24/7)
 lo staking delle tue monete, mantenendo le tue chiavi private in ​​un luogo sicuro e offline.</translation>
@@ -966,10 +966,6 @@ proprietario</translation>
         <translation>Filtra per</translation>
     </message>
     <message>
-        <source>Amount of FLS and zFLS staked.</source>
-        <translation>Quantità di FLS e zFLS dallo stake.</translation>
-    </message>
-    <message>
         <source>Please wait until the wallet is fully synced to see your correct balance</source>
         <translation>Attendi fino a quando il portafoglio non è completamente sincronizzato per vedere il tuo saldo corretto</translation>
     </message>
@@ -1062,8 +1058,8 @@ Si avvierà automaticamente non appena il portafoglio avrà sufficienti conferme
         <translation>Modifica indirizzo di invio</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid fls address.</source>
-        <translation>L'indirizzo inserito "%1" non è un indirizzo fls valido.</translation>
+        <source>The entered address "%1" is not a valid FLITS address.</source>
+        <translation>L'indirizzo inserito "%1" non è un indirizzo FLITS valido.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1115,16 +1111,16 @@ Si avvierà automaticamente non appena il portafoglio avrà sufficienti conferme
         <translation>versione</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-bit)</translation>
     </message>
     <message>
-        <source>About fls Core</source>
-        <translation>Informazioni su fls Core</translation>
+        <source>About FLITS Core</source>
+        <translation>Informazioni su FLITS Core</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1178,16 +1174,16 @@ Si avvierà automaticamente non appena il portafoglio avrà sufficienti conferme
         <translation>Benvenuto</translation>
     </message>
     <message>
-        <source>Welcome to fls Core.</source>
-        <translation>Benvenuto in PIVIX Core.</translation>
+        <source>Welcome to FLITS Core.</source>
+        <translation>Benvenuto in FLSIX Core.</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where fls Core will store its data.</source>
-        <translation>Essendo il primo avvio dell'applicazione, puoi scegliere dove fls Core salverà i propri dati.</translation>
+        <source>As this is the first time the program is launched, you can choose where FLITS Core will store its data.</source>
+        <translation>Essendo il primo avvio dell'applicazione, puoi scegliere dove FLITS Core salverà i propri dati.</translation>
     </message>
     <message>
-        <source>fls Core will download and store a copy of the fls block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>fls Core scaricherà e salverà una copia della blockchain fls. Verranno salvati almeno %1GB di dati in questa cartella, che cresceranno nel tempo. In questa cartella verrà salvato anche il portafoglio.</translation>
+        <source>FLITS Core will download and store a copy of the FLITS block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>FLITS Core scaricherà e salverà una copia della blockchain FLS. Verranno salvati almeno %1GB di dati in questa cartella, che cresceranno nel tempo. In questa cartella verrà salvato anche il portafoglio.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1206,8 +1202,8 @@ Si avvierà automaticamente non appena il portafoglio avrà sufficienti conferme
         <translation>OK</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1314,8 +1310,8 @@ Si avvierà automaticamente non appena il portafoglio avrà sufficienti conferme
         <translation>Crea nuovo controller Masternode</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a fls Masternode you must dedicate 10,000 FLS (the unit of fls) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Per creare un Masternode fls devi dedicare 10.000 FLS (l'unità di fls) alla rete (tuttavia, queste coin sono ancora tue e saranno sempre in tuo possesso). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;Puoi disattivare il nodo e sbloccare le valute in qualsiasi momento.</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Per creare un Masternode FLITS devi dedicare 10.000 FLS (l'unità di FLS) alla rete (tuttavia, queste coin sono ancora tue e saranno sempre in tuo possesso). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;Puoi disattivare il nodo e sbloccare le valute in qualsiasi momento.</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1785,8 +1781,8 @@ STAKING</translation>
         <translation>Se si disabilita la spesa per la modifica non confermata, la modifica da una transazione&lt;br/&gt;non può essere utilizzata fino a quando tale transazione non ha almeno una conferma.&lt;br/&gt;Ciò influisce anche sul modo in cui viene calcolato il saldo.</translation>
     </message>
     <message>
-        <source>Automatically open the fls client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Apri automaticamente la porta client fls sul router. Funziona solo quando il router supporta UPnP ed è abilitato.</translation>
+        <source>Automatically open the FLITS client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Apri automaticamente la porta client FLITS sul router. Funziona solo quando il router supporta UPnP ed è abilitato.</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1805,12 +1801,12 @@ STAKING</translation>
         <translation>Esperto</translation>
     </message>
     <message>
-        <source>Automatically start fls after logging in to the system.</source>
-        <translation>Avvia automaticamente fls dopo aver effettuato l'accesso al sistema.</translation>
+        <source>Automatically start FLITS after logging in to the system.</source>
+        <translation>Avvia automaticamente FLITS dopo aver effettuato l'accesso al sistema.</translation>
     </message>
     <message>
-        <source>&amp;Start fls on system login</source>
-        <translation>&amp;Start fls all'accesso al sistema</translation>
+        <source>&amp;Start FLITS on system login</source>
+        <translation>&amp;Start FLITS all'accesso al sistema</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1837,14 +1833,14 @@ STAKING</translation>
         <translation>&amp;Network</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting fls.</source>
-        <translation>La lingua dell'interfaccia utente può essere impostata qui. Questa impostazione avrà effetto dopo il riavvio di fls.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
+        <translation>La lingua dell'interfaccia utente può essere impostata qui. Questa impostazione avrà effetto dopo il riavvio di FLS.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/fls-project/fls-project-translations</source>
+https://www.transifex.com/flitsnode/flits-core-project-translations</source>
         <translation>Lingua mancante o traduzione incompleta? Aiutaci a contribuire alle traduzioni qui:
-https://www.transifex.com/fls-project/fls-project-translations</translation>
+https://www.transifex.com/flitsnode/flits-core-project-translations</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1887,8 +1883,8 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
         <translation>Soglia di divisione dello stake</translation>
     </message>
     <message>
-        <source>Connect to the fls network through a SOCKS5 proxy.</source>
-        <translation>Connettiti alla rete fls tramite un proxy SOCKS5.</translation>
+        <source>Connect to the FLITS network through a SOCKS5 proxy.</source>
+        <translation>Connettiti alla rete FLITS tramite un proxy SOCKS5.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -2032,10 +2028,10 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
     </message>
 </context>
 <context>
-    <name>flsGUI</name>
+    <name>FLSGUI</name>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -2062,8 +2058,8 @@ https://www.transifex.com/fls-project/fls-project-translations</translation>
         <translation>Chiude l'applicazione</translation>
     </message>
     <message>
-        <source>fls Core client</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core client</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2133,8 +2129,8 @@ Indirizzo: %4
         <translation>Impossibile avviare fls: gestore click-to-pay</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid fls address or malformed URI parameters.</source>
-        <translation>Impossibile leggere il file della richiesta di pagamento! Ciò può essere causato da un indirizzo fls non valido o parametri URI non validi.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
+        <translation>Impossibile leggere il file della richiesta di pagamento! Ciò può essere causato da un indirizzo FLITS non valido o parametri URI non validi.</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -2219,8 +2215,8 @@ Indirizzo: %4
         <translation>Ammontare</translation>
     </message>
     <message>
-        <source>Enter fls address (e.g. %1)</source>
-        <translation>Inserisci un indirizzo fls (ad es. %1)</translation>
+        <source>Enter FLITS address (e.g. %1)</source>
+        <translation>Inserisci un indirizzo FLITS (ad es. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2263,12 +2259,12 @@ Indirizzo: %4
         <translation>%1 ms</translation>
     </message>
     <message>
-        <source>A fatal error occurred. fls can no longer continue safely and will quit.</source>
-        <translation>Si è verificato un errore irreversibile. fls non può più continuare in modo sicuro e verrà chiuso.</translation>
+        <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
+        <translation>Si è verificato un errore irreversibile. FLITS non può più continuare in modo sicuro e verrà chiuso.</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -2279,16 +2275,8 @@ Indirizzo: %4
         <translation>Errore: impossibile analizzare il file di configurazione: %1. Utilizzare solo la sintassi key=value.</translation>
     </message>
     <message>
-        <source>Error: Invalid combination of -regtest and -testnet.</source>
-        <translation>Errore: combinazione non valida di -regtest e -testnet.</translation>
-    </message>
-    <message>
         <source>Error reading masternode configuration file: %1</source>
         <translation>Errore durante la lettura del file di configurazione del Masternode: %1</translation>
-    </message>
-    <message>
-        <source>fls Core didn't yet exit safely...</source>
-        <translation>fls Core non è ancora uscito in modo sicuro...</translation>
     </message>
     <message>
         <source>Contact</source>
@@ -2526,8 +2514,8 @@ Indirizzo: %4
         <translation>Blockchain</translation>
     </message>
     <message>
-        <source>Open the fls debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Aprire il file di registro di debug fls dalla directory dei dati corrente. Questa operazione può richiedere alcuni secondi per file di registro di grandi dimensioni.</translation>
+        <source>Open the FLITS debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Aprire il file di registro di debug FLITS dalla directory dei dati corrente. Questa operazione può richiedere alcuni secondi per file di registro di grandi dimensioni.</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -2750,8 +2738,8 @@ Indirizzo: %4
         <translation>Out:</translation>
     </message>
     <message>
-        <source>Welcome to the fls RPC console.</source>
-        <translation>Benvenuti nella console RPC di fls.</translation>
+        <source>Welcome to the FLITS RPC console.</source>
+        <translation>Benvenuti nella console RPC di FLS.</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -3018,8 +3006,8 @@ Indirizzo: %4
         <translation>FLS</translation>
     </message>
     <message>
-        <source>Instead of sharing only a fls address, you can create a payment request, bundling up more information</source>
-        <translation>Invece di condividere solo un indirizzo fls, è possibile creare un messaggio di richiesta pagamento, raccogliendo più informazioni</translation>
+        <source>Instead of sharing only a FLITS address, you can create a payment request, bundling up more information</source>
+        <translation>Invece di condividere solo un indirizzo FLS, è possibile creare un messaggio di richiesta pagamento, raccogliendo più informazioni</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -3109,8 +3097,8 @@ Indirizzo: %4
         <translation>Modifica indirizzo personalizzata</translation>
     </message>
     <message>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" fls address</source>
-        <translation>Il resto del valore risultante dagli ingressi meno il valore delle uscite va all'indirizzo fls "cambio"</translation>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" FLITS address</source>
+        <translation>Il resto del valore risultante dagli ingressi meno il valore delle uscite va all'indirizzo FLITS "cambio"</translation>
     </message>
     <message>
         <source>SAVE</source>
@@ -3439,9 +3427,9 @@ Ricordati di scriverla e conservarla in modo sicuro, altrimenti potresti perdere
         <translation>Strumenti BIP38</translation>
     </message>
     <message>
-        <source>Encrypt your fls addresses (key pair actually) using BIP38 encryption.
+        <source>Encrypt your FLITS addresses (key pair actually) using BIP38 encryption.
 Using this mechanism you can share your keys without middle-man risk, only need to store your passphrase safely</source>
-        <translation>Cifra gli indirizzi fls (la coppia di chiavi) con la crittografia BIP38.
+        <translation>Cifra gli indirizzi FLITS (la coppia di chiavi) con la crittografia BIP38.
 Usando questo meccanismo è possibile condividere le chiavi senza rischi dell'intermediario, basta solo memorizzare la password in modo sicuro</translation>
     </message>
     <message>
@@ -3477,8 +3465,8 @@ Usando questo meccanismo è possibile condividere le chiavi senza rischi dell'in
         <translation>DECRITTOGRAFA LA CHIAVE</translation>
     </message>
     <message>
-        <source>fls address</source>
-        <translation>Indirizzi fls</translation>
+        <source>FLITS address</source>
+        <translation>Indirizzi FLS</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3610,8 +3598,8 @@ Verify that you have installed a predetermined text editor.</source>
 Verifica di aver installato un editor di testo predeterminato.</translation>
     </message>
     <message>
-        <source>Welcome to the fls RPC console.</source>
-        <translation>Benvenuti nella console RPC di fls.</translation>
+        <source>Welcome to the FLITS RPC console.</source>
+        <translation>Benvenuti nella console RPC di FLS.</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
@@ -3720,12 +3708,12 @@ Verifica di aver installato un editor di testo predeterminato.</translation>
         <translation>Esporta elenco indirizzi</translation>
     </message>
     <message>
-        <source>fls_tx_csv_export(*.csv)</source>
-        <translation>fls_tx_csv_export(*.csv)</translation>
+        <source>FLS_tx_csv_export(*.csv)</source>
+        <translation>FLS_tx_csv_export(*.csv)</translation>
     </message>
     <message>
-        <source>fls_addresses_csv_export(*.csv)</source>
-        <translation>fls_addresses_csv_export(*.csv)</translation>
+        <source>FLS_addresses_csv_export(*.csv)</source>
+        <translation>FLS_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -3795,24 +3783,24 @@ Si è verificato un errore nel tentativo di salvare l'elenco degli indirizzi in 
         <translation>Modulo</translation>
     </message>
     <message>
-        <source>1) What is fls?</source>
-        <translation>1) Che cos'è fls?</translation>
+        <source>1) What is FLS?</source>
+        <translation>1) Che cos'è FLS?</translation>
     </message>
     <message>
         <source>2) Why are my FLS unspendable?</source>
         <translation>2) Perché i miei FLS non sono spendibili?</translation>
     </message>
     <message>
-        <source>https://fls.org/</source>
-        <translation>https://fls.org/</translation>
+        <source>https://flitswallet.app/</source>
+        <translation>https://flitswallet.app/</translation>
     </message>
     <message>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <source>What is fls?</source>
-        <translation>Che cos'è fls?</translation>
+        <source>What is FLS?</source>
+        <translation>Che cos'è FLS?</translation>
     </message>
     <message>
         <source>2</source>
@@ -3825,19 +3813,19 @@ Si è verificato un errore nel tentativo di salvare l'elenco degli indirizzi in 
     <message>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Newly received fls requires 6 confirmations on the network
+                           Newly received FLITS requires 6 confirmations on the network
                            to become eligible for spending which can take ~6 minutes.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           Your fls wallet also needs to be completely synchronized
+                           Your FLITS wallet also needs to be completely synchronized
                            to see and spend balances on the network.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
         <translation>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           fls appeni ricevuti richiedono 6 conferme sulla rete
+                           FLITS appeni ricevuti richiedono 6 conferme sulla rete
  per poter essere spendibili, cioè può richiedere ~6 minuti.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           Anche il tuo portafoglio fls deve essere completamente sincronizzato
+                           Anche il tuo portafoglio FLITS deve essere completamente sincronizzato
 per vedere e spendere i saldi sulla rete.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </translation>
@@ -3851,8 +3839,8 @@ per vedere e spendere i saldi sulla rete.
         <translation>Come posso fare lo stake di FLS?</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You must have a balance of fls with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (fls-cli); the command &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Assicurati che il tuo wallet sia completamente sincronizzato e che tu stia usando l'ultima versione. 56Il bilancio dei tuoi fls deve avere almeno 600 conferme. Per lo stacking il tuo wallet deve rimanere online e deve essere sbloccato. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Una volta portati a termine questi step, siete pronti per avviare lo stacking. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Potete vedere lo stato dello staking nel wallet, passando il mouse sull'icona del pacchetto nella riga in alto a sinistra dell'interfaccia del portafoglio. Il pacchetto sarà illuminato e indicherà &amp;quot;Staking Enabled&amp;quot; per indicare che lo staking è attivo. Usando nella riga di comando dell'interfaccia (fls-cli); il comando &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; avrai conferma che lo staking è attivo. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You must have a balance of FLITS with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (fls-cli); the command &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Assicurati che il tuo wallet sia completamente sincronizzato e che tu stia usando l'ultima versione. 56Il bilancio dei tuoi FLITS deve avere almeno 600 conferme. Per lo stacking il tuo wallet deve rimanere online e deve essere sbloccato. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Una volta portati a termine questi step, siete pronti per avviare lo stacking. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Potete vedere lo stato dello staking nel wallet, passando il mouse sull'icona del pacchetto nella riga in alto a sinistra dell'interfaccia del portafoglio. Il pacchetto sarà illuminato e indicherà &amp;quot;Staking Enabled&amp;quot; per indicare che lo staking è attivo. Usando nella riga di comando dell'interfaccia (fls-cli); il comando &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; avrai conferma che lo staking è attivo. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>4</source>
@@ -3871,28 +3859,6 @@ per vedere e spendere i saldi sulla rete.
         <translation>Dove dovrei andare se ho bisogno di supporto?</translation>
     </message>
     <message>
-        <source>
-                           &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           We have support channels in most of our official chat groups, for example
-                           &lt;a style='color: #b088ff' href='https://discord.fls.org'&gt;
-                           #support in our Discord&lt;/a&gt;.
-                           If you prefer to submit a ticket, You can do so at
-                           &lt;a style='color: #b088ff' href='https://fls.freshdesk.com'&gt;
-                           our Freshdesk support site&lt;/a&gt;.
-                           &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-                         </source>
-        <translation>
-                           &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Abbiamo canali di supporto nella maggior parte dei nostri gruppi di chat ufficiali, ad esempio
-                           &lt;a style='color: #b088ff' href='https://Discord.fls.com'&gt;
-                           #support nel nostro Discord&lt;/a&gt;.
-                           Se preferisci aprire un ticket, puoi farlo su
-                           &lt;a style='color: #b088ff' href='https://fls.FreshDesk.com'&gt;
-                           il nostro sito di supporto Freshdesk&lt;/a&gt;.
-                           &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-                         </translation>
-    </message>
-    <message>
         <source>What is a Masternode?</source>
         <translation>Cos'è un Masternode?</translation>
     </message>
@@ -3903,92 +3869,6 @@ per vedere e spendere i saldi sulla rete.
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 10,000 FLS collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Un Masternode Controller wallet è dove i 10.000 FLS collaterali possono risiedere durante l'impostazione del Masternode Controller remoto. È un portafoglio che può attivare uno o più portafogli masternode remoti e ti consente di mantenere offline le tue valute collaterali mentre il masternode remoto rimane online.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>
-                           &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           A masternode is a computer running a full node fls core wallet with a
-                           requirement of 10,000 FLS secured collateral to provide extra services
-                           to the network and in return, receive a portion of the block reward
-                           regularly.  These services include:
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-
-                           &lt;ul&gt;
-                           &lt;li&gt;Instant transactions (SwiftX)&lt;/li&gt;
-                           &lt;li&gt;A decentralized governance (Proposal Voting)&lt;/li&gt;
-                           &lt;li&gt;A decentralized budgeting system (Treasury)&lt;/li&gt;
-                           &lt;li&gt;Validation of transactions within each block&lt;/li&gt;
-                           &lt;li&gt;Act as an additional full node in the network&lt;/li&gt;
-                           &lt;/ul&gt;
-
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-                           For providing such services, masternodes are also paid a certain portion
-                           of reward for each block. This can serve as a passive income to the
-                           masternode owners minus their running cost.
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-
-                           Masternode Perks:
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-                           &lt;ul&gt;
-                           &lt;li&gt;Participate in fls Governance&lt;/li&gt;
-                           &lt;li&gt;Earn Masternode Rewards&lt;/li&gt;
-                           &lt;li&gt;Commodity option for future sale&lt;/li&gt;
-                           &lt;li&gt;Help secure the fls network&lt;/li&gt;
-                           &lt;/ul&gt;
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-
-                           Requirements:
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-                           &lt;ul&gt;
-                           &lt;li&gt;10,000 FLS per single Masternode instance&lt;/li&gt;
-                           &lt;li&gt;Must be stored in a core wallet&lt;/li&gt;
-                           &lt;li&gt;Need dedicated IP address&lt;/li&gt;
-                           &lt;li&gt;Masternode wallet to remain online&lt;/li&gt;
-                           &lt;/ul&gt;
-                           &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-                         </source>
-        <translation>
-                           &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Un masternode è un computer che esegue un portafoglio core fls a nodo completo
-con un requisito di 10.000 FLS a garanzia per fornire servizi extra
-alla rete e, in cambio, riceve una parte del premio del blocco
-regolarmente. Questi servizi includono:
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-
-                           &lt;ul&gt;
-                           &lt;li&gt;Transazioni istantanee (SwiftX)&lt;/li&gt;
-                           &lt;li&gt;Una governance decentrata (votazione della proposta)&lt;/li&gt;
-                           &lt;li&gt;Un sistema di bilancio decentralizzato (Tesoreria)&lt;/li&gt;
-                           &lt;li&gt;Convalida delle transazioni all'interno di ciascun blocco&lt;/li&gt;
-                           &lt;li&gt;Funziona come un nodo completo aggiuntivo nella rete&lt;/li&gt;
-                           &lt;/ul&gt;
-
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-                           Per fornire tali servizi, i masternode vengono pagati anche una determinata porzione
- di ricompensa per ogni blocco. Questo può servire come reddito passivo per il
- proprietari di masternode detratti i loro costi di gestione.
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-
-                           Vantaggi del Masternode:
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-                           &lt;ul&gt;
-                           &lt;li&gt;Partecipare alla Governance di fls &lt;/li&gt;
-                           &lt;li&gt;Guadagnare i premi del Masternode&lt;/li&gt;
-                           &lt;li&gt;Opzione di una commodity per vendita futura&lt;/li&gt;
-                           &lt;li&gt;Aiuta a proteggere la rete fls&lt;/li&gt;
-                           &lt;/ul&gt;
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-
-                           Requisiti:
-                           &lt;/p&gt;&lt;p align="justify"&gt;
-                           &lt;ul&gt;
-                           &lt;li&gt;10,000 FLS per singolo Masternode
-                           &lt;li&gt;Devono essere conservati in un portafoglio core&lt;/li&gt;
-                           &lt;li&gt;Necessita un indirizzo IP dedicato&lt;/li&gt;
-                           &lt;li&gt;Il portafoglio del Masternode deve rimanere online&lt;/li&gt;
-                           &lt;/ul&gt;
-                           &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-                         </translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
@@ -4169,8 +4049,8 @@ regolarmente. Questi servizi includono:
         <translation>Numero di script e processi di verifica</translation>
     </message>
     <message>
-        <source>Start fls on system login</source>
-        <translation>Avvia fls all'accesso al sistema</translation>
+        <source>Start FLITS on system login</source>
+        <translation>Avvia FLITS all'accesso al sistema</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -4257,8 +4137,8 @@ Sei sicuro?
         <translation>CheckBox</translation>
     </message>
     <message>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other fls addresses after it matures.</source>
-        <translation>MultiSend ti consente di inviare automaticamente fino al 100% dei tuoi stake o ricompense masternode a un elenco di altri indirizzi fls dopo la loro maturazione.</translation>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures.</source>
+        <translation>MultiSend ti consente di inviare automaticamente fino al 100% dei tuoi stake o ricompense masternode a un elenco di altri indirizzi FLITS dopo la loro maturazione.</translation>
     </message>
     <message>
         <source>Active</source>
@@ -4384,8 +4264,8 @@ Seleziona una o entrambe le caselle di controllo per inviare gli stake e/o i pre
         <translation>Messaggio</translation>
     </message>
     <message>
-        <source>fls address or contact label</source>
-        <translation>Indirizzo fls o etichetta contatto</translation>
+        <source>FLITS address or contact label</source>
+        <translation>Indirizzo FLITS o etichetta contatto</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -4705,8 +4585,8 @@ Seleziona una o entrambe le caselle di controllo per inviare gli stake e/o i pre
         <translation>FAQ</translation>
     </message>
     <message>
-        <source>About fls</source>
-        <translation>Informazioni su fls</translation>
+        <source>About FLS</source>
+        <translation>Informazioni su FLS</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4776,8 +4656,8 @@ Sei sicuro?
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>fls Core is shutting down...</source>
-        <translation>fls Core si sta spegnendo...</translation>
+        <source>FLITS Core is shutting down...</source>
+        <translation>FLITS Core si sta spegnendo...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -4806,8 +4686,8 @@ Sei sicuro?
         <translation>Caricamento...</translation>
     </message>
     <message>
-        <source>fls Core</source>
-        <translation>fls Core</translation>
+        <source>FLITS Core</source>
+        <translation>FLITS Core</translation>
     </message>
 </context>
 <context>
@@ -5346,25 +5226,25 @@ Selezionare meno ingressi con controllo coin.</translation>
     </message>
     <message>
         <source>Welcome to
-fls Core Wallet</source>
+FLITS Core Wallet</source>
         <translation>Benvenuto in
-Portafoglio fls Core.</translation>
+Portafoglio FLITS Core.</translation>
     </message>
     <message>
-        <source>fls is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>fls è la tecnologia basata su blockchain Proof of Stake più innovativa al mondo. Sviluppato da un team di sviluppatori e crittografi di grande esperienza.</translation>
+        <source>FLITS is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <translation>FLITS è la tecnologia basata su blockchain Proof of Stake più innovativa al mondo. Sviluppato da un team di sviluppatori e crittografi di grande esperienza.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - fls believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Come dice il nostro manifesto: la privacy è un diritto umano di base non negoziabile; garantisce agli utenti la libertà di condividere i propri dati quando e con chi vuole - fls crede nell'auto sovranità.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - FLITS believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Come dice il nostro manifesto: la privacy è un diritto umano di base non negoziabile; garantisce agli utenti la libertà di condividere i propri dati quando e con chi vuole - FLITS crede nell'auto sovranità.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is fls's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>La rete masternode è la rete di secondo livello di fls sopra alla blockchain che consente al nostro DAO di fornire governance decentralizzata e tesoreria.</translation>
+        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <translation>La rete masternode è la rete di secondo livello di FLITS sopra alla blockchain che consente al nostro DAO di fornire governance decentralizzata e tesoreria.</translation>
     </message>
     <message>
-        <source>How fls respects your privacy?</source>
-        <translation>In che modo fls rispetta la tua privacy?</translation>
+        <source>How FLITS respects your privacy?</source>
+        <translation>In che modo FLITS rispetta la tua privacy?</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -5376,7 +5256,7 @@ Portafoglio fls Core.</translation>
     </message>
 </context>
 <context>
-    <name>flits-core</name>
+    <name>fls-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>Consenti connessioni JSON-RPC dall'origine specificata. Valido per &lt;ip&gt; sono un singolo IP (ad es. 1.2.3.4), una rete / maschera di rete (ad es. 1.2.3.4/255.255.255.0) o una rete / CIDR (ad es. 1.2.3.4/24). Questa opzione può essere specificata più volte</translation>
@@ -5392,10 +5272,6 @@ Portafoglio fls Core.</translation>
     <message>
         <source>Bind to given address to listen for JSON-RPC connections. Use [host]:port notation for IPv6. This option can be specified multiple times (default: bind to all interfaces)</source>
         <translation>Associa l'indirizzo indicato per ascoltare le connessioni JSON-RPC. Usa la notazione [host]:porta per IPv6. Questa opzione può essere specificata più volte (impostazione predefinita: associa a tutte le interfacce)</translation>
-    </message>
-    <message>
-        <source>Cannot obtain a lock on data directory %s. fls Core is probably already running.</source>
-        <translation>Impossibile allocare la directory di dati %s. Probabilmente fls Core è già in esecuzione.</translation>
     </message>
     <message>
         <source>Change automatic finalized budget voting behavior. mode=auto: Vote for only exact finalized budget match to my generated budget. (string, default: auto)</source>
@@ -5424,10 +5300,6 @@ Portafoglio fls Core.</translation>
     <message>
         <source>Enable spork administration functionality with the appropriate private key.</source>
         <translation>Abilitare la funzionalità di amministrazione di spork con la chiave privata appropriata.</translation>
-    </message>
-    <message>
-        <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
-        <translation>Entra nella modalità test di regressione, che utilizza una catena speciale in cui i blocchi possono essere risolti istantaneamente.</translation>
     </message>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
@@ -5460,10 +5332,6 @@ Portafoglio fls Core.</translation>
     <message>
         <source>If paytxfee is not set, include enough fee so transactions begin confirmation on average within n blocks (default: %u)</source>
         <translation>Se paytxfee non è impostato, includere una commissione sufficiente in modo che le transazioni inizino la conferma in media entro n blocchi (impostazione predefinita: %u)</translation>
-    </message>
-    <message>
-        <source>In this mode -genproclimit controls how many blocks are generated immediately.</source>
-        <translation>In questa modalità -genproclimit controlla quanti blocchi vengono generati immediatamente.</translation>
     </message>
     <message>
         <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
@@ -5542,8 +5410,8 @@ Portafoglio fls Core.</translation>
         <translation>La lunghezza totale della stringa della versione di rete (%i) supera la lunghezza massima (%i). Ridurre il numero o la dimensione degli uacomments.</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. fls Core is probably already running.</source>
-        <translation>Impossibile associare %s su questo computer. Probabilmente fls Core è già in esecuzione.</translation>
+        <source>Unable to bind to %s on this computer. FLITS Core is probably already running.</source>
+        <translation>Impossibile associare %s su questo computer. Probabilmente FLITS Core è già in esecuzione.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -5558,8 +5426,8 @@ Portafoglio fls Core.</translation>
         <translation>Attenzione: -paytxfee è impostato molto alto! Questa è la commissione di transazione che dovrai pagare se invii una transazione.</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong fls Core will not work properly.</source>
-        <translation>Avvertenza: verificare che la data e l'ora del computer siano corrette! Se l'orologio è sbagliato, fls Core non funzionerà correttamente.</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
+        <translation>Avvertenza: verificare che la data e l'ora del computer siano corrette! Se l'orologio è sbagliato, FLITS Core non funzionerà correttamente.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -5630,8 +5498,8 @@ Portafoglio fls Core.</translation>
         <translation>Copyright (C) 2014-%i Gli sviluppatori di Dash Core</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The fls Core Developers</source>
-        <translation>Copyright (C) 2015-%i Gli sviluppatori di fls Core</translation>
+        <source>Copyright (C) 2015-%i The FLITS Core Developers</source>
+        <translation>Copyright (C) 2015-%i Gli sviluppatori di FLITS Core</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -5750,10 +5618,6 @@ Portafoglio fls Core.</translation>
         <translation>Informazioni</translation>
     </message>
     <message>
-        <source>Initialization sanity check failed. fls Core is shutting down.</source>
-        <translation>Verifica dell'integrità dell'inizializzazione non riuscita. fls Core si sta spegnendo.</translation>
-    </message>
-    <message>
         <source>Insufficient funds.</source>
         <translation>Fondi insufficienti.</translation>
     </message>
@@ -5776,10 +5640,6 @@ Portafoglio fls Core.</translation>
     <message>
         <source>Error: Unsupported argument -checklevel found. Checklevel must be level 4.</source>
         <translation>Errore: argomento non supportato -checklevel trovato. Il livello di controllo deve essere di livello 4.</translation>
-    </message>
-    <message>
-        <source>Execute command when the best block changes and its size is over (%s in cmd is replaced by block hash, %d with the block size)</source>
-        <translation>Esegui comando quando il blocco migliore cambia e la sua dimensione è finita (%s in cmd è sostituito dall'hash del blocco, %d con la dimensione del blocco)</translation>
     </message>
     <message>
         <source>Specify custom backup path to add a copy of any wallet backup. If set as dir, every backup generates a timestamped file. If set as file, will rewrite to that file every backup.</source>
@@ -5998,8 +5858,8 @@ Portafoglio fls Core.</translation>
         <translation>Importo positivo minimo (in FLS) consentito da GUI e RPC per la soglia di ripartizione della partecipazione (default: %s)</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong fls Core will not work properly.</source>
-        <translation>Verificare che la data e l'ora del computer siano corrette! Se l'orologio sincronizzato, fls Core non funzionerà correttamente.</translation>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
+        <translation>Verificare che la data e l'ora del computer siano corrette! Se l'orologio sincronizzato, FLITS Core non funzionerà correttamente.</translation>
     </message>
     <message>
         <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect/-noconnect)</source>
@@ -6256,10 +6116,6 @@ Portafoglio fls Core.</translation>
         <translation>Questo è un software sperimentale.</translation>
     </message>
     <message>
-        <source>This is intended for regression testing tools and app development.</source>
-        <translation>Questo è destinato agli strumenti di test di regressione e allo sviluppo di app.</translation>
-    </message>
-    <message>
         <source>This is not a masternode. 'local' option disabled.</source>
         <translation>Questo non è un masternode. opzione "locale" disattivata.</translation>
     </message>
@@ -6332,10 +6188,6 @@ Portafoglio fls Core.</translation>
         <translation>Utilizzare UPnP per mappare la porta di ascolto (default: %u)</translation>
     </message>
     <message>
-        <source>Use the test network</source>
-        <translation>Usa la rete di test</translation>
-    </message>
-    <message>
         <source>User Agent comment (%s) contains unsafe characters.</source>
         <translation>Il commento del User Agent (%s) contiene caratteri non sicuri.</translation>
     </message>
@@ -6352,8 +6204,8 @@ Portafoglio fls Core.</translation>
         <translation>Verifica del portafoglio...</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart fls Core to complete</source>
-        <translation>Il portafoglio doveva essere riscritto: riavviare fls Core per completare</translation>
+        <source>Wallet needed to be rewritten: restart FLITS Core to complete</source>
+        <translation>Il portafoglio doveva essere riscritto: riavviare FLITS Core per completare</translation>
     </message>
     <message>
         <source>Wallet options:</source>
@@ -6407,8 +6259,8 @@ Portafoglio fls Core.</translation>
         <translation>Invia</translation>
     </message>
     <message>
-        <source>fls address or contact label</source>
-        <translation>Indirizzo fls o etichetta contatto</translation>
+        <source>FLITS address or contact label</source>
+        <translation>Indirizzo FLITS o etichetta contatto</translation>
     </message>
     <message>
         <source>Amount</source>

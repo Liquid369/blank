@@ -34,13 +34,13 @@ Test is as follows:
 from decimal import Decimal
 import os
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import (
     assert_equal,
     wait_until,
 )
 
-class MempoolPersistTest(flsTestFramework):
+class MempoolPersistTest(FlsTestFramework):
     def set_test_params(self):
         self.num_nodes = 3
         self.extra_args = [[], ["-persistmempool=0"], []]

@@ -1,6 +1,7 @@
 // Copyright (c) 2016-2020 The ZCash developers
 // Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -398,31 +399,25 @@ void SaplingScriptPubKeyMan::GetNotes(const std::vector<SaplingOutPoint>& saplin
     for (const auto& outpoint : saplingOutpoints) {
         const auto* wtx = wallet->GetWalletTx(outpoint.hash);
         if (!wtx) throw std::runtime_error("No transaction available for hash " + outpoint.hash.GetHex());
+        const int depth = WITH_LOCK(wallet->cs_wallet, return wtx->GetDepthInMainChain(); );
         const auto& it = wtx->mapSaplingNoteData.find(outpoint);
         if (it != wtx->mapSaplingNoteData.end()) {
-
             const SaplingOutPoint& op = it->first;
             const SaplingNoteData& nd = it->second;
 
             // skip sent notes
             if (!nd.IsMyNote()) continue;
+
+            // recover plaintext and address
+            auto optNotePtAndAddress = wtx->DecryptSaplingNote(op);
+            assert(static_cast<bool>(optNotePtAndAddress));
+
             const libzcash::SaplingIncomingViewingKey& ivk = *(nd.ivk);
-
-            const OutputDescription& outDesc = wtx->tx->sapData->vShieldedOutput[op.n];
-            auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
-                    outDesc.encCiphertext,
-                    ivk,
-                    outDesc.ephemeralKey,
-                    outDesc.cmu);
-            assert(static_cast<bool>(maybe_pt));
-            auto notePt = maybe_pt.get();
-
-            auto maybe_pa = ivk.address(notePt.d);
-            assert(static_cast<bool>(maybe_pa));
-            auto pa = maybe_pa.get();
-
+            const libzcash::SaplingNotePlaintext& notePt = optNotePtAndAddress->first;
+            const libzcash::SaplingPaymentAddress& pa = optNotePtAndAddress->second;
             auto note = notePt.note(ivk).get();
-            saplingEntriesRet.emplace_back(op, pa, note, notePt.memo(), wtx->GetDepthInMainChain());
+
+            saplingEntriesRet.emplace_back(op, pa, note, notePt.memo(), depth);
         }
     }
 }
@@ -472,9 +467,9 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
         }
 
         // Filter the transactions before checking for notes
+        const int depth = wtx.GetDepthInMainChain();
         if (!IsFinalTx(wtx.tx, wallet->GetLastBlockHeight() + 1, GetAdjustedTime()) ||
-            wtx.GetDepthInMainChain() < minDepth ||
-            wtx.GetDepthInMainChain() > maxDepth) {
+            depth < minDepth || depth > maxDepth) {
             continue;
         }
 
@@ -482,21 +477,17 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
             const SaplingOutPoint& op = it.first;
             const SaplingNoteData& nd = it.second;
 
-            // Skip sent notes
+            // skip sent notes
             if (!nd.IsMyNote()) continue;
+
+            // recover plaintext and address
+            auto optNotePtAndAddress = wtx.DecryptSaplingNote(op);
+            assert(static_cast<bool>(optNotePtAndAddress));
+
             const libzcash::SaplingIncomingViewingKey& ivk = *(nd.ivk);
-
-            auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
-                    wtx.tx->sapData->vShieldedOutput[op.n].encCiphertext,
-                    ivk,
-                    wtx.tx->sapData->vShieldedOutput[op.n].ephemeralKey,
-                    wtx.tx->sapData->vShieldedOutput[op.n].cmu);
-            assert(static_cast<bool>(maybe_pt));
-            auto notePt = maybe_pt.get();
-
-            auto maybe_pa = ivk.address(notePt.d);
-            assert(static_cast<bool>(maybe_pa));
-            auto pa = maybe_pa.get();
+            const libzcash::SaplingNotePlaintext& notePt = optNotePtAndAddress->first;
+            const libzcash::SaplingPaymentAddress& pa = optNotePtAndAddress->second;
+            auto note = notePt.note(ivk).get();
 
             // skip notes which belong to a different payment address in the wallet
             if (!(filterAddresses.empty() || filterAddresses.count(pa))) {
@@ -517,8 +508,7 @@ void SaplingScriptPubKeyMan::GetFilteredNotes(
             //    continue;
             //}
 
-            auto note = notePt.note(ivk).get();
-            saplingEntries.emplace_back(op, pa, note, notePt.memo(), wtx.GetDepthInMainChain());
+            saplingEntries.emplace_back(op, pa, note, notePt.memo(), depth);
         }
     }
 }

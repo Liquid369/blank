@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,7 +13,7 @@
 #include "qt/fls/qtutils.h"
 #include "guiinterface.h"
 
-SettingsExportCSV::SettingsExportCSV(flsGUI* _window, QWidget *parent) :
+SettingsExportCSV::SettingsExportCSV(FLSGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsExportCSV)
 {
@@ -60,7 +61,7 @@ void SettingsExportCSV::selectFileOutput(const bool& isTxExport)
 {
     QString filename = GUIUtil::getSaveFileName(this,
                                         isTxExport ? tr("Export CSV") : tr("Export Address List"), QString(),
-                                        isTxExport ? tr("fls_tx_csv_export(*.csv)") : tr("fls_addresses_csv_export(*.csv)"),
+                                        isTxExport ? tr("FLS_tx_csv_export(*.csv)") : tr("FLS_addresses_csv_export(*.csv)"),
                                         nullptr);
 
     if (isTxExport) {

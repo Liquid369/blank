@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -62,7 +63,7 @@ public:
 };
 
 
-AddressesWidget::AddressesWidget(flsGUI* parent) :
+AddressesWidget::AddressesWidget(FLSGUI* parent) :
     PWidget(parent),
     ui(new Ui::AddressesWidget)
 {
@@ -188,15 +189,15 @@ void AddressesWidget::onStoreContactClicked()
         QString address = ui->lineEditAddress->text();
 
         bool isStakingAddress = false;
-        auto pivAdd = Standard::DecodeDestination(address.toUtf8().constData(), isStakingAddress);
+        auto flsAdd = Standard::DecodeDestination(address.toUtf8().constData(), isStakingAddress);
 
-        if (!Standard::IsValidDestination(pivAdd)) {
+        if (!Standard::IsValidDestination(flsAdd)) {
             setCssEditLine(ui->lineEditAddress, false, true);
             inform(tr("Invalid Contact Address"));
             return;
         }
 
-        if (walletModel->isMine(pivAdd)) {
+        if (walletModel->isMine(flsAdd)) {
             setCssEditLine(ui->lineEditAddress, false, true);
             inform(tr("Cannot store your own address as contact"));
             return;
@@ -209,8 +210,8 @@ void AddressesWidget::onStoreContactClicked()
             return;
         }
 
-        bool isShielded = walletModel->IsShieldedDestination(pivAdd);
-        if (walletModel->updateAddressBookLabels(pivAdd, label.toUtf8().constData(),
+        bool isShielded = walletModel->IsShieldedDestination(flsAdd);
+        if (walletModel->updateAddressBookLabels(flsAdd, label.toUtf8().constData(),
                          isShielded ? AddressBook::AddressBookPurpose::SHIELDED_SEND :
                          isStakingAddress ? AddressBook::AddressBookPurpose::COLD_STAKING_SEND : AddressBook::AddressBookPurpose::SEND)
                 ) {

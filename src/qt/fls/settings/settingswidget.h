@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -20,7 +21,7 @@
 #include "qt/fls/settings/settingsinformationwidget.h"
 #include "qt/fls/settings/settingsconsolewidget.h"
 
-class flsGUI;
+class FLSGUI;
 
 QT_BEGIN_NAMESPACE
 class QDataWidgetMapper;
@@ -35,7 +36,7 @@ class SettingsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWidget(flsGUI* parent);
+    explicit SettingsWidget(FLSGUI* parent);
     ~SettingsWidget();
 
     void loadClientModel() override;

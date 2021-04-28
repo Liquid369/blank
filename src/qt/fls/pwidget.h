@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,7 +13,7 @@
 #include "qt/fls/prunnable.h"
 #include "walletmodel.h"
 
-class flsGUI;
+class FLSGUI;
 class ClientModel;
 class WalletModel;
 class WorkerTask;
@@ -31,13 +32,13 @@ class PWidget : public QWidget, public Runnable, public Translator
 {
     Q_OBJECT
 public:
-    explicit PWidget(flsGUI* _window = nullptr, QWidget *parent = nullptr);
+    explicit PWidget(FLSGUI* _window = nullptr, QWidget *parent = nullptr);
     explicit PWidget(PWidget *parent = nullptr);
 
     void setClientModel(ClientModel* model);
     void setWalletModel(WalletModel* model);
 
-    flsGUI* getWindow() { return this->window; }
+    FLSGUI* getWindow() { return this->window; }
 
     void run(int type) override;
     void onError(QString error, int type) override;
@@ -57,7 +58,7 @@ protected Q_SLOTS:
     void onChangeTheme(bool isLightTheme, QString &theme);
 
 protected:
-    flsGUI* window = nullptr;
+    FLSGUI* window = nullptr;
     ClientModel* clientModel = nullptr;
     WalletModel* walletModel = nullptr;
 

@@ -1,5 +1,7 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
-// Copyright (c) 2017-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -42,7 +44,7 @@ public:
     GUIException(const std::string &message) : message(message) {}
 };
 
-/** Utility functions used by the fls Qt UI.
+/** Utility functions used by the FLITS Qt UI.
  */
 namespace GUIUtil
 {
@@ -51,7 +53,7 @@ QString dateTimeStr(const QDateTime& datetime);
 QString dateTimeStrWithSeconds(const QDateTime& date);
 QString dateTimeStr(qint64 nTime);
 
-// Render fls addresses in monospace font
+// Render FLITS addresses in monospace font
 QFont bitcoinAddressFont();
 
 // Parse string into a CAmount value
@@ -267,26 +269,6 @@ QString formatTimeOffset(int64_t nTimeOffset);
 #else
     typedef QProgressBar ProgressBar;
 #endif
-
-/**
-* Splits the string into substrings wherever separator occurs, and returns
-* the list of those strings. Empty strings do not appear in the result.
-*
-* QString::split() signature differs in different Qt versions:
-*  - QString::SplitBehavior is deprecated since Qt 5.15
-*  - Qt::SplitBehavior was introduced in Qt 5.14
-* If {QString|Qt}::SkipEmptyParts behavior is required, use this
-* function instead of QString::split().
-*/
-template <typename SeparatorType>
-QStringList SplitSkipEmptyParts(const QString& string, const SeparatorType& separator)
-{
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
-    return string.split(separator, Qt::SkipEmptyParts);
-#else
-    return string.split(separator, QString::SkipEmptyParts);
-#endif
-}
 
 } // namespace GUIUtil
 

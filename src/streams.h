@@ -1,14 +1,15 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2017-2019 The fls developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2020 The Flits Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_STREAMS_H
 #define BITCOIN_STREAMS_H
 
+#include "allocators.h"
 #include "serialize.h"
-#include "support/allocators/zeroafterfree.h"
 
 #include <algorithm>
 #include <assert.h>
@@ -279,7 +280,7 @@ public:
     }
 
     template <typename T>
-    CBaseDataStream& operator>>(T&& obj)
+    CBaseDataStream& operator>>(T& obj)
     {
         // Unserialize from this stream
         ::Unserialize(*this, obj);
@@ -503,8 +504,8 @@ public:
         return (*this);
     }
 
-    template<typename T>
-    CAutoFile& operator>>(T&& obj)
+    template <typename T>
+    CAutoFile& operator>>(T& obj)
     {
         // Unserialize from this stream
         if (!file)
@@ -650,8 +651,9 @@ public:
         return true;
     }
 
-    template<typename T>
-    CBufferedFile& operator>>(T&& obj) {
+    template <typename T>
+    CBufferedFile& operator>>(T& obj)
+    {
         // Unserialize from this stream
         ::Unserialize(*this, obj);
         return (*this);

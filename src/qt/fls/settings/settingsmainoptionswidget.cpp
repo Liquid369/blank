@@ -1,5 +1,8 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -30,7 +33,7 @@
 #include <QTimer>
 
 
-SettingsMainOptionsWidget::SettingsMainOptionsWidget(flsGUI* _window, QWidget *parent) :
+SettingsMainOptionsWidget::SettingsMainOptionsWidget(FLSGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsMainOptionsWidget)
 {
@@ -52,7 +55,7 @@ SettingsMainOptionsWidget::SettingsMainOptionsWidget(flsGUI* _window, QWidget *p
     setCssProperty({ui->labelTitleSizeDb, ui->labelTitleThreads}, "text-main-settings");
 
     // Switch
-    ui->pushSwitchStart->setText(tr("Start fls on system login"));
+    ui->pushSwitchStart->setText(tr("Start FLITS on system login"));
     ui->pushSwitchStart->setProperty("cssClass", "btn-switch");
 
     // Combobox

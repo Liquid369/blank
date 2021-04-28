@@ -1,10 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_PFBorderImage_H
-#define fls_PFBorderImage_H
+#ifndef FLS_PFBorderImage_H
+#define FLS_PFBorderImage_H
 
 #include <QPainter>
 #include <QPixmap>
@@ -53,4 +56,4 @@ protected:
 
 };
 
-#endif //fls_PFBorderImage_H
+#endif //FLS_PFBorderImage_H

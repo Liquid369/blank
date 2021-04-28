@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -25,7 +26,7 @@
 #include <QSpacerItem>
 #include <atomic>
 
-class flsGUI;
+class FLSGUI;
 class WalletModel;
 class CSDelegationHolder;
 
@@ -42,7 +43,7 @@ class ColdStakingWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit ColdStakingWidget(flsGUI* parent);
+    explicit ColdStakingWidget(FLSGUI* parent);
     ~ColdStakingWidget();
 
     void loadWalletModel() override;

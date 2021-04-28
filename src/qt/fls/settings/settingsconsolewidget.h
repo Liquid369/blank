@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -29,11 +30,19 @@ class SettingsConsoleWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsConsoleWidget(flsGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsConsoleWidget(FLSGUI* _window, QWidget *parent = nullptr);
     ~SettingsConsoleWidget();
 
     void loadClientModel() override;
     void showEvent(QShowEvent *event) override;
+
+    enum MessageClass {
+        MC_ERROR,
+        MC_DEBUG,
+        CMD_REQUEST,
+        CMD_REPLY,
+        CMD_ERROR
+    };
 
 public Q_SLOTS:
     void clear(bool clearHistory = true);

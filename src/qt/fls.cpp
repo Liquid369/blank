@@ -1,6 +1,8 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -83,7 +85,7 @@ static void InitMessage(const std::string& message)
  */
 static std::string Translate(const char* psz)
 {
-    return QCoreApplication::translate("flits-core", psz).toStdString();
+    return QCoreApplication::translate("fls-core", psz).toStdString();
 }
 
 static QString GetLangTerritory(bool forceLangFromSetting = false)
@@ -150,7 +152,7 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 }
 
-/** Class encapsulating fls Core startup and shutdown.
+/** Class encapsulating FLITS Core startup and shutdown.
  * Allows running startup and shutdown in a different thread from the UI thread.
  */
 class BitcoinCore : public QObject
@@ -177,7 +179,7 @@ private:
     void handleRunawayException(const std::exception* e);
 };
 
-/** Main fls application object */
+/** Main FLITS application object */
 class BitcoinApplication : public QApplication
 {
     Q_OBJECT
@@ -209,7 +211,7 @@ public:
     /// Get process return value
     int getReturnValue() { return returnValue; }
 
-    /// Get window identifier of QMainWindow (flsGUI)
+    /// Get window identifier of QMainWindow (FLSGUI)
     WId getMainWinId() const;
 
 public Q_SLOTS:
@@ -230,7 +232,7 @@ private:
     QThread* coreThread{nullptr};
     OptionsModel* optionsModel{nullptr};
     ClientModel* clientModel{nullptr};
-    flsGUI* window{nullptr};
+    FLSGUI* window{nullptr};
     QTimer* pollShutdownTimer{nullptr};
 #ifdef ENABLE_WALLET
     PaymentServer* paymentServer{nullptr};
@@ -372,10 +374,10 @@ void BitcoinApplication::createOptionsModel()
 
 void BitcoinApplication::createWindow(const NetworkStyle* networkStyle)
 {
-    window = new flsGUI(networkStyle, 0);
+    window = new FLSGUI(networkStyle, 0);
 
     pollShutdownTimer = new QTimer(window);
-    connect(pollShutdownTimer, &QTimer::timeout, window, &flsGUI::detectShutdown);
+    connect(pollShutdownTimer, &QTimer::timeout, window, &FLSGUI::detectShutdown);
 }
 
 void BitcoinApplication::createSplashScreen(const NetworkStyle* networkStyle)
@@ -422,7 +424,7 @@ void BitcoinApplication::startThread()
     connect(executor, &BitcoinCore::runawayException, this, &BitcoinApplication::handleRunawayException);
     connect(this, &BitcoinApplication::requestedInitialize, executor, &BitcoinCore::initialize);
     connect(this, &BitcoinApplication::requestedShutdown, executor, &BitcoinCore::shutdown);
-    connect(window, &flsGUI::requestedRestart, executor, &BitcoinCore::restart);
+    connect(window, &FLSGUI::requestedRestart, executor, &BitcoinCore::restart);
     /*  make sure executor object is deleted in its own thread */
     connect(this, &BitcoinApplication::stopThread, executor, &QObject::deleteLater);
     connect(this, &BitcoinApplication::stopThread, coreThread, &QThread::quit);
@@ -492,8 +494,8 @@ void BitcoinApplication::initializeResult(int retval)
             walletModel = new WalletModel(pwalletMain, optionsModel);
             walletModel->setClientModel(clientModel);
 
-            window->addWallet(flsGUI::DEFAULT_WALLET, walletModel);
-            window->setCurrentWallet(flsGUI::DEFAULT_WALLET);
+            window->addWallet(FLSGUI::DEFAULT_WALLET, walletModel);
+            window->setCurrentWallet(FLSGUI::DEFAULT_WALLET);
 
             connect(walletModel, &WalletModel::coinsSent,
                     paymentServer, &PaymentServer::fetchPaymentACK);
@@ -510,9 +512,9 @@ void BitcoinApplication::initializeResult(int retval)
 
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
-        // fls: URIs or payment requests:
-        //connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &flsGUI::handlePaymentRequest);
-        connect(window, &flsGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
+        // FLS: URIs or payment requests:
+        //connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &FLSGUI::handlePaymentRequest);
+        connect(window, &FLSGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
         connect(paymentServer, &PaymentServer::message, [this](const QString& title, const QString& message, unsigned int style) {
           window->message(title, message, style);
         });
@@ -532,7 +534,7 @@ void BitcoinApplication::shutdownResult(int retval)
 
 void BitcoinApplication::handleRunawayException(const QString& message)
 {
-    QMessageBox::critical(0, "Runaway exception", QObject::tr("A fatal error occurred. fls can no longer continue safely and will quit.") + QString("\n\n") + message);
+    QMessageBox::critical(0, "Runaway exception", QObject::tr("A fatal error occurred. FLITS can no longer continue safely and will quit.") + QString("\n\n") + message);
     ::exit(1);
 }
 
@@ -607,14 +609,14 @@ int main(int argc, char* argv[])
     /// 6. Determine availability of data directory and parse fls.conf
     /// - Do not call GetDataDir(true) before this step finishes
     if (!fs::is_directory(GetDataDir(false))) {
-        QMessageBox::critical(0, QObject::tr("fls Core"),
+        QMessageBox::critical(0, QObject::tr("FLITS Core"),
             QObject::tr("Error: Specified data directory \"%1\" does not exist.").arg(QString::fromStdString(gArgs.GetArg("-datadir", ""))));
         return 1;
     }
     try {
         gArgs.ReadConfigFile();
     } catch (const std::exception& e) {
-        QMessageBox::critical(0, QObject::tr("fls Core"),
+        QMessageBox::critical(0, QObject::tr("FLITS Core"),
             QObject::tr("Error: Cannot parse configuration file: %1. Only use key=value syntax.").arg(e.what()));
         return 0;
     }
@@ -629,7 +631,7 @@ int main(int argc, char* argv[])
     try {
         SelectParams(ChainNameFromCommandLine());
     } catch(const std::exception& e) {
-        QMessageBox::critical(0, QObject::tr("fls Core"), QObject::tr("Error: %1").arg(e.what()));
+        QMessageBox::critical(0, QObject::tr("FLITS Core"), QObject::tr("Error: %1").arg(e.what()));
         return 1;
     }
 #ifdef ENABLE_WALLET
@@ -648,7 +650,7 @@ int main(int argc, char* argv[])
     /// 7a. parse masternode.conf
     std::string strErr;
     if (!masternodeConfig.read(strErr)) {
-        QMessageBox::critical(0, QObject::tr("fls Core"),
+        QMessageBox::critical(0, QObject::tr("FLITS Core"),
             QObject::tr("Error reading masternode configuration file: %1").arg(strErr.c_str()));
         return 0;
     }

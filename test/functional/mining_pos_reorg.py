@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-# Copyright (c) 2019-2020 The PIVX Developers
-Copyright (c) 2020-2021 The Flits Developers
+# Copyright (c) 2019-2020 The PIVX developers
+# Copyright (c) 2019-2020 The Flits Developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -15,7 +15,7 @@ from test_framework.util import (
     DecimalAmt,
 )
 
-class ReorgStakeTest(flsTestFramework):
+class ReorgStakeTest(FlsTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 3
@@ -51,11 +51,11 @@ class ReorgStakeTest(flsTestFramework):
         assert_equal(self.nodes[nodeid].getblockcount(), wi['last_processed_block'])
         return wi['balance'] + wi['immature_balance']
 
-    def check_money_supply(self, expected_piv):
+    def check_money_supply(self, expected_fls):
         # verify that nodes have the expected FLS supply
-        piv_supply = [self.nodes[i].getsupplyinfo(True)['transparentsupply']
+        fls_supply = [self.nodes[i].getsupplyinfo(True)['transparentsupply']
                       for i in range(self.num_nodes)]
-        assert_equal(piv_supply, [DecimalAmt(expected_piv)] * self.num_nodes)
+        assert_equal(fls_supply, [DecimalAmt(expected_fls)] * self.num_nodes)
 
 
     def run_test(self):

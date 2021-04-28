@@ -1,7 +1,9 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,9 +13,9 @@
 
 #include "util.h"
 
+#include "allocators.h"
 #include "chainparamsbase.h"
 #include "random.h"
-#include "support/allocators/zeroafterfree.h"
 #include "utilstrencodings.h"
 #include "utiltime.h"
 
@@ -83,12 +85,12 @@
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
 
-const char * const fls_CONF_FILENAME = "fls.conf";
-const char * const fls_PID_FILENAME = "fls.pid";
-const char * const fls_MASTERNODE_CONF_FILENAME = "masternode.conf";
+const char * const FLS_CONF_FILENAME = "fls.conf";
+const char * const FLS_PID_FILENAME = "fls.pid";
+const char * const FLS_MASTERNODE_CONF_FILENAME = "masternode.conf";
 
 
-// fls only features
+// FLITS only features
 // Masternode
 std::atomic<bool> fMasterNode{false};
 std::string strMasterNodeAddr = "";
@@ -346,13 +348,13 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 
 fs::path GetDefaultDataDir()
 {
-// Windows < Vista: C:\Documents and Settings\Username\Application Data\fls
-// Windows >= Vista: C:\Users\Username\AppData\Roaming\fls
-// Mac: ~/Library/Application Support/fls
+// Windows < Vista: C:\Documents and Settings\Username\Application Data\FLS
+// Windows >= Vista: C:\Users\Username\AppData\Roaming\FLS
+// Mac: ~/Library/Application Support/FLS
 // Unix: ~/.fls
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "fls";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "FLS";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -364,7 +366,7 @@ fs::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     TryCreateDirectory(pathRet);
-    return pathRet / "fls";
+    return pathRet / "FLS";
 #else
     // Unix
     return pathRet / ".fls";
@@ -380,13 +382,13 @@ static RecursiveMutex csPathCached;
 static fs::path ZC_GetBaseParamsDir()
 {
     // Copied from GetDefaultDataDir and adapter for zcash params.
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\flsParams
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\flsParams
-    // Mac: ~/Library/Application Support/flsParams
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\FLSParams
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\FLSParams
+    // Mac: ~/Library/Application Support/FLSParams
     // Unix: ~/.fls-params
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "flsParams";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "FLSParams";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -398,7 +400,7 @@ static fs::path ZC_GetBaseParamsDir()
     // Mac
     pathRet /= "Library/Application Support";
     TryCreateDirectory(pathRet);
-    return pathRet / "flsParams";
+    return pathRet / "FLSParams";
 #else
     // Unix
     return pathRet / ".fls-params";
@@ -544,13 +546,13 @@ void ClearDatadirCache()
 
 fs::path GetConfigFile()
 {
-    fs::path pathConfigFile(gArgs.GetArg("-conf", fls_CONF_FILENAME));
+    fs::path pathConfigFile(gArgs.GetArg("-conf", FLS_CONF_FILENAME));
     return AbsPathForConfigVal(pathConfigFile, false);
 }
 
 fs::path GetMasternodeConfigFile()
 {
-    fs::path pathConfigFile(gArgs.GetArg("-mnconf", fls_MASTERNODE_CONF_FILENAME));
+    fs::path pathConfigFile(gArgs.GetArg("-mnconf", FLS_MASTERNODE_CONF_FILENAME));
     return AbsPathForConfigVal(pathConfigFile);
 }
 
@@ -595,7 +597,7 @@ fs::path AbsPathForConfigVal(const fs::path& path, bool net_specific)
 #ifndef WIN32
 fs::path GetPidFile()
 {
-    fs::path pathPidFile(gArgs.GetArg("-pid", fls_PID_FILENAME));
+    fs::path pathPidFile(gArgs.GetArg("-pid", FLS_PID_FILENAME));
     return AbsPathForConfigVal(pathPidFile);
 }
 

@@ -94,7 +94,6 @@ SET(QT_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/qvalidatedlineedit.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/qvaluecombobox.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/rpcconsole.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/rpcexecutor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/trafficgraphwidget.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/utilitydialog.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/addressbookpage.cpp
@@ -175,6 +174,13 @@ SET(QT_SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/pivx/splash.cpp
         )
 
+# Workaround until the old rpcconsole UI window is fully removed
+set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/pivx/settings/settingsconsolewidget.cpp PROPERTY SKIP_AUTOMOC ON)
+execute_process(
+        COMMAND ${MOC_BIN} -o moc_settingsconsolewidget.cpp settingsconsolewidget.h
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/pivx/settings
+)
+
 execute_process(
         COMMAND ${MOC_BIN} -o moc_pfborderimage.cpp pfborderimage.h
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/pivx
@@ -197,7 +203,7 @@ target_include_directories(qt_stuff PUBLIC ${CMAKE_SOURCE_DIR}/src
         ${OPENSSL_INCLUDE_DIR}
         ${BerkeleyDB_INCLUDE_DIRS}
         )
-set_property(TARGET qt_stuff PROPERTY CXX_STANDARD 14)
+set_property(TARGET qt_stuff PROPERTY CXX_STANDARD 11)
 
 file(GLOB QT_TRANSLATIONS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/locale/*.ts)
 

@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -21,7 +22,7 @@
 
 static const int MAX_SEND_POPUP_ENTRIES = 8;
 
-class flsGUI;
+class FLSGUI;
 class ClientModel;
 class OperationResult;
 class WalletModel;
@@ -37,7 +38,7 @@ class SendWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SendWidget(flsGUI* parent);
+    explicit SendWidget(FLSGUI* parent);
     ~SendWidget();
 
     void addEntry();
@@ -71,7 +72,7 @@ protected:
     void onError(QString error, int type) override;
 
 private Q_SLOTS:
-    void onPIVSelected(bool _isTransparent);
+    void onFLSSelected(bool _isTransparent);
     void onSendClicked();
     void onContactsClicked(SendMultiRow* entry);
     void onMenuClicked(SendMultiRow* entry);

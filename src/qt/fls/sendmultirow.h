@@ -1,5 +1,8 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -26,7 +29,7 @@ class SendMultiRow : public PWidget
     Q_OBJECT
 
 public:
-    explicit SendMultiRow(flsGUI* _window, PWidget *parent = nullptr);
+    explicit SendMultiRow(FLSGUI* _window, PWidget *parent = nullptr);
     ~SendMultiRow();
 
     void hideLabels();

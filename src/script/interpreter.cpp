@@ -1,6 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2017-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -873,7 +875,7 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                         return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
 
                     int nKeysCount = CScriptNum(stacktop(-i), fRequireMinimal).getint();
-                    if (nKeysCount < 0 || nKeysCount > MAX_PUBKEYS_PER_MULTISIG)
+                    if (nKeysCount < 0 || nKeysCount > 20)
                         return set_error(serror, SCRIPT_ERR_PUBKEY_COUNT);
                     nOpCount += nKeysCount;
                     if (nOpCount > 201)
@@ -1089,21 +1091,21 @@ public:
     }
 };
 
-const unsigned char fls_PREVOUTS_HASH_PERSONALIZATION[crypto_generichash_blake2b_PERSONALBYTES] =
+const unsigned char FLS_PREVOUTS_HASH_PERSONALIZATION[crypto_generichash_blake2b_PERSONALBYTES] =
         {'P','I','V','X','P','r','e','v','o','u','t','H','a','s','h'};
-const unsigned char fls_SEQUENCE_HASH_PERSONALIZATION[crypto_generichash_blake2b_PERSONALBYTES] =
+const unsigned char FLS_SEQUENCE_HASH_PERSONALIZATION[crypto_generichash_blake2b_PERSONALBYTES] =
         {'P','I','V','X','S','e','q','u','e','n','c','H','a','s','h'};
-const unsigned char fls_OUTPUTS_HASH_PERSONALIZATION[crypto_generichash_blake2b_PERSONALBYTES] =
+const unsigned char FLS_OUTPUTS_HASH_PERSONALIZATION[crypto_generichash_blake2b_PERSONALBYTES] =
         {'P','I','V','X','O','u','t','p','u','t','s','H','a','s','h'};
-const unsigned char fls_SHIELDED_SPENDS_HASH_PERSONALIZATION[crypto_generichash_blake2b_PERSONALBYTES] =
+const unsigned char FLS_SHIELDED_SPENDS_HASH_PERSONALIZATION[crypto_generichash_blake2b_PERSONALBYTES] =
         {'P','I','V','X','S','S','p','e','n','d','s','H','a','s','h'};
-const unsigned char fls_SHIELDED_OUTPUTS_HASH_PERSONALIZATION[crypto_generichash_blake2b_PERSONALBYTES] =
+const unsigned char FLS_SHIELDED_OUTPUTS_HASH_PERSONALIZATION[crypto_generichash_blake2b_PERSONALBYTES] =
         {'P','I','V','X','S','O','u','t','p','u','t','H','a','s','h'};
 
 
 
 uint256 GetPrevoutHash(const CTransaction& txTo) {
-    CBLAKE2bWriter ss(SER_GETHASH, 0, fls_PREVOUTS_HASH_PERSONALIZATION);
+    CBLAKE2bWriter ss(SER_GETHASH, 0, FLS_PREVOUTS_HASH_PERSONALIZATION);
     for (unsigned int n = 0; n < txTo.vin.size(); n++) {
         ss << txTo.vin[n].prevout;
     }
@@ -1111,7 +1113,7 @@ uint256 GetPrevoutHash(const CTransaction& txTo) {
 }
 
 uint256 GetSequenceHash(const CTransaction& txTo) {
-    CBLAKE2bWriter ss(SER_GETHASH, 0, fls_SEQUENCE_HASH_PERSONALIZATION);
+    CBLAKE2bWriter ss(SER_GETHASH, 0, FLS_SEQUENCE_HASH_PERSONALIZATION);
     for (unsigned int n = 0; n < txTo.vin.size(); n++) {
         ss << txTo.vin[n].nSequence;
     }
@@ -1119,7 +1121,7 @@ uint256 GetSequenceHash(const CTransaction& txTo) {
 }
 
 uint256 GetOutputsHash(const CTransaction& txTo) {
-    CBLAKE2bWriter ss(SER_GETHASH, 0, fls_OUTPUTS_HASH_PERSONALIZATION);
+    CBLAKE2bWriter ss(SER_GETHASH, 0, FLS_OUTPUTS_HASH_PERSONALIZATION);
     for (unsigned int n = 0; n < txTo.vout.size(); n++) {
         ss << txTo.vout[n];
     }
@@ -1128,7 +1130,7 @@ uint256 GetOutputsHash(const CTransaction& txTo) {
 
 uint256 GetShieldedSpendsHash(const CTransaction& txTo) {
     assert(txTo.sapData);
-    CBLAKE2bWriter ss(SER_GETHASH, 0, fls_SHIELDED_SPENDS_HASH_PERSONALIZATION);
+    CBLAKE2bWriter ss(SER_GETHASH, 0, FLS_SHIELDED_SPENDS_HASH_PERSONALIZATION);
     auto sapData = txTo.sapData;
     for (const auto& n : sapData->vShieldedSpend) {
         ss << n.cv;
@@ -1142,7 +1144,7 @@ uint256 GetShieldedSpendsHash(const CTransaction& txTo) {
 
 uint256 GetShieldedOutputsHash(const CTransaction& txTo) {
     assert(txTo.sapData);
-    CBLAKE2bWriter ss(SER_GETHASH, 0, fls_SHIELDED_OUTPUTS_HASH_PERSONALIZATION);
+    CBLAKE2bWriter ss(SER_GETHASH, 0, FLS_SHIELDED_OUTPUTS_HASH_PERSONALIZATION);
     auto sapData = txTo.sapData;
     for (const auto& n : sapData->vShieldedOutput) {
         ss << n;
@@ -1194,7 +1196,7 @@ uint256 SignatureHash(const CScript& scriptCode, const CTransaction& txTo, unsig
         if ((nHashType & 0x1f) != SIGHASH_SINGLE && (nHashType & 0x1f) != SIGHASH_NONE) {
             hashOutputs = cache ? cache->hashOutputs : GetOutputsHash(txTo);
         } else if ((nHashType & 0x1f) == SIGHASH_SINGLE && nIn < txTo.vout.size()) {
-            CBLAKE2bWriter ss(SER_GETHASH, 0, fls_OUTPUTS_HASH_PERSONALIZATION);
+            CBLAKE2bWriter ss(SER_GETHASH, 0, FLS_OUTPUTS_HASH_PERSONALIZATION);
             ss << txTo.vout[nIn];
             hashOutputs = ss.GetHash();
         }
@@ -1214,7 +1216,7 @@ uint256 SignatureHash(const CScript& scriptCode, const CTransaction& txTo, unsig
         // todo: complete branch id with the active network upgrade
         uint32_t leConsensusBranchId = htole32(0);
         unsigned char personalization[16] = {};
-        memcpy(personalization, "flsSigHash", 12);
+        memcpy(personalization, "FLSSigHash", 12);
         memcpy(personalization+12, &leConsensusBranchId, 4);
 
         CBLAKE2bWriter ss(SER_GETHASH, 0, personalization);

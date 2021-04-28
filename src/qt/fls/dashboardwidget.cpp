@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -24,7 +25,7 @@
 #define REQUEST_LOAD_TASK 1
 #define CHART_LOAD_MIN_TIME_INTERVAL 15
 
-DashboardWidget::DashboardWidget(flsGUI* parent) :
+DashboardWidget::DashboardWidget(FLSGUI* parent) :
     PWidget(parent),
     ui(new Ui::DashboardWidget)
 {
@@ -53,9 +54,9 @@ DashboardWidget::DashboardWidget(flsGUI* parent) :
 
     // Staking Information
     setCssSubtitleScreen(ui->labelMessage);
-    setCssProperty(ui->labelSquarePiv, "square-chart-piv");
+    setCssProperty(ui->labelSquareFls, "square-chart-fls");
     setCssProperty(ui->labelSquarezFls, "square-chart-zfls");
-    setCssProperty(ui->labelPiv, "text-chart-piv");
+    setCssProperty(ui->labelFls, "text-chart-fls");
     setCssProperty(ui->labelZfls, "text-chart-zfls");
 
     // Staking Amount
@@ -63,7 +64,7 @@ DashboardWidget::DashboardWidget(flsGUI* parent) :
     fontBold.setWeight(QFont::Bold);
 
     setCssProperty(ui->labelChart, "legend-chart");
-    setCssProperty(ui->labelAmountPiv, "text-stake-piv-disable");
+    setCssProperty(ui->labelAmountFls, "text-stake-fls-disable");
     setCssProperty(ui->labelAmountZfls, "text-stake-zfls-disable");
 
     setCssProperty({ui->pushButtonAll,  ui->pushButtonMonth, ui->pushButtonYear}, "btn-check-time");
@@ -81,7 +82,7 @@ DashboardWidget::DashboardWidget(flsGUI* parent) :
 #ifdef USE_QTCHARTS
     setCssProperty(ui->right, "container-right");
     ui->right->setContentsMargins(20,20,20,0);
-    connect(ui->comboBoxYears, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentTextChanged),
+    connect(ui->comboBoxYears, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentIndexChanged),
         this, &DashboardWidget::onChartYearChanged);
 #else
     // hide charts container if not USE_QTCHARTS
@@ -92,14 +93,14 @@ DashboardWidget::DashboardWidget(flsGUI* parent) :
     SortEdit* lineEdit = new SortEdit(ui->comboBoxSort);
     connect(lineEdit, &SortEdit::Mouse_Pressed, [this](){ui->comboBoxSort->showPopup();});
     setSortTx(ui->comboBoxSort, lineEdit);
-    connect(ui->comboBoxSort, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentTextChanged), this, &DashboardWidget::onSortChanged);
+    connect(ui->comboBoxSort, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentIndexChanged), this, &DashboardWidget::onSortChanged);
 
     // Sort type
     SortEdit* lineEditType = new SortEdit(ui->comboBoxSortType);
     connect(lineEditType, &SortEdit::Mouse_Pressed, [this](){ui->comboBoxSortType->showPopup();});
     setSortTxTypeFilter(ui->comboBoxSortType, lineEditType);
     ui->comboBoxSortType->setCurrentIndex(0);
-    connect(ui->comboBoxSortType, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentTextChanged),
+    connect(ui->comboBoxSortType, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentIndexChanged),
         this, &DashboardWidget::onSortTypeChanged);
 
     // Transactions
@@ -145,7 +146,7 @@ bool hasCharts = false;
     connect(ui->pushButtonMonth, &QPushButton::clicked, [this](){setChartShow(MONTH);});
     connect(ui->pushButtonAll, &QPushButton::clicked, [this](){setChartShow(ALL);});
     if (window)
-        connect(window, &flsGUI::windowResizeEvent, this, &DashboardWidget::windowResizeEvent);
+        connect(window, &FLSGUI::windowResizeEvent, this, &DashboardWidget::windowResizeEvent);
 #endif
 
     if (hasCharts) {
@@ -398,7 +399,7 @@ void DashboardWidget::loadChart()
             yearFilter = currentDate.year();
             for (int i = 1; i < 13; ++i) ui->comboBoxMonths->addItem(QString(monthsNames[i-1]), QVariant(i));
             ui->comboBoxMonths->setCurrentIndex(monthFilter - 1);
-            connect(ui->comboBoxMonths, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentTextChanged),
+            connect(ui->comboBoxMonths, static_cast<void (QComboBox::*)(const QString&)>(&QComboBox::currentIndexChanged),
                 this, &DashboardWidget::onChartMonthChanged);
             connect(ui->pushButtonChartArrow, &QPushButton::clicked, [this](){ onChartArrowClicked(true); });
             connect(ui->pushButtonChartRight, &QPushButton::clicked, [this](){ onChartArrowClicked(false); });
@@ -533,7 +534,7 @@ const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
         QModelIndex modelIndex = stakesFilter->index(i, TransactionTableModel::ToAddress);
         qint64 amount = llabs(modelIndex.data(TransactionTableModel::AmountRole).toLongLong());
         QDate date = modelIndex.data(TransactionTableModel::DateRole).toDateTime().date();
-        bool isPiv = modelIndex.data(TransactionTableModel::TypeRole).toInt() != TransactionRecord::StakeZFLS;
+        bool isFls = modelIndex.data(TransactionTableModel::TypeRole).toInt() != TransactionRecord::StakeZFLS;
 
         int time = 0;
         switch (chartShow) {
@@ -554,12 +555,12 @@ const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
                 return amountBy;
         }
         if (amountBy.contains(time)) {
-            if (isPiv) {
+            if (isFls) {
                 amountBy[time].first += amount;
             } else
                 amountBy[time].second += amount;
         } else {
-            if (isPiv) {
+            if (isFls) {
                 amountBy[time] = std::make_pair(amount, 0);
             } else {
                 amountBy[time] = std::make_pair(0, amount);
@@ -591,22 +592,22 @@ bool DashboardWidget::loadChartData(bool withMonthNames)
 
     for (int j = range.first; j < range.second; j++) {
         int num = (isOrderedByMonth && j > daysInMonth) ? (j % daysInMonth) : j;
-        qreal piv = 0;
+        qreal fls = 0;
         qreal zfls = 0;
         if (chartData->amountsByCache.contains(num)) {
             std::pair <qint64, qint64> pair = chartData->amountsByCache[num];
-            piv = (pair.first != 0) ? pair.first / 100000000 : 0;
+            fls = (pair.first != 0) ? pair.first / 100000000 : 0;
             zfls = (pair.second != 0) ? pair.second / 100000000 : 0;
-            chartData->totalPiv += pair.first;
+            chartData->totalFls += pair.first;
             chartData->totalZfls += pair.second;
         }
 
         chartData->xLabels << ((withMonthNames) ? monthsNames[num - 1] : QString::number(num));
 
-        chartData->valuesPiv.append(piv);
+        chartData->valuesFls.append(fls);
         chartData->valueszFls.append(zfls);
 
-        int max = std::max(piv, zfls);
+        int max = std::max(fls, zfls);
         if (max > chartData->maxValue) {
             chartData->maxValue = max;
         }
@@ -677,20 +678,20 @@ void DashboardWidget::onChartRefreshed()
     series->attachAxis(axisX);
     series->attachAxis(axisY);
 
-    set0->append(chartData->valuesPiv);
+    set0->append(chartData->valuesFls);
     set1->append(chartData->valueszFls);
 
     // Total
     nDisplayUnit = walletModel->getOptionsModel()->getDisplayUnit();
-    if (chartData->totalPiv > 0 || chartData->totalZfls > 0) {
-        setCssProperty(ui->labelAmountPiv, "text-stake-piv");
+    if (chartData->totalFls > 0 || chartData->totalZfls > 0) {
+        setCssProperty(ui->labelAmountFls, "text-stake-fls");
         setCssProperty(ui->labelAmountZfls, "text-stake-zfls");
     } else {
-        setCssProperty(ui->labelAmountPiv, "text-stake-piv-disable");
+        setCssProperty(ui->labelAmountFls, "text-stake-fls-disable");
         setCssProperty(ui->labelAmountZfls, "text-stake-zfls-disable");
     }
-    forceUpdateStyle({ui->labelAmountPiv, ui->labelAmountZfls});
-    ui->labelAmountPiv->setText(GUIUtil::formatBalance(chartData->totalPiv, nDisplayUnit));
+    forceUpdateStyle({ui->labelAmountFls, ui->labelAmountZfls});
+    ui->labelAmountFls->setText(GUIUtil::formatBalance(chartData->totalFls, nDisplayUnit));
     ui->labelAmountZfls->setText(GUIUtil::formatBalance(chartData->totalZfls, nDisplayUnit, true));
 
     series->append(set0);

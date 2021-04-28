@@ -1,5 +1,6 @@
-// Copyright (c) 2019-2020 The PIVX Developers
-// Copyright (c) 2020-2021 The Flits Developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -23,7 +24,7 @@
 #define REQUEST_PREPARE_TX 1
 #define REQUEST_REFRESH_BALANCE 2
 
-SendWidget::SendWidget(flsGUI* parent) :
+SendWidget::SendWidget(FLSGUI* parent) :
     PWidget(parent),
     ui(new Ui::send),
     coinIcon(new QPushButton())
@@ -106,7 +107,7 @@ SendWidget::SendWidget(flsGUI* parent) :
     coinIcon->show();
     coinIcon->raise();
 
-    setCssProperty(coinIcon, "coin-icon-piv");
+    setCssProperty(coinIcon, "coin-icon-fls");
 
     QSize BUTTON_SIZE = QSize(24, 24);
     coinIcon->setMinimumSize(BUTTON_SIZE);
@@ -123,8 +124,8 @@ SendWidget::SendWidget(flsGUI* parent) :
     setCustomFeeSelected(false);
 
     // Connect
-    connect(ui->pushLeft, &QPushButton::clicked, [this](){onPIVSelected(true);});
-    connect(ui->pushRight,  &QPushButton::clicked, [this](){onPIVSelected(false);});
+    connect(ui->pushLeft, &QPushButton::clicked, [this](){onFLSSelected(true);});
+    connect(ui->pushRight,  &QPushButton::clicked, [this](){onFLSSelected(false);});
     connect(ui->pushButtonSave, &QPushButton::clicked, this, &SendWidget::onSendClicked);
     connect(ui->pushButtonAddRecipient, &QPushButton::clicked, this, &SendWidget::onAddEntryClicked);
     connect(ui->pushButtonClear, &QPushButton::clicked, [this](){clearAll(true);});
@@ -355,7 +356,7 @@ void SendWidget::setFocusOnLastEntry()
 void SendWidget::showHideCheckBoxDelegations(CAmount delegationBalance)
 {
     // Show checkbox only when there is any available owned delegation and
-    // coincontrol is not selected, and we are trying to spend transparent PIVs.
+    // coincontrol is not selected, and we are trying to spend transparent FLSs.
     const bool isCControl = coinControlDialog ? coinControlDialog->coinControl->HasSelected() : false;
     const bool hasDel = delegationBalance > 0;
 
@@ -753,7 +754,7 @@ void SendWidget::onShieldCoinsClicked()
             auto res = walletModel->getNewShieldedAddress(strAddress, "");
             // Check for generation errors
             if (!res.result) {
-                inform(tr("Error generating address to shield PIVs"));
+                inform(tr("Error generating address to shield FLSs"));
                 return false;
             }
             recipients.back().address = strAddress;
@@ -761,7 +762,7 @@ void SendWidget::onShieldCoinsClicked()
             return true;
         });
     } else {
-        inform(tr("You don't have any transparent PIVs to shield."));
+        inform(tr("You don't have any transparent FLSs to shield."));
     }
 }
 
@@ -790,7 +791,7 @@ void SendWidget::onCheckBoxChanged()
     }
 }
 
-void SendWidget::onPIVSelected(bool _isTransparent)
+void SendWidget::onFLSSelected(bool _isTransparent)
 {
     isTransparent = _isTransparent;
 
@@ -898,14 +899,14 @@ void SendWidget::onContactMultiClicked()
         }
 
         bool isStakingAddr = false;
-        auto pivAdd = Standard::DecodeDestination(address.toStdString(), isStakingAddr);
+        auto flsAdd = Standard::DecodeDestination(address.toStdString(), isStakingAddr);
 
-        if (!Standard::IsValidDestination(pivAdd) || isStakingAddr) {
+        if (!Standard::IsValidDestination(flsAdd) || isStakingAddr) {
             inform(tr("Invalid address"));
             return;
         }
 
-        if (walletModel->isMine(pivAdd)) {
+        if (walletModel->isMine(flsAdd)) {
             inform(tr("Cannot store your own address as contact"));
             return;
         }
@@ -925,7 +926,7 @@ void SendWidget::onContactMultiClicked()
             if (label == dialog->getLabel()) {
                 return;
             }
-            if (walletModel->updateAddressBookLabels(pivAdd, dialog->getLabel().toStdString(),
+            if (walletModel->updateAddressBookLabels(flsAdd, dialog->getLabel().toStdString(),
                     AddressBook::AddressBookPurpose::SEND)) {
                 inform(tr("New Contact Stored"));
             } else {

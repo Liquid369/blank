@@ -1,10 +1,11 @@
 // Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_LEGACY_ZPOS_H
-#define fls_LEGACY_ZPOS_H
+#ifndef FLS_LEGACY_ZPOS_H
+#define FLS_LEGACY_ZPOS_H
 
 #include "stakeinput.h"
 #include "txdb.h"
@@ -32,4 +33,4 @@ public:
     virtual bool ContextCheck(int nHeight, uint32_t nTime) override;
 };
 
-#endif //fls_LEGACY_ZPOS_H
+#endif //FLS_LEGACY_ZPOS_H

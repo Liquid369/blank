@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 # Copyright (c) 2019 The PIVX Developers
-Copyright (c) 2019 The Flits Developers
+# Copyright (c) 2020 The PIVX developers
+# Copyright (c) 2020 The Flits Developers
+
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test RPC commands for budget proposal creation, submission, and verification."""
 
-from test_framework.test_framework import flsTestFramework
+from test_framework.test_framework import FlsTestFramework
 from test_framework.util import *
 
 
-class BudgetProposalTest(flsTestFramework):
+class BudgetProposalTest(FlsTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
 
@@ -47,8 +49,8 @@ class BudgetProposalTest(flsTestFramework):
         assert_raises_rpc_error(-8, "Invalid block start", self.nodes[0].preparebudget,
                                 name, scheme + url, numcycles, nextsuperblock - budgetcycleblocks, address, cycleamount)
 
-        self.log.info("Test with invalid fls address")
-        assert_raises_rpc_error(-5, "Invalid fls address", self.nodes[0].preparebudget,
+        self.log.info("Test with invalid FLITS address")
+        assert_raises_rpc_error(-5, "Invalid FLITS address", self.nodes[0].preparebudget,
                                 name, scheme + url, numcycles, nextsuperblock, "DBREvBPNQguwuC4YMoCG5FoH1sA2YntvZm", cycleamount)
 
         self.log.info("Test with too low amount")

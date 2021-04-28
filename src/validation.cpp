@@ -4,7 +4,9 @@
 // Copyright (c) 2011-2013 The PPCoin developers
 // Copyright (c) 2013-2014 The NovaCoin Developers
 // Copyright (c) 2014-2018 The BlackCoin Developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,7 +24,6 @@
 #include "consensus/tx_verify.h"
 #include "consensus/validation.h"
 #include "consensus/zerocoin_verify.h"
-#include "evo/specialtx.h"
 #include "fs.h"
 #include "guiinterface.h"
 #include "init.h"
@@ -63,7 +64,7 @@
 
 
 #if defined(NDEBUG)
-#error "fls cannot be compiled without assertions."
+#error "FLITS cannot be compiled without assertions."
 #endif
 
 /**
@@ -104,7 +105,7 @@ size_t nCoinCacheUsage = 5000 * 300;
 /* If the tip is older than this (in seconds), the node is considered to be in initial block download. */
 int64_t nMaxTipAge = DEFAULT_MAX_TIP_AGE;
 
-/** Fees smaller than this (in upiv) are considered zero fee (for relaying, mining and transaction creation)
+/** Fees smaller than this (in ufls) are considered zero fee (for relaying, mining and transaction creation)
  * We are ~100 times smaller then bitcoin now (2015-06-23), set minRelayTxFee only 10 times higher
  * so it's still 10 times lower comparing to bitcoin.
  */
@@ -252,23 +253,6 @@ bool CheckFinalTx(const CTransactionRef& tx, int flags)
     return IsFinalTx(tx, nBlockHeight, nBlockTime);
 }
 
-bool GetUTXOCoin(const COutPoint& outpoint, Coin& coin)
-{
-    LOCK(cs_main);
-    if (!pcoinsTip->GetCoin(outpoint, coin))
-        return false;
-    if (coin.IsSpent())
-        return false;
-    return true;
-}
-
-Optional<int> GetUTXOHeight(const COutPoint& outpoint)
-{
-    // nullopt means UTXO is yet unknown or already spent
-    Coin coin;
-    return GetUTXOCoin(outpoint, coin) ? Optional<int>(coin.nHeight) : nullopt;
-}
-
 void LimitMempoolSize(CTxMemPool& pool, size_t limit, unsigned long age) {
     int expired = pool.Expire(GetTime() - age);
     if (expired != 0)
@@ -332,59 +316,6 @@ std::string FormatStateMessage(const CValidationState &state)
         state.GetRejectCode());
 }
 
-/* Make mempool consistent after a reorg, by re-adding or recursively erasing
- * disconnected block transactions from the mempool, and also removing any
- * other transactions from the mempool that are no longer valid given the new
- * tip/height.
- *
- * Note: we assume that disconnectpool only contains transactions that are NOT
- * confirmed in the current chain nor already in the mempool (otherwise,
- * in-mempool descendants of such transactions would be removed).
- *
- * Passing fAddToMempool=false will skip trying to add the transactions back,
- * and instead just erase from the mempool as needed.
- */
-
-void UpdateMempoolForReorg(DisconnectedBlockTransactions &disconnectpool, bool fAddToMempool)
-{
-    AssertLockHeld(cs_main);
-    AssertLockHeld(mempool.cs);
-    std::vector<uint256> vHashUpdate;
-    // disconnectpool's insertion_order index sorts the entries from
-    // oldest to newest, but the oldest entry will be the last tx from the
-    // latest mined block that was disconnected.
-    // Iterate disconnectpool in reverse, so that we add transactions
-    // back to the mempool starting with the earliest transaction that had
-    // been previously seen in a block.
-    auto it = disconnectpool.queuedTx.get<insertion_order>().rbegin();
-    while (it != disconnectpool.queuedTx.get<insertion_order>().rend()) {
-        // ignore validation errors in resurrected transactions
-        CValidationState stateDummy;
-        if (!fAddToMempool || (*it)->IsCoinBase() || (*it)->IsCoinStake() ||
-                !AcceptToMemoryPool(mempool, stateDummy, *it, false, nullptr, true)) {
-            // If the transaction doesn't make it in to the mempool, remove any
-            // transactions that depend on it (which would now be orphans).
-            mempool.removeRecursive(**it, MemPoolRemovalReason::REORG);
-        } else if (mempool.exists((*it)->GetHash())) {
-            vHashUpdate.emplace_back((*it)->GetHash());
-        }
-        ++it;
-    }
-    disconnectpool.queuedTx.clear();
-    // AcceptToMemoryPool/addUnchecked all assume that new mempool entries have
-    // no in-mempool children, which is generally not true when adding
-    // previously-confirmed transactions back to the mempool.
-    // UpdateTransactionsFromBlock finds descendants of any transactions in
-    // the disconnectpool that were added back and cleans up the mempool state.
-    mempool.UpdateTransactionsFromBlock(vHashUpdate);
-
-    // We also need to remove any now-immature transactions
-    mempool.removeForReorg(pcoinsTip, chainActive.Tip()->nHeight + 1, STANDARD_LOCKTIME_VERIFY_FLAGS);
-    // Re-limit mempool size, in case we added any transactions
-    LimitMempoolSize(mempool, gArgs.GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000,
-                              gArgs.GetArg("-mempoolexpiry", DEFAULT_MEMPOOL_EXPIRY) * 60 * 60);
-}
-
 bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const CTransactionRef& _tx, bool fLimitFree,
                               bool* pfMissingInputs, int64_t nAcceptTime, bool fOverrideMempoolLimit, bool fRejectAbsurdFee, bool ignoreFees,
                               std::vector<COutPoint>& coins_to_uncache)
@@ -406,6 +337,7 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
     const CChainParams& params = Params();
     const Consensus::Params& consensus = params.GetConsensus();
     int chainHeight = chainActive.Height();
+    bool fSaplingActive = consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_V5_0);
 
     // Zerocoin txes are not longer accepted in the mempool.
     if (hasTxZerocoins) {
@@ -414,12 +346,14 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
 
     // Check transaction
     bool fColdStakingActive = !sporkManager.IsSporkActive(SPORK_19_COLDSTAKING_MAINTENANCE);
-    if (!CheckTransaction(tx, state, fColdStakingActive))
+    if (!CheckTransaction(tx, consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_ZC),
+            state, isBlockBetweenFakeSerialAttackRange(chainHeight), fColdStakingActive, fSaplingActive))
         return error("%s : transaction checks for %s failed with %s", __func__, tx.GetHash().ToString(), FormatStateMessage(state));
 
+    // Sapling
     int nextBlockHeight = chainHeight + 1;
-    // Check transaction contextually against consensus rules at block height
-    if (!ContextualCheckTransaction(_tx, state, params, nextBlockHeight, false /* isMined */, IsInitialBlockDownload())) {
+    // Check transaction contextually against the set of consensus rules which apply in the next block to be mined.
+    if (!SaplingValidation::ContextualCheckTransaction(tx, state, params, nextBlockHeight, false, IsInitialBlockDownload())) {
         return error("AcceptToMemoryPool: ContextualCheckTransaction failed");
     }
 
@@ -611,11 +545,6 @@ bool AcceptToMemoryPoolWorker(CTxMemPool& pool, CValidationState &state, const C
         std::string errString;
         if (!pool.CalculateMemPoolAncestors(entry, setAncestors, nLimitAncestors, nLimitAncestorSize, nLimitDescendants, nLimitDescendantSize, errString)) {
             return state.DoS(0, error("%s : %s", __func__, errString), REJECT_NONSTANDARD, "too-long-mempool-chain", false);
-        }
-
-        if (!CheckSpecialTx(tx, chainActive.Tip(), state)) {
-            // pass the state returned by the function above
-            return false;
         }
 
         bool fCLTVIsActivated = consensus.NetworkUpgradeActive(chainHeight, Consensus::UPGRADE_BIP65);
@@ -851,37 +780,91 @@ double ConvertBitsToDouble(unsigned int nBits)
 
 CAmount GetBlockValue(int nHeight)
 {
-    // Fixed block value on regtest
-    if (Params().IsRegTestNet()) {
-        return 250 * COIN;
+    int64_t nSubsidy = 0;
+    if (nHeight == 0) {
+        nSubsidy = 0 * COIN;
+    } else if (nHeight == 1) {
+         nSubsidy = 110000 * COIN;
+    } else if (nHeight <= 200 && nHeight > 0) {
+         nSubsidy = 0 * COIN;
+    } else if (nHeight <= 10080 && nHeight >= 201) {
+         nSubsidy = 0.2 * COIN;
+    } else if (nHeight <= 20000 && nHeight > 10080) {
+         nSubsidy = 0.6 * COIN;
+    } else if (nHeight <= 40000 && nHeight > 20000) {
+         nSubsidy = 0.9 * COIN;
+    } else if (nHeight <= 60000 && nHeight > 40000) {
+         nSubsidy = 1.3 * COIN;
+    } else if (nHeight <= 80000 && nHeight > 60000) {
+         nSubsidy = 1.4 * COIN;
+    } else if (nHeight <= 100000 && nHeight > 80000) {
+         nSubsidy = 1.6 * COIN;
+    } else if (nHeight <= 140000 && nHeight > 100000) {
+         nSubsidy = 1.9 * COIN;
+    } else if (nHeight <= 180000 && nHeight > 140000) {
+         nSubsidy = 2.2 * COIN;
+    } else if (nHeight <= 220000 && nHeight > 180000) {
+         nSubsidy = 2.4 * COIN;
+    } else if (nHeight <= 260000 && nHeight > 220000) {
+         nSubsidy = 2.6 * COIN;
+    } else if (nHeight <= 300000 && nHeight > 260000) {
+         nSubsidy = 2.8 * COIN;
+    } else if (nHeight <= 340000 && nHeight > 300000) {
+         nSubsidy = 3 * COIN;
+    } else if (nHeight <= 380000 && nHeight > 340000) {
+         nSubsidy = 3.25 * COIN;
+    } else if (nHeight <= 420000 && nHeight > 380000) {
+         nSubsidy = 3.5 * COIN;
+    } else if (nHeight <= 460000 && nHeight > 420000) {
+         nSubsidy = 3.75 * COIN;
+    } else if (nHeight <= 500000 && nHeight > 460000) {
+         nSubsidy = 4 * COIN;
+    } else if (nHeight <= 600000 && nHeight > 500000) {
+         nSubsidy = 4.6 * COIN;
+    } else if (nHeight <= 700000 && nHeight > 600000) {
+         nSubsidy = 5.25 * COIN;
+    } else if (nHeight <= 800000 && nHeight > 700000) {
+         nSubsidy = 6.6 * COIN;
+    } else if (nHeight <= 900000 && nHeight > 800000) {
+         nSubsidy = 6.25 * COIN;
+    } else if (nHeight <= 1000000 && nHeight > 900000) {
+         nSubsidy = 6.9 * COIN;
+    } else if (nHeight <= 1200000 && nHeight > 1000000) {
+         nSubsidy = 5 * COIN;
+    } else if (nHeight <= 1400000 && nHeight > 1200000) {
+         nSubsidy = 3.75 * COIN;
+    } else if (nHeight <= 1600000 && nHeight > 1400000) {
+         nSubsidy = 2.5 * COIN;
+    } else if (nHeight <= 2000000 && nHeight > 1600000) {
+         nSubsidy = 2.25 * COIN;
+    } else if (nHeight <= 2400000 && nHeight > 2000000) {
+         nSubsidy = 2 * COIN;
+    } else if (nHeight <= 2800000 && nHeight > 2400000) {
+         nSubsidy = 1.75 * COIN;
+    } else if (nHeight <= 3200000 && nHeight > 2800000) {
+         nSubsidy = 1.5 * COIN;
+    } else if (nHeight <= 3600000 && nHeight > 3200000) {
+         nSubsidy = 1.25 * COIN;
+    } else if (nHeight > 3600000) {
+         nSubsidy = 0.63 * COIN;
     }
-    // Testnet high-inflation blocks [2, 200] with value 250k FLS
-    const bool isTestnet = Params().IsTestnet();
-    if (isTestnet && nHeight < 201 && nHeight > 1) {
-        return 250000 * COIN;
-    }
-    // Mainnet/Testnet block reward reduction schedule
-    const int nLast = Params().GetConsensus().vUpgrades[Consensus::UPGRADE_ZC_V2].nActivationHeight;
-    if (nHeight > nLast)   return 5    * COIN;
-    if (nHeight > 648000)  return 4.5  * COIN;
-    if (nHeight > 604800)  return 9    * COIN;
-    if (nHeight > 561600)  return 13.5 * COIN;
-    if (nHeight > 518400)  return 18   * COIN;
-    if (nHeight > 475200)  return 22.5 * COIN;
-    if (nHeight > 432000)  return 27   * COIN;
-    if (nHeight > 388800)  return 31.5 * COIN;
-    if (nHeight > 345600)  return 36   * COIN;
-    if (nHeight > 302400)  return 40.5 * COIN;
-    if (nHeight > 151200)  return 45   * COIN;
-    if (nHeight > 86400)   return 225  * COIN;
-    if (nHeight !=1)       return 250  * COIN;
-    // Premine for 6 masternodes at block 1
-    return 60001 * COIN;
+
+    return nSubsidy;
 }
 
-int64_t GetMasternodePayment()
+int64_t GetMasternodePayment(int nHeight)
 {
-    return 3 * COIN;
+
+    int64_t nSubsidy = GetBlockValue(nHeight);
+    int64_t ret = 0;
+
+    if (nSubsidy == 0) return 0;
+    
+    ret = nSubsidy * 0.8;
+    ret = 4.48 * COIN;
+
+    return ret;
+
 }
 
 bool IsInitialBlockDownload()
@@ -1437,9 +1420,9 @@ void ThreadScriptCheck()
 }
 
 static int64_t nTimeVerify = 0;
-static int64_t nTimeProcessSpecial = 0;
 static int64_t nTimeConnect = 0;
 static int64_t nTimeIndex = 0;
+static int64_t nTimeCallbacks = 0;
 static int64_t nTimeTotal = 0;
 
 /** Apply the effects of this block (with given index) on the UTXO set represented by coins.
@@ -1715,13 +1698,6 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     nTimeVerify += nTime2 - nTimeStart;
     LogPrint(BCLog::BENCH, "    - Verify %u txins: %.2fms (%.3fms/txin) [%.2fs]\n", nInputs - 1, 0.001 * (nTime2 - nTimeStart), nInputs <= 1 ? 0 : 0.001 * (nTime2 - nTimeStart) / (nInputs - 1), nTimeVerify * 0.000001);
 
-    if (!ProcessSpecialTxsInBlock(block, pindex, state, fJustCheck)) {
-        return error("%s: Special tx processing failed with %s", __func__, FormatStateMessage(state));
-    }
-    int64_t nTime3 = GetTimeMicros();
-    nTimeProcessSpecial += nTime3 - nTime2;
-    LogPrint(BCLog::BENCH, "    - Process special tx: %.2fms [%.2fs]\n", 0.001 * (nTime3 - nTime2), nTimeProcessSpecial * 0.000001);
-
     //IMPORTANT NOTE: Nothing before this point should actually store to disk (or even memory)
     if (fJustCheck)
         return true;
@@ -1757,9 +1733,13 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
     // add this block to the view's block chain
     view.SetBestBlock(pindex->GetBlockHash());
 
+    int64_t nTime3 = GetTimeMicros();
+    nTimeIndex += nTime3 - nTime2;
+    LogPrint(BCLog::BENCH, "    - Index writing: %.2fms [%.2fs]\n", 0.001 * (nTime3 - nTime2), nTimeIndex * 0.000001);
+
     int64_t nTime4 = GetTimeMicros();
-    nTimeIndex += nTime4 - nTime3;
-    LogPrint(BCLog::BENCH, "    - Index writing: %.2fms [%.2fs]\n", 0.001 * (nTime4 - nTime3), nTimeIndex * 0.000001);
+    nTimeCallbacks += nTime4 - nTime3;
+    LogPrint(BCLog::BENCH, "    - Callbacks: %.2fms [%.2fs]\n", 0.001 * (nTime4 - nTime3), nTimeCallbacks * 0.000001);
 
     if (consensus.NetworkUpgradeActive(pindex->nHeight, Consensus::UPGRADE_ZC_V2) &&
             pindex->nHeight < consensus.height_last_ZC_AccumCheckpoint) {
@@ -1929,27 +1909,17 @@ void static UpdateTip(CBlockIndex* pindexNew)
     }
 }
 
-/** Disconnect chainActive's tip.
-  * After calling, the mempool will be in an inconsistent state, with
-  * transactions from disconnected blocks being added to disconnectpool.  You
-  * should make the mempool consistent again by calling UpdateMempoolForReorg.
-  * with cs_main held.
-  *
-  * If disconnectpool is NULL, then no disconnected transactions are added to
-  * disconnectpool (note that the caller is responsible for mempool consistency
-  * in any case).
-  */
-bool static DisconnectTip(CValidationState& state, const CChainParams& chainparams, DisconnectedBlockTransactions *disconnectpool)
+/** Disconnect chainActive's tip. You probably want to call mempool.removeForReorg and manually re-limit mempool size after this, with cs_main held. */
+bool static DisconnectTip(CValidationState& state, const CChainParams& chainparams)
 {
     AssertLockHeld(cs_main);
-    AssertLockHeld(mempool.cs);
     CBlockIndex* pindexDelete = chainActive.Tip();
     assert(pindexDelete);
     // Read block from disk.
     std::shared_ptr<CBlock> pblock = std::make_shared<CBlock>();
     CBlock& block = *pblock;
     if (!ReadBlockFromDisk(block, pindexDelete))
-        return error("%s: Failed to read block", __func__);
+        return AbortNode(state, "Failed to read block");
     // Apply the block atomically to the chain state.
     const uint256& saplingAnchorBeforeDisconnect = pcoinsTip->GetBestAnchor();
     int64_t nStart = GetTimeMicros();
@@ -1965,18 +1935,23 @@ bool static DisconnectTip(CValidationState& state, const CChainParams& chainpara
     // Write the chain state to disk, if necessary.
     if (!FlushStateToDisk(state, FLUSH_STATE_IF_NEEDED))
         return false;
-    if (disconnectpool) {
-        // Save transactions to re-add to mempool at end of reorg
-        for (auto it = block.vtx.rbegin(); it != block.vtx.rend(); ++it) {
-            disconnectpool->addTransaction(*it);
-        }
-        while (disconnectpool->DynamicMemoryUsage() > MAX_DISCONNECTED_TX_POOL_SIZE * 1000) {
-            // Drop the earliest entry, and remove its children from the mempool.
-            auto it = disconnectpool->queuedTx.get<insertion_order>().begin();
-            mempool.removeRecursive(**it, MemPoolRemovalReason::REORG);
-            disconnectpool->removeEntry(it);
+    // Resurrect mempool transactions from the disconnected block.
+    std::vector<uint256> vHashUpdate;
+    for (const auto& tx : block.vtx) {
+        // ignore validation errors in resurrected transactions
+        CValidationState stateDummy;
+        if (tx->IsCoinBase() || tx->IsCoinStake() || !AcceptToMemoryPool(mempool, stateDummy, tx, false, nullptr, true)) {
+            mempool.removeRecursive(*tx, MemPoolRemovalReason::REORG);
+        } else if (mempool.exists(tx->GetHash())) {
+            vHashUpdate.push_back(tx->GetHash());
         }
     }
+    // AcceptToMemoryPool/addUnchecked all assume that new mempool entries have
+    // no in-mempool children, which is generally not true when adding
+    // previously-confirmed transactions back to the mempool.
+    // UpdateTransactionsFromBlock finds descendants of any transactions in this
+    // block that were added back and cleans up the mempool state.
+    mempool.UpdateTransactionsFromBlock(vHashUpdate);
     // Update MN manager cache
     // replace the cached hash of pindexDelete with the hash of the block
     // at depth CACHED_BLOCK_HASHES if it exists, or empty hash otherwise.
@@ -2078,10 +2053,8 @@ public:
  *
  * The block is added to connectTrace if connection succeeds.
  */
-bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const std::shared_ptr<const CBlock>& pblock, ConnectTrace& connectTrace, DisconnectedBlockTransactions &disconnectpool)
+bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const std::shared_ptr<const CBlock>& pblock, ConnectTrace& connectTrace)
 {
-    AssertLockHeld(cs_main);
-    AssertLockHeld(mempool.cs);
     assert(pindexNew->pprev == chainActive.Tip());
 
     // Read block from disk.
@@ -2132,7 +2105,6 @@ bool static ConnectTip(CValidationState& state, CBlockIndex* pindexNew, const st
 
     // Remove conflicting transactions from the mempool.
     mempool.removeForBlock(blockConnecting.vtx, pindexNew->nHeight, !IsInitialBlockDownload());
-    disconnectpool.removeForBlock(blockConnecting.vtx);
     // Update chainActive & related variables.
     UpdateTip(pindexNew);
     // Update MN manager cache
@@ -2228,24 +2200,14 @@ static void PruneBlockIndexCandidates()
 static bool ActivateBestChainStep(CValidationState& state, CBlockIndex* pindexMostWork, const std::shared_ptr<const CBlock>& pblock, bool& fInvalidFound, ConnectTrace& connectTrace)
 {
     AssertLockHeld(cs_main);
-    AssertLockHeld(mempool.cs);
     const CBlockIndex* pindexOldTip = chainActive.Tip();
     const CBlockIndex* pindexFork = chainActive.FindFork(pindexMostWork);
 
     // Disconnect active blocks which are no longer in the best chain.
     bool fBlocksDisconnected = false;
-    DisconnectedBlockTransactions disconnectpool;
     while (chainActive.Tip() && chainActive.Tip() != pindexFork) {
-        if (!DisconnectTip(state, Params(), &disconnectpool)) {
-            // This is likely a fatal error, but keep the mempool consistent,
-            // just in case. Only remove from the mempool in this case.
-            UpdateMempoolForReorg(disconnectpool, false);
-
-            // If we're unable to disconnect a block during normal operation,
-            // then that is a failure of our local system -- we should abort
-            // rather than stay on a less work chain.
-            return AbortNode(state, "Failed to disconnect block; see debug.log for details");
-        }
+        if (!DisconnectTip(state, Params()))
+            return false;
         fBlocksDisconnected = true;
     }
 
@@ -2268,7 +2230,7 @@ static bool ActivateBestChainStep(CValidationState& state, CBlockIndex* pindexMo
 
         // Connect new blocks.
         for (CBlockIndex* pindexConnect : reverse_iterate(vpindexToConnect)) {
-            if (!ConnectTip(state, pindexConnect, (pindexConnect == pindexMostWork) ? pblock : std::shared_ptr<const CBlock>(), connectTrace, disconnectpool)) {
+            if (!ConnectTip(state, pindexConnect, (pindexConnect == pindexMostWork) ? pblock : std::shared_ptr<const CBlock>(), connectTrace)) {
                 if (state.IsInvalid()) {
                     // The block violates a consensus rule.
                     if (!state.CorruptionPossible())
@@ -2279,9 +2241,6 @@ static bool ActivateBestChainStep(CValidationState& state, CBlockIndex* pindexMo
                     break;
                 } else {
                     // A system error occurred (disk space, database error, ...).
-                    // Make the mempool consistent with the current tip, just in case
-                    // any observers try to use it before shutdown.
-                    UpdateMempoolForReorg(disconnectpool, false);
                     return false;
                 }
             } else {
@@ -2296,9 +2255,8 @@ static bool ActivateBestChainStep(CValidationState& state, CBlockIndex* pindexMo
     }
 
     if (fBlocksDisconnected) {
-        // If any blocks were disconnected, disconnectpool may be non empty.  Add
-        // any disconnected transactions back to the mempool.
-        UpdateMempoolForReorg(disconnectpool, true);
+        mempool.removeForReorg(pcoinsTip, chainActive.Tip()->nHeight + 1, STANDARD_LOCKTIME_VERIFY_FLAGS);
+        LimitMempoolSize(mempool, gArgs.GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000, gArgs.GetArg("-mempoolexpiry", DEFAULT_MEMPOOL_EXPIRY) * 60 * 60);
     }
     mempool.check(pcoinsTip);
 
@@ -2345,7 +2303,6 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
 
         {
             LOCK(cs_main);
-            LOCK(mempool.cs); // Lock transaction pool for at least as long as it takes for connectTrace to be consumed
             CBlockIndex* starting_tip = chainActive.Tip();
             bool blocks_connected = false;
             do {
@@ -2394,6 +2351,7 @@ bool ActivateBestChain(CValidationState& state, std::shared_ptr<const CBlock> pb
                 uiInterface.NotifyBlockTip(fInitialDownload, pindexNewTip);
             }
         }
+        // When we reach this point, we switched to a new tip (stored in pindexNewTip).
 
         // We check shutdown only after giving ActivateBestChainStep a chance to run once so that we
         // never shutdown before connecting the genesis block during LoadChainTip(). Previously this
@@ -2421,8 +2379,6 @@ bool InvalidateBlock(CValidationState& state, const CChainParams& chainparams, C
     setDirtyBlockIndex.insert(pindex);
     setBlockIndexCandidates.erase(pindex);
 
-    LOCK(mempool.cs); // Lock for as long as disconnectpool is in scope to make sure UpdateMempoolForReorg is called after DisconnectTip without unlocking in between
-    DisconnectedBlockTransactions disconnectpool;
     while (chainActive.Contains(pindex)) {
         CBlockIndex* pindexWalk = chainActive.Tip();
         pindexWalk->nStatus |= BLOCK_FAILED_CHILD;
@@ -2430,17 +2386,13 @@ bool InvalidateBlock(CValidationState& state, const CChainParams& chainparams, C
         setBlockIndexCandidates.erase(pindexWalk);
         // ActivateBestChain considers blocks already in chainActive
         // unconditionally valid already, so force disconnect away from it.
-        if (!DisconnectTip(state, chainparams, &disconnectpool)) {
-            // It's probably hopeless to try to make the mempool consistent
-            // here if DisconnectTip failed, but we can try.
-            UpdateMempoolForReorg(disconnectpool, false);
+        if (!DisconnectTip(state, chainparams)) {
+            mempool.removeForReorg(pcoinsTip, chainActive.Tip()->nHeight + 1, STANDARD_LOCKTIME_VERIFY_FLAGS);
             return false;
         }
     }
 
-    // DisconnectTip will add transactions to disconnectpool; try to add these
-    // back to the mempool.
-    UpdateMempoolForReorg(disconnectpool, true);
+    LimitMempoolSize(mempool, gArgs.GetArg("-maxmempool", DEFAULT_MAX_MEMPOOL_SIZE) * 1000000, gArgs.GetArg("-mempoolexpiry", DEFAULT_MEMPOOL_EXPIRY) * 60 * 60);
 
     // The resulting new best tip may not be in setBlockIndexCandidates anymore, so
     // add it again.
@@ -2453,6 +2405,7 @@ bool InvalidateBlock(CValidationState& state, const CChainParams& chainparams, C
     }
 
     InvalidChainFound(pindex);
+    mempool.removeForReorg(pcoinsTip, chainActive.Tip()->nHeight + 1, STANDARD_LOCKTIME_VERIFY_FLAGS);
     return true;
 }
 
@@ -2524,7 +2477,6 @@ CBlockIndex* AddToBlockIndex(const CBlock& block)
             pindexNew->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash);
         }
     }
-    pindexNew->nTimeMax = (pindexNew->pprev ? std::max(pindexNew->pprev->nTimeMax, pindexNew->nTime) : pindexNew->nTime);
     pindexNew->nChainWork = (pindexNew->pprev ? pindexNew->pprev->nChainWork : 0) + GetBlockProof(*pindexNew);
     pindexNew->RaiseValidity(BLOCK_VALID_TREE);
     if (pindexBestHeader == NULL || pindexBestHeader->nChainWork < pindexNew->nChainWork)
@@ -2687,7 +2639,7 @@ bool CheckColdStakeFreeOutput(const CTransaction& tx, const int nHeight)
     const unsigned int outs = tx.vout.size();
     const CTxOut& lastOut = tx.vout[outs-1];
     if (outs >=3 && lastOut.scriptPubKey != tx.vout[outs-2].scriptPubKey) {
-        if (lastOut.nValue == GetMasternodePayment())
+        if (lastOut.nValue == GetMasternodePayment(nHeight))
             return true;
 
         // This could be a budget block.
@@ -2703,8 +2655,8 @@ bool CheckColdStakeFreeOutput(const CTransaction& tx, const int nHeight)
                 return error("%s : read txPrev failed: %s",  __func__, tx.vin[0].prevout.hash.GetHex());
             CAmount amtIn = txPrev->vout[tx.vin[0].prevout.n].nValue + GetBlockValue(nHeight);
             CAmount amtOut = 0;
-            for (unsigned int i = 1; i < outs-1; i++) amtOut += tx.vout[i].nValue;
-            if (amtOut != amtIn)
+            for (unsigned int i = 1; i < outs; i++) amtOut += tx.vout[i].nValue;
+            if ((amtOut != amtIn))
                 return error("%s: non-free outputs value %d less than required %d", __func__, amtOut, amtIn);
             return true;
         }
@@ -2814,7 +2766,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                 nHeight = (*mi).second->nHeight + 1;
         }
 
-        // fls
+        // FLS
         // It is entierly possible that we don't have enough data and this could fail
         // (i.e. the block could indeed be valid). Store the block for later consideration
         // but issue an initial reject message.
@@ -2841,22 +2793,25 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
     }
 
     // Check transactions
-    bool fSaplingActive = Params().GetConsensus().NetworkUpgradeActive(nHeight, Consensus::UPGRADE_V5_0);
     std::vector<CBigNum> vBlockSerials;
+    // TODO: Check if this is ok... blockHeight is always the tip or should we look for the prevHash and get the height?
+    int blockHeight = chainActive.Height() + 1;
+    const Consensus::Params& consensus = Params().GetConsensus();
+    bool fSaplingActive = consensus.NetworkUpgradeActive(blockHeight, Consensus::UPGRADE_V5_0);
     for (const auto& txIn : block.vtx) {
         const CTransaction& tx = *txIn;
-        if (!CheckTransaction(tx, state, fColdStakingActive)) {
+        if (!CheckTransaction(
+                tx,
+                fZerocoinActive,
+                state,
+                isBlockBetweenFakeSerialAttackRange(blockHeight),
+                fColdStakingActive,
+                fSaplingActive
+        ))
             return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
-                    strprintf("Transaction check failed (tx hash %s) %s", tx.GetHash().ToString(), state.GetDebugMessage()));
-        }
+                                             strprintf("Transaction check failed (tx hash %s) %s", tx.GetHash().ToString(), state.GetDebugMessage()));
 
-        // Non-contextual checks for special txes
-        if (!CheckSpecialTxNoContext(tx, state)) {
-            // pass the state returned by the function above
-            return false;
-        }
-
-        // No need to check for zerocoin anymore after sapling, they are networkely disabled
+        // No need to check for zerocoin anymore, they are networkely disabled
         // and checkpoints are preventing the chain for any massive reorganization.
         if (fSaplingActive && tx.ContainsZerocoins()) {
             return state.DoS(100, error("%s : v5 upgrade enforced, zerocoin disabled", __func__));
@@ -2891,7 +2846,7 @@ bool CheckWork(const CBlock& block, const CBlockIndex* const pindexPrev)
 
     unsigned int nBitsRequired = GetNextWorkRequired(pindexPrev, &block);
 
-    if (!Params().IsRegTestNet() && block.IsProofOfWork() && (pindexPrev->nHeight + 1 <= 68589)) {
+    if (!Params().IsRegTestNet() && block.IsProofOfWork() && (pindexPrev->nHeight + 1 <= 201)) {
         double n1 = ConvertBitsToDouble(block.nBits);
         double n2 = ConvertBitsToDouble(nBitsRequired);
 
@@ -2904,13 +2859,12 @@ bool CheckWork(const CBlock& block, const CBlockIndex* const pindexPrev)
     if (block.nBits != nBitsRequired) {
         // fls Specific reference to the block with the wrong threshold was used.
         const Consensus::Params& consensus = Params().GetConsensus();
-        if ((block.nTime == (uint32_t) consensus.nflsBadBlockTime) &&
-                (block.nBits == (uint32_t) consensus.nflsBadBlockBits)) {
-            // accept fls block minted with incorrect proof of work threshold
-            return true;
+        if (block.nTime >= (uint32_t) consensus.nFlsBadBlockTime){
+            if (pindexPrev->nHeight + 1 >= 800000) {
+            // accept FLS block minted with incorrect proof of work threshold
+                return error("%s : incorrect proof of work at %d", __func__, pindexPrev->nHeight + 1);
+            }
         }
-
-        return error("%s : incorrect proof of work at %d", __func__, pindexPrev->nHeight + 1);
     }
 
     return true;
@@ -3022,9 +2976,9 @@ bool ContextualCheckBlock(const CBlock& block, CValidationState& state, CBlockIn
     // Check that all transactions are finalized
     for (const auto& tx : block.vtx) {
 
-        // Check transaction contextually against consensus rules at block height
-        if (!ContextualCheckTransaction(tx, state, chainparams, nHeight, true /* isMined */, IsInitialBlockDownload())) {
-            return false;
+        // Sapling: Check transaction contextually against consensus rules at block height
+        if (!SaplingValidation::ContextualCheckTransaction(*tx, state, chainparams, nHeight, true, IsInitialBlockDownload())) {
+            return false; // Failure reason has been set in validation state object
         }
 
         if (!IsFinalTx(tx, nHeight, block.GetBlockTime())) {
@@ -3145,12 +3099,15 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         return true;
     }
 
-    if (!CheckBlock(block, state) || !ContextualCheckBlock(block, state, pindex->pprev)) {
-        if (state.IsInvalid() && !state.CorruptionPossible()) {
-            pindex->nStatus |= BLOCK_FAILED_VALID;
-            setDirtyBlockIndex.insert(pindex);
+    if (pindex->nHeight > 100000)
+    {
+        if (!CheckBlock(block, state) || !ContextualCheckBlock(block, state, pindex->pprev)) {
+            if (state.IsInvalid() && !state.CorruptionPossible()) {
+                pindex->nStatus |= BLOCK_FAILED_VALID;
+                setDirtyBlockIndex.insert(pindex);
+            }
+            return error("%s: %s", __func__, FormatStateMessage(state));
         }
-        return error("%s: %s", __func__, FormatStateMessage(state));
     }
 
     int nHeight = pindex->nHeight;
@@ -3167,17 +3124,17 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         const CTransaction &stakeTxIn = *block.vtx[1];
 
         // Inputs
-        std::vector<CTxIn> pivInputs;
+        std::vector<CTxIn> flsInputs;
         std::vector<CTxIn> zFLSInputs;
 
         for (const CTxIn& stakeIn : stakeTxIn.vin) {
             if(stakeIn.IsZerocoinSpend()){
                 zFLSInputs.push_back(stakeIn);
             }else{
-                pivInputs.push_back(stakeIn);
+                flsInputs.push_back(stakeIn);
             }
         }
-        const bool hasPIVInputs = !pivInputs.empty();
+        const bool hasFLSInputs = !flsInputs.empty();
         const bool hasZFLSInputs = !zFLSInputs.empty();
 
         // ZC started after PoS.
@@ -3217,10 +3174,10 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
                     }
                 }
                 if(tx.IsCoinStake()) continue;
-                if(hasPIVInputs) {
+                if(hasFLSInputs) {
                     // Check if coinstake input is double spent inside the same block
-                    for (const CTxIn& pivIn : pivInputs)
-                        if(pivIn.prevout == in.prevout)
+                    for (const CTxIn& flsIn : flsInputs)
+                        if(flsIn.prevout == in.prevout)
                             // double spent coinstake input inside block
                             return error("%s: double spent coinstake input inside block", __func__);
                 }
@@ -3264,8 +3221,8 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
                             vBlockSerials.push_back(TxInToZerocoinSpend(in).getCoinSerialNumber());
 
                         // Loop through every input of the staking tx
-                        if (hasPIVInputs) {
-                            for (const CTxIn& stakeIn : pivInputs)
+                        if (hasFLSInputs) {
+                            for (const CTxIn& stakeIn : flsInputs)
                                 // check if the tx input is double spending any coinstake input
                                 if (stakeIn.prevout == in.prevout)
                                     return state.DoS(100, error("%s: input already spent on a previous block", __func__));
@@ -3521,7 +3478,6 @@ bool static LoadBlockIndexDB(std::string& strError)
 
         CBlockIndex* pindex = item.second;
         pindex->nChainWork = (pindex->pprev ? pindex->pprev->nChainWork : 0) + GetBlockProof(*pindex);
-        pindex->nTimeMax = (pindex->pprev ? std::max(pindex->pprev->nTimeMax, pindex->nTime) : pindex->nTime);
         if (pindex->nStatus & BLOCK_HAVE_DATA) {
             if (pindex->pprev) {
                 if (pindex->pprev->nChainTx) {
@@ -4153,13 +4109,13 @@ void static CheckBlockIndex()
 //       it was the one which was commented out
 int ActiveProtocol()
 {
-    // SPORK_14 was used for 70919 (v4.1.1), commented out now.
-    //if (sporkManager.IsSporkActive(SPORK_14_NEW_PROTOCOL_ENFORCEMENT))
-    //        return MIN_PEER_PROTO_VERSION_AFTER_ENFORCEMENT;
-
-    // SPORK_15 is used for 70920 (v5.0.0)
-    if (sporkManager.IsSporkActive(SPORK_15_NEW_PROTOCOL_ENFORCEMENT_2))
+    // SPORK_14 was used for 80005 (v3.0.0), commented out now.
+    if (sporkManager.IsSporkActive(SPORK_14_NEW_PROTOCOL_ENFORCEMENT))
             return MIN_PEER_PROTO_VERSION_AFTER_ENFORCEMENT;
+
+    // SPORK_15 is used for 80004 (v2.1.0)
+    //if (sporkManager.IsSporkActive(SPORK_15_NEW_PROTOCOL_ENFORCEMENT_2))
+    //        return MIN_PEER_PROTO_VERSION_AFTER_ENFORCEMENT;
 
     return MIN_PEER_PROTO_VERSION_BEFORE_ENFORCEMENT;
 }
@@ -4167,11 +4123,6 @@ int ActiveProtocol()
 std::string CBlockFileInfo::ToString() const
 {
     return strprintf("CBlockFileInfo(blocks=%u, size=%u, heights=%u...%u, time=%s...%s)", nBlocks, nSize, nHeightFirst, nHeightLast, DateTimeStrFormat("%Y-%m-%d", nTimeFirst), DateTimeStrFormat("%Y-%m-%d", nTimeLast));
-}
-
-CBlockFileInfo* GetBlockFileInfo(size_t n)
-{
-    return &vinfoBlockFile.at(n);
 }
 
 static const uint64_t MEMPOOL_DUMP_VERSION = 1;

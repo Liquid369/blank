@@ -1,10 +1,11 @@
 // Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_SAPLING_OPERATION_H
-#define fls_SAPLING_OPERATION_H
+#ifndef FLS_SAPLING_OPERATION_H
+#define FLS_SAPLING_OPERATION_H
 
 #include "amount.h"
 #include "sapling/transaction_builder.h"
@@ -138,4 +139,4 @@ OperationResult GetMemoFromString(const std::string& s, std::array<unsigned char
 
 OperationResult CheckTransactionSize(std::vector<SendManyRecipient>& recipients, bool fromTaddr);
 
-#endif //fls_SAPLING_OPERATION_H
+#endif //FLS_SAPLING_OPERATION_H

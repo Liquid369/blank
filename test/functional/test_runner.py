@@ -10,7 +10,7 @@ forward all unrecognized arguments onto the individual test scripts.
 Functional tests are disabled on Windows by default. Use --force to run them anyway.
 
 For a description of arguments recognized by test scripts, see
-`test/functional/test_framework/test_framework.py:flsTestFramework.main`.
+`test/functional/test_framework/test_framework.py:FlsTestFramework.main`.
 
 """
 
@@ -65,41 +65,39 @@ BASE_SCRIPTS= [
     'wallet_hd.py',                             # ~ 300 sec
     'wallet_zapwallettxes.py',                  # ~ 300 sec
     'p2p_time_offset.py',                       # ~ 267 sec
-    'rpc_fundrawtransaction.py',                # ~ 227 sec
-    'mining_pos_coldStaking.py',                # ~ 220 sec
-    'wallet_import_rescan.py',                  # ~ 204 sec
-    'feature_logging.py',                       # ~ 195 sec
-    'wallet_abandonconflict.py',                # ~ 188 sec
-    'feature_blockindexstats.py',               # ~ 167 sec
-    'wallet_importmulti.py',                    # ~ 157 sec
-    'wallet_keypool_topup.py',                  # ~ 153 sec
-    'rpc_spork.py',                             # ~ 144 sec
-    'wallet_txn_doublespend.py --mineblock',    # ~ 143 sec
-    'wallet_txn_clone.py --mineblock',          # ~ 143 sec
-    'feature_proxy.py',                         # ~ 138 sec
-    'rpc_rawtransaction.py',                    # ~ 134 sec
+    'rpc_fundrawtransaction.py',                # ~ 260 sec
+    'mining_pos_coldStaking.py',                # ~ 215 sec
+    'wallet_abandonconflict.py',                # ~ 212 sec
+    'feature_logging.py',                       # ~ 200 sec
+    'feature_blockindexstats.py',               # ~ 197 sec
+    'rpc_rawtransaction.py',                    # ~ 193 sec
+    'wallet_keypool_topup.py',                  # ~ 174 sec
+    'wallet_txn_doublespend.py --mineblock',    # ~ 157 sec
+    'wallet_txn_clone.py --mineblock',          # ~ 157 sec
+    'rpc_spork.py',                             # ~ 156 sec
+    'interface_rest.py',                        # ~ 154 sec
+    'feature_proxy.py',                         # ~ 143 sec
+    'feature_uacomment.py',                     # ~ 130 sec
     'mining_pos_reorg.py',                      # ~ 128 sec
-    'feature_uacomment.py',                     # ~ 125 sec
-    'interface_rest.py',                        # ~ 120 sec
+    'wallet_upgrade.py',                        # ~ 124 sec
+    'wallet_import_stakingaddress.py',          # ~ 123 sec
 
     # vv Tests less than 2m vv
-    'wallet_upgrade.py',                        # ~ 119 sec
     'p2p_disconnect_ban.py',                    # ~ 118 sec
+    'wallet_listreceivedby.py',                 # ~ 117 sec
+    'mining_pos_fakestake.py',                  # ~ 113 sec
     'feature_reindex.py',                       # ~ 110 sec
     'interface_http.py',                        # ~ 105 sec
     'feature_blockhashcache.py',                # ~ 100 sec
     'wallet_listtransactions.py',               # ~ 97 sec
-    'wallet_listreceivedby.py',                 # ~ 94 sec
-    'mining_pos_fakestake.py',                  # ~ 94 sec
     'mempool_reorg.py',                         # ~ 92 sec
-    'interface_zmq.py',                         # ~ 90 sec
     'wallet_encryption.py',                     # ~ 89 sec
-    'wallet_import_stakingaddress.py',          # ~ 86 sec
     'wallet_keypool.py',                        # ~ 88 sec
     'wallet_dump.py',                           # ~ 83 sec
     'rpc_net.py',                               # ~ 83 sec
     'rpc_bip38.py',                             # ~ 82 sec
     #'rpc_deprecated.py',                        # ~ 80 sec (disabled for now, no deprecated RPC commands to test)
+    'interface_zmq.py',                         # ~ 95 sec
     'interface_bitcoin_cli.py',                 # ~ 80 sec
     'mempool_packages.py',                      # ~ 63 sec
 
@@ -120,12 +118,14 @@ BASE_SCRIPTS= [
     # Don't append tests at the end to avoid merge conflicts
     # Put them in a random line within the section that fits their approximate run-time
     # 'feature_block.py',
+    # 'wallet_importmulti.py',
     # 'mempool_limit.py', # We currently don't limit our mempool_reorg
     # 'rpc_getchaintips.py',
     # 'rpc_users.py',
     # 'mining_prioritisetransaction.py',
     # 'p2p_invalid_block.py',
     # 'p2p_invalid_tx.py',
+    # 'wallet_import_rescan.py',
     # 'mining_basic.py',
     # 'wallet_bumpfee.py',
     # 'wallet_listsinceblock.py',
@@ -171,7 +171,6 @@ EXTENDED_SCRIPTS = [
     #'p2p_timeouts.py',
     # vv Tests less than 60s vv
     #'p2p_feefilter.py',
-    'feature_abortnode.py',
     'rpc_bind.py',
     # vv Tests less than 30s vv
     #'example_test.py',
@@ -213,8 +212,6 @@ LEGACY_SKIP_TESTS = [
     'sapling_wallet_listreceived.py',
     'sapling_wallet_nullifiers.py',
     'sapling_mempool.py',
-    'wallet_importmulti.py',
-    'wallet_import_rescan.py',
 ]
 
 # Place the lists with the longest tests (on average) first
