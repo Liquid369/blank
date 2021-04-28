@@ -8,7 +8,8 @@
 ///
 /// \copyright  Copyright 2013 Ian Miers, Christina Garman and Matthew Green
 /// \license    This project is released under the MIT license.
-// Copyright (c) 2017-2019 The fls developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2020 The Flits Developers
 
 #include "ParamGeneration.h"
 #include <string>

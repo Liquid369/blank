@@ -1,7 +1,9 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2016-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -335,7 +337,7 @@ public:
         uint64_t nServicesInt = nServices;
         READWRITE(nServicesInt);
         nServices = static_cast<ServiceFlags>(nServicesInt);
-        READWRITEAS(CService, *this);
+        READWRITE(*static_cast<CService*>(this));
     }
 
     // TODO: make private (improves encapsulation)

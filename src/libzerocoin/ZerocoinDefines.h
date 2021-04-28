@@ -10,7 +10,10 @@
 * @license    This project is released under the MIT license.
 **/
 // Copyright (c) 2017 The PIVX Developers
+// Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
+
 
 #ifndef ZEROCOIN_DEFINES_H_
 #define ZEROCOIN_DEFINES_H_

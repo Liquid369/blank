@@ -1,7 +1,9 @@
 // Copyright (c) 2011-2013 The PPCoin developers
 // Copyright (c) 2013-2014 The NovaCoin Developers
 // Copyright (c) 2014-2018 The BlackCoin Developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -108,7 +110,7 @@ bool LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::uni
     const CTxIn& txin = block.vtx[1]->vin[0];
     stake = txin.IsZerocoinSpend() ?
             std::unique_ptr<CStakeInput>(new CLegacyZFlsStake()) :
-            std::unique_ptr<CStakeInput>(CPivStake::NewPivStake(txin));
+            std::unique_ptr<CStakeInput>(CFlsStake::NewFlsStake(txin));
 
     return stake && stake->InitFromTxIn(txin);
 }

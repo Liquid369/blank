@@ -1,6 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2017-2019 The fls developers
+// Copyright (c) 2017-2019 The PIVX developers
+// Copyright (c) 2020 The Flits Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -78,7 +79,7 @@ public:
         s >> VARINT(nSize);
         if (nSize < nSpecialScripts) {
             std::vector<unsigned char> vch(GetSpecialSize(nSize), 0x00);
-            s >> CFlatData(vch);
+            s >> REF(CFlatData(vch));
             Decompress(nSize, vch);
             return;
         }
@@ -89,7 +90,7 @@ public:
             s.ignore(nSize);
         } else {
             script.resize(nSize);
-            s >> CFlatData(script);
+            s >> REF(CFlatData(script));
         }
     }
 };

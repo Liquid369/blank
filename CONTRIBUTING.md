@@ -1,7 +1,7 @@
-Contributing to Flits Core
+Contributing to FLITS Core
 ============================
 
-The Flits Core project operates an open contributor model where anyone is
+The FLITS Core project operates an open contributor model where anyone is
 welcome to contribute towards development in the form of peer review, testing
 and patches. This document explains the practical process and guidelines for
 contributing.
@@ -84,7 +84,7 @@ Examples:
     Trivial: Fix typo in init.cpp
 
 Note that translations should not be submitted as pull requests, please see
-[Translation Process](https://github.com/fls-project/fls/blob/master/doc/translation_process.md)
+[Translation Process](https://github.com/flitsnode/flits-core/blob/master/doc/translation_process.md)
 for more information on helping with translations.
 
 If a pull request is not to be considered for merging (yet), please
@@ -203,10 +203,10 @@ workload on reviewing.
 "Decision Making" Process
 -------------------------
 
-The following applies to code changes to the Flits Core project, and is not to be
-confused with overall Flits Network Protocol consensus changes.
+The following applies to code changes to the FLITS Core project, and is not to be
+confused with overall FLITS Network Protocol consensus changes.
 
-Whether a pull request is merged into Flits Core rests with the project merge
+Whether a pull request is merged into FLITS Core rests with the project merge
 maintainers and ultimately the project lead.
 
 Maintainers will take into consideration if a patch is in line with the general
@@ -220,7 +220,7 @@ In general, all pull requests must:
   - Be well peer reviewed;
   - follow code style guidelines;
 
-Patches that change Flits consensus rules are considerably more involved than
+Patches that change FLITS consensus rules are considerably more involved than
 normal because they affect the entire ecosystem and so must be preceded by
 extensive discussions and clear detailing. While each case will be different,
 one should be prepared to expend more time and effort than for other kinds of
@@ -263,7 +263,7 @@ higher in terms of discussion and peer review requirements, keeping in mind that
 mistakes could be very costly to the wider community. This includes refactoring
 of consensus critical code.
 
-Where a patchset proposes to change the Flits consensus, it must have been
+Where a patchset proposes to change the FLITS consensus, it must have been
 discussed extensively on the forums and Discord, be accompanied by a widely
 discussed Proposal and have a generally widely perceived technical consensus of being
 a worthwhile change based on the judgement of the maintainers.
@@ -303,7 +303,7 @@ about:
 Release Policy
 --------------
 
-The project leader is the release manager for each Flits Core release.
+The project leader is the release manager for each FLITS Core release.
 
 Copyright
 ---------

@@ -1,15 +1,17 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2017-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_CRYPTER_H
 #define BITCOIN_CRYPTER_H
 
+#include "allocators.h"
 #include "keystore.h"
 #include "serialize.h"
 #include "streams.h"
-#include "support/allocators/zeroafterfree.h"
 
 class uint256;
 

@@ -1,12 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2018 The fls developers
+// Copyright (c) 2015-2018 The PIVX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_BLOB_UINT256_H
-#define fls_BLOB_UINT256_H
+#ifndef FLS_BLOB_UINT256_H
+#define FLS_BLOB_UINT256_H
 
 #include <assert.h>
 #include <cstring>
@@ -162,4 +162,4 @@ inline blob_uint256 blob_uint256S(const std::string& str)
 const blob_uint256 BLOB_UINT256_ZERO = blob_uint256();
 const blob_uint256 BLOB_UINT256_ONE = blob_uint256S("0000000000000000000000000000000000000000000000000000000000000001");
 
-#endif // fls_BLOB_UINT256_H
+#endif // FLS_BLOB_UINT256_H

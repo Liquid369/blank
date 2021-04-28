@@ -1,6 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
@@ -102,13 +104,9 @@ public:
     CScript scriptSig;
     uint32_t nSequence;
 
-    /* Setting nSequence to this value for every input in a transaction
-     * disables nLockTime. */
-    static const uint32_t SEQUENCE_FINAL = 0xffffffff;
-
-    CTxIn() { nSequence = SEQUENCE_FINAL; }
-    explicit CTxIn(COutPoint prevoutIn, CScript scriptSigIn=CScript(), uint32_t nSequenceIn=SEQUENCE_FINAL);
-    CTxIn(uint256 hashPrevTx, uint32_t nOut, CScript scriptSigIn=CScript(), uint32_t nSequenceIn=SEQUENCE_FINAL);
+    CTxIn() { nSequence = std::numeric_limits<unsigned int>::max(); }
+    explicit CTxIn(COutPoint prevoutIn, CScript scriptSigIn=CScript(), uint32_t nSequenceIn=std::numeric_limits<unsigned int>::max());
+    CTxIn(uint256 hashPrevTx, uint32_t nOut, CScript scriptSigIn=CScript(), uint32_t nSequenceIn=std::numeric_limits<uint32_t>::max());
 
     ADD_SERIALIZE_METHODS;
 
@@ -119,7 +117,7 @@ public:
         READWRITE(nSequence);
     }
 
-    bool IsFinal() const { return nSequence == SEQUENCE_FINAL; }
+    bool IsFinal() const { return nSequence == std::numeric_limits<uint32_t>::max(); }
     bool IsNull() const { return prevout.IsNull() && scriptSig.empty() && IsFinal(); }
 
     bool IsZerocoinSpend() const;

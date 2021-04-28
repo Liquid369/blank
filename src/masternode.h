@@ -1,5 +1,7 @@
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -19,7 +21,7 @@
 static const unsigned int MNPING_DEPTH = 12;
 
 /* Masternode collateral amount */
-static const CAmount MN_COLL_AMT = 10000 * COIN;
+static const CAmount MN_COLL_AMT = 1000 * COIN;
 
 
 class CMasternode;

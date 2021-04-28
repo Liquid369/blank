@@ -1,5 +1,7 @@
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -755,11 +757,12 @@ std::string CBudgetManager::GetRequiredPaymentsString(int nBlockHeight)
 
 CAmount CBudgetManager::GetTotalBudget(int nHeight)
 {
-    // 20% of the block value
-    CAmount nSubsidy = GetBlockValue(nHeight) / 5;
-
-    // multiplied by the number of blocks in a cycle (144 on testnet, 30*1440 on mainnet)
-    return nSubsidy * Params().GetConsensus().nBudgetCycleBlocks;
+    //Static budget
+    if (nHeight <= 335000) {
+        return 0 * COIN;
+    } else {
+        return 25000 * COIN;
+    }
 }
 
 void CBudgetManager::AddSeenProposalVote(const CBudgetVote& vote)

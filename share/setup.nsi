@@ -1,27 +1,27 @@
-Name "Flits Core (-bit)"
+Name "FLITS Core (-bit)"
 
 RequestExecutionLevel highest
 SetCompressor /SOLID lzma
 
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
-!define COMPANY "Flits Core project"
-!define URL https://www.fls.org
+!define COMPANY "FLITS Core project"
+!define URL https://www.flitswallet.app
 
 # MUI Symbol Definitions
-!define MUI_ICON "/media/data/Projects/fls/share/pixmaps/fls.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "/media/data/Projects/fls/share/pixmaps/nsis-wizard.bmp"
+!define MUI_ICON "/media/data/pivx/share/pixmaps/fls.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "/media/data/pivx/share/pixmaps/nsis-wizard.bmp"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "/media/data/Projects/fls/share/pixmaps/nsis-header.bmp"
+!define MUI_HEADERIMAGE_BITMAP "/media/data/pivx/share/pixmaps/nsis-header.bmp"
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME StartMenuGroup
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER "Flits Core"
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "FLITS Core"
 !define MUI_FINISHPAGE_RUN $INSTDIR\fls-qt
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/media/data/Projects/fls/share/pixmaps/nsis-wizard.bmp"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "/media/data/pivx/share/pixmaps/nsis-wizard.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -47,22 +47,22 @@ Var StartMenuGroup
 !insertmacro MUI_LANGUAGE English
 
 # Installer attributes
-OutFile /media/data/Projects/fls/fls-5.0.99-win-setup.exe
+OutFile /media/data/pivx/fls-3.0.0-win-setup.exe
 !if "" == "64"
-InstallDir $PROGRAMFILES64\fls
+InstallDir $PROGRAMFILES64\Fls
 !else
-InstallDir $PROGRAMFILES\fls
+InstallDir $PROGRAMFILES\Fls
 !endif
 CRCCheck on
 XPStyle on
 BrandingText " "
 ShowInstDetails show
-VIProductVersion 5.0.99.0
-VIAddVersionKey ProductName "Flits Core"
-VIAddVersionKey ProductVersion "5.0.99"
+VIProductVersion 3.0.0.0
+VIAddVersionKey ProductName "FLITS Core"
+VIAddVersionKey ProductVersion "3.0.0"
 VIAddVersionKey CompanyName "${COMPANY}"
 VIAddVersionKey CompanyWebsite "${URL}"
-VIAddVersionKey FileVersion "5.0.99"
+VIAddVersionKey FileVersion "3.0.0"
 VIAddVersionKey FileDescription ""
 VIAddVersionKey LegalCopyright ""
 InstallDirRegKey HKCU "${REGKEY}" Path
@@ -72,17 +72,17 @@ ShowUninstDetails show
 Section -Main SEC0000
     SetOutPath $INSTDIR
     SetOverwrite on
-    File /media/data/Projects/fls/release/fls-qt
-    File /oname=COPYING.txt /media/data/Projects/fls/COPYING
-    File /oname=readme.txt /media/data/Projects/fls/doc/README_windows.txt
+    File /media/data/pivx/release/fls-qt
+    File /oname=COPYING.txt /media/data/pivx/COPYING
+    File /oname=readme.txt /media/data/pivx/doc/README_windows.txt
     SetOutPath $INSTDIR\daemon
-    File /media/data/Projects/fls/release/flsd
-    File /media/data/Projects/fls/release/fls-cli
+    File /media/data/pivx/release/flsd
+    File /media/data/pivx/release/fls-cli
     SetOutPath $INSTDIR\doc
-    File /r /media/data/Projects/fls/doc\*.*
-    SetOutPath $APPDATA\flsParams
-    File /media/data/Projects/fls/params/sapling-output.params
-    File /media/data/Projects/fls/params/sapling-spend.params
+    File /r /media/data/pivx/doc\*.*
+    SetOutPath $APPDATA\FLSParams
+    File /media/data/pivx/params/sapling-output.params
+    File /media/data/pivx/params/sapling-spend.params
     SetOutPath $INSTDIR
     WriteRegStr HKCU "${REGKEY}\Components" Main 1
 SectionEnd
@@ -94,11 +94,11 @@ Section -post SEC0001
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     CreateDirectory $SMPROGRAMS\$StartMenuGroup
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" $INSTDIR\fls-qt
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Flits Core (testnet, -bit).lnk" "$INSTDIR\fls-qt" "-testnet" "$INSTDIR\fls-qt" 1
+    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\FLITS Core (testnet, -bit).lnk" "$INSTDIR\fls-qt" "-testnet" "$INSTDIR\fls-qt" 1
     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk" $INSTDIR\uninstall.exe
     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
-    WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "5.0.99"
+    WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "3.0.0"
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" Publisher "${COMPANY}"
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" URLInfoAbout "${URL}"
     WriteRegStr HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayIcon $INSTDIR\uninstall.exe
@@ -106,7 +106,7 @@ Section -post SEC0001
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoModify 1
     WriteRegDWORD HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" NoRepair 1
     WriteRegStr HKCR "fls" "URL Protocol" ""
-    WriteRegStr HKCR "fls" "" "URL:fls"
+    WriteRegStr HKCR "fls" "" "URL:Fls"
     WriteRegStr HKCR "fls\DefaultIcon" "" $INSTDIR\fls-qt
     WriteRegStr HKCR "fls\shell\open\command" "" '"$INSTDIR\fls-qt" "%1"'
 SectionEnd
@@ -138,8 +138,8 @@ Section -un.post UNSEC0001
     DeleteRegKey HKCU "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Flits Core (testnet, -bit).lnk"
-    Delete /REBOOTOK "$SMSTARTUP\fls.lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\FLITS Core (testnet, -bit).lnk"
+    Delete /REBOOTOK "$SMSTARTUP\Fls.lnk"
     Delete /REBOOTOK $INSTDIR\uninstall.exe
     Delete /REBOOTOK $INSTDIR\debug.log
     Delete /REBOOTOK $INSTDIR\db.log

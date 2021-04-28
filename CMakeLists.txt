@@ -25,8 +25,8 @@ project(PIVX)
 
 set(BDB_VER "4.8.30")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/contrib/cmake")
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++14 ")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 ")
 include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -199,7 +199,6 @@ set(SERVER_SOURCES
         ./src/blocksignature.cpp
         ./src/chain.cpp
         ./src/checkpoints.cpp
-        ./src/consensus/tx_verify.cpp
         ./src/httprpc.cpp
         ./src/httpserver.cpp
         ./src/indirectmap.h
@@ -232,12 +231,12 @@ set(SERVER_SOURCES
         ./src/timedata.cpp
         ./src/torcontrol.cpp
         ./src/sapling/sapling_txdb.cpp
-        ./src/sapling/sapling_validation.cpp
         ./src/txdb.cpp
         ./src/txmempool.cpp
+        ./src/sapling/sapling_validation.cpp
         ./src/validation.cpp
         ./src/validationinterface.cpp
-        ./src/zflschain.cpp
+        ./src/zpivchain.cpp
         )
 add_library(SERVER_A STATIC ${BitcoinHeaders} ${SERVER_SOURCES})
 if(MINIUPNP_FOUND)
@@ -281,18 +280,18 @@ set(WALLET_SOURCES
         ./src/masternodeconfig.cpp
         ./src/masternodeman.cpp
         ./src/messagesigner.cpp
-        ./src/zfls/mintpool.cpp
+        ./src/zpiv/mintpool.cpp
         ./src/wallet/hdchain.cpp
         ./src/wallet/rpcdump.cpp
-        ./src/zfls/zerocoin.cpp
+        ./src/zpiv/zerocoin.cpp
         ./src/wallet/scriptpubkeyman.cpp
         ./src/wallet/rpcwallet.cpp
         ./src/kernel.cpp
         ./src/legacy/stakemodifier.cpp
         ./src/wallet/wallet.cpp
         ./src/wallet/walletdb.cpp
-        ./src/zfls/zflsmodule.cpp
-        ./src/zfls/zpos.cpp
+        ./src/zpiv/zpivmodule.cpp
+        ./src/zpiv/zpos.cpp
         ./src/stakeinput.cpp
         )
 add_library(WALLET_A STATIC ${BitcoinHeaders} ${WALLET_SOURCES})
@@ -375,6 +374,7 @@ target_include_directories(ZEROCOIN_A PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
         )
 
 set(COMMON_SOURCES
+        ./src/allocators.cpp
         ./src/base58.cpp
         ./src/bip38.cpp
         ./src/consensus/params.cpp
@@ -383,12 +383,13 @@ set(COMMON_SOURCES
         ./src/coins.cpp
         ./src/key_io.cpp
         ./src/compressor.cpp
-        ./src/evo/specialtx.cpp
+        ./src/tiertwo/specialtx_validation.cpp
         ./src/consensus/merkle.cpp
+        ./src/consensus/tx_verify.cpp
         ./src/consensus/zerocoin_verify.cpp
         ./src/primitives/block.cpp
         ./src/primitives/transaction.cpp
-        ./src/zfls/zerocoin.cpp
+        ./src/zpiv/zerocoin.cpp
         ./src/core_read.cpp
         ./src/core_write.cpp
         ./src/hash.cpp
@@ -420,6 +421,7 @@ target_include_directories(COMMON_A PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
         )
 
 set(UTIL_SOURCES
+        ./src/allocators.cpp
         ./src/compat/strnlen.cpp
         ./src/compat/glibc_sanity.cpp
         ./src/compat/glibcxx_sanity.cpp
@@ -439,7 +441,6 @@ set(UTIL_SOURCES
         ./src/utilstrencodings.cpp
         ./src/utilmoneystr.cpp
         ./src/utiltime.cpp
-        ./src/support/lockedpool.cpp
         ./src/support/cleanse.cpp
         )
 add_library(UTIL_A STATIC ${BitcoinHeaders} ${UTIL_SOURCES})

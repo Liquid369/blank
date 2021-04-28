@@ -1,14 +1,16 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_KEY_H
-#define fls_KEY_H
+#ifndef FLS_KEY_H
+#define FLS_KEY_H
 
+#include "allocators.h"
 #include "serialize.h"
-#include "support/allocators/secure.h"
 #include "uint256.h"
 #include "pubkey.h"
 
@@ -20,6 +22,7 @@ class CPubKey;
 struct CExtPubKey;
 
 /**
+ * secure_allocator is defined in allocators.h
  * CPrivKey is a serialized private key, with all parameters included
  * (PRIVATE_KEY_SIZE bytes)
  */
@@ -180,4 +183,4 @@ void ECC_Stop(void);
 /** Check that required EC support is available at runtime. */
 bool ECC_InitSanityCheck(void);
 
-#endif // fls_KEY_H
+#endif // FLS_KEY_H

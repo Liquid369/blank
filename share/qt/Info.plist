@@ -17,28 +17,28 @@
   <string>APPL</string>
 
   <key>CFBundleGetInfoString</key>
-  <string>5.0.99.0, Copyright © 2009-2021 The Bitcoin Core developers, 2014-2021 The Dash Core developers, 2015-2021 The fls Core developers</string>
+  <string>3.0.0.0, Copyright © 2009-2021 The Bitcoin Core developers, 2014-2021 The Dash Core developers, 2015-2021 The FLITS Core developers</string>
 
   <key>CFBundleShortVersionString</key>
-  <string>5.0.99</string>
+  <string>3.0.0</string>
 
   <key>CFBundleVersion</key>
-  <string>5.0.99</string>
+  <string>3.0.0</string>
 
   <key>CFBundleSignature</key>
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>fls-Qt</string>
+  <string>FLS-Qt</string>
 
   <key>CFBundleName</key>
-  <string>fls-Qt</string>
+  <string>FLS-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>io.fls.Flits-Qt</string>
+  <string>io.fls.Fls-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,7 +46,7 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>io.fls.flsPayment</string>
+      <string>io.fls.FlsPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
         <string>fls</string>
@@ -60,7 +60,7 @@
       <key>UTTypeIdentifier</key>
       <string>io.fls.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>fls payment request</string>
+      <string>Fls payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>

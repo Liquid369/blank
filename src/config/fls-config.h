@@ -1,9 +1,9 @@
 /* src/config/fls-config.h.  Generated from fls-config.h.in by configure.  */
 /* src/config/fls-config.h.in.  Generated from configure.ac by autoheader.  */
 
-#ifndef PIV_CONFIG_H
+#ifndef FLS_CONFIG_H
 
-#define PIV_CONFIG_H
+#define FLS_CONFIG_H
 
 /* Define if building universal (internal helper macro) */
 /* #undef AC_APPLE_UNIVERSAL_BUILD */
@@ -12,16 +12,16 @@
 #define CLIENT_VERSION_BUILD 0
 
 /* Version is release */
-#define CLIENT_VERSION_IS_RELEASE false
+#define CLIENT_VERSION_IS_RELEASE true
 
 /* Major version */
-#define CLIENT_VERSION_MAJOR 5
+#define CLIENT_VERSION_MAJOR 3
 
 /* Minor version */
 #define CLIENT_VERSION_MINOR 0
 
 /* Build revision */
-#define CLIENT_VERSION_REVISION 99
+#define CLIENT_VERSION_REVISION 0
 
 /* Version is release */
 #define COPYRIGHT_YEAR 2021
@@ -71,8 +71,8 @@
 /* Define this symbol if the consensus lib has been built */
 /* #undef HAVE_CONSENSUS_LIB */
 
-/* define if the compiler supports basic C++14 syntax */
-#define HAVE_CXX14 1
+/* define if the compiler supports basic C++11 syntax */
+#define HAVE_CXX11 1
 
 /* Define to 1 if you have the declaration of `be16toh', and to 0 if you
    don't. */
@@ -337,22 +337,22 @@
 #define LT_OBJDIR ".libs/"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "https://github.com/fls-project/fls/issues"
+#define PACKAGE_BUGREPORT "https://github.com/flitsnode/flits-core/issues"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "Flits Core"
+#define PACKAGE_NAME "FLITS Core"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Flits Core 5.0.99"
+#define PACKAGE_STRING "FLITS Core 3.0.0"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "fls"
 
 /* Define to the home page for this package. */
-#define PACKAGE_URL "https://fls.org/"
+#define PACKAGE_URL "https://flitswallet.app/"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "5.0.99"
+#define PACKAGE_VERSION "3.0.0"
 
 /* Path to the zk params dir during unit tests on windows */
 #define PARAMS_DIR ""
@@ -365,16 +365,16 @@
 /* #undef QT_QPA_PLATFORM_COCOA */
 
 /* Define this symbol if the minimal Qt platform exists */
-/* #undef QT_QPA_PLATFORM_MINIMAL */
+#define QT_QPA_PLATFORM_MINIMAL 1
 
 /* Define this symbol if the Qt platform is Windows */
 /* #undef QT_QPA_PLATFORM_WINDOWS */
 
 /* Define this symbol if the Qt platform is XCB */
-/* #undef QT_QPA_PLATFORM_XCB */
+#define QT_QPA_PLATFORM_XCB 1
 
 /* Define this symbol if Qt plugins are static */
-/* #undef QT_STATICPLUGIN */
+#define QT_STATICPLUGIN 1
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
@@ -430,4 +430,4 @@
 /* Define for large files, on AIX-style hosts. */
 /* #undef _LARGE_FILES */
 
-#endif //PIV_CONFIG_H
+#endif //FLS_CONFIG_H
