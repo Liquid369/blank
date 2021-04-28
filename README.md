@@ -1,8 +1,8 @@
 FLITS Core integration/staging repository
 =====================================
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/flitsnode/flits-core?color=%365ACE&cacheSeconds=3600)](https://github.com/flitsnode/flits-core/releases)
-[![GitHub Release Date](https://img.shields.io/github/release-date/flitsnode/flits-core?color=%365ACEd&cacheSeconds=3600)](https://github.com/flitsnode/flits-core/releases)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/flitsnode/flits-core?color=%23365ACE&cacheSeconds=3600)](https://github.com/flitsnode/flits-core/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/flitsnode/flits-core?color=%23365ACE&cacheSeconds=3600)](https://github.com/flitsnode/flits-core/releases)
 
 ## What is FLS?
 
