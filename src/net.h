@@ -1,6 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -78,7 +80,7 @@ static const unsigned int DEFAULT_MAX_PEER_CONNECTIONS = 125;
 
 static const ServiceFlags REQUIRED_SERVICES = NODE_NETWORK;
 
-static const bool DEFAULT_FORCEDNSSEED = false;
+static const bool DEFAULT_FORCEDNSSEED = true;
 static const size_t DEFAULT_MAXRECEIVEBUFFER = 5 * 1000;
 static const size_t DEFAULT_MAXSENDBUFFER    = 1 * 1000;
 

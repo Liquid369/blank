@@ -1,2 +1,2 @@
-contrib/pivxd.bash-completion	pivxd
-contrib/pivx-cli.bash-completion pivx-cli
+contrib/flsd.bash-completion	flsd
+contrib/fls-cli.bash-completion fls-cli

@@ -1,10 +1,13 @@
 // Copyright (c) 2018 The PIVX Developers
+// Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_INVALID_H
-#define fls_INVALID_H
+#ifndef FLS_INVALID_H
+#define FLS_INVALID_H
 
 #include <set>
 #include <string>
@@ -22,4 +25,4 @@ namespace invalid_out
     bool LoadOutpoints();
 }
 
-#endif //fls_INVALID_H
+#endif //FLS_INVALID_H

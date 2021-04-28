@@ -84,9 +84,9 @@ OpenRC).
 ### macOS
 
 Binary:              `/usr/local/bin/flsd`
-Configuration file:  `~/Library/Application Support/fls/fls.conf`
-Data directory:      `~/Library/Application Support/fls`
-Lock file:           `~/Library/Application Support/fls/.lock`
+Configuration file:  `~/Library/Application Support/FLS/fls.conf`
+Data directory:      `~/Library/Application Support/FLS`
+Lock file:           `~/Library/Application Support/FLS/.lock`
 
 Installing Service Configuration
 -----------------------------------
@@ -124,7 +124,7 @@ use old versions of Upstart and do not supply the start-stop-daemon utility.
 Copy flsd.init to /etc/init.d/flsd. Test by running `service flsd start`.
 
 Using this script, you can adjust the path and flags to the flsd program by
-setting the flsD and FLAGS environment variables in the file
+setting the FLSD and FLAGS environment variables in the file
 /etc/sysconfig/flsd. You can also use the DAEMONOPTS environment variable here.
 
 ### macOS

@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin developers
 // Copyright (c) 2009-2015 The Dash developers
-// Copyright (c) 2015-2019 The fls developers
+// Copyright (c) 2015-2019 The PIVX developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -32,7 +32,7 @@ std::string HelpMessageCli()
     std::string strUsage;
     strUsage += HelpMessageGroup(_("Options:"));
     strUsage += HelpMessageOpt("-?", _("This help message"));
-    strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), fls_CONF_FILENAME));
+    strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), FLS_CONF_FILENAME));
     strUsage += HelpMessageOpt("-datadir=<dir>", _("Specify data directory"));
     AppendParamsHelpMessages(strUsage);
     strUsage += HelpMessageOpt("-rpcconnect=<ip>", strprintf(_("Send commands to node running on <ip> (default: %s)"), DEFAULT_RPCCONNECT));
@@ -69,10 +69,10 @@ static bool AppInitRPC(int argc, char* argv[])
     //
     gArgs.ParseParameters(argc, argv);
     if (argc < 2 || gArgs.IsArgSet("-?") || gArgs.IsArgSet("-h") || gArgs.IsArgSet("-help") || gArgs.IsArgSet("-version")) {
-        std::string strUsage = _("fls Core RPC client version") + " " + FormatFullVersion() + "\n";
+        std::string strUsage = _("FLITS Core RPC client version") + " " + FormatFullVersion() + "\n";
         if (!gArgs.IsArgSet("-version")) {
             strUsage += "\n" + _("Usage:") + "\n" +
-                        "  fls-cli [options] <command> [params]  " + _("Send command to fls Core") + "\n" +
+                        "  fls-cli [options] <command> [params]  " + _("Send command to FLITS Core") + "\n" +
                         "  fls-cli [options] help                " + _("List commands") + "\n" +
                         "  fls-cli [options] help <command>      " + _("Get help for a command") + "\n";
 

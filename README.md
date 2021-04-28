@@ -1,13 +1,13 @@
-Flits Core integration/staging repository
+FLITS Core integration/staging repository
 =====================================
 
-[![master Actions Status](https://github.com/Flits-Project/Flits/workflows/CI%20Actions%20for%20fls/badge.svg)](https://github.com/Flits-Project/Flits/actions)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Flits-Project/fls?color=%235c4b7d&cacheSeconds=3600)](https://github.com/Flits-Project/Flits/releases)
-[![GitHub Release Date](https://img.shields.io/github/release-date/Flits-Project/fls?color=%235c4b7d&cacheSeconds=3600)](https://github.com/Flits-Project/Flits/releases)
+[![master Actions Status](https://github.com/flitsnode/flits-core/workflows/CI%20Actions%20for%20FLS/badge.svg)](https://github.com/flitsnode/flits-core/actions)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/flitsnode/flits-core?color=%235c4b7d&cacheSeconds=3600)](https://github.com/flitsnode/flits-core/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/flitsnode/flits-core?color=%235c4b7d&cacheSeconds=3600)](https://github.com/flitsnode/flits-core/releases)
 
-## What is Flits?
+## What is FLS?
 
-Flits is an open source community-driven cryptocurrency, focused on five main aspects:
+FLITS is an open source community-driven cryptocurrency, focused on five main aspects:
 
 (1) User Data Protection: Through the use of SHIELD, a zk-SNARKs based privacy protocol.
 
@@ -15,20 +15,20 @@ Flits is an open source community-driven cryptocurrency, focused on five main as
 
 (3) Decentralized Governance System: A DAO built on top of the tier two Masternodes network, enabling a monthly community treasury, proposals submission and decentralized voting.
 
-(4) Fast Transactions: Through the use of fast block times and the tier two network, Flits is committed to continue researching new and better instant transactions mechanisms.
+(4) Fast Transactions: Through the use of fast block times and the tier two network, FLITS is committed to continue researching new and better instant transactions mechanisms.
 
-(5) Ease of Use: Flits is determined to offer the best possible graphical interface for a core node/wallet. A full featured graphical product for new and advanced users.
+(5) Ease of Use: FLITS is determined to offer the best possible graphical interface for a core node/wallet. A full featured graphical product for new and advanced users.
 
-A lot more information and specs at [Flits.org](https://www.fls.org/). Join the community at [Flits Discord](https://discordapp.com/invite/jzqVsJd).
+A lot more information and specs at [flitswallet.app](https://www.flitswallet.app/). Join the community at [FLITS Discord](https://discordapp.com/invite/jzqVsJd).
 
 ## License
-Flits Core is released under the terms of the MIT license. See [COPYING](https://github.com/Flits-Project/Flits/blob/master/COPYING) for more information or see https://opensource.org/licenses/MIT.
+FLITS Core is released under the terms of the MIT license. See [COPYING](https://github.com/flitsnode/flits-core/blob/master/COPYING) for more information or see https://opensource.org/licenses/MIT.
 
 ## Development Process
 
-The master branch is regularly built (see doc/build-*.md for instructions) and tested, but it is not guaranteed to be completely stable. [Tags](https://github.com/Flits-Project/Flits/tags) are created regularly from release branches to indicate new official, stable release versions of Flits Core.
+The master branch is regularly built (see doc/build-*.md for instructions) and tested, but it is not guaranteed to be completely stable. [Tags](https://github.com/flitsnode/flits-core/tags) are created regularly from release branches to indicate new official, stable release versions of FLITS Core.
 
-The contribution workflow is described in [CONTRIBUTING.md](https://github.com/Flits-Project/Flits/blob/master/CONTRIBUTING.md) and useful hints for developers can be found in [doc/developer-notes.md](https://github.com/Flits-Project/Flits/blob/master/doc/developer-notes.md).
+The contribution workflow is described in [CONTRIBUTING.md](https://github.com/flitsnode/flits-core/blob/master/CONTRIBUTING.md) and useful hints for developers can be found in [doc/developer-notes.md](https://github.com/flitsnode/flits-core/blob/master/doc/developer-notes.md).
 
 ## Testing
 
@@ -36,7 +36,7 @@ Testing and code review is the bottleneck for development; we get more pull requ
 
 ## Automated Testing
 
-Developers are strongly encouraged to write [unit tests](https://github.com/Flits-Project/Flits/blob/master/src/test/README.md) for new code, and to submit new unit tests for old code. Unit tests can be compiled and run (assuming they weren't disabled in configure) with: make check. Further details on running and extending unit tests can be found in [/src/test/README.md](https://github.com/Flits-Project/Flits/blob/master/src/test/README.md).
+Developers are strongly encouraged to write [unit tests](https://github.com/flitsnode/flits-core/blob/master/src/test/README.md) for new code, and to submit new unit tests for old code. Unit tests can be compiled and run (assuming they weren't disabled in configure) with: make check. Further details on running and extending unit tests can be found in [/src/test/README.md](https://github.com/flitsnode/flits-core/blob/master/src/test/README.md).
 
 There are also regression and integration tests, written in Python. These tests can be run (if the test dependencies are installed) with: test/functional/test_runner.py`
 
@@ -48,8 +48,8 @@ Changes should be tested by somebody other than the developer who wrote the code
 
 ## Translations
 
-Changes to translations as well as new translations can be submitted to Flits Core's Transifex page.
+Changes to translations as well as new translations can be submitted to FLITS Core's Transifex page.
 
-Translations are periodically pulled from Transifex and merged into the git repository. See the [translation process](https://github.com/Flits-Project/Flits/blob/master/doc/translation_process.md) for details on how this works.
+Translations are periodically pulled from Transifex and merged into the git repository. See the [translation process](https://github.com/flitsnode/flits-core/blob/master/doc/translation_process.md) for details on how this works.
 
 Important: We do not accept translation changes as GitHub pull requests because the next pull from Transifex would automatically overwrite them again.

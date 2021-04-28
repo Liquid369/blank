@@ -1,5 +1,7 @@
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -233,7 +235,9 @@ bool IsBlockValueValid(int nHeight, CAmount& nExpectedValue, CAmount nMinted)
             }
         }
     }
-
+    if (nHeight == 609500) {
+        return true;
+    }
     return nMinted <= nExpectedValue;
 }
 
@@ -324,7 +328,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int n
     }
 
     if (hasPayment) {
-        CAmount masternodePayment = GetMasternodePayment();
+        CAmount masternodePayment = GetMasternodePayment(nHeight);
         if (fProofOfStake) {
             /**For Proof Of Stake vout[0] must be null
              * Stake reward can be split into many different outputs, so we must
@@ -530,7 +534,7 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew)
     if (nMaxSignatures < MNPAYMENTS_SIGNATURES_REQUIRED) return true;
 
     std::string strPayeesPossible = "";
-    CAmount requiredMasternodePayment = GetMasternodePayment();
+    CAmount requiredMasternodePayment = GetMasternodePayment(nBlockHeight);
 
     for (CMasternodePayee& payee : vecPayments) {
         bool found = false;

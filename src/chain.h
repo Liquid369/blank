@@ -3,7 +3,9 @@
 // Copyright (c) 2011-2013 The PPCoin developers
 // Copyright (c) 2013-2014 The NovaCoin Developers
 // Copyright (c) 2014-2018 The BlackCoin Developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -21,13 +23,6 @@
 #include "libzerocoin/Denominations.h"
 
 #include <vector>
-
-/**
- * Timestamp window used as a grace period by code that compares external
- * timestamps (such as timestamps passed to RPCs, or wallet key creation times)
- * to block timestamps.
- */
-static constexpr int64_t TIMESTAMP_WINDOW = 2 * 60 * 60;
 
 class CBlockFileInfo
 {
@@ -94,8 +89,9 @@ struct CDiskBlockPos {
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(VARINT(nFile, VarIntMode::NONNEGATIVE_SIGNED));
+    inline void SerializationOp(Stream& s, Operation ser_action)
+    {
+        READWRITE(VARINT(nFile));
         READWRITE(VARINT(nPos));
     }
 
@@ -245,9 +241,6 @@ public:
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     uint32_t nSequenceId{0};
 
-    //! (memory only) Maximum nTime in the chain upto and including this block.
-    unsigned int nTimeMax{0};
-
     CBlockIndex() {}
     CBlockIndex(const CBlock& block);
 
@@ -258,8 +251,6 @@ public:
     CBlockHeader GetBlockHeader() const;
     uint256 GetBlockHash() const { return *phashBlock; }
     int64_t GetBlockTime() const { return (int64_t)nTime; }
-    int64_t GetBlockTimeMax() const { return (int64_t)nTimeMax; }
-
     int64_t GetMedianTimePast() const;
 
     int64_t MaxFutureBlockTime() const;
@@ -301,8 +292,8 @@ const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* 
 /** Used to marshal pointers into hashes for db storage. */
 
 // New serialization introduced with 4.0.99
-static const int DBI_OLD_SER_VERSION = 4009900;
-static const int DBI_SER_VERSION_NO_ZC = 4009902;   // removes mapZerocoinSupply, nMoneySupply
+static const int DBI_OLD_SER_VERSION = 1000200;
+static const int DBI_SER_VERSION_NO_ZC = 2000000;   // removes mapZerocoinSupply, nMoneySupply
 
 class CDiskBlockIndex : public CBlockIndex
 {
@@ -326,13 +317,13 @@ public:
     {
         int nSerVersion = s.GetVersion();
         if (!(s.GetType() & SER_GETHASH))
-            READWRITE(VARINT(nSerVersion, VarIntMode::NONNEGATIVE_SIGNED));
+            READWRITE(VARINT(nSerVersion));
 
-        READWRITE(VARINT(nHeight, VarIntMode::NONNEGATIVE_SIGNED));
+        READWRITE(VARINT(nHeight));
         READWRITE(VARINT(nStatus));
         READWRITE(VARINT(nTx));
         if (nStatus & (BLOCK_HAVE_DATA | BLOCK_HAVE_UNDO))
-            READWRITE(VARINT(nFile, VarIntMode::NONNEGATIVE_SIGNED));
+            READWRITE(VARINT(nFile));
         if (nStatus & BLOCK_HAVE_DATA)
             READWRITE(VARINT(nDataPos));
         if (nStatus & BLOCK_HAVE_UNDO)
@@ -466,7 +457,7 @@ public:
     {
         int nSerVersion = s.GetVersion();
         if (!(s.GetType() & SER_GETHASH))
-            READWRITE(VARINT(nSerVersion, VarIntMode::NONNEGATIVE_SIGNED));
+            READWRITE(VARINT(nSerVersion));
 
         if (nSerVersion >= DBI_SER_VERSION_NO_ZC) {
             // no extra serialized field
@@ -478,11 +469,11 @@ public:
             return;
         }
 
-        READWRITE(VARINT(nHeight, VarIntMode::NONNEGATIVE_SIGNED));
+        READWRITE(VARINT(nHeight));
         READWRITE(VARINT(nStatus));
         READWRITE(VARINT(nTx));
         if (nStatus & (BLOCK_HAVE_DATA | BLOCK_HAVE_UNDO))
-            READWRITE(VARINT(nFile, VarIntMode::NONNEGATIVE_SIGNED));
+            READWRITE(VARINT(nFile));
         if (nStatus & BLOCK_HAVE_DATA)
             READWRITE(VARINT(nDataPos));
         if (nStatus & BLOCK_HAVE_UNDO)
@@ -606,9 +597,6 @@ public:
 
     /** Find the last common block between this chain and a block index entry. */
     const CBlockIndex* FindFork(const CBlockIndex* pindex) const;
-
-    /** Find the earliest block with timestamp equal or greater than the given. */
-    CBlockIndex* FindEarliestAtLeast(int64_t nTime) const;
 };
 
 #endif // BITCOIN_CHAIN_H

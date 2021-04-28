@@ -1,6 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2016-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -79,7 +81,7 @@ public:
         nHeight = code >> 2;
         fCoinBase = code & 2;
         fCoinStake = code & 1;
-        ::Unserialize(s, CTxOutCompressor(out));
+        ::Unserialize(s, REF(CTxOutCompressor(out)));
     }
 
     bool IsSpent() const {
@@ -445,7 +447,7 @@ private:
 };
 
 //! Utility function to add all of a transaction's outputs to a cache.
-// fls: When check is false, this assumes that overwrites are never possible due to BIP34 always in effect
+// FLS: When check is false, this assumes that overwrites are never possible due to BIP34 always in effect
 // When check is true, the underlying view may be queried to determine whether an addition is
 // an overwrite.
 // When fSkipInvalid is true, the invalid_out list is checked before adding the coin.

@@ -1,13 +1,13 @@
 dnl require autoconf 2.60 (AS_ECHO/AS_ECHO_N)
 AC_PREREQ([2.60])
-define(_CLIENT_VERSION_MAJOR, 5)
+define(_CLIENT_VERSION_MAJOR, 3)
 define(_CLIENT_VERSION_MINOR, 0)
-define(_CLIENT_VERSION_REVISION, 99)
+define(_CLIENT_VERSION_REVISION, 0)
 define(_CLIENT_VERSION_BUILD, 0)
 define(_CLIENT_VERSION_RC, 0)
-define(_CLIENT_VERSION_IS_RELEASE, false)
+define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2021)
-AC_INIT([Flits Core],m4_join([.], _CLIENT_VERSION_MAJOR, _CLIENT_VERSION_MINOR, _CLIENT_VERSION_REVISION, m4_if(_CLIENT_VERSION_BUILD, [0], [], _CLIENT_VERSION_BUILD))m4_if(_CLIENT_VERSION_RC, [0], [], [rc]_CLIENT_VERSION_RC),[https://github.com/fls-project/fls/issues],[fls],[https://fls.org/])
+AC_INIT([FLITS Core],m4_join([.], _CLIENT_VERSION_MAJOR, _CLIENT_VERSION_MINOR, _CLIENT_VERSION_REVISION, m4_if(_CLIENT_VERSION_BUILD, [0], [], _CLIENT_VERSION_BUILD))m4_if(_CLIENT_VERSION_RC, [0], [], [rc]_CLIENT_VERSION_RC),[https://github.com/flitsnode/flits-core/issues],[fls],[https://flitswallet.app/])
 AC_CONFIG_SRCDIR([src/validation.cpp])
 AC_CONFIG_HEADERS([src/config/fls-config.h])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -26,9 +26,9 @@ fi
 
 AC_CANONICAL_HOST
 
-AH_TOP([#ifndef PIV_CONFIG_H])
-AH_TOP([#define PIV_CONFIG_H])
-AH_BOTTOM([#endif //PIV_CONFIG_H])
+AH_TOP([#ifndef FLS_CONFIG_H])
+AH_TOP([#define FLS_CONFIG_H])
+AH_BOTTOM([#endif //FLS_CONFIG_H])
 
 dnl faketime breaks configure and is only needed for make. Disable it here.
 unset FAKETIME
@@ -59,8 +59,8 @@ case $host in
      lt_cv_deplibs_check_method="pass_all"
   ;;
 esac
-dnl Require C++14 compiler (no GNU extensions)
-AX_CXX_COMPILE_STDCXX([14], [noext], [mandatory], [nodefault])
+dnl Require C++11 compiler (no GNU extensions)
+AX_CXX_COMPILE_STDCXX([11], [noext], [mandatory], [nodefault])
 dnl Check if -latomic is required for <std::atomic>
 CHECK_ATOMIC
 
@@ -1152,6 +1152,8 @@ else
   fi
 fi
 
+LIBSAPLING_LIBS="-lgmp -lboost_system-mt -lcrypto -lsodium"
+
 dnl univalue check
 
 need_bundled_univalue=yes
@@ -1221,7 +1223,7 @@ AM_CONDITIONAL([HAVE_RUST_TARGET], [test -n "$RUST_TARGET"])
 AX_CHECK_COMPILE_FLAG([-fno-strict-aliasing],[CXXFLAGS="$CXXFLAGS -fno-strict-aliasing"])
 AX_CHECK_COMPILE_FLAG([-Wno-builtin-declaration-mismatch],[CXXFLAGS="$CXXFLAGS -Wno-builtin-declaration-mismatch"],,[[$CXXFLAG_WERROR]])
 
-LIBZCASH_LIBS="$BOOST_SYSTEM_LIB $SODIUM_LIBS $RUST_LIBS"
+LIBZCASH_LIBS="$BOOST_SYSTEM_LIB $CRYPTO_LIBS $SODIUM_LIBS $RUST_LIBS"
 
 AC_MSG_CHECKING([whether to build flsd])
 AM_CONDITIONAL([BUILD_BITCOIND], [test x$build_bitcoind = xyes])
@@ -1488,6 +1490,7 @@ AC_SUBST(EVENT_LIBS)
 AC_SUBST(EVENT_PTHREADS_LIBS)
 AC_SUBST(SODIUM_LIBS)
 AC_SUBST(ZMQ_LIBS)
+AC_SUBST(LIBSAPLING_LIBS)
 AC_SUBST(LIBZCASH_LIBS)
 AC_SUBST(PROTOBUF_LIBS)
 AC_SUBST(QR_LIBS)

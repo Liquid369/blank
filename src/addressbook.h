@@ -1,10 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
-// Copyright (c) 2019 The Flits Developers
+// Copyright (c) 2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_ADDRESSBOOK_H
-#define fls_ADDRESSBOOK_H
+#ifndef FLS_ADDRESSBOOK_H
+#define FLS_ADDRESSBOOK_H
 
 #include <map>
 #include <string>
@@ -49,4 +52,4 @@ namespace AddressBook {
 
 }
 
-#endif //fls_ADDRESSBOOK_H
+#endif //FLS_ADDRESSBOOK_H

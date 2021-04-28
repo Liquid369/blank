@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=1.0
-Name=fls Core
-Comment=fls P2P Cryptocurrency
-Comment[fr]=fls, monnaie virtuelle cryptographique pair à pair
-Comment[tr]=fls, eşten eşe kriptografik sanal para birimi
+Name=FLITS Core
+Comment=FLITS P2P Cryptocurrency
+Comment[fr]=FLS, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=FLS, eşten eşe kriptografik sanal para birimi
 Exec=fls-qt %u
 Terminal=false
 Type=Application

@@ -1,10 +1,13 @@
 // Copyright (c) 2018 The PIVX Developers
+// Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_SPENDTYPE_H
-#define fls_SPENDTYPE_H
+#ifndef FLS_SPENDTYPE_H
+#define FLS_SPENDTYPE_H
 
 #include <cstdint>
 
@@ -17,4 +20,4 @@ namespace libzerocoin {
     };
 }
 
-#endif //fls_SPENDTYPE_H
+#endif //FLS_SPENDTYPE_H

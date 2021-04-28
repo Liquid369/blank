@@ -4,7 +4,9 @@
 // Copyright (c) 2011-2013 The PPCoin developers
 // Copyright (c) 2013-2014 The NovaCoin Developers
 // Copyright (c) 2014-2018 The BlackCoin Developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
@@ -69,7 +71,7 @@ bool ProcessBlockFound(const std::shared_ptr<const CBlock>& pblock, CWallet& wal
     {
         WAIT_LOCK(g_best_block_mutex, lock);
         if (pblock->hashPrevBlock != g_best_block)
-            return error("flsMiner : generated block is stale");
+            return error("FLSMiner : generated block is stale");
     }
 
     // Remove key from key pool
@@ -79,7 +81,7 @@ bool ProcessBlockFound(const std::shared_ptr<const CBlock>& pblock, CWallet& wal
     // Process this block the same as if we had received it from another node
     CValidationState state;
     if (!ProcessNewBlock(state, nullptr, pblock, nullptr)) {
-        return error("flsMiner : ProcessNewBlock, block not accepted");
+        return error("FLSMiner : ProcessNewBlock, block not accepted");
     }
 
     g_connman->ForEachNode([&pblock](CNode* node)
@@ -109,7 +111,7 @@ void CheckForCoins(CWallet* pwallet, std::vector<CStakeableOutput>* availableCoi
 
 void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
 {
-    LogPrintf("flsMiner started\n");
+    LogPrintf("FLSMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
     util::ThreadRename("fls-miner");
     const Consensus::Params& consensus = Params().GetConsensus();
@@ -188,7 +190,7 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
         // POW - miner main
         IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
-        LogPrintf("Running flsMiner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
+        LogPrintf("Running FLSMiner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
             ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
         //
@@ -274,12 +276,12 @@ void static ThreadBitcoinMiner(void* parg)
         BitcoinMiner(pwallet, false);
         boost::this_thread::interruption_point();
     } catch (const std::exception& e) {
-        LogPrintf("flsMiner exception");
+        LogPrintf("FLSMiner exception");
     } catch (...) {
-        LogPrintf("flsMiner exception");
+        LogPrintf("FLSMiner exception");
     }
 
-    LogPrintf("flsMiner exiting\n");
+    LogPrintf("FLSMiner exiting\n");
 }
 
 void GenerateBitcoins(bool fGenerate, CWallet* pwallet, int nThreads)

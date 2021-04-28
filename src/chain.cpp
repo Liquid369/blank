@@ -1,6 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2016-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -62,13 +64,6 @@ const CBlockIndex* CChain::FindFork(const CBlockIndex* pindex) const
     while (pindex && !Contains(pindex))
         pindex = pindex->pprev;
     return pindex;
-}
-
-CBlockIndex* CChain::FindEarliestAtLeast(int64_t nTime) const
-{
-    std::vector<CBlockIndex*>::const_iterator lower = std::lower_bound(vChain.begin(), vChain.end(), nTime,
-        [](CBlockIndex* pBlock, const int64_t& time) -> bool { return pBlock->GetBlockTimeMax() < time; });
-    return (lower == vChain.end() ? nullptr : *lower);
 }
 
 /** Turn the lowest '1' bit in the binary representation of a number into a '0'. */
@@ -189,7 +184,7 @@ int64_t CBlockIndex::MinPastBlockTime() const
 
     // on the transition from Time Protocol v1 to v2
     // pindexPrev->nTime might be in the future (up to the allowed drift)
-    // so we allow the nBlockTimeProtocolV2 (fls v4.0) to be at most (180-14) seconds earlier than previous block
+    // so we allow the nBlockTimeProtocolV2 (FLITS v4.0) to be at most (180-14) seconds earlier than previous block
     if (nHeight + 1 == consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight)
         return GetBlockTime() - consensus.FutureBlockTimeDrift(nHeight) + consensus.FutureBlockTimeDrift(nHeight + 1);
 

@@ -1,6 +1,8 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -17,9 +19,9 @@ static const unsigned int DEFAULT_MAX_ORPHAN_TRANSACTIONS = 100;
 /** Default for -blockspamfilter, use header spam filter */
 static const bool DEFAULT_BLOCK_SPAM_FILTER = true;
 /** Default for -blockspamfiltermaxsize, maximum size of the list of indexes in the block spam filter */
-static const unsigned int DEFAULT_BLOCK_SPAM_FILTER_MAX_SIZE = 100;
+static const unsigned int DEFAULT_BLOCK_SPAM_FILTER_MAX_SIZE = 500;
 /** Default for -blockspamfiltermaxavg, maximum average size of an index occurrence in the block spam filter */
-static const unsigned int DEFAULT_BLOCK_SPAM_FILTER_MAX_AVG = 10;
+static const unsigned int DEFAULT_BLOCK_SPAM_FILTER_MAX_AVG = 50;
 
 /** Average delay between trickled inventory transmissions in seconds.
  *  Blocks and whitelisted receivers bypass this, outbound peers get half this delay. */

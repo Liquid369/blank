@@ -1,10 +1,11 @@
 // Copyright (c) 2020 The PIVX Developers
 // Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_MONEYSUPPLY_H
-#define fls_MONEYSUPPLY_H
+#ifndef FLS_MONEYSUPPLY_H
+#define FLS_MONEYSUPPLY_H
 
 #include "amount.h"
 #include "sync.h"
@@ -33,4 +34,4 @@ public:
     int64_t GetCacheHeight() const { LOCK(cs); return nHeight; }
 };
 
-#endif // fls_MONEYSUPPLY_H
+#endif // FLS_MONEYSUPPLY_H

@@ -143,11 +143,12 @@ LIBSAPLING_H = \
   sapling/sapling_operation.h
 
 .PHONY: FORCE cargo-build check-symbols check-security
-# fls core #
+# flits core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrdb.h \
   addrman.h \
+  allocators.h \
   arith_uint256.h \
   amount.h \
   base58.h \
@@ -181,7 +182,6 @@ BITCOIN_CORE_H = \
   cuckoocache.h \
   crypter.h \
   cyclingvector.h \
-  evo/specialtx.h \
   pairresult.h \
   addressbook.h \
   wallet/db.h \
@@ -244,6 +244,7 @@ BITCOIN_CORE_H = \
   rpc/protocol.h \
   rpc/register.h \
   rpc/server.h \
+  tiertwo/specialtx_validation.h \
   scheduler.h \
   script/interpreter.h \
   script/keyorigin.h \
@@ -259,10 +260,7 @@ BITCOIN_CORE_H = \
   stakeinput.h \
   script/ismine.h \
   streams.h \
-  support/allocators/secure.h \
-  support/allocators/zeroafterfree.h \
   support/cleanse.h \
-  support/lockedpool.h \
   sync.h \
   threadsafety.h \
   threadinterrupt.h \
@@ -322,7 +320,6 @@ libbitcoin_server_a_SOURCES = \
   consensus/params.cpp \
   consensus/tx_verify.cpp \
   consensus/zerocoin_verify.cpp \
-  evo/specialtx.cpp \
   httprpc.cpp \
   httpserver.cpp \
   init.cpp \
@@ -347,6 +344,7 @@ libbitcoin_server_a_SOURCES = \
   rpc/net.cpp \
   rpc/rawtransaction.cpp \
   rpc/server.cpp \
+  tiertwo/specialtx_validation.cpp \
   script/sigcache.cpp \
   script/ismine.cpp \
   sporkdb.cpp \
@@ -487,6 +485,7 @@ endif
 libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_common_a_SOURCES = \
+  allocators.cpp \
   base58.cpp \
   bip38.cpp \
   chainparams.cpp \
@@ -527,6 +526,7 @@ libbitcoin_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_util_a_SOURCES = \
   arith_uint256.cpp \
+  allocators.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
   compat/glibc_sanity.cpp \
@@ -538,7 +538,6 @@ libbitcoin_util_a_SOURCES = \
   random.cpp \
   rpc/protocol.cpp \
   support/cleanse.cpp \
-  support/lockedpool.cpp \
   sync.cpp \
   threadinterrupt.cpp \
   uint256.cpp \
@@ -671,6 +670,7 @@ if BUILD_BITCOIN_LIBS
 include_HEADERS = script/bitcoinconsensus.h
 libbitcoinconsensus_la_SOURCES = \
   arith_uint256.cpp \
+  allocators.cpp \
   primitives/transaction.cpp \
   crypto/hmac_sha512.cpp \
   crypto/scrypt.cpp \

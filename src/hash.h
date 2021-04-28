@@ -1,12 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2019 The fls developers
+// Copyright (c) 2015-2019 The PIVX developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef fls_HASH_H
-#define fls_HASH_H
+#ifndef FLS_HASH_H
+#define FLS_HASH_H
 
 #include "crypto/ripemd160.h"
 #include "crypto/sha256.h"
@@ -340,7 +340,7 @@ public:
     }
 
     template<typename T>
-    CHashVerifier<Source>& operator>>(T&& obj)
+    CHashVerifier<Source>& operator>>(T& obj)
     {
         // Unserialize from this stream
         ::Unserialize(*this, obj);
@@ -529,5 +529,5 @@ public:
 uint64_t SipHashUint256(uint64_t k0, uint64_t k1, const uint256& val);
 uint64_t SipHashUint256Extra(uint64_t k0, uint64_t k1, const uint256& val, uint32_t extra);
 
-#endif // fls_HASH_H
+#endif // FLS_HASH_H
 

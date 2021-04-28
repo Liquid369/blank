@@ -1,7 +1,9 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2020 The fls developers
+// Copyright (c) 2017-2020 The PIVX Developers
+// Copyright (c) 2020 The Flits Developers
+
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -672,7 +674,7 @@ void CNode::copyStats(CNodeStats& stats)
         nPingUsecWait = GetTimeMicros() - nPingUsecStart;
     }
 
-    // Raw ping time is in microseconds, but show it to user as whole seconds (fls users should be well used to small numbers with many decimal places by now :)
+    // Raw ping time is in microseconds, but show it to user as whole seconds (FLITS users should be well used to small numbers with many decimal places by now :)
     stats.dPingTime = (((double)nPingUsecTime) / 1e6);
     stats.dPingWait = (((double)nPingUsecWait) / 1e6);
 
@@ -823,7 +825,7 @@ size_t CConnman::SocketSendData(CNode* pnode)
             nBytes = send(pnode->hSocket, reinterpret_cast<const char*>(data.data()) + pnode->nSendOffset, data.size() - pnode->nSendOffset, MSG_NOSIGNAL | MSG_DONTWAIT);
         }
         if (nBytes > 0) {
-            pnode->nLastSend = GetSystemTimeInSeconds();
+            pnode->nLastSend = GetTime();
             pnode->nSendBytes += nBytes;
             pnode->nSendOffset += nBytes;
             nSentSize += nBytes;
@@ -878,7 +880,7 @@ void CheckOffsetDisconnectedPeers(const CNetAddr& ip)
         setOffsetDisconnectedPeers.clear();
         // Trigger the warning
         std::string strWarn1 = _("Peers are being disconnected due time differences.");
-        std::string strWarn2 = _("Please check that your computer's date and time are correct! If your clock is wrong fls Core will not work properly.");
+        std::string strWarn2 = _("Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.");
 
         LogPrintf("*** Warning: %s %s\n", strWarn1, strWarn2);
 
@@ -1311,7 +1313,7 @@ void CConnman::ThreadSocketHandler()
             //
             // Inactivity checking
             //
-            int64_t nTime = GetSystemTimeInSeconds();
+            int64_t nTime = GetTime();
             if (nTime - pnode->nTimeConnected > 60) {
                 if (pnode->nLastRecv == 0 || pnode->nLastSend == 0) {
                     LogPrint(BCLog::NET, "socket no message in first 60 seconds, %d %d from %d\n", pnode->nLastRecv != 0, pnode->nLastSend != 0, pnode->id);
@@ -1393,7 +1395,7 @@ void ThreadMapPort()
             }
         }
 
-        std::string strDesc = "fls " + FormatFullVersion();
+        std::string strDesc = "FLITS " + FormatFullVersion();
 
         do {
 #ifndef UPNPDISCOVER_SUCCESS
@@ -1680,15 +1682,9 @@ void CConnman::ThreadOpenConnections()
                 addr = addrman.Select(fFeeler);
             }
 
-            // Require outbound connections, other than feelers, to be to distinct network groups
-            if (!fFeeler && setConnected.count(addr.GetGroup())) {
+            // if we selected an invalid address, restart
+            if (!addr.IsValid() || setConnected.count(addr.GetGroup()) || IsLocal(addr))
                 break;
-            }
-
-            // if we selected an invalid or local address, restart
-            if (!addr.IsValid() || IsLocal(addr)) {
-                break;
-            }
 
             // If we didn't find an appropriate destination after trying 100 addresses fetched from addrman,
             // stop this loop, and let the outer loop run again (which sleeps, adds seed nodes, recalculates
@@ -1957,7 +1953,7 @@ bool CConnman::BindListenPort(const CService& addrBind, std::string& strError, b
     if (::bind(hListenSocket, (struct sockaddr*)&sockaddr, len) == SOCKET_ERROR) {
         int nErr = WSAGetLastError();
         if (nErr == WSAEADDRINUSE)
-            strError = strprintf(_("Unable to bind to %s on this computer. fls Core is probably already running."), addrBind.ToString());
+            strError = strprintf(_("Unable to bind to %s on this computer. FLITS Core is probably already running."), addrBind.ToString());
         else
             strError = strprintf(_("Unable to bind to %s on this computer (bind returned error %s)"), addrBind.ToString(), NetworkErrorString(nErr));
         LogPrintf("%s\n", strError);
@@ -2407,7 +2403,7 @@ unsigned int CConnman::GetReceiveFloodSize() const { return nReceiveFloodSize; }
 unsigned int CConnman::GetSendBufferSize() const{ return nSendBufferMaxSize; }
 
 CNode::CNode(NodeId idIn, ServiceFlags nLocalServicesIn, int nMyStartingHeightIn, SOCKET hSocketIn, const CAddress& addrIn, uint64_t nKeyedNetGroupIn, uint64_t nLocalHostNonceIn, const std::string& addrNameIn, bool fInboundIn) :
-    nTimeConnected(GetSystemTimeInSeconds()),
+    nTimeConnected(GetTime()),
     addr(addrIn),
     fInbound(fInboundIn),
     id(idIn),

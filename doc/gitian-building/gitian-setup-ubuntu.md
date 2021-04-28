@@ -32,10 +32,10 @@ git config --global user.email "MY_NAME@example.com"
 Fetching the Build Script
 --------------------------
 
-The build script we'll be using is contained in the fls github repository ([contrib/gitian-build.py](https://github.com/fls-project/fls/blob/master/contrib/gitian-build.py)). Since this is a completely fresh environment, we haven't yet cloned the fls repository and will need to fetch this script with the following commands:
+The build script we'll be using is contained in the FLITS github repository ([contrib/gitian-build.py](https://github.com/flitsnode/flits-core/blob/master/contrib/gitian-build.py)). Since this is a completely fresh environment, we haven't yet cloned the FLITS repository and will need to fetch this script with the following commands:
 
 ```bash
-curl -L -O https://raw.githubusercontent.com/fls-Project/fls/master/contrib/gitian-build.py
+curl -L -O https://raw.githubusercontent.com/flitsnode/flits-core/master/contrib/gitian-build.py
 chmod +x gitian-build.py
 ```
 
