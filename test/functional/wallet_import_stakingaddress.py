@@ -13,13 +13,13 @@ Node1 imports and rescans. The test checks that cold utxos and staking balance i
 
 from time import sleep
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import (
     assert_equal,
     DecimalAmt,
 )
 
-class ImportStakingTest(FlsTestFramework):
+class ImportStakingTest(DogeCashTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 2
@@ -41,7 +41,7 @@ class ImportStakingTest(FlsTestFramework):
                              for i in range(2 * NUM_OF_DELEGATIONS)]
         delegations = []
         for i, sa in enumerate(staking_addresses):
-            # delegate 10 FLS
+            # delegate 10 DOGEC
             delegations.append(self.nodes[0].delegatestake(sa, 10)['txid'])
             # mine a block and check staking balance
             self.nodes[0].generate(1)

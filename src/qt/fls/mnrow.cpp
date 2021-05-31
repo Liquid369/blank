@@ -4,9 +4,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/mnrow.h"
-#include "qt/fls/forms/ui_mnrow.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/mnrow.h"
+#include "qt/dogecash/forms/ui_mnrow.h"
+#include "qt/dogecash/qtutils.h"
 
 MNRow::MNRow(QWidget *parent) :
     QWidget(parent),

@@ -78,7 +78,7 @@ public:
         Other,
         Generated,
         StakeMint,
-        StakeZFLS,
+        StakeZDOGEC,
         SendToAddress,
         SendToOther,
         RecvWithAddress,
@@ -88,7 +88,7 @@ public:
         ZerocoinMint,
         ZerocoinSpend,
         RecvFromZerocoinSpend,
-        ZerocoinSpend_Change_zFls,
+        ZerocoinSpend_Change_zDogeCash,
         ZerocoinSpend_FromMe,
         StakeDelegated, // Received cold stake (owner)
         StakeHot, // Staked via a delegated P2CS.
@@ -102,7 +102,7 @@ public:
         SendToSelfShieldedAddress, // Shielded send to self
         SendToSelfShieldToTransparent, // Unshield coins to self
         SendToSelfShieldToShieldChangeAddress, // Changing coins from one shielded address to another inside the wallet.
-        SendToNobody // Burned FLSs, op_return output.
+        SendToNobody // Burned DOGECs, op_return output.
     };
 
     /** Number of confirmation recommended for accepting a transaction */

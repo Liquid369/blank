@@ -4,15 +4,15 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/navmenuwidget.h"
-#include "qt/fls/forms/ui_navmenuwidget.h"
-#include "qt/fls/flsgui.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/navmenuwidget.h"
+#include "qt/dogecash/forms/ui_navmenuwidget.h"
+#include "qt/dogecash/dogecashgui.h"
+#include "qt/dogecash/qtutils.h"
 #include "clientversion.h"
 #include "optionsmodel.h"
 #include <QScrollBar>
 
-NavMenuWidget::NavMenuWidget(FLSGUI *mainWindow, QWidget *parent) :
+NavMenuWidget::NavMenuWidget(DOGECGUI *mainWindow, QWidget *parent) :
     PWidget(mainWindow, parent),
     ui(new Ui::NavMenuWidget)
 {

@@ -46,10 +46,10 @@ static bool AppInitRawTx(int argc, char* argv[])
 
     if (argc < 2 || gArgs.IsArgSet("-?") || gArgs.IsArgSet("-h") || gArgs.IsArgSet("-help")) {
         // First part of help message is specific to this utility
-        std::string strUsage = _("Flits Core fls-tx utility version") + " " + FormatFullVersion() + "\n\n" +
+        std::string strUsage = _("Flits Core dogecash-tx utility version") + " " + FormatFullVersion() + "\n\n" +
                                _("Usage:") + "\n" +
-                               "  fls-tx [options] <hex-tx> [commands]  " + _("Update hex-encoded fls transaction") + "\n" +
-                               "  fls-tx [options] -create [commands]   " + _("Create hex-encoded fls transaction") + "\n" +
+                               "  dogecash-tx [options] <hex-tx> [commands]  " + _("Update hex-encoded dogecash transaction") + "\n" +
+                               "  dogecash-tx [options] -create [commands]   " + _("Create hex-encoded dogecash transaction") + "\n" +
                                "\n";
 
         fprintf(stdout, "%s", strUsage.c_str());
@@ -602,7 +602,7 @@ static int CommandLineRawTx(int argc, char* argv[])
             if (argc < 2)
                 throw std::runtime_error("too few parameters");
 
-            // param: hex-encoded fls transaction
+            // param: hex-encoded dogecash transaction
             std::string strHexTx(argv[1]);
             if (strHexTx == "-") // "-" implies standard input
                 strHexTx = readStdin();

@@ -7,11 +7,11 @@
 #ifndef DASHBOARDWIDGET_H
 #define DASHBOARDWIDGET_H
 
-#include "qt/fls/pwidget.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
-#include "qt/fls/furlistrow.h"
+#include "qt/dogecash/pwidget.h"
+#include "qt/dogecash/furabstractlistitemdelegate.h"
+#include "qt/dogecash/furlistrow.h"
 #include "transactiontablemodel.h"
-#include "qt/fls/txviewholder.h"
+#include "qt/dogecash/txviewholder.h"
 #include "transactionfilterproxy.h"
 
 #include <atomic>
@@ -21,7 +21,7 @@
 #include <QMap>
 
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h" /* for USE_QTCHARTS */
+#include "config/dogecash-config.h" /* for USE_QTCHARTS */
 #endif
 
 #ifdef USE_QTCHARTS
@@ -39,7 +39,7 @@ using namespace QtCharts;
 
 #endif
 
-class FLSGUI;
+class DOGECGUI;
 class WalletModel;
 
 namespace Ui {
@@ -82,10 +82,10 @@ public:
 
     QMap<int, std::pair<qint64, qint64>> amountsByCache;
     qreal maxValue = 0;
-    qint64 totalFls = 0;
-    qint64 totalZfls = 0;
-    QList<qreal> valuesFls;
-    QList<qreal> valueszFls;
+    qint64 totalDogeCash = 0;
+    qint64 totalZdogecash = 0;
+    QList<qreal> valuesDogeCash;
+    QList<qreal> valueszDogeCash;
     QStringList xLabels;
 };
 
@@ -98,7 +98,7 @@ class DashboardWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit DashboardWidget(FLSGUI* _window);
+    explicit DashboardWidget(DOGECGUI* _window);
     ~DashboardWidget();
 
     void loadWalletModel() override;
@@ -167,7 +167,7 @@ private:
     int yearFilter{0};
     int monthFilter{0};
     int dayStart{1};
-    bool hasZflsStakes{false};
+    bool hasZdogecashStakes{false};
 
     ChartData* chartData{nullptr};
     bool hasStakes{false};

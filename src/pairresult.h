@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_PAIRRESULT_H
-#define FLS_PAIRRESULT_H
+#ifndef DOGEC_PAIRRESULT_H
+#define DOGEC_PAIRRESULT_H
 
 
 class PairResult {
@@ -21,4 +21,4 @@ public:
 };
 
 
-#endif //FLS_PAIRRESULT_H
+#endif //DOGEC_PAIRRESULT_H

@@ -7,7 +7,7 @@
 #ifndef QTUTILS_H
 #define QTUTILS_H
 
-#include "qt/fls/flsgui.h"
+#include "qt/dogecash/dogecashgui.h"
 
 #include <QAbstractAnimation>
 #include <QColor>
@@ -35,11 +35,11 @@ const QString RESYNC("-resync");
 extern Qt::Modifier SHORT_KEY;
 
 bool openDialog(QDialog* widget, QWidget* gui);
-void closeDialog(QDialog* widget, FLSGUI* gui);
+void closeDialog(QDialog* widget, DOGECGUI* gui);
 void openDialogFullScreen(QWidget* parent, QWidget* dialog);
-bool openDialogWithOpaqueBackgroundY(QDialog* widget, FLSGUI* gui, double posX = 3, int posY = 5);
-bool openDialogWithOpaqueBackground(QDialog* widget, FLSGUI* gui, double posX = 3);
-bool openDialogWithOpaqueBackgroundFullScreen(QDialog* widget, FLSGUI* gui);
+bool openDialogWithOpaqueBackgroundY(QDialog* widget, DOGECGUI* gui, double posX = 3, int posY = 5);
+bool openDialogWithOpaqueBackground(QDialog* widget, DOGECGUI* gui, double posX = 3);
+bool openDialogWithOpaqueBackgroundFullScreen(QDialog* widget, DOGECGUI* gui);
 
 //
 QPixmap encodeToQr(QString str, QString& errorStr, QColor qrColor = Qt::black);

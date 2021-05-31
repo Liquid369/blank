@@ -10,10 +10,10 @@
 #define MASTERNODEWIZARDDIALOG_H
 
 #include "walletmodel.h"
-#include "qt/fls/focuseddialog.h"
-#include "qt/fls/snackbar.h"
+#include "qt/dogecash/focuseddialog.h"
+#include "qt/dogecash/snackbar.h"
 #include "masternodeconfig.h"
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 
 class WalletModel;
 

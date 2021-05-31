@@ -4,7 +4,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/guitransactionsutils.h"
+#include "qt/dogecash/guitransactionsutils.h"
 #include "bitcoinunits.h"
 #include "optionsmodel.h"
 

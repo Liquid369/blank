@@ -101,7 +101,7 @@ UniValue preparebudget(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 6)
         throw std::runtime_error(
-            "preparebudget \"proposal-name\" \"url\" payment-count block-start \"fls-address\" monthy-payment\n"
+            "preparebudget \"proposal-name\" \"url\" payment-count block-start \"dogecash-address\" monthy-payment\n"
             "\nPrepare proposal for network by signing and creating tx\n"
 
             "\nArguments:\n"
@@ -109,7 +109,7 @@ UniValue preparebudget(const JSONRPCRequest& request)
             "2. \"url\":            (string, required) URL of proposal details (64 character limit)\n"
             "3. payment-count:    (numeric, required) Total number of monthly payments\n"
             "4. block-start:      (numeric, required) Starting super block height\n"
-            "5. \"fls-address\":   (string, required) FLITS address to send payments to\n"
+            "5. \"dogecash-address\":   (string, required) FLITS address to send payments to\n"
             "6. monthly-payment:  (numeric, required) Monthly payment amount\n"
 
             "\nResult:\n"
@@ -148,7 +148,7 @@ UniValue preparebudget(const JSONRPCRequest& request)
     CTransactionRef wtx;
     // make our change address
     CReserveKey keyChange(pwalletMain);
-    if (!pwalletMain->CreateBudgetFeeTX(wtx, nHash, keyChange, false)) { // 50 FLS collateral for proposal
+    if (!pwalletMain->CreateBudgetFeeTX(wtx, nHash, keyChange, false)) { // 50 DOGEC collateral for proposal
         throw std::runtime_error("Error making collateral transaction for proposal. Please check your wallet balance.");
     }
 
@@ -168,7 +168,7 @@ UniValue submitbudget(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 7)
         throw std::runtime_error(
-            "submitbudget \"proposal-name\" \"url\" payment-count block-start \"fls-address\" monthly-payment \"fee-tx\"\n"
+            "submitbudget \"proposal-name\" \"url\" payment-count block-start \"dogecash-address\" monthly-payment \"fee-tx\"\n"
             "\nSubmit proposal to the network\n"
 
             "\nArguments:\n"
@@ -176,7 +176,7 @@ UniValue submitbudget(const JSONRPCRequest& request)
             "2. \"url\":            (string, required) URL of proposal details (64 character limit)\n"
             "3. payment-count:    (numeric, required) Total number of monthly payments\n"
             "4. block-start:      (numeric, required) Starting super block height\n"
-            "5. \"fls-address\":   (string, required) FLITS address to send payments to\n"
+            "5. \"dogecash-address\":   (string, required) FLITS address to send payments to\n"
             "6. monthly-payment:  (numeric, required) Monthly payment amount\n"
             "7. \"fee-tx\":         (string, required) Transaction hash from preparebudget command\n"
 
@@ -457,13 +457,13 @@ UniValue getbudgetprojection(const JSONRPCRequest& request)
             "    \"Yeas\": n,                    (numeric) Number of yea votes\n"
             "    \"Nays\": n,                    (numeric) Number of nay votes\n"
             "    \"Abstains\": n,                (numeric) Number of abstains\n"
-            "    \"TotalPayment\": xxx.xxx,      (numeric) Total payment amount in FLS\n"
-            "    \"MonthlyPayment\": xxx.xxx,    (numeric) Monthly payment amount in FLS\n"
+            "    \"TotalPayment\": xxx.xxx,      (numeric) Total payment amount in DOGEC\n"
+            "    \"MonthlyPayment\": xxx.xxx,    (numeric) Monthly payment amount in DOGEC\n"
             "    \"IsEstablished\": true|false,  (boolean) Proposal is considered established, 24 hrs after being submitted to network. (Testnet is 5 mins)\n"
             "    \"IsValid\": true|false,        (boolean) Valid (true) or Invalid (false)\n"
             "    \"IsInvalidReason\": \"xxxx\",  (string) Error message, if any\n"
-            "    \"Allotted\": xxx.xxx,           (numeric) Amount of FLS allotted in current period\n"
-            "    \"TotalBudgetAllotted\": xxx.xxx (numeric) Total FLS allotted\n"
+            "    \"Allotted\": xxx.xxx,           (numeric) Amount of DOGEC allotted in current period\n"
+            "    \"TotalBudgetAllotted\": xxx.xxx (numeric) Total DOGEC allotted\n"
             "  }\n"
             "  ,...\n"
             "]\n"
@@ -513,8 +513,8 @@ UniValue getbudgetinfo(const JSONRPCRequest& request)
             "    \"Yeas\": n,                    (numeric) Number of yea votes\n"
             "    \"Nays\": n,                    (numeric) Number of nay votes\n"
             "    \"Abstains\": n,                (numeric) Number of abstains\n"
-            "    \"TotalPayment\": xxx.xxx,      (numeric) Total payment amount in FLS\n"
-            "    \"MonthlyPayment\": xxx.xxx,    (numeric) Monthly payment amount in FLS\n"
+            "    \"TotalPayment\": xxx.xxx,      (numeric) Total payment amount in DOGEC\n"
+            "    \"MonthlyPayment\": xxx.xxx,    (numeric) Monthly payment amount in DOGEC\n"
             "    \"IsEstablished\": true|false,  (boolean) Proposal is considered established, 24 hrs after being submitted to network. (5 mins for Testnet)\n"
             "    \"IsValid\": true|false,        (boolean) Valid (true) or Invalid (false)\n"
             "    \"IsInvalidReason\": \"xxxx\",      (string) Error message, if any\n"

@@ -3,7 +3,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import (
     assert_fee_amount,
     assert_equal,
@@ -36,7 +36,7 @@ def check_outputs(outputs, dec_tx):
     return True
 
 
-class RawTransactionsTest(FlsTestFramework):
+class RawTransactionsTest(DogeCashTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 4
@@ -345,7 +345,7 @@ class RawTransactionsTest(FlsTestFramework):
         addrs = [self.nodes[2].getnewaddress() for _ in range(2)]
         mSigAddr = self.nodes[2].addmultisigaddress(2, addrs)
 
-        # Send 50.1 FLS to mSigAddr.
+        # Send 50.1 DOGEC to mSigAddr.
         self.nodes[0].sendtoaddress(mSigAddr, 50.1)
         self.nodes[0].generate(1)
         self.sync_all()

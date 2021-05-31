@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsdisplayoptionswidget.h"
-#include "qt/fls/settings/forms/ui_settingsdisplayoptionswidget.h"
+#include "qt/dogecash/settings/settingsdisplayoptionswidget.h"
+#include "qt/dogecash/settings/forms/ui_settingsdisplayoptionswidget.h"
 #include <QListView>
 #include <QSettings>
 #include <QDir>
@@ -13,9 +13,9 @@
 #include "clientmodel.h"
 #include "optionsmodel.h"
 #include "bitcoinunits.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 
-SettingsDisplayOptionsWidget::SettingsDisplayOptionsWidget(FLSGUI* _window, QWidget *parent) :
+SettingsDisplayOptionsWidget::SettingsDisplayOptionsWidget(DOGECGUI* _window, QWidget *parent) :
     PWidget(_window,parent),
     ui(new Ui::SettingsDisplayOptionsWidget)
 {

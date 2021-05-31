@@ -13,22 +13,22 @@ The following are some helpful notes on how to run FLITS Core on your native pla
 
 Unpack the files into a directory and run:
 
-- `bin/fls-qt` (GUI) or
-- `bin/flsd` (headless)
+- `bin/dogecash-qt` (GUI) or
+- `bin/dogecashd` (headless)
 
-If this is the first time running FLITS Core (since v5.0.0), you'll need to install the sapling params by running the included `install-params.sh` script, which copies the two params files to `$HOME/.fls-params`
+If this is the first time running FLITS Core (since v5.0.0), you'll need to install the sapling params by running the included `install-params.sh` script, which copies the two params files to `$HOME/.dogecash-params`
 
 ### Windows
 
-Unpack the files into a directory, and then run fls-qt.exe.
+Unpack the files into a directory, and then run dogecash-qt.exe.
 
 ### macOS
 
-Drag FLS-Qt to your applications folder, and then run FLS-Qt.
+Drag DogeCash-Qt to your applications folder, and then run DogeCash-Qt.
 
 ### Need Help?
 
-* See the documentation at the [FLITS Wiki](https://github.com/flitsnode/flits-core/wiki)
+* See the documentation at the [FLITS Wiki](https://github.com/dogecash/dogecash/wiki)
 for help and more information.
 * Ask for help on [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or on the [FLITS Forum](http://forum.flitswallet.app/).
 * Join our Discord server [Discord Server](https://discord.flitswallet.app)
@@ -51,14 +51,14 @@ The FLITS repo's [root README](/README.md) contains relevant information on the 
 - [Multiwallet Qt Development](multiwallet-qt.md)
 - [Release Notes](release-notes.md)
 - [Release Process](release-process.md)
-- [Source Code Documentation (External Link)](https://www.fuzzbawls.pw/fls/doxygen/)
+- [Source Code Documentation (External Link)](https://www.fuzzbawls.pw/dogecash/doxygen/)
 - [Translation Process](translation_process.md)
 - [Unit Tests](unit-tests.md)
 - [Unauthenticated REST Interface](REST-interface.md)
 - [Dnsseed Policy](dnsseed-policy.md)
 
 ### Resources
-* Discuss on the [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or the [FLS](http://forum.flitswallet.app/) forum.
+* Discuss on the [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or the [DOGEC](http://forum.flitswallet.app/) forum.
 * Join the [FLITS Discord](https://discord.flitswallet.app).
 
 ### Miscellaneous

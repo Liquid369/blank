@@ -14,7 +14,7 @@
 #include <QAction>
 #include "walletmodel.h"
 #include "amount.h"
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 
 class WalletModel;
 class SendCoinsRecipient;
@@ -29,7 +29,7 @@ class SendMultiRow : public PWidget
     Q_OBJECT
 
 public:
-    explicit SendMultiRow(FLSGUI* _window, PWidget *parent = nullptr);
+    explicit SendMultiRow(DOGECGUI* _window, PWidget *parent = nullptr);
     ~SendMultiRow();
 
     void hideLabels();

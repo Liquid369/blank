@@ -6,11 +6,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsmultisenddialog.h"
-#include "qt/fls/settings/forms/ui_settingsmultisenddialog.h"
+#include "qt/dogecash/settings/settingsmultisenddialog.h"
+#include "qt/dogecash/settings/forms/ui_settingsmultisenddialog.h"
 #include <QListView>
 #include <QIntValidator>
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 
 SettingsMultisendDialog::SettingsMultisendDialog(QWidget *parent) :
     QDialog(parent),

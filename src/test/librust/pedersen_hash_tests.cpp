@@ -7,7 +7,7 @@
 
 #include "uint256.h"
 #include "utilstrencodings.h"
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include <boost/test/unit_test.hpp>
 #include <librustzcash.h>

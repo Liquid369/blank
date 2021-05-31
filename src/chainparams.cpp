@@ -56,8 +56,8 @@ void CChainParams::UpdateNetworkUpgradeParameters(Consensus::UpgradeIndex idx, i
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "Flits - powered by CryptoDevs.co.uk and CDEV coin. Provider of quality wallets and related services.";
-    const CScript genesisOutputScript = CScript() << ParseHex("04c10e54f7633cde562f7d47eddd5855ac7c10bd055814ce121ba32607d573b8810c02c0582aed05b4deb9c4b77b26d92428c61256cd42774babea0a073b2ed0c9") << OP_CHECKSIG;
+    const char* pszTimestamp = "DogeCash Repowered Launch - akshaynexus - Liquid369";
+    const CScript genesisOutputScript = CScript() << ParseHex("047a7df379bd5e6b93b164968c10fcbb141ecb3c6dc1a5e181c2a62328405cf82311dd5b40bf45430320a4f30add05c8e3e16dd56c52d65f7abe475189564bf2b1") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
@@ -72,19 +72,61 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits
  * + Contains no strange transactions
  */
 static Checkpoints::MapCheckpoints mapCheckpoints = {
-    {  0, uint256("0000080ab32d3fdbb4c9e2c5c84419f8dabea84676ad2ef8ca86f73b86cf86c0")},
-    { 50, uint256("00000068810f3b72470dac384c395aee650cc35f6f087e0fdd70543042f7744f")},
-    { 155482, uint256("77d4637a3042cb74253b28715c2eab3ec91b528cf5c5002cd8be13198f4929e0")},
-    { 377999, uint256("84d5b95c7f670999a531d0dbf2572c80562b2d32387cfc451bb01671dc00b90f")},
-    { 378000, uint256("983abe2d967f7692b8fdd65ce1d69ac15deb802baa15b5b27bfb170506ed7d52")},
-    { 378000, uint256("983abe2d967f7692b8fdd65ce1d69ac15deb802baa15b5b27bfb170506ed7d52")},
-    { 400000, uint256("2baad9dcf614df95e49c81995fe7fc0166c39f1734f7cf98d4cb6f0d2a501493")},
-    { 450000, uint256("c385e8eee311945f8a9e637f3d81967207ae5682049767208c8a1f4bb1fba10e")},
-    { 500000, uint256("5926a646c11a26cf9242cb43a48ac905a0d2d7b010eb34ffbe7a9166cab28097")},
-    { 550000, uint256("4cd7ea64a94734b823f26a56a2c3264d70c11fd188c8c5752a2d7866a199684e")},
-    { 590000, uint256("d1b9ba35dba5122b718bd95dbc379b4195d2384c61d67e4417c720e06d4de602")},
-    { 599053, uint256("fe5a63d06b3bc63883a3878c8bef635b71cb6618a2b46e1a7ec0e66951ef9cbf")},
-    { 601339, uint256("2d904565adff7b808d3d01e5b861d7abb63627ce250a960aa8a01473f1e67c4a")}
+    {  0,      uint256("0000093cfce0a5a3cecea522e2c13bdf055d65c559fd2222730ba6f0d18dd2cd")},
+    {  10000,  uint256("ac81af6de342c16de0b4cc25a0e6f3cf809eb78281d9436778cfd24cbd5fd13c")},
+    {  20000,  uint256("60c40b879f9706086fd4dd4dd319aa01d013544b3c067b6d121dc0e38d422717")},
+    {  30000,  uint256("5743b924d3e9261723fc19d3190b2ae609bb3aac0ee9704508c2505418cc711a")},
+    {  40000,  uint256("6eab55484ade0cc92873623ecdf8cf9170aea4b0d917d772bce24f1c679fab4a")},
+    {  50000,  uint256("f53cb8d1e9bc91b557fe9a0eb9f97c0368623de1016593880e2b2b955bda6b3a")},
+    {  80000,  uint256("6cf1ec04cdef31344bf8f21156de2b770326afdb049d3fc525b41af658a0c42f")},
+    {  100000, uint256("77bd1cabf80229bb7e5c4e59cb51e8b7a72d3ec5c93e083682e55df76d25ca20")},
+    {  120000, uint256("64ec817c98d70951cd1962079d5d340f25f5ba5de8b76de04133840e434bb806")},
+    {  140000, uint256("31f0701ac4747287f94d7e08beb2d86bffd46ae225e40e0e9189338f38b93b1d")},
+    {  150000, uint256("ae49cc17b7eb7c2974eb75203ee3c77ca68f241f7bdc6730fe4701f47e10339a")},
+    {  160000, uint256("ea6a8e9b2ce3e3cdbbe3772501b3460a0ce091cad32107e7eb789a72ff61f731")},
+    {  170000, uint256("2d466072ef75f7acf11f6af4306d8577b7346d0a0e57b2e099b6aff55494d355")},
+    {  180000, uint256("a28341f962b3cca6ab33879b196d12a5f18e15ea2c208949d180346535269de0")},
+    {  190000, uint256("5495c4528d6d9892bc724a8cf9df0133418c17c163218593c861759f11aae338")},
+    {  200000, uint256("006184858a3bdebf55fc2e50933aa7f52b1e6b063be1d8afde1543ca30de5ff8")},
+    {  210000, uint256("c189cc15bf90899ddc25990d9ce82a22b9dd30938307101a36289d53add58918")},
+    {  220000, uint256("4bd6999b5feefeb255bac4e6651f99d961b422e942af963f1d2575b2f89d3336")},
+    {  230000, uint256("c063c978716d6d0d8ca56708dcac28e323bc503c50a16f4b95aca9f0e21f3409")},
+    {  238620, uint256("4e83603994564be49ef250f0f724e197b2abbaee9ae662b531285003d428ad31")},
+    {  238621, uint256("6b9c0cf87ea802a8f5aa60461bb71934736b2085ca4f0aee9694c2d9c748770f")},
+    {  240000, uint256("57c0e1a7168fca9e032a8d129fcaa7996cd216d4124b054d261b23c4a4f778db")},
+    {  250000, uint256("9e82fc0e7498d76d6fbfe515312f9a378f349635f772688b81f7859e74685561")},
+    {  270000, uint256("cb2737887b9d0f11fd01c124c7a34feff9d449a0913caadce43b334730623d79")},
+    {  260000, uint256("365125f6a678f30fbacd077624fdaef572d032209a50cefa0c1fc91041a86283")},
+    {  280000, uint256("6197c6d354a016309ac154174fe6d39cb0f52847a80953e4e09cff700549400a")},
+    {  290000, uint256("1ab6ec19e478e7de7c14493ff3d11a0f3119417fc257141f644683279b5ed6f4")},
+    {  300000, uint256("3daa4a3c0de0c207a8a2c9e6b26739d84ea69ca0aa45a2da1c0e429c80387268")},
+    {  310000, uint256("4fdfdd03a3c7f5426337b516c5a56760d3b6a750281f275ce5d1a183fa2ad7b0")},
+    {  320000, uint256("9f9a5c11067a9fc1a859e9f27ad3bf31e9a36904656b4c7088ef92d2ed37e1ef")},
+    {  330000, uint256("9c5be3b995e6c22bdc3b2b99f543fe2e8dc4948131c447dfc2723ea8c76f1dfc")},
+    {  340000, uint256("5ffd44994a771d40ad23459e424ede1dd7fbc17b95c5c9d95ced5f26d8e6d823")},
+    {  350000, uint256("b655f7fda3ede41707b5904eeec5380b2c8c693fd5956879b29ebdca141dbb49")},
+    {  360000, uint256("9235801f18365e0763b416f2ce545f549d469779eb9a8d09c202bc75c355cb5b")},
+    {  370000, uint256("cee1d759bcba7cef98e3986a24070118d5f76a7716dbc7da52d0c2b846df4721")},
+    {  380000, uint256("0376178f6e903e052e074ca9d5ea8f3f5e596fe1560c907f4149fa7a8a44ff68")},
+    {  390000, uint256("381a36dfaecef98e92954c28516ee4125981ae50f679f70496e7b1c1bc7c0978")},
+    {  400000, uint256("8fbb45882855e92cf566660e0d19ce2839471746a8dc7adf3635a3beab16b2f6")},
+    {  410000, uint256("411062e905ff43aa206f39190d56b80ab185249ddd5c84476299ee46d17b1efa")},
+    {  420000, uint256("f28783187740f000444bcfe25a735134c33db8151e2beb3d71fe885ad2eb6479")},
+    {  430000, uint256("6010a6ff83d3445d770958928e58a3002433664c3d80530e775d8b8a38f03f56")},
+    {  440000, uint256("9f6c767a680b867e2c7a23bfc94a055151578fc358f7a2577793e9c4410c54bb")},
+    {  450000, uint256("2be93df511f570b29e1f221029a71860f8ae3b9d8797ca42902d3a6f8dd4af4b")},
+    {  460000, uint256("1b17ce2b106bbe0a5abad3e2ab23a44b2d5c974fbdae1a408926730110b60301")},
+    {  470000, uint256("b86b52483089e932ecd0bf8fddd2c88a1966de7156425293131bf63f8b22f09e")},
+    {  480000, uint256("035be7137990635bf6d6f3d423e0dd1c56c1f4bcad2f112a903c04dfe03074fe")},
+    {  490000, uint256("a70946367a65b1fb360406a03be33cb64722ac311107812ee06e9a6f7122688d")},
+    {  500000, uint256("47dc6caac180fdbf900ab4e3dec45e6ba93e1eb9b7596f58b3fdd3fc425a6510")},
+    {  510000, uint256("45afc45bd1765c4e3bcbf97ac7ea6ba7465b9c5bbb1e735e948dcf1d42e39201")},
+    {  520000, uint256("f1ce2eb26e478b06d80b1b320f514017b444a00a1fd822a5697deb4cd0bfd8e8")},
+    {  530000, uint256("3d80df51b71a434b1149b34eb172635ab0e437fed1fed1013c2c89b396f5ac7b")},
+    {  540000, uint256("b225698083f4a077490dbb8ed7d73c6ad3696c7fda820fb81ee289c84a277869")},
+    {  550000, uint256("18fa071492467696ecd34c8f7c95980216e4ee961e452873cb6a824e427f5411")},
+    {  560000, uint256("fbd89a525344ee3829ee22f69125099010ea6f311da246fe602b2a0a66af8844")},
+    {  570000, uint256("74687dbc5671933f53704345a0863d62cbce67c004c69707bd545fced2ef8279")}
 };
 
 static const Checkpoints::CCheckpointData data = {
@@ -120,7 +162,7 @@ public:
     {
         strNetworkID = "main";
 
-        genesis = CreateGenesisBlock(1554402932, 1497761, 0x1e0ffff0, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1558130910, 5510938, 0x1e0ffff0, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S("0x0000080ab32d3fdbb4c9e2c5c84419f8dabea84676ad2ef8ca86f73b86cf86c0"));
         assert(genesis.hashMerkleRoot == uint256S("0x3a498d64ca00ee8d217c5985342fef31829dbc0ac144cac4af7100f5a8982cbe"));
@@ -129,26 +171,26 @@ public:
         consensus.powLimit   = ~UINT256_ZERO >> 20;   // FLITS starting difficulty is 1 / 2^12
         consensus.posLimitV1 = ~UINT256_ZERO >> 24;
         consensus.posLimitV2 = ~UINT256_ZERO >> 20;
-        consensus.nBudgetCycleBlocks = 31500;       // approx. 1 every 30 days
+        consensus.nBudgetCycleBlocks = 43200;       // approx. 1 every 30 days
         consensus.nBudgetFeeConfirmations = 6;      // Number of confirmations for the finalization fee
         consensus.nCoinbaseMaturity = 30;
         consensus.nFutureTimeDriftPoW = 7200;
         consensus.nFutureTimeDriftPoS = 180;
         consensus.nMasternodeCountDrift = 20;       // num of MN we allow the see-saw payments to be off by
-        consensus.nMaxMoneyOut = 10000000 * COIN;
+        consensus.nMaxMoneyOut = 21000000 * COIN;
         consensus.nPoolMaxTransactions = 3;
         consensus.nProposalEstablishmentTime = 60 * 60 * 24;    // must be at least a day old to make it into a budget
         consensus.nStakeMinAge = 60 * 60;
-        consensus.nStakeMinDepth = 600;
-        consensus.nTargetTimespan = 40 * 80;
-        consensus.nTargetTimespanV2 = 30 * 80;
-        consensus.nTargetSpacing = 1 * 80;
-        consensus.nTimeSlotLength = 20;
+        consensus.nStakeMinDepth = 100;
+        consensus.nTargetTimespan = 40 * 60;
+        consensus.nTargetTimespanV2 = 30 * 60;
+        consensus.nTargetSpacing = 1 * 60;
+        consensus.nTimeSlotLength = 15;
         consensus.nMaxProposalPayments = 6;
 
         // spork keys
-        consensus.strSporkPubKey = "04878dd2f3979e8f97b7c34e48c6e5585deb3e21426bcc9ebdaf1a652299c5ebec5d6e912613e0dd75ad89d99abfd91a86b25dd66102fb4b5f7fa0f048fb929996";
-        consensus.strSporkPubKeyOld = "0426c24ed88f8c36b3b0e97766a6f94e72e860b7faa4cc489c68386cf5f8a9f4eef881aea324a2bf7fe0ca1c4bd6c015f910224df5f42a718c1660b1a14808e6c2";
+        consensus.strSporkPubKey = "047a7df379bd5e6b93b164968c10fcbb141ecb3c6dc1a5e181c2a62328405cf82311dd5b40bf45430320a4f30add05c8e3e16dd56c52d65f7abe475189564bf2b1";
+        consensus.strSporkPubKeyOld = "047a7df379bd5e6b93b164968c10fcbb141ecb3c6dc1a5e181c2a62328405cf82311dd5b40bf45430320a4f30add05c8e3e16dd56c52d65f7abe475189564bf2b1";
         consensus.nTime_EnforceNewSporkKey = 1600005947;    //!> September 13, 2020 4:05:47 PM GMT+1
         consensus.nTime_RejectOldSporkKey = 1600005947;     //!> September 13, 2020 4:05:47 PM GMT+1
 
@@ -159,8 +201,8 @@ public:
         consensus.height_ZC_RecalcAccumulators = INT_MAX;
 
         // validation by-pass
-        consensus.nFlsBadBlockTime = 1554556853;    // Skip nBit validation of Block 259201 per PR #915
-        consensus.nFlsBadBlockBits = 488380309;    // Skip nBit validation of Block 259201 per PR #915
+        consensus.nDogeCashBadBlockTime = 1554556853;    // Skip nBit validation of Block 259201 per PR #915
+        consensus.nDogeCashBadBlockBits = 488380309;    // Skip nBit validation of Block 259201 per PR #915
 
         // Zerocoin-related params
         consensus.ZC_Modulus = "25195908475657893494027183240048398571429282126204032027777137836043662020707595556264018525880784"
@@ -181,63 +223,61 @@ public:
                 Consensus::NetworkUpgrade::ALWAYS_ACTIVE;
         consensus.vUpgrades[Consensus::UPGRADE_TESTDUMMY].nActivationHeight =
                 Consensus::NetworkUpgrade::NO_ACTIVATION_HEIGHT;
-        consensus.vUpgrades[Consensus::UPGRADE_POS].nActivationHeight           = 201;
-        consensus.vUpgrades[Consensus::UPGRADE_POS_V2].nActivationHeight        = 601339;
-        consensus.vUpgrades[Consensus::UPGRADE_ZC].nActivationHeight            = 205;
-        consensus.vUpgrades[Consensus::UPGRADE_ZC_V2].nActivationHeight         = 220;
+        consensus.vUpgrades[Consensus::UPGRADE_POS].nActivationHeight           = 201;  
+        consensus.vUpgrades[Consensus::UPGRADE_POS_V2].nActivationHeight        = 601339; 
+        consensus.vUpgrades[Consensus::UPGRADE_ZC].nActivationHeight            = 1;
+        consensus.vUpgrades[Consensus::UPGRADE_ZC_V2].nActivationHeight         = 1;
         consensus.vUpgrades[Consensus::UPGRADE_BIP65].nActivationHeight         = 1;
         consensus.vUpgrades[Consensus::UPGRADE_ZC_PUBLIC].nActivationHeight     = INT_MAX;
-        consensus.vUpgrades[Consensus::UPGRADE_V3_4].nActivationHeight          = 178000;
-        consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight          = 601339;
+        consensus.vUpgrades[Consensus::UPGRADE_V3_4].nActivationHeight          = 261028;
+        consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight          = 574990;
         consensus.vUpgrades[Consensus::UPGRADE_V5_0].nActivationHeight          = 850000;
 
         consensus.vUpgrades[Consensus::UPGRADE_ZC].hashActivationBlock =
-                uint256S("0x4a427f335da9385dbbdc5c08e26001ee430eb2239f849560574f6bad6d7a1c09");
+                uint256S("0x00000ae6d22cf38ad8bb55538f508bcf84c0ace873e87ef4cc200e366e848412");
         consensus.vUpgrades[Consensus::UPGRADE_ZC_V2].hashActivationBlock =
-                uint256S("0x0bac510f09f5d8df2df7db845a08d4a08eeecba85bdbe783565f60a5851906b8");
+                uint256S("0x00000ae6d22cf38ad8bb55538f508bcf84c0ace873e87ef4cc200e366e848412");
         consensus.vUpgrades[Consensus::UPGRADE_BIP65].hashActivationBlock =
-                uint256S("0x00000e7ef05ce13909b689fdd4bbedb1d4ff98444005f07aa69817ddfb119123");
+                uint256S("0x00000ae6d22cf38ad8bb55538f508bcf84c0ace873e87ef4cc200e366e848412");
         consensus.vUpgrades[Consensus::UPGRADE_ZC_PUBLIC].hashActivationBlock =
-                uint256S("0xae65c230c6ca2cfb6b438215d67c23cb29cfe92ed155f18cb1407ed4f6449116");
+                uint256S("0x00000ae6d22cf38ad8bb55538f508bcf84c0ace873e87ef4cc200e366e848412");
         consensus.vUpgrades[Consensus::UPGRADE_V3_4].hashActivationBlock =
-                uint256S("0x058dd19c481a61eaf8cef1d9efde63e11e890217b13b25d3fd55627d37696706");
+                uint256S("0xa9d36583a0624e091e225054f56c8f4fd14ac82c4b40aee97ad0a118bbe8f2cf");
         consensus.vUpgrades[Consensus::UPGRADE_V4_0].hashActivationBlock =
-                uint256S("0x2d904565adff7b808d3d01e5b861d7abb63627ce250a960aa8a01473f1e67c4a");
+                uint256S("0x2177e3592a1c705ee5fea6223002ab6cdcd55f8560896d1bf0e6119d07d630a5");
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 4-byte int at any alignment.
          */
-        pchMessageStart[0] = 0xf4;
-        pchMessageStart[1] = 0xe1;
-        pchMessageStart[2] = 0xef;
-        pchMessageStart[3] = 0xc2;
-        nDefaultPort = 12270;
+        pchMessageStart[0] = 0xa0;
+        pchMessageStart[1] = 0x43;
+        pchMessageStart[2] = 0x16;
+        pchMessageStart[3] = 0x19;
+        nDefaultPort = 56740;
 
         // Note that of those with the service bits flag, most only support a subset of possible options
-        vSeeds.emplace_back("seed01.flitsnode.app", "seed01.flitsnode.app", true);     // Primary DNS Seeder from Fuzzbawls
-        vSeeds.emplace_back("134.209.93.244", "134.209.93.244", true);    // Secondary DNS Seeder from Fuzzbawls
-        vSeeds.emplace_back("46.101.244.207", "46.101.244.207", true); 
-        vSeeds.emplace_back("206.189.143.36", "206.189.143.36", true); 
+        vSeeds.emplace_back("seeds.dogec.io", "seeds.dogec.io", true);     // Primary DNS Seeder from Liquid369
+        vSeeds.emplace_back("x9.seeds.dogec.io", "x9.seeds.dogec.io", true);    // Secondary DNS Seeder from DanielHalford
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 36);
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 48);
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 30);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 19);
         base58Prefixes[STAKING_ADDRESS] = std::vector<unsigned char>(1, 63);     // starting with 'S'
-        base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 66);
+        base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 122;
         base58Prefixes[EXT_PUBLIC_KEY] = {0x02, 0x2D, 0x25, 0x33};
         base58Prefixes[EXT_SECRET_KEY] = {0x02, 0x21, 0x31, 0x2B};
         // BIP44 coin type is from https://github.com/satoshilabs/slips/blob/master/slip-0044.md
-        base58Prefixes[EXT_COIN_TYPE] = {0x80, 0x00, 0x00, 0x77};
+        base58Prefixes[EXT_COIN_TYPE] = {0x80, 0x00, 0x01, 0x81};
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
         // Sapling
-        bech32HRPs[SAPLING_PAYMENT_ADDRESS]      = "fs";
-        bech32HRPs[SAPLING_FULL_VIEWING_KEY]     = "fviews";
-        bech32HRPs[SAPLING_INCOMING_VIEWING_KEY] = "flsks";
-        bech32HRPs[SAPLING_EXTENDED_SPEND_KEY]   = "f-secret-spending-key-main";
-        bech32HRPs[SAPLING_EXTENDED_FVK]         = "fxviews";
+        bech32HRPs[SAPLING_PAYMENT_ADDRESS]      = "ds";
+        bech32HRPs[SAPLING_FULL_VIEWING_KEY]     = "dviews";
+        bech32HRPs[SAPLING_INCOMING_VIEWING_KEY] = "dlsks";
+        bech32HRPs[SAPLING_EXTENDED_SPEND_KEY]   = "d-secret-spending-key-main";
+        bech32HRPs[SAPLING_EXTENDED_FVK]         = "dxviews";
     }
 
     const Checkpoints::CCheckpointData& Checkpoints() const
@@ -336,18 +376,18 @@ public:
         nDefaultPort = 51474;
 
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("fuzzbawls.pw", "fls-testnet.seed.fuzzbawls.pw", true);
-        vSeeds.emplace_back("fuzzbawls.pw", "fls-testnet.seed2.fuzzbawls.pw", true);
+        vSeeds.emplace_back("fuzzbawls.pw", "dogecash-testnet.seed.fuzzbawls.pw", true);
+        vSeeds.emplace_back("fuzzbawls.pw", "dogecash-testnet.seed2.fuzzbawls.pw", true);
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 139); // Testnet fls addresses start with 'x' or 'y'
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 19);  // Testnet fls script addresses start with '8' or '9'
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 139); // Testnet dogecash addresses start with 'x' or 'y'
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 19);  // Testnet dogecash script addresses start with '8' or '9'
         base58Prefixes[STAKING_ADDRESS] = std::vector<unsigned char>(1, 73);     // starting with 'W'
         base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 239);     // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
-        // Testnet fls BIP32 pubkeys start with 'DRKV'
+        // Testnet dogecash BIP32 pubkeys start with 'DRKV'
         base58Prefixes[EXT_PUBLIC_KEY] = {0x3a, 0x80, 0x61, 0xa0};
-        // Testnet fls BIP32 prvkeys start with 'DRKP'
+        // Testnet dogecash BIP32 prvkeys start with 'DRKP'
         base58Prefixes[EXT_SECRET_KEY] = {0x3a, 0x80, 0x58, 0x37};
-        // Testnet fls BIP44 coin type is '1' (All coin's testnet default)
+        // Testnet dogecash BIP44 coin type is '1' (All coin's testnet default)
         base58Prefixes[EXT_COIN_TYPE] = {0x80, 0x00, 0x00, 0x01};
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
@@ -355,7 +395,7 @@ public:
         // Sapling
         bech32HRPs[SAPLING_PAYMENT_ADDRESS]      = "ptestsapling";
         bech32HRPs[SAPLING_FULL_VIEWING_KEY]     = "pviewtestsapling";
-        bech32HRPs[SAPLING_INCOMING_VIEWING_KEY] = "flsktestsapling";
+        bech32HRPs[SAPLING_INCOMING_VIEWING_KEY] = "dogecashktestsapling";
         bech32HRPs[SAPLING_EXTENDED_SPEND_KEY]   = "p-secret-spending-key-test";
         bech32HRPs[SAPLING_EXTENDED_FVK]         = "pxviewtestsapling";
     }
@@ -460,21 +500,21 @@ public:
         pchMessageStart[3] = 0xac;
         nDefaultPort = 51476;
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 139); // Testnet fls addresses start with 'x' or 'y'
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 19);  // Testnet fls script addresses start with '8' or '9'
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 139); // Testnet dogecash addresses start with 'x' or 'y'
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 19);  // Testnet dogecash script addresses start with '8' or '9'
         base58Prefixes[STAKING_ADDRESS] = std::vector<unsigned char>(1, 73);     // starting with 'W'
         base58Prefixes[SECRET_KEY] = std::vector<unsigned char>(1, 239);     // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
-        // Testnet fls BIP32 pubkeys start with 'DRKV'
+        // Testnet dogecash BIP32 pubkeys start with 'DRKV'
         base58Prefixes[EXT_PUBLIC_KEY] = {0x3a, 0x80, 0x61, 0xa0};
-        // Testnet fls BIP32 prvkeys start with 'DRKP'
+        // Testnet dogecash BIP32 prvkeys start with 'DRKP'
         base58Prefixes[EXT_SECRET_KEY] = {0x3a, 0x80, 0x58, 0x37};
-        // Testnet fls BIP44 coin type is '1' (All coin's testnet default)
+        // Testnet dogecash BIP44 coin type is '1' (All coin's testnet default)
         base58Prefixes[EXT_COIN_TYPE] = {0x80, 0x00, 0x00, 0x01};
 
         // Sapling
         bech32HRPs[SAPLING_PAYMENT_ADDRESS]      = "ptestsapling";
         bech32HRPs[SAPLING_FULL_VIEWING_KEY]     = "pviewtestsapling";
-        bech32HRPs[SAPLING_INCOMING_VIEWING_KEY] = "flsktestsapling";
+        bech32HRPs[SAPLING_INCOMING_VIEWING_KEY] = "dogecashktestsapling";
         bech32HRPs[SAPLING_EXTENDED_SPEND_KEY]   = "p-secret-spending-key-test";
         bech32HRPs[SAPLING_EXTENDED_FVK]         = "pxviewtestsapling";
     }

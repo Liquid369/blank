@@ -11,7 +11,7 @@
 
 #include <QDialog>
 
-class FLSGUI;
+class DOGECGUI;
 
 namespace Ui {
 class SettingsFaqWidget;
@@ -30,7 +30,7 @@ public:
         MNCONTROLLER
     };
 
-    explicit SettingsFaqWidget(FLSGUI *parent = nullptr);
+    explicit SettingsFaqWidget(DOGECGUI *parent = nullptr);
     ~SettingsFaqWidget();
 
     void showEvent(QShowEvent *event) override;

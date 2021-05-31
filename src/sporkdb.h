@@ -3,8 +3,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_CSPORKDB_H
-#define FLS_CSPORKDB_H
+#ifndef DOGEC_CSPORKDB_H
+#define DOGEC_CSPORKDB_H
 
 #include "fs.h"
 #include "dbwrapper.h"
@@ -26,4 +26,4 @@ public:
 };
 
 
-#endif //FLS_CSPORKDB_H
+#endif //DOGEC_CSPORKDB_H

@@ -6,15 +6,15 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_AMOUNT_H
-#define FLS_AMOUNT_H
+#ifndef DOGEC_AMOUNT_H
+#define DOGEC_AMOUNT_H
 
 #include <stdint.h>
 
-/** Amount in FLS (Can be negative) */
+/** Amount in DOGEC (Can be negative) */
 typedef int64_t CAmount;
 
 static const CAmount COIN = 100000000;
 static const CAmount CENT = 1000000;
 
-#endif //  FLS_AMOUNT_H
+#endif //  DOGEC_AMOUNT_H

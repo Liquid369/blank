@@ -8,7 +8,7 @@
 
 # Test descendant package tracking code
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import (
     assert_equal,
     Decimal,
@@ -22,7 +22,7 @@ def satoshi_round(amount):
 MAX_ANCESTORS = 25
 MAX_DESCENDANTS = 25
 
-class MempoolPackagesTest(FlsTestFramework):
+class MempoolPackagesTest(DogeCashTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.extra_args = [["-maxorphantx=1000", "-relaypriority=0"], ["-maxorphantx=1000", "-relaypriority=0", "-limitancestorcount=5"]]

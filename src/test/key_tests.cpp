@@ -11,7 +11,7 @@
 #include "uint256.h"
 #include "util.h"
 #include "utilstrencodings.h"
-#include "test_fls.h"
+#include "test_dogecash.h"
 
 #include <string>
 #include <vector>

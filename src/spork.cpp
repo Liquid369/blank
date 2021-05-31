@@ -19,7 +19,7 @@
 #define MAKE_SPORK_DEF(name, defaultValue) CSporkDef(name, defaultValue, #name)
 
 std::vector<CSporkDef> sporkDefs = {
-    MAKE_SPORK_DEF(SPORK_5_MAX_VALUE,                       1000),          // 1000 FLS
+    MAKE_SPORK_DEF(SPORK_5_MAX_VALUE,                       1000),          // 1000 DOGEC
     MAKE_SPORK_DEF(SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT,  4070908800ULL), // OFF
     MAKE_SPORK_DEF(SPORK_9_MASTERNODE_BUDGET_ENFORCEMENT,   4070908800ULL), // OFF
     MAKE_SPORK_DEF(SPORK_13_ENABLE_SUPERBLOCKS,             4070908800ULL), // OFF
@@ -48,7 +48,7 @@ void CSporkManager::Clear()
     mapSporksActive.clear();
 }
 
-// FLS: on startup load spork values from previous session if they exist in the sporkDB
+// DOGEC: on startup load spork values from previous session if they exist in the sporkDB
 void CSporkManager::LoadSporksFromDB()
 {
     for (const auto& sporkDef : sporkDefs) {
@@ -181,7 +181,7 @@ int CSporkManager::ProcessSporkMsg(CSporkMessage& spork)
     }
     spork.Relay();
 
-    // FLS: add to spork database.
+    // DOGEC: add to spork database.
     pSporkDB->WriteSpork(spork.nSporkID, spork);
     // All good.
     return 0;

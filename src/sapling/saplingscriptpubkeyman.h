@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_SAPLINGSCRIPTPUBKEYMAN_H
-#define FLS_SAPLINGSCRIPTPUBKEYMAN_H
+#ifndef DOGEC_SAPLINGSCRIPTPUBKEYMAN_H
+#define DOGEC_SAPLINGSCRIPTPUBKEYMAN_H
 
 #include "consensus/consensus.h"
 #include "sapling/note.h"
@@ -423,4 +423,4 @@ private:
     TxNullifiers mapTxSaplingNullifiers;
 };
 
-#endif //FLS_SAPLINGSCRIPTPUBKEYMAN_H
+#endif //DOGEC_SAPLINGSCRIPTPUBKEYMAN_H

@@ -11,7 +11,7 @@
 
 #include <QWidget>
 #include <QDataWidgetMapper>
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 namespace Ui {
 class SettingsWalletOptionsWidget;
 }
@@ -21,7 +21,7 @@ class SettingsWalletOptionsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWalletOptionsWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsWalletOptionsWidget(DOGECGUI* _window, QWidget *parent = nullptr);
     ~SettingsWalletOptionsWidget();
 
     void setMapper(QDataWidgetMapper *mapper);

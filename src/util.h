@@ -15,7 +15,7 @@
 #define BITCOIN_UTIL_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h"
+#include "config/dogecash-config.h"
 #endif
 
 #include "fs.h"
@@ -45,9 +45,9 @@ public:
     boost::signals2::signal<std::string (const char* psz)> Translate;
 };
 
-extern const char * const FLS_CONF_FILENAME;
-extern const char * const FLS_PID_FILENAME;
-extern const char * const FLS_MASTERNODE_CONF_FILENAME;
+extern const char * const DOGEC_CONF_FILENAME;
+extern const char * const DOGEC_PID_FILENAME;
+extern const char * const DOGEC_MASTERNODE_CONF_FILENAME;
 extern const char * const DEFAULT_DEBUGLOGFILE;
 
 //FLITS only features
@@ -243,7 +243,7 @@ void SetThreadPriority(int nPriority);
 template <typename Callable>
 void TraceThread(const char* name, Callable func)
 {
-    std::string s = strprintf("fls-%s", name);
+    std::string s = strprintf("dogecash-%s", name);
     util::ThreadRename(s.c_str());
     try {
         LogPrintf("%s thread start\n", name);

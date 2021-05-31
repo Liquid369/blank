@@ -425,7 +425,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../fls.qrc">
+            <iconset resource="../dogecash.qrc">
              <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
            </property>
            <property name="shortcut">
@@ -1328,17 +1328,17 @@
         </widget>
        </item>
        <item row="4" column="0">
-        <widget class="QLabel" name="wallet_customzflsbackuppath_label">
+        <widget class="QLabel" name="wallet_customzdogecashbackuppath_label">
          <property name="visible">
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Custom zFLS Backup Path:</string>
+          <string>Custom zDOGEC Backup Path:</string>
          </property>
         </widget>
        </item>
        <item row="4" column="1" colspan="3">
-        <widget class="QLabel" name="wallet_customzflsbackuppath">
+        <widget class="QLabel" name="wallet_customzdogecashbackuppath">
          <property name="cursor">
           <cursorShape>IBeamCursor</cursorShape>
          </property>
@@ -1639,7 +1639,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../fls.qrc"/>
+  <include location="../dogecash.qrc"/>
  </resources>
  <connections/>
 </ui>

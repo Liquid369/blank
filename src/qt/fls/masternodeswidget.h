@@ -7,10 +7,10 @@
 #ifndef MASTERNODESWIDGET_H
 #define MASTERNODESWIDGET_H
 
-#include "qt/fls/pwidget.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
-#include "qt/fls/mnmodel.h"
-#include "qt/fls/tooltipmenu.h"
+#include "qt/dogecash/pwidget.h"
+#include "qt/dogecash/furabstractlistitemdelegate.h"
+#include "qt/dogecash/mnmodel.h"
+#include "qt/dogecash/tooltipmenu.h"
 #include "walletmodel.h"
 
 #include <atomic>
@@ -18,7 +18,7 @@
 #include <QTimer>
 #include <QWidget>
 
-class FLSGUI;
+class DOGECGUI;
 
 namespace Ui {
 class MasterNodesWidget;
@@ -34,7 +34,7 @@ class MasterNodesWidget : public PWidget
 
 public:
 
-    explicit MasterNodesWidget(FLSGUI *parent = nullptr);
+    explicit MasterNodesWidget(DOGECGUI *parent = nullptr);
     ~MasterNodesWidget();
 
     void loadWalletModel() override;

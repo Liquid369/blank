@@ -5,7 +5,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "util.h"
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include <string>
 #include <vector>

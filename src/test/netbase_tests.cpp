@@ -8,7 +8,7 @@
 
 #include "net.h"    // validateMasternodeIP
 #include "netbase.h"
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include <string>
 

@@ -16,7 +16,7 @@
 #include "init.h"
 #include "intro.h"
 #include "guiutil.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 #include "util.h"
 
 #include <stdio.h>
@@ -71,7 +71,7 @@ HelpMessageDialog::HelpMessageDialog(QWidget* parent, bool about) : QDialog(pare
     } else {
         setWindowTitle(tr("Command-line options"));
         QString header = tr("Usage:") + "\n" +
-                         "  fls-qt [" + tr("command-line options") + "]                     " + "\n";
+                         "  dogecash-qt [" + tr("command-line options") + "]                     " + "\n";
         QTextCursor cursor(ui->helpMessage->document());
         cursor.insertText(version);
         cursor.insertBlock();

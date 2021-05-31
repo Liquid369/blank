@@ -4,22 +4,22 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/coldstakingwidget.h"
-#include "qt/fls/forms/ui_coldstakingwidget.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/coldstakingwidget.h"
+#include "qt/dogecash/forms/ui_coldstakingwidget.h"
+#include "qt/dogecash/qtutils.h"
 #include "amount.h"
 #include "guiutil.h"
-#include "qt/fls/requestdialog.h"
-#include "qt/fls/tooltipmenu.h"
-#include "qt/fls/furlistrow.h"
-#include "qt/fls/sendconfirmdialog.h"
-#include "qt/fls/addnewcontactdialog.h"
-#include "qt/fls/guitransactionsutils.h"
+#include "qt/dogecash/requestdialog.h"
+#include "qt/dogecash/tooltipmenu.h"
+#include "qt/dogecash/furlistrow.h"
+#include "qt/dogecash/sendconfirmdialog.h"
+#include "qt/dogecash/addnewcontactdialog.h"
+#include "qt/dogecash/guitransactionsutils.h"
 #include "walletmodel.h"
 #include "optionsmodel.h"
 #include "coincontroldialog.h"
 #include "coincontrol.h"
-#include "qt/fls/csrow.h"
+#include "qt/dogecash/csrow.h"
 
 #define DECORATION_SIZE 70
 #define NUM_ITEMS 3
@@ -73,7 +73,7 @@ private:
     CSRow *cachedRow = nullptr;
 };
 
-ColdStakingWidget::ColdStakingWidget(FLSGUI* parent) :
+ColdStakingWidget::ColdStakingWidget(DOGECGUI* parent) :
     PWidget(parent),
     ui(new Ui::ColdStakingWidget),
     isLoading(false)

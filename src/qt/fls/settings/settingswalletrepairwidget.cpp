@@ -6,11 +6,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingswalletrepairwidget.h"
-#include "qt/fls/settings/forms/ui_settingswalletrepairwidget.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/settings/settingswalletrepairwidget.h"
+#include "qt/dogecash/settings/forms/ui_settingswalletrepairwidget.h"
+#include "qt/dogecash/qtutils.h"
 
-SettingsWalletRepairWidget::SettingsWalletRepairWidget(FLSGUI* _window, QWidget *parent) :
+SettingsWalletRepairWidget::SettingsWalletRepairWidget(DOGECGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsWalletRepairWidget)
 {
@@ -122,7 +122,7 @@ void SettingsWalletRepairWidget::buildParameterlist(QString arg)
     // Append repair parameter to command line.
     args.append(arg);
 
-    // Send command-line arguments to FLSGUI::handleRestart()
+    // Send command-line arguments to DOGECGUI::handleRestart()
     Q_EMIT handleRestart(args);
 }
 

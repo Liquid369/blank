@@ -4,12 +4,12 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/mninfodialog.h"
-#include "qt/fls/forms/ui_mninfodialog.h"
+#include "qt/dogecash/mninfodialog.h"
+#include "qt/dogecash/forms/ui_mninfodialog.h"
 #include "walletmodel.h"
 #include "wallet/wallet.h"
 #include "guiutil.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 #include <QDateTime>
 
 MnInfoDialog::MnInfoDialog(QWidget *parent) :

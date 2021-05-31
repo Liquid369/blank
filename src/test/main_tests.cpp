@@ -6,7 +6,7 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include "blocksignature.h"
 #include "net.h"
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(subsidy_limit_test)
 {
     CAmount nSum = 0;
     for (int nHeight = 0; nHeight < 1; nHeight += 1) {
-        /* premine in block 1 (60,001 FLS) */
+        /* premine in block 1 (60,001 DOGEC) */
         CAmount nSubsidy = GetBlockValue(nHeight + 1);
         BOOST_CHECK(nSubsidy <= 60001 * COIN);
         nSum += nSubsidy;

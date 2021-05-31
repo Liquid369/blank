@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_POLICY_FEERATE_H
-#define FLS_POLICY_FEERATE_H
+#ifndef DOGEC_POLICY_FEERATE_H
+#define DOGEC_POLICY_FEERATE_H
 
 #include "amount.h"
 #include "serialize.h"
@@ -16,7 +16,7 @@
 extern const std::string CURRENCY_UNIT;
 
 /**
- * Fee rate in FLS per kilobyte: CAmount / kB
+ * Fee rate in DOGEC per kilobyte: CAmount / kB
  */
 class CFeeRate
 {
@@ -47,4 +47,4 @@ public:
     }
 };
 
-#endif //  FLS_POLICY_FEERATE_H
+#endif //  DOGEC_POLICY_FEERATE_H

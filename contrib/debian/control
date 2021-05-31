@@ -1,4 +1,4 @@
-Source: fls
+Source: dogecash
 Section: utils
 Priority: optional
 Maintainer: Fuzzbawls <fuzzbawls@gmail.com>
@@ -32,7 +32,7 @@ Homepage: http://www.flitswallet.app
 Vcs-Git: git://github.com/flitsnode/flits-core.git
 Vcs-Browser: http://github.com/flitsnode/flits-core
 
-Package: flsd
+Package: dogecashd
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer network based digital currency - daemon
@@ -45,10 +45,10 @@ Description: peer-to-peer network based digital currency - daemon
  Full transaction history is stored locally at each client.  This
  requires 18.5+ GB of space, slowly growing.
  .
- This package provides the daemon, flsd, and the CLI tool
- fls-cli to interact with the daemon.
+ This package provides the daemon, dogecashd, and the CLI tool
+ dogecash-cli to interact with the daemon.
 
-Package: fls-qt
+Package: dogecash-qt
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer network based digital currency - Qt GUI
@@ -61,4 +61,4 @@ Description: peer-to-peer network based digital currency - Qt GUI
  Full transaction history is stored locally at each client.  This
  requires 18.5+ GB of space, slowly growing.
  .
- This package provides Fls-Qt, a GUI for FLITS based on Qt.
+ This package provides DogeCash-Qt, a GUI for FLITS based on Qt.

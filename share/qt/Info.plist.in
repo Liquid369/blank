@@ -29,16 +29,16 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>FLS-Qt</string>
+  <string>DogeCash-Qt</string>
 
   <key>CFBundleName</key>
-  <string>FLS-Qt</string>
+  <string>DogeCash-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>io.fls.Fls-Qt</string>
+  <string>io.dogecash.DogeCash-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,10 +46,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>io.fls.FlsPayment</string>
+      <string>io.dogecash.DogeCashPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>fls</string>
+        <string>dogecash</string>
       </array>
     </dict>
   </array>
@@ -58,9 +58,9 @@
   <array>
     <dict>
       <key>UTTypeIdentifier</key>
-      <string>io.fls.paymentrequest</string>
+      <string>io.dogecash.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>Fls payment request</string>
+      <string>DogeCash payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>
@@ -68,10 +68,10 @@
       <key>UTTypeTagSpecification</key>
       <dict>
         <key>public.mime-type</key>
-        <string>application/x-fls-payment-request</string>
+        <string>application/x-dogecash-payment-request</string>
         <key>public.filename-extension</key>
         <array>
-          <string>flspaymentrequest</string>
+          <string>dogecashpaymentrequest</string>
         </array>
       </dict>
     </dict>
@@ -84,7 +84,7 @@
       <string>Editor</string>
       <key>LSItemContentTypes</key>
       <array>
-        <string>io.fls.paymentrequest</string>
+        <string>io.dogecash.paymentrequest</string>
       </array>
       <key>LSHandlerRank</key>
       <string>Owner</string>

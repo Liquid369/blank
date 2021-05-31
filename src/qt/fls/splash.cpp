@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/splash.h"
-#include "qt/fls/forms/ui_splash.h"
+#include "qt/dogecash/splash.h"
+#include "qt/dogecash/forms/ui_splash.h"
 #include "QFile"
 
 #include "interfaces/handler.h"

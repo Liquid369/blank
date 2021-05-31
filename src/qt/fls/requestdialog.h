@@ -9,14 +9,14 @@
 #ifndef REQUESTDIALOG_H
 #define REQUESTDIALOG_H
 
-#include "qt/fls/focuseddialog.h"
-#include "qt/fls/snackbar.h"
+#include "qt/dogecash/focuseddialog.h"
+#include "qt/dogecash/snackbar.h"
 #include "walletmodel.h"
 
 #include <QPixmap>
 
 class WalletModel;
-class FLSGUI;
+class DOGECGUI;
 
 namespace Ui {
 class RequestDialog;

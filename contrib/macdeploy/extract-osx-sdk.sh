@@ -13,7 +13,7 @@ SDKDIR="Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/Ma
 7z x "${INPUTFILE}" "${HFSFILENAME}"
 SDKNAME="$(basename "${SDKDIR}")"
 SDKDIRINODE=$(ifind -n "${SDKDIR}" "${HFSFILENAME}")
-fls "${HFSFILENAME}" -rpF ${SDKDIRINODE} |
+dogecash "${HFSFILENAME}" -rpF ${SDKDIRINODE} |
  while read type inode filename; do
 	inode="${inode::-1}"
 	if [ "${filename:0:14}" = "usr/share/man/" ]; then

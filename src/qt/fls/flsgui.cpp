@@ -4,7 +4,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/flsgui.h"
+#include "qt/dogecash/dogecashgui.h"
 
 #ifdef Q_OS_MAC
 #include "macdockiconhandler.h"
@@ -17,8 +17,8 @@
 #include "networkstyle.h"
 #include "notificator.h"
 #include "guiinterface.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/defaultdialog.h"
+#include "qt/dogecash/qtutils.h"
+#include "qt/dogecash/defaultdialog.h"
 
 #include "init.h"
 #include "util.h"
@@ -38,9 +38,9 @@
 #define BASE_WINDOW_MIN_WIDTH 1100
 
 
-const QString FLSGUI::DEFAULT_WALLET = "~Default";
+const QString DOGECGUI::DEFAULT_WALLET = "~Default";
 
-FLSGUI::FLSGUI(const NetworkStyle* networkStyle, QWidget* parent) :
+DOGECGUI::DOGECGUI(const NetworkStyle* networkStyle, QWidget* parent) :
         QMainWindow(parent),
         clientModel(0){
 
@@ -167,7 +167,7 @@ FLSGUI::FLSGUI(const NetworkStyle* networkStyle, QWidget* parent) :
 
 }
 
-void FLSGUI::createActions(const NetworkStyle* networkStyle)
+void DOGECGUI::createActions(const NetworkStyle* networkStyle)
 {
     toggleHideAction = new QAction(networkStyle->getAppIcon(), tr("&Show / Hide"), this);
     toggleHideAction->setStatusTip(tr("Show or hide the main Window"));
@@ -177,14 +177,14 @@ void FLSGUI::createActions(const NetworkStyle* networkStyle)
     quitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
     quitAction->setMenuRole(QAction::QuitRole);
 
-    connect(toggleHideAction, &QAction::triggered, this, &FLSGUI::toggleHidden);
+    connect(toggleHideAction, &QAction::triggered, this, &DOGECGUI::toggleHidden);
     connect(quitAction, &QAction::triggered, qApp, &QApplication::quit);
 }
 
 /**
  * Here add every event connection
  */
-void FLSGUI::connectActions()
+void DOGECGUI::connectActions()
 {
     QShortcut *consoleShort = new QShortcut(this);
     consoleShort->setKey(QKeySequence(SHORT_KEY + Qt::Key_C));
@@ -193,22 +193,22 @@ void FLSGUI::connectActions()
         settingsWidget->showDebugConsole();
         goToSettings();
     });
-    connect(topBar, &TopBar::showHide, this, &FLSGUI::showHide);
-    connect(topBar, &TopBar::themeChanged, this, &FLSGUI::changeTheme);
+    connect(topBar, &TopBar::showHide, this, &DOGECGUI::showHide);
+    connect(topBar, &TopBar::themeChanged, this, &DOGECGUI::changeTheme);
     connect(topBar, &TopBar::onShowHideColdStakingChanged, navMenu, &NavMenuWidget::onShowHideColdStakingChanged);
-    connect(settingsWidget, &SettingsWidget::showHide, this, &FLSGUI::showHide);
-    connect(sendWidget, &SendWidget::showHide, this, &FLSGUI::showHide);
-    connect(receiveWidget, &ReceiveWidget::showHide, this, &FLSGUI::showHide);
-    connect(addressesWidget, &AddressesWidget::showHide, this, &FLSGUI::showHide);
-    connect(masterNodesWidget, &MasterNodesWidget::showHide, this, &FLSGUI::showHide);
-    connect(masterNodesWidget, &MasterNodesWidget::execDialog, this, &FLSGUI::execDialog);
-    connect(coldStakingWidget, &ColdStakingWidget::showHide, this, &FLSGUI::showHide);
-    connect(coldStakingWidget, &ColdStakingWidget::execDialog, this, &FLSGUI::execDialog);
-    connect(settingsWidget, &SettingsWidget::execDialog, this, &FLSGUI::execDialog);
+    connect(settingsWidget, &SettingsWidget::showHide, this, &DOGECGUI::showHide);
+    connect(sendWidget, &SendWidget::showHide, this, &DOGECGUI::showHide);
+    connect(receiveWidget, &ReceiveWidget::showHide, this, &DOGECGUI::showHide);
+    connect(addressesWidget, &AddressesWidget::showHide, this, &DOGECGUI::showHide);
+    connect(masterNodesWidget, &MasterNodesWidget::showHide, this, &DOGECGUI::showHide);
+    connect(masterNodesWidget, &MasterNodesWidget::execDialog, this, &DOGECGUI::execDialog);
+    connect(coldStakingWidget, &ColdStakingWidget::showHide, this, &DOGECGUI::showHide);
+    connect(coldStakingWidget, &ColdStakingWidget::execDialog, this, &DOGECGUI::execDialog);
+    connect(settingsWidget, &SettingsWidget::execDialog, this, &DOGECGUI::execDialog);
 }
 
 
-void FLSGUI::createTrayIcon(const NetworkStyle* networkStyle)
+void DOGECGUI::createTrayIcon(const NetworkStyle* networkStyle)
 {
 #ifndef Q_OS_MAC
     trayIcon = new QSystemTrayIcon(this);
@@ -220,7 +220,7 @@ void FLSGUI::createTrayIcon(const NetworkStyle* networkStyle)
     notificator = new Notificator(QApplication::applicationName(), trayIcon, this);
 }
 
-FLSGUI::~FLSGUI()
+DOGECGUI::~DOGECGUI()
 {
     // Unsubscribe from notifications from core
     unsubscribeFromCoreSignals();
@@ -235,14 +235,14 @@ FLSGUI::~FLSGUI()
 
 
 /** Get restart command-line parameters and request restart */
-void FLSGUI::handleRestart(QStringList args)
+void DOGECGUI::handleRestart(QStringList args)
 {
     if (!ShutdownRequested())
         Q_EMIT requestedRestart(args);
 }
 
 
-void FLSGUI::setClientModel(ClientModel* _clientModel)
+void DOGECGUI::setClientModel(ClientModel* _clientModel)
 {
     this->clientModel = _clientModel;
     if (this->clientModel) {
@@ -256,7 +256,7 @@ void FLSGUI::setClientModel(ClientModel* _clientModel)
         settingsWidget->setClientModel(clientModel);
 
         // Receive and report messages from client model
-        connect(clientModel, &ClientModel::message, this, &FLSGUI::message);
+        connect(clientModel, &ClientModel::message, this, &DOGECGUI::message);
         connect(clientModel, &ClientModel::alertsChanged, [this](const QString& _alertStr) {
             message(tr("Alert!"), _alertStr, CClientUIInterface::MSG_WARNING);
         });
@@ -283,7 +283,7 @@ void FLSGUI::setClientModel(ClientModel* _clientModel)
     }
 }
 
-void FLSGUI::createTrayIconMenu()
+void DOGECGUI::createTrayIconMenu()
 {
 #ifndef Q_OS_MAC
     // return if trayIcon is unset (only on non-macOSes)
@@ -293,11 +293,11 @@ void FLSGUI::createTrayIconMenu()
     trayIconMenu = new QMenu(this);
     trayIcon->setContextMenu(trayIconMenu);
 
-    connect(trayIcon, &QSystemTrayIcon::activated, this, &FLSGUI::trayIconActivated);
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &DOGECGUI::trayIconActivated);
 #else
     // Note: On macOS, the Dock icon is used to provide the tray's functionality.
     MacDockIconHandler* dockIconHandler = MacDockIconHandler::instance();
-    connect(dockIconHandler, &MacDockIconHandler::dockIconClicked, this, &FLSGUI::macosDockIconActivated);
+    connect(dockIconHandler, &MacDockIconHandler::dockIconClicked, this, &DOGECGUI::macosDockIconActivated);
 
     trayIconMenu = new QMenu(this);
     trayIconMenu->setAsDockMenu();
@@ -314,7 +314,7 @@ void FLSGUI::createTrayIconMenu()
 }
 
 #ifndef Q_OS_MAC
-void FLSGUI::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
+void DOGECGUI::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger) {
         // Click on system tray icon triggers show/hide of the main window
@@ -322,14 +322,14 @@ void FLSGUI::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 #else
-void FLSGUI::macosDockIconActivated()
+void DOGECGUI::macosDockIconActivated()
  {
      show();
      activateWindow();
  }
 #endif
 
-void FLSGUI::changeEvent(QEvent* e)
+void DOGECGUI::changeEvent(QEvent* e)
 {
     QMainWindow::changeEvent(e);
 #ifndef Q_OS_MAC // Ignored on Mac
@@ -337,7 +337,7 @@ void FLSGUI::changeEvent(QEvent* e)
         if (clientModel && clientModel->getOptionsModel() && clientModel->getOptionsModel()->getMinimizeToTray()) {
             QWindowStateChangeEvent* wsevt = static_cast<QWindowStateChangeEvent*>(e);
             if (!(wsevt->oldState() & Qt::WindowMinimized) && isMinimized()) {
-                QTimer::singleShot(0, this, &FLSGUI::hide);
+                QTimer::singleShot(0, this, &DOGECGUI::hide);
                 e->ignore();
             }
         }
@@ -345,7 +345,7 @@ void FLSGUI::changeEvent(QEvent* e)
 #endif
 }
 
-void FLSGUI::closeEvent(QCloseEvent* event)
+void DOGECGUI::closeEvent(QCloseEvent* event)
 {
 #ifndef Q_OS_MAC // Ignored on Mac
     if (clientModel && clientModel->getOptionsModel()) {
@@ -358,7 +358,7 @@ void FLSGUI::closeEvent(QCloseEvent* event)
 }
 
 
-void FLSGUI::messageInfo(const QString& text)
+void DOGECGUI::messageInfo(const QString& text)
 {
     if (!this->snackBar) this->snackBar = new SnackBar(this, this);
     this->snackBar->setText(text);
@@ -367,7 +367,7 @@ void FLSGUI::messageInfo(const QString& text)
 }
 
 
-void FLSGUI::message(const QString& title, const QString& message, unsigned int style, bool* ret)
+void DOGECGUI::message(const QString& title, const QString& message, unsigned int style, bool* ret)
 {
     QString strTitle =  tr("FLITS Core"); // default title
     // Default to information icon
@@ -426,7 +426,7 @@ void FLSGUI::message(const QString& title, const QString& message, unsigned int 
     }
 }
 
-bool FLSGUI::openStandardDialog(QString title, QString body, QString okBtn, QString cancelBtn)
+bool DOGECGUI::openStandardDialog(QString title, QString body, QString okBtn, QString cancelBtn)
 {
     DefaultDialog *dialog;
     if (isVisible()) {
@@ -449,7 +449,7 @@ bool FLSGUI::openStandardDialog(QString title, QString body, QString okBtn, QStr
 }
 
 
-void FLSGUI::showNormalIfMinimized(bool fToggleHidden)
+void DOGECGUI::showNormalIfMinimized(bool fToggleHidden)
 {
     if (!clientModel)
         return;
@@ -460,12 +460,12 @@ void FLSGUI::showNormalIfMinimized(bool fToggleHidden)
     }
 }
 
-void FLSGUI::toggleHidden()
+void DOGECGUI::toggleHidden()
 {
     showNormalIfMinimized(true);
 }
 
-void FLSGUI::detectShutdown()
+void DOGECGUI::detectShutdown()
 {
     if (ShutdownRequested()) {
         if (rpcConsole)
@@ -474,7 +474,7 @@ void FLSGUI::detectShutdown()
     }
 }
 
-void FLSGUI::goToDashboard()
+void DOGECGUI::goToDashboard()
 {
     if (stackedContainer->currentWidget() != dashboard) {
         stackedContainer->setCurrentWidget(dashboard);
@@ -482,48 +482,48 @@ void FLSGUI::goToDashboard()
     }
 }
 
-void FLSGUI::goToSend()
+void DOGECGUI::goToSend()
 {
     showTop(sendWidget);
 }
 
-void FLSGUI::goToAddresses()
+void DOGECGUI::goToAddresses()
 {
     showTop(addressesWidget);
 }
 
-void FLSGUI::goToMasterNodes()
+void DOGECGUI::goToMasterNodes()
 {
     showTop(masterNodesWidget);
 }
 
-void FLSGUI::goToColdStaking()
+void DOGECGUI::goToColdStaking()
 {
     showTop(coldStakingWidget);
 }
 
-void FLSGUI::goToSettings(){
+void DOGECGUI::goToSettings(){
     showTop(settingsWidget);
 }
 
-void FLSGUI::goToSettingsInfo()
+void DOGECGUI::goToSettingsInfo()
 {
     navMenu->selectSettings();
     settingsWidget->showInformation();
     goToSettings();
 }
 
-void FLSGUI::goToReceive()
+void DOGECGUI::goToReceive()
 {
     showTop(receiveWidget);
 }
 
-void FLSGUI::openNetworkMonitor()
+void DOGECGUI::openNetworkMonitor()
 {
     settingsWidget->openNetworkMonitor();
 }
 
-void FLSGUI::showTop(QWidget* view)
+void DOGECGUI::showTop(QWidget* view)
 {
     if (stackedContainer->currentWidget() != view) {
         stackedContainer->setCurrentWidget(view);
@@ -531,7 +531,7 @@ void FLSGUI::showTop(QWidget* view)
     }
 }
 
-void FLSGUI::changeTheme(bool isLightTheme)
+void DOGECGUI::changeTheme(bool isLightTheme)
 {
 
     QString css = GUIUtil::loadStyleSheet();
@@ -544,7 +544,7 @@ void FLSGUI::changeTheme(bool isLightTheme)
     updateStyle(this);
 }
 
-void FLSGUI::resizeEvent(QResizeEvent* event)
+void DOGECGUI::resizeEvent(QResizeEvent* event)
 {
     // Parent..
     QMainWindow::resizeEvent(event);
@@ -554,12 +554,12 @@ void FLSGUI::resizeEvent(QResizeEvent* event)
     Q_EMIT windowResizeEvent(event);
 }
 
-bool FLSGUI::execDialog(QDialog *dialog, int xDiv, int yDiv)
+bool DOGECGUI::execDialog(QDialog *dialog, int xDiv, int yDiv)
 {
     return openDialogWithOpaqueBackgroundY(dialog, this);
 }
 
-void FLSGUI::showHide(bool show)
+void DOGECGUI::showHide(bool show)
 {
     if (!op) op = new QLabel(this);
     if (!show) {
@@ -587,12 +587,12 @@ void FLSGUI::showHide(bool show)
     }
 }
 
-int FLSGUI::getNavWidth()
+int DOGECGUI::getNavWidth()
 {
     return this->navMenu->width();
 }
 
-void FLSGUI::openFAQ(SettingsFaqWidget::Section section)
+void DOGECGUI::openFAQ(SettingsFaqWidget::Section section)
 {
     showHide(true);
     SettingsFaqWidget* dialog = new SettingsFaqWidget(this);
@@ -603,7 +603,7 @@ void FLSGUI::openFAQ(SettingsFaqWidget::Section section)
 
 
 #ifdef ENABLE_WALLET
-bool FLSGUI::addWallet(const QString& name, WalletModel* walletModel)
+bool DOGECGUI::addWallet(const QString& name, WalletModel* walletModel)
 {
     // Single wallet supported for now..
     if (!stackedContainer || !clientModel || !walletModel)
@@ -621,33 +621,33 @@ bool FLSGUI::addWallet(const QString& name, WalletModel* walletModel)
     settingsWidget->setWalletModel(walletModel);
 
     // Connect actions..
-    connect(walletModel, &WalletModel::message, this, &FLSGUI::message);
-    connect(masterNodesWidget, &MasterNodesWidget::message, this, &FLSGUI::message);
-    connect(coldStakingWidget, &ColdStakingWidget::message, this, &FLSGUI::message);
-    connect(topBar, &TopBar::message, this, &FLSGUI::message);
-    connect(sendWidget, &SendWidget::message,this, &FLSGUI::message);
-    connect(receiveWidget, &ReceiveWidget::message,this, &FLSGUI::message);
-    connect(addressesWidget, &AddressesWidget::message,this, &FLSGUI::message);
-    connect(settingsWidget, &SettingsWidget::message, this, &FLSGUI::message);
+    connect(walletModel, &WalletModel::message, this, &DOGECGUI::message);
+    connect(masterNodesWidget, &MasterNodesWidget::message, this, &DOGECGUI::message);
+    connect(coldStakingWidget, &ColdStakingWidget::message, this, &DOGECGUI::message);
+    connect(topBar, &TopBar::message, this, &DOGECGUI::message);
+    connect(sendWidget, &SendWidget::message,this, &DOGECGUI::message);
+    connect(receiveWidget, &ReceiveWidget::message,this, &DOGECGUI::message);
+    connect(addressesWidget, &AddressesWidget::message,this, &DOGECGUI::message);
+    connect(settingsWidget, &SettingsWidget::message, this, &DOGECGUI::message);
 
     // Pass through transaction notifications
-    connect(dashboard, &DashboardWidget::incomingTransaction, this, &FLSGUI::incomingTransaction);
+    connect(dashboard, &DashboardWidget::incomingTransaction, this, &DOGECGUI::incomingTransaction);
 
     return true;
 }
 
-bool FLSGUI::setCurrentWallet(const QString& name)
+bool DOGECGUI::setCurrentWallet(const QString& name)
 {
     // Single wallet supported.
     return true;
 }
 
-void FLSGUI::removeAllWallets()
+void DOGECGUI::removeAllWallets()
 {
     // Single wallet supported.
 }
 
-void FLSGUI::incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address)
+void DOGECGUI::incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address)
 {
     // Only send notifications when not disabled
     if (!bdisableSystemnotifications) {
@@ -670,7 +670,7 @@ void FLSGUI::incomingTransaction(const QString& date, int unit, const CAmount& a
 #endif // ENABLE_WALLET
 
 
-static bool ThreadSafeMessageBox(FLSGUI* gui, const std::string& message, const std::string& caption, unsigned int style)
+static bool ThreadSafeMessageBox(DOGECGUI* gui, const std::string& message, const std::string& caption, unsigned int style)
 {
     bool modal = (style & CClientUIInterface::MODAL);
     // The SECURE flag has no effect in the Qt GUI.
@@ -689,13 +689,13 @@ static bool ThreadSafeMessageBox(FLSGUI* gui, const std::string& message, const 
 }
 
 
-void FLSGUI::subscribeToCoreSignals()
+void DOGECGUI::subscribeToCoreSignals()
 {
     // Connect signals to client
     m_handler_message_box = interfaces::MakeHandler(uiInterface.ThreadSafeMessageBox.connect(std::bind(ThreadSafeMessageBox, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
 }
 
-void FLSGUI::unsubscribeFromCoreSignals()
+void DOGECGUI::unsubscribeFromCoreSignals()
 {
     // Disconnect signals from client
     m_handler_message_box->disconnect();

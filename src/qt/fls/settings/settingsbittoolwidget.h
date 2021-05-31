@@ -10,8 +10,8 @@
 #define SETTINGSBITTOOLWIDGET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
-#include "qt/fls/contactsdropdown.h"
+#include "qt/dogecash/pwidget.h"
+#include "qt/dogecash/contactsdropdown.h"
 #include "key.h"
 
 namespace Ui {
@@ -23,7 +23,7 @@ class SettingsBitToolWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsBitToolWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsBitToolWidget(DOGECGUI* _window, QWidget *parent = nullptr);
     ~SettingsBitToolWidget();
 protected:
     void resizeEvent(QResizeEvent *event) override;

@@ -11,7 +11,7 @@
 #include "uint256.h"
 #include "version.h"
 #include "consensus/merkle.h"
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include <vector>
 

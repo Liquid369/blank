@@ -4,13 +4,13 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_LEGACY_ZPOS_H
-#define FLS_LEGACY_ZPOS_H
+#ifndef DOGEC_LEGACY_ZPOS_H
+#define DOGEC_LEGACY_ZPOS_H
 
 #include "stakeinput.h"
 #include "txdb.h"
 
-class CLegacyZFlsStake : public CStakeInput
+class CLegacyZDogeCashStake : public CStakeInput
 {
 private:
     uint32_t nChecksum{0};
@@ -18,11 +18,11 @@ private:
     uint256 hashSerial{UINT256_ZERO};
 
 public:
-    CLegacyZFlsStake() : CStakeInput(nullptr) {}
+    CLegacyZDogeCashStake() : CStakeInput(nullptr) {}
 
-    explicit CLegacyZFlsStake(const libzerocoin::CoinSpend& spend);
+    explicit CLegacyZDogeCashStake(const libzerocoin::CoinSpend& spend);
     bool InitFromTxIn(const CTxIn& txin) override;
-    bool IsZFLS() const override { return true; }
+    bool IsZDOGEC() const override { return true; }
     uint32_t GetChecksum() const { return nChecksum; }
     const CBlockIndex* GetIndexFrom() const override;
     CAmount GetValue() const override;
@@ -33,4 +33,4 @@ public:
     virtual bool ContextCheck(int nHeight, uint32_t nTime) override;
 };
 
-#endif //FLS_LEGACY_ZPOS_H
+#endif //DOGEC_LEGACY_ZPOS_H

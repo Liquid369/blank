@@ -11,7 +11,7 @@
 
 #include <QWidget>
 #include <QDataWidgetMapper>
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 
 namespace Ui {
 class SettingsDisplayOptionsWidget;
@@ -22,7 +22,7 @@ class SettingsDisplayOptionsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsDisplayOptionsWidget(FLSGUI* _window = nullptr, QWidget *parent = nullptr);
+    explicit SettingsDisplayOptionsWidget(DOGECGUI* _window = nullptr, QWidget *parent = nullptr);
     ~SettingsDisplayOptionsWidget();
 
     void setMapper(QDataWidgetMapper *mapper);

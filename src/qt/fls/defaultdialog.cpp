@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/defaultdialog.h"
-#include "qt/fls/forms/ui_defaultdialog.h"
+#include "qt/dogecash/defaultdialog.h"
+#include "qt/dogecash/forms/ui_defaultdialog.h"
 #include "guiutil.h"
 
 DefaultDialog::DefaultDialog(QWidget *parent) :

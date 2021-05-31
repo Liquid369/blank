@@ -703,7 +703,7 @@ public:
     // Staker status (last hashed block and time)
     CStakerStatus* pStakerStatus = nullptr;
 
-    // User-defined fee FLS/kb
+    // User-defined fee DOGEC/kb
     bool fUseCustomFee;
     CAmount nCustomFee;
 
@@ -819,7 +819,7 @@ public:
 
     std::map<CTxDestination, std::vector<COutput> > AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue, bool fIncludeColdStaking);
 
-    /// Get 10000 FLS output and keys which can be used for the Masternode
+    /// Get 10000 DOGEC output and keys which can be used for the Masternode
     bool GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet,
             CKey& keyRet, std::string strTxHash, std::string strOutputIndex, std::string& strError);
     /// Extract txin information and keys from output

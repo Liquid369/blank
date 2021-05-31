@@ -56,7 +56,7 @@ bool AppInit(int argc, char* argv[])
     //
     // Parameters
     //
-    // If Qt is used, parameters/fls.conf are parsed in qt/fls.cpp's main()
+    // If Qt is used, parameters/dogecash.conf are parsed in qt/dogecash.cpp's main()
     gArgs.ParseParameters(argc, argv);
 
     // Process help and version before taking care about datadir
@@ -67,7 +67,7 @@ bool AppInit(int argc, char* argv[])
             strUsage += LicenseInfo();
         } else {
             strUsage += "\n" + _("Usage:") + "\n" +
-                        "  flsd [options]                     " + _("Start Pivx Core Daemon") + "\n";
+                        "  dogecashd [options]                     " + _("Start Pivx Core Daemon") + "\n";
 
             strUsage += "\n" + HelpMessage(HMM_BITCOIND);
         }
@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
 {
     SetupEnvironment();
 
-    // Connect flsd signal handlers
+    // Connect dogecashd signal handlers
     noui_connect();
 
     return (AppInit(argc, argv) ? 0 : 1);

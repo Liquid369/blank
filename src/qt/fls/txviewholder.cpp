@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/txviewholder.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/txviewholder.h"
+#include "qt/dogecash/qtutils.h"
 #include "transactiontablemodel.h"
 #include <QModelIndex>
 
@@ -36,8 +36,8 @@ void TxViewHolder::init(QWidget* holder, const QModelIndex &index, bool isHovere
     txRow->showHideSecondAmount(hasDoubleAmount);
 
     if (type != TransactionRecord::ZerocoinMint &&
-            type !=  TransactionRecord::ZerocoinSpend_Change_zFls &&
-            type !=  TransactionRecord::StakeZFLS &&
+            type !=  TransactionRecord::ZerocoinSpend_Change_zDogeCash &&
+            type !=  TransactionRecord::StakeZDOGEC &&
             type != TransactionRecord::Other) {
 
         QString address = rIndex.data(Qt::DisplayRole).toString();

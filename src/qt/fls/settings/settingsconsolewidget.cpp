@@ -4,10 +4,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsconsolewidget.h"
-#include "qt/fls/settings/forms/ui_settingsconsolewidget.h"
+#include "qt/dogecash/settings/settingsconsolewidget.h"
+#include "qt/dogecash/settings/forms/ui_settingsconsolewidget.h"
 
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 
 #include "clientmodel.h"
 #include "guiutil.h"
@@ -99,7 +99,7 @@ public:
     }
 };
 
-#include "qt/fls/settings/moc_settingsconsolewidget.cpp"
+#include "qt/dogecash/settings/moc_settingsconsolewidget.cpp"
 
 /**
  * Split shell command line into a list of arguments. Aims to emulate \c bash and friends.
@@ -241,7 +241,7 @@ void RPCExecutor::requestCommand(const QString& command)
     }
 }
 
-SettingsConsoleWidget::SettingsConsoleWidget(FLSGUI* _window, QWidget *parent) :
+SettingsConsoleWidget::SettingsConsoleWidget(DOGECGUI* _window, QWidget *parent) :
     PWidget(_window,parent),
     ui(new Ui::SettingsConsoleWidget)
 {

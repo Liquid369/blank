@@ -4,7 +4,7 @@
 <context>
     <name>AddNewAddressDialog</name>
     <message>
-        <location filename="../fls/forms/addnewaddressdialog.ui" line="+14"/>
+        <location filename="../dogecash/forms/addnewaddressdialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -37,7 +37,7 @@
 <context>
     <name>AddNewContactDialog</name>
     <message>
-        <location filename="../fls/forms/addnewcontactdialog.ui" line="+14"/>
+        <location filename="../dogecash/forms/addnewcontactdialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -67,7 +67,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/addnewcontactdialog.cpp" line="+48"/>
+        <location filename="../dogecash/addnewcontactdialog.cpp" line="+48"/>
         <source>Edit label for the selected address:
 %1</source>
         <translation type="unfinished"></translation>
@@ -199,7 +199,7 @@
 <context>
     <name>AddressLabelRow</name>
     <message>
-        <location filename="../fls/forms/addresslabelrow.ui" line="+20"/>
+        <location filename="../dogecash/forms/addresslabelrow.ui" line="+20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -245,7 +245,7 @@
 <context>
     <name>AddressesWidget</name>
     <message>
-        <location filename="../fls/forms/addresseswidget.ui" line="+14"/>
+        <location filename="../dogecash/forms/addresseswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -280,7 +280,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/addresseswidget.cpp" line="+90"/>
+        <location filename="../dogecash/addresseswidget.cpp" line="+90"/>
         <source>Add new contact</source>
         <translation type="unfinished"></translation>
     </message>
@@ -448,7 +448,7 @@ for staking</source>
     </message>
     <message>
         <location line="+161"/>
-        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
+        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -537,7 +537,7 @@ for staking</source>
 <context>
     <name>BalanceBubble</name>
     <message>
-        <location filename="../fls/forms/balancebubble.ui" line="+26"/>
+        <location filename="../dogecash/forms/balancebubble.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -549,7 +549,7 @@ for staking</source>
     <message>
         <location line="+15"/>
         <location line="+26"/>
-        <source>0.00 fls</source>
+        <source>0.00 dogecash</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -574,7 +574,7 @@ for staking</source>
 <context>
     <name>CSRow</name>
     <message>
-        <location filename="../fls/forms/csrow.ui" line="+14"/>
+        <location filename="../dogecash/forms/csrow.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -585,7 +585,7 @@ for staking</source>
     </message>
     <message>
         <location line="+20"/>
-        <source>0,00 FLS</source>
+        <source>0,00 DOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -599,7 +599,7 @@ for staking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/csrow.cpp" line="+27"/>
+        <location filename="../dogecash/csrow.cpp" line="+27"/>
         <source>Own delegation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -636,7 +636,7 @@ for staking</source>
     </message>
     <message>
         <location line="+81"/>
-        <source>Select FLS Outputs to Spend</source>
+        <source>Select DOGEC Outputs to Spend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -674,7 +674,7 @@ for staking</source>
         <location line="-393"/>
         <location line="+124"/>
         <location line="+461"/>
-        <source>0.00 FLS</source>
+        <source>0.00 DOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -876,7 +876,7 @@ for staking</source>
 <context>
     <name>ColdStakingWidget</name>
     <message>
-        <location filename="../fls/forms/coldstakingwidget.ui" line="+14"/>
+        <location filename="../dogecash/forms/coldstakingwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -926,7 +926,7 @@ for staking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/coldstakingwidget.cpp" line="+801"/>
+        <location filename="../dogecash/coldstakingwidget.cpp" line="+801"/>
         <source>Total Staking: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -936,8 +936,8 @@ for staking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/forms/coldstakingwidget.ui" line="-603"/>
-        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
+        <location filename="../dogecash/forms/coldstakingwidget.ui" line="-603"/>
+        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -948,7 +948,7 @@ stake on your behalf, while you keep the keys securely offline.</source>
     </message>
     <message>
         <location line="-139"/>
-        <source>Accept FLS delegation / Delegate FLS</source>
+        <source>Accept DOGEC delegation / Delegate DOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -957,7 +957,7 @@ stake on your behalf, while you keep the keys securely offline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/coldstakingwidget.cpp" line="+18"/>
+        <location filename="../dogecash/coldstakingwidget.cpp" line="+18"/>
         <source>No receive addresses available, you can go to the receive screen and create some there!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1158,7 +1158,7 @@ address</source>
 <context>
     <name>ContactDropdownRow</name>
     <message>
-        <location filename="../fls/forms/contactdropdownrow.ui" line="+20"/>
+        <location filename="../dogecash/forms/contactdropdownrow.ui" line="+20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1166,7 +1166,7 @@ address</source>
 <context>
     <name>DashboardWidget</name>
     <message>
-        <location filename="../fls/forms/dashboardwidget.ui" line="+14"/>
+        <location filename="../dogecash/forms/dashboardwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1192,7 +1192,7 @@ address</source>
     </message>
     <message>
         <location line="+357"/>
-        <source>How to get FLS</source>
+        <source>How to get DOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1226,12 +1226,12 @@ address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/dashboardwidget.cpp" line="+115"/>
+        <location filename="../dogecash/dashboardwidget.cpp" line="+115"/>
         <source>Please wait until the wallet is fully synced to see your correct balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/forms/dashboardwidget.ui" line="-658"/>
+        <location filename="../dogecash/forms/dashboardwidget.ui" line="-658"/>
         <source>No transactions yet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1242,7 +1242,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/dashboardwidget.cpp" line="+36"/>
+        <location filename="../dogecash/dashboardwidget.cpp" line="+36"/>
         <location line="+274"/>
         <source>You have no staking rewards</source>
         <translation type="unfinished"></translation>
@@ -1278,7 +1278,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>DefaultDialog</name>
     <message>
-        <location filename="../fls/forms/defaultdialog.ui" line="+14"/>
+        <location filename="../dogecash/forms/defaultdialog.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1364,7 +1364,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>ExpandableButton</name>
     <message>
-        <location filename="../fls/forms/expandablebutton.ui" line="+26"/>
+        <location filename="../dogecash/forms/expandablebutton.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1547,7 +1547,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>LoadingDialog</name>
     <message>
-        <location filename="../fls/forms/loadingdialog.ui" line="+14"/>
+        <location filename="../dogecash/forms/loadingdialog.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1570,7 +1570,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>LockUnlock</name>
     <message>
-        <location filename="../fls/forms/lockunlock.ui" line="+14"/>
+        <location filename="../dogecash/forms/lockunlock.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1593,12 +1593,12 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>MNRow</name>
     <message>
-        <location filename="../fls/forms/mnrow.ui" line="+14"/>
+        <location filename="../dogecash/forms/mnrow.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
-        <location filename="../fls/mnrow.cpp" line="+24"/>
+        <location filename="../dogecash/mnrow.cpp" line="+24"/>
         <source>Collateral tx not found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1611,7 +1611,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>MasterNodeWizardDialog</name>
     <message>
-        <location filename="../fls/forms/masternodewizarddialog.ui" line="+14"/>
+        <location filename="../dogecash/forms/masternodewizarddialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1652,7 +1652,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+23"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 DOGEC (the unit of DOGEC) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1677,7 +1677,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+97"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 FLS will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node&apos;s name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 DOGEC will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node&apos;s name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1701,7 +1701,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/masternodewizarddialog.cpp" line="+171"/>
+        <location filename="../dogecash/masternodewizarddialog.cpp" line="+171"/>
         <source>address label cannot be empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1769,7 +1769,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>MasterNodesWidget</name>
     <message>
-        <location filename="../fls/forms/masternodeswidget.ui" line="+14"/>
+        <location filename="../dogecash/forms/masternodeswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1805,7 +1805,7 @@ and vote on the treasury system receiving a periodic reward.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/masternodeswidget.cpp" line="+174"/>
+        <location filename="../dogecash/masternodeswidget.cpp" line="+174"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1922,7 +1922,7 @@ Please wait few more minutes (masternode collaterals require %1 confirmations).<
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the fls.conf file
+You will only have to paste the data in the dogecash.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press &quot;start&quot;).
 </source>
@@ -1970,7 +1970,7 @@ Are you sure?</source>
 <context>
     <name>MnInfoDialog</name>
     <message>
-        <location filename="../fls/forms/mninfodialog.ui" line="+20"/>
+        <location filename="../dogecash/forms/mninfodialog.ui" line="+20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -2015,7 +2015,7 @@ Are you sure?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/mninfodialog.cpp" line="+27"/>
+        <location filename="../dogecash/mninfodialog.cpp" line="+27"/>
         <source>Masternode public key copied</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2028,7 +2028,7 @@ Are you sure?</source>
 <context>
     <name>MyAddressRow</name>
     <message>
-        <location filename="../fls/forms/myaddressrow.ui" line="+14"/>
+        <location filename="../dogecash/forms/myaddressrow.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -2036,7 +2036,7 @@ Are you sure?</source>
 <context>
     <name>NavMenuWidget</name>
     <message>
-        <location filename="../fls/forms/navmenuwidget.ui" line="+14"/>
+        <location filename="../dogecash/forms/navmenuwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -2088,7 +2088,7 @@ STAKING</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/navmenuwidget.cpp" line="+23"/>
+        <location filename="../dogecash/navmenuwidget.cpp" line="+23"/>
         <source>v%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2142,14 +2142,14 @@ STAKING</source>
     </message>
     <message>
         <location line="+6"/>
-        <source>Invalid URI, not starting with &quot;fls&quot; prefix</source>
+        <source>Invalid URI, not starting with &quot;dogecash&quot; prefix</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OptionButton</name>
     <message>
-        <location filename="../fls/forms/optionbutton.ui" line="+14"/>
+        <location filename="../dogecash/forms/optionbutton.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -2263,7 +2263,7 @@ STAKING</source>
     </message>
     <message>
         <location line="+192"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
+        <source>The user interface language can be set here. This setting will take effect after restarting DOGEC.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2279,17 +2279,17 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</source>
     </message>
     <message>
         <location line="-187"/>
-        <source>Enable automatic minting of FLS units to zFLS</source>
+        <source>Enable automatic minting of DOGEC units to zDOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
-        <source>Enable zFLS Automint</source>
+        <source>Enable zDOGEC Automint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>Enable automatic zFLS minting from specific addresses</source>
+        <source>Enable automatic zDOGEC minting from specific addresses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2299,23 +2299,23 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</source>
     </message>
     <message>
         <location line="+11"/>
-        <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
+        <source>Percentage of incoming DOGEC which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Percentage of autominted zFLS</source>
+        <source>Percentage of autominted zDOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
         <location line="+16"/>
-        <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
+        <source>Wait with automatic conversion to Zerocoin until enough DOGEC for this denomination is available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-13"/>
-        <source>Preferred Automint zFLS Denomination</source>
+        <source>Preferred Automint zDOGEC Denomination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2508,9 +2508,9 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</source>
     </message>
 </context>
 <context>
-    <name>FLSGUI</name>
+    <name>DOGECGUI</name>
     <message>
-        <location filename="../fls/flsgui.cpp" line="+69"/>
+        <location filename="../dogecash/dogecashgui.cpp" line="+69"/>
         <location line="+301"/>
         <location line="+69"/>
         <source>FLITS Core</source>
@@ -2641,7 +2641,7 @@ Address: %4
     </message>
     <message>
         <location line="-101"/>
-        <source>Cannot start fls: click-to-pay handler</source>
+        <source>Cannot start dogecash: click-to-pay handler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2814,7 +2814,7 @@ Address: %4
         <translation>%1 ms</translation>
     </message>
     <message>
-        <location filename="../fls.cpp" line="+535"/>
+        <location filename="../dogecash.cpp" line="+535"/>
         <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2858,25 +2858,25 @@ Address: %4
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../fls/qtutils.cpp" line="+136"/>
+        <location filename="../dogecash/qtutils.cpp" line="+136"/>
         <source>Receiving</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../fls/qtutils.cpp" line="+3"/>
+        <location filename="../dogecash/qtutils.cpp" line="+3"/>
         <source>Delegator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../fls/qtutils.cpp" line="+1"/>
+        <location filename="../dogecash/qtutils.cpp" line="+1"/>
         <source>Delegable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../fls/qtutils.cpp" line="-2"/>
+        <location filename="../dogecash/qtutils.cpp" line="-2"/>
         <source>Cold Staking</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2906,7 +2906,7 @@ Address: %4
         <translation type="unfinished">Unknown</translation>
     </message>
     <message>
-        <location filename="../fls/qtutils.cpp" line="-3"/>
+        <location filename="../dogecash/qtutils.cpp" line="-3"/>
         <location line="+24"/>
         <source>All</source>
         <translation type="unfinished">All</translation>
@@ -3022,7 +3022,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/dashboardwidget.cpp" line="-530"/>
+        <location filename="../dogecash/dashboardwidget.cpp" line="-530"/>
         <source>Jan</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3082,7 +3082,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/coldstakingwidget.cpp" line="-711"/>
+        <location filename="../dogecash/coldstakingwidget.cpp" line="-711"/>
         <source>Address with no label</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3390,7 +3390,7 @@ Address: %4
     </message>
     <message>
         <location line="+29"/>
-        <source>Custom zFLS Backup Path:</source>
+        <source>Custom zDOGEC Backup Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3637,7 +3637,7 @@ Address: %4
 <context>
     <name>ReceiveDialog</name>
     <message>
-        <location filename="../fls/forms/receivedialog.ui" line="+14"/>
+        <location filename="../dogecash/forms/receivedialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3660,13 +3660,13 @@ Address: %4
 <context>
     <name>ReceiveWidget</name>
     <message>
-        <location filename="../fls/forms/receivewidget.ui" line="+20"/>
+        <location filename="../dogecash/forms/receivewidget.ui" line="+20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location line="+61"/>
-        <source>Scan the QR code or copy the address to receive FLS</source>
+        <source>Scan the QR code or copy the address to receive DOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3681,12 +3681,12 @@ Address: %4
     </message>
     <message>
         <location line="+19"/>
-        <source>Accept transparent or shielded FLS</source>
+        <source>Accept transparent or shielded DOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+179"/>
-        <location filename="../fls/receivewidget.cpp" line="+183"/>
+        <location filename="../dogecash/receivewidget.cpp" line="+183"/>
         <source>Add Label</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3706,7 +3706,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/receivewidget.cpp" line="-123"/>
+        <location filename="../dogecash/receivewidget.cpp" line="-123"/>
         <source>My Addresses</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3835,7 +3835,7 @@ try unlocking the wallet</source>
 <context>
     <name>RequestDialog</name>
     <message>
-        <location filename="../fls/forms/requestdialog.ui" line="+14"/>
+        <location filename="../dogecash/forms/requestdialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3846,7 +3846,7 @@ try unlocking the wallet</source>
     </message>
     <message>
         <location line="+74"/>
-        <source>FLS</source>
+        <source>DOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3900,17 +3900,17 @@ try unlocking the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/requestdialog.cpp" line="+49"/>
+        <location filename="../dogecash/requestdialog.cpp" line="+49"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../fls/forms/requestdialog.ui" line="+222"/>
+        <location filename="../dogecash/forms/requestdialog.ui" line="+222"/>
         <source>GENERATE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/requestdialog.cpp" line="+27"/>
+        <location filename="../dogecash/requestdialog.cpp" line="+27"/>
         <source>Creates an address to receive coin delegations and be able to stake them.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3948,13 +3948,13 @@ try unlocking the wallet</source>
 <context>
     <name>SendChangeAddressDialog</name>
     <message>
-        <location filename="../fls/forms/sendchangeaddressdialog.ui" line="+14"/>
+        <location filename="../dogecash/forms/sendchangeaddressdialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+238"/>
-        <location filename="../fls/sendchangeaddressdialog.cpp" line="+64"/>
+        <location filename="../dogecash/sendchangeaddressdialog.cpp" line="+64"/>
         <source>CANCEL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3974,7 +3974,7 @@ try unlocking the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/sendchangeaddressdialog.cpp" line="-17"/>
+        <location filename="../dogecash/sendchangeaddressdialog.cpp" line="-17"/>
         <source>RESET</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3992,7 +3992,7 @@ try unlocking the wallet</source>
 <context>
     <name>SendCustomFeeDialog</name>
     <message>
-        <location filename="../fls/forms/sendcustomfeedialog.ui" line="+14"/>
+        <location filename="../dogecash/forms/sendcustomfeedialog.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4003,7 +4003,7 @@ try unlocking the wallet</source>
     </message>
     <message>
         <location line="+86"/>
-        <source>FLS/kilobyte</source>
+        <source>DOGEC/kilobyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4032,7 +4032,7 @@ try unlocking the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/sendcustomfeedialog.cpp" line="+35"/>
+        <location filename="../dogecash/sendcustomfeedialog.cpp" line="+35"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4047,12 +4047,12 @@ try unlocking the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/forms/sendcustomfeedialog.ui" line="+260"/>
+        <location filename="../dogecash/forms/sendcustomfeedialog.ui" line="+260"/>
         <source>SAVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/sendcustomfeedialog.cpp" line="+90"/>
+        <location filename="../dogecash/sendcustomfeedialog.cpp" line="+90"/>
         <source>Fee too high. Must be below: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4065,7 +4065,7 @@ try unlocking the wallet</source>
 <context>
     <name>SendMemoDialog</name>
     <message>
-        <location filename="../fls/forms/sendmemodialog.ui" line="+14"/>
+        <location filename="../dogecash/forms/sendmemodialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4089,7 +4089,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/sendmemodialog.cpp" line="+49"/>
+        <location filename="../dogecash/sendmemodialog.cpp" line="+49"/>
         <source>RESET</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4102,7 +4102,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SendMultiRow</name>
     <message>
-        <location filename="../fls/forms/sendmultirow.ui" line="+26"/>
+        <location filename="../dogecash/forms/sendmultirow.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4122,7 +4122,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/sendmultirow.cpp" line="+92"/>
+        <location filename="../dogecash/sendmultirow.cpp" line="+92"/>
         <source>Update memo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4140,7 +4140,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SendWidget</name>
     <message>
-        <location filename="../fls/send.cpp" line="+159"/>
+        <location filename="../dogecash/send.cpp" line="+159"/>
         <source>Total remaining from the selected UTXO</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4333,12 +4333,12 @@ Do you want to continue?
     </message>
     <message>
         <location line="+14"/>
-        <source>Error generating address to shield FLSs</source>
+        <source>Error generating address to shield DOGECs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>You don&apos;t have any transparent FLSs to shield.</source>
+        <source>You don&apos;t have any transparent DOGECs to shield.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4395,7 +4395,7 @@ Do you want to continue?
 <context>
     <name>SettingsBackupWallet</name>
     <message>
-        <location filename="../fls/settings/forms/settingsbackupwallet.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingsbackupwallet.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4417,7 +4417,7 @@ This option creates a wallet.dat file that can be used to recover your whole bal
     </message>
     <message>
         <location line="+53"/>
-        <location filename="../fls/settings/settingsbackupwallet.cpp" line="+57"/>
+        <location filename="../dogecash/settings/settingsbackupwallet.cpp" line="+57"/>
         <source>Select folder...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4434,12 +4434,12 @@ Remember to write it down and store it safely, otherwise you might lose access t
     </message>
     <message>
         <location line="-172"/>
-        <location filename="../fls/settings/settingsbackupwallet.cpp" line="-7"/>
+        <location filename="../dogecash/settings/settingsbackupwallet.cpp" line="-7"/>
         <source>Backup Wallet</source>
         <translation type="unfinished">Backup Wallet</translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsbackupwallet.cpp" line="+1"/>
+        <location filename="../dogecash/settings/settingsbackupwallet.cpp" line="+1"/>
         <source>Wallet Data (*.dat)</source>
         <translation type="unfinished">Wallet Data (*.dat)</translation>
     </message>
@@ -4462,7 +4462,7 @@ Remember to write it down and store it safely, otherwise you might lose access t
 <context>
     <name>SettingsBitToolWidget</name>
     <message>
-        <location filename="../fls/settings/forms/settingsbittoolwidget.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingsbittoolwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4565,7 +4565,7 @@ Using this mechanism you can share your keys without middle-man risk, only need 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsbittoolwidget.cpp" line="+142"/>
+        <location filename="../dogecash/settings/settingsbittoolwidget.cpp" line="+142"/>
         <source>The entered passphrase is invalid. </source>
         <translation type="unfinished"></translation>
     </message>
@@ -4655,7 +4655,7 @@ Using this mechanism you can share your keys without middle-man risk, only need 
 <context>
     <name>SettingsConsoleWidget</name>
     <message>
-        <location filename="../fls/settings/forms/settingsconsolewidget.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingsconsolewidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4665,12 +4665,12 @@ Using this mechanism you can share your keys without middle-man risk, only need 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsconsolewidget.cpp" line="+264"/>
+        <location filename="../dogecash/settings/settingsconsolewidget.cpp" line="+264"/>
         <source>Console input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/forms/settingsconsolewidget.ui" line="+29"/>
+        <location filename="../dogecash/settings/forms/settingsconsolewidget.ui" line="+29"/>
         <source>Open Debug File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4685,7 +4685,7 @@ Using this mechanism you can share your keys without middle-man risk, only need 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsconsolewidget.cpp" line="+13"/>
+        <location filename="../dogecash/settings/settingsconsolewidget.cpp" line="+13"/>
         <source>Cannot open debug file.
 Verify that you have installed a predetermined text editor.</source>
         <translation type="unfinished"></translation>
@@ -4714,7 +4714,7 @@ Verify that you have installed a predetermined text editor.</source>
 <context>
     <name>SettingsDisplayOptionsWidget</name>
     <message>
-        <location filename="../fls/settings/forms/settingsdisplayoptionswidget.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingsdisplayoptionswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4725,7 +4725,7 @@ Verify that you have installed a predetermined text editor.</source>
     </message>
     <message>
         <location line="+91"/>
-        <location filename="../fls/settings/settingsdisplayoptionswidget.cpp" line="+92"/>
+        <location filename="../dogecash/settings/settingsdisplayoptionswidget.cpp" line="+92"/>
         <source>Reset to default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4770,7 +4770,7 @@ Verify that you have installed a predetermined text editor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsdisplayoptionswidget.cpp" line="-1"/>
+        <location filename="../dogecash/settings/settingsdisplayoptionswidget.cpp" line="-1"/>
         <source>SAVE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4788,7 +4788,7 @@ Verify that you have installed a predetermined text editor.</source>
 <context>
     <name>SettingsExportCSV</name>
     <message>
-        <location filename="../fls/settings/forms/settingsexportcsv.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingsexportcsv.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4810,7 +4810,7 @@ Verify that you have installed a predetermined text editor.</source>
     <message>
         <location line="+58"/>
         <location line="+115"/>
-        <location filename="../fls/settings/settingsexportcsv.cpp" line="+70"/>
+        <location filename="../dogecash/settings/settingsexportcsv.cpp" line="+70"/>
         <location line="+7"/>
         <source>Select folder...</source>
         <translation type="unfinished"></translation>
@@ -4821,7 +4821,7 @@ Verify that you have installed a predetermined text editor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsexportcsv.cpp" line="-16"/>
+        <location filename="../dogecash/settings/settingsexportcsv.cpp" line="-16"/>
         <source>Export CSV</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4832,12 +4832,12 @@ Verify that you have installed a predetermined text editor.</source>
     </message>
     <message>
         <location line="+1"/>
-        <source>FLS_tx_csv_export(*.csv)</source>
+        <source>DOGEC_tx_csv_export(*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>FLS_addresses_csv_export(*.csv)</source>
+        <source>DOGEC_addresses_csv_export(*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4914,18 +4914,18 @@ There was an error trying to save the address list to %1. Please try again.</sou
 <context>
     <name>SettingsFaqWidget</name>
     <message>
-        <location filename="../fls/settings/forms/settingsfaqwidget.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingsfaqwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location line="+152"/>
-        <source>1) What is FLS?</source>
+        <source>1) What is DOGEC?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+31"/>
-        <source>2) Why are my FLS unspendable?</source>
+        <source>2) Why are my DOGEC unspendable?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4940,7 +4940,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+18"/>
-        <source>What is FLS?</source>
+        <source>What is DOGEC?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4950,7 +4950,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+21"/>
-        <source>Why are my FLS unspendable?</source>
+        <source>Why are my DOGEC unspendable?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4973,12 +4973,12 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+18"/>
-        <source>How do I stake FLS?</source>
+        <source>How do I stake DOGEC?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+26"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You must have a balance of FLITS with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (fls-cli); the command &lt;span style=&quot; font-style:italic;&quot;&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You must have a balance of FLITS with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (dogecash-cli); the command &lt;span style=&quot; font-style:italic;&quot;&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5007,7 +5007,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
                            A masternode is a computer running a full node FLITS core wallet with a
-                           requirement of 10,000 FLS secured collateral to provide extra services
+                           requirement of 10,000 DOGEC secured collateral to provide extra services
                            to the network and in return, receive a portion of the block reward
                            regularly.  These services include:
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
@@ -5038,7 +5038,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
                            Requirements:
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
                            &lt;ul&gt;
-                           &lt;li&gt;10,000 FLS per single Masternode instance&lt;/li&gt;
+                           &lt;li&gt;10,000 DOGEC per single Masternode instance&lt;/li&gt;
                            &lt;li&gt;Must be stored in a core wallet&lt;/li&gt;
                            &lt;li&gt;Need dedicated IP address&lt;/li&gt;
                            &lt;li&gt;Masternode wallet to remain online&lt;/li&gt;
@@ -5087,7 +5087,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+26"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;A Masternode Controller wallet is where the 10,000 FLS collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;A Masternode Controller wallet is where the 10,000 DOGEC collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5102,7 +5102,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+138"/>
-        <source>3) How do I stake FLS?</source>
+        <source>3) How do I stake DOGEC?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5129,7 +5129,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
 <context>
     <name>SettingsInformationWidget</name>
     <message>
-        <location filename="../fls/settings/forms/settingsinformationwidget.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingsinformationwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5224,12 +5224,12 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsinformationwidget.cpp" line="+74"/>
+        <location filename="../dogecash/settings/settingsinformationwidget.cpp" line="+74"/>
         <source>Main</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/forms/settingsinformationwidget.ui" line="-587"/>
+        <location filename="../dogecash/settings/forms/settingsinformationwidget.ui" line="-587"/>
         <source>Wallet Conf</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5239,7 +5239,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsinformationwidget.cpp" line="+22"/>
+        <location filename="../dogecash/settings/settingsinformationwidget.cpp" line="+22"/>
         <source>No information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5250,7 +5250,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+4"/>
-        <source>Unable to open fls.conf with default application</source>
+        <source>Unable to open dogecash.conf with default application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5272,7 +5272,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
 <context>
     <name>SettingsMainOptionsWidget</name>
     <message>
-        <location filename="../fls/settings/forms/settingsmainoptionswidget.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingsmainoptionswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5322,12 +5322,12 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsmainoptionswidget.cpp" line="+54"/>
+        <location filename="../dogecash/settings/settingsmainoptionswidget.cpp" line="+54"/>
         <source>Start FLITS on system login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/forms/settingsmainoptionswidget.ui" line="+130"/>
+        <location filename="../dogecash/settings/forms/settingsmainoptionswidget.ui" line="+130"/>
         <source>Minimize to the tray instead of the taskbar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5337,7 +5337,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsmainoptionswidget.cpp" line="+30"/>
+        <location filename="../dogecash/settings/settingsmainoptionswidget.cpp" line="+30"/>
         <source>Reset Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5358,7 +5358,7 @@ Are you sure?
 <context>
     <name>SettingsMultisendDialog</name>
     <message>
-        <location filename="../fls/settings/forms/settingsmultisenddialog.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingsmultisenddialog.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5385,7 +5385,7 @@ Are you sure?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsmultisenddialog.cpp" line="+24"/>
+        <location filename="../dogecash/settings/settingsmultisenddialog.cpp" line="+24"/>
         <source>New recipient for multisend</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5408,7 +5408,7 @@ Are you sure?
 <context>
     <name>SettingsMultisendWidget</name>
     <message>
-        <location filename="../fls/settings/forms/settingsmultisendwidget.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingsmultisendwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5430,7 +5430,7 @@ Are you sure?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingsmultisendwidget.cpp" line="+164"/>
+        <location filename="../dogecash/settings/settingsmultisendwidget.cpp" line="+164"/>
         <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5550,7 +5550,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
 <context>
     <name>SettingsSignMessageWidgets</name>
     <message>
-        <location filename="../fls/settings/forms/settingssignmessagewidgets.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingssignmessagewidgets.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5575,12 +5575,12 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingssignmessagewidgets.cpp" line="+47"/>
+        <location filename="../dogecash/settings/settingssignmessagewidgets.cpp" line="+47"/>
         <source>Select mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/forms/settingssignmessagewidgets.ui" line="-19"/>
+        <location filename="../dogecash/settings/forms/settingssignmessagewidgets.ui" line="-19"/>
         <source>Message</source>
         <translation type="unfinished">Message</translation>
     </message>
@@ -5602,7 +5602,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
     </message>
     <message>
         <location line="+88"/>
-        <location filename="../fls/settings/settingssignmessagewidgets.cpp" line="+64"/>
+        <location filename="../dogecash/settings/settingssignmessagewidgets.cpp" line="+64"/>
         <source>SIGN</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5612,7 +5612,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingssignmessagewidgets.cpp" line="-1"/>
+        <location filename="../dogecash/settings/settingssignmessagewidgets.cpp" line="-1"/>
         <source>You can sign messages with your addresses to prove you own them. Be careful not to sign anything vague, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation type="unfinished">You can sign messages with your addresses to prove you own them. Be careful not to sign anything vague, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</translation>
     </message>
@@ -5701,7 +5701,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
 <context>
     <name>SettingsWalletOptionsWidget</name>
     <message>
-        <location filename="../fls/settings/forms/settingswalletoptionswidget.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingswalletoptionswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5737,7 +5737,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
     </message>
     <message>
         <location line="+71"/>
-        <location filename="../fls/settings/settingswalletoptionswidget.cpp" line="+38"/>
+        <location filename="../dogecash/settings/settingswalletoptionswidget.cpp" line="+38"/>
         <source>Network</source>
         <translation type="unfinished">Network</translation>
     </message>
@@ -5787,7 +5787,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingswalletoptionswidget.cpp" line="+28"/>
+        <location filename="../dogecash/settings/settingswalletoptionswidget.cpp" line="+28"/>
         <source>Options reset succeed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5795,13 +5795,13 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
 <context>
     <name>SettingsWalletRepairWidget</name>
     <message>
-        <location filename="../fls/settings/forms/settingswalletrepairwidget.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingswalletrepairwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location line="+94"/>
-        <location filename="../fls/settings/settingswalletrepairwidget.cpp" line="+22"/>
+        <location filename="../dogecash/settings/settingswalletrepairwidget.cpp" line="+22"/>
         <source>Wallet Repair</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5881,7 +5881,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingswalletrepairwidget.cpp" line="+63"/>
+        <location filename="../dogecash/settings/settingswalletrepairwidget.cpp" line="+63"/>
         <source>This will delete your local blockchain folders and the wallet will synchronize the complete Blockchain from scratch.&lt;br /&gt;&lt;br /&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5909,7 +5909,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
 <context>
     <name>SettingsWidget</name>
     <message>
-        <location filename="../fls/settings/forms/settingswidget.ui" line="+14"/>
+        <location filename="../dogecash/settings/forms/settingswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5996,7 +5996,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
     </message>
     <message>
         <location line="+31"/>
-        <source>About FLS</source>
+        <source>About DOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6005,7 +6005,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/settings/settingswidget.cpp" line="+222"/>
+        <location filename="../dogecash/settings/settingswidget.cpp" line="+222"/>
         <source>Confirm options reset</source>
         <translation type="unfinished">Confirm options reset</translation>
     </message>
@@ -6090,7 +6090,7 @@ Are you sure?
 <context>
     <name>SnackBar</name>
     <message>
-        <location filename="../fls/forms/snackbar.ui" line="+26"/>
+        <location filename="../dogecash/forms/snackbar.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -6103,7 +6103,7 @@ Are you sure?
 <context>
     <name>Splash</name>
     <message>
-        <location filename="../fls/forms/splash.ui" line="+26"/>
+        <location filename="../dogecash/forms/splash.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -6113,7 +6113,7 @@ Are you sure?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/splash.cpp" line="+31"/>
+        <location filename="../dogecash/splash.cpp" line="+31"/>
         <source>FLITS Core</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6129,7 +6129,7 @@ Are you sure?
 <context>
     <name>TooltipMenu</name>
     <message>
-        <location filename="../fls/forms/tooltipmenu.ui" line="+26"/>
+        <location filename="../dogecash/forms/tooltipmenu.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -6157,7 +6157,7 @@ Are you sure?
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../fls/forms/topbar.ui" line="+26"/>
+        <location filename="../dogecash/forms/topbar.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -6173,7 +6173,7 @@ Are you sure?
     </message>
     <message>
         <location line="+213"/>
-        <location filename="../fls/topbar.cpp" line="+668"/>
+        <location filename="../dogecash/topbar.cpp" line="+668"/>
         <source>Available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6188,7 +6188,7 @@ Are you sure?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/topbar.cpp" line="-369"/>
+        <location filename="../dogecash/topbar.cpp" line="-369"/>
         <location line="+341"/>
         <source>Wallet Unlocked for staking</source>
         <translation type="unfinished"></translation>
@@ -6624,7 +6624,7 @@ backup will be created.
     </message>
     <message>
         <location line="+2"/>
-        <source>Burned FLSs</source>
+        <source>Burned DOGECs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6681,13 +6681,13 @@ backup will be created.
 <context>
     <name>TxDetailDialog</name>
     <message>
-        <location filename="../fls/forms/sendconfirmdialog.ui" line="+26"/>
+        <location filename="../dogecash/forms/sendconfirmdialog.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location line="+90"/>
-        <location filename="../fls/sendconfirmdialog.cpp" line="+75"/>
+        <location filename="../dogecash/sendconfirmdialog.cpp" line="+75"/>
         <source>Transaction Details</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6698,13 +6698,13 @@ backup will be created.
     </message>
     <message>
         <location line="+117"/>
-        <location filename="../fls/sendconfirmdialog.cpp" line="+12"/>
+        <location filename="../dogecash/sendconfirmdialog.cpp" line="+12"/>
         <source>Previous Transaction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-16"/>
-        <location filename="../fls/sendconfirmdialog.cpp" line="+1"/>
+        <location filename="../dogecash/sendconfirmdialog.cpp" line="+1"/>
         <source>Output Index</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6789,7 +6789,7 @@ backup will be created.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/sendconfirmdialog.cpp" line="-34"/>
+        <location filename="../dogecash/sendconfirmdialog.cpp" line="-34"/>
         <source>Confirm Your Transaction</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6837,18 +6837,18 @@ backup will be created.
 <context>
     <name>TxRow</name>
     <message>
-        <location filename="../fls/forms/txrow.ui" line="+20"/>
+        <location filename="../dogecash/forms/txrow.ui" line="+20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location line="+142"/>
-        <source>+0.000585 FLS</source>
+        <source>+0.000585 DOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
-        <source>-0.000585 FLS</source>
+        <source>-0.000585 DOGEC</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6875,7 +6875,7 @@ Select fewer inputs with coin control.</source>
 <context>
     <name>WelcomeContentWidget</name>
     <message>
-        <location filename="../fls/forms/welcomecontentwidget.ui" line="+244"/>
+        <location filename="../dogecash/forms/welcomecontentwidget.ui" line="+244"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6937,7 +6937,7 @@ FLITS Core Wallet</source>
     </message>
     <message>
         <location line="+83"/>
-        <source>The masternode network is FLS&apos;s second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <source>The masternode network is DOGEC&apos;s second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6951,15 +6951,15 @@ FLITS Core Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../fls/welcomecontentwidget.cpp" line="+178"/>
+        <location filename="../dogecash/welcomecontentwidget.cpp" line="+178"/>
         <source>default</source>
         <translation type="unfinished">default</translation>
     </message>
 </context>
 <context>
-    <name>fls-core</name>
+    <name>dogecash-core</name>
     <message>
-        <location filename="../flsstrings.cpp" line="+18"/>
+        <location filename="../dogecashstrings.cpp" line="+18"/>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation type="unfinished">Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</translation>
     </message>
@@ -7828,7 +7828,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+28"/>
-        <source>Minimum positive amount (in FLS) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
+        <source>Minimum positive amount (in DOGEC) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8371,7 +8371,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
 <context>
     <name>send</name>
     <message>
-        <location filename="../fls/forms/send.ui" line="+14"/>
+        <location filename="../dogecash/forms/send.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>

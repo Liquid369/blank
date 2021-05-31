@@ -13,10 +13,10 @@
 #include "guiconstants.h"
 #include "guiutil.h"
 #include "walletmodel.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/loadingdialog.h"
-#include "qt/fls/defaultdialog.h"
-#include "qt/fls/flsgui.h"
+#include "qt/dogecash/qtutils.h"
+#include "qt/dogecash/loadingdialog.h"
+#include "qt/dogecash/defaultdialog.h"
+#include "qt/dogecash/dogecashgui.h"
 #include <QDebug>
 
 #include <QKeyEvent>
@@ -192,7 +192,7 @@ void AskPassphraseDialog::accept()
         );
         if (ret) {
             newpassCache = newpass1;
-            FLSGUI* window = static_cast<FLSGUI*>(parentWidget());
+            DOGECGUI* window = static_cast<DOGECGUI*>(parentWidget());
             LoadingDialog *dialog = new LoadingDialog(window);
             dialog->execute(this, 1);
             openDialogWithOpaqueBackgroundFullScreen(dialog, window);
@@ -312,7 +312,7 @@ bool AskPassphraseDialog::eventFilter(QObject* object, QEvent* event)
 
 bool AskPassphraseDialog::openStandardDialog(QString title, QString body, QString okBtn, QString cancelBtn)
 {
-    FLSGUI* gui = static_cast<FLSGUI*>(parentWidget());
+    DOGECGUI* gui = static_cast<DOGECGUI*>(parentWidget());
     DefaultDialog *confirmDialog = new DefaultDialog(gui);
     confirmDialog->setText(title, body, okBtn, cancelBtn);
     confirmDialog->adjustSize();
@@ -345,13 +345,13 @@ void AskPassphraseDialog::updateWarningsLabel()
 void AskPassphraseDialog::warningMessage()
 {
     hide();
-    static_cast<FLSGUI*>(parentWidget())->showHide(true);
+    static_cast<DOGECGUI*>(parentWidget())->showHide(true);
     openStandardDialog(
             tr("Wallet encrypted"),
             "<qt>" +
             tr("FLITS will close now to finish the encryption process. "
                "Remember that encrypting your wallet cannot fully protect "
-               "your FLSs from being stolen by malware infecting your computer.") +
+               "your DOGECs from being stolen by malware infecting your computer.") +
             "<br><br><b>" +
             tr("IMPORTANT: Any previous backups you have made of your wallet file "
                "should be replaced with the newly generated, encrypted wallet file. "

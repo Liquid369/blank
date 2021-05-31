@@ -6,7 +6,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h"
+#include "config/dogecash-config.h"
 #endif
 
 #include "optionsdialog.h"

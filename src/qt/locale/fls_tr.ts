@@ -348,8 +348,8 @@ Stake için kaldırın</translation>
         <translation>İPTAL</translation>
     </message>
     <message>
-        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
-        <translation>FLITS şifreleme işlemini tamamlamak için şimdi kapanacaktır. Cüzdanınızı şifrelemenin, FLS'lerinizi bilgisayarınıza bulaşan kötücül yazılımlar tarafından çalınmasına tamamen engelleyemediğini unutmayın</translation>
+        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <translation>FLITS şifreleme işlemini tamamlamak için şimdi kapanacaktır. Cüzdanınızı şifrelemenin, DOGEC'lerinizi bilgisayarınıza bulaşan kötücül yazılımlar tarafından çalınmasına tamamen engelleyemediğini unutmayın</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -425,8 +425,8 @@ Stake için kaldırın</translation>
         <translation>Birikimler</translation>
     </message>
     <message>
-        <source>0,00 FLS</source>
-        <translation>0,00 FLS</translation>
+        <source>0,00 DOGEC</source>
+        <translation>0,00 DOGEC</translation>
     </message>
     <message>
         <source>address</source>
@@ -467,8 +467,8 @@ Stake için kaldırın</translation>
         <translation>Koin Seçimi</translation>
     </message>
     <message>
-        <source>Select FLS Outputs to Spend</source>
-        <translation>Harcama için FLS Çıktılarını Seçin</translation>
+        <source>Select DOGEC Outputs to Spend</source>
+        <translation>Harcama için DOGEC Çıktılarını Seçin</translation>
     </message>
     <message>
         <source>Dust:</source>
@@ -495,8 +495,8 @@ Stake için kaldırın</translation>
         <translation>Miktar</translation>
     </message>
     <message>
-        <source>0.00 FLS</source>
-        <translation>0.00 FLS</translation>
+        <source>0.00 DOGEC</source>
+        <translation>0.00 DOGEC</translation>
     </message>
     <message>
         <source>0</source>
@@ -686,9 +686,9 @@ Stake için kaldırın</translation>
         <translation>Delegasyonların yüklenmesinde hata:%1</translation>
     </message>
     <message>
-        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
+        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>Sıcak bir düğüme izin vererek FLS'lerinizi devredebilirsiniz (7/24 çevrimiçi düğüm)
+        <translation>Sıcak bir düğüme izin vererek DOGEC'lerinizi devredebilirsiniz (7/24 çevrimiçi düğüm)
 anahtarları çevrimdışı bir şekilde güvenli tutarken, kendi adınıza stake yapın.</translation>
     </message>
     <message>
@@ -1200,8 +1200,8 @@ Cüzdanınız senkronize olduktan ve harcanmamış bakiyeniz yeterli miktarda on
         <translation>Bu miktarda koininizin olduğundan emin olunuz.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 FLS will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10.000 FLS'lik bir transfer &lt;/p&gt;&lt;p&gt;yeni ve boş bir adrese yapılacaktır.&lt;/p&gt;&lt;p&gt;Adres Masternode'unuz ismi ile etiketlenecektir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 DOGEC will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10.000 DOGEC'lik bir transfer &lt;/p&gt;&lt;p&gt;yeni ve boş bir adrese yapılacaktır.&lt;/p&gt;&lt;p&gt;Adres Masternode'unuz ismi ile etiketlenecektir.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1298,7 +1298,7 @@ and vote on the treasury system receiving a periodic reward.</source>
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the fls.conf file
+You will only have to paste the data in the dogecash.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1306,7 +1306,7 @@ this controller wallet (select the Masternode in the list and press "start").
 panoya almak üzeresiniz.
 
 
-Bilgiyi uzak sunucunuzdaki fls.conf dosyasına yapıştırmanız ve
+Bilgiyi uzak sunucunuzdaki dogecash.conf dosyasına yapıştırmanız ve
  başlatmanız gerekecektir, ondan sonra bu kontrol cüzdanını kullanan
 Masternodu başlatın (Listeden Masternodu seçip "başlat" tuşuna basın).
 </translation>
@@ -1434,8 +1434,8 @@ Emin misiniz?</translation>
         <translation>Ayrıştırılmış bilgi çok büyük</translation>
     </message>
     <message>
-        <source>Invalid URI, not starting with "fls" prefix</source>
-        <translation>Geçersiz URI, "fls" ön adıyla başlamıyor</translation>
+        <source>Invalid URI, not starting with "dogecash" prefix</source>
+        <translation>Geçersiz URI, "dogecash" ön adıyla başlamıyor</translation>
     </message>
 </context>
 <context>
@@ -1501,11 +1501,11 @@ Emin misiniz?</translation>
     </message>
     <message>
         <source>Automatically start FLITS after logging in to the system.</source>
-        <translation>Sisteme giriş yaptıktan sonra otomatik olarak FLS'i başlatın.</translation>
+        <translation>Sisteme giriş yaptıktan sonra otomatik olarak DOGEC'i başlatın.</translation>
     </message>
     <message>
         <source>&amp;Start FLITS on system login</source>
-        <translation>&amp; Sistem oturum açma işleminde FLS'i başlat</translation>
+        <translation>&amp; Sistem oturum açma işleminde DOGEC'i başlat</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1532,7 +1532,7 @@ Emin misiniz?</translation>
         <translation>&amp;Ağ</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
+        <source>The user interface language can be set here. This setting will take effect after restarting DOGEC.</source>
         <translation>Kullanıcı arabirimi dili burada ayarlanabilir. Bu ayar, FLITS yeniden başlatıldıktan sonra geçerli olur.</translation>
     </message>
     <message>
@@ -1546,36 +1546,36 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
         <translation>Map port using &amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>FLS birimlerinin zFLS'e otomatik basımını ektinleştir</translation>
+        <source>Enable automatic minting of DOGEC units to zDOGEC</source>
+        <translation>DOGEC birimlerinin zDOGEC'e otomatik basımını ektinleştir</translation>
     </message>
     <message>
-        <source>Enable zFLS Automint</source>
-        <translation>zFLS Otomatik basımı etkinleştir</translation>
+        <source>Enable zDOGEC Automint</source>
+        <translation>zDOGEC Otomatik basımı etkinleştir</translation>
     </message>
     <message>
-        <source>Enable automatic zFLS minting from specific addresses</source>
-        <translation>Belirli bir adresten otomatik zFLS minting yapılmasını etkinleştir</translation>
+        <source>Enable automatic zDOGEC minting from specific addresses</source>
+        <translation>Belirli bir adresten otomatik zDOGEC minting yapılmasını etkinleştir</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Automint adreslerini etkinleştir</translation>
     </message>
     <message>
-        <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
-        <translation>Zerocoin Protokolü üzerinden otomatik olarak zFLS'ye dönüştürülen gelen FLS yüzdesi (dakika: 10%)</translation>
+        <source>Percentage of incoming DOGEC which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
+        <translation>Zerocoin Protokolü üzerinden otomatik olarak zDOGEC'ye dönüştürülen gelen DOGEC yüzdesi (dakika: 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zFLS</source>
-        <translation>Otomatikleştirilmiş zFLS yüzdesi</translation>
+        <source>Percentage of autominted zDOGEC</source>
+        <translation>Otomatikleştirilmiş zDOGEC yüzdesi</translation>
     </message>
     <message>
-        <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
-        <translation>Bu bölen için yeterli FLS bulunana kadar Zerocoin'e otomatik dönüştürmede kalın</translation>
+        <source>Wait with automatic conversion to Zerocoin until enough DOGEC for this denomination is available</source>
+        <translation>Bu bölen için yeterli DOGEC bulunana kadar Zerocoin'e otomatik dönüştürmede kalın</translation>
     </message>
     <message>
-        <source>Preferred Automint zFLS Denomination</source>
-        <translation>Tercih edilen Automint zFLS Nominal değeri</translation>
+        <source>Preferred Automint zDOGEC Denomination</source>
+        <translation>Tercih edilen Automint zDOGEC Nominal değeri</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -1727,7 +1727,7 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
     </message>
 </context>
 <context>
-    <name>FLSGUI</name>
+    <name>DOGECGUI</name>
     <message>
         <source>FLITS Core</source>
         <translation>FLITS Core</translation>
@@ -1824,8 +1824,8 @@ Adres: %4
         <translation>Geçersiz ödeme adresi %1</translation>
     </message>
     <message>
-        <source>Cannot start fls: click-to-pay handler</source>
-        <translation>Fls başlatılamıyor: tıkla ve ödeme işleyicisi</translation>
+        <source>Cannot start dogecash: click-to-pay handler</source>
+        <translation>DogeCash başlatılamıyor: tıkla ve ödeme işleyicisi</translation>
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
@@ -2245,8 +2245,8 @@ Adres: %4
         <translation>Özel Yedekleme Yolu:</translation>
     </message>
     <message>
-        <source>Custom zFLS Backup Path:</source>
-        <translation>Özel zFLS Yedekleme Yolu:</translation>
+        <source>Custom zDOGEC Backup Path:</source>
+        <translation>Özel zDOGEC Yedekleme Yolu:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -2557,8 +2557,8 @@ Adres: %4
         <translation>Miktar</translation>
     </message>
     <message>
-        <source>FLS</source>
-        <translation>FLS</translation>
+        <source>DOGEC</source>
+        <translation>DOGEC</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -2621,7 +2621,7 @@ Adres: %4
     </message>
     <message>
         <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" FLITS address</source>
-        <translation>Giriş ve çıkış değerleri arasındaki kalan tutar "fark" FLS adresine gider</translation>
+        <translation>Giriş ve çıkış değerleri arasındaki kalan tutar "fark" DOGEC adresine gider</translation>
     </message>
     <message>
         <source>SAVE</source>
@@ -3124,19 +3124,19 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>Form</translation>
     </message>
     <message>
-        <source>1) What is FLS?</source>
+        <source>1) What is DOGEC?</source>
         <translation>1)FLITS nedir?</translation>
     </message>
     <message>
-        <source>2) Why are my FLS unspendable?</source>
-        <translation>2) FLS'lerim neden harcanabilir değil?</translation>
+        <source>2) Why are my DOGEC unspendable?</source>
+        <translation>2) DOGEC'lerim neden harcanabilir değil?</translation>
     </message>
     <message>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <source>What is FLS?</source>
+        <source>What is DOGEC?</source>
         <translation>FLITS Nedir?</translation>
     </message>
     <message>
@@ -3144,8 +3144,8 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>2</translation>
     </message>
     <message>
-        <source>Why are my FLS unspendable?</source>
-        <translation>FLS'lerim neden harcanabilir değil?</translation>
+        <source>Why are my DOGEC unspendable?</source>
+        <translation>DOGEC'lerim neden harcanabilir değil?</translation>
     </message>
     <message>
         <source>
@@ -3159,7 +3159,7 @@ Verify that you have installed a predetermined text editor.</source>
                          </source>
         <translation>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Yeni alınmış FLS'lerin harcanabilr hale gelmesi için ağdan 6 onay
+                           Yeni alınmış DOGEC'lerin harcanabilr hale gelmesi için ağdan 6 onay
                            alması gerekmektedir, bu işlem yaklaşık olarak 6 dakika sürer.
                            &lt;/p&gt;&lt;p align="justify"&gt;
                            FLITS cüzdanınızın ağdaki bakiyesini görebilmesi ve harcayabilmesi
@@ -3255,8 +3255,8 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>Yedek klasörü açılamadı</translation>
     </message>
     <message>
-        <source>Unable to open fls.conf with default application</source>
-        <translation>fls.conf dosyası uygulama tarafından açılamadı</translation>
+        <source>Unable to open dogecash.conf with default application</source>
+        <translation>dogecash.conf dosyası uygulama tarafından açılamadı</translation>
     </message>
     <message>
         <source>In:</source>
@@ -3307,7 +3307,7 @@ Verify that you have installed a predetermined text editor.</source>
     </message>
     <message>
         <source>Start FLITS on system login</source>
-        <translation>Sistem açılışında FLS'i başlat</translation>
+        <translation>Sistem açılışında DOGEC'i başlat</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -3766,7 +3766,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation>SSS</translation>
     </message>
     <message>
-        <source>About FLS</source>
+        <source>About DOGEC</source>
         <translation>FLITS Hakkında</translation>
     </message>
     <message>
@@ -4168,8 +4168,8 @@ Emin misiniz?
         <translation>Form</translation>
     </message>
     <message>
-        <source>+0.000585 FLS</source>
-        <translation>+0.000585 FLS</translation>
+        <source>+0.000585 DOGEC</source>
+        <translation>+0.000585 DOGEC</translation>
     </message>
     </context>
 <context>
@@ -4232,7 +4232,7 @@ Hoşgeldiniz</translation>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Manifestomuzda yazdığı gibi: Gizlilik, pazarlık yapılamayacak temel bir insan hakkıdır; kullanıcılarına istedikleri zaman ve istedikleri kişiyle verilerini paylaşma özgürlüğü verir - FLITS özerkliğe inanır.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <source>The masternode network is DOGEC's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
         <translation>Masternode ağı dağıtık yönetim ve hazine yönetimini sağlayan FLITS blockchaini üzerindeki ikinci katmandır.</translation>
     </message>
     <message>
@@ -4249,7 +4249,7 @@ Hoşgeldiniz</translation>
     </message>
 </context>
 <context>
-    <name>fls-core</name>
+    <name>dogecash-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>JSON-RPC bağlantılarını seçilmiş kaynaktan izin ver. Geçerli  &lt;ip&gt; sadece tek IP için  (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). TBu seçenek defalarca kez belirlenebilir.</translation>

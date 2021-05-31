@@ -16,14 +16,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "FLS"
-            VALUE "FileDescription",    "flsd (OSS daemon/client for FLS)"
+            VALUE "CompanyName",        "DOGEC"
+            VALUE "FileDescription",    "dogecashd (OSS daemon/client for DOGEC)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
-            VALUE "InternalName",       "flsd"
+            VALUE "InternalName",       "dogecashd"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
-            VALUE "OriginalFilename",   "flsd.exe"
-            VALUE "ProductName",        "flsd"
+            VALUE "OriginalFilename",   "dogecashd.exe"
+            VALUE "ProductName",        "dogecashd"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

@@ -4,16 +4,16 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/addresseswidget.h"
-#include "qt/fls/forms/ui_addresseswidget.h"
-#include "qt/fls/addresslabelrow.h"
-#include "qt/fls/addnewaddressdialog.h"
-#include "qt/fls/tooltipmenu.h"
+#include "qt/dogecash/addresseswidget.h"
+#include "qt/dogecash/forms/ui_addresseswidget.h"
+#include "qt/dogecash/addresslabelrow.h"
+#include "qt/dogecash/addnewaddressdialog.h"
+#include "qt/dogecash/tooltipmenu.h"
 
-#include "qt/fls/addnewcontactdialog.h"
-#include "qt/fls/flsgui.h"
+#include "qt/dogecash/addnewcontactdialog.h"
+#include "qt/dogecash/dogecashgui.h"
 #include "guiutil.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 #include "walletmodel.h"
 
 #include <QModelIndex>
@@ -63,7 +63,7 @@ public:
 };
 
 
-AddressesWidget::AddressesWidget(FLSGUI* parent) :
+AddressesWidget::AddressesWidget(DOGECGUI* parent) :
     PWidget(parent),
     ui(new Ui::AddressesWidget)
 {
@@ -189,15 +189,15 @@ void AddressesWidget::onStoreContactClicked()
         QString address = ui->lineEditAddress->text();
 
         bool isStakingAddress = false;
-        auto flsAdd = Standard::DecodeDestination(address.toUtf8().constData(), isStakingAddress);
+        auto dogecashAdd = Standard::DecodeDestination(address.toUtf8().constData(), isStakingAddress);
 
-        if (!Standard::IsValidDestination(flsAdd)) {
+        if (!Standard::IsValidDestination(dogecashAdd)) {
             setCssEditLine(ui->lineEditAddress, false, true);
             inform(tr("Invalid Contact Address"));
             return;
         }
 
-        if (walletModel->isMine(flsAdd)) {
+        if (walletModel->isMine(dogecashAdd)) {
             setCssEditLine(ui->lineEditAddress, false, true);
             inform(tr("Cannot store your own address as contact"));
             return;
@@ -210,8 +210,8 @@ void AddressesWidget::onStoreContactClicked()
             return;
         }
 
-        bool isShielded = walletModel->IsShieldedDestination(flsAdd);
-        if (walletModel->updateAddressBookLabels(flsAdd, label.toUtf8().constData(),
+        bool isShielded = walletModel->IsShieldedDestination(dogecashAdd);
+        if (walletModel->updateAddressBookLabels(dogecashAdd, label.toUtf8().constData(),
                          isShielded ? AddressBook::AddressBookPurpose::SHIELDED_SEND :
                          isStakingAddress ? AddressBook::AddressBookPurpose::COLD_STAKING_SEND : AddressBook::AddressBookPurpose::SEND)
                 ) {

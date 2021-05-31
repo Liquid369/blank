@@ -3,13 +3,13 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_MINTPOOL_H
-#define FLS_MINTPOOL_H
+#ifndef DOGEC_MINTPOOL_H
+#define DOGEC_MINTPOOL_H
 
 #include <map>
 #include <list>
 
-#include "zfls/zerocoin.h"
+#include "zdogecash/zerocoin.h"
 #include "libzerocoin/bignum.h"
 #include "uint256.h"
 
@@ -51,4 +51,4 @@ public:
 };
 
 
-#endif //FLS_MINTPOOL_H
+#endif //DOGEC_MINTPOOL_H

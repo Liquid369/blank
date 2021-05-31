@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_ZIP32_H
-#define FLS_ZIP32_H
+#ifndef DOGEC_ZIP32_H
+#define DOGEC_ZIP32_H
 
 #include "serialize.h"
 #include "allocators.h"
@@ -145,4 +145,4 @@ bool IsValidSpendingKey(const libzcash::SpendingKey& zkey);
 /** Check whether a ViewingKey is not an InvalidEncoding. */
 bool IsValidViewingKey(const libzcash::ViewingKey& vk);
 
-#endif // FLS_ZIP32_H
+#endif // DOGEC_ZIP32_H

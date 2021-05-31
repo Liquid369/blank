@@ -4,17 +4,17 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/sendmultirow.h"
-#include "qt/fls/forms/ui_sendmultirow.h"
+#include "qt/dogecash/sendmultirow.h"
+#include "qt/dogecash/forms/ui_sendmultirow.h"
 
 #include "optionsmodel.h"
 #include "addresstablemodel.h"
 #include "guiutil.h"
 #include "bitcoinunits.h"
-#include "qt/fls/sendmemodialog.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/sendmemodialog.h"
+#include "qt/dogecash/qtutils.h"
 
-SendMultiRow::SendMultiRow(FLSGUI* _window, PWidget *parent) :
+SendMultiRow::SendMultiRow(DOGECGUI* _window, PWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SendMultiRow),
     iconNumber(new QPushButton())

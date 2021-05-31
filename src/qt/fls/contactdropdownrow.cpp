@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/contactdropdownrow.h"
-#include "qt/fls/forms/ui_contactdropdownrow.h"
+#include "qt/dogecash/contactdropdownrow.h"
+#include "qt/dogecash/forms/ui_contactdropdownrow.h"
 
 ContactDropdownRow::ContactDropdownRow(QWidget *parent) :
     QWidget(parent),

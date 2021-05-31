@@ -7,16 +7,16 @@
 #ifndef RECEIVEWIDGET_H
 #define RECEIVEWIDGET_H
 
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 #include "addresstablemodel.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
-#include "qt/fls/addressfilterproxymodel.h"
+#include "qt/dogecash/furabstractlistitemdelegate.h"
+#include "qt/dogecash/addressfilterproxymodel.h"
 
 #include <QSpacerItem>
 #include <QWidget>
 #include <QPixmap>
 
-class FLSGUI;
+class DOGECGUI;
 class SendCoinsRecipient;
 
 namespace Ui {
@@ -32,7 +32,7 @@ class ReceiveWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit ReceiveWidget(FLSGUI* parent);
+    explicit ReceiveWidget(DOGECGUI* parent);
     ~ReceiveWidget();
 
     void loadWalletModel() override;

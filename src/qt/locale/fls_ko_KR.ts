@@ -361,8 +361,8 @@ for staking</source>
         <translation>취소</translation>
     </message>
     <message>
-        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
-        <translation>FLS는 이제 암호화 프로세스를 마치기 위해 닫힐것입니다. 지갑을 암호화하더라도 맬웨어로 인한 FLSs 의 도난당하는 것을 완벽하게 보호 할 수는 없습니다.</translation>
+        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <translation>DOGEC는 이제 암호화 프로세스를 마치기 위해 닫힐것입니다. 지갑을 암호화하더라도 맬웨어로 인한 DOGECs 의 도난당하는 것을 완벽하게 보호 할 수는 없습니다.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -436,8 +436,8 @@ for staking</source>
         <translation>Transparent</translation>
     </message>
     <message>
-        <source>0.00 fls</source>
-        <translation>0.00 fls</translation>
+        <source>0.00 dogecash</source>
+        <translation>0.00 dogecash</translation>
     </message>
     <message>
         <source>Shielded</source>
@@ -466,8 +466,8 @@ for staking</source>
         <translation>계좌</translation>
     </message>
     <message>
-        <source>0,00 FLS</source>
-        <translation>0,00 FLS</translation>
+        <source>0,00 DOGEC</source>
+        <translation>0,00 DOGEC</translation>
     </message>
     <message>
         <source>address</source>
@@ -508,8 +508,8 @@ for staking</source>
         <translation>코인 선택</translation>
     </message>
     <message>
-        <source>Select FLS Outputs to Spend</source>
-        <translation>사용할 FLS 아웃풋 선택</translation>
+        <source>Select DOGEC Outputs to Spend</source>
+        <translation>사용할 DOGEC 아웃풋 선택</translation>
     </message>
     <message>
         <source>Dust:</source>
@@ -536,8 +536,8 @@ for staking</source>
         <translation>금액</translation>
     </message>
     <message>
-        <source>0.00 FLS</source>
-        <translation>0.00 FLS</translation>
+        <source>0.00 DOGEC</source>
+        <translation>0.00 DOGEC</translation>
     </message>
     <message>
         <source>0</source>
@@ -739,17 +739,17 @@ for staking</source>
         <translation>위임 데이터 로딩 에러: %1</translation>
     </message>
     <message>
-        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
+        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>안전히 개인 프라이빗 키를 오프라인으로 보관한 상태로, 가지고 계신 FLS 를 매일 24시간 온라인으로 돌아가는 핫 노드로 위임하여, 대신 스테이킹을 하게 할수 있습니다. </translation>
+        <translation>안전히 개인 프라이빗 키를 오프라인으로 보관한 상태로, 가지고 계신 DOGEC 를 매일 24시간 온라인으로 돌아가는 핫 노드로 위임하여, 대신 스테이킹을 하게 할수 있습니다. </translation>
     </message>
     <message>
         <source>Enter owner address</source>
         <translation>Owner 주소 입력</translation>
     </message>
     <message>
-        <source>Accept FLS delegation / Delegate FLS</source>
-        <translation>FLS 위임권 수락하기 / FLS 위임 하기</translation>
+        <source>Accept DOGEC delegation / Delegate DOGEC</source>
+        <translation>DOGEC 위임권 수락하기 / DOGEC 위임 하기</translation>
     </message>
     <message>
         <source>Cold Staking address</source>
@@ -953,8 +953,8 @@ address</source>
         <translation>계정의 거래 이력 보기</translation>
     </message>
     <message>
-        <source>How to get FLS</source>
-        <translation>FLS를 얻을 수 있는 방법</translation>
+        <source>How to get DOGEC</source>
+        <translation>DOGEC를 얻을 수 있는 방법</translation>
     </message>
     <message>
         <source>Sort by</source>
@@ -1320,8 +1320,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>새로운 마스터노드 컨트롤러 만들기</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FLITS 마스터노드를 생성하기 위해서는 10,000 FLS (FLITS 단위)를 네트워크에 예치해야 합니다. (예치한 코인은 계속 본인의 소유입니다.) &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;언제든지 노드를 비활성화 시키고 코인을 잠금해제할 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 DOGEC (the unit of DOGEC) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FLITS 마스터노드를 생성하기 위해서는 10,000 DOGEC (FLITS 단위)를 네트워크에 예치해야 합니다. (예치한 코인은 계속 본인의 소유입니다.) &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;언제든지 노드를 비활성화 시키고 코인을 잠금해제할 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1340,8 +1340,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>이만큼의 코인을 보유하고 있는지 확인하십시오.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 FLS will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10,000 FLS의 트랜잭션은&lt;/p&gt;&lt;p&gt;지갑의 새로운 빈 주소로 만들어질 것입니다.&lt;/p&gt;&lt;p&gt;그 주소는 마스터노드 이름에 따라 레이블링됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 DOGEC will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10,000 DOGEC의 트랜잭션은&lt;/p&gt;&lt;p&gt;지갑의 새로운 빈 주소로 만들어질 것입니다.&lt;/p&gt;&lt;p&gt;그 주소는 마스터노드 이름에 따라 레이블링됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1546,7 +1546,7 @@ Please wait few more minutes (masternode collaterals require %1 confirmations).<
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the fls.conf file
+You will only have to paste the data in the dogecash.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1554,7 +1554,7 @@ this controller wallet (select the Masternode in the list and press "start").
 클립보드로 내보내려고 합니다.
 
 
-그 데이터를 리모트 서버의 fls.conf 파일에
+그 데이터를 리모트 서버의 dogecash.conf 파일에
 붙여넣고 시작합니다. 그리고 컨트롤러 지갑에서 마스터노드를
 시작합니다. (리스트에서 마스터노드를 선택하고 "시작"을 누르십시오.)
 </translation>
@@ -1743,8 +1743,8 @@ STAKING</source>
         <translation>구문 분석된 데이터가 너무 큽니다.</translation>
     </message>
     <message>
-        <source>Invalid URI, not starting with "fls" prefix</source>
-        <translation>"fls"로 시작하지 않아 유효하지 않은 URI</translation>
+        <source>Invalid URI, not starting with "dogecash" prefix</source>
+        <translation>"dogecash"로 시작하지 않아 유효하지 않은 URI</translation>
     </message>
 </context>
 <context>
@@ -1810,7 +1810,7 @@ STAKING</source>
     </message>
     <message>
         <source>Automatically start FLITS after logging in to the system.</source>
-        <translation>시스템 로그인 후 FLS을 자동으로 시작합니다.</translation>
+        <translation>시스템 로그인 후 DOGEC을 자동으로 시작합니다.</translation>
     </message>
     <message>
         <source>&amp;Start FLITS on system login</source>
@@ -1841,8 +1841,8 @@ STAKING</source>
         <translation>&amp;네트워크</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
-        <translation>사용자 인터페이스 언어를 설정할 수 있습니다. 이 설정은 FLS을 다시 시작한 후에 적용됩니다.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting DOGEC.</source>
+        <translation>사용자 인터페이스 언어를 설정할 수 있습니다. 이 설정은 DOGEC을 다시 시작한 후에 적용됩니다.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
@@ -1855,36 +1855,36 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
         <translation>&amp;UPnp를 사용하여 포트 매핑</translation>
     </message>
     <message>
-        <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>보상받은 FLS를 zFLS로 자동변환 활성화</translation>
+        <source>Enable automatic minting of DOGEC units to zDOGEC</source>
+        <translation>보상받은 DOGEC를 zDOGEC로 자동변환 활성화</translation>
     </message>
     <message>
-        <source>Enable zFLS Automint</source>
-        <translation>zFLS 자동생성 활성화</translation>
+        <source>Enable zDOGEC Automint</source>
+        <translation>zDOGEC 자동생성 활성화</translation>
     </message>
     <message>
-        <source>Enable automatic zFLS minting from specific addresses</source>
-        <translation>특정 주소들로부터 자동으로 zFLS 민트되는 것을 허용</translation>
+        <source>Enable automatic zDOGEC minting from specific addresses</source>
+        <translation>특정 주소들로부터 자동으로 zDOGEC 민트되는 것을 허용</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Automint 주소 사용</translation>
     </message>
     <message>
-        <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
-        <translation>FLS수신시 자동변환 zFLS 비율 (최소값:10%)</translation>
+        <source>Percentage of incoming DOGEC which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
+        <translation>DOGEC수신시 자동변환 zDOGEC 비율 (최소값:10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zFLS</source>
-        <translation>자동 변환되는 zFLS 비율</translation>
+        <source>Percentage of autominted zDOGEC</source>
+        <translation>자동 변환되는 zDOGEC 비율</translation>
     </message>
     <message>
-        <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
-        <translation>이 디노미네이션의 FLS가 충분해질 때까지 Zerocoin으로 자동전환은 보류됩니다.</translation>
+        <source>Wait with automatic conversion to Zerocoin until enough DOGEC for this denomination is available</source>
+        <translation>이 디노미네이션의 DOGEC가 충분해질 때까지 Zerocoin으로 자동전환은 보류됩니다.</translation>
     </message>
     <message>
-        <source>Preferred Automint zFLS Denomination</source>
-        <translation>선호하는 자동생성 zFLS 디노미네이션 </translation>
+        <source>Preferred Automint zDOGEC Denomination</source>
+        <translation>선호하는 자동생성 zDOGEC 디노미네이션 </translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -2036,7 +2036,7 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
     </message>
 </context>
 <context>
-    <name>FLSGUI</name>
+    <name>DOGECGUI</name>
     <message>
         <source>FLITS Core</source>
         <translation>FLITS Core</translation>
@@ -2133,8 +2133,8 @@ Address: %4
         <translation>잘못된 결제 주소 %1</translation>
     </message>
     <message>
-        <source>Cannot start fls: click-to-pay handler</source>
-        <translation>FLS을 시작할 수 없습니다: 결제하기 위한 클릭 처리</translation>
+        <source>Cannot start dogecash: click-to-pay handler</source>
+        <translation>DOGEC을 시작할 수 없습니다: 결제하기 위한 클릭 처리</translation>
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
@@ -2272,7 +2272,7 @@ Address: %4
     </message>
     <message>
         <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
-        <translation>치명적인 오류가 발생하였습니다. FLS는 더 이상 안전하게 계속될 수 없으며, 곧 종료됩니다.</translation>
+        <translation>치명적인 오류가 발생하였습니다. DOGEC는 더 이상 안전하게 계속될 수 없으며, 곧 종료됩니다.</translation>
     </message>
     <message>
         <source>FLITS Core</source>
@@ -2650,8 +2650,8 @@ Address: %4
         <translation>맞춤 백업 경로 :</translation>
     </message>
     <message>
-        <source>Custom zFLS Backup Path:</source>
-        <translation>맞춤 zFLS 백업 경로 :</translation>
+        <source>Custom zDOGEC Backup Path:</source>
+        <translation>맞춤 zDOGEC 백업 경로 :</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -2873,8 +2873,8 @@ Address: %4
         <translation>Shielded</translation>
     </message>
     <message>
-        <source>Accept transparent or shielded FLS</source>
-        <translation>Transparent / Shielded FLS 받기 주소 선택</translation>
+        <source>Accept transparent or shielded DOGEC</source>
+        <translation>Transparent / Shielded DOGEC 받기 주소 선택</translation>
     </message>
     <message>
         <source>Add Label</source>
@@ -2983,8 +2983,8 @@ Address: %4
         <translation>금액</translation>
     </message>
     <message>
-        <source>FLS</source>
-        <translation>FLS</translation>
+        <source>DOGEC</source>
+        <translation>DOGEC</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -3073,8 +3073,8 @@ Address: %4
         <translation>권장</translation>
     </message>
     <message>
-        <source>FLS/kilobyte</source>
-        <translation>FLS/Kilobyte</translation>
+        <source>DOGEC/kilobyte</source>
+        <translation>DOGEC/Kilobyte</translation>
     </message>
     <message>
         <source>0.00 KB</source>
@@ -3242,8 +3242,8 @@ Do you wish to proceed without memo?
         <translation>선택할 수 있는 %1을 가지고 있지 않습니다.</translation>
     </message>
     <message>
-        <source>You don't have any transparent FLSs to shield.</source>
-        <translation>Shield 가 가능한 Transparent FLS 가 없습니다.</translation>
+        <source>You don't have any transparent DOGECs to shield.</source>
+        <translation>Shield 가 가능한 Transparent DOGEC 가 없습니다.</translation>
     </message>
     <message>
         <source>No contacts available, you can go to the contacts screen and add some there!</source>
@@ -3749,8 +3749,8 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>백업 폴더를 열 수 없습니다.</translation>
     </message>
     <message>
-        <source>Unable to open fls.conf with default application</source>
-        <translation>fls.conf 파일을 기본 앱으로 열 수 없습니다.</translation>
+        <source>Unable to open dogecash.conf with default application</source>
+        <translation>dogecash.conf 파일을 기본 앱으로 열 수 없습니다.</translation>
     </message>
     <message>
         <source>In:</source>
@@ -4250,7 +4250,7 @@ Please check the address and try again.</source>
         <translation>FAQ</translation>
     </message>
     <message>
-        <source>About FLS</source>
+        <source>About DOGEC</source>
         <translation>FLITS 정보</translation>
     </message>
     <message>
@@ -4754,8 +4754,8 @@ NOTE: 업그레이드 이후에는
         <translation>양식</translation>
     </message>
     <message>
-        <source>+0.000585 FLS</source>
-        <translation>+0.000585 FLS</translation>
+        <source>+0.000585 DOGEC</source>
+        <translation>+0.000585 DOGEC</translation>
     </message>
     </context>
 <context>
@@ -4815,15 +4815,15 @@ FLITS Core Wallet</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - FLITS believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FLITS 선언서(manifesto) 내용: 프라이버시는 타협할 수 없는 인간의 기본적인 인권입니다. 사용자가 원한다면 언제든 누구에게든 정보를 공유할 수 있는 자유를 보장합니다. FLS는 자기 주권(self sovereignty)을 추구합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FLITS 선언서(manifesto) 내용: 프라이버시는 타협할 수 없는 인간의 기본적인 인권입니다. 사용자가 원한다면 언제든 누구에게든 정보를 공유할 수 있는 자유를 보장합니다. DOGEC는 자기 주권(self sovereignty)을 추구합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <source>The masternode network is DOGEC's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
         <translation>마스터노드 네트워크는 FLITS 블록체인의 상위의 2nd 레이어 네트워크입니다. 이를 통해 탈중앙화 거버넌스 및 예산 관리가 가능한 DAO를 구현합니다.</translation>
     </message>
     <message>
         <source>How FLITS respects your privacy?</source>
-        <translation>FLS는 프라이버시를 얼마나 중요하게 생각하나요?</translation>
+        <translation>DOGEC는 프라이버시를 얼마나 중요하게 생각하나요?</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -4835,7 +4835,7 @@ FLITS Core Wallet</translation>
     </message>
 </context>
 <context>
-    <name>fls-core</name>
+    <name>dogecash-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>지정된 소스에서 JSON-RPC 연결을 허용하십시오. 단일 IP (예 : 1.2.3.4), 네트워크/넷마스크 (예 : 1.2.3.4/255.255.255.0) 또는 네트워크 / CIDR (예 : 1.2.3.4/24)에 대해 &lt;ip&gt; 가 유효합니다. 이 옵션은 여러번 지정할 수 있습니다.</translation>

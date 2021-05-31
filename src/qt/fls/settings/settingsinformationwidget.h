@@ -10,7 +10,7 @@
 #define SETTINGSINFORMATIONWIDGET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 #include "rpcconsole.h"
 
 namespace Ui {
@@ -22,7 +22,7 @@ class SettingsInformationWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsInformationWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsInformationWidget(DOGECGUI* _window, QWidget *parent = nullptr);
     ~SettingsInformationWidget() override;
 
     void loadClientModel() override;

@@ -10,19 +10,19 @@
 #include <QWidget>
 #include <QPushButton>
 
-#include "qt/fls/pwidget.h"
-#include "qt/fls/contactsdropdown.h"
-#include "qt/fls/sendmultirow.h"
-#include "qt/fls/sendcustomfeedialog.h"
+#include "qt/dogecash/pwidget.h"
+#include "qt/dogecash/contactsdropdown.h"
+#include "qt/dogecash/sendmultirow.h"
+#include "qt/dogecash/sendcustomfeedialog.h"
 #include "walletmodel.h"
 #include "coincontroldialog.h"
-#include "qt/fls/tooltipmenu.h"
+#include "qt/dogecash/tooltipmenu.h"
 
 #include <atomic>
 
 static const int MAX_SEND_POPUP_ENTRIES = 8;
 
-class FLSGUI;
+class DOGECGUI;
 class ClientModel;
 class OperationResult;
 class WalletModel;
@@ -38,7 +38,7 @@ class SendWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SendWidget(FLSGUI* parent);
+    explicit SendWidget(DOGECGUI* parent);
     ~SendWidget();
 
     void addEntry();
@@ -72,7 +72,7 @@ protected:
     void onError(QString error, int type) override;
 
 private Q_SLOTS:
-    void onFLSSelected(bool _isTransparent);
+    void onDOGECSelected(bool _isTransparent);
     void onSendClicked();
     void onContactsClicked(SendMultiRow* entry);
     void onMenuClicked(SendMultiRow* entry);

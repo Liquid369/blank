@@ -23,7 +23,7 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
     if (Params().IsRegTestNet())
         return pindexLast->nBits;
 
-    /* current difficulty formula, fls - DarkGravity v3, written by Evan Duffield - evan@dashpay.io */
+    /* current difficulty formula, dogecash - DarkGravity v3, written by Evan Duffield - evan@dashpay.io */
     const CBlockIndex* BlockLastSolved = pindexLast;
     const CBlockIndex* BlockReading = pindexLast;
     int64_t nActualTimespan = 0;

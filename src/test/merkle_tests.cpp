@@ -8,7 +8,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "consensus/merkle.h"
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include <boost/test/unit_test.hpp>
 

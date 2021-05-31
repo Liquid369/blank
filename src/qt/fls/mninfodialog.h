@@ -9,8 +9,8 @@
 #ifndef MNINFODIALOG_H
 #define MNINFODIALOG_H
 
-#include "qt/fls/focuseddialog.h"
-#include "qt/fls/snackbar.h"
+#include "qt/dogecash/focuseddialog.h"
+#include "qt/dogecash/snackbar.h"
 
 class WalletModel;
 

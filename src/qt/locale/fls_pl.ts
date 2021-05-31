@@ -365,8 +365,8 @@ do stakingu</translation>
         <translation>ANULUJ</translation>
     </message>
     <message>
-        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
-        <translation>FLITS zamknie się teraz, aby zakończyć proces szyfrowania. Pamiętaj, że zaszyfrowanie portfela nie chroni w pełni Twoich FLS przed kradzieżą przez złośliwe oprogramowanie infekujące Twój komputer.</translation>
+        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <translation>FLITS zamknie się teraz, aby zakończyć proces szyfrowania. Pamiętaj, że zaszyfrowanie portfela nie chroni w pełni Twoich DOGEC przed kradzieżą przez złośliwe oprogramowanie infekujące Twój komputer.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -440,8 +440,8 @@ do stakingu</translation>
         <translation>Transparent</translation>
     </message>
     <message>
-        <source>0.00 fls</source>
-        <translation>0.00 fls</translation>
+        <source>0.00 dogecash</source>
+        <translation>0.00 dogecash</translation>
     </message>
     <message>
         <source>Shielded</source>
@@ -470,8 +470,8 @@ do stakingu</translation>
         <translation>Oszczędności</translation>
     </message>
     <message>
-        <source>0,00 FLS</source>
-        <translation>0,00 FLS</translation>
+        <source>0,00 DOGEC</source>
+        <translation>0,00 DOGEC</translation>
     </message>
     <message>
         <source>address</source>
@@ -512,8 +512,8 @@ do stakingu</translation>
         <translation>Wybór monet</translation>
     </message>
     <message>
-        <source>Select FLS Outputs to Spend</source>
-        <translation>Wybierz adres wyjściowy FLS do wydania</translation>
+        <source>Select DOGEC Outputs to Spend</source>
+        <translation>Wybierz adres wyjściowy DOGEC do wydania</translation>
     </message>
     <message>
         <source>Dust:</source>
@@ -540,8 +540,8 @@ do stakingu</translation>
         <translation>Ilość</translation>
     </message>
     <message>
-        <source>0.00 FLS</source>
-        <translation>0.00 FLS</translation>
+        <source>0.00 DOGEC</source>
+        <translation>0.00 DOGEC</translation>
     </message>
     <message>
         <source>0</source>
@@ -739,9 +739,9 @@ do stakingu</translation>
         <translation>Błąd ładowania delegacji: %1</translation>
     </message>
     <message>
-        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
+        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>Możesz delegować swoje FLS, używając gorącego węzła (węzeł online 24/7)
+        <translation>Możesz delegować swoje DOGEC, używając gorącego węzła (węzeł online 24/7)
 stake w Twoim imieniu, podczas gdy klucze są bezpiecznie offline.</translation>
     </message>
     <message>
@@ -749,8 +749,8 @@ stake w Twoim imieniu, podczas gdy klucze są bezpiecznie offline.</translation>
         <translation>Wpisz adres właściciela</translation>
     </message>
     <message>
-        <source>Accept FLS delegation / Delegate FLS</source>
-        <translation>Zaakceptuj delegację FLS / Deleguj FLS</translation>
+        <source>Accept DOGEC delegation / Delegate DOGEC</source>
+        <translation>Zaakceptuj delegację DOGEC / Deleguj DOGEC</translation>
     </message>
     <message>
         <source>Cold Staking address</source>
@@ -955,8 +955,8 @@ adres</translation>
         <translation>Wyświetl historię swojego konta</translation>
     </message>
     <message>
-        <source>How to get FLS</source>
-        <translation>Jak zdobyć FLS</translation>
+        <source>How to get DOGEC</source>
+        <translation>Jak zdobyć DOGEC</translation>
     </message>
     <message>
         <source>Amount of staking rewards received.</source>
@@ -1077,7 +1077,7 @@ Rozpocznie się automatycznie, gdy portfel będzie miał wystarczającą liczbę
     </message>
     <message>
         <source>The entered address "%1" is not a valid FLITS address.</source>
-        <translation>Wprowadzony adres "%1" nie jest prawidłowym adresem FLS.</translation>
+        <translation>Wprowadzony adres "%1" nie jest prawidłowym adresem DOGEC.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1201,7 +1201,7 @@ Rozpocznie się automatycznie, gdy portfel będzie miał wystarczającą liczbę
     </message>
     <message>
         <source>FLITS Core will download and store a copy of the FLITS block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>FLITS Core pobierze i zapisze kopię łańcucha bloków FLS. Przynajmniej %1 GB danych zostanie zapisanych w tym katalogu, a jego liczba będzie rosnąć z czasem. Portfel zostanie również zapisany w tym katalogu.</translation>
+        <translation>FLITS Core pobierze i zapisze kopię łańcucha bloków DOGEC. Przynajmniej %1 GB danych zostanie zapisanych w tym katalogu, a jego liczba będzie rosnąć z czasem. Portfel zostanie również zapisany w tym katalogu.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1328,8 +1328,8 @@ Rozpocznie się automatycznie, gdy portfel będzie miał wystarczającą liczbę
         <translation>Utwórz nowy kontroler Masternode</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aby utworzyć Masternode FLS, musisz przeznaczyć 10.000 FLS (jednostkę FLS) na sieć (jednak monety te są nadal twoje i nigdy nie zmienią swojego właściciela).&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;Możesz dezaktywować węzeł i odblokować monety w dowolnym momencie.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 DOGEC (the unit of DOGEC) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aby utworzyć Masternode DOGEC, musisz przeznaczyć 10.000 DOGEC (jednostkę DOGEC) na sieć (jednak monety te są nadal twoje i nigdy nie zmienią swojego właściciela).&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;Możesz dezaktywować węzeł i odblokować monety w dowolnym momencie.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1348,8 +1348,8 @@ Rozpocznie się automatycznie, gdy portfel będzie miał wystarczającą liczbę
         <translation>Upewnij się, że masz taką liczbę monet.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 FLS will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dokonana zostanie transakcja 10 000 FLS&lt;/p&gt;&lt;p&gt;na nowy pusty adres w portfelu.&lt;/p&gt;&lt;p&gt;Adres jest oznaczony pod nazwą węzła głównego.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 DOGEC will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dokonana zostanie transakcja 10 000 DOGEC&lt;/p&gt;&lt;p&gt;na nowy pusty adres w portfelu.&lt;/p&gt;&lt;p&gt;Adres jest oznaczony pod nazwą węzła głównego.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1541,7 +1541,7 @@ i głosuj na system skarbu otrzymujący okresową nagrodę.</translation>
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the fls.conf file
+You will only have to paste the data in the dogecash.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1549,7 +1549,7 @@ this controller wallet (select the Masternode in the list and press "start").
 na zdalnym serwerze do twojego schowka.
 
 
-Wystarczy wkleić dane do pliku fls.conf
+Wystarczy wkleić dane do pliku dogecash.conf
 zdalnego serwera i uruchom go, a następnie uruchom Masternode przy użyciu
 portfela kontrolujacego (wybierz Masternode z listy i naciśnij „start”).
 </translation>
@@ -1739,8 +1739,8 @@ STAKING</translation>
         <translation>Przetwarzane dane są za duże</translation>
     </message>
     <message>
-        <source>Invalid URI, not starting with "fls" prefix</source>
-        <translation>Nieprawidłowy identyfikator URI, nie zaczynający się od prefiksu „fls”</translation>
+        <source>Invalid URI, not starting with "dogecash" prefix</source>
+        <translation>Nieprawidłowy identyfikator URI, nie zaczynający się od prefiksu „dogecash”</translation>
     </message>
 </context>
 <context>
@@ -1837,8 +1837,8 @@ STAKING</translation>
         <translation>&amp;Sieć</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
-        <translation>Język interfejsu użytkownika może być wybrany tutaj. Ustawienia ulegną zmianie po restarcie FLS</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting DOGEC.</source>
+        <translation>Język interfejsu użytkownika może być wybrany tutaj. Ustawienia ulegną zmianie po restarcie DOGEC</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
@@ -1851,36 +1851,36 @@ https://www.transifex.com/flitsnode/flits-core-project-translations </translatio
         <translation>Mapuj port za pomocą &amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>Włącz automatyczny minting FLS do zFLS</translation>
+        <source>Enable automatic minting of DOGEC units to zDOGEC</source>
+        <translation>Włącz automatyczny minting DOGEC do zDOGEC</translation>
     </message>
     <message>
-        <source>Enable zFLS Automint</source>
-        <translation>Włącz zFLS Automint</translation>
+        <source>Enable zDOGEC Automint</source>
+        <translation>Włącz zDOGEC Automint</translation>
     </message>
     <message>
-        <source>Enable automatic zFLS minting from specific addresses</source>
-        <translation>Włącz automatyczne wybijanie zFLS-ów z określonych adresów</translation>
+        <source>Enable automatic zDOGEC minting from specific addresses</source>
+        <translation>Włącz automatyczne wybijanie zDOGEC-ów z określonych adresów</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Włącz adresy Automint</translation>
     </message>
     <message>
-        <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
-        <translation>Procent FLS, które są automatycznie konwertowane na zFLS za pomocą protokołu Zerocoin (min: 10%)</translation>
+        <source>Percentage of incoming DOGEC which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
+        <translation>Procent DOGEC, które są automatycznie konwertowane na zDOGEC za pomocą protokołu Zerocoin (min: 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zFLS</source>
-        <translation>Procent automint zFLS</translation>
+        <source>Percentage of autominted zDOGEC</source>
+        <translation>Procent automint zDOGEC</translation>
     </message>
     <message>
-        <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
-        <translation>Zaczekaj z automatyczną konwersją na Zerocoin, aż będzie dostępna wystarczająca wartość FLS dla tego nominału</translation>
+        <source>Wait with automatic conversion to Zerocoin until enough DOGEC for this denomination is available</source>
+        <translation>Zaczekaj z automatyczną konwersją na Zerocoin, aż będzie dostępna wystarczająca wartość DOGEC dla tego nominału</translation>
     </message>
     <message>
-        <source>Preferred Automint zFLS Denomination</source>
-        <translation>Preferowane nominały Automint zFLS</translation>
+        <source>Preferred Automint zDOGEC Denomination</source>
+        <translation>Preferowane nominały Automint zDOGEC</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -2032,7 +2032,7 @@ https://www.transifex.com/flitsnode/flits-core-project-translations </translatio
     </message>
 </context>
 <context>
-    <name>FLSGUI</name>
+    <name>DOGECGUI</name>
     <message>
         <source>FLITS Core</source>
         <translation>FLITS Core</translation>
@@ -2133,8 +2133,8 @@ Adres: %4
         <translation>Nieprawidłowy adres płatności %1</translation>
     </message>
     <message>
-        <source>Cannot start fls: click-to-pay handler</source>
-        <translation>Nie można uruchomić fls: click-to-pay handler</translation>
+        <source>Cannot start dogecash: click-to-pay handler</source>
+        <translation>Nie można uruchomić dogecash: click-to-pay handler</translation>
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
@@ -2642,8 +2642,8 @@ Adres: %4
         <translation>Standardowa ścieżka kopii zapasowej:</translation>
     </message>
     <message>
-        <source>Custom zFLS Backup Path:</source>
-        <translation>standardowa ścieżka kopii zapasowej zFLS:</translation>
+        <source>Custom zDOGEC Backup Path:</source>
+        <translation>standardowa ścieżka kopii zapasowej zDOGEC:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -2860,8 +2860,8 @@ Adres: %4
         <translation>Formularz</translation>
     </message>
     <message>
-        <source>Scan the QR code or copy the address to receive FLS</source>
-        <translation>Zeskanuj kod QR lub skopiuj adres, aby otrzymać FLS</translation>
+        <source>Scan the QR code or copy the address to receive DOGEC</source>
+        <translation>Zeskanuj kod QR lub skopiuj adres, aby otrzymać DOGEC</translation>
     </message>
     <message>
         <source>Transparent</source>
@@ -2872,8 +2872,8 @@ Adres: %4
         <translation>Shielded</translation>
     </message>
     <message>
-        <source>Accept transparent or shielded FLS</source>
-        <translation>Zaakceptuj transparent albo shielded FLS</translation>
+        <source>Accept transparent or shielded DOGEC</source>
+        <translation>Zaakceptuj transparent albo shielded DOGEC</translation>
     </message>
     <message>
         <source>Add Label</source>
@@ -2998,8 +2998,8 @@ Adres: %4
         <translation>Ilość</translation>
     </message>
     <message>
-        <source>FLS</source>
-        <translation>FLS</translation>
+        <source>DOGEC</source>
+        <translation>DOGEC</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -3120,8 +3120,8 @@ Adres: %4
         <translation>Zalecane</translation>
     </message>
     <message>
-        <source>FLS/kilobyte</source>
-        <translation>FLS/kilobyte</translation>
+        <source>DOGEC/kilobyte</source>
+        <translation>DOGEC/kilobyte</translation>
     </message>
     <message>
         <source>0.00 KB</source>
@@ -3349,12 +3349,12 @@ Monety te nie będą już cold-staked.</translation>
         <translation>Nie masz żadnego %1 do wybrania.</translation>
     </message>
     <message>
-        <source>Error generating address to shield FLSs</source>
-        <translation>Błąd podczas generowania adresu dla shield FLS</translation>
+        <source>Error generating address to shield DOGECs</source>
+        <translation>Błąd podczas generowania adresu dla shield DOGEC</translation>
     </message>
     <message>
-        <source>You don't have any transparent FLSs to shield.</source>
-        <translation>Nie masz żadnych transparentnych FLSs do shield.</translation>
+        <source>You don't have any transparent DOGECs to shield.</source>
+        <translation>Nie masz żadnych transparentnych DOGECs do shield.</translation>
     </message>
     <message>
         <source>No contacts available, you can go to the contacts screen and add some there!</source>
@@ -3488,7 +3488,7 @@ Monety te nie będą już cold-staked.</translation>
     </message>
     <message>
         <source>FLITS address</source>
-        <translation>Adres FLS</translation>
+        <translation>Adres DOGEC</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3730,12 +3730,12 @@ Sprawdź, czy zainstalowałeś określony edytor tekstu.</translation>
         <translation>Eksportuj listę adresów</translation>
     </message>
     <message>
-        <source>FLS_tx_csv_export(*.csv)</source>
-        <translation>FLS_tx_csv_export(*.csv)</translation>
+        <source>DOGEC_tx_csv_export(*.csv)</source>
+        <translation>DOGEC_tx_csv_export(*.csv)</translation>
     </message>
     <message>
-        <source>FLS_addresses_csv_export(*.csv)</source>
-        <translation>FLS_addresses_csv_export(*.csv)</translation>
+        <source>DOGEC_addresses_csv_export(*.csv)</source>
+        <translation>DOGEC_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -3805,12 +3805,12 @@ Wystąpił błąd podczas próby zapisania listy adresów w %1. Proszę spróbuj
         <translation>Formularz</translation>
     </message>
     <message>
-        <source>1) What is FLS?</source>
-        <translation>1) Co to jest FLS?</translation>
+        <source>1) What is DOGEC?</source>
+        <translation>1) Co to jest DOGEC?</translation>
     </message>
     <message>
-        <source>2) Why are my FLS unspendable?</source>
-        <translation>2) Dlaczego mojego FLS nie można wydać?</translation>
+        <source>2) Why are my DOGEC unspendable?</source>
+        <translation>2) Dlaczego mojego DOGEC nie można wydać?</translation>
     </message>
     <message>
         <source>https://flitswallet.app/</source>
@@ -3821,24 +3821,24 @@ Wystąpił błąd podczas próby zapisania listy adresów w %1. Proszę spróbuj
         <translation>1</translation>
     </message>
     <message>
-        <source>What is FLS?</source>
-        <translation>Co to jest FLS?</translation>
+        <source>What is DOGEC?</source>
+        <translation>Co to jest DOGEC?</translation>
     </message>
     <message>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <source>Why are my FLS unspendable?</source>
-        <translation>Dlaczego mojego FLS nie można wydać?</translation>
+        <source>Why are my DOGEC unspendable?</source>
+        <translation>Dlaczego mojego DOGEC nie można wydać?</translation>
     </message>
     <message>
         <source>3</source>
         <translation>3</translation>
     </message>
     <message>
-        <source>How do I stake FLS?</source>
-        <translation>Jak stake-ować FLS?</translation>
+        <source>How do I stake DOGEC?</source>
+        <translation>Jak stake-ować DOGEC?</translation>
     </message>
     <message>
         <source>4</source>
@@ -3976,8 +3976,8 @@ Wystąpił błąd podczas próby zapisania listy adresów w %1. Proszę spróbuj
         <translation>Nie można otworzyć folderu kopii zapasowych</translation>
     </message>
     <message>
-        <source>Unable to open fls.conf with default application</source>
-        <translation>Nie można otworzyć pliku fls.conf w domyślnej aplikacji</translation>
+        <source>Unable to open dogecash.conf with default application</source>
+        <translation>Nie można otworzyć pliku dogecash.conf w domyślnej aplikacji</translation>
     </message>
     <message>
         <source>In:</source>
@@ -4539,8 +4539,8 @@ Zaznacz jedno lub oba pola wyboru, aby wysłać stake i / lub nagrode masternode
         <translation>FAQ</translation>
     </message>
     <message>
-        <source>About FLS</source>
-        <translation>o FLS</translation>
+        <source>About DOGEC</source>
+        <translation>o DOGEC</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -5105,8 +5105,8 @@ kopia zapasowa zostanie utworzona.
         <translation>Formularz</translation>
     </message>
     <message>
-        <source>+0.000585 FLS</source>
-        <translation>+0.000585 FLS</translation>
+        <source>+0.000585 DOGEC</source>
+        <translation>+0.000585 DOGEC</translation>
     </message>
     </context>
 <context>
@@ -5177,7 +5177,7 @@ Portfel FLITS Core</translation>
         <translation>FLITS to najbardziej innowacyjna na świecie technologia oparta na blockchain Proof of Stake. Opracowany przez zespół wysoce doświadczonych programistów i kryptografów.</translation>
     </message>
     <message>
-        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <source>The masternode network is DOGEC's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
         <translation>Sieć masternode jest siecią drugiej warstwy FLITS na szczycie blockchain, która umożliwia naszemu DAO zapewnienie zdecentralizowanego zarządzania i skarbca.</translation>
     </message>
     <message>
@@ -5194,7 +5194,7 @@ Portfel FLITS Core</translation>
     </message>
 </context>
 <context>
-    <name>fls-core</name>
+    <name>dogecash-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>Zezwalaj na połączenia JSON-RPC z określonego źródła. Ważny dla &lt;ip&gt; są pojedynczym IP (na przykład 1.2.3.4), siecią / maską sieci (np. 1.2.3.4/255.255.255.0) lub siecią / CIDR (na przykład 1.2.3.4/24). Ta opcja może być określona wiele razy</translation>

@@ -5,7 +5,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import FlsTier2TestFramework
+from test_framework.test_framework import DogeCashTier2TestFramework
 from test_framework.util import (
     assert_equal,
     assert_true,
@@ -23,7 +23,7 @@ Test checking:
  5) Proposal and vote sync.
 """
 
-class MasternodeGovernanceBasicTest(FlsTier2TestFramework):
+class MasternodeGovernanceBasicTest(DogeCashTier2TestFramework):
 
     def check_budget_finalization_sync(self, votesCount, status):
         for i in range(0, len(self.nodes)):

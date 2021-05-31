@@ -22,7 +22,7 @@ Developer Notes
     - [Threads](#threads)
     - [Ignoring IDE/editor files](#ignoring-ideeditor-files)
 - [Development guidelines](#development-guidelines)
-    - [General FLITS Core](#general-fls-core)
+    - [General FLITS Core](#general-dogecash-core)
     - [Wallet](#wallet)
     - [General C++](#general-c)
     - [C++ data structures](#c-data-structures)
@@ -215,7 +215,7 @@ to see it.
 
 ### Testnet and Regtest modes
 
-Run with the `-testnet` option to run with "play FLSs (tFLS)" on the test network, if you
+Run with the `-testnet` option to run with "play DOGECs (tDOGEC)" on the test network, if you
 are testing multi-machine code that needs to operate across the internet.
 
 If you are testing something that can run on one machine, run with the `-regtest` option.
@@ -234,15 +234,15 @@ debug.log file if inconsistencies are detected.
 
 Valgrind is a programming tool for memory debugging, memory leak detection, and
 profiling. The repo contains a Valgrind suppressions file
-([`valgrind.supp`](https://github.com/flitsnode/flits-core/blob/master/contrib/valgrind.supp))
+([`valgrind.supp`](https://github.com/dogecash/dogecash/blob/master/contrib/valgrind.supp))
 which includes known Valgrind warnings in our dependencies that cannot be fixed
 in-tree. Example use:
 
 ```shell
-$ valgrind --suppressions=contrib/valgrind.supp src/test/test_fls
+$ valgrind --suppressions=contrib/valgrind.supp src/test/test_dogecash
 $ valgrind --suppressions=contrib/valgrind.supp --leak-check=full \
-      --show-leak-kinds=all src/test/test_fls --log_level=test_suite
-$ valgrind -v --leak-check=full src/flsd -printtoconsole
+      --show-leak-kinds=all src/test/test_dogecash --log_level=test_suite
+$ valgrind -v --leak-check=full src/dogecashd -printtoconsole
 ```
 
 ### Compiling for test coverage
@@ -258,7 +258,7 @@ To enable LCOV report generation during test runs:
 make
 make cov
 
-# A coverage report will now be accessible at `./test_fls.coverage/index.html`.
+# A coverage report will now be accessible at `./test_dogecash.coverage/index.html`.
 ```
 
 Locking/mutex usage notes
@@ -305,7 +305,7 @@ Threads
 
 - ThreadRPCServer : Remote procedure call handler, listens on port 8332 for connections and services them.
 
-- BitcoinMiner : Generates FLSs (if wallet is enabled).
+- BitcoinMiner : Generates DOGECs (if wallet is enabled).
 
 - Shutdown : Does an orderly shutdown of everything.
 
@@ -693,7 +693,7 @@ you must be aware of.
 
 In most configurations we use the default LevelDB value for `max_open_files`,
 which is 1000 at the time of this writing. If LevelDB actually uses this many
-file descriptors it will cause problems with FLS's `select()` loop, because
+file descriptors it will cause problems with DOGEC's `select()` loop, because
 it may cause new sockets to be created where the fd value is >= 1024. For this
 reason, on 64-bit Unix systems we rely on an internal LevelDB optimization that
 uses `mmap()` + `close()` to open table files without actually retaining
@@ -704,7 +704,7 @@ In addition to reviewing the upstream changes in `env_posix.cc`, you can use `ls
 check this. For example, on Linux this command will show open `.ldb` file counts:
 
 ```bash
-$ lsof -p $(pidof flsd) |\
+$ lsof -p $(pidof dogecashd) |\
     awk 'BEGIN { fd=0; mem=0; } /ldb$/ { if ($4 == "mem") mem++; else fd++ } END { printf "mem = %s, fd = %s\n", mem, fd}'
 mem = 119, fd = 0
 ```
@@ -801,7 +801,7 @@ Git and GitHub tips
 
         [remote "upstream-pull"]
                 fetch = +refs/pull/*:refs/remotes/upstream-pull/*
-                url = git@github.com:FLS-Project/FLS.git
+                url = git@github.com:DOGEC-Project/DOGEC.git
 
   This will add an `upstream-pull` remote to your git repository, which can be fetched using `git fetch --all`
   or `git fetch upstream-pull`. Afterwards, you can use `upstream-pull/NUMBER/head` in arguments to `git show`,
@@ -862,7 +862,7 @@ A few guidelines for introducing and reviewing new RPC interfaces:
 - Try not to overload methods on argument type. E.g. don't make `getblock(true)` and `getblock("hash")`
   do different things.
 
-  - *Rationale*: This is impossible to use with `fls-cli`, and can be surprising to users.
+  - *Rationale*: This is impossible to use with `dogecash-cli`, and can be surprising to users.
 
   - *Exception*: Some RPC calls can take both an `int` and `bool`, most notably when a bool was switched
     to a multi-value, or due to other historical reasons. **Always** have false map to 0 and
@@ -881,7 +881,7 @@ A few guidelines for introducing and reviewing new RPC interfaces:
 
 - Add every non-string RPC argument `(method, idx, name)` to the table `vRPCConvertParams` in `rpc/client.cpp`.
 
-  - *Rationale*: `fls-cli` and the GUI debug console use this table to determine how to
+  - *Rationale*: `dogecash-cli` and the GUI debug console use this table to determine how to
     convert a plaintext command line to JSON. If the types don't match, the method can be unusable
     from there.
 

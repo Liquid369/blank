@@ -1,4 +1,4 @@
-# TOR SUPPORT IN FLS
+# TOR SUPPORT IN DOGEC
 
 It is possible to run FLITS Core as a Tor hidden service, and connect to such services.
 
@@ -35,7 +35,7 @@ outgoing connections, but more is possible.
 
 In a typical situation, this suffices to run behind a Tor proxy:
 
-	./flsd -proxy=127.0.0.1:9050
+	./dogecashd -proxy=127.0.0.1:9050
 
 
 ## 2. Run a FLITS Core hidden server
@@ -45,19 +45,19 @@ reachable from the Tor network. Add these lines to your /etc/tor/torrc (or equiv
 config file): *Needed for Tor version 0.2.7.0 and older versions of Tor only. For newer
 versions of Tor see [Section 3](#3-automatically-listen-on-tor).*
 
-	HiddenServiceDir /var/lib/tor/fls-service/
+	HiddenServiceDir /var/lib/tor/dogecash-service/
 	HiddenServiceVersion 2
 	HiddenServicePort 51472 127.0.0.1:51472
 	HiddenServicePort 61472 127.0.0.1:61472
 
 The directory can be different of course, but (both) port numbers should be equal to
-your flsd's P2P listen port (51472 by default).
+your dogecashd's P2P listen port (51472 by default).
 
-	-externalip=X   You can tell fls about its publicly reachable address using
+	-externalip=X   You can tell dogecash about its publicly reachable address using
 	                this option, and this can be a v2 .onion address (v3 .onion
 	                addresses are not supported by the FLITS network). Given the above
 	                configuration, you can find your .onion address in
-	                /var/lib/tor/fls-service/hostname. For connections
+	                /var/lib/tor/dogecash-service/hostname. For connections
 	                coming from unroutable addresses (such as 127.0.0.1, where the
 	                Tor proxy typically runs), .onion addresses are given
 	                preference for your node to advertise itself with.
@@ -74,25 +74,25 @@ your flsd's P2P listen port (51472 by default).
 
 In a typical situation, where you're only reachable via Tor, this should suffice:
 
-	./flsd -proxy=127.0.0.1:9050 -externalip=flszj6l4cvo2fxy.onion -listen
+	./dogecashd -proxy=127.0.0.1:9050 -externalip=dogecashzj6l4cvo2fxy.onion -listen
 
 (obviously, replace the .onion address with your own). It should be noted that you still
 listen on all devices and another node could establish a clearnet connection, when knowing
 your address. To mitigate this, additionally bind the address of your Tor proxy:
 
-	./flsd ... -bind=127.0.0.1
+	./dogecashd ... -bind=127.0.0.1
 
 If you don't care too much about hiding your node, and want to be reachable on IPv4
 as well, use `discover` instead:
 
-	./flsd ... -discover
+	./dogecashd ... -discover
 
 and open port 51472 on your firewall (or use -upnp).
 
 If you only want to use Tor to reach .onion addresses, but not use it as a proxy
 for normal IPv4/IPv6 communication, use:
 
-	./flsd -onion=127.0.0.1:9050 -externalip=flszj6l4cvo2fxy.onion -discover
+	./dogecashd -onion=127.0.0.1:9050 -externalip=dogecashzj6l4cvo2fxy.onion -discover
 
 ## 3. Automatically listen on Tor
 
@@ -111,12 +111,12 @@ To show verbose debugging information, pass `-debug=tor`.
 
 Connecting to Tor's control socket API requires one of two authentication methods to be
 configured. It also requires the control socket to be enabled, e.g. put `ControlPort 9051`
-in `torrc` config file. For cookie authentication the user running flsd must have read
+in `torrc` config file. For cookie authentication the user running dogecashd must have read
 access to the `CookieAuthFile` specified in Tor configuration. In some cases this is
 preconfigured and the creation of a hidden service is automatic. If permission problems
 are seen with `-debug=tor` they can be resolved by adding both the user running Tor and
-the user running flsd to the same group and setting permissions appropriately. On
-Debian-based systems the user running flsd can be added to the debian-tor group,
+the user running dogecashd to the same group and setting permissions appropriately. On
+Debian-based systems the user running dogecashd can be added to the debian-tor group,
 which has the appropriate permissions.
 
 An alternative authentication method is the use

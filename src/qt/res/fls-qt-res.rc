@@ -19,13 +19,13 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "FLS"
-            VALUE "FileDescription",    "FLITS Core (OSS GUI client for FLS)"
+            VALUE "CompanyName",        "DOGEC"
+            VALUE "FileDescription",    "FLITS Core (OSS GUI client for DOGEC)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
-            VALUE "InternalName",       "fls-qt"
+            VALUE "InternalName",       "dogecash-qt"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT/X11 software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
-            VALUE "OriginalFilename",   "fls-qt.exe"
+            VALUE "OriginalFilename",   "dogecash-qt.exe"
             VALUE "ProductName",        "FLITS Core"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END

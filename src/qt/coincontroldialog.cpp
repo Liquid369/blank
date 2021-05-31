@@ -20,7 +20,7 @@
 #include "wallet/wallet.h"
 #include "walletmodel.h"
 
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 
 #include <QApplication>
 #include <QCheckBox>
@@ -591,8 +591,8 @@ void CoinControlDialog::updateLabels()
         return;
 
     ui->labelTitle->setText(fSelectTransparent ?
-            "Select FLS Outputs to Spend" :
-            "Select Shielded FLS to Spend");
+            "Select DOGEC Outputs to Spend" :
+            "Select Shielded DOGEC to Spend");
 
     const TotalAmounts& t = getTotals();
 
@@ -602,7 +602,7 @@ void CoinControlDialog::updateLabels()
     updatePushButtonSelectAll(coinControl->QuantitySelected() * 2 > nSelectableInputs);
 
     // actually update labels
-    int nDisplayUnit = BitcoinUnits::FLS;
+    int nDisplayUnit = BitcoinUnits::DOGEC;
     if (model && model->getOptionsModel())
         nDisplayUnit = model->getOptionsModel()->getDisplayUnit();
 

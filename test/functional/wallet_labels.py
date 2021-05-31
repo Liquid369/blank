@@ -11,10 +11,10 @@ RPCs tested are:
 """
 from collections import defaultdict
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import assert_equal, assert_raises_rpc_error
 
-class WalletlabelsTest(FlsTestFramework):
+class WalletlabelsTest(DogeCashTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1
@@ -30,7 +30,7 @@ class WalletlabelsTest(FlsTestFramework):
         assert_equal(node.getbalance(), 500)
 
         # there should be 2 address groups
-        # each with 1 address with a balance of 250 FLSs
+        # each with 1 address with a balance of 250 DOGECs
         address_groups = node.listaddressgroupings()
         assert_equal(len(address_groups), 2)
         # the addresses aren't linked now, but will be after we send to the

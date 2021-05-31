@@ -15,9 +15,9 @@ if [ -n "${1:-}" ]; then
     PARAMS_DIR="$1"
 else
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        PARAMS_DIR="$HOME/Library/Application Support/FLSParams"
+        PARAMS_DIR="$HOME/Library/Application Support/DOGECParams"
     else
-        PARAMS_DIR="$HOME/.fls-params"
+        PARAMS_DIR="$HOME/.dogecash-params"
     fi
 fi
 
@@ -43,7 +43,7 @@ function install_params {
     # if the params don't exist in the current directory, assume we're running from release tarballs
     if ! [ -f "$filename" ]
     then
-        filename="share/fls/$filename"
+        filename="share/dogecash/$filename"
     fi
 
     if ! [ -f "$output" ]

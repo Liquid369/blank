@@ -4,9 +4,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsbittoolwidget.h"
-#include "qt/fls/settings/forms/ui_settingsbittoolwidget.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/settings/settingsbittoolwidget.h"
+#include "qt/dogecash/settings/forms/ui_settingsbittoolwidget.h"
+#include "qt/dogecash/qtutils.h"
 
 #include "guiutil.h"
 #include "walletmodel.h"
@@ -21,7 +21,7 @@
 #include <vector>
 
 
-SettingsBitToolWidget::SettingsBitToolWidget(FLSGUI* _window, QWidget *parent) :
+SettingsBitToolWidget::SettingsBitToolWidget(DOGECGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsBitToolWidget)
 {

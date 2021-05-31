@@ -4,7 +4,7 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include "util.h"
 #include "validation.h"

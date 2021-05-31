@@ -4,11 +4,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/dashboardwidget.h"
-#include "qt/fls/forms/ui_dashboardwidget.h"
-#include "qt/fls/sendconfirmdialog.h"
-#include "qt/fls/txrow.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/dashboardwidget.h"
+#include "qt/dogecash/forms/ui_dashboardwidget.h"
+#include "qt/dogecash/sendconfirmdialog.h"
+#include "qt/dogecash/txrow.h"
+#include "qt/dogecash/qtutils.h"
 #include "guiutil.h"
 #include "walletmodel.h"
 #include "clientmodel.h"
@@ -25,7 +25,7 @@
 #define REQUEST_LOAD_TASK 1
 #define CHART_LOAD_MIN_TIME_INTERVAL 15
 
-DashboardWidget::DashboardWidget(FLSGUI* parent) :
+DashboardWidget::DashboardWidget(DOGECGUI* parent) :
     PWidget(parent),
     ui(new Ui::DashboardWidget)
 {
@@ -54,18 +54,18 @@ DashboardWidget::DashboardWidget(FLSGUI* parent) :
 
     // Staking Information
     setCssSubtitleScreen(ui->labelMessage);
-    setCssProperty(ui->labelSquareFls, "square-chart-fls");
-    setCssProperty(ui->labelSquarezFls, "square-chart-zfls");
-    setCssProperty(ui->labelFls, "text-chart-fls");
-    setCssProperty(ui->labelZfls, "text-chart-zfls");
+    setCssProperty(ui->labelSquareDogeCash, "square-chart-dogecash");
+    setCssProperty(ui->labelSquarezDogeCash, "square-chart-zdogecash");
+    setCssProperty(ui->labelDogeCash, "text-chart-dogecash");
+    setCssProperty(ui->labelZdogecash, "text-chart-zdogecash");
 
     // Staking Amount
     QFont fontBold;
     fontBold.setWeight(QFont::Bold);
 
     setCssProperty(ui->labelChart, "legend-chart");
-    setCssProperty(ui->labelAmountFls, "text-stake-fls-disable");
-    setCssProperty(ui->labelAmountZfls, "text-stake-zfls-disable");
+    setCssProperty(ui->labelAmountDogeCash, "text-stake-dogecash-disable");
+    setCssProperty(ui->labelAmountZdogecash, "text-stake-zdogecash-disable");
 
     setCssProperty({ui->pushButtonAll,  ui->pushButtonMonth, ui->pushButtonYear}, "btn-check-time");
     setCssProperty({ui->comboBoxMonths,  ui->comboBoxYears}, "btn-combo-chart-selected");
@@ -146,7 +146,7 @@ bool hasCharts = false;
     connect(ui->pushButtonMonth, &QPushButton::clicked, [this](){setChartShow(MONTH);});
     connect(ui->pushButtonAll, &QPushButton::clicked, [this](){setChartShow(ALL);});
     if (window)
-        connect(window, &FLSGUI::windowResizeEvent, this, &DashboardWidget::windowResizeEvent);
+        connect(window, &DOGECGUI::windowResizeEvent, this, &DashboardWidget::windowResizeEvent);
 #endif
 
     if (hasCharts) {
@@ -218,7 +218,7 @@ void DashboardWidget::loadWalletModel()
                 &DashboardWidget::onHideChartsChanged);
 #endif
     }
-    // update the display unit, to not use the default ("FLS")
+    // update the display unit, to not use the default ("DOGEC")
     updateDisplayUnit();
 }
 
@@ -520,7 +520,7 @@ void DashboardWidget::updateStakeFilter()
     }
 }
 
-// pair FLS, zFLS
+// pair DOGEC, zDOGEC
 const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
 {
     if (filterUpdateNeeded) {
@@ -534,7 +534,7 @@ const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
         QModelIndex modelIndex = stakesFilter->index(i, TransactionTableModel::ToAddress);
         qint64 amount = llabs(modelIndex.data(TransactionTableModel::AmountRole).toLongLong());
         QDate date = modelIndex.data(TransactionTableModel::DateRole).toDateTime().date();
-        bool isFls = modelIndex.data(TransactionTableModel::TypeRole).toInt() != TransactionRecord::StakeZFLS;
+        bool isDogeCash = modelIndex.data(TransactionTableModel::TypeRole).toInt() != TransactionRecord::StakeZDOGEC;
 
         int time = 0;
         switch (chartShow) {
@@ -555,16 +555,16 @@ const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
                 return amountBy;
         }
         if (amountBy.contains(time)) {
-            if (isFls) {
+            if (isDogeCash) {
                 amountBy[time].first += amount;
             } else
                 amountBy[time].second += amount;
         } else {
-            if (isFls) {
+            if (isDogeCash) {
                 amountBy[time] = std::make_pair(amount, 0);
             } else {
                 amountBy[time] = std::make_pair(0, amount);
-                hasZflsStakes = true;
+                hasZdogecashStakes = true;
             }
         }
     }
@@ -579,7 +579,7 @@ bool DashboardWidget::loadChartData(bool withMonthNames)
     }
 
     chartData = new ChartData();
-    chartData->amountsByCache = getAmountBy(); // pair FLS, zFLS
+    chartData->amountsByCache = getAmountBy(); // pair DOGEC, zDOGEC
 
     std::pair<int,int> range = getChartRange(chartData->amountsByCache);
     if (range.first == 0 && range.second == 0) {
@@ -592,22 +592,22 @@ bool DashboardWidget::loadChartData(bool withMonthNames)
 
     for (int j = range.first; j < range.second; j++) {
         int num = (isOrderedByMonth && j > daysInMonth) ? (j % daysInMonth) : j;
-        qreal fls = 0;
-        qreal zfls = 0;
+        qreal dogecash = 0;
+        qreal zdogecash = 0;
         if (chartData->amountsByCache.contains(num)) {
             std::pair <qint64, qint64> pair = chartData->amountsByCache[num];
-            fls = (pair.first != 0) ? pair.first / 100000000 : 0;
-            zfls = (pair.second != 0) ? pair.second / 100000000 : 0;
-            chartData->totalFls += pair.first;
-            chartData->totalZfls += pair.second;
+            dogecash = (pair.first != 0) ? pair.first / 100000000 : 0;
+            zdogecash = (pair.second != 0) ? pair.second / 100000000 : 0;
+            chartData->totalDogeCash += pair.first;
+            chartData->totalZdogecash += pair.second;
         }
 
         chartData->xLabels << ((withMonthNames) ? monthsNames[num - 1] : QString::number(num));
 
-        chartData->valuesFls.append(fls);
-        chartData->valueszFls.append(zfls);
+        chartData->valuesDogeCash.append(dogecash);
+        chartData->valueszDogeCash.append(zdogecash);
 
-        int max = std::max(fls, zfls);
+        int max = std::max(dogecash, zdogecash);
         if (max > chartData->maxValue) {
             chartData->maxValue = max;
         }
@@ -678,24 +678,24 @@ void DashboardWidget::onChartRefreshed()
     series->attachAxis(axisX);
     series->attachAxis(axisY);
 
-    set0->append(chartData->valuesFls);
-    set1->append(chartData->valueszFls);
+    set0->append(chartData->valuesDogeCash);
+    set1->append(chartData->valueszDogeCash);
 
     // Total
     nDisplayUnit = walletModel->getOptionsModel()->getDisplayUnit();
-    if (chartData->totalFls > 0 || chartData->totalZfls > 0) {
-        setCssProperty(ui->labelAmountFls, "text-stake-fls");
-        setCssProperty(ui->labelAmountZfls, "text-stake-zfls");
+    if (chartData->totalDogeCash > 0 || chartData->totalZdogecash > 0) {
+        setCssProperty(ui->labelAmountDogeCash, "text-stake-dogecash");
+        setCssProperty(ui->labelAmountZdogecash, "text-stake-zdogecash");
     } else {
-        setCssProperty(ui->labelAmountFls, "text-stake-fls-disable");
-        setCssProperty(ui->labelAmountZfls, "text-stake-zfls-disable");
+        setCssProperty(ui->labelAmountDogeCash, "text-stake-dogecash-disable");
+        setCssProperty(ui->labelAmountZdogecash, "text-stake-zdogecash-disable");
     }
-    forceUpdateStyle({ui->labelAmountFls, ui->labelAmountZfls});
-    ui->labelAmountFls->setText(GUIUtil::formatBalance(chartData->totalFls, nDisplayUnit));
-    ui->labelAmountZfls->setText(GUIUtil::formatBalance(chartData->totalZfls, nDisplayUnit, true));
+    forceUpdateStyle({ui->labelAmountDogeCash, ui->labelAmountZdogecash});
+    ui->labelAmountDogeCash->setText(GUIUtil::formatBalance(chartData->totalDogeCash, nDisplayUnit));
+    ui->labelAmountZdogecash->setText(GUIUtil::formatBalance(chartData->totalZdogecash, nDisplayUnit, true));
 
     series->append(set0);
-    if (hasZflsStakes)
+    if (hasZdogecashStakes)
         series->append(set1);
 
     // bar width

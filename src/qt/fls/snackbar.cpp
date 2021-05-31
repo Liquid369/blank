@@ -4,13 +4,13 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/snackbar.h"
-#include "qt/fls/forms/ui_snackbar.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/snackbar.h"
+#include "qt/dogecash/forms/ui_snackbar.h"
+#include "qt/dogecash/qtutils.h"
 #include <QTimer>
 
 
-SnackBar::SnackBar(FLSGUI* _window, QWidget *parent) :
+SnackBar::SnackBar(DOGECGUI* _window, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SnackBar),
     window(_window),
@@ -25,7 +25,7 @@ SnackBar::SnackBar(FLSGUI* _window, QWidget *parent) :
 
     connect(ui->pushButton, &QPushButton::clicked, this, &SnackBar::close);
     if (window)
-        connect(window, &FLSGUI::windowResizeEvent, this, &SnackBar::windowResizeEvent);
+        connect(window, &DOGECGUI::windowResizeEvent, this, &SnackBar::windowResizeEvent);
     else {
         ui->horizontalLayout->setContentsMargins(0,0,0,0);
         ui->label->setStyleSheet("font-size: 15px; color:white;");

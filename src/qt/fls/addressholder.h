@@ -6,13 +6,13 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_ADDRESSHOLDER_H
-#define FLS_ADDRESSHOLDER_H
+#ifndef DOGEC_ADDRESSHOLDER_H
+#define DOGEC_ADDRESSHOLDER_H
 
 #include <QWidget>
 #include <QColor>
-#include "qt/fls/myaddressrow.h"
-#include "qt/fls/furlistrow.h"
+#include "qt/dogecash/myaddressrow.h"
+#include "qt/dogecash/furlistrow.h"
 #include "guiutil.h"
 
 
@@ -42,4 +42,4 @@ public:
 };
 
 
-#endif //FLS_ADDRESSHOLDER_H
+#endif //DOGEC_ADDRESSHOLDER_H

@@ -6,9 +6,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/addnewcontactdialog.h"
-#include "qt/fls/forms/ui_addnewcontactdialog.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/addnewcontactdialog.h"
+#include "qt/dogecash/forms/ui_addnewcontactdialog.h"
+#include "qt/dogecash/qtutils.h"
 
 AddNewContactDialog::AddNewContactDialog(QWidget *parent) :
     FocusedDialog(parent),

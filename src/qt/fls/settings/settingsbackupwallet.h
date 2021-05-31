@@ -8,7 +8,7 @@
 #define SETTINGSBACKUPWALLET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 
 namespace Ui {
 class SettingsBackupWallet;
@@ -19,7 +19,7 @@ class SettingsBackupWallet : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsBackupWallet(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsBackupWallet(DOGECGUI* _window, QWidget *parent = nullptr);
     ~SettingsBackupWallet();
 
 private Q_SLOTS:

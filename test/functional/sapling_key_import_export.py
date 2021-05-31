@@ -7,11 +7,11 @@
 # file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
 from decimal import Decimal
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import *
 from functools import reduce
 
-class SaplingkeyImportExportTest (FlsTestFramework):
+class SaplingkeyImportExportTest (DogeCashTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 5
@@ -115,7 +115,7 @@ class SaplingkeyImportExportTest (FlsTestFramework):
         bob_fee = Decimal("0")
 
         # Try to reproduce zombie balance reported in zcash#1936
-        # At generated shield_addr, receive FLS, and send FLS back out. bob -> alice
+        # At generated shield_addr, receive DOGEC, and send DOGEC back out. bob -> alice
         for amount in amounts[:2]:
             print("Sending amount from bob to alice: ", amount)
             txid = shielded_send(bob, bob_addr, alice_addr, amount)

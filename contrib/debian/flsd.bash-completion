@@ -1,2 +1,2 @@
-contrib/flsd.bash-completion	flsd
-contrib/fls-cli.bash-completion fls-cli
+contrib/dogecashd.bash-completion	dogecashd
+contrib/dogecash-cli.bash-completion dogecash-cli

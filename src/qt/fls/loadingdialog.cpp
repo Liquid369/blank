@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/loadingdialog.h"
-#include "qt/fls/forms/ui_loadingdialog.h"
+#include "qt/dogecash/loadingdialog.h"
+#include "qt/dogecash/forms/ui_loadingdialog.h"
 #include <QMovie>
 
 void Worker::process(){

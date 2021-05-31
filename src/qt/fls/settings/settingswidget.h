@@ -8,20 +8,20 @@
 #define SETTINGSWIDGET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
-#include "qt/fls/settings/settingsbackupwallet.h"
-#include "qt/fls/settings/settingsexportcsv.h"
-#include "qt/fls/settings/settingsbittoolwidget.h"
-#include "qt/fls/settings/settingssignmessagewidgets.h"
-#include "qt/fls/settings/settingswalletrepairwidget.h"
-#include "qt/fls/settings/settingswalletoptionswidget.h"
-#include "qt/fls/settings/settingsmainoptionswidget.h"
-#include "qt/fls/settings/settingsdisplayoptionswidget.h"
-#include "qt/fls/settings/settingsmultisendwidget.h"
-#include "qt/fls/settings/settingsinformationwidget.h"
-#include "qt/fls/settings/settingsconsolewidget.h"
+#include "qt/dogecash/pwidget.h"
+#include "qt/dogecash/settings/settingsbackupwallet.h"
+#include "qt/dogecash/settings/settingsexportcsv.h"
+#include "qt/dogecash/settings/settingsbittoolwidget.h"
+#include "qt/dogecash/settings/settingssignmessagewidgets.h"
+#include "qt/dogecash/settings/settingswalletrepairwidget.h"
+#include "qt/dogecash/settings/settingswalletoptionswidget.h"
+#include "qt/dogecash/settings/settingsmainoptionswidget.h"
+#include "qt/dogecash/settings/settingsdisplayoptionswidget.h"
+#include "qt/dogecash/settings/settingsmultisendwidget.h"
+#include "qt/dogecash/settings/settingsinformationwidget.h"
+#include "qt/dogecash/settings/settingsconsolewidget.h"
 
-class FLSGUI;
+class DOGECGUI;
 
 QT_BEGIN_NAMESPACE
 class QDataWidgetMapper;
@@ -36,7 +36,7 @@ class SettingsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWidget(FLSGUI* parent);
+    explicit SettingsWidget(DOGECGUI* parent);
     ~SettingsWidget();
 
     void loadClientModel() override;

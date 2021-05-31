@@ -4,13 +4,13 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "zflschain.h"
+#include "zdogecashchain.h"
 
 #include "guiinterface.h"
 #include "invalid.h"
 #include "txdb.h"
 #include "wallet/wallet.h"
-#include "zfls/zflsmodule.h"
+#include "zdogecash/zdogecashmodule.h"
 
 // 6 comes from OPCODE (1) + vch.size() (1) + BIGNUM size (4)
 #define SCRIPT_OFFSET 6
@@ -27,7 +27,7 @@ bool IsSerialInBlockchain(const CBigNum& bnSerial, int& nHeightTx)
 
 libzerocoin::CoinSpend TxInToZerocoinSpend(const CTxIn& txin)
 {
-    CDataStream serializedCoinSpend = ZFLSModule::ScriptSigToSerializedSpend(txin.scriptSig);
+    CDataStream serializedCoinSpend = ZDOGECModule::ScriptSigToSerializedSpend(txin.scriptSig);
     return libzerocoin::CoinSpend(serializedCoinSpend);
 }
 

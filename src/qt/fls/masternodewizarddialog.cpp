@@ -4,15 +4,15 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/masternodewizarddialog.h"
-#include "qt/fls/forms/ui_masternodewizarddialog.h"
+#include "qt/dogecash/masternodewizarddialog.h"
+#include "qt/dogecash/forms/ui_masternodewizarddialog.h"
 
 #include "activemasternode.h"
 #include "optionsmodel.h"
 #include "pairresult.h"
-#include "qt/fls/mnmodel.h"
-#include "qt/fls/guitransactionsutils.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/mnmodel.h"
+#include "qt/dogecash/guitransactionsutils.h"
+#include "qt/dogecash/qtutils.h"
 
 #include <QFile>
 #include <QIntValidator>

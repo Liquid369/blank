@@ -4,10 +4,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/balancebubble.h"
-#include "qt/fls/forms/ui_balancebubble.h"
+#include "qt/dogecash/balancebubble.h"
+#include "qt/dogecash/forms/ui_balancebubble.h"
 
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>

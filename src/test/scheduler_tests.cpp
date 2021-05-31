@@ -7,7 +7,7 @@
 #include "random.h"
 #include "scheduler.h"
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h"
+#include "config/dogecash-config.h"
 #endif
 
 #include <boost/random/mersenne_twister.hpp>

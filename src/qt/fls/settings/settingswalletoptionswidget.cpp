@@ -6,14 +6,14 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingswalletoptionswidget.h"
-#include "qt/fls/settings/forms/ui_settingswalletoptionswidget.h"
+#include "qt/dogecash/settings/settingswalletoptionswidget.h"
+#include "qt/dogecash/settings/forms/ui_settingswalletoptionswidget.h"
 #include <QListView>
 #include "optionsmodel.h"
 #include "clientmodel.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 
-SettingsWalletOptionsWidget::SettingsWalletOptionsWidget(FLSGUI* _window, QWidget *parent) :
+SettingsWalletOptionsWidget::SettingsWalletOptionsWidget(DOGECGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsWalletOptionsWidget)
 {

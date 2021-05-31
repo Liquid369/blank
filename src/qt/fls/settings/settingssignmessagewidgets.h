@@ -10,8 +10,8 @@
 #define SETTINGSSIGNMESSAGEWIDGETS_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
-#include "qt/fls/contactsdropdown.h"
+#include "qt/dogecash/pwidget.h"
+#include "qt/dogecash/contactsdropdown.h"
 
 namespace Ui {
 class SettingsSignMessageWidgets;
@@ -22,7 +22,7 @@ class SettingsSignMessageWidgets : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsSignMessageWidgets(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsSignMessageWidgets(DOGECGUI* _window, QWidget *parent = nullptr);
     ~SettingsSignMessageWidgets();
 
     void setAddress_SM(const QString& address);

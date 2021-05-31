@@ -4,16 +4,16 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/topbar.h"
-#include "qt/fls/forms/ui_topbar.h"
-#include "qt/fls/lockunlock.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/receivedialog.h"
-#include "qt/fls/loadingdialog.h"
+#include "qt/dogecash/topbar.h"
+#include "qt/dogecash/forms/ui_topbar.h"
+#include "qt/dogecash/lockunlock.h"
+#include "qt/dogecash/qtutils.h"
+#include "qt/dogecash/receivedialog.h"
+#include "qt/dogecash/loadingdialog.h"
 #include "askpassphrasedialog.h"
 
 #include "bitcoinunits.h"
-#include "qt/fls/balancebubble.h"
+#include "qt/dogecash/balancebubble.h"
 #include "clientmodel.h"
 #include "qt/guiutil.h"
 #include "optionsmodel.h"
@@ -51,7 +51,7 @@ public:
     }
 };
 
-TopBar::TopBar(FLSGUI* _mainWindow, QWidget *parent) :
+TopBar::TopBar(DOGECGUI* _mainWindow, QWidget *parent) :
     PWidget(_mainWindow, parent),
     ui(new Ui::TopBar)
 {
@@ -76,9 +76,9 @@ TopBar::TopBar(FLSGUI* _mainWindow, QWidget *parent) :
 
     // Amount information top
     ui->widgetTopAmount->setVisible(false);
-    setCssProperty({ui->labelAmountTopFls, ui->labelAmountTopShieldedFls}, "amount-small-topbar");
-    setCssProperty({ui->labelAmountFls}, "amount-topbar");
-    setCssProperty({ui->labelPendingFls, ui->labelImmatureFls}, "amount-small-topbar");
+    setCssProperty({ui->labelAmountTopDogeCash, ui->labelAmountTopShieldedDogeCash}, "amount-small-topbar");
+    setCssProperty({ui->labelAmountDogeCash}, "amount-topbar");
+    setCssProperty({ui->labelPendingDogeCash, ui->labelImmatureDogeCash}, "amount-small-topbar");
 
     // Progress Sync
     progressBar = new QProgressBar(ui->layoutSync);
@@ -582,7 +582,7 @@ void TopBar::loadWalletModel()
     connect(walletModel, &WalletModel::encryptionStatusChanged, this, &TopBar::refreshStatus);
     // Ask for passphrase if needed
     connect(walletModel, &WalletModel::requireUnlock, this, &TopBar::unlockWallet);
-    // update the display unit, to not use the default ("FLS")
+    // update the display unit, to not use the default ("DOGEC")
     updateDisplayUnit();
 
     refreshStatus();
@@ -669,19 +669,19 @@ void TopBar::updateBalances(const interfaces::WalletBalances& newBalance)
     }
     ui->labelTitle1->setText(nLockedBalance > 0 ? tr("Available (Locked included)") : tr("Available"));
 
-    // FLS Total
-    QString totalFls = GUIUtil::formatBalance(newBalance.balance, nDisplayUnit);
+    // DOGEC Total
+    QString totalDogeCash = GUIUtil::formatBalance(newBalance.balance, nDisplayUnit);
     QString totalTransparent = GUIUtil::formatBalance(newBalance.balance - newBalance.shielded_balance);
     QString totalShielded = GUIUtil::formatBalance(newBalance.shielded_balance);
 
-    // FLS
+    // DOGEC
     // Top
-    ui->labelAmountTopFls->setText(totalTransparent);
-    ui->labelAmountTopShieldedFls->setText(totalShielded);
+    ui->labelAmountTopDogeCash->setText(totalTransparent);
+    ui->labelAmountTopShieldedDogeCash->setText(totalShielded);
     // Expanded
-    ui->labelAmountFls->setText(totalFls);
-    ui->labelPendingFls->setText(GUIUtil::formatBalance(newBalance.unconfirmed_balance + newBalance.unconfirmed_shielded_balance, nDisplayUnit));
-    ui->labelImmatureFls->setText(GUIUtil::formatBalance(newBalance.immature_balance, nDisplayUnit));
+    ui->labelAmountDogeCash->setText(totalDogeCash);
+    ui->labelPendingDogeCash->setText(GUIUtil::formatBalance(newBalance.unconfirmed_balance + newBalance.unconfirmed_shielded_balance, nDisplayUnit));
+    ui->labelImmatureDogeCash->setText(GUIUtil::formatBalance(newBalance.immature_balance, nDisplayUnit));
 }
 
 void TopBar::resizeEvent(QResizeEvent *event)

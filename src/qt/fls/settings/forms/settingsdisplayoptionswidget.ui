@@ -121,7 +121,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalPercentagezFls">
+         <layout class="QHBoxLayout" name="horizontalPercentagezDogeCash">
           <item>
            <widget class="QLabel" name="labelTitleUnit">
             <property name="text">
@@ -130,7 +130,7 @@
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacerPercentagezFls">
+           <spacer name="horizontalSpacerPercentagezDogeCash">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -161,7 +161,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalDenomzFls">
+         <layout class="QHBoxLayout" name="horizontalDenomzDogeCash">
           <item>
            <widget class="QLabel" name="labelTitleDigits">
             <property name="text">
@@ -170,7 +170,7 @@
            </widget>
           </item>
           <item>
-           <spacer name="horizontalDenomzFls_1">
+           <spacer name="horizontalDenomzDogeCash_1">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>

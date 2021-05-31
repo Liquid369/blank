@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[fls-project-translations.qt-translation-50x]
-file_filter = src/qt/locale/fls_<lang>.ts
-source_file = src/qt/locale/fls_en.ts
+[dogecash-project-translations.qt-translation-50x]
+file_filter = src/qt/locale/dogecash_<lang>.ts
+source_file = src/qt/locale/dogecash_en.ts
 source_lang = en

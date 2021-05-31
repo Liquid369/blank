@@ -13,8 +13,8 @@
 #include <vector>
 
 /**
- * CBaseChainParams defines the base parameters (shared between fls-cli and flsd)
- * of a given instance of the Fls system.
+ * CBaseChainParams defines the base parameters (shared between dogecash-cli and dogecashd)
+ * of a given instance of the DogeCash system.
  */
 class CBaseChainParams
 {

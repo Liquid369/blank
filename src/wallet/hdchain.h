@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_HDCHAIN_H
-#define FLS_HDCHAIN_H
+#ifndef DOGEC_HDCHAIN_H
+#define DOGEC_HDCHAIN_H
 
 #include "key.h"
 
@@ -74,4 +74,4 @@ public:
     }
 };
 
-#endif // FLS_HDCHAIN_H
+#endif // DOGEC_HDCHAIN_H

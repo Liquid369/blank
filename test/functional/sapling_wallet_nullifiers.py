@@ -6,7 +6,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import *
 from decimal import Decimal
 
@@ -14,7 +14,7 @@ def connect_nodes_bi(nodes, a, b):
     connect_nodes(nodes[a], b)
     connect_nodes(nodes[b], a)
 
-class WalletNullifiersTest (FlsTestFramework):
+class WalletNullifiersTest (DogeCashTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 4

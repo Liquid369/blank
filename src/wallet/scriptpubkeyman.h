@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_SCRIPTPUBKEYMAN_H
-#define FLS_SCRIPTPUBKEYMAN_H
+#ifndef DOGEC_SCRIPTPUBKEYMAN_H
+#define DOGEC_SCRIPTPUBKEYMAN_H
 
 #include "wallet/hdchain.h"
 #include "wallet/wallet.h"
@@ -162,4 +162,4 @@ private:
 };
 
 
-#endif //FLS_SCRIPTPUBKEYMAN_H
+#endif //DOGEC_SCRIPTPUBKEYMAN_H

@@ -6,9 +6,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/receivedialog.h"
-#include "qt/fls/forms/ui_receivedialog.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/receivedialog.h"
+#include "qt/dogecash/forms/ui_receivedialog.h"
+#include "qt/dogecash/qtutils.h"
 #include "walletmodel.h"
 #include <QFile>
 

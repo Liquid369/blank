@@ -19,7 +19,7 @@ importing nodes pick up the new transactions regardless of whether rescans
 happened previously.
 """
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import (assert_raises_rpc_error, connect_nodes, assert_equal, set_node_times)
 
 import collections
@@ -106,7 +106,7 @@ IMPORT_NODES = [ImportNode(*fields) for fields in itertools.product((False, True
 TIMESTAMP_WINDOW = 2 * 60 * 60
 
 
-class ImportRescanTest(FlsTestFramework):
+class ImportRescanTest(DogeCashTestFramework):
     def set_test_params(self):
         self.num_nodes = 2 + len(IMPORT_NODES)
 

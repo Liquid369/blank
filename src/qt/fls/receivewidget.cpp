@@ -4,14 +4,14 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/receivewidget.h"
-#include "qt/fls/forms/ui_receivewidget.h"
-#include "qt/fls/requestdialog.h"
-#include "qt/fls/addnewcontactdialog.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/myaddressrow.h"
-#include "qt/fls/furlistrow.h"
-#include "qt/fls/addressholder.h"
+#include "qt/dogecash/receivewidget.h"
+#include "qt/dogecash/forms/ui_receivewidget.h"
+#include "qt/dogecash/requestdialog.h"
+#include "qt/dogecash/addnewcontactdialog.h"
+#include "qt/dogecash/qtutils.h"
+#include "qt/dogecash/myaddressrow.h"
+#include "qt/dogecash/furlistrow.h"
+#include "qt/dogecash/addressholder.h"
 #include "walletmodel.h"
 #include "guiutil.h"
 #include "pairresult.h"
@@ -23,7 +23,7 @@
 #define DECORATION_SIZE 70
 #define NUM_ITEMS 3
 
-ReceiveWidget::ReceiveWidget(FLSGUI* parent) :
+ReceiveWidget::ReceiveWidget(DOGECGUI* parent) :
     PWidget(parent),
     ui(new Ui::ReceiveWidget)
 {

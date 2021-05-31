@@ -4,16 +4,16 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsexportcsv.h"
-#include "qt/fls/settings/forms/ui_settingsexportcsv.h"
+#include "qt/dogecash/settings/settingsexportcsv.h"
+#include "qt/dogecash/settings/forms/ui_settingsexportcsv.h"
 #include <QFile>
 #include "csvmodelwriter.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 #include "guiinterface.h"
 
-SettingsExportCSV::SettingsExportCSV(FLSGUI* _window, QWidget *parent) :
+SettingsExportCSV::SettingsExportCSV(DOGECGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsExportCSV)
 {
@@ -61,7 +61,7 @@ void SettingsExportCSV::selectFileOutput(const bool& isTxExport)
 {
     QString filename = GUIUtil::getSaveFileName(this,
                                         isTxExport ? tr("Export CSV") : tr("Export Address List"), QString(),
-                                        isTxExport ? tr("FLS_tx_csv_export(*.csv)") : tr("FLS_addresses_csv_export(*.csv)"),
+                                        isTxExport ? tr("DOGEC_tx_csv_export(*.csv)") : tr("DOGEC_addresses_csv_export(*.csv)"),
                                         nullptr);
 
     if (isTxExport) {

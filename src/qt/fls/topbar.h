@@ -8,14 +8,14 @@
 #define TOPBAR_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
-#include "qt/fls/lockunlock.h"
+#include "qt/dogecash/pwidget.h"
+#include "qt/dogecash/lockunlock.h"
 #include "amount.h"
 #include <QTimer>
 #include <QProgressBar>
 
 class BalanceBubble;
-class FLSGUI;
+class DOGECGUI;
 class WalletModel;
 class ClientModel;
 
@@ -28,7 +28,7 @@ class TopBar : public PWidget
     Q_OBJECT
 
 public:
-    explicit TopBar(FLSGUI* _mainWindow, QWidget *parent = nullptr);
+    explicit TopBar(DOGECGUI* _mainWindow, QWidget *parent = nullptr);
     ~TopBar();
 
     void showTop();

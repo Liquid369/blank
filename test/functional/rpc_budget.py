@@ -7,11 +7,11 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test RPC commands for budget proposal creation, submission, and verification."""
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import *
 
 
-class BudgetProposalTest(FlsTestFramework):
+class BudgetProposalTest(DogeCashTestFramework):
     def set_test_params(self):
         self.num_nodes = 1
 
@@ -55,7 +55,7 @@ class BudgetProposalTest(FlsTestFramework):
 
         self.log.info("Test with too low amount")
         invalid_amt = 9.99999999
-        assert_raises_rpc_error(-8, "Invalid amount - Payment of %.8f is less than minimum 10 FLS allowed" % invalid_amt, self.nodes[0].preparebudget,
+        assert_raises_rpc_error(-8, "Invalid amount - Payment of %.8f is less than minimum 10 DOGEC allowed" % invalid_amt, self.nodes[0].preparebudget,
                                 name, scheme + url, numcycles, nextsuperblock, address, invalid_amt)
 
         self.log.info("Test with too high amount")

@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_PUBKEY_H
-#define FLS_PUBKEY_H
+#ifndef DOGEC_PUBKEY_H
+#define DOGEC_PUBKEY_H
 
 #include "hash.h"
 #include "serialize.h"
@@ -265,4 +265,4 @@ public:
     ~ECCVerifyHandle();
 };
 
-#endif // FLS_PUBKEY_H
+#endif // DOGEC_PUBKEY_H

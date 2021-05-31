@@ -4,12 +4,12 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_CONSENSUS_ZEROCOIN_VERIFY_H
-#define FLS_CONSENSUS_ZEROCOIN_VERIFY_H
+#ifndef DOGEC_CONSENSUS_ZEROCOIN_VERIFY_H
+#define DOGEC_CONSENSUS_ZEROCOIN_VERIFY_H
 
 #include "consensus/consensus.h"
 #include "script/interpreter.h"
-#include "zflschain.h"
+#include "zdogecashchain.h"
 
 /** Context-independent validity checks */
 bool CheckZerocoinSpend(const CTransaction& tx, bool fVerifySignature, CValidationState& state, bool fFakeSerialAttack = false);
@@ -22,4 +22,4 @@ bool CheckPublicCoinSpendVersion(int version);
 bool ContextualCheckZerocoinSpend(const CTransaction& tx, const libzerocoin::CoinSpend* spend, int nHeight, const uint256& hashBlock);
 bool ContextualCheckZerocoinSpendNoSerialCheck(const CTransaction& tx, const libzerocoin::CoinSpend* spend, int nHeight, const uint256& hashBlock);
 
-#endif //FLS_CONSENSUS_ZEROCOIN_VERIFY_H
+#endif //DOGEC_CONSENSUS_ZEROCOIN_VERIFY_H

@@ -4,17 +4,17 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsbackupwallet.h"
+#include "qt/dogecash/settings/settingsbackupwallet.h"
 
-#include "qt/fls/settings/forms/ui_settingsbackupwallet.h"
+#include "qt/dogecash/settings/forms/ui_settingsbackupwallet.h"
 
 #include "guiinterface.h"
 #include "guiutil.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 
 #include <QGraphicsDropShadowEffect>
 
-SettingsBackupWallet::SettingsBackupWallet(FLSGUI* _window, QWidget *parent) :
+SettingsBackupWallet::SettingsBackupWallet(DOGECGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsBackupWallet)
 {

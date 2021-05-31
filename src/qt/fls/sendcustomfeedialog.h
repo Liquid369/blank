@@ -8,10 +8,10 @@
 #define SENDCUSTOMFEEDIALOG_H
 
 #include "policy/feerate.h"
-#include "qt/fls/focuseddialog.h"
-#include "qt/fls/snackbar.h"
+#include "qt/dogecash/focuseddialog.h"
+#include "qt/dogecash/snackbar.h"
 
-class FLSGUI;
+class DOGECGUI;
 class WalletModel;
 
 namespace Ui {
@@ -23,7 +23,7 @@ class SendCustomFeeDialog : public FocusedDialog
     Q_OBJECT
 
 public:
-    explicit SendCustomFeeDialog(FLSGUI* parent, WalletModel* model);
+    explicit SendCustomFeeDialog(DOGECGUI* parent, WalletModel* model);
     ~SendCustomFeeDialog();
 
     void showEvent(QShowEvent* event) override;

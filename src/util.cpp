@@ -8,7 +8,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h"
+#include "config/dogecash-config.h"
 #endif
 
 #include "util.h"
@@ -85,9 +85,9 @@
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
 
-const char * const FLS_CONF_FILENAME = "fls.conf";
-const char * const FLS_PID_FILENAME = "fls.pid";
-const char * const FLS_MASTERNODE_CONF_FILENAME = "masternode.conf";
+const char * const DOGEC_CONF_FILENAME = "dogecash.conf";
+const char * const DOGEC_PID_FILENAME = "dogecash.pid";
+const char * const DOGEC_MASTERNODE_CONF_FILENAME = "masternode.conf";
 
 
 // FLITS only features
@@ -329,7 +329,7 @@ static std::string FormatException(const std::exception* pex, const char* pszThr
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(NULL, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "fls";
+    const char* pszModule = "dogecash";
 #endif
     if (pex)
         return strprintf(
@@ -348,13 +348,13 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 
 fs::path GetDefaultDataDir()
 {
-// Windows < Vista: C:\Documents and Settings\Username\Application Data\FLS
-// Windows >= Vista: C:\Users\Username\AppData\Roaming\FLS
-// Mac: ~/Library/Application Support/FLS
-// Unix: ~/.fls
+// Windows < Vista: C:\Documents and Settings\Username\Application Data\DOGEC
+// Windows >= Vista: C:\Users\Username\AppData\Roaming\DOGEC
+// Mac: ~/Library/Application Support/DOGEC
+// Unix: ~/.dogecash
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "FLS";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "DOGEC";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -366,10 +366,10 @@ fs::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     TryCreateDirectory(pathRet);
-    return pathRet / "FLS";
+    return pathRet / "DOGEC";
 #else
     // Unix
-    return pathRet / ".fls";
+    return pathRet / ".dogecash";
 #endif
 #endif
 }
@@ -382,13 +382,13 @@ static RecursiveMutex csPathCached;
 static fs::path ZC_GetBaseParamsDir()
 {
     // Copied from GetDefaultDataDir and adapter for zcash params.
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\FLSParams
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\FLSParams
-    // Mac: ~/Library/Application Support/FLSParams
-    // Unix: ~/.fls-params
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\DOGECParams
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\DOGECParams
+    // Mac: ~/Library/Application Support/DOGECParams
+    // Unix: ~/.dogecash-params
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "FLSParams";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "DOGECParams";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -400,10 +400,10 @@ static fs::path ZC_GetBaseParamsDir()
     // Mac
     pathRet /= "Library/Application Support";
     TryCreateDirectory(pathRet);
-    return pathRet / "FLSParams";
+    return pathRet / "DOGECParams";
 #else
     // Unix
-    return pathRet / ".fls-params";
+    return pathRet / ".dogecash-params";
 #endif
 #endif
 }
@@ -469,14 +469,14 @@ void initZKSNARKS()
         CFRelease(mainBundle);
 #else
         // Linux fallback path for debuild/ppa based installs
-        sapling_spend = "/usr/share/fls/sapling-spend.params";
-        sapling_output = "/usr/share/fls/sapling-output.params";
+        sapling_spend = "/usr/share/dogecash/sapling-spend.params";
+        sapling_output = "/usr/share/dogecash/sapling-output.params";
         if (fs::exists(sapling_spend) && fs::exists(sapling_output)) {
             fParamsFound = true;
         } else {
             // Linux fallback for local installs
-            sapling_spend = "/usr/local/share/fls/sapling-spend.params";
-            sapling_output = "/usr/local/share/fls/sapling-output.params";
+            sapling_spend = "/usr/local/share/dogecash/sapling-spend.params";
+            sapling_output = "/usr/local/share/dogecash/sapling-output.params";
         }
 #endif
         if (fs::exists(sapling_spend) && fs::exists(sapling_output))
@@ -546,13 +546,13 @@ void ClearDatadirCache()
 
 fs::path GetConfigFile()
 {
-    fs::path pathConfigFile(gArgs.GetArg("-conf", FLS_CONF_FILENAME));
+    fs::path pathConfigFile(gArgs.GetArg("-conf", DOGEC_CONF_FILENAME));
     return AbsPathForConfigVal(pathConfigFile, false);
 }
 
 fs::path GetMasternodeConfigFile()
 {
-    fs::path pathConfigFile(gArgs.GetArg("-mnconf", FLS_MASTERNODE_CONF_FILENAME));
+    fs::path pathConfigFile(gArgs.GetArg("-mnconf", DOGEC_MASTERNODE_CONF_FILENAME));
     return AbsPathForConfigVal(pathConfigFile);
 }
 
@@ -560,7 +560,7 @@ void ArgsManager::ReadConfigFile()
 {
     fs::ifstream streamConfig(GetConfigFile());
     if (!streamConfig.good()) {
-        // Create empty fls.conf if it does not exist
+        // Create empty dogecash.conf if it does not exist
         FILE* configFile = fsbridge::fopen(GetConfigFile(), "a");
         if (configFile != NULL)
             fclose(configFile);
@@ -573,7 +573,7 @@ void ArgsManager::ReadConfigFile()
         setOptions.insert("*");
 
         for (boost::program_options::detail::config_file_iterator it(streamConfig, setOptions), end; it != end; ++it) {
-            // Don't overwrite existing settings so command line settings override fls.conf
+            // Don't overwrite existing settings so command line settings override dogecash.conf
             std::string strKey = std::string("-") + it->string_key;
             std::string strValue = it->value[0];
             InterpretNegatedOption(strKey, strValue);
@@ -597,7 +597,7 @@ fs::path AbsPathForConfigVal(const fs::path& path, bool net_specific)
 #ifndef WIN32
 fs::path GetPidFile()
 {
-    fs::path pathPidFile(gArgs.GetArg("-pid", FLS_PID_FILENAME));
+    fs::path pathPidFile(gArgs.GetArg("-pid", DOGEC_PID_FILENAME));
     return AbsPathForConfigVal(pathPidFile);
 }
 

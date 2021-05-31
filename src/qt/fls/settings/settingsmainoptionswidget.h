@@ -9,7 +9,7 @@
 #ifndef SETTINGSMAINOPTIONSWIDGET_H
 #define SETTINGSMAINOPTIONSWIDGET_H
 
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 
 #include <QWidget>
 
@@ -26,7 +26,7 @@ class SettingsMainOptionsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsMainOptionsWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsMainOptionsWidget(DOGECGUI* _window, QWidget *parent = nullptr);
     ~SettingsMainOptionsWidget();
 
     void setMapper(QDataWidgetMapper *mapper);

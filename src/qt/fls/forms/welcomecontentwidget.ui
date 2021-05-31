@@ -1139,7 +1139,7 @@ FLITS Core Wallet</string>
                 <item>
                  <widget class="QLabel" name="labelMessage4">
                   <property name="text">
-                   <string>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</string>
+                   <string>The masternode network is DOGEC's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -1181,7 +1181,7 @@ FLITS Core Wallet</string>
   <customwidget>
    <class>PFBorderImage</class>
    <extends>QFrame</extends>
-   <header>qt/fls/pfborderimage.h</header>
+   <header>qt/dogecash/pfborderimage.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

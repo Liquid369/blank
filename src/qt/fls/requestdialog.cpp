@@ -6,11 +6,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/requestdialog.h"
-#include "qt/fls/forms/ui_requestdialog.h"
+#include "qt/dogecash/requestdialog.h"
+#include "qt/dogecash/forms/ui_requestdialog.h"
 #include <QListView>
 
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 #include "guiutil.h"
 #include "amount.h"
 #include "pairresult.h"

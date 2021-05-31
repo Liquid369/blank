@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/lockunlock.h"
-#include "qt/fls/forms/ui_lockunlock.h"
+#include "qt/dogecash/lockunlock.h"
+#include "qt/dogecash/forms/ui_lockunlock.h"
 
 LockUnlock::LockUnlock(QWidget *parent) :
     QWidget(parent),

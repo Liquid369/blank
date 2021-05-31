@@ -7,14 +7,14 @@
 #ifndef COLDSTAKINGWIDGET_H
 #define COLDSTAKINGWIDGET_H
 
-#include "qt/fls/pwidget.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
-#include "qt/fls/txviewholder.h"
-#include "qt/fls/tooltipmenu.h"
-#include "qt/fls/sendmultirow.h"
-#include "qt/fls/coldstakingmodel.h"
-#include "qt/fls/contactsdropdown.h"
-#include "qt/fls/addressholder.h"
+#include "qt/dogecash/pwidget.h"
+#include "qt/dogecash/furabstractlistitemdelegate.h"
+#include "qt/dogecash/txviewholder.h"
+#include "qt/dogecash/tooltipmenu.h"
+#include "qt/dogecash/sendmultirow.h"
+#include "qt/dogecash/coldstakingmodel.h"
+#include "qt/dogecash/contactsdropdown.h"
+#include "qt/dogecash/addressholder.h"
 #include "transactiontablemodel.h"
 #include "addresstablemodel.h"
 #include "addressfilterproxymodel.h"
@@ -26,7 +26,7 @@
 #include <QSpacerItem>
 #include <atomic>
 
-class FLSGUI;
+class DOGECGUI;
 class WalletModel;
 class CSDelegationHolder;
 
@@ -43,7 +43,7 @@ class ColdStakingWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit ColdStakingWidget(FLSGUI* parent);
+    explicit ColdStakingWidget(DOGECGUI* parent);
     ~ColdStakingWidget();
 
     void loadWalletModel() override;

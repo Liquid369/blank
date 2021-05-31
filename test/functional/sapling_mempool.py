@@ -3,7 +3,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -12,7 +12,7 @@ from test_framework.util import (
 from decimal import Decimal
 
 # Test mempool interaction with Sapling transactions
-class SaplingMempoolTest(FlsTestFramework):
+class SaplingMempoolTest(DogeCashTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 2
@@ -32,7 +32,7 @@ class SaplingMempoolTest(FlsTestFramework):
         # Sanity-check the test harness
         assert_equal([x.getblockcount() for x in self.nodes], [120] * self.num_nodes)
 
-        # miner sends a 10 FLS note to Alice
+        # miner sends a 10 DOGEC note to Alice
         self.log.info("Shielding some coins for Alice...")
         alice_zaddr = alice.getnewshieldaddress()
         miner.shieldsendmany("from_transparent", [{"address": alice_zaddr, "amount": Decimal('10.00')}], 1, fee)
@@ -72,7 +72,7 @@ class SaplingMempoolTest(FlsTestFramework):
                                 alice.sendrawtransaction, rawTx_hex)
         self.log.info("tx_A NOT accepted in the mempool. Good.")
 
-        # miner sends another 10 FLS note to Alice
+        # miner sends another 10 DOGEC note to Alice
         self.log.info("Shielding some more coins for Alice...")
         miner.shieldsendmany("from_transparent", [{"address": alice_zaddr, "amount": Decimal('10.00')}], 1, fee)
         miner.generate(1)

@@ -4,10 +4,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingswidget.h"
-#include "qt/fls/settings/forms/ui_settingswidget.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/defaultdialog.h"
+#include "qt/dogecash/settings/settingswidget.h"
+#include "qt/dogecash/settings/forms/ui_settingswidget.h"
+#include "qt/dogecash/qtutils.h"
+#include "qt/dogecash/defaultdialog.h"
 #include "optionsmodel.h"
 #include "clientmodel.h"
 #include "utilitydialog.h"
@@ -15,7 +15,7 @@
 #include <QScrollBar>
 #include <QDataWidgetMapper>
 
-SettingsWidget::SettingsWidget(FLSGUI* parent) :
+SettingsWidget::SettingsWidget(DOGECGUI* parent) :
     PWidget(parent),
     ui(new Ui::SettingsWidget)
 {

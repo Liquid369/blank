@@ -9,7 +9,7 @@
 #ifndef ADDNEWCONTACTDIALOG_H
 #define ADDNEWCONTACTDIALOG_H
 
-#include "qt/fls/focuseddialog.h"
+#include "qt/dogecash/focuseddialog.h"
 
 namespace Ui {
 class AddNewContactDialog;

@@ -1,11 +1,11 @@
 Sample configuration files for:
 ```
-SystemD: flsd.service
-Upstart: flsd.conf
-OpenRC:  flsd.openrc
-         flsd.openrcconf
-CentOS:  flsd.init
-macOS:    org.fls.flsd.plist
+SystemD: dogecashd.service
+Upstart: dogecashd.conf
+OpenRC:  dogecashd.openrc
+         dogecashd.openrcconf
+CentOS:  dogecashd.init
+macOS:    org.dogecash.dogecashd.plist
 ```
 have been made available to assist packagers in creating node packages here.
 

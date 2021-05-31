@@ -9,7 +9,7 @@
 #ifndef FURABSTRACTLISTITEMDELEGATE_H
 #define FURABSTRACTLISTITEMDELEGATE_H
 
-#include "qt/fls/furlistrow.h"
+#include "qt/dogecash/furlistrow.h"
 
 #include <QAbstractItemDelegate>
 #include <QColor>

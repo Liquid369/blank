@@ -4,10 +4,10 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/sendmemodialog.h"
-#include "qt/fls/forms/ui_sendmemodialog.h"
-#include "qt/fls/snackbar.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/sendmemodialog.h"
+#include "qt/dogecash/forms/ui_sendmemodialog.h"
+#include "qt/dogecash/snackbar.h"
+#include "qt/dogecash/qtutils.h"
 
 SendMemoDialog::SendMemoDialog(QWidget* parent, WalletModel* model) :
     FocusedDialog(parent),

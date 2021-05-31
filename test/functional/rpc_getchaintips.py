@@ -10,10 +10,10 @@
 - verify that getchaintips now returns two chain tips.
 """
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import assert_equal
 
-class GetChainTipsTest (FlsTestFramework):
+class GetChainTipsTest (DogeCashTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
 

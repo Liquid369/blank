@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_PFBorderImage_H
-#define FLS_PFBorderImage_H
+#ifndef DOGEC_PFBorderImage_H
+#define DOGEC_PFBorderImage_H
 
 #include <QPainter>
 #include <QPixmap>
@@ -56,4 +56,4 @@ protected:
 
 };
 
-#endif //FLS_PFBorderImage_H
+#endif //DOGEC_PFBorderImage_H

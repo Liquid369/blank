@@ -3,7 +3,7 @@ Gitian building
 
 *Setup instructions for a gitian build of FLITS Core using a VM or physical system.*
 
-Gitian is the deterministic build process that is used to build the FLS
+Gitian is the deterministic build process that is used to build the DOGEC
 Core executables. It provides a way to be reasonably sure that the
 executables are really built from source on GitHub. It also makes sure that
 the same, tested dependencies are used and statically built into the executable.
@@ -23,7 +23,7 @@ Table of Contents
 - [Preparing the Gitian builder host](#preparing-the-gitian-builder-host)
   - [macOS Builds](#macos-builds)
 - [Initial Gitian Setup](#initial-gitian-setup)
-- [Building FLITS Core](#building-fls-core)
+- [Building FLITS Core](#building-dogecash-core)
 - [Signing externally](#signing-externally)
 - [Uploading signatures](#uploading-signatures)
 
@@ -104,15 +104,15 @@ Signing Externally
 If your gitian host does not have your GPG private key installed, you will need to copy these uncommited changes to your host machine, where you can sign them:
 
 ```bash
-gpg --output ${VERSION}-linux/${NAME}/fls-linux-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-linux/$NAME/fls-linux-${VERSION%\.*}-build.assert
-gpg --output ${VERSION}-osx-unsigned/$NAME/fls-osx-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-osx-unsigned/$NAME/fls-osx-${VERSION%\.*}-build.assert
-gpg --output ${VERSION}-win-unsigned/$NAME/fls-win-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-win-unsigned/$NAME/fls-win-${VERSION%\.*}-build.assert
+gpg --output ${VERSION}-linux/${NAME}/dogecash-linux-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-linux/$NAME/dogecash-linux-${VERSION%\.*}-build.assert
+gpg --output ${VERSION}-osx-unsigned/$NAME/dogecash-osx-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-osx-unsigned/$NAME/dogecash-osx-${VERSION%\.*}-build.assert
+gpg --output ${VERSION}-win-unsigned/$NAME/dogecash-win-${VERSION%\.*}-build.assert.sig --detach-sign ${VERSION}-win-unsigned/$NAME/dogecash-win-${VERSION%\.*}-build.assert
 ```
 
 Uploading Signatures
 --------------------
 Make a Pull Request (both the `.assert` and `.assert.sig` files) to the
-[gitian.sigs](https://github.com/fls-project/gitian.sigs/) repository:
+[gitian.sigs](https://github.com/dogecash/gitian.sigs/) repository:
 
 ```bash
 git checkout -b ${VERSION}-not-codesigned
@@ -123,9 +123,9 @@ git push --set-upstream $NAME $VERSION-not-codesigned
 You can also mail the files to Fuzzbawls (fuzzbawls@flitswallet.app) and he will commit them.
 
 ```bash
-gpg --detach-sign ${VERSION}-linux/${NAME}/fls-linux-*-build.assert
-gpg --detach-sign ${VERSION}-win-unsigned/${NAME}/fls-win-*-build.assert
-gpg --detach-sign ${VERSION}-osx-unsigned/${NAME}/fls-osx-*-build.assert
+gpg --detach-sign ${VERSION}-linux/${NAME}/dogecash-linux-*-build.assert
+gpg --detach-sign ${VERSION}-win-unsigned/${NAME}/dogecash-win-*-build.assert
+gpg --detach-sign ${VERSION}-osx-unsigned/${NAME}/dogecash-osx-*-build.assert
 ```
 
 You may have other .assert files as well (e.g. `signed` ones), in which case you should sign them too. You can see all of them by doing `ls ${VERSION}-*/${NAME}`.

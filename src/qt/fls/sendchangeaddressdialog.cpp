@@ -4,9 +4,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/sendchangeaddressdialog.h"
-#include "qt/fls/forms/ui_sendchangeaddressdialog.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/sendchangeaddressdialog.h"
+#include "qt/dogecash/forms/ui_sendchangeaddressdialog.h"
+#include "qt/dogecash/qtutils.h"
 
 SendChangeAddressDialog::SendChangeAddressDialog(QWidget* parent, WalletModel* model) :
     FocusedDialog(parent),

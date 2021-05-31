@@ -423,7 +423,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
                 return InvalidAmount;
             }
             total += subtotal;
-        } else { // User-entered fls address / amount:
+        } else { // User-entered dogecash address / amount:
             if (!validateAddress(rcp.address, rcp.isP2CS)) {
                 return InvalidAddress;
             }
@@ -541,7 +541,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction& tran
                 std::string value;
                 rcp.paymentRequest.SerializeToString(&value);
                 newTx->vOrderForm.emplace_back(key, value);
-            } else if (!rcp.message.isEmpty()) // Message from normal fls:URI (fls:XyZ...?message=example)
+            } else if (!rcp.message.isEmpty()) // Message from normal dogecash:URI (dogecash:XyZ...?message=example)
             {
                 newTx->vOrderForm.emplace_back("Message", rcp.message.toStdString());
             }
@@ -970,7 +970,7 @@ std::string WalletModel::getLabelForAddress(const CTxDestination& address)
     return label;
 }
 
-// returns a COutPoint of 10000 FLS if found
+// returns a COutPoint of 10000 DOGEC if found
 bool WalletModel::getMNCollateralCandidate(COutPoint& outPoint)
 {
     CWallet::AvailableCoinsFilter coinsFilter;

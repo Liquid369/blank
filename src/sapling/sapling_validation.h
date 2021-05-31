@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_SAPLING_VALIDATION_H
-#define FLS_SAPLING_VALIDATION_H
+#ifndef DOGEC_SAPLING_VALIDATION_H
+#define DOGEC_SAPLING_VALIDATION_H
 
 #include "chainparams.h"
 
@@ -29,4 +29,4 @@ bool ContextualCheckTransaction(const CTransaction &tx, CValidationState &state,
 
 }; // End SaplingValidation namespace
 
-#endif //FLS_SAPLING_VALIDATION_H
+#endif //DOGEC_SAPLING_VALIDATION_H

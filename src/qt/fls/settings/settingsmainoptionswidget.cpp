@@ -6,19 +6,19 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsmainoptionswidget.h"
-#include "qt/fls/settings/forms/ui_settingsmainoptionswidget.h"
+#include "qt/dogecash/settings/settingsmainoptionswidget.h"
+#include "qt/dogecash/settings/forms/ui_settingsmainoptionswidget.h"
 #include "QListView"
 
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h"
+#include "config/dogecash-config.h"
 #endif
 
 #include "bitcoinunits.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
 #include "clientmodel.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 
 #include "netbase.h"
 #include "txdb.h" // for -dbcache defaults
@@ -33,7 +33,7 @@
 #include <QTimer>
 
 
-SettingsMainOptionsWidget::SettingsMainOptionsWidget(FLSGUI* _window, QWidget *parent) :
+SettingsMainOptionsWidget::SettingsMainOptionsWidget(DOGECGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsMainOptionsWidget)
 {

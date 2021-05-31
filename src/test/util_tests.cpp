@@ -12,7 +12,7 @@
 #include "sync.h"
 #include "utilstrencodings.h"
 #include "utilmoneystr.h"
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include <stdint.h>
 #include <vector>
@@ -598,7 +598,7 @@ BOOST_AUTO_TEST_CASE(test_ToUpper)
 BOOST_AUTO_TEST_CASE(test_Capitalize)
 {
     BOOST_CHECK_EQUAL(Capitalize(""), "");
-    BOOST_CHECK_EQUAL(Capitalize("fls"), "Fls");
+    BOOST_CHECK_EQUAL(Capitalize("dogecash"), "DogeCash");
     BOOST_CHECK_EQUAL(Capitalize("\x00\xfe\xff"), "\x00\xfe\xff");
 }
 

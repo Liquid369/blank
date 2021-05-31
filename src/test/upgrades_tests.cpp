@@ -8,7 +8,7 @@
 #include "chainparams.h"
 #include "consensus/upgrades.h"
 #include "optional.h"
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include <boost/test/unit_test.hpp>
 

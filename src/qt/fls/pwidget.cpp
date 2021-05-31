@@ -4,19 +4,19 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/pwidget.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/loadingdialog.h"
+#include "qt/dogecash/pwidget.h"
+#include "qt/dogecash/qtutils.h"
+#include "qt/dogecash/loadingdialog.h"
 #include <QRunnable>
 #include <QThreadPool>
 
-PWidget::PWidget(FLSGUI* _window, QWidget *parent) : QWidget((parent) ? parent : _window), window(_window) { init(); }
+PWidget::PWidget(DOGECGUI* _window, QWidget *parent) : QWidget((parent) ? parent : _window), window(_window) { init(); }
 PWidget::PWidget(PWidget* parent) : QWidget(parent), window(parent->getWindow()) { init(); }
 
 void PWidget::init()
 {
     if (window)
-        connect(window, &FLSGUI::themeChanged, this, &PWidget::onChangeTheme);
+        connect(window, &DOGECGUI::themeChanged, this, &PWidget::onChangeTheme);
 }
 
 void PWidget::setClientModel(ClientModel* model)

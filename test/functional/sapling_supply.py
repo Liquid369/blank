@@ -5,13 +5,13 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import (
     assert_equal,
 )
 from decimal import Decimal
 
-class SaplingSupplyTest(FlsTestFramework):
+class SaplingSupplyTest(DogeCashTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 1
@@ -39,8 +39,8 @@ class SaplingSupplyTest(FlsTestFramework):
         z_supply = 0
         self.check_shield_supply(z_supply)
 
-        # Send 200 FLS to shield addr1
-        self.log.info("Shielding 200 FLS...")
+        # Send 200 DOGEC to shield addr1
+        self.log.info("Shielding 200 DOGEC...")
         z_addr1 = self.nodes[0].getnewshieldaddress()
         txid = self.nodes[0].shieldsendmany(
             "from_transparent", [{'address': z_addr1, 'amount': 200,
@@ -66,7 +66,7 @@ class SaplingSupplyTest(FlsTestFramework):
         self.check_shield_supply(z_supply)
 
         # Deshield 100 coins
-        self.log.info("Deshielding 100 FLS...")
+        self.log.info("Deshielding 100 DOGEC...")
         t_addr1 = self.nodes[0].getnewaddress()
         txid = self.nodes[0].shieldsendmany(
             "from_shield", [{'address': t_addr1, 'amount': 100}], 1, fee)

@@ -10,10 +10,10 @@
 #include "txdb.h"
 #include "wallet/wallet.h"
 
-CFlsStake* CFlsStake::NewFlsStake(const CTxIn& txin)
+CDogeCashStake* CDogeCashStake::NewDogeCashStake(const CTxIn& txin)
 {
     if (txin.IsZerocoinSpend()) {
-        error("%s: unable to initialize CFlsStake from zerocoin spend", __func__);
+        error("%s: unable to initialize CDogeCashStake from zerocoin spend", __func__);
         return nullptr;
     }
 
@@ -37,29 +37,29 @@ CFlsStake* CFlsStake::NewFlsStake(const CTxIn& txin)
         return nullptr;
     }
 
-    return new CFlsStake(txPrev->vout[txin.prevout.n],
+    return new CDogeCashStake(txPrev->vout[txin.prevout.n],
                          txin.prevout,
                          pindexFrom);
 }
 
-bool CFlsStake::GetTxOutFrom(CTxOut& out) const
+bool CDogeCashStake::GetTxOutFrom(CTxOut& out) const
 {
     out = outputFrom;
     return true;
 }
 
-bool CFlsStake::CreateTxIn(CWallet* pwallet, CTxIn& txIn, uint256 hashTxOut)
+bool CDogeCashStake::CreateTxIn(CWallet* pwallet, CTxIn& txIn, uint256 hashTxOut)
 {
     txIn = CTxIn(outpointFrom.hash, outpointFrom.n);
     return true;
 }
 
-CAmount CFlsStake::GetValue() const
+CAmount CDogeCashStake::GetValue() const
 {
     return outputFrom.nValue;
 }
 
-bool CFlsStake::CreateTxOuts(CWallet* pwallet, std::vector<CTxOut>& vout, CAmount nTotal, const bool onlyP2PK)
+bool CDogeCashStake::CreateTxOuts(CWallet* pwallet, std::vector<CTxOut>& vout, CAmount nTotal, const bool onlyP2PK)
 {
     std::vector<valtype> vSolutions;
     txnouttype whichType;
@@ -108,24 +108,24 @@ bool CFlsStake::CreateTxOuts(CWallet* pwallet, std::vector<CTxOut>& vout, CAmoun
     return true;
 }
 
-CDataStream CFlsStake::GetUniqueness() const
+CDataStream CDogeCashStake::GetUniqueness() const
 {
-    //The unique identifier for a FLS stake is the outpoint
+    //The unique identifier for a DOGEC stake is the outpoint
     CDataStream ss(SER_NETWORK, 0);
     ss << outpointFrom.n << outpointFrom.hash;
     return ss;
 }
 
 //The block that the UTXO was added to the chain
-const CBlockIndex* CFlsStake::GetIndexFrom() const
+const CBlockIndex* CDogeCashStake::GetIndexFrom() const
 {
     // Sanity check, pindexFrom is set on the constructor.
-    if (!pindexFrom) throw std::runtime_error("CFlsStake: uninitialized pindexFrom");
+    if (!pindexFrom) throw std::runtime_error("CDogeCashStake: uninitialized pindexFrom");
     return pindexFrom;
 }
 
 // Verify stake contextual checks
-bool CFlsStake::ContextCheck(int nHeight, uint32_t nTime)
+bool CDogeCashStake::ContextCheck(int nHeight, uint32_t nTime)
 {
     const Consensus::Params& consensus = Params().GetConsensus();
     // Get Stake input block time/height

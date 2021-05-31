@@ -505,7 +505,7 @@ bool CMasternodeBroadcast::CheckInputsAndAdd(int nChainHeight, int& nDoS)
     }
 
     // verify that sig time is legit in past
-    // should be at least not earlier than block when 1000 FLS tx got MASTERNODE_MIN_CONFIRMATIONS
+    // should be at least not earlier than block when 1000 DOGEC tx got MASTERNODE_MIN_CONFIRMATIONS
     CBlockIndex* pConfIndex = WITH_LOCK(cs_main, return chainActive[utxoHeight + MasternodeCollateralMinConf() - 1]); // block where tx got MASTERNODE_MIN_CONFIRMATIONS
     if (pConfIndex->GetBlockTime() > sigTime) {
         LogPrint(BCLog::MASTERNODE,"mnb - Bad sigTime %d for Masternode %s (%i conf block is at %d)\n",

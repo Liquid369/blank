@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_WARNINGS_H
-#define FLS_WARNINGS_H
+#ifndef DOGEC_WARNINGS_H
+#define DOGEC_WARNINGS_H
 
 #include <stdlib.h>
 #include <string>
@@ -18,4 +18,4 @@ std::string GetWarnings(const std::string& strFor);
 
 static const bool DEFAULT_TESTSAFEMODE = false;
 
-#endif //FLS_WARNINGS_H
+#endif //DOGEC_WARNINGS_H

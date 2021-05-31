@@ -8,9 +8,9 @@
 #define NAVMENUWIDGET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 
-class FLSGUI;
+class DOGECGUI;
 
 namespace Ui {
 class NavMenuWidget;
@@ -21,7 +21,7 @@ class NavMenuWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit NavMenuWidget(FLSGUI* mainWindow, QWidget *parent = nullptr);
+    explicit NavMenuWidget(DOGECGUI* mainWindow, QWidget *parent = nullptr);
     ~NavMenuWidget();
 
     void loadWalletModel() override;

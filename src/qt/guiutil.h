@@ -60,8 +60,8 @@ QFont bitcoinAddressFont();
 CAmount parseValue(const QString& text, int displayUnit, bool* valid_out = 0);
 
 // Format an amount
-QString formatBalance(CAmount amount, int nDisplayUnit = 0, bool isZfls = false);
-QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit = 0, bool isZfls = false);
+QString formatBalance(CAmount amount, int nDisplayUnit = 0, bool isZdogecash = false);
+QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit = 0, bool isZdogecash = false);
 
 
 // Set up widgets for address and amounts
@@ -71,7 +71,7 @@ void setupAmountWidget(QLineEdit* widget, QWidget* parent);
 // Update the cursor of the widget after a text change
 void updateWidgetTextAndCursorPosition(QLineEdit* widget, const QString& str);
 
-// Parse "fls:" URI into recipient object, return true on successful parsing
+// Parse "dogecash:" URI into recipient object, return true on successful parsing
 bool parseBitcoinURI(const QUrl& uri, SendCoinsRecipient* out);
 bool parseBitcoinURI(QString uri, SendCoinsRecipient* out);
 QString formatBitcoinURI(const SendCoinsRecipient& info);
@@ -140,7 +140,7 @@ bool isObscured(QWidget* w);
 // Open debug.log
 bool openDebugLogfile();
 
-// Open fls.conf
+// Open dogecash.conf
 bool openConfigfile();
 
 // Open masternode.conf

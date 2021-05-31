@@ -6,9 +6,9 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/optionbutton.h"
-#include "qt/fls/forms/ui_optionbutton.h"
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/optionbutton.h"
+#include "qt/dogecash/forms/ui_optionbutton.h"
+#include "qt/dogecash/qtutils.h"
 #include <QMouseEvent>
 
 OptionButton::OptionButton(QWidget *parent) :

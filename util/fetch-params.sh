@@ -15,9 +15,9 @@ if [ -n "${1:-}" ]; then
     PARAMS_DIR="$1"
 else
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        PARAMS_DIR="$HOME/Library/Application Support/FLSParams"
+        PARAMS_DIR="$HOME/Library/Application Support/DOGECParams"
     else
-        PARAMS_DIR="$HOME/.fls-params"
+        PARAMS_DIR="$HOME/.dogecash-params"
     fi
 fi
 

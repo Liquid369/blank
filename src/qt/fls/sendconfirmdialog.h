@@ -8,8 +8,8 @@
 #define SENDCONFIRMDIALOG_H
 
 #include "walletmodeltransaction.h"
-#include "qt/fls/focuseddialog.h"
-#include "qt/fls/snackbar.h"
+#include "qt/dogecash/focuseddialog.h"
+#include "qt/dogecash/snackbar.h"
 
 class WalletModelTransaction;
 class WalletModel;

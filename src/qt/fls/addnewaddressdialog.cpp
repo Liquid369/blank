@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/addnewaddressdialog.h"
-#include "qt/fls/forms/ui_addnewaddressdialog.h"
+#include "qt/dogecash/addnewaddressdialog.h"
+#include "qt/dogecash/forms/ui_addnewaddressdialog.h"
 
 AddNewAddressDialog::AddNewAddressDialog(QWidget *parent) :
     QWidget(parent),

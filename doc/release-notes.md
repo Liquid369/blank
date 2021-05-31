@@ -1,8 +1,8 @@
-FLITS Core version v5.1.0 is now available from:  <https://github.com/flitsnode/flits-core/releases>
+FLITS Core version v5.1.0 is now available from:  <https://github.com/dogecash/dogecash/releases>
 
 This is a new major version release, including various bug fixes and performance improvements, as well as updated translations.
 
-Please report bugs using the issue tracker at github: <https://github.com/flitsnode/flits-core/issues>
+Please report bugs using the issue tracker at github: <https://github.com/dogecash/dogecash/issues>
 
 Recommended Update
 ==============
@@ -12,7 +12,7 @@ This version is an optional, but recommended, update for all users and services.
 How to Upgrade
 ==============
 
-If you are running an older version, shut it down. Wait until it has completely shut down (which might take a few minutes for older versions), then run the installer (on Windows) or just copy over /Applications/FLS-Qt (on Mac) or flsd/fls-qt (on Linux).
+If you are running an older version, shut it down. Wait until it has completely shut down (which might take a few minutes for older versions), then run the installer (on Windows) or just copy over /Applications/DogeCash-Qt (on Mac) or dogecashd/dogecash-qt (on Linux).
 
 Sapling Parameters
 ==================
@@ -26,7 +26,7 @@ For the following packages, no action is required by the user:
 
 For the other packages, the user must save the param files in the proper location, before being able to run FLITS v5.0.0:
 - macOS/Linux `tar.gz` tarballs include a bash script (`install-params.sh`) to copy the parameters in the appropriate location.
-- Windows `.zip` users need to manually copy the files from the `share/fls` folder to the `%APPDATA%\FLSParams` directory.
+- Windows `.zip` users need to manually copy the files from the `share/dogecash` folder to the `%APPDATA%\DOGECParams` directory.
 - self compilers can run the script from the repository sources (`params/install-params.sh`), or copy the files directly from the `params` subdirectory.
 
 Compatibility
@@ -140,7 +140,7 @@ Detailed release notes follow. This overview includes changes that affect behavi
 
 ### Tier Two Network (Masternodes / Budget)
 - #2143 [BUG] Fix deadlock in GetNextMasternodeInQueueForPayment (random-zebra)
-- #2170 Better fls.conf Masternode data error notification (furszy)
+- #2170 Better dogecash.conf Masternode data error notification (furszy)
 - #2186 Improving masternode check inputs and add process (furszy)
 
 ### Miscellaneous
@@ -227,4 +227,4 @@ Thanks to everyone who directly contributed to this release:
 - Wladimir J. van der Laan
 
 
-As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/fls-project-translations/), the QA team during Testing and the Node hosts supporting our Testnet.
+As well as everyone that helped translating on [Transifex](https://www.transifex.com/projects/p/dogecash-project-translations/), the QA team during Testing and the Node hosts supporting our Testnet.

@@ -18,14 +18,14 @@ from decimal import Decimal
 import os
 import shutil
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import DogeCashTestFramework
 from test_framework.util import (
         assert_equal,
         connect_nodes,
         disconnect_nodes,
 )
 
-class ReorgsRestoreTest(FlsTestFramework):
+class ReorgsRestoreTest(DogeCashTestFramework):
     def set_test_params(self):
         self.num_nodes = 3
 

@@ -26,7 +26,7 @@ urgent technical necessity and disclosed.
 3. The results may not be served with a DNS TTL of less than one minute.
 
 4. Any logging of DNS queries should be only that which is necessary
-for the operation of the service or urgent health of the FLS
+for the operation of the service or urgent health of the DOGEC
 network and must not be retained longer than necessary nor disclosed
 to any third party.
 
@@ -42,7 +42,7 @@ details of their operating practices.
 related to the DNS seed operation.
 
 If these expectations cannot be satisfied the operator should
-discontinue providing services and contact the active FLS
+discontinue providing services and contact the active DOGEC
 Core development team as well as posting on the
 [FLITS Forum](https://forum.flitswallet.app).
 

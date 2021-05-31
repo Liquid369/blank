@@ -11,7 +11,7 @@
 
 #include <QWidget>
 #include <QDataWidgetMapper>
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 
 namespace Ui {
 class SettingsNetworkWidget;
@@ -22,7 +22,7 @@ class SettingsNetworkWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsNetworkWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsNetworkWidget(DOGECGUI* _window, QWidget *parent = nullptr);
     ~SettingsNetworkWidget();
 
     void setMapper(QDataWidgetMapper *mapper);

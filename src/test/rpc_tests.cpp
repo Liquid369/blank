@@ -11,7 +11,7 @@
 #include "netbase.h"
 #include "util.h"
 
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/test/unit_test.hpp>

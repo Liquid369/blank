@@ -10,7 +10,7 @@
 #include "serialize.h"
 #include "streams.h"
 
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include <string>
 

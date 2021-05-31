@@ -578,7 +578,7 @@ padding-top:2px;
                      <item>
                       <widget class="QLabel" name="labelAmountSend">
                        <property name="text">
-                        <string notr="true">0.00 FLS</string>
+                        <string notr="true">0.00 DOGEC</string>
                        </property>
                       </widget>
                      </item>
@@ -834,7 +834,7 @@ padding-top:2px;
   <customwidget>
    <class>OptionButton</class>
    <extends>QWidget</extends>
-   <header>qt/fls/optionbutton.h</header>
+   <header>qt/dogecash/optionbutton.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

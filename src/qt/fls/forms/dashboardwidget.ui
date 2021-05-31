@@ -454,7 +454,7 @@
             <enum>Qt::NoFocus</enum>
            </property>
            <property name="text">
-            <string>How to get FLS</string>
+            <string>How to get DOGEC</string>
            </property>
           </widget>
          </item>
@@ -565,9 +565,9 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="labelAmountFls">
+           <widget class="QLabel" name="labelAmountDogeCash">
             <property name="text">
-             <string notr="true">0 FLS</string>
+             <string notr="true">0 DOGEC</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -575,9 +575,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelAmountZfls">
+           <widget class="QLabel" name="labelAmountZdogecash">
             <property name="text">
-             <string notr="true">0 zFLS</string>
+             <string notr="true">0 zDOGEC</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -673,7 +673,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLabel" name="labelSquareFls">
+                 <widget class="QLabel" name="labelSquareDogeCash">
                   <property name="minimumSize">
                    <size>
                     <width>14</width>
@@ -692,9 +692,9 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="labelFls">
+                 <widget class="QLabel" name="labelDogeCash">
                   <property name="text">
-                   <string notr="true">FLS</string>
+                   <string notr="true">DOGEC</string>
                   </property>
                  </widget>
                 </item>
@@ -715,7 +715,7 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLabel" name="labelSquarezFls">
+                 <widget class="QLabel" name="labelSquarezDogeCash">
                   <property name="minimumSize">
                    <size>
                     <width>14</width>
@@ -734,9 +734,9 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="labelZfls">
+                 <widget class="QLabel" name="labelZdogecash">
                   <property name="text">
-                   <string notr="true">zFLS</string>
+                   <string notr="true">zDOGEC</string>
                   </property>
                  </widget>
                 </item>

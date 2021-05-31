@@ -5,7 +5,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "test/test_fls.h"
+#include "test/test_dogecash.h"
 
 #include "sapling/address.h"
 #include "sapling/key_io_sapling.h"

@@ -4,11 +4,11 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_CORE_NEW_GUI_FLSGUI_H
-#define FLS_CORE_NEW_GUI_FLSGUI_H
+#ifndef DOGEC_CORE_NEW_GUI_DOGECGUI_H
+#define DOGEC_CORE_NEW_GUI_DOGECGUI_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h"
+#include "config/dogecash-config.h"
 #endif
 
 #include <QMainWindow>
@@ -16,17 +16,17 @@
 #include <QSystemTrayIcon>
 #include <QLabel>
 
-#include "qt/fls/navmenuwidget.h"
-#include "qt/fls/topbar.h"
-#include "qt/fls/dashboardwidget.h"
-#include "qt/fls/send.h"
-#include "qt/fls/receivewidget.h"
-#include "qt/fls/addresseswidget.h"
-#include "qt/fls/coldstakingwidget.h"
-#include "qt/fls/masternodeswidget.h"
-#include "qt/fls/snackbar.h"
-#include "qt/fls/settings/settingswidget.h"
-#include "qt/fls/settings/settingsfaqwidget.h"
+#include "qt/dogecash/navmenuwidget.h"
+#include "qt/dogecash/topbar.h"
+#include "qt/dogecash/dashboardwidget.h"
+#include "qt/dogecash/send.h"
+#include "qt/dogecash/receivewidget.h"
+#include "qt/dogecash/addresseswidget.h"
+#include "qt/dogecash/coldstakingwidget.h"
+#include "qt/dogecash/masternodeswidget.h"
+#include "qt/dogecash/snackbar.h"
+#include "qt/dogecash/settings/settingswidget.h"
+#include "qt/dogecash/settings/settingsfaqwidget.h"
 #include "qt/rpcconsole.h"
 
 namespace interfaces {
@@ -43,15 +43,15 @@ class WalletModel;
   FLITS GUI main class. This class represents the main window of the FLITS UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
 */
-class FLSGUI : public QMainWindow
+class DOGECGUI : public QMainWindow
 {
     Q_OBJECT
 
 public:
     static const QString DEFAULT_WALLET;
 
-    explicit FLSGUI(const NetworkStyle* networkStyle, QWidget* parent = 0);
-    ~FLSGUI();
+    explicit DOGECGUI(const NetworkStyle* networkStyle, QWidget* parent = 0);
+    ~DOGECGUI();
 
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
@@ -197,4 +197,4 @@ Q_SIGNALS:
 };
 
 
-#endif //FLS_CORE_NEW_GUI_FLSGUI_H
+#endif //DOGEC_CORE_NEW_GUI_DOGECGUI_H

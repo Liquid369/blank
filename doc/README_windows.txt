@@ -11,7 +11,7 @@ with each other, with the help of a P2P network to check for double-spending.
 
 Setup
 -----
-Unpack the files into a directory and run fls-qt.exe.
+Unpack the files into a directory and run dogecash-qt.exe.
 
 FLITS Core is the original FLITS client and it builds the backbone of the network.
 However, it downloads and stores the entire history of FLITS transactions;

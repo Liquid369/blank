@@ -7,7 +7,7 @@
 #ifndef DEFAULTDIALOG_H
 #define DEFAULTDIALOG_H
 
-#include "qt/fls/focuseddialog.h"
+#include "qt/dogecash/focuseddialog.h"
 
 namespace Ui {
 class DefaultDialog;

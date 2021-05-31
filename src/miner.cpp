@@ -71,7 +71,7 @@ bool ProcessBlockFound(const std::shared_ptr<const CBlock>& pblock, CWallet& wal
     {
         WAIT_LOCK(g_best_block_mutex, lock);
         if (pblock->hashPrevBlock != g_best_block)
-            return error("FLSMiner : generated block is stale");
+            return error("DOGECMiner : generated block is stale");
     }
 
     // Remove key from key pool
@@ -81,7 +81,7 @@ bool ProcessBlockFound(const std::shared_ptr<const CBlock>& pblock, CWallet& wal
     // Process this block the same as if we had received it from another node
     CValidationState state;
     if (!ProcessNewBlock(state, nullptr, pblock, nullptr)) {
-        return error("FLSMiner : ProcessNewBlock, block not accepted");
+        return error("DOGECMiner : ProcessNewBlock, block not accepted");
     }
 
     g_connman->ForEachNode([&pblock](CNode* node)
@@ -111,9 +111,9 @@ void CheckForCoins(CWallet* pwallet, std::vector<CStakeableOutput>* availableCoi
 
 void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
 {
-    LogPrintf("FLSMiner started\n");
+    LogPrintf("DOGECMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    util::ThreadRename("fls-miner");
+    util::ThreadRename("dogecash-miner");
     const Consensus::Params& consensus = Params().GetConsensus();
     const int64_t nSpacingMillis = consensus.nTargetSpacing * 1000;
 
@@ -190,7 +190,7 @@ void BitcoinMiner(CWallet* pwallet, bool fProofOfStake)
         // POW - miner main
         IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
-        LogPrintf("Running FLSMiner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
+        LogPrintf("Running DOGECMiner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
             ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
         //
@@ -276,12 +276,12 @@ void static ThreadBitcoinMiner(void* parg)
         BitcoinMiner(pwallet, false);
         boost::this_thread::interruption_point();
     } catch (const std::exception& e) {
-        LogPrintf("FLSMiner exception");
+        LogPrintf("DOGECMiner exception");
     } catch (...) {
-        LogPrintf("FLSMiner exception");
+        LogPrintf("DOGECMiner exception");
     }
 
-    LogPrintf("FLSMiner exiting\n");
+    LogPrintf("DOGECMiner exiting\n");
 }
 
 void GenerateBitcoins(bool fGenerate, CWallet* pwallet, int nThreads)

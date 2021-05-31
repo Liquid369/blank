@@ -11,10 +11,10 @@
 
 #include <QWidget>
 #include <QAbstractTableModel>
-#include "qt/fls/pwidget.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
+#include "qt/dogecash/pwidget.h"
+#include "qt/dogecash/furabstractlistitemdelegate.h"
 
-class FLSGUI;
+class DOGECGUI;
 
 namespace Ui {
 class SettingsMultisendWidget;

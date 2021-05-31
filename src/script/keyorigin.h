@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_SCRIPT_KEYORIGIN_H
-#define FLS_SCRIPT_KEYORIGIN_H
+#ifndef DOGEC_SCRIPT_KEYORIGIN_H
+#define DOGEC_SCRIPT_KEYORIGIN_H
 
 #include <serialize.h>
 #include <vector>
@@ -52,4 +52,4 @@ struct KeyOriginInfo
     }
 };
 
-#endif // FLS_SCRIPT_KEYORIGIN_H
+#endif // DOGEC_SCRIPT_KEYORIGIN_H

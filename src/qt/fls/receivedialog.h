@@ -9,7 +9,7 @@
 #ifndef RECEIVEDIALOG_H
 #define RECEIVEDIALOG_H
 
-#include "qt/fls/focuseddialog.h"
+#include "qt/dogecash/focuseddialog.h"
 #include <QPixmap>
 
 class SendCoinsRecipient;

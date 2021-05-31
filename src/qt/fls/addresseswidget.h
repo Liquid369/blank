@@ -7,17 +7,17 @@
 #ifndef ADDRESSESWIDGET_H
 #define ADDRESSESWIDGET_H
 
-#include "qt/fls/pwidget.h"
+#include "qt/dogecash/pwidget.h"
 #include "addresstablemodel.h"
-#include "qt/fls/tooltipmenu.h"
+#include "qt/dogecash/tooltipmenu.h"
 #include "furabstractlistitemdelegate.h"
-#include "qt/fls/addressfilterproxymodel.h"
+#include "qt/dogecash/addressfilterproxymodel.h"
 
 #include <QWidget>
 
 class AddressViewDelegate;
 class TooltipMenu;
-class FLSGUI;
+class DOGECGUI;
 class WalletModel;
 
 namespace Ui {
@@ -33,7 +33,7 @@ class AddressesWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit AddressesWidget(FLSGUI* parent);
+    explicit AddressesWidget(DOGECGUI* parent);
     ~AddressesWidget();
 
     void loadWalletModel() override;

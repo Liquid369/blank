@@ -12,7 +12,7 @@
 #include <QPointer>
 #include <iostream>
 #include <QTimer>
-#include "qt/fls/prunnable.h"
+#include "qt/dogecash/prunnable.h"
 #include "qt/walletmodel.h"
 
 namespace Ui {

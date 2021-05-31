@@ -9,8 +9,8 @@
 #ifndef TXVIEWHOLDER_H
 #define TXVIEWHOLDER_H
 
-#include "qt/fls/furlistrow.h"
-#include "qt/fls/txrow.h"
+#include "qt/dogecash/furlistrow.h"
+#include "qt/dogecash/txrow.h"
 #include "bitcoinunits.h"
 #include <transactionfilterproxy.h>
 

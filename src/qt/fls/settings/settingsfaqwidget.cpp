@@ -6,13 +6,13 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsfaqwidget.h"
-#include "qt/fls/settings/forms/ui_settingsfaqwidget.h"
+#include "qt/dogecash/settings/settingsfaqwidget.h"
+#include "qt/dogecash/settings/forms/ui_settingsfaqwidget.h"
 #include <QScrollBar>
 #include <QMetaObject>
-#include "qt/fls/qtutils.h"
+#include "qt/dogecash/qtutils.h"
 
-SettingsFaqWidget::SettingsFaqWidget(FLSGUI *parent) :
+SettingsFaqWidget::SettingsFaqWidget(DOGECGUI *parent) :
     QDialog(parent),
     ui(new Ui::SettingsFaqWidget)
 {
@@ -31,7 +31,7 @@ SettingsFaqWidget::SettingsFaqWidget(FLSGUI *parent) :
     // Content
     setCssProperty({
            ui->labelNumber_Intro,
-           ui->labelNumber_UnspendableFLS,
+           ui->labelNumber_UnspendableDOGEC,
            ui->labelNumber_Stake,
            ui->labelNumber_Support,
            ui->labelNumber_Masternode,
@@ -40,7 +40,7 @@ SettingsFaqWidget::SettingsFaqWidget(FLSGUI *parent) :
 
     setCssProperty({
               ui->labelSubtitle_Intro,
-              ui->labelSubtitle_UnspendableFLS,
+              ui->labelSubtitle_UnspendableDOGEC,
               ui->labelSubtitle_Stake,
               ui->labelSubtitle_Support,
               ui->labelSubtitle_Masternode,
@@ -50,7 +50,7 @@ SettingsFaqWidget::SettingsFaqWidget(FLSGUI *parent) :
 
     setCssProperty({
               ui->labelContent_Intro,
-              ui->labelContent_UnspendableFLS,
+              ui->labelContent_UnspendableDOGEC,
               ui->labelContent_Stake,
               ui->labelContent_Support,
               ui->labelContent_Masternode,
@@ -60,7 +60,7 @@ SettingsFaqWidget::SettingsFaqWidget(FLSGUI *parent) :
 
     setCssProperty({
               ui->pushButton_Intro,
-              ui->pushButton_UnspendableFLS,
+              ui->pushButton_UnspendableDOGEC,
               ui->pushButton_Stake,
               ui->pushButton_Support,
               ui->pushButton_Masternode,
@@ -79,14 +79,14 @@ SettingsFaqWidget::SettingsFaqWidget(FLSGUI *parent) :
     // Buttons
     connect(ui->pushButtonExit, &QPushButton::clicked, this, &SettingsFaqWidget::close);
     connect(ui->pushButton_Intro, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_Intro);});
-    connect(ui->pushButton_UnspendableFLS, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_UnspendableFLS);});
+    connect(ui->pushButton_UnspendableDOGEC, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_UnspendableDOGEC);});
     connect(ui->pushButton_Stake, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_Stake);});
     connect(ui->pushButton_Support, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_Support);});
     connect(ui->pushButton_Masternode, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_Masternode);});
     connect(ui->pushButton_MNController, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_MNController);});
 
     if (parent)
-        connect(parent, &FLSGUI::windowResizeEvent, this, &SettingsFaqWidget::windowResizeEvent);
+        connect(parent, &DOGECGUI::windowResizeEvent, this, &SettingsFaqWidget::windowResizeEvent);
 }
 
 void SettingsFaqWidget::showEvent(QShowEvent *event)
@@ -117,7 +117,7 @@ std::vector<QPushButton*> SettingsFaqWidget::getButtons()
 {
     return {
             ui->pushButton_Intro,
-            ui->pushButton_UnspendableFLS,
+            ui->pushButton_UnspendableDOGEC,
             ui->pushButton_Stake,
             ui->pushButton_Support,
             ui->pushButton_Masternode,

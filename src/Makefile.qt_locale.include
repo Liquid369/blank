@@ -1,15 +1,15 @@
 QT_TS = \
-  qt/locale/fls_de.ts \
-  qt/locale/fls_en.ts \
-  qt/locale/fls_en_US.ts \
-  qt/locale/fls_es.ts \
-  qt/locale/fls_es_ES.ts \
-  qt/locale/fls_fr_FR.ts \
-  qt/locale/fls_hr_HR.ts \
-  qt/locale/fls_it.ts \
-  qt/locale/fls_ko_KR.ts \
-  qt/locale/fls_nl.ts \
-  qt/locale/fls_pl.ts \
-  qt/locale/fls_ru.ts \
-  qt/locale/fls_tr.ts \
-  qt/locale/fls_zh_CN.ts
+  qt/locale/dogecash_de.ts \
+  qt/locale/dogecash_en.ts \
+  qt/locale/dogecash_en_US.ts \
+  qt/locale/dogecash_es.ts \
+  qt/locale/dogecash_es_ES.ts \
+  qt/locale/dogecash_fr_FR.ts \
+  qt/locale/dogecash_hr_HR.ts \
+  qt/locale/dogecash_it.ts \
+  qt/locale/dogecash_ko_KR.ts \
+  qt/locale/dogecash_nl.ts \
+  qt/locale/dogecash_pl.ts \
+  qt/locale/dogecash_ru.ts \
+  qt/locale/dogecash_tr.ts \
+  qt/locale/dogecash_zh_CN.ts
