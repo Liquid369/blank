@@ -37,7 +37,7 @@ NO_WALLET ?=
 NO_ZMQ ?=
 NO_UPNP ?=
 NO_RUST ?=
-FALLBACK_DOWNLOAD_PATH ?= https://depends.dogecash.org
+FALLBACK_DOWNLOAD_PATH ?= https://depends.pivx.org
 
 BUILD = $(shell ./config.guess)
 HOST ?= $(BUILD)
@@ -50,6 +50,7 @@ CRATE_REGISTRY:=vendored-sources
 CRATE_ARCHIVE = $(SOURCES_PATH)/vendored-crates.tar.gz
 HOST_ID_SALT ?= salt
 BUILD_ID_SALT ?= salt
+
 
 host:=$(BUILD)
 ifneq ($(HOST),)
@@ -153,7 +154,6 @@ include funcs.mk
 
 binutils_path=$($($(host_arch)_$(host_os)_native_binutils)_prefixbin)
 ifeq ($(strip $(FORCE_USE_SYSTEM_CLANG)),)
-
 toolchain_path=$($($(host_arch)_$(host_os)_native_toolchain)_prefixbin)
 else
 toolchain_path=
@@ -166,12 +166,12 @@ $(host_prefix)/.stamp_$(final_build_id): $(native_packages) $(packages)
 	$(AT)echo copying packages: $^
 	$(AT)echo to: $(@D)
 	$(AT)cd $(@D); $(foreach package,$^, tar xf $($(package)_cached); )
-    $(AT)if test -f "$(CRATE_ARCHIVE)"; \
- 	then echo Extracting pre-vendored crates from $(CRATE_ARCHIVE)...; \
- 		tar xf $(CRATE_ARCHIVE) -C $(@D); \
- 	else echo Vendoring crates...; \
- 		$(@D)/native/bin/cargo vendor --locked --manifest-path $(BASEDIR)/../Cargo.toml $(@D)/$(CRATE_REGISTRY); \
- 	fi
+	$(AT)if test -f "$(CRATE_ARCHIVE)"; \
+	then echo Extracting pre-vendored crates from $(CRATE_ARCHIVE)...; \
+		tar xf $(CRATE_ARCHIVE) -C $(@D); \
+	else echo Vendoring crates...; \
+		$(@D)/native/bin/cargo vendor --locked --manifest-path $(BASEDIR)/../Cargo.toml $(@D)/$(CRATE_REGISTRY); \
+	fi
 	$(AT)touch $@
 
 $(host_prefix)/share/config.site : config.site.in $(host_prefix)/.stamp_$(final_build_id)
@@ -216,12 +216,12 @@ endef
 
 check-packages:
 	@$(foreach package,$(packages),$(call check_or_remove_cached,$(package));)
- 	@$(foreach package,$(rust_crates),$(call check_or_remove_cached,$(package));)
- 	@$(foreach package,$(native_packages),$(call check_or_remove_cached,$(package));)
+	@$(foreach package,$(rust_crates),$(call check_or_remove_cached,$(package));)
+	@$(foreach package,$(native_packages),$(call check_or_remove_cached,$(package));)
 check-sources:
 	@$(foreach package,$(packages),$(call check_or_remove_sources,$(package));)
- 	@$(foreach package,$(rust_crates),$(call check_or_remove_sources,$(package));)
- 	@$(foreach package,$(native_packages),$(call check_or_remove_sources,$(package));)
+	@$(foreach package,$(rust_crates),$(call check_or_remove_sources,$(package));)
+	@$(foreach package,$(native_packages),$(call check_or_remove_sources,$(package));)
 
 $(host_prefix)/share/config.site: check-packages
 
@@ -234,6 +234,7 @@ clean:
 	@rm -rf $(WORK_PATH) $(BASE_CACHE) $(BUILD)
 
 install: check-packages $(host_prefix)/share/config.site
+
 
 crates_download_dir=$(base_download_dir)/crates
 download-crates: native_rust
@@ -250,7 +251,7 @@ download-crates: native_rust
 download-one: check-sources $(all_sources)
 
 download-osx:
-	@$(MAKE) -s HOST=x86_64-apple-darwin16 download-one
+	@$(MAKE) -s HOST=x86_64-apple-darwin14 download-one
 download-linux:
 	@$(MAKE) -s HOST=x86_64-unknown-linux-gnu download-one
 download-win:
@@ -259,4 +260,4 @@ download: download-crates download-osx download-linux download-win
 
 $(foreach package,$(all_packages),$(eval $(call ext_add_stages,$(package))))
 
-.PHONY: install cached clean clean-all download-one download-crates download-osx download-linux download-win download check-packages check-sources
+.PHONY: install cached clean clean-all download-crates download-one download-osx download-linux download-win download check-packages check-sources
