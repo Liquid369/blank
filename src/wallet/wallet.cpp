@@ -22,7 +22,7 @@
 #include "spork.h"
 #include "util.h"
 #include "utilmoneystr.h"
-#include "zdogecashchain.h"
+#include "zdogecchain.h"
 
 #include <future>
 #include <boost/algorithm/string/replace.hpp>
@@ -4192,10 +4192,10 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
             UIWarning(strprintf(_("Warning: error reading %s! All keys read correctly, but transaction data"
                          " or address book entries might be missing or incorrect."), walletFile));
         } else if (nLoadWalletRet == DB_TOO_NEW) {
-            UIError(strprintf(_("Error loading %s: Wallet requires newer version of FLITS Core"), walletFile));
+            UIError(strprintf(_("Error loading %s: Wallet requires newer version of DogeCash Core"), walletFile));
             return nullptr;
         } else if (nLoadWalletRet == DB_NEED_REWRITE) {
-            UIError(_("Wallet needed to be rewritten: restart FLITS Core to complete"));
+            UIError(_("Wallet needed to be rewritten: restart DogeCash Core to complete"));
             return nullptr;
         } else {
             UIError(strprintf(_("Error loading %s\n"), walletFile));
@@ -4216,7 +4216,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
     const bool fLegacyWallet = gArgs.GetBoolArg("-legacywallet", false);
     if (gArgs.GetBoolArg("-upgradewallet", fFirstRun && !fLegacyWallet) ||
             (!walletInstance->IsLocked() && prev_version == FEATURE_PRE_SPLIT_KEYPOOL)) {
-        if (prev_version <= FEATURE_PRE_FLITS && walletInstance->IsLocked()) {
+        if (prev_version <= FEATURE_PRE_DogeCash && walletInstance->IsLocked()) {
             // Cannot upgrade a locked wallet
             UIError("Cannot upgrade a locked wallet.");
             return nullptr;
@@ -4262,7 +4262,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
             }
             // Create legacy wallet
             LogPrintf("Creating Pre-HD Wallet\n");
-            walletInstance->SetMaxVersion(FEATURE_PRE_FLITS);
+            walletInstance->SetMaxVersion(FEATURE_PRE_DogeCash);
         }
 
         // Top up the keypool

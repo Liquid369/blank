@@ -153,7 +153,7 @@ bool CTransaction::HasZerocoinMintOutputs() const
 
 bool CTransaction::HasZerocoinPublicSpendInputs() const
 {
-    // The wallet only allows publicSpend inputs in the same tx and not a combination between dogecash and zdogecash
+    // The wallet only allows publicSpend inputs in the same tx and not a combination between dogecash and zdogec
     for(const CTxIn& txin : vin) {
         if (txin.IsZerocoinPublicSpend())
             return true;

@@ -143,7 +143,7 @@ LIBSAPLING_H = \
   sapling/sapling_operation.h
 
 .PHONY: FORCE cargo-build check-symbols check-security
-# flits core #
+# DogeCash Core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrdb.h \
@@ -292,10 +292,10 @@ BITCOIN_CORE_H = \
   wallet/wallet.h \
   wallet/walletdb.h \
   warnings.h \
-  zdogecashchain.h \
-  zdogecash/mintpool.h \
-  zdogecash/zerocoin.h \
-  zdogecash/zpos.h \
+  zdogecchain.h \
+  zdogec/mintpool.h \
+  zdogec/zerocoin.h \
+  zdogec/zpos.h \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h \
   zmq/zmqnotificationinterface.h \
@@ -355,7 +355,7 @@ libbitcoin_server_a_SOURCES = \
   txmempool.cpp \
   validation.cpp \
   validationinterface.cpp \
-  zdogecashchain.cpp \
+  zdogecchain.cpp \
   $(BITCOIN_CORE_H) \
   $(LIBSAPLING_H)
 
@@ -402,10 +402,10 @@ libbitcoin_wallet_a_SOURCES = \
   destination_io.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
-  zdogecash/zerocoin.cpp \
-  zdogecash/mintpool.cpp \
+  zdogec/zerocoin.cpp \
+  zdogec/mintpool.cpp \
   stakeinput.cpp \
-  zdogecash/zpos.cpp \
+  zdogec/zpos.cpp \
   $(BITCOIN_CORE_H) \
   $(LIBSAPLING_H)
 
@@ -464,7 +464,7 @@ libzerocoin_libbitcoin_zerocoin_a_SOURCES = \
   libzerocoin/Params.h \
   libzerocoin/SpendType.h \
   libzerocoin/ZerocoinDefines.h \
-  zdogecash/zdogecashmodule.h \
+  zdogec/zdogecmodule.h \
   libzerocoin/bignum.cpp \
   libzerocoin/Accumulator.cpp \
   libzerocoin/Coin.cpp \
@@ -473,7 +473,7 @@ libzerocoin_libbitcoin_zerocoin_a_SOURCES = \
   libzerocoin/Denominations.cpp \
   libzerocoin/ParamGeneration.cpp \
   libzerocoin/Params.cpp \
-  zdogecash/zdogecashmodule.cpp
+  zdogec/zdogecmodule.cpp
 if USE_NUM_GMP
   libzerocoin_libbitcoin_zerocoin_a_SOURCES += libzerocoin/bignum_gmp.cpp
 endif
@@ -495,7 +495,7 @@ libbitcoin_common_a_SOURCES = \
   consensus/merkle.cpp \
   primitives/block.cpp \
   primitives/transaction.cpp \
-  zdogecash/zerocoin.cpp \
+  zdogec/zerocoin.cpp \
   core_read.cpp \
   core_write.cpp \
   hash.cpp \
@@ -721,7 +721,7 @@ CLEANFILES += util/*.gcda util/*.gcno
 CLEANFILES += wallet/*.gcda wallet/*.gcno
 CLEANFILES += wallet/test/*.gcda wallet/test/*.gcno
 CLEANFILES += zmq/*.gcda zmq/*.gcno
-CLEANFILES += zdogecash/*.gcda zdogecash/*.gcno
+CLEANFILES += zdogec/*.gcda zdogec/*.gcno
 CLEANFILES += obj/build.h
 
 CTAES_DIST =  crypto/ctaes/bench.c

@@ -123,7 +123,7 @@ EXPECTED_HOLDER_NAMES = [
     "The Dash Developers\n",
     "The Dash Core developers\n",
     "The PIVX developers\n",
-    "The Flits Developers\n",
+    "The DogeCash Developers\n",
     "The PPCoin developers\n",
     "The NovaCoin Developers",
     "The BlackCoin Developers\n",
@@ -360,7 +360,7 @@ def write_file_lines(filename, file_lines):
 COPYRIGHT = 'Copyright \(c\)'
 YEAR = "20[0-9][0-9]"
 YEAR_RANGE = '(%s)(-%s)?' % (YEAR, YEAR)
-HOLDER = 'The FLITS developers'
+HOLDER = 'The DogeCash developers'
 UPDATEABLE_LINE_COMPILED = re.compile(' '.join([COPYRIGHT, YEAR_RANGE, HOLDER]))
 
 def get_updatable_copyright_line(file_lines):
@@ -425,24 +425,24 @@ def exec_update_header_year(base_directory):
 ################################################################################
 
 UPDATE_USAGE = """
-Updates all the copyright headers of "The FLITS developers" which were
+Updates all the copyright headers of "The DogeCash developers" which were
 changed in a year more recent than is listed. For example:
 
-// Copyright (c) <firstYear>-<lastYear> The FLITS developers
+// Copyright (c) <firstYear>-<lastYear> The DogeCash developers
 
 will be updated to:
 
-// Copyright (c) <firstYear>-<lastModifiedYear> The FLITS developers
+// Copyright (c) <firstYear>-<lastModifiedYear> The DogeCash developers
 
 where <lastModifiedYear> is obtained from the 'git log' history.
 
 This subcommand also handles copyright headers that have only a single year. In those cases:
 
-// Copyright (c) <year> The FLITS developers
+// Copyright (c) <year> The DogeCash developers
 
 will be updated to:
 
-// Copyright (c) <year>-<lastModifiedYear> The FLITS developers
+// Copyright (c) <year>-<lastModifiedYear> The DogeCash developers
 
 where the update is appropriate.
 
@@ -475,7 +475,7 @@ def get_header_lines(header, start_year, end_year):
     return [line + '\n' for line in lines]
 
 CPP_HEADER = '''
-// Copyright (c) %s The FLITS developers
+// Copyright (c) %s The DogeCash developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 '''
@@ -484,7 +484,7 @@ def get_cpp_header_lines_to_insert(start_year, end_year):
     return reversed(get_header_lines(CPP_HEADER, start_year, end_year))
 
 PYTHON_HEADER = '''
-# Copyright (c) %s The FLITS developers
+# Copyright (c) %s The DogeCash developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 '''
@@ -538,7 +538,7 @@ def insert_cpp_header(filename, file_lines, start_year, end_year):
 def exec_insert_header(filename, style):
     file_lines = read_file_lines(filename)
     if file_already_has_core_copyright(file_lines):
-        sys.exit('*** %s already has a copyright by The FLITS developers'
+        sys.exit('*** %s already has a copyright by The DogeCash developers'
                  % (filename))
     start_year, end_year = get_git_change_year_range(filename)
     if style == 'python':
@@ -551,7 +551,7 @@ def exec_insert_header(filename, style):
 ################################################################################
 
 INSERT_USAGE = """
-Inserts a copyright header for "The FLITS developers" at the top of the
+Inserts a copyright header for "The DogeCash developers" at the top of the
 file in either Python or C++ style as determined by the file extension. If the
 file is a Python file and it has a '#!' starting the first line, the header is
 inserted in the line below it.
@@ -565,7 +565,7 @@ where <year_introduced> is according to the 'git log' history. If
 
 "<current_year>"
 
-If the file already has a copyright for "The FLITS developers", the
+If the file already has a copyright for "The DogeCash developers", the
 script will exit.
 
 Usage:

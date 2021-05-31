@@ -9,7 +9,7 @@
 
 #include "consensus/consensus.h"
 #include "script/interpreter.h"
-#include "zdogecashchain.h"
+#include "zdogecchain.h"
 
 /** Context-independent validity checks */
 bool CheckZerocoinSpend(const CTransaction& tx, bool fVerifySignature, CValidationState& state, bool fFakeSerialAttack = false);

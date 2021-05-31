@@ -90,7 +90,7 @@ const char * const DOGEC_PID_FILENAME = "dogecash.pid";
 const char * const DOGEC_MASTERNODE_CONF_FILENAME = "masternode.conf";
 
 
-// FLITS only features
+// DogeCash only features
 // Masternode
 std::atomic<bool> fMasterNode{false};
 std::string strMasterNodeAddr = "";

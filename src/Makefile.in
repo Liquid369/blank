@@ -405,7 +405,7 @@ am_libbitcoin_common_a_OBJECTS =  \
 	consensus/libbitcoin_common_a-merkle.$(OBJEXT) \
 	primitives/libbitcoin_common_a-block.$(OBJEXT) \
 	primitives/libbitcoin_common_a-transaction.$(OBJEXT) \
-	zdogecash/libbitcoin_common_a-zerocoin.$(OBJEXT) \
+	zdogec/libbitcoin_common_a-zerocoin.$(OBJEXT) \
 	libbitcoin_common_a-core_read.$(OBJEXT) \
 	libbitcoin_common_a-core_write.$(OBJEXT) \
 	libbitcoin_common_a-hash.$(OBJEXT) \
@@ -474,7 +474,7 @@ am_libbitcoin_server_a_OBJECTS = libbitcoin_server_a-addrdb.$(OBJEXT) \
 	libbitcoin_server_a-txmempool.$(OBJEXT) \
 	libbitcoin_server_a-validation.$(OBJEXT) \
 	libbitcoin_server_a-validationinterface.$(OBJEXT) \
-	libbitcoin_server_a-zdogecashchain.$(OBJEXT) $(am__objects_3) \
+	libbitcoin_server_a-zdogecchain.$(OBJEXT) $(am__objects_3) \
 	$(am__objects_3)
 libbitcoin_server_a_OBJECTS = $(am_libbitcoin_server_a_OBJECTS)
 libbitcoin_util_a_AR = $(AR) $(ARFLAGS)
@@ -527,8 +527,8 @@ am__libbitcoin_util_a_SOURCES_DIST = arith_uint256.cpp allocators.cpp \
 	utilstrencodings.h utilmoneystr.h utiltime.h validation.h \
 	validationinterface.h version.h wallet/hdchain.h \
 	wallet/rpcwallet.h wallet/scriptpubkeyman.h destination_io.h \
-	wallet/wallet.h wallet/walletdb.h warnings.h zdogecashchain.h \
-	zdogecash/mintpool.h zdogecash/zerocoin.h zdogecash/zpos.h \
+	wallet/wallet.h wallet/walletdb.h warnings.h zdogecchain.h \
+	zdogec/mintpool.h zdogec/zerocoin.h zdogec/zpos.h \
 	zmq/zmqabstractnotifier.h zmq/zmqconfig.h \
 	zmq/zmqnotificationinterface.h zmq/zmqpublishnotifier.h \
 	sapling/sapling.h bech32.h sapling/key_io_sapling.h \
@@ -599,10 +599,10 @@ am_libbitcoin_wallet_a_OBJECTS =  \
 	libbitcoin_wallet_a-destination_io.$(OBJEXT) \
 	wallet/libbitcoin_wallet_a-wallet.$(OBJEXT) \
 	wallet/libbitcoin_wallet_a-walletdb.$(OBJEXT) \
-	zdogecash/libbitcoin_wallet_a-zerocoin.$(OBJEXT) \
-	zdogecash/libbitcoin_wallet_a-mintpool.$(OBJEXT) \
+	zdogec/libbitcoin_wallet_a-zerocoin.$(OBJEXT) \
+	zdogec/libbitcoin_wallet_a-mintpool.$(OBJEXT) \
 	libbitcoin_wallet_a-stakeinput.$(OBJEXT) \
-	zdogecash/libbitcoin_wallet_a-zpos.$(OBJEXT) $(am__objects_3) \
+	zdogec/libbitcoin_wallet_a-zpos.$(OBJEXT) $(am__objects_3) \
 	$(am__objects_3)
 libbitcoin_wallet_a_OBJECTS = $(am_libbitcoin_wallet_a_OBJECTS)
 libbitcoin_zmq_a_AR = $(AR) $(ARFLAGS)
@@ -650,13 +650,13 @@ am__libzerocoin_libbitcoin_zerocoin_a_SOURCES_DIST =  \
 	libzerocoin/CoinSpend.h libzerocoin/Commitment.h \
 	libzerocoin/Denominations.h libzerocoin/ParamGeneration.h \
 	libzerocoin/Params.h libzerocoin/SpendType.h \
-	libzerocoin/ZerocoinDefines.h zdogecash/zdogecashmodule.h \
+	libzerocoin/ZerocoinDefines.h zdogec/zdogecmodule.h \
 	libzerocoin/bignum.cpp libzerocoin/Accumulator.cpp \
 	libzerocoin/Coin.cpp \
 	libzerocoin/CoinRandomnessSchnorrSignature.cpp \
 	libzerocoin/CoinSpend.cpp libzerocoin/Denominations.cpp \
 	libzerocoin/ParamGeneration.cpp libzerocoin/Params.cpp \
-	zdogecash/zdogecashmodule.cpp libzerocoin/bignum_gmp.cpp \
+	zdogec/zdogecmodule.cpp libzerocoin/bignum_gmp.cpp \
 	libzerocoin/bignum_openssl.cpp
 @USE_NUM_GMP_TRUE@am__objects_6 = libzerocoin/libzerocoin_libbitcoin_zerocoin_a-bignum_gmp.$(OBJEXT)
 @USE_NUM_OPENSSL_TRUE@am__objects_7 = libzerocoin/libzerocoin_libbitcoin_zerocoin_a-bignum_openssl.$(OBJEXT)
@@ -668,7 +668,7 @@ am_libzerocoin_libbitcoin_zerocoin_a_OBJECTS = libzerocoin/libzerocoin_libbitcoi
 	libzerocoin/libzerocoin_libbitcoin_zerocoin_a-Denominations.$(OBJEXT) \
 	libzerocoin/libzerocoin_libbitcoin_zerocoin_a-ParamGeneration.$(OBJEXT) \
 	libzerocoin/libzerocoin_libbitcoin_zerocoin_a-Params.$(OBJEXT) \
-	zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.$(OBJEXT) \
+	zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.$(OBJEXT) \
 	$(am__objects_6) $(am__objects_7)
 libzerocoin_libbitcoin_zerocoin_a_OBJECTS =  \
 	$(am_libzerocoin_libbitcoin_zerocoin_a_OBJECTS)
@@ -932,11 +932,11 @@ am__qt_libbitcoinqt_a_SOURCES_DIST = qt/bantablemodel.cpp \
 	qt/dogecash/res/img/ic-receive-off.svg \
 	qt/dogecash/res/img/img-empty-staking-on.svg \
 	qt/dogecash/res/img/ic-arrow-drop-up-white.svg \
-	qt/dogecash/res/img/ic-coin-zdogecash.png \
+	qt/dogecash/res/img/ic-coin-zdogec.png \
 	qt/dogecash/res/img/ic-receive-on.svg \
 	qt/dogecash/res/img/img-empty-transactions.svg \
 	qt/dogecash/res/img/ic-arrow-drop-up.svg \
-	qt/dogecash/res/img/ic-coin-zdogecash.svg qt/dogecash/res/img/ic-received.svg \
+	qt/dogecash/res/img/ic-coin-zdogec.svg qt/dogecash/res/img/ic-received.svg \
 	qt/dogecash/res/img/img-logo-dogecash.png \
 	qt/dogecash/res/img/ic-arrow-drop-white-down.svg \
 	qt/dogecash/res/img/ic-combo-box.svg qt/dogecash/res/img/ic-send.svg \
@@ -2370,7 +2370,7 @@ LIBSAPLING_H = \
   sapling/transaction_builder.h \
   sapling/sapling_operation.h
 
-# flits core #
+# DogeCash Core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrdb.h \
@@ -2519,10 +2519,10 @@ BITCOIN_CORE_H = \
   wallet/wallet.h \
   wallet/walletdb.h \
   warnings.h \
-  zdogecashchain.h \
-  zdogecash/mintpool.h \
-  zdogecash/zerocoin.h \
-  zdogecash/zpos.h \
+  zdogecchain.h \
+  zdogec/mintpool.h \
+  zdogec/zerocoin.h \
+  zdogec/zpos.h \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h \
   zmq/zmqnotificationinterface.h \
@@ -2577,7 +2577,7 @@ libbitcoin_server_a_SOURCES = \
   txmempool.cpp \
   validation.cpp \
   validationinterface.cpp \
-  zdogecashchain.cpp \
+  zdogecchain.cpp \
   $(BITCOIN_CORE_H) \
   $(LIBSAPLING_H)
 
@@ -2623,10 +2623,10 @@ libbitcoin_wallet_a_SOURCES = \
   destination_io.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
-  zdogecash/zerocoin.cpp \
-  zdogecash/mintpool.cpp \
+  zdogec/zerocoin.cpp \
+  zdogec/mintpool.cpp \
   stakeinput.cpp \
-  zdogecash/zpos.cpp \
+  zdogec/zpos.cpp \
   $(BITCOIN_CORE_H) \
   $(LIBSAPLING_H)
 
@@ -2681,13 +2681,13 @@ libzerocoin_libbitcoin_zerocoin_a_SOURCES = libzerocoin/Accumulator.h \
 	libzerocoin/CoinSpend.h libzerocoin/Commitment.h \
 	libzerocoin/Denominations.h libzerocoin/ParamGeneration.h \
 	libzerocoin/Params.h libzerocoin/SpendType.h \
-	libzerocoin/ZerocoinDefines.h zdogecash/zdogecashmodule.h \
+	libzerocoin/ZerocoinDefines.h zdogec/zdogecmodule.h \
 	libzerocoin/bignum.cpp libzerocoin/Accumulator.cpp \
 	libzerocoin/Coin.cpp \
 	libzerocoin/CoinRandomnessSchnorrSignature.cpp \
 	libzerocoin/CoinSpend.cpp libzerocoin/Denominations.cpp \
 	libzerocoin/ParamGeneration.cpp libzerocoin/Params.cpp \
-	zdogecash/zdogecashmodule.cpp $(am__append_5) $(am__append_6)
+	zdogec/zdogecmodule.cpp $(am__append_5) $(am__append_6)
 
 # common: shared between dogecashd, and dogecash-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
@@ -2703,7 +2703,7 @@ libbitcoin_common_a_SOURCES = \
   consensus/merkle.cpp \
   primitives/block.cpp \
   primitives/transaction.cpp \
-  zdogecash/zerocoin.cpp \
+  zdogec/zerocoin.cpp \
   core_read.cpp \
   core_write.cpp \
   hash.cpp \
@@ -2832,7 +2832,7 @@ CLEANFILES = $(EXTRA_LIBRARIES) *.gcda *.gcno compat/*.gcda \
 	test/librust/*.gcno univalue/*.gcda univalue/*.gcno \
 	util/*.gcda util/*.gcno wallet/*.gcda wallet/*.gcno \
 	wallet/test/*.gcda wallet/test/*.gcno zmq/*.gcda zmq/*.gcno \
-	zdogecash/*.gcda zdogecash/*.gcno obj/build.h $(am__append_41) \
+	zdogec/*.gcda zdogec/*.gcno obj/build.h $(am__append_41) \
 	$(am__append_44) $(am__append_53) $(am__append_60)
 CTAES_DIST = crypto/ctaes/bench.c crypto/ctaes/ctaes.c \
 	crypto/ctaes/ctaes.h crypto/ctaes/README.md \
@@ -3534,11 +3534,11 @@ EXTRA_DIST = $(CTAES_DIST) rust
 @ENABLE_QT_TRUE@  qt/dogecash/res/img/ic-receive-off.svg \
 @ENABLE_QT_TRUE@  qt/dogecash/res/img/img-empty-staking-on.svg \
 @ENABLE_QT_TRUE@  qt/dogecash/res/img/ic-arrow-drop-up-white.svg \
-@ENABLE_QT_TRUE@  qt/dogecash/res/img/ic-coin-zdogecash.png \
+@ENABLE_QT_TRUE@  qt/dogecash/res/img/ic-coin-zdogec.png \
 @ENABLE_QT_TRUE@  qt/dogecash/res/img/ic-receive-on.svg \
 @ENABLE_QT_TRUE@  qt/dogecash/res/img/img-empty-transactions.svg \
 @ENABLE_QT_TRUE@  qt/dogecash/res/img/ic-arrow-drop-up.svg \
-@ENABLE_QT_TRUE@  qt/dogecash/res/img/ic-coin-zdogecash.svg \
+@ENABLE_QT_TRUE@  qt/dogecash/res/img/ic-coin-zdogec.svg \
 @ENABLE_QT_TRUE@  qt/dogecash/res/img/ic-received.svg \
 @ENABLE_QT_TRUE@  qt/dogecash/res/img/img-logo-dogecash.png \
 @ENABLE_QT_TRUE@  qt/dogecash/res/img/ic-arrow-drop-white-down.svg \
@@ -4137,14 +4137,14 @@ primitives/libbitcoin_common_a-block.$(OBJEXT):  \
 primitives/libbitcoin_common_a-transaction.$(OBJEXT):  \
 	primitives/$(am__dirstamp) \
 	primitives/$(DEPDIR)/$(am__dirstamp)
-zdogecash/$(am__dirstamp):
-	@$(MKDIR_P) zdogecash
-	@: > zdogecash/$(am__dirstamp)
-zdogecash/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) zdogecash/$(DEPDIR)
-	@: > zdogecash/$(DEPDIR)/$(am__dirstamp)
-zdogecash/libbitcoin_common_a-zerocoin.$(OBJEXT): zdogecash/$(am__dirstamp) \
-	zdogecash/$(DEPDIR)/$(am__dirstamp)
+zdogec/$(am__dirstamp):
+	@$(MKDIR_P) zdogec
+	@: > zdogec/$(am__dirstamp)
+zdogec/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) zdogec/$(DEPDIR)
+	@: > zdogec/$(DEPDIR)/$(am__dirstamp)
+zdogec/libbitcoin_common_a-zerocoin.$(OBJEXT): zdogec/$(am__dirstamp) \
+	zdogec/$(DEPDIR)/$(am__dirstamp)
 policy/$(am__dirstamp):
 	@$(MKDIR_P) policy
 	@: > policy/$(am__dirstamp)
@@ -4324,12 +4324,12 @@ wallet/libbitcoin_wallet_a-wallet.$(OBJEXT): wallet/$(am__dirstamp) \
 	wallet/$(DEPDIR)/$(am__dirstamp)
 wallet/libbitcoin_wallet_a-walletdb.$(OBJEXT): wallet/$(am__dirstamp) \
 	wallet/$(DEPDIR)/$(am__dirstamp)
-zdogecash/libbitcoin_wallet_a-zerocoin.$(OBJEXT): zdogecash/$(am__dirstamp) \
-	zdogecash/$(DEPDIR)/$(am__dirstamp)
-zdogecash/libbitcoin_wallet_a-mintpool.$(OBJEXT): zdogecash/$(am__dirstamp) \
-	zdogecash/$(DEPDIR)/$(am__dirstamp)
-zdogecash/libbitcoin_wallet_a-zpos.$(OBJEXT): zdogecash/$(am__dirstamp) \
-	zdogecash/$(DEPDIR)/$(am__dirstamp)
+zdogec/libbitcoin_wallet_a-zerocoin.$(OBJEXT): zdogec/$(am__dirstamp) \
+	zdogec/$(DEPDIR)/$(am__dirstamp)
+zdogec/libbitcoin_wallet_a-mintpool.$(OBJEXT): zdogec/$(am__dirstamp) \
+	zdogec/$(DEPDIR)/$(am__dirstamp)
+zdogec/libbitcoin_wallet_a-zpos.$(OBJEXT): zdogec/$(am__dirstamp) \
+	zdogec/$(DEPDIR)/$(am__dirstamp)
 
 libbitcoin_wallet.a: $(libbitcoin_wallet_a_OBJECTS) $(libbitcoin_wallet_a_DEPENDENCIES) $(EXTRA_libbitcoin_wallet_a_DEPENDENCIES) 
 	$(AM_V_at)-rm -f libbitcoin_wallet.a
@@ -4417,8 +4417,8 @@ libzerocoin/libzerocoin_libbitcoin_zerocoin_a-ParamGeneration.$(OBJEXT):  \
 libzerocoin/libzerocoin_libbitcoin_zerocoin_a-Params.$(OBJEXT):  \
 	libzerocoin/$(am__dirstamp) \
 	libzerocoin/$(DEPDIR)/$(am__dirstamp)
-zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.$(OBJEXT):  \
-	zdogecash/$(am__dirstamp) zdogecash/$(DEPDIR)/$(am__dirstamp)
+zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.$(OBJEXT):  \
+	zdogec/$(am__dirstamp) zdogec/$(DEPDIR)/$(am__dirstamp)
 libzerocoin/libzerocoin_libbitcoin_zerocoin_a-bignum_gmp.$(OBJEXT):  \
 	libzerocoin/$(am__dirstamp) \
 	libzerocoin/$(DEPDIR)/$(am__dirstamp)
@@ -5280,7 +5280,7 @@ mostlyclean-compile:
 	-rm -f util/*.$(OBJEXT)
 	-rm -f wallet/*.$(OBJEXT)
 	-rm -f wallet/test/*.$(OBJEXT)
-	-rm -f zdogecash/*.$(OBJEXT)
+	-rm -f zdogec/*.$(OBJEXT)
 	-rm -f zmq/*.$(OBJEXT)
 
 distclean-compile:
@@ -5334,7 +5334,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-txmempool.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-validation.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-validationinterface.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-zdogecashchain.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_server_a-zdogecchain.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_util_a-allocators.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_util_a-arith_uint256.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbitcoin_util_a-blob_uint256.Po@am__quote@
@@ -5802,11 +5802,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@wallet/test/$(DEPDIR)/test_test_dogecash-wallet_shielded_balances_tests.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@wallet/test/$(DEPDIR)/test_test_dogecash-wallet_test_fixture.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@wallet/test/$(DEPDIR)/test_test_dogecash-wallet_tests.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@zdogecash/$(DEPDIR)/libbitcoin_common_a-zerocoin.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@zdogecash/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zpos.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@zdogecash/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@zdogec/$(DEPDIR)/libbitcoin_common_a-zerocoin.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@zdogec/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@zdogec/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@zdogec/$(DEPDIR)/libbitcoin_wallet_a-zpos.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@zdogec/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@zmq/$(DEPDIR)/libbitcoin_zmq_a-zmqabstractnotifier.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@zmq/$(DEPDIR)/libbitcoin_zmq_a-zmqnotificationinterface.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@zmq/$(DEPDIR)/libbitcoin_zmq_a-zmqpublishnotifier.Po@am__quote@
@@ -6867,19 +6867,19 @@ primitives/libbitcoin_common_a-transaction.obj: primitives/transaction.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_common_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_common_a_CXXFLAGS) $(CXXFLAGS) -c -o primitives/libbitcoin_common_a-transaction.obj `if test -f 'primitives/transaction.cpp'; then $(CYGPATH_W) 'primitives/transaction.cpp'; else $(CYGPATH_W) '$(srcdir)/primitives/transaction.cpp'; fi`
 
-zdogecash/libbitcoin_common_a-zerocoin.o: zdogecash/zerocoin.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_common_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_common_a_CXXFLAGS) $(CXXFLAGS) -MT zdogecash/libbitcoin_common_a-zerocoin.o -MD -MP -MF zdogecash/$(DEPDIR)/libbitcoin_common_a-zerocoin.Tpo -c -o zdogecash/libbitcoin_common_a-zerocoin.o `test -f 'zdogecash/zerocoin.cpp' || echo '$(srcdir)/'`zdogecash/zerocoin.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogecash/$(DEPDIR)/libbitcoin_common_a-zerocoin.Tpo zdogecash/$(DEPDIR)/libbitcoin_common_a-zerocoin.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecash/zerocoin.cpp' object='zdogecash/libbitcoin_common_a-zerocoin.o' libtool=no @AMDEPBACKSLASH@
+zdogec/libbitcoin_common_a-zerocoin.o: zdogec/zerocoin.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_common_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_common_a_CXXFLAGS) $(CXXFLAGS) -MT zdogec/libbitcoin_common_a-zerocoin.o -MD -MP -MF zdogec/$(DEPDIR)/libbitcoin_common_a-zerocoin.Tpo -c -o zdogec/libbitcoin_common_a-zerocoin.o `test -f 'zdogec/zerocoin.cpp' || echo '$(srcdir)/'`zdogec/zerocoin.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogec/$(DEPDIR)/libbitcoin_common_a-zerocoin.Tpo zdogec/$(DEPDIR)/libbitcoin_common_a-zerocoin.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogec/zerocoin.cpp' object='zdogec/libbitcoin_common_a-zerocoin.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_common_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_common_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogecash/libbitcoin_common_a-zerocoin.o `test -f 'zdogecash/zerocoin.cpp' || echo '$(srcdir)/'`zdogecash/zerocoin.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_common_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_common_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogec/libbitcoin_common_a-zerocoin.o `test -f 'zdogec/zerocoin.cpp' || echo '$(srcdir)/'`zdogec/zerocoin.cpp
 
-zdogecash/libbitcoin_common_a-zerocoin.obj: zdogecash/zerocoin.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_common_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_common_a_CXXFLAGS) $(CXXFLAGS) -MT zdogecash/libbitcoin_common_a-zerocoin.obj -MD -MP -MF zdogecash/$(DEPDIR)/libbitcoin_common_a-zerocoin.Tpo -c -o zdogecash/libbitcoin_common_a-zerocoin.obj `if test -f 'zdogecash/zerocoin.cpp'; then $(CYGPATH_W) 'zdogecash/zerocoin.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecash/zerocoin.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogecash/$(DEPDIR)/libbitcoin_common_a-zerocoin.Tpo zdogecash/$(DEPDIR)/libbitcoin_common_a-zerocoin.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecash/zerocoin.cpp' object='zdogecash/libbitcoin_common_a-zerocoin.obj' libtool=no @AMDEPBACKSLASH@
+zdogec/libbitcoin_common_a-zerocoin.obj: zdogec/zerocoin.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_common_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_common_a_CXXFLAGS) $(CXXFLAGS) -MT zdogec/libbitcoin_common_a-zerocoin.obj -MD -MP -MF zdogec/$(DEPDIR)/libbitcoin_common_a-zerocoin.Tpo -c -o zdogec/libbitcoin_common_a-zerocoin.obj `if test -f 'zdogec/zerocoin.cpp'; then $(CYGPATH_W) 'zdogec/zerocoin.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogec/zerocoin.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogec/$(DEPDIR)/libbitcoin_common_a-zerocoin.Tpo zdogec/$(DEPDIR)/libbitcoin_common_a-zerocoin.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogec/zerocoin.cpp' object='zdogec/libbitcoin_common_a-zerocoin.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_common_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_common_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogecash/libbitcoin_common_a-zerocoin.obj `if test -f 'zdogecash/zerocoin.cpp'; then $(CYGPATH_W) 'zdogecash/zerocoin.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecash/zerocoin.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_common_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_common_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogec/libbitcoin_common_a-zerocoin.obj `if test -f 'zdogec/zerocoin.cpp'; then $(CYGPATH_W) 'zdogec/zerocoin.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogec/zerocoin.cpp'; fi`
 
 libbitcoin_common_a-core_read.o: core_read.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_common_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_common_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_common_a-core_read.o -MD -MP -MF $(DEPDIR)/libbitcoin_common_a-core_read.Tpo -c -o libbitcoin_common_a-core_read.o `test -f 'core_read.cpp' || echo '$(srcdir)/'`core_read.cpp
@@ -7777,19 +7777,19 @@ libbitcoin_server_a-validationinterface.obj: validationinterface.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-validationinterface.obj `if test -f 'validationinterface.cpp'; then $(CYGPATH_W) 'validationinterface.cpp'; else $(CYGPATH_W) '$(srcdir)/validationinterface.cpp'; fi`
 
-libbitcoin_server_a-zdogecashchain.o: zdogecashchain.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_server_a-zdogecashchain.o -MD -MP -MF $(DEPDIR)/libbitcoin_server_a-zdogecashchain.Tpo -c -o libbitcoin_server_a-zdogecashchain.o `test -f 'zdogecashchain.cpp' || echo '$(srcdir)/'`zdogecashchain.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbitcoin_server_a-zdogecashchain.Tpo $(DEPDIR)/libbitcoin_server_a-zdogecashchain.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecashchain.cpp' object='libbitcoin_server_a-zdogecashchain.o' libtool=no @AMDEPBACKSLASH@
+libbitcoin_server_a-zdogecchain.o: zdogecchain.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_server_a-zdogecchain.o -MD -MP -MF $(DEPDIR)/libbitcoin_server_a-zdogecchain.Tpo -c -o libbitcoin_server_a-zdogecchain.o `test -f 'zdogecchain.cpp' || echo '$(srcdir)/'`zdogecchain.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbitcoin_server_a-zdogecchain.Tpo $(DEPDIR)/libbitcoin_server_a-zdogecchain.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecchain.cpp' object='libbitcoin_server_a-zdogecchain.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-zdogecashchain.o `test -f 'zdogecashchain.cpp' || echo '$(srcdir)/'`zdogecashchain.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-zdogecchain.o `test -f 'zdogecchain.cpp' || echo '$(srcdir)/'`zdogecchain.cpp
 
-libbitcoin_server_a-zdogecashchain.obj: zdogecashchain.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_server_a-zdogecashchain.obj -MD -MP -MF $(DEPDIR)/libbitcoin_server_a-zdogecashchain.Tpo -c -o libbitcoin_server_a-zdogecashchain.obj `if test -f 'zdogecashchain.cpp'; then $(CYGPATH_W) 'zdogecashchain.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecashchain.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbitcoin_server_a-zdogecashchain.Tpo $(DEPDIR)/libbitcoin_server_a-zdogecashchain.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecashchain.cpp' object='libbitcoin_server_a-zdogecashchain.obj' libtool=no @AMDEPBACKSLASH@
+libbitcoin_server_a-zdogecchain.obj: zdogecchain.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_server_a-zdogecchain.obj -MD -MP -MF $(DEPDIR)/libbitcoin_server_a-zdogecchain.Tpo -c -o libbitcoin_server_a-zdogecchain.obj `if test -f 'zdogecchain.cpp'; then $(CYGPATH_W) 'zdogecchain.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecchain.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbitcoin_server_a-zdogecchain.Tpo $(DEPDIR)/libbitcoin_server_a-zdogecchain.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecchain.cpp' object='libbitcoin_server_a-zdogecchain.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-zdogecashchain.obj `if test -f 'zdogecashchain.cpp'; then $(CYGPATH_W) 'zdogecashchain.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecashchain.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_server_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_server_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_server_a-zdogecchain.obj `if test -f 'zdogecchain.cpp'; then $(CYGPATH_W) 'zdogecchain.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecchain.cpp'; fi`
 
 libbitcoin_util_a-arith_uint256.o: arith_uint256.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_util_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_util_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_util_a-arith_uint256.o -MD -MP -MF $(DEPDIR)/libbitcoin_util_a-arith_uint256.Tpo -c -o libbitcoin_util_a-arith_uint256.o `test -f 'arith_uint256.cpp' || echo '$(srcdir)/'`arith_uint256.cpp
@@ -8519,33 +8519,33 @@ wallet/libbitcoin_wallet_a-walletdb.obj: wallet/walletdb.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o wallet/libbitcoin_wallet_a-walletdb.obj `if test -f 'wallet/walletdb.cpp'; then $(CYGPATH_W) 'wallet/walletdb.cpp'; else $(CYGPATH_W) '$(srcdir)/wallet/walletdb.cpp'; fi`
 
-zdogecash/libbitcoin_wallet_a-zerocoin.o: zdogecash/zerocoin.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogecash/libbitcoin_wallet_a-zerocoin.o -MD -MP -MF zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Tpo -c -o zdogecash/libbitcoin_wallet_a-zerocoin.o `test -f 'zdogecash/zerocoin.cpp' || echo '$(srcdir)/'`zdogecash/zerocoin.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Tpo zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecash/zerocoin.cpp' object='zdogecash/libbitcoin_wallet_a-zerocoin.o' libtool=no @AMDEPBACKSLASH@
+zdogec/libbitcoin_wallet_a-zerocoin.o: zdogec/zerocoin.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogec/libbitcoin_wallet_a-zerocoin.o -MD -MP -MF zdogec/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Tpo -c -o zdogec/libbitcoin_wallet_a-zerocoin.o `test -f 'zdogec/zerocoin.cpp' || echo '$(srcdir)/'`zdogec/zerocoin.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogec/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Tpo zdogec/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogec/zerocoin.cpp' object='zdogec/libbitcoin_wallet_a-zerocoin.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogecash/libbitcoin_wallet_a-zerocoin.o `test -f 'zdogecash/zerocoin.cpp' || echo '$(srcdir)/'`zdogecash/zerocoin.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogec/libbitcoin_wallet_a-zerocoin.o `test -f 'zdogec/zerocoin.cpp' || echo '$(srcdir)/'`zdogec/zerocoin.cpp
 
-zdogecash/libbitcoin_wallet_a-zerocoin.obj: zdogecash/zerocoin.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogecash/libbitcoin_wallet_a-zerocoin.obj -MD -MP -MF zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Tpo -c -o zdogecash/libbitcoin_wallet_a-zerocoin.obj `if test -f 'zdogecash/zerocoin.cpp'; then $(CYGPATH_W) 'zdogecash/zerocoin.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecash/zerocoin.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Tpo zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecash/zerocoin.cpp' object='zdogecash/libbitcoin_wallet_a-zerocoin.obj' libtool=no @AMDEPBACKSLASH@
+zdogec/libbitcoin_wallet_a-zerocoin.obj: zdogec/zerocoin.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogec/libbitcoin_wallet_a-zerocoin.obj -MD -MP -MF zdogec/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Tpo -c -o zdogec/libbitcoin_wallet_a-zerocoin.obj `if test -f 'zdogec/zerocoin.cpp'; then $(CYGPATH_W) 'zdogec/zerocoin.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogec/zerocoin.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogec/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Tpo zdogec/$(DEPDIR)/libbitcoin_wallet_a-zerocoin.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogec/zerocoin.cpp' object='zdogec/libbitcoin_wallet_a-zerocoin.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogecash/libbitcoin_wallet_a-zerocoin.obj `if test -f 'zdogecash/zerocoin.cpp'; then $(CYGPATH_W) 'zdogecash/zerocoin.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecash/zerocoin.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogec/libbitcoin_wallet_a-zerocoin.obj `if test -f 'zdogec/zerocoin.cpp'; then $(CYGPATH_W) 'zdogec/zerocoin.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogec/zerocoin.cpp'; fi`
 
-zdogecash/libbitcoin_wallet_a-mintpool.o: zdogecash/mintpool.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogecash/libbitcoin_wallet_a-mintpool.o -MD -MP -MF zdogecash/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Tpo -c -o zdogecash/libbitcoin_wallet_a-mintpool.o `test -f 'zdogecash/mintpool.cpp' || echo '$(srcdir)/'`zdogecash/mintpool.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogecash/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Tpo zdogecash/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecash/mintpool.cpp' object='zdogecash/libbitcoin_wallet_a-mintpool.o' libtool=no @AMDEPBACKSLASH@
+zdogec/libbitcoin_wallet_a-mintpool.o: zdogec/mintpool.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogec/libbitcoin_wallet_a-mintpool.o -MD -MP -MF zdogec/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Tpo -c -o zdogec/libbitcoin_wallet_a-mintpool.o `test -f 'zdogec/mintpool.cpp' || echo '$(srcdir)/'`zdogec/mintpool.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogec/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Tpo zdogec/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogec/mintpool.cpp' object='zdogec/libbitcoin_wallet_a-mintpool.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogecash/libbitcoin_wallet_a-mintpool.o `test -f 'zdogecash/mintpool.cpp' || echo '$(srcdir)/'`zdogecash/mintpool.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogec/libbitcoin_wallet_a-mintpool.o `test -f 'zdogec/mintpool.cpp' || echo '$(srcdir)/'`zdogec/mintpool.cpp
 
-zdogecash/libbitcoin_wallet_a-mintpool.obj: zdogecash/mintpool.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogecash/libbitcoin_wallet_a-mintpool.obj -MD -MP -MF zdogecash/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Tpo -c -o zdogecash/libbitcoin_wallet_a-mintpool.obj `if test -f 'zdogecash/mintpool.cpp'; then $(CYGPATH_W) 'zdogecash/mintpool.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecash/mintpool.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogecash/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Tpo zdogecash/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecash/mintpool.cpp' object='zdogecash/libbitcoin_wallet_a-mintpool.obj' libtool=no @AMDEPBACKSLASH@
+zdogec/libbitcoin_wallet_a-mintpool.obj: zdogec/mintpool.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogec/libbitcoin_wallet_a-mintpool.obj -MD -MP -MF zdogec/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Tpo -c -o zdogec/libbitcoin_wallet_a-mintpool.obj `if test -f 'zdogec/mintpool.cpp'; then $(CYGPATH_W) 'zdogec/mintpool.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogec/mintpool.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogec/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Tpo zdogec/$(DEPDIR)/libbitcoin_wallet_a-mintpool.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogec/mintpool.cpp' object='zdogec/libbitcoin_wallet_a-mintpool.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogecash/libbitcoin_wallet_a-mintpool.obj `if test -f 'zdogecash/mintpool.cpp'; then $(CYGPATH_W) 'zdogecash/mintpool.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecash/mintpool.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogec/libbitcoin_wallet_a-mintpool.obj `if test -f 'zdogec/mintpool.cpp'; then $(CYGPATH_W) 'zdogec/mintpool.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogec/mintpool.cpp'; fi`
 
 libbitcoin_wallet_a-stakeinput.o: stakeinput.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT libbitcoin_wallet_a-stakeinput.o -MD -MP -MF $(DEPDIR)/libbitcoin_wallet_a-stakeinput.Tpo -c -o libbitcoin_wallet_a-stakeinput.o `test -f 'stakeinput.cpp' || echo '$(srcdir)/'`stakeinput.cpp
@@ -8561,19 +8561,19 @@ libbitcoin_wallet_a-stakeinput.obj: stakeinput.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o libbitcoin_wallet_a-stakeinput.obj `if test -f 'stakeinput.cpp'; then $(CYGPATH_W) 'stakeinput.cpp'; else $(CYGPATH_W) '$(srcdir)/stakeinput.cpp'; fi`
 
-zdogecash/libbitcoin_wallet_a-zpos.o: zdogecash/zpos.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogecash/libbitcoin_wallet_a-zpos.o -MD -MP -MF zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zpos.Tpo -c -o zdogecash/libbitcoin_wallet_a-zpos.o `test -f 'zdogecash/zpos.cpp' || echo '$(srcdir)/'`zdogecash/zpos.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zpos.Tpo zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zpos.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecash/zpos.cpp' object='zdogecash/libbitcoin_wallet_a-zpos.o' libtool=no @AMDEPBACKSLASH@
+zdogec/libbitcoin_wallet_a-zpos.o: zdogec/zpos.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogec/libbitcoin_wallet_a-zpos.o -MD -MP -MF zdogec/$(DEPDIR)/libbitcoin_wallet_a-zpos.Tpo -c -o zdogec/libbitcoin_wallet_a-zpos.o `test -f 'zdogec/zpos.cpp' || echo '$(srcdir)/'`zdogec/zpos.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogec/$(DEPDIR)/libbitcoin_wallet_a-zpos.Tpo zdogec/$(DEPDIR)/libbitcoin_wallet_a-zpos.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogec/zpos.cpp' object='zdogec/libbitcoin_wallet_a-zpos.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogecash/libbitcoin_wallet_a-zpos.o `test -f 'zdogecash/zpos.cpp' || echo '$(srcdir)/'`zdogecash/zpos.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogec/libbitcoin_wallet_a-zpos.o `test -f 'zdogec/zpos.cpp' || echo '$(srcdir)/'`zdogec/zpos.cpp
 
-zdogecash/libbitcoin_wallet_a-zpos.obj: zdogecash/zpos.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogecash/libbitcoin_wallet_a-zpos.obj -MD -MP -MF zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zpos.Tpo -c -o zdogecash/libbitcoin_wallet_a-zpos.obj `if test -f 'zdogecash/zpos.cpp'; then $(CYGPATH_W) 'zdogecash/zpos.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecash/zpos.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zpos.Tpo zdogecash/$(DEPDIR)/libbitcoin_wallet_a-zpos.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecash/zpos.cpp' object='zdogecash/libbitcoin_wallet_a-zpos.obj' libtool=no @AMDEPBACKSLASH@
+zdogec/libbitcoin_wallet_a-zpos.obj: zdogec/zpos.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -MT zdogec/libbitcoin_wallet_a-zpos.obj -MD -MP -MF zdogec/$(DEPDIR)/libbitcoin_wallet_a-zpos.Tpo -c -o zdogec/libbitcoin_wallet_a-zpos.obj `if test -f 'zdogec/zpos.cpp'; then $(CYGPATH_W) 'zdogec/zpos.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogec/zpos.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogec/$(DEPDIR)/libbitcoin_wallet_a-zpos.Tpo zdogec/$(DEPDIR)/libbitcoin_wallet_a-zpos.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogec/zpos.cpp' object='zdogec/libbitcoin_wallet_a-zpos.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogecash/libbitcoin_wallet_a-zpos.obj `if test -f 'zdogecash/zpos.cpp'; then $(CYGPATH_W) 'zdogecash/zpos.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecash/zpos.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_wallet_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_wallet_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogec/libbitcoin_wallet_a-zpos.obj `if test -f 'zdogec/zpos.cpp'; then $(CYGPATH_W) 'zdogec/zpos.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogec/zpos.cpp'; fi`
 
 zmq/libbitcoin_zmq_a-zmqabstractnotifier.o: zmq/zmqabstractnotifier.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbitcoin_zmq_a_CPPFLAGS) $(CPPFLAGS) $(libbitcoin_zmq_a_CXXFLAGS) $(CXXFLAGS) -MT zmq/libbitcoin_zmq_a-zmqabstractnotifier.o -MD -MP -MF zmq/$(DEPDIR)/libbitcoin_zmq_a-zmqabstractnotifier.Tpo -c -o zmq/libbitcoin_zmq_a-zmqabstractnotifier.o `test -f 'zmq/zmqabstractnotifier.cpp' || echo '$(srcdir)/'`zmq/zmqabstractnotifier.cpp
@@ -8953,19 +8953,19 @@ libzerocoin/libzerocoin_libbitcoin_zerocoin_a-Params.obj: libzerocoin/Params.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libzerocoin_libbitcoin_zerocoin_a_CPPFLAGS) $(CPPFLAGS) $(libzerocoin_libbitcoin_zerocoin_a_CXXFLAGS) $(CXXFLAGS) -c -o libzerocoin/libzerocoin_libbitcoin_zerocoin_a-Params.obj `if test -f 'libzerocoin/Params.cpp'; then $(CYGPATH_W) 'libzerocoin/Params.cpp'; else $(CYGPATH_W) '$(srcdir)/libzerocoin/Params.cpp'; fi`
 
-zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.o: zdogecash/zdogecashmodule.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libzerocoin_libbitcoin_zerocoin_a_CPPFLAGS) $(CPPFLAGS) $(libzerocoin_libbitcoin_zerocoin_a_CXXFLAGS) $(CXXFLAGS) -MT zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.o -MD -MP -MF zdogecash/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.Tpo -c -o zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.o `test -f 'zdogecash/zdogecashmodule.cpp' || echo '$(srcdir)/'`zdogecash/zdogecashmodule.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogecash/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.Tpo zdogecash/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecash/zdogecashmodule.cpp' object='zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.o' libtool=no @AMDEPBACKSLASH@
+zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.o: zdogec/zdogecmodule.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libzerocoin_libbitcoin_zerocoin_a_CPPFLAGS) $(CPPFLAGS) $(libzerocoin_libbitcoin_zerocoin_a_CXXFLAGS) $(CXXFLAGS) -MT zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.o -MD -MP -MF zdogec/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.Tpo -c -o zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.o `test -f 'zdogec/zdogecmodule.cpp' || echo '$(srcdir)/'`zdogec/zdogecmodule.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogec/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.Tpo zdogec/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogec/zdogecmodule.cpp' object='zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libzerocoin_libbitcoin_zerocoin_a_CPPFLAGS) $(CPPFLAGS) $(libzerocoin_libbitcoin_zerocoin_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.o `test -f 'zdogecash/zdogecashmodule.cpp' || echo '$(srcdir)/'`zdogecash/zdogecashmodule.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libzerocoin_libbitcoin_zerocoin_a_CPPFLAGS) $(CPPFLAGS) $(libzerocoin_libbitcoin_zerocoin_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.o `test -f 'zdogec/zdogecmodule.cpp' || echo '$(srcdir)/'`zdogec/zdogecmodule.cpp
 
-zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.obj: zdogecash/zdogecashmodule.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libzerocoin_libbitcoin_zerocoin_a_CPPFLAGS) $(CPPFLAGS) $(libzerocoin_libbitcoin_zerocoin_a_CXXFLAGS) $(CXXFLAGS) -MT zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.obj -MD -MP -MF zdogecash/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.Tpo -c -o zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.obj `if test -f 'zdogecash/zdogecashmodule.cpp'; then $(CYGPATH_W) 'zdogecash/zdogecashmodule.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecash/zdogecashmodule.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogecash/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.Tpo zdogecash/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogecash/zdogecashmodule.cpp' object='zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.obj' libtool=no @AMDEPBACKSLASH@
+zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.obj: zdogec/zdogecmodule.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libzerocoin_libbitcoin_zerocoin_a_CPPFLAGS) $(CPPFLAGS) $(libzerocoin_libbitcoin_zerocoin_a_CXXFLAGS) $(CXXFLAGS) -MT zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.obj -MD -MP -MF zdogec/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.Tpo -c -o zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.obj `if test -f 'zdogec/zdogecmodule.cpp'; then $(CYGPATH_W) 'zdogec/zdogecmodule.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogec/zdogecmodule.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) zdogec/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.Tpo zdogec/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='zdogec/zdogecmodule.cpp' object='zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libzerocoin_libbitcoin_zerocoin_a_CPPFLAGS) $(CPPFLAGS) $(libzerocoin_libbitcoin_zerocoin_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogecash/libzerocoin_libbitcoin_zerocoin_a-zdogecashmodule.obj `if test -f 'zdogecash/zdogecashmodule.cpp'; then $(CYGPATH_W) 'zdogecash/zdogecashmodule.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogecash/zdogecashmodule.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libzerocoin_libbitcoin_zerocoin_a_CPPFLAGS) $(CPPFLAGS) $(libzerocoin_libbitcoin_zerocoin_a_CXXFLAGS) $(CXXFLAGS) -c -o zdogec/libzerocoin_libbitcoin_zerocoin_a-zdogecmodule.obj `if test -f 'zdogec/zdogecmodule.cpp'; then $(CYGPATH_W) 'zdogec/zdogecmodule.cpp'; else $(CYGPATH_W) '$(srcdir)/zdogec/zdogecmodule.cpp'; fi`
 
 libzerocoin/libzerocoin_libbitcoin_zerocoin_a-bignum_gmp.o: libzerocoin/bignum_gmp.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libzerocoin_libbitcoin_zerocoin_a_CPPFLAGS) $(CPPFLAGS) $(libzerocoin_libbitcoin_zerocoin_a_CXXFLAGS) $(CXXFLAGS) -MT libzerocoin/libzerocoin_libbitcoin_zerocoin_a-bignum_gmp.o -MD -MP -MF libzerocoin/$(DEPDIR)/libzerocoin_libbitcoin_zerocoin_a-bignum_gmp.Tpo -c -o libzerocoin/libzerocoin_libbitcoin_zerocoin_a-bignum_gmp.o `test -f 'libzerocoin/bignum_gmp.cpp' || echo '$(srcdir)/'`libzerocoin/bignum_gmp.cpp
@@ -13573,8 +13573,8 @@ distclean-generic:
 	-rm -f wallet/$(am__dirstamp)
 	-rm -f wallet/test/$(DEPDIR)/$(am__dirstamp)
 	-rm -f wallet/test/$(am__dirstamp)
-	-rm -f zdogecash/$(DEPDIR)/$(am__dirstamp)
-	-rm -f zdogecash/$(am__dirstamp)
+	-rm -f zdogec/$(DEPDIR)/$(am__dirstamp)
+	-rm -f zdogec/$(am__dirstamp)
 	-rm -f zmq/$(DEPDIR)/$(am__dirstamp)
 	-rm -f zmq/$(am__dirstamp)
 
@@ -13587,7 +13587,7 @@ clean-am: clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
 	clean-libtool clean-local clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-recursive
-	-rm -rf ./$(DEPDIR) bench/$(DEPDIR) budget/$(DEPDIR) compat/$(DEPDIR) consensus/$(DEPDIR) crc32c/src/$(DEPDIR) crypto/$(DEPDIR) interfaces/$(DEPDIR) legacy/$(DEPDIR) leveldb/db/$(DEPDIR) leveldb/helpers/memenv/$(DEPDIR) leveldb/table/$(DEPDIR) leveldb/util/$(DEPDIR) libzerocoin/$(DEPDIR) policy/$(DEPDIR) primitives/$(DEPDIR) qt/$(DEPDIR) qt/dogecash/$(DEPDIR) qt/dogecash/settings/$(DEPDIR) qt/test/$(DEPDIR) rpc/$(DEPDIR) sapling/$(DEPDIR) script/$(DEPDIR) support/$(DEPDIR) test/$(DEPDIR) test/librust/$(DEPDIR) tiertwo/$(DEPDIR) util/$(DEPDIR) wallet/$(DEPDIR) wallet/test/$(DEPDIR) zdogecash/$(DEPDIR) zmq/$(DEPDIR)
+	-rm -rf ./$(DEPDIR) bench/$(DEPDIR) budget/$(DEPDIR) compat/$(DEPDIR) consensus/$(DEPDIR) crc32c/src/$(DEPDIR) crypto/$(DEPDIR) interfaces/$(DEPDIR) legacy/$(DEPDIR) leveldb/db/$(DEPDIR) leveldb/helpers/memenv/$(DEPDIR) leveldb/table/$(DEPDIR) leveldb/util/$(DEPDIR) libzerocoin/$(DEPDIR) policy/$(DEPDIR) primitives/$(DEPDIR) qt/$(DEPDIR) qt/dogecash/$(DEPDIR) qt/dogecash/settings/$(DEPDIR) qt/test/$(DEPDIR) rpc/$(DEPDIR) sapling/$(DEPDIR) script/$(DEPDIR) support/$(DEPDIR) test/$(DEPDIR) test/librust/$(DEPDIR) tiertwo/$(DEPDIR) util/$(DEPDIR) wallet/$(DEPDIR) wallet/test/$(DEPDIR) zdogec/$(DEPDIR) zmq/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -13633,7 +13633,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-recursive
-	-rm -rf ./$(DEPDIR) bench/$(DEPDIR) budget/$(DEPDIR) compat/$(DEPDIR) consensus/$(DEPDIR) crc32c/src/$(DEPDIR) crypto/$(DEPDIR) interfaces/$(DEPDIR) legacy/$(DEPDIR) leveldb/db/$(DEPDIR) leveldb/helpers/memenv/$(DEPDIR) leveldb/table/$(DEPDIR) leveldb/util/$(DEPDIR) libzerocoin/$(DEPDIR) policy/$(DEPDIR) primitives/$(DEPDIR) qt/$(DEPDIR) qt/dogecash/$(DEPDIR) qt/dogecash/settings/$(DEPDIR) qt/test/$(DEPDIR) rpc/$(DEPDIR) sapling/$(DEPDIR) script/$(DEPDIR) support/$(DEPDIR) test/$(DEPDIR) test/librust/$(DEPDIR) tiertwo/$(DEPDIR) util/$(DEPDIR) wallet/$(DEPDIR) wallet/test/$(DEPDIR) zdogecash/$(DEPDIR) zmq/$(DEPDIR)
+	-rm -rf ./$(DEPDIR) bench/$(DEPDIR) budget/$(DEPDIR) compat/$(DEPDIR) consensus/$(DEPDIR) crc32c/src/$(DEPDIR) crypto/$(DEPDIR) interfaces/$(DEPDIR) legacy/$(DEPDIR) leveldb/db/$(DEPDIR) leveldb/helpers/memenv/$(DEPDIR) leveldb/table/$(DEPDIR) leveldb/util/$(DEPDIR) libzerocoin/$(DEPDIR) policy/$(DEPDIR) primitives/$(DEPDIR) qt/$(DEPDIR) qt/dogecash/$(DEPDIR) qt/dogecash/settings/$(DEPDIR) qt/test/$(DEPDIR) rpc/$(DEPDIR) sapling/$(DEPDIR) script/$(DEPDIR) support/$(DEPDIR) test/$(DEPDIR) test/librust/$(DEPDIR) tiertwo/$(DEPDIR) util/$(DEPDIR) wallet/$(DEPDIR) wallet/test/$(DEPDIR) zdogec/$(DEPDIR) zmq/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

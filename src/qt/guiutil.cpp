@@ -123,14 +123,14 @@ CAmount parseValue(const QString& text, int displayUnit, bool* valid_out)
     return valid ? val : 0;
 }
 
-QString formatBalance(CAmount amount, int nDisplayUnit, bool isZdogecash)
+QString formatBalance(CAmount amount, int nDisplayUnit, bool iszdogec)
 {
-    return (amount == 0) ? ("0.00 " + BitcoinUnits::name(nDisplayUnit, isZdogecash)) : BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, amount, false, BitcoinUnits::separatorAlways, true, isZdogecash);
+    return (amount == 0) ? ("0.00 " + BitcoinUnits::name(nDisplayUnit, iszdogec)) : BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, amount, false, BitcoinUnits::separatorAlways, true, iszdogec);
 }
 
-QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit, bool isZdogecash)
+QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit, bool iszdogec)
 {
-    return (amount == 0) ? ("0.00 " + BitcoinUnits::name(nDisplayUnit, isZdogecash)) : BitcoinUnits::floorWithUnit(nDisplayUnit, amount, false, BitcoinUnits::separatorAlways, true, isZdogecash);
+    return (amount == 0) ? ("0.00 " + BitcoinUnits::name(nDisplayUnit, iszdogec)) : BitcoinUnits::floorWithUnit(nDisplayUnit, amount, false, BitcoinUnits::separatorAlways, true, iszdogec);
 }
 
 void setupAddressWidget(QValidatedLineEdit* widget, QWidget* parent)
@@ -140,7 +140,7 @@ void setupAddressWidget(QValidatedLineEdit* widget, QWidget* parent)
     widget->setFont(bitcoinAddressFont());
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter FLITS address (e.g. %1)").arg("D7VFR83SQbiezrW72hjcWJtcfip5krte2Z"));
+    widget->setPlaceholderText(QObject::tr("Enter DogeCash address (e.g. %1)").arg("D7VFR83SQbiezrW72hjcWJtcfip5krte2Z"));
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent));
 }
@@ -633,9 +633,9 @@ bool DHMSTableWidgetItem::operator<(QTableWidgetItem const& item) const
 fs::path static StartupShortcutPath()
 {
     if (gArgs.GetBoolArg("-testnet", false))
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "FLITS (testnet).lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "DogeCash (testnet).lnk";
     else if (gArgs.GetBoolArg("-regtest", false))
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "FLITS (regtest).lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "DogeCash (regtest).lnk";
 
     return GetSpecialFolderPath(CSIDL_STARTUP) / "DOGEC.lnk";
 }
@@ -754,9 +754,9 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
         if (gArgs.GetBoolArg("-testnet", false))
-            optionFile << "Name=FLITS (testnet)\n";
+            optionFile << "Name=DogeCash (testnet)\n";
         else if (gArgs.GetBoolArg("-regtest", false))
-            optionFile << "Name=FLITS (regtest)\n";
+            optionFile << "Name=DogeCash (regtest)\n";
         else
             optionFile << "Name=DOGEC\n";
         optionFile << "Exec=" << pszExePath << strprintf(" -min -testnet=%d -regtest=%d\n", gArgs.GetBoolArg("-testnet", false), gArgs.GetBoolArg("-regtest", false));

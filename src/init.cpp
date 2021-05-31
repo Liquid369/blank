@@ -55,7 +55,7 @@
 #include "util/threadnames.h"
 #include "validation.h"
 #include "validationinterface.h"
-#include "zdogecashchain.h"
+#include "zdogecchain.h"
 
 #ifdef ENABLE_WALLET
 #include "wallet/db.h"
@@ -548,7 +548,7 @@ std::string HelpMessage(HelpMessageMode mode)
     }
     strUsage += HelpMessageOpt("-shrinkdebugfile", _("Shrink debug.log file on client startup (default: 1 when no -debug)"));
     AppendParamsHelpMessages(strUsage, showDebug);
-    strUsage += HelpMessageOpt("-litemode=<n>", strprintf(_("Disable all FLITS specific functionality (Masternodes, Budgeting) (0-1, default: %u)"), 0));
+    strUsage += HelpMessageOpt("-litemode=<n>", strprintf(_("Disable all DogeCash specific functionality (Masternodes, Budgeting) (0-1, default: %u)"), 0));
 
     strUsage += HelpMessageGroup(_("Masternode options:"));
     strUsage += HelpMessageOpt("-masternode=<n>", strprintf(_("Enable the client to act as a masternode (0-1, default: %u)"), DEFAULT_MASTERNODE));
@@ -598,7 +598,7 @@ std::string LicenseInfo()
            "\n" +
            FormatParagraph(strprintf(_("Copyright (C) 2014-%i The Dash Core Developers"), COPYRIGHT_YEAR)) + "\n" +
            "\n" +
-           FormatParagraph(strprintf(_("Copyright (C) 2015-%i The FLITS Core Developers"), COPYRIGHT_YEAR)) + "\n" +
+           FormatParagraph(strprintf(_("Copyright (C) 2015-%i The DogeCash Core Developers"), COPYRIGHT_YEAR)) + "\n" +
            "\n" +
            FormatParagraph(_("This is experimental software.")) + "\n" +
            "\n" +
@@ -725,7 +725,7 @@ void ThreadImport(const std::vector<fs::path>& vImportFiles)
 }
 
 /** Sanity checks
- *  Ensure that FLITS is running in a usable environment with all
+ *  Ensure that DogeCash is running in a usable environment with all
  *  necessary library support.
  */
 bool InitSanityCheck(void)
@@ -1009,7 +1009,7 @@ void InitLogging()
 #else
     version_string += " (release build)";
 #endif
-    LogPrintf("FLITS version %s (%s)\n", version_string, CLIENT_DATE);
+    LogPrintf("DogeCash version %s (%s)\n", version_string, CLIENT_DATE);
 }
 
 bool AppInitParameterInteraction()
@@ -1165,7 +1165,7 @@ static bool LockDataDirectory(bool probeOnly)
 {
     std::string strDataDir = GetDataDir().string();
 
-    // Make sure only a single FLITS process is using the data directory.
+    // Make sure only a single DogeCash process is using the data directory.
     fs::path pathLockFile = GetDataDir() / ".lock";
     FILE* file = fsbridge::fopen(pathLockFile, "a"); // empty lock file; created if it doesn't exist.
     if (file) fclose(file);
@@ -1574,7 +1574,7 @@ bool AppInitMain()
                 delete zerocoinDB;
                 delete pSporkDB;
 
-                //FLITS specific: zerocoin and spork DB's
+                //DogeCash specific: zerocoin and spork DB's
                 zerocoinDB = new CZerocoinDB(0, false, fReindex);
                 pSporkDB = new CSporkDB(0, false, false);
 

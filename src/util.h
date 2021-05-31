@@ -50,7 +50,7 @@ extern const char * const DOGEC_PID_FILENAME;
 extern const char * const DOGEC_MASTERNODE_CONF_FILENAME;
 extern const char * const DEFAULT_DEBUGLOGFILE;
 
-//FLITS only features
+//DogeCash only features
 
 extern std::atomic<bool> fMasterNode;
 extern bool fLiteMode;

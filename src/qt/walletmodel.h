@@ -116,7 +116,7 @@ public:
     }
 };
 
-/** Interface to FLITS wallet from Qt view code. */
+/** Interface to DogeCash wallet from Qt view code. */
 class WalletModel : public QObject
 {
     Q_OBJECT

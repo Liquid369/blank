@@ -17,8 +17,8 @@
 #include "util.h"
 #include "utilmoneystr.h"
 #include "validation.h"
-#include "zdogecashchain.h"
-#include "zdogecash/zpos.h"
+#include "zdogecchain.h"
+#include "zdogec/zpos.h"
 
 /**
  * CStakeKernel Constructor
@@ -109,7 +109,7 @@ bool LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::uni
     // Construct the stakeinput object
     const CTxIn& txin = block.vtx[1]->vin[0];
     stake = txin.IsZerocoinSpend() ?
-            std::unique_ptr<CStakeInput>(new CLegacyZDogeCashStake()) :
+            std::unique_ptr<CStakeInput>(new CLegacyzdogecStake()) :
             std::unique_ptr<CStakeInput>(CDogeCashStake::NewDogeCashStake(txin));
 
     return stake && stake->InitFromTxIn(txin);

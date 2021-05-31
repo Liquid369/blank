@@ -349,7 +349,7 @@ void AskPassphraseDialog::warningMessage()
     openStandardDialog(
             tr("Wallet encrypted"),
             "<qt>" +
-            tr("FLITS will close now to finish the encryption process. "
+            tr("DogeCash will close now to finish the encryption process. "
                "Remember that encrypting your wallet cannot fully protect "
                "your DOGECs from being stolen by malware infecting your computer.") +
             "<br><br><b>" +

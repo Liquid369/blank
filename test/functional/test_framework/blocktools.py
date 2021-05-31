@@ -97,7 +97,7 @@ def get_legacy_sigopcount_tx(tx, fAccurate=True):
         count += CScript(j.scriptSig).GetSigOpCount(fAccurate)
     return count
 
-### FLITS specific blocktools ###
+### DogeCash specific blocktools ###
 def create_coinbase_pos(height):
     coinbase = CTransaction()
     coinbase.vin = [CTxIn(NullOutPoint, cbase_scriptsig(height), 0xffffffff)]

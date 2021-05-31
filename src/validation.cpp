@@ -51,9 +51,9 @@
 #include "utilmoneystr.h"
 #include "validationinterface.h"
 #include "warnings.h"
-#include "zdogecashchain.h"
-#include "zdogecash/zerocoin.h"
-#include "zdogecash/zdogecashmodule.h"
+#include "zdogecchain.h"
+#include "zdogec/zerocoin.h"
+#include "zdogec/zdogecmodule.h"
 
 #include <future>
 
@@ -64,7 +64,7 @@
 
 
 #if defined(NDEBUG)
-#error "FLITS cannot be compiled without assertions."
+#error "DogeCash cannot be compiled without assertions."
 #endif
 
 /**
@@ -3243,8 +3243,8 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
 
             // Now that this loop if completed. Check if we have zDOGEC inputs.
             if(hasZDOGECInputs) {
-                for (const CTxIn& zDogeCashInput : zDOGECInputs) {
-                    libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zDogeCashInput);
+                for (const CTxIn& zdogecInput : zDOGECInputs) {
+                    libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zdogecInput);
 
                     // First check if the serials were not already spent on the forked blocks.
                     CBigNum coinSerial = spend.getCoinSerialNumber();
@@ -3264,7 +3264,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
 
                     if (!ContextualCheckZerocoinSpendNoSerialCheck(stakeTxIn, &spend, pindex->nHeight, UINT256_ZERO))
                         return state.DoS(100,error("%s: forked chain ContextualCheckZerocoinSpend failed for tx %s", __func__,
-                                                   stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdogecash");
+                                                   stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdogec");
 
                 }
             }
@@ -3284,11 +3284,11 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
             }
         } else {
             if(!isBlockFromFork)
-                for (const CTxIn& zDogeCashInput : zDOGECInputs) {
-                        libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zDogeCashInput);
+                for (const CTxIn& zdogecInput : zDOGECInputs) {
+                        libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zdogecInput);
                         if (!ContextualCheckZerocoinSpend(stakeTxIn, &spend, pindex->nHeight, UINT256_ZERO))
                             return state.DoS(100,error("%s: main chain ContextualCheckZerocoinSpend failed for tx %s", __func__,
-                                    stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdogecash");
+                                    stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdogec");
                 }
 
         }

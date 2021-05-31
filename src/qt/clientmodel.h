@@ -45,7 +45,7 @@ enum NumConnections {
     CONNECTIONS_ALL = (CONNECTIONS_IN | CONNECTIONS_OUT),
 };
 
-/** Model for FLITS network client. */
+/** Model for DogeCash network client. */
 class ClientModel : public QObject
 {
     Q_OBJECT

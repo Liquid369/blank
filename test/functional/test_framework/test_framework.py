@@ -626,7 +626,7 @@ class DogeCashTestFramework():
             initialize_datadir(self.options.tmpdir, i)
 
 
-    ### FLITS Specific TestFramework ###
+    ### DogeCash Specific TestFramework ###
     ###################################
     def init_dummy_key(self):
         self.DUMMY_KEY = CECKey()

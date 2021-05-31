@@ -103,7 +103,7 @@ class MasternodeGovernanceBasicTest(DogeCashTier2TestFramework):
         # Prepare the proposal
         self.log.info("preparing budget proposal..")
         firstProposalName = "super-cool"
-        firstProposalLink = "https://forum.flitswallet.app/t/test-proposal"
+        firstProposalLink = "https://forum.dogec.io/t/test-proposal"
         firstProposalCycles = 2
         firstProposalAddress = self.miner.getnewaddress()
         firstProposalAmountPerCycle = 300

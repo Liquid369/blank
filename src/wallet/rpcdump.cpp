@@ -143,7 +143,7 @@ UniValue importprivkey(const JSONRPCRequest& request)
         if (fRescan) {
             CBlockIndex *pindex = chainActive.Genesis();
             if (fStakingAddress && !Params().IsRegTestNet()) {
-                // cold staking was activated after nBlockTimeProtocolV2 (FLITS v4.0). No need to scan the whole chain
+                // cold staking was activated after nBlockTimeProtocolV2 (DogeCash v4.0). No need to scan the whole chain
                 pindex = chainActive[Params().GetConsensus().vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight];
             }
             pwalletMain->ScanForWalletTransactions(pindex, true);
@@ -229,7 +229,7 @@ UniValue importaddress(const JSONRPCRequest& request)
         ImportScript(CScript(data.begin(), data.end()), strLabel, fP2SH);
 
     } else {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address or script");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid DogeCash address or script");
     }
 
     if (fRescan) {
@@ -334,7 +334,7 @@ UniValue importwallet(const JSONRPCRequest& request)
             continue;
 
         // Sapling keys
-        // Let's see if the address is a valid FLITS spending key
+        // Let's see if the address is a valid DogeCash spending key
         if (pwalletMain->HasSaplingSPKM()) {
             libzcash::SpendingKey spendingkey = KeyIO::DecodeSpendingKey(vstr[0]);
             int64_t nTime = DecodeDumpTime(vstr[1]);
@@ -435,7 +435,7 @@ UniValue dumpprivkey(const JSONRPCRequest& request)
     std::string strAddress = request.params[0].get_str();
     CTxDestination dest = DecodeDestination(strAddress);
     if (!IsValidDestination(dest))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid DogeCash address");
     const CKeyID* keyID = boost::get<CKeyID>(&dest);
     if (!keyID)
         throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to a key");
@@ -512,7 +512,7 @@ UniValue dumpwallet(const JSONRPCRequest& request)
 
     CBlockIndex* tip = chainActive.Tip();
     // produce output
-    file << strprintf("# Wallet dump created by FLITS %s (%s)\n", CLIENT_BUILD, CLIENT_DATE);
+    file << strprintf("# Wallet dump created by DogeCash %s (%s)\n", CLIENT_BUILD, CLIENT_DATE);
     file << strprintf("# * Created on %s\n", EncodeDumpTime(GetTime()));
     if (tip) {
         file << strprintf("# * Best block at time of backup was %i (%s),\n", tip->nHeight,
@@ -621,7 +621,7 @@ UniValue bip38encrypt(const JSONRPCRequest& request)
 
     CTxDestination address = DecodeDestination(strAddress);
     if (!IsValidDestination(address))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid DogeCash address");
     const CKeyID* keyID = boost::get<CKeyID>(&address);
     if (!keyID)
         throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to a key");

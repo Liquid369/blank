@@ -138,7 +138,7 @@ public:
 };
 
 /**
- * FLITS RPC command dispatcher.
+ * DogeCash RPC command dispatcher.
  */
 class CRPCTable
 {

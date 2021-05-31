@@ -50,7 +50,7 @@ static const int MAX_URI_LENGTH = 255;
 
 
 #define QAPP_ORG_NAME "DOGEC"
-#define QAPP_ORG_DOMAIN "flitswallet.app"
+#define QAPP_ORG_DOMAIN "dogec.io"
 #define QAPP_APP_NAME_DEFAULT "DogeCash-Qt"
 #define QAPP_APP_NAME_TESTNET "DogeCash-Qt-testnet"
 

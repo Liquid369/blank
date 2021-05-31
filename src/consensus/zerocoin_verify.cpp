@@ -17,7 +17,7 @@
 #include "upgrades.h"            // for IsActivationHeight
 #include "utilmoneystr.h"        // for FormatMoney
 #include "../validation.h"
-#include "zdogecash/zdogecashmodule.h"
+#include "zdogec/zdogecmodule.h"
 
 
 bool CheckZerocoinSpend(const CTransaction& tx, bool fVerifySignature, CValidationState& state, bool fFakeSerialAttack)

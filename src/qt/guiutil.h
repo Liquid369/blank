@@ -44,7 +44,7 @@ public:
     GUIException(const std::string &message) : message(message) {}
 };
 
-/** Utility functions used by the FLITS Qt UI.
+/** Utility functions used by the DogeCash Qt UI.
  */
 namespace GUIUtil
 {
@@ -53,15 +53,15 @@ QString dateTimeStr(const QDateTime& datetime);
 QString dateTimeStrWithSeconds(const QDateTime& date);
 QString dateTimeStr(qint64 nTime);
 
-// Render FLITS addresses in monospace font
+// Render DogeCash addresses in monospace font
 QFont bitcoinAddressFont();
 
 // Parse string into a CAmount value
 CAmount parseValue(const QString& text, int displayUnit, bool* valid_out = 0);
 
 // Format an amount
-QString formatBalance(CAmount amount, int nDisplayUnit = 0, bool isZdogecash = false);
-QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit = 0, bool isZdogecash = false);
+QString formatBalance(CAmount amount, int nDisplayUnit = 0, bool iszdogec = false);
+QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit = 0, bool iszdogec = false);
 
 
 // Set up widgets for address and amounts

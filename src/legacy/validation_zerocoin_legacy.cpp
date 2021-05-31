@@ -7,8 +7,8 @@
 
 #include "libzerocoin/CoinSpend.h"
 #include "wallet/wallet.h"
-#include "zdogecashchain.h"
-#include "zdogecash/zdogecashmodule.h"
+#include "zdogecchain.h"
+#include "zdogec/zdogecmodule.h"
 
 bool DisconnectZerocoinTx(const CTransaction& tx, CZerocoinDB* zerocoinDB)
 {

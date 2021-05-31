@@ -312,7 +312,7 @@ UniValue createrawtransaction(const JSONRPCRequest& request)
     for (const std::string& name_ : addrList) {
         CTxDestination address = DecodeDestination(name_);
         if (!IsValidDestination(address))
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid FLITS address: ")+name_);
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid DogeCash address: ")+name_);
 
         if (setAddress.count(address))
             throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ")+name_);
@@ -470,7 +470,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
             "1. \"hexstring\"    (string, required) The hex string of the raw transaction\n"
             "2. options          (object, optional)\n"
             "   {\n"
-            "     \"changeAddress\"     (string, optional, default pool address) The FLITS address to receive the change\n"
+            "     \"changeAddress\"     (string, optional, default pool address) The DogeCash address to receive the change\n"
             "     \"changePosition\"    (numeric, optional, default random) The index of the change output\n"
             "     \"includeWatching\"   (boolean, optional, default false) Also select inputs which are watch only\n"
             "     \"lockUnspents\"      (boolean, optional, default false) Lock selected unspent outputs\n"
@@ -527,7 +527,7 @@ UniValue fundrawtransaction(const JSONRPCRequest& request)
             changeAddress = DecodeDestination(options["changeAddress"].get_str());
 
             if (!IsValidDestination(changeAddress))
-                throw JSONRPCError(RPC_INVALID_PARAMETER, "changeAddress must be a valid FLITS address");
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "changeAddress must be a valid DogeCash address");
         }
 
         if (options.exists("changePosition"))

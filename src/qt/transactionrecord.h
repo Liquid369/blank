@@ -88,7 +88,7 @@ public:
         ZerocoinMint,
         ZerocoinSpend,
         RecvFromZerocoinSpend,
-        ZerocoinSpend_Change_zDogeCash,
+        ZerocoinSpend_Change_zdogec,
         ZerocoinSpend_FromMe,
         StakeDelegated, // Received cold stake (owner)
         StakeHot, // Staked via a delegated P2CS.

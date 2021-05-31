@@ -195,7 +195,7 @@ class RawTransactionsTest(DogeCashTestFramework):
         self.log.info("test with an invalid change address")
         outputs = {self.nodes[0].getnewaddress(): 1.0}
         rawtx = self.nodes[2].createrawtransaction([], outputs)
-        assert_raises_rpc_error(-8, "changeAddress must be a valid FLITS address",
+        assert_raises_rpc_error(-8, "changeAddress must be a valid DogeCash address",
                                 self.nodes[2].fundrawtransaction, rawtx, {'changeAddress': 'foobar'})
 
     def test_valid_change_address(self):

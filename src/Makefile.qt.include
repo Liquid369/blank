@@ -393,11 +393,11 @@ RES_ICONS = \
   qt/dogecash/res/img/ic-receive-off.svg \
   qt/dogecash/res/img/img-empty-staking-on.svg \
   qt/dogecash/res/img/ic-arrow-drop-up-white.svg \
-  qt/dogecash/res/img/ic-coin-zdogecash.png \
+  qt/dogecash/res/img/ic-coin-zdogec.png \
   qt/dogecash/res/img/ic-receive-on.svg \
   qt/dogecash/res/img/img-empty-transactions.svg \
   qt/dogecash/res/img/ic-arrow-drop-up.svg \
-  qt/dogecash/res/img/ic-coin-zdogecash.svg \
+  qt/dogecash/res/img/ic-coin-zdogec.svg \
   qt/dogecash/res/img/ic-received.svg \
   qt/dogecash/res/img/img-logo-dogecash.png \
   qt/dogecash/res/img/ic-arrow-drop-white-down.svg \

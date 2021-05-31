@@ -7,7 +7,7 @@
 #include "blocksignature.h"
 
 #include "script/standard.h"
-#include "zdogecashchain.h"
+#include "zdogecchain.h"
 
 bool SignBlockWithKey(CBlock& block, const CKey& key)
 {

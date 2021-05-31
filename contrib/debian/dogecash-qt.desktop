@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=DogeCash Core
+Comment=DogeCash P2P Cryptocurrency
+Comment[fr]=DOGEC, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=DOGEC, eşten eşe kriptografik sanal para birimi
+Exec=dogecash-qt %u
+Terminal=false
+Type=Application
+Icon=dogecash128
+MimeType=x-scheme-handler/dogecash;
+Categories=Office;Finance;
+StartupWMClass=DogeCash-qt

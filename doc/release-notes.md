@@ -1,4 +1,4 @@
-FLITS Core version v5.1.0 is now available from:  <https://github.com/dogecash/dogecash/releases>
+DogeCash Core version v5.1.0 is now available from:  <https://github.com/dogecash/dogecash/releases>
 
 This is a new major version release, including various bug fixes and performance improvements, as well as updated translations.
 
@@ -17,14 +17,14 @@ If you are running an older version, shut it down. Wait until it has completely 
 Sapling Parameters
 ==================
 
-In order to run, FLITS Core now requires two files, `sapling-output.params` and `sapling-spend.params` (with total size ~50 MB), to be saved in a specific location.
+In order to run, DogeCash Core now requires two files, `sapling-output.params` and `sapling-spend.params` (with total size ~50 MB), to be saved in a specific location.
 
 For the following packages, no action is required by the user:
 - macOS release `dmg` binaries will use the params that are bundled into the .app bundle.
 - Windows installer `.exe` will automatically copy the files in the proper location.
 - Linux `PPA/Snap` installs will automatically copy the files in the proper location.
 
-For the other packages, the user must save the param files in the proper location, before being able to run FLITS v5.0.0:
+For the other packages, the user must save the param files in the proper location, before being able to run DogeCash v5.0.0:
 - macOS/Linux `tar.gz` tarballs include a bash script (`install-params.sh`) to copy the parameters in the appropriate location.
 - Windows `.zip` users need to manually copy the files from the `share/dogecash` folder to the `%APPDATA%\DOGECParams` directory.
 - self compilers can run the script from the repository sources (`params/install-params.sh`), or copy the files directly from the `params` subdirectory.
@@ -32,13 +32,13 @@ For the other packages, the user must save the param files in the proper locatio
 Compatibility
 ==============
 
-FLITS Core is extensively tested on multiple operating systems using the Linux kernel, macOS 10.10+, and Windows 7 and later.
+DogeCash Core is extensively tested on multiple operating systems using the Linux kernel, macOS 10.10+, and Windows 7 and later.
 
 Microsoft ended support for Windows XP on [April 8th, 2014](https://www.microsoft.com/en-us/WindowsForBusiness/end-of-xp-support), No attempt is made to prevent installing or running the software on Windows XP, you can still do so at your own risk but be aware that there are known instabilities and issues. Please do not report issues about Windows XP to the issue tracker.
 
-Apple released it's last Mountain Lion update August 13, 2015, and officially ended support on [December 14, 2015](http://news.fnal.gov/2015/10/mac-os-x-mountain-lion-10-8-end-of-life-december-14/). FLITS Core software starting with v3.2.0 will no longer run on MacOS versions prior to Yosemite (10.10). Please do not report issues about MacOS versions prior to Yosemite to the issue tracker.
+Apple released it's last Mountain Lion update August 13, 2015, and officially ended support on [December 14, 2015](http://news.fnal.gov/2015/10/mac-os-x-mountain-lion-10-8-end-of-life-december-14/). DogeCash Core software starting with v3.2.0 will no longer run on MacOS versions prior to Yosemite (10.10). Please do not report issues about MacOS versions prior to Yosemite to the issue tracker.
 
-FLITS Core should also work on most other Unix-like systems but is not frequently tested on them.
+DogeCash Core should also work on most other Unix-like systems but is not frequently tested on them.
 
 Notable Changes
 ==============
@@ -105,7 +105,7 @@ Detailed release notes follow. This overview includes changes that affect behavi
 - #2228 Fixing few shutdown problems (furszy)
 - #2229 Transaction filter, minimize model data request + cleanup (furszy)
 - #2244 Pre-5.1 make translate (Fuzzbawls)
-- #2249 Make box of FLITS Send address return to purple when it's empty (PicklesRcool)
+- #2249 Make box of DogeCash Send address return to purple when it's empty (PicklesRcool)
 - #2247 Fix double fade-in Topbar Available click animation. Issue 2216 (PicklesRcool)
 - #2237 Set fee to highest possible if input is too big (dnchk)
 - #2215 Automatically set the lowest possible Custom Fee when user provided fee is too low (MishaPozdnikin)

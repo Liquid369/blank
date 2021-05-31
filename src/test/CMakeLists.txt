@@ -53,8 +53,8 @@ endfunction()
 GenerateHeaders(${JSON_TEST_FILES})
 
 set(BITCOIN_TEST_SUITE
-        ${CMAKE_CURRENT_SOURCE_DIR}/test_pivx.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/test_pivx.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/test_dogecash.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/test_dogecash.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/librust/sapling_test_fixture.h
         ${CMAKE_CURRENT_SOURCE_DIR}/librust/sapling_test_fixture.cpp
         ${CMAKE_SOURCE_DIR}/src/wallet/test/wallet_test_fixture.h
@@ -141,15 +141,15 @@ set(BITCOIN_TESTS
         ${CMAKE_SOURCE_DIR}/src/wallet/test/wallet_sapling_transactions_validations_tests.cpp
         )
 
-set(test_test_pivx_SOURCES ${BITCOIN_TEST_SUITE} ${BITCOIN_TESTS} ${JSON_TEST_FILES})
-add_executable(test_pivx ${test_test_pivx_SOURCES} ${BitcoinHeaders})
-add_dependencies(test_pivx genHeaders libunivalue libsecp256k1 libzcashrust leveldb crc32c)
-target_include_directories(test_pivx PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+set(test_test_dogecash_SOURCES ${BITCOIN_TEST_SUITE} ${BITCOIN_TESTS} ${JSON_TEST_FILES})
+add_executable(test_dogecash ${test_test_dogecash_SOURCES} ${BitcoinHeaders})
+add_dependencies(test_dogecash genHeaders libunivalue libsecp256k1 libzcashrust leveldb crc32c)
+target_include_directories(test_dogecash PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_SOURCE_DIR}/src/leveldb
         ${CMAKE_SOURCE_DIR}/src/leveldb/include
         ${CMAKE_SOURCE_DIR}/src/leveldb/helpers/memenv
         ${LIBEVENT_INCLUDE_DIR})
-target_link_libraries(test_pivx PRIVATE
+target_link_libraries(test_dogecash PRIVATE
         SERVER_A
         CLI_A
         WALLET_A
@@ -166,24 +166,24 @@ target_link_libraries(test_pivx PRIVATE
         ${BerkeleyDB_LIBRARIES} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${LIBEVENT_LIB} pthread
         )
 if(GMP_FOUND)
-    target_link_libraries(test_pivx PRIVATE ${GMP_LIBRARY})
-    target_include_directories(test_pivx PRIVATE ${GMP_INCLUDE_DIR})
+    target_link_libraries(test_dogecash PRIVATE ${GMP_LIBRARY})
+    target_include_directories(test_dogecash PRIVATE ${GMP_INCLUDE_DIR})
 endif()
 if(ZMQ_FOUND)
-    target_link_libraries(test_pivx PRIVATE ZMQ_A ${ZMQ_LIB})
-    target_include_directories(test_pivx PRIVATE ${ZMQ_INCLUDE_DIR})
+    target_link_libraries(test_dogecash PRIVATE ZMQ_A ${ZMQ_LIB})
+    target_include_directories(test_dogecash PRIVATE ${ZMQ_INCLUDE_DIR})
 endif()
 if(MINIUPNP_FOUND)
-    target_compile_definitions(test_pivx PRIVATE "-DSTATICLIB -DMINIUPNP_STATICLIB")
-    target_link_libraries(test_pivx PRIVATE ${MINIUPNP_LIBRARY})
-    target_include_directories(test_pivx PRIVATE ${MINIUPNP_INCLUDE_DIR})
+    target_compile_definitions(test_dogecash PRIVATE "-DSTATICLIB -DMINIUPNP_STATICLIB")
+    target_link_libraries(test_dogecash PRIVATE ${MINIUPNP_LIBRARY})
+    target_include_directories(test_dogecash PRIVATE ${MINIUPNP_INCLUDE_DIR})
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    target_link_libraries(test_pivx PRIVATE "-framework Cocoa")
+    target_link_libraries(test_dogecash PRIVATE "-framework Cocoa")
 endif()
 
-target_link_libraries(test_pivx PRIVATE ${sodium_LIBRARY_RELEASE} -ldl -lpthread)
+target_link_libraries(test_dogecash PRIVATE ${sodium_LIBRARY_RELEASE} -ldl -lpthread)
 
 enable_testing()
-add_test(NAME btest_pivx COMMAND test_pivx)
+add_test(NAME btest_dogecash COMMAND test_dogecash)

@@ -1,12 +1,12 @@
 Expectations for DNS Seed operators
 ====================================
 
-FLITS Core attempts to minimize the level of trust in DNS seeds,
+DogeCash Core attempts to minimize the level of trust in DNS seeds,
 but DNS seeds still pose a small amount of risk for the network.
 As such, DNS seeds must be run by entities which have some minimum
-level of trust within the FLITS community.
+level of trust within the DogeCash community.
 
-Other implementations of FLITS software may also use the same
+Other implementations of DogeCash software may also use the same
 seeds and may be more exposed. In light of this exposure, this
 document establishes some basic expectations for operating dnsseeds.
 
@@ -16,7 +16,7 @@ and not sell or transfer control of the DNS seed. Any hosting services
 contracted by the operator are equally expected to uphold these expectations.
 
 1. The DNS seed results must consist exclusively of fairly selected and
-functioning FLITS nodes from the public network to the best of the
+functioning DogeCash nodes from the public network to the best of the
 operators understanding and capability.
 
 2. For the avoidance of doubt, the results may be randomized but must not
@@ -44,7 +44,7 @@ related to the DNS seed operation.
 If these expectations cannot be satisfied the operator should
 discontinue providing services and contact the active DOGEC
 Core development team as well as posting on the
-[FLITS Forum](https://forum.flitswallet.app).
+[DogeCash Forum](https://forum.dogec.io).
 
 Behavior outside of these expectations may be reasonable in some
 situations but should be discussed in public in advance.

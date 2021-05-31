@@ -12,7 +12,7 @@
 #include "pow.h"
 #include "uint256.h"
 #include "util.h"
-#include "zdogecash/zerocoin.h"
+#include "zdogec/zerocoin.h"
 
 #include <stdint.h>
 

@@ -21,7 +21,7 @@ if(RUSTC_PROGRAM)
     message(STATUS "Found rustc: ${RUSTC_PROGRAM}")
 endif()
 
-project(PIVX)
+project(DogeCash)
 
 set(BDB_VER "4.8.30")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/contrib/cmake")
@@ -54,7 +54,7 @@ elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
         message(STATUS "Compiling on WSL")
         set(ENV{DISPLAY} ":0")
         set(ENV{LIBGL_ALWAYS_INDIRECT} 1)
-        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY /home/$ENV{USER}/pivx-run)
+        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY /home/$ENV{USER}/dogecash-run)
         message(WARNING "WSL Runtime support requires VcXsrv to be installed and running")
     else()
         message(STATUS "Compiling on Linux")
@@ -109,8 +109,8 @@ else()
     )
 endif()
 
-# run configure if pivx_config.h doesn't exist
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/config/pivx-config.h")
+# run configure if dogecash_config.h doesn't exist
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/config/dogecash-config.h")
 else()
     execute_process(
         COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/configure ${CONFIGSITE} ${BDB_CONFIGURE_FLAGS} ${BIGNUM_CONFIGURE_FLAGS} ${SSL_CONFIGURE_FLAGS}
@@ -119,7 +119,7 @@ else()
 endif()
 
 # error out if configure fails
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/config/pivx-config.h")
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/config/dogecash-config.h")
 else()
     execute_process(COMMAND cat config.log WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
     message(FATAL_ERROR "configure script didn't finish properly see config.log output above")
@@ -236,7 +236,7 @@ set(SERVER_SOURCES
         ./src/sapling/sapling_validation.cpp
         ./src/validation.cpp
         ./src/validationinterface.cpp
-        ./src/zpivchain.cpp
+        ./src/zdogecchain.cpp
         )
 add_library(SERVER_A STATIC ${BitcoinHeaders} ${SERVER_SOURCES})
 if(MINIUPNP_FOUND)
@@ -280,18 +280,18 @@ set(WALLET_SOURCES
         ./src/masternodeconfig.cpp
         ./src/masternodeman.cpp
         ./src/messagesigner.cpp
-        ./src/zpiv/mintpool.cpp
+        ./src/zdogec/mintpool.cpp
         ./src/wallet/hdchain.cpp
         ./src/wallet/rpcdump.cpp
-        ./src/zpiv/zerocoin.cpp
+        ./src/zdogec/zerocoin.cpp
         ./src/wallet/scriptpubkeyman.cpp
         ./src/wallet/rpcwallet.cpp
         ./src/kernel.cpp
         ./src/legacy/stakemodifier.cpp
         ./src/wallet/wallet.cpp
         ./src/wallet/walletdb.cpp
-        ./src/zpiv/zpivmodule.cpp
-        ./src/zpiv/zpos.cpp
+        ./src/zdogec/zdogecmodule.cpp
+        ./src/zdogec/zpos.cpp
         ./src/stakeinput.cpp
         )
 add_library(WALLET_A STATIC ${BitcoinHeaders} ${WALLET_SOURCES})
@@ -389,7 +389,7 @@ set(COMMON_SOURCES
         ./src/consensus/zerocoin_verify.cpp
         ./src/primitives/block.cpp
         ./src/primitives/transaction.cpp
-        ./src/zpiv/zerocoin.cpp
+        ./src/zdogec/zerocoin.cpp
         ./src/core_read.cpp
         ./src/core_write.cpp
         ./src/hash.cpp
@@ -492,13 +492,13 @@ link_directories(
 
 link_directories(${CMAKE_BINARY_DIR})
 
-set(pivx-cli_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/pivx-cli.cpp)
+set(dogecash-cli_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/dogecash-cli.cpp)
 if($ENV{target} MATCHES "Windows")
-    list(APPEND pivx-cli_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/pivx-cli-res.rc)
+    list(APPEND dogecash-cli_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/dogecash-cli-res.rc)
 endif()
-add_executable(pivx-cli ${pivx-cli_SOURCES})
-add_dependencies(pivx-cli libunivalue libzcashrust)
-target_link_libraries(pivx-cli
+add_executable(dogecash-cli ${dogecash-cli_SOURCES})
+add_dependencies(dogecash-cli libunivalue libzcashrust)
+target_link_libraries(dogecash-cli
         CLI_A
         univalue
         UTIL_A
@@ -508,19 +508,19 @@ target_link_libraries(pivx-cli
         ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${LIBEVENT_LIB} ${sodium_LIBRARY_RELEASE} -ldl pthread
         )
 if($ENV{target} MATCHES "Windows")
-    target_link_libraries(pivx-cli ${WINDOWS_LDADD})
+    target_link_libraries(dogecash-cli ${WINDOWS_LDADD})
 endif()
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    target_link_libraries(pivx-cli "-framework Cocoa")
+    target_link_libraries(dogecash-cli "-framework Cocoa")
 endif()
 
-set(pivx-tx_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/pivx-tx.cpp)
+set(dogecash-tx_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/dogecash-tx.cpp)
 if($ENV{target} MATCHES "Windows")
-    list(APPEND pivx-tx_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/pivx-tx-res.rc)
+    list(APPEND dogecash-tx_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/dogecash-tx-res.rc)
 endif()
-add_executable(pivx-tx ${pivx-tx_SOURCES})
-add_dependencies(pivx-tx libunivalue libsecp256k1 libzcashrust)
-target_link_libraries(pivx-tx
+add_executable(dogecash-tx ${dogecash-tx_SOURCES})
+add_dependencies(dogecash-tx libunivalue libsecp256k1 libzcashrust)
+target_link_libraries(dogecash-tx
         univalue
         COMMON_A
         ZEROCOIN_A
@@ -532,27 +532,27 @@ target_link_libraries(pivx-tx
         ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} ${LIBEVENT_LIB} ${sodium_LIBRARY_RELEASE} -ldl pthread
         )
 if($ENV{target} MATCHES "Windows")
-    target_link_libraries(pivx-tx ${WINDOWS_LDADD})
+    target_link_libraries(dogecash-tx ${WINDOWS_LDADD})
 endif()
 if(GMP_FOUND)
-    target_link_libraries(pivx-tx ${GMP_LIBRARY})
+    target_link_libraries(dogecash-tx ${GMP_LIBRARY})
 endif()
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    target_link_libraries(pivx-tx "-framework Cocoa")
+    target_link_libraries(dogecash-tx "-framework Cocoa")
 endif()
 
-set(pivxd_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/pivxd.cpp)
+set(dogecashd_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/dogecashd.cpp)
 if($ENV{target} MATCHES "Windows")
-    list(APPEND pivxd_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/pivxd-res.rc)
+    list(APPEND dogecashd_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/dogecashd-res.rc)
 endif()
-add_executable(pivxd ${pivxd_SOURCES} ${BitcoinHeaders})
-add_dependencies(pivxd libunivalue libsecp256k1 libzcashrust leveldb crc32c)
-target_include_directories(pivxd PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
+add_executable(dogecashd ${dogecashd_SOURCES} ${BitcoinHeaders})
+add_dependencies(dogecashd libunivalue libsecp256k1 libzcashrust leveldb crc32c)
+target_include_directories(dogecashd PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/src/leveldb
         ${CMAKE_CURRENT_SOURCE_DIR}/src/leveldb/include
         ${CMAKE_CURRENT_SOURCE_DIR}/src/leveldb/helpers/memenv
         ${LIBEVENT_INCLUDE_DIR})
-target_link_libraries(pivxd
+target_link_libraries(dogecashd
         pthread
         SERVER_A
         WALLET_A
@@ -570,27 +570,27 @@ target_link_libraries(pivxd
         )
 if($ENV{target} MATCHES "Windows")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wstack-protector -fstack-protector-all -fPIE -pipe -O2 -pthread -Wl,--dynamicbase -Wl,--nxcompat -Wl,--high-entropy-va -pie --static")
-    target_link_libraries(pivxd ${WINDOWS_LDADD})
+    target_link_libraries(dogecashd ${WINDOWS_LDADD})
 endif()
 if(GMP_FOUND)
-    target_link_libraries(pivxd ${GMP_LIBRARY})
-    target_include_directories(pivxd PUBLIC ${GMP_INCLUDE_DIR})
+    target_link_libraries(dogecashd ${GMP_LIBRARY})
+    target_include_directories(dogecashd PUBLIC ${GMP_INCLUDE_DIR})
 endif()
 if(ZMQ_FOUND)
-    target_link_libraries(pivxd ZMQ_A ${ZMQ_LIB})
-    target_include_directories(pivxd PUBLIC ${ZMQ_INCLUDE_DIR})
+    target_link_libraries(dogecashd ZMQ_A ${ZMQ_LIB})
+    target_include_directories(dogecashd PUBLIC ${ZMQ_INCLUDE_DIR})
 endif()
 if(MINIUPNP_FOUND)
-    target_compile_definitions(pivxd PUBLIC "-DSTATICLIB -DMINIUPNP_STATICLIB")
-    target_link_libraries(pivxd ${MINIUPNP_LIBRARY})
-    target_include_directories(pivxd PUBLIC ${MINIUPNP_INCLUDE_DIR})
+    target_compile_definitions(dogecashd PUBLIC "-DSTATICLIB -DMINIUPNP_STATICLIB")
+    target_link_libraries(dogecashd ${MINIUPNP_LIBRARY})
+    target_include_directories(dogecashd PUBLIC ${MINIUPNP_INCLUDE_DIR})
 endif()
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    target_link_libraries(pivxd "-framework Cocoa")
+    target_link_libraries(dogecashd "-framework Cocoa")
 endif()
 
-target_link_libraries(pivxd ${sodium_LIBRARY_RELEASE} -ldl -lpthread)
+target_link_libraries(dogecashd ${sodium_LIBRARY_RELEASE} -ldl -lpthread)
 
 add_subdirectory(src/qt)
 add_subdirectory(src/test)

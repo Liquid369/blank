@@ -24,7 +24,7 @@
 #include "utilmoneystr.h"
 #include "wallet.h"
 #include "walletdb.h"
-#include "zdogecashchain.h"
+#include "zdogecchain.h"
 
 #include "sapling/sapling_operation.h"
 #include "sapling/transaction_builder.h"
@@ -138,7 +138,7 @@ UniValue getaddressinfo(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
                 "getaddressinfo ( \"address\" )\n"
-                "\nReturn information about the given FLITS address.\n"
+                "\nReturn information about the given DogeCash address.\n"
                 "Some of the information will only be present if the address is in the active wallet.\n"
                 "Metadata for shield addresses is available only if the wallet is unlocked.\n"
                 "{Result:\n"
@@ -479,7 +479,7 @@ UniValue getnewaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
             "getnewaddress ( \"label\" )\n"
-            "\nReturns a new FLITS address for receiving payments.\n"
+            "\nReturns a new DogeCash address for receiving payments.\n"
             "If 'label' is specified, it is added to the address book \n"
             "so payments received with the address will be associated with 'label'.\n"
 
@@ -501,7 +501,7 @@ UniValue getnewstakingaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
             "getnewstakingaddress ( \"label\" )\n"
-            "\nReturns a new FLITS cold staking address for receiving delegated cold stakes.\n"
+            "\nReturns a new DogeCash cold staking address for receiving delegated cold stakes.\n"
 
             "\nArguments:\n"
             "1. \"label\"        (string, optional) The label name for the address to be linked to. if not provided, the default label \"\" is used. It can also be set to the empty string \"\" to represent the default label. The label does not need to exist, it will be created if there is no label by the given name.\n"
@@ -694,13 +694,13 @@ UniValue delegatoradd(const JSONRPCRequest& request)
     bool isStakingAddress = false;
     CTxDestination dest = DecodeDestination(request.params[0].get_str(), isStakingAddress);
     if (!IsValidDestination(dest) || isStakingAddress)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid DogeCash address");
 
     const std::string strLabel = (request.params.size() > 1 ? request.params[1].get_str() : "");
 
     const CKeyID* keyID = boost::get<CKeyID>(&dest);
     if (!keyID)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get KeyID from FLITS address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get KeyID from DogeCash address");
 
     return pwalletMain->SetAddressBook(*keyID, strLabel, AddressBook::AddressBookPurpose::DELEGATOR);
 }
@@ -726,14 +726,14 @@ UniValue delegatorremove(const JSONRPCRequest& request)
     bool isStakingAddress = false;
     CTxDestination dest = DecodeDestination(request.params[0].get_str(), isStakingAddress);
     if (!IsValidDestination(dest) || isStakingAddress)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid DogeCash address");
 
     const CKeyID* keyID = boost::get<CKeyID>(&dest);
     if (!keyID)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get KeyID from FLITS address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get KeyID from DogeCash address");
 
     if (!pwalletMain->HasAddressBook(*keyID))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get FLITS address from addressBook");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to get DogeCash address from addressBook");
 
     std::string label = "";
     auto optAdd = pwalletMain->GetAddressBookEntry(dest);
@@ -783,7 +783,7 @@ UniValue listdelegators(const JSONRPCRequest& request)
             "[\n"
             "   {\n"
             "   \"label\": \"yyy\",    (string) Address label\n"
-            "   \"address\": \"xxx\",  (string) FLITS address string\n"
+            "   \"address\": \"xxx\",  (string) DogeCash address string\n"
             "   }\n"
             "  ...\n"
             "]\n"
@@ -809,7 +809,7 @@ UniValue liststakingaddresses(const JSONRPCRequest& request)
             "[\n"
             "   {\n"
             "   \"label\": \"yyy\",  (string) Address label\n"
-            "   \"address\": \"xxx\",  (string) FLITS address string\n"
+            "   \"address\": \"xxx\",  (string) DogeCash address string\n"
             "   }\n"
             "  ...\n"
             "]\n"
@@ -869,7 +869,7 @@ UniValue getrawchangeaddress(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
             "getrawchangeaddress\n"
-            "\nReturns a new FLITS address, for receiving change.\n"
+            "\nReturns a new DogeCash address, for receiving change.\n"
             "This is for use with raw transactions, NOT normal use.\n"
 
             "\nResult:\n"
@@ -914,7 +914,7 @@ UniValue setlabel(const JSONRPCRequest& request)
 
     CTxDestination dest = DecodeDestination(request.params[0].get_str());
     if (!IsValidDestination(dest))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid DogeCash address");
 
     std::string old_label = pwalletMain->GetNameForAddressBookEntry(dest);
     std::string label = LabelFromValue(request.params[1]);
@@ -943,7 +943,7 @@ void SendMoney(const CTxDestination& address, CAmount nValue, CTransactionRef& t
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
     }
 
-    // Parse FLITS address
+    // Parse DogeCash address
     CScript scriptPubKey = GetScriptForDestination(address);
 
     // Create and send the transaction
@@ -1044,7 +1044,7 @@ UniValue sendtoaddress(const JSONRPCRequest& request)
     const std::string addrStr = request.params[0].get_str();
     const CWDestination& destination = Standard::DecodeDestination(addrStr, isStaking, isShielded);
     if (!Standard::IsValidDestination(destination) || isStaking)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid DogeCash address");
     const std::string commentStr = (request.params.size() > 2 && !request.params[2].isNull()) ?
                                    request.params[2].get_str() : "";
     const std::string toStr = (request.params.size() > 3 && !request.params[3].isNull()) ?
@@ -1095,7 +1095,7 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CTransactionRef& txNe
     bool isStaking = false;
     CTxDestination stakeAddr = DecodeDestination(params[0].get_str(), isStaking);
     if (!IsValidDestination(stakeAddr) || !isStaking)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS staking address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid DogeCash staking address");
 
     CKeyID* stakeKey = boost::get<CKeyID>(&stakeAddr);
     if (!stakeKey)
@@ -1128,7 +1128,7 @@ UniValue CreateColdStakeDelegation(const UniValue& params, CTransactionRef& txNe
         bool isStaking = false;
         CTxDestination dest = DecodeDestination(params[2].get_str(), isStaking);
         if (!IsValidDestination(dest) || isStaking)
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS spending address");
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid DogeCash spending address");
         ownerKey = *boost::get<CKeyID>(&dest);
         // Check that the owner address belongs to this wallet, or fForceExternalAddr is true
         bool fForceExternalAddr = params.size() > 3 && !params[3].isNull() ? params[3].get_bool() : false;
@@ -1360,7 +1360,7 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
                 "      \"spend\" : n,                    (numeric, sapling) the index of the spend within vShieldedSpend\n"
                 "      \"txidPrev\" : \"transactionid\",   (string) The id for the transaction this note was created in\n"
                 "      \"outputPrev\" : n,               (numeric, sapling) the index of the output within the vShieldedOutput\n"
-                "      \"address\" : \"dogecashaddress\",     (string) The FLITS address involved in the transaction\n"
+                "      \"address\" : \"dogecashaddress\",     (string) The DogeCash address involved in the transaction\n"
                 "      \"value\" : x.xxx                 (numeric) The amount in " + CURRENCY_UNIT + "\n"
                 "      \"valueSat\" : xxxx               (numeric) The amount in satoshis\n"
                 "    }\n"
@@ -1369,7 +1369,7 @@ UniValue viewshieldtransaction(const JSONRPCRequest& request)
                 "  \"outputs\" : [\n"
                 "    {\n"
                 "      \"output\" : n,                   (numeric, sapling) the index of the output within the vShieldedOutput\n"
-                "      \"address\" : \"dogecashaddress\",     (string) The FLITS address involved in the transaction\n"
+                "      \"address\" : \"dogecashaddress\",     (string) The DogeCash address involved in the transaction\n"
                 "      \"outgoing\" : true|false         (boolean, sapling) True if the output is not for an address in the wallet\n"
                 "      \"value\" : x.xxx                 (numeric) The amount in " + CURRENCY_UNIT + "\n"
                 "      \"valueSat\" : xxxx               (numeric) The amount in satoshis\n"
@@ -1902,7 +1902,7 @@ UniValue getreceivedbyaddress(const JSONRPCRequest& request)
     // dogecash address
     CTxDestination address = DecodeDestination(request.params[0].get_str());
     if (!IsValidDestination(address))
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid FLITS address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid DogeCash address");
     CScript scriptPubKey = GetScriptForDestination(address);
     if (!IsMine(*pwalletMain, scriptPubKey))
         throw JSONRPCError(RPC_WALLET_ERROR, "Address not found in wallet");
@@ -2121,7 +2121,7 @@ static UniValue legacy_sendmany(const UniValue& sendTo, int nMinDepth, std::stri
         bool isStaking = false;
         CTxDestination dest = DecodeDestination(name_,isStaking);
         if (!IsValidDestination(dest) || isStaking)
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid FLITS address: ")+name_);
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid DogeCash address: ")+name_);
 
         if (setAddress.count(dest))
             throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ")+name_);
@@ -2181,7 +2181,7 @@ UniValue sendmany(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() < 2 || request.params.size() > 5)
         throw std::runtime_error(
             "sendmany \"\" {\"address\":amount,...} ( minconf \"comment\" includeDelegated )\n"
-            "\nSend to multiple destinations. Recipients are transparent or shield FLITS addresses.\n"
+            "\nSend to multiple destinations. Recipients are transparent or shield DogeCash addresses.\n"
             "\nAmounts are double-precision floating point numbers.\n"
             + HelpRequiringPassphrase() + "\n"
 
@@ -2256,7 +2256,7 @@ UniValue addmultisigaddress(const JSONRPCRequest& request)
         throw std::runtime_error(
             "addmultisigaddress nrequired [\"key\",...] ( \"label\" )\n"
             "\nAdd a nrequired-to-sign multisignature address to the wallet.\n"
-            "Each key is a FLITS address or hex-encoded public key.\n"
+            "Each key is a DogeCash address or hex-encoded public key.\n"
             "If 'label' is specified, assign address to that label.\n"
 
             "\nArguments:\n"
@@ -3439,7 +3439,7 @@ UniValue listunspent(const JSONRPCRequest& request)
             const UniValue& input = inputs[inx];
             CTxDestination dest = DecodeDestination(input.get_str());
             if (!IsValidDestination(dest))
-                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid FLITS address: ") + input.get_str());
+                throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid DogeCash address: ") + input.get_str());
             if (destinations.count(dest))
                 throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Invalid parameter, duplicated address: ") + input.get_str());
             destinations.insert(dest);
@@ -3906,7 +3906,7 @@ UniValue autocombinerewards(const JSONRPCRequest& request)
     if (request.fHelp || request.params.size() < 1 || (fEnable && request.params.size() != 2) || request.params.size() > 2)
         throw std::runtime_error(
             "autocombinerewards enable ( threshold )\n"
-            "\nWallet will automatically monitor for any coins with value below the threshold amount, and combine them if they reside with the same FLITS address\n"
+            "\nWallet will automatically monitor for any coins with value below the threshold amount, and combine them if they reside with the same DogeCash address\n"
             "When autocombinerewards runs it will create a transaction, and therefore will be subject to transaction fees.\n"
 
             "\nArguments:\n"

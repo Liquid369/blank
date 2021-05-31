@@ -56,11 +56,11 @@ QString BitcoinUnits::id(int unit)
     }
 }
 
-QString BitcoinUnits::name(int unit, bool isZdogecash)
+QString BitcoinUnits::name(int unit, bool iszdogec)
 {
     const QString CURR_UNIT = QString(CURRENCY_UNIT.c_str());
     QString z = "";
-    if(isZdogecash) z = "z";
+    if(iszdogec) z = "z";
     if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         switch (unit) {
         case DOGEC:

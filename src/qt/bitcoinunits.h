@@ -47,7 +47,7 @@
 #define THIN_SP_UTF8 REAL_THIN_SP_UTF8
 #define THIN_SP_HTML HTML_HACK_SP
 
-/** FLITS unit definitions. Encapsulates parsing and formatting
+/** DogeCash unit definitions. Encapsulates parsing and formatting
    and serves as list model for drop-down selection boxes.
 */
 class BitcoinUnits : public QAbstractListModel
@@ -57,7 +57,7 @@ class BitcoinUnits : public QAbstractListModel
 public:
     explicit BitcoinUnits(QObject* parent);
 
-    /** FLITS units.
+    /** DogeCash units.
       @note Source: https://en.bitcoin.it/wiki/Units . Please add only sensible ones
      */
     enum Unit {
@@ -83,7 +83,7 @@ public:
     //! Identifier, e.g. for image names
     static QString id(int unit);
     //! Short name
-    static QString name(int unit, bool isZdogecash = false);
+    static QString name(int unit, bool iszdogec = false);
     //! Longer description
     static QString description(int unit);
     //! Number of Satoshis (1e-8) per unit
