@@ -166,7 +166,7 @@ $(host_prefix)/.stamp_$(final_build_id): $(native_packages) $(packages)
 	$(AT)echo copying packages: $^
 	$(AT)echo to: $(@D)
 	$(AT)cd $(@D); $(foreach package,$^, tar xf $($(package)_cached); )
-  $(AT)if test -f "$(CRATE_ARCHIVE)"; \
+    $(AT)if test -f "$(CRATE_ARCHIVE)"; \
  	then echo Extracting pre-vendored crates from $(CRATE_ARCHIVE)...; \
  		tar xf $(CRATE_ARCHIVE) -C $(@D); \
  	else echo Vendoring crates...; \
