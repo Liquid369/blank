@@ -936,7 +936,8 @@ am__qt_libbitcoinqt_a_SOURCES_DIST = qt/bantablemodel.cpp \
 	qt/dogecash/res/img/ic-receive-on.svg \
 	qt/dogecash/res/img/img-empty-transactions.svg \
 	qt/dogecash/res/img/ic-arrow-drop-up.svg \
-	qt/dogecash/res/img/ic-coin-zdogec.svg qt/dogecash/res/img/ic-received.svg \
+	qt/dogecash/res/img/ic-coin-zdogec.svg \
+	qt/dogecash/res/img/ic-received.svg \
 	qt/dogecash/res/img/img-logo-dogecash.png \
 	qt/dogecash/res/img/ic-arrow-drop-white-down.svg \
 	qt/dogecash/res/img/ic-combo-box.svg qt/dogecash/res/img/ic-send.svg \
