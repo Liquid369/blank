@@ -1,7 +1,7 @@
 // Copyright (c) 2011-2013 The Bitcoin Core developers
 // Copyright (c) 2018 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The DogeCash Developers
 
 
 // Distributed under the MIT software license, see the accompanying

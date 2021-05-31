@@ -1,5 +1,5 @@
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The DogeCash Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
