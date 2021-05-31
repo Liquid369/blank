@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2017 The Bitcoin Core developers
 # Copyright (c) 2020 The PIVX Developers
-# Copyright (c) 2020 The PIVX developers
 # Copyright (c) 2020 The Flits Developers
 
 # Distributed under the MIT software license, see the accompanying
