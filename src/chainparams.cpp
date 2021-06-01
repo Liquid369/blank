@@ -230,7 +230,7 @@ public:
         consensus.vUpgrades[Consensus::UPGRADE_BIP65].nActivationHeight         = 1;
         consensus.vUpgrades[Consensus::UPGRADE_ZC_PUBLIC].nActivationHeight     = INT_MAX;
         consensus.vUpgrades[Consensus::UPGRADE_V3_4].nActivationHeight          = 261028;
-        consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight          = 574990;
+        consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight          = 575000;
         consensus.vUpgrades[Consensus::UPGRADE_V5_0].nActivationHeight          = 1100000;
 
         consensus.vUpgrades[Consensus::UPGRADE_ZC].hashActivationBlock =
@@ -244,7 +244,7 @@ public:
         consensus.vUpgrades[Consensus::UPGRADE_V3_4].hashActivationBlock =
                 uint256S("0xa9d36583a0624e091e225054f56c8f4fd14ac82c4b40aee97ad0a118bbe8f2cf");
         consensus.vUpgrades[Consensus::UPGRADE_V4_0].hashActivationBlock =
-                uint256S("0x2177e3592a1c705ee5fea6223002ab6cdcd55f8560896d1bf0e6119d07d630a5");
+                uint256S("0x5f41e0d5725835f4550e626747059b5c233d2a358157418c3488bd1ff86a64fc");
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
