@@ -114,7 +114,7 @@ enum WalletFeature {
 
     FEATURE_PRE_SPLIT_KEYPOOL = 169900, // Upgraded to HD SPLIT and can have a pre-split keypool
 
-    FEATURE_SAPLING = 170000, // Upgraded to Saplings key manager.
+    FEATURE_SAPLING = 180000, // Upgraded to Saplings key manager.
 
     FEATURE_LATEST = FEATURE_SAPLING
 };
