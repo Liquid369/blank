@@ -759,9 +759,9 @@ CAmount CBudgetManager::GetTotalBudget(int nHeight)
 {
     //Static budget
     if (nHeight <= 335000) {
-        return 0 * COIN;
+        return 55000 * COIN;
     } else {
-        return 25000 * COIN;
+        return 50000 * COIN;
     }
 }
 

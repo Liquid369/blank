@@ -201,7 +201,7 @@ public:
         consensus.height_ZC_RecalcAccumulators = INT_MAX;
 
         // validation by-pass
-        consensus.nDogeCashBadBlockTime = 1554556853;    // Skip nBit validation of Block 259201 per PR #915
+        consensus.nDogeCashBadBlockTime = 1593294062;    // Skip nBit validation of Block 259201 per PR #915
         consensus.nDogeCashBadBlockBits = 488380309;    // Skip nBit validation of Block 259201 per PR #915
 
         // Zerocoin-related params
@@ -373,7 +373,7 @@ public:
         pchMessageStart[1] = 0xe6;
         pchMessageStart[2] = 0xd5;
         pchMessageStart[3] = 0xca;
-        nDefaultPort = 51474;
+        nDefaultPort = 56744;
 
         // nodes with support for servicebits filtering should be at the top
         vSeeds.emplace_back("fuzzbawls.pw", "dogecash-testnet.seed.fuzzbawls.pw", true);
@@ -498,7 +498,7 @@ public:
         pchMessageStart[1] = 0xcf;
         pchMessageStart[2] = 0x7e;
         pchMessageStart[3] = 0xac;
-        nDefaultPort = 51476;
+        nDefaultPort = 56746;
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 139); // Testnet dogecash addresses start with 'x' or 'y'
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 19);  // Testnet dogecash script addresses start with '8' or '9'
