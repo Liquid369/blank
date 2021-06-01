@@ -781,11 +781,11 @@ double ConvertBitsToDouble(unsigned int nBits)
 CAmount GetBlockValue(int nHeight)
 {
     int64_t nSubsidy = 0;
-    if (nHeight == 0) {
+    if (nHeight < 2) {
         nSubsidy = 0 * COIN;
-    } else if (nHeight == 1) {
+    } else if (nHeight == 2) {
          nSubsidy = 7000000 * COIN;
-    } else if (nHeight <= 200 && nHeight > 0) {
+    } else if (nHeight <= 200 && nHeight > 2) {
          nSubsidy = 10.8 * COIN;
     } else if (nHeight <= 238621 && nHeight >= 201) {
          nSubsidy = 10.8 * COIN;
