@@ -758,7 +758,7 @@ std::string CBudgetManager::GetRequiredPaymentsString(int nBlockHeight)
 CAmount CBudgetManager::GetTotalBudget(int nHeight)
 {
     //Static budget
-    if (nHeight <= 335000) {
+    if (nHeight <= 1000000) {
         return 85000 * COIN;
     } else {
         return 50000 * COIN;
