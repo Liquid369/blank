@@ -164,8 +164,8 @@ public:
 
         genesis = CreateGenesisBlock(1558130910, 5510938, 0x1e0ffff0, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000080ab32d3fdbb4c9e2c5c84419f8dabea84676ad2ef8ca86f73b86cf86c0"));
-        assert(genesis.hashMerkleRoot == uint256S("0x3a498d64ca00ee8d217c5985342fef31829dbc0ac144cac4af7100f5a8982cbe"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000093cfce0a5a3cecea522e2c13bdf055d65c559fd2222730ba6f0d18dd2cd"));
+        assert(genesis.hashMerkleRoot == uint256S("0x7c3f1b5874e38c421d07fc20ce79ddb3bbaad19cdbad903a0b185070d6005b8c"));
 
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.powLimit   = ~UINT256_ZERO >> 20;   // DogeCash starting difficulty is 1 / 2^12
