@@ -1791,9 +1791,9 @@ QProgressBar[cssClass="progress-splash"]::chunk:horizontal {
     y1: 0.5,
     x2: 1,
     y2: 0.5,
-    stop: 0 #80211a2f,
-    stop: 1 #80b088ff,
-    stop: 2 #80211a2f,);
+    stop: 0 #9c7019,
+    stop: 1 #9c7019,
+    stop: 2 #9c7019,);
     margin-right: 2px;
 }
 
