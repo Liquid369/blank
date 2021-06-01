@@ -39,7 +39,7 @@ icvp = {
     'backgroundType': 2,
     'backgroundColorRed': 1.0
 }
-alias = Alias.from_bytes()
+alias = Alias.from_bytes(icvp['backgroundImageAlias'])
 alias.volume.name = package_name_ns
 alias.volume.posix_path = '/Volumes/' + package_name_ns
 alias.volume.disk_image_alias.target.filename = package_name_ns + '.temp.dmg'
