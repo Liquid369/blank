@@ -1,24 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.1.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="ic_connect" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#FFFFFF;}
-	.st1{fill:none;}
-</style>
-<g id="Group_8843">
-	<g id="Group_8839">
-		<circle id="Ellipse_602" class="st0" cx="12" cy="18" r="2"/>
-	</g>
-	<g id="Group_8840">
-		<path id="Path_18896" class="st0" d="M20.7,9.4c-4.9-4.5-12.5-4.5-17.5,0L1.9,7.9c5.7-5.2,14.5-5.2,20.2,0L20.7,9.4z"/>
-	</g>
-	<g id="Group_8841">
-		<path id="Path_18897" class="st0" d="M18,12.3c-3.4-3.1-8.7-3.1-12.1,0l-1.3-1.5C8.8,7,15.2,7,19.4,10.9L18,12.3z"/>
-	</g>
-	<g id="Group_8842">
-		<path id="Path_18898" class="st0" d="M8.6,15.3l-1.3-1.5c2.7-2.4,6.7-2.4,9.4,0l-1.3,1.5C13.4,13.6,10.6,13.6,8.6,15.3z"/>
-	</g>
-</g>
-<path id="Rectangle_4416" class="st1" d="M0,0h24v24H0V0z"/>
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_connect" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style type="text/css">
+            .cls-1{fill:#fff}.cls-2{fill:none}
+        </style>
+    </defs>
+    <g id="Group_8843" data-name="Group 8843">
+        <g id="Group_8839" data-name="Group 8839">
+            <circle id="Ellipse_602" cx="2" cy="2" r="2" class="cls-1" data-name="Ellipse 602" transform="translate(10 16)"/>
+        </g>
+        <g id="Group_8840" data-name="Group 8840">
+            <path id="Path_18896" d="M20.733 9.393a12.935 12.935 0 0 0-17.466 0l-1.346-1.48a14.937 14.937 0 0 1 20.158 0z" class="cls-1" data-name="Path 18896"/>
+        </g>
+        <g id="Group_8841" data-name="Group 8841">
+            <path id="Path_18897" d="M18.046 12.349a8.955 8.955 0 0 0-12.092 0l-1.346-1.48a10.957 10.957 0 0 1 14.784 0z" class="cls-1" data-name="Path 18897"/>
+        </g>
+        <g id="Group_8842" data-name="Group 8842">
+            <path id="Path_18898" d="M8.642 15.305L7.3 13.826a6.972 6.972 0 0 1 9.408 0l-1.346 1.479a5.1 5.1 0 0 0-6.72 0z" class="cls-1" data-name="Path 18898"/>
+        </g>
+    </g>
+    <path id="Rectangle_4416" d="M0 0h24v24H0z" class="cls-2" data-name="Rectangle 4416"/>
 </svg>

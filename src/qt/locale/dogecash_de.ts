@@ -4012,14 +4012,14 @@ Es gab ein Problem bei dem Versuch die Adressen unter %1 zu speichern. Bitte ver
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
                            We have support channels in most of our official chat groups, for example
-                           &lt;a style='color: #b088ff' href='https://discord.dogec.io'&gt;
+                           &lt;a style='color: #9c7019' href='https://discord.dogec.io'&gt;
                            #support in our Discord&lt;/a&gt;.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
         <translation>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
                            Wir haben Support-Kanäle in den meisten unserer offiziellen Chat-Gruppen, zum Beispiel
-                           &lt;a style='color: #b088ff' href='https://discord.dogec.io'&gt;
+                           &lt;a style='color: #9c7019' href='https://discord.dogec.io'&gt;
                            #support in unserem Discord&lt;/a&gt;.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </translation>
