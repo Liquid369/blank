@@ -157,7 +157,7 @@ UniValue mnsync(const JSONRPCRequest& request)
     if (request.params.size() == 1)
         strMode = request.params[0].get_str();
 
-    if (request.fHelp || request.params.size() != 1 || (strMode != "status" && strMode != "reset")) {
+    if (request.fHelp || request.params.size() != 1 || (strMode != "status" && strMode != "reset" && strMode != "next")) {
         throw std::runtime_error(
             "mnsync \"status|reset|next\"\n"
             "\nReturns the sync status, resets sync or skips to next asset.\n"

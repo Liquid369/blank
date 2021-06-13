@@ -13,7 +13,7 @@
 #include "streams.h"
 
 static const CAmount PROPOSAL_FEE_TX = (350 * COIN);
-static const CAmount BUDGET_FEE_TX_OLD = 3(50 * COIN);
+static const CAmount BUDGET_FEE_TX_OLD = (350 * COIN);
 static const CAmount BUDGET_FEE_TX = (5 * COIN);
 static const int64_t BUDGET_VOTE_UPDATE_MIN = 60 * 60;
 
