@@ -214,7 +214,7 @@ bool MasterNodeWizardDialog::createMN()
         SendCoinsRecipient sendCoinsRecipient(
                 QString::fromStdString(dest.ToString()),
                 QString::fromStdString(alias),
-                CAmount(10000) * COIN,
+                CAmount(5000) * COIN,
                 "");
 
         // Send the 10 tx to one of your address
