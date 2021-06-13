@@ -354,7 +354,7 @@ fs::path GetDefaultDataDir()
 // Unix: ~/.dogecash
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "DOGEC";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "DogeCash Core";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -366,7 +366,7 @@ fs::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     TryCreateDirectory(pathRet);
-    return pathRet / "DOGEC";
+    return pathRet / "DogeCash Core";
 #else
     // Unix
     return pathRet / ".dogecash";
