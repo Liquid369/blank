@@ -1,13 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/txviewholder.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/txviewholder.h"
+#include "qt/rbx/qtutils.h"
 #include "transactiontablemodel.h"
 #include <QModelIndex>
 
@@ -36,8 +36,8 @@ void TxViewHolder::init(QWidget* holder, const QModelIndex &index, bool isHovere
     txRow->showHideSecondAmount(hasDoubleAmount);
 
     if (type != TransactionRecord::ZerocoinMint &&
-            type !=  TransactionRecord::ZerocoinSpend_Change_zFls &&
-            type !=  TransactionRecord::StakeZFLS &&
+            type !=  TransactionRecord::ZerocoinSpend_Change_zRbx &&
+            type !=  TransactionRecord::StakeZRBX &&
             type != TransactionRecord::Other) {
 
         QString address = rIndex.data(Qt::DisplayRole).toString();

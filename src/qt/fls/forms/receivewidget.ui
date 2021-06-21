@@ -78,7 +78,7 @@
             <item alignment="Qt::AlignTop">
              <widget class="QLabel" name="labelSubtitle1">
               <property name="text">
-               <string>Scan the QR code or copy the address to receive FLS</string>
+               <string>Scan the QR code or copy the address to receive RBX</string>
               </property>
              </widget>
             </item>
@@ -201,7 +201,7 @@
              <item alignment="Qt::AlignHCenter|Qt::AlignTop">
               <widget class="QLabel" name="labelSubtitle2">
                <property name="text">
-                <string>Accept transparent or shielded FLS</string>
+                <string>Accept transparent or shielded RBX</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -572,7 +572,7 @@
   <customwidget>
    <class>OptionButton</class>
    <extends>QWidget</extends>
-   <header>qt/fls/optionbutton.h</header>
+   <header>qt/rbx/optionbutton.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

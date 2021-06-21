@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # Copyright (c) 2018 The Zcash developers
 # Copyright (c) 2020 The PIVX Developers
-# Copyright (c) 2020 The Flits Developers
+# Copyright (c) 2020 The Rubus Developers
 
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 
 from test_framework.messages import (
     CTransaction,
@@ -21,7 +21,7 @@ from test_framework.util import (
 from decimal import Decimal
 from io import BytesIO
 
-class MalleableSigsTest(FlsTestFramework):
+class MalleableSigsTest(RbxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 1
@@ -36,8 +36,8 @@ class MalleableSigsTest(FlsTestFramework):
         z_addr = node.getnewshieldaddress()
         shield_to = [{"address": z_addr, "amount": Decimal('10')}]
 
-        # Create rawtx shielding 10 FLS
-        self.log.info("Shielding 10 FLS...")
+        # Create rawtx shielding 10 RBX
+        self.log.info("Shielding 10 RBX...")
         rawtx_hex = node.rawshieldsendmany("from_transparent", shield_to)
         self.log.info("Raw tx created")
 

@@ -1,15 +1,15 @@
 QT_TS = \
-  qt/locale/fls_de.ts \
-  qt/locale/fls_en.ts \
-  qt/locale/fls_en_US.ts \
-  qt/locale/fls_es.ts \
-  qt/locale/fls_es_ES.ts \
-  qt/locale/fls_fr_FR.ts \
-  qt/locale/fls_hr_HR.ts \
-  qt/locale/fls_it.ts \
-  qt/locale/fls_ko_KR.ts \
-  qt/locale/fls_nl.ts \
-  qt/locale/fls_pl.ts \
-  qt/locale/fls_ru.ts \
-  qt/locale/fls_tr.ts \
-  qt/locale/fls_zh_CN.ts
+  qt/locale/rbx_de.ts \
+  qt/locale/rbx_en.ts \
+  qt/locale/rbx_en_US.ts \
+  qt/locale/rbx_es.ts \
+  qt/locale/rbx_es_ES.ts \
+  qt/locale/rbx_fr_FR.ts \
+  qt/locale/rbx_hr_HR.ts \
+  qt/locale/rbx_it.ts \
+  qt/locale/rbx_ko_KR.ts \
+  qt/locale/rbx_nl.ts \
+  qt/locale/rbx_pl.ts \
+  qt/locale/rbx_ru.ts \
+  qt/locale/rbx_tr.ts \
+  qt/locale/rbx_zh_CN.ts

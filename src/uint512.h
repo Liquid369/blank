@@ -1,11 +1,11 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_UINT512_H
-#define FLS_UINT512_H
+#ifndef RBX_UINT512_H
+#define RBX_UINT512_H
 
 #include "arith_uint256.h"
 #include "blob_uint256.h"
@@ -41,4 +41,4 @@ inline blob_uint512 blob_uint512S(const char* str)
     return rv;
 }
 
-#endif // FLS_UINT512_H
+#endif // RBX_UINT512_H

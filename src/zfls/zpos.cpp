@@ -1,13 +1,13 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "zfls/zpos.h"
+#include "zrbx/zpos.h"
 
 #include "validation.h"
-#include "zflschain.h"
+#include "zrbxchain.h"
 
 
 /*
@@ -24,28 +24,28 @@ uint32_t ParseAccChecksum(uint256 nCheckpoint, const libzerocoin::CoinDenominati
     return nCheckpoint.Get32();
 }
 
-bool CLegacyZFlsStake::InitFromTxIn(const CTxIn& txin)
+bool CLegacyZRbxStake::InitFromTxIn(const CTxIn& txin)
 {
     // Construct the stakeinput object
     if (!txin.IsZerocoinSpend())
-        return error("%s: unable to initialize CLegacyZFlsStake from non zc-spend", __func__);
+        return error("%s: unable to initialize CLegacyZRbxStake from non zc-spend", __func__);
 
     // Check spend type
     libzerocoin::CoinSpend spend = TxInToZerocoinSpend(txin);
     if (spend.getSpendType() != libzerocoin::SpendType::STAKE)
         return error("%s : spend is using the wrong SpendType (%d)", __func__, (int)spend.getSpendType());
 
-    *this = CLegacyZFlsStake(spend);
+    *this = CLegacyZRbxStake(spend);
 
     // Find the pindex with the accumulator checksum
     if (!GetIndexFrom())
-        return error("%s : Failed to find the block index for zfls stake origin", __func__);
+        return error("%s : Failed to find the block index for zrbx stake origin", __func__);
 
     // All good
     return true;
 }
 
-CLegacyZFlsStake::CLegacyZFlsStake(const libzerocoin::CoinSpend& spend) : CStakeInput(nullptr)
+CLegacyZRbxStake::CLegacyZRbxStake(const libzerocoin::CoinSpend& spend) : CStakeInput(nullptr)
 {
     this->nChecksum = spend.getAccumulatorChecksum();
     this->denom = spend.getDenomination();
@@ -53,7 +53,7 @@ CLegacyZFlsStake::CLegacyZFlsStake(const libzerocoin::CoinSpend& spend) : CStake
     this->hashSerial = Hash(nSerial.begin(), nSerial.end());
 }
 
-const CBlockIndex* CLegacyZFlsStake::GetIndexFrom() const
+const CBlockIndex* CLegacyZRbxStake::GetIndexFrom() const
 {
     // First look in the legacy database
     int nHeightChecksum = 0;
@@ -81,12 +81,12 @@ const CBlockIndex* CLegacyZFlsStake::GetIndexFrom() const
     return nullptr;
 }
 
-CAmount CLegacyZFlsStake::GetValue() const
+CAmount CLegacyZRbxStake::GetValue() const
 {
     return denom * COIN;
 }
 
-CDataStream CLegacyZFlsStake::GetUniqueness() const
+CDataStream CLegacyZRbxStake::GetUniqueness() const
 {
     CDataStream ss(SER_GETHASH, 0);
     ss << hashSerial;
@@ -94,11 +94,11 @@ CDataStream CLegacyZFlsStake::GetUniqueness() const
 }
 
 // Verify stake contextual checks
-bool CLegacyZFlsStake::ContextCheck(int nHeight, uint32_t nTime)
+bool CLegacyZRbxStake::ContextCheck(int nHeight, uint32_t nTime)
 {
     const Consensus::Params& consensus = Params().GetConsensus();
     if (!consensus.NetworkUpgradeActive(nHeight, Consensus::UPGRADE_ZC_V2) || nHeight >= consensus.height_last_ZC_AccumCheckpoint)
-        return error("%s : zFLS stake block: height %d outside range", __func__, nHeight);
+        return error("%s : zRBX stake block: height %d outside range", __func__, nHeight);
 
     // The checkpoint needs to be from 200 blocks ago
     const int cpHeight = nHeight - 1 - consensus.ZC_MinStakeDepth;

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # Copyright (c) 2018 The Zcash developers
-# Copyright (c) 20202 The FLITS developers
+# Copyright (c) 20202 The Rubus developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 from test_framework.util import *
 
-class SaplingWalletPersistenceTest(FlsTestFramework):
+class SaplingWalletPersistenceTest(RbxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 1

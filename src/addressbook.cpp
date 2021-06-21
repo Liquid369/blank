@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying

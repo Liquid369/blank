@@ -1,17 +1,17 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsnetworkwidget.h"
-#include "qt/fls/settings/forms/ui_settingsnetworkwidget.h"
+#include "qt/rbx/settings/settingsnetworkwidget.h"
+#include "qt/rbx/settings/forms/ui_settingsnetworkwidget.h"
 #include "optionsmodel.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/qtutils.h"
 
-SettingsNetworkWidget::SettingsNetworkWidget(FLSGUI* _window, QWidget *parent) :
+SettingsNetworkWidget::SettingsNetworkWidget(RBXGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsNetworkWidget)
 {

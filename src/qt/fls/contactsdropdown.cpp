@@ -1,17 +1,17 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/contactsdropdown.h"
+#include "qt/rbx/contactsdropdown.h"
 
 #include <QPainter>
 #include <QSizePolicy>
-#include "qt/fls/addresslabelrow.h"
-#include "qt/fls/contactdropdownrow.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/furlistrow.h"
+#include "qt/rbx/addresslabelrow.h"
+#include "qt/rbx/contactdropdownrow.h"
+#include "qt/rbx/qtutils.h"
+#include "qt/rbx/furlistrow.h"
 #include "walletmodel.h"
 #include "addresstablemodel.h"
 

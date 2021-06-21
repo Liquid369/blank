@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -10,7 +10,7 @@
 #define SETTINGSWALLETREPAIRWIDGET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 
 namespace Ui {
 class SettingsWalletRepairWidget;
@@ -21,7 +21,7 @@ class SettingsWalletRepairWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWalletRepairWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsWalletRepairWidget(RBXGUI* _window, QWidget *parent = nullptr);
     ~SettingsWalletRepairWidget();
 
     /** Build parameter list for restart */

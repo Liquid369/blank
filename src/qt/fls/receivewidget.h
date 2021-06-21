@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,16 +7,16 @@
 #ifndef RECEIVEWIDGET_H
 #define RECEIVEWIDGET_H
 
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 #include "addresstablemodel.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
-#include "qt/fls/addressfilterproxymodel.h"
+#include "qt/rbx/furabstractlistitemdelegate.h"
+#include "qt/rbx/addressfilterproxymodel.h"
 
 #include <QSpacerItem>
 #include <QWidget>
 #include <QPixmap>
 
-class FLSGUI;
+class RBXGUI;
 class SendCoinsRecipient;
 
 namespace Ui {
@@ -32,7 +32,7 @@ class ReceiveWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit ReceiveWidget(FLSGUI* parent);
+    explicit ReceiveWidget(RBXGUI* parent);
     ~ReceiveWidget();
 
     void loadWalletModel() override;

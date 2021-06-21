@@ -1,12 +1,12 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/addressfilterproxymodel.h"
+#include "qt/rbx/addressfilterproxymodel.h"
 #include <iostream>
 
 bool AddressFilterProxyModel::filterAcceptsRow(int row, const QModelIndex& parent) const

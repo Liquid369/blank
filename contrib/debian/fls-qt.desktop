@@ -1,13 +1,13 @@
 [Desktop Entry]
 Version=1.0
-Name=FLITS Core
-Comment=FLITS P2P Cryptocurrency
-Comment[fr]=FLS, monnaie virtuelle cryptographique pair à pair
-Comment[tr]=FLS, eşten eşe kriptografik sanal para birimi
-Exec=fls-qt %u
+Name=Rubus Core
+Comment=Rubus P2P Cryptocurrency
+Comment[fr]=RBX, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=RBX, eşten eşe kriptografik sanal para birimi
+Exec=rbx-qt %u
 Terminal=false
 Type=Application
-Icon=fls128
-MimeType=x-scheme-handler/fls;
+Icon=rbx128
+MimeType=x-scheme-handler/rbx;
 Categories=Office;Finance;
-StartupWMClass=Fls-qt
+StartupWMClass=Rbx-qt

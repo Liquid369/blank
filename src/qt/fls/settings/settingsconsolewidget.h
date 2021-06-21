@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -8,7 +8,7 @@
 #define SETTINGSCONSOLEWIDGET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 #include "guiutil.h"
 #include "net.h"
 #include <QCompleter>
@@ -30,7 +30,7 @@ class SettingsConsoleWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsConsoleWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsConsoleWidget(RBXGUI* _window, QWidget *parent = nullptr);
     ~SettingsConsoleWidget();
 
     void loadClientModel() override;

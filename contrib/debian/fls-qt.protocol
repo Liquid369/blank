@@ -1,6 +1,6 @@
 [Protocol]
-exec=fls-qt '%u'
-protocol=fls
+exec=rbx-qt '%u'
+protocol=rbx
 input=none
 output=none
 helper=true

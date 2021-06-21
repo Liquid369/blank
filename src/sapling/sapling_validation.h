@@ -1,12 +1,12 @@
 // Copyright (c) 2016-2020 The ZCash developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_SAPLING_VALIDATION_H
-#define FLS_SAPLING_VALIDATION_H
+#ifndef RBX_SAPLING_VALIDATION_H
+#define RBX_SAPLING_VALIDATION_H
 
 #include "chainparams.h"
 
@@ -29,4 +29,4 @@ bool ContextualCheckTransaction(const CTransaction &tx, CValidationState &state,
 
 }; // End SaplingValidation namespace
 
-#endif //FLS_SAPLING_VALIDATION_H
+#endif //RBX_SAPLING_VALIDATION_H

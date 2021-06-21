@@ -1,13 +1,13 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsconsolewidget.h"
-#include "qt/fls/settings/forms/ui_settingsconsolewidget.h"
+#include "qt/rbx/settings/settingsconsolewidget.h"
+#include "qt/rbx/settings/forms/ui_settingsconsolewidget.h"
 
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/qtutils.h"
 
 #include "clientmodel.h"
 #include "guiutil.h"
@@ -99,7 +99,7 @@ public:
     }
 };
 
-#include "qt/fls/settings/moc_settingsconsolewidget.cpp"
+#include "qt/rbx/settings/moc_settingsconsolewidget.cpp"
 
 /**
  * Split shell command line into a list of arguments. Aims to emulate \c bash and friends.
@@ -241,7 +241,7 @@ void RPCExecutor::requestCommand(const QString& command)
     }
 }
 
-SettingsConsoleWidget::SettingsConsoleWidget(FLSGUI* _window, QWidget *parent) :
+SettingsConsoleWidget::SettingsConsoleWidget(RBXGUI* _window, QWidget *parent) :
     PWidget(_window,parent),
     ui(new Ui::SettingsConsoleWidget)
 {
@@ -427,7 +427,7 @@ void SettingsConsoleWidget::clear(bool clearHistory)
     QString clsKey = "Ctrl-L";
 #endif
 
-    messageInternal(CMD_REPLY, (tr("Welcome to the FLITS RPC console.") + "<br>" +
+    messageInternal(CMD_REPLY, (tr("Welcome to the Rubus RPC console.") + "<br>" +
                         tr("Use up and down arrows to navigate history, and %1 to clear screen.").arg("<b>"+clsKey+"</b>") + "<br>" +
                         tr("Type <b>help</b> for an overview of available commands.") +
                         "<br><span class=\"secwarning\"><br>" +
@@ -459,13 +459,13 @@ static bool PotentiallyDangerousCommand(const QString& cmd)
         return true;
     }
     if (cmd.size() >= 13 && cmd.leftRef(11) == "dumpprivkey") {
-        // valid FLITS Transparent Address
+        // valid Rubus Transparent Address
         std::vector<std::string> args;
         parseCommandLineSettings(args, cmd.toStdString());
         return (args.size() == 2 && IsValidDestinationString(args[1], false));
     }
     if (cmd.size() >= 18 && cmd.leftRef(16) == "exportsaplingkey") {
-        // valid FLITS Shield Address
+        // valid Rubus Shield Address
         std::vector<std::string> args;
         parseCommandLineSettings(args, cmd.toStdString());
         return (args.size() == 2 && KeyIO::IsValidPaymentAddressString(args[1]));

@@ -5,19 +5,19 @@
 # See "man systemd.service" for details.
 
 # Note that almost all daemon options could be specified in
-# /etc/fls/fls.conf
+# /etc/rbx/rbx.conf
 
 [Unit]
 Description=PIVX daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/flsd -daemon -conf=/etc/fls/fls.conf -pid=/run/flsd/flsd.pid
-# Creates /run/flsd owned by fls
-RuntimeDirectory=flsd
-User=fls
+ExecStart=/usr/bin/rbxd -daemon -conf=/etc/rbx/rbx.conf -pid=/run/rbxd/rbxd.pid
+# Creates /run/rbxd owned by rbx
+RuntimeDirectory=rbxd
+User=rbx
 Type=forking
-PIDFile=/run/flsd/flsd.pid
+PIDFile=/run/rbxd/rbxd.pid
 Restart=on-failure
 
 # Hardening measures

@@ -1,13 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_PAIRRESULT_H
-#define FLS_PAIRRESULT_H
+#ifndef RBX_PAIRRESULT_H
+#define RBX_PAIRRESULT_H
 
 
 class PairResult {
@@ -21,4 +21,4 @@ public:
 };
 
 
-#endif //FLS_PAIRRESULT_H
+#endif //RBX_PAIRRESULT_H

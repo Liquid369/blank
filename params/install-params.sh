@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2015-2020 The Zcash developers
 # Copyright (c) 2020 The PIVX Developers
-# Copyright (c) 2020 The Flits Developers
+# Copyright (c) 2020 The Rubus Developers
 
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -15,9 +15,9 @@ if [ -n "${1:-}" ]; then
     PARAMS_DIR="$1"
 else
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        PARAMS_DIR="$HOME/Library/Application Support/FLSParams"
+        PARAMS_DIR="$HOME/Library/Application Support/RBXParams"
     else
-        PARAMS_DIR="$HOME/.fls-params"
+        PARAMS_DIR="$HOME/.rbx-params"
     fi
 fi
 
@@ -43,7 +43,7 @@ function install_params {
     # if the params don't exist in the current directory, assume we're running from release tarballs
     if ! [ -f "$filename" ]
     then
-        filename="share/fls/$filename"
+        filename="share/rbx/$filename"
     fi
 
     if ! [ -f "$output" ]
@@ -93,9 +93,9 @@ function main() {
     || exit_locked_error
 
     cat <<EOF
-FLITS - install-params.sh
+Rubus - install-params.sh
 
-This script will install the FLITS zkSNARK parameters and verify their
+This script will install the Rubus zkSNARK parameters and verify their
 integrity with sha256sum.
 
 If they already exist locally, it will exit now and do nothing else.
@@ -107,7 +107,7 @@ EOF
         mkdir -p "$PARAMS_DIR"
         README_PATH="$PARAMS_DIR/README"
         cat >> "$README_PATH" <<EOF
-This directory stores common FLITS zkSNARK parameters. Note that it is
+This directory stores common Rubus zkSNARK parameters. Note that it is
 distinct from the daemon's -datadir argument because the parameters are
 large and may be shared across multiple distinct -datadir's such as when
 setting up test networks.

@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -14,7 +14,7 @@
 #include <QAction>
 #include "walletmodel.h"
 #include "amount.h"
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 
 class WalletModel;
 class SendCoinsRecipient;
@@ -29,7 +29,7 @@ class SendMultiRow : public PWidget
     Q_OBJECT
 
 public:
-    explicit SendMultiRow(FLSGUI* _window, PWidget *parent = nullptr);
+    explicit SendMultiRow(RBXGUI* _window, PWidget *parent = nullptr);
     ~SendMultiRow();
 
     void hideLabels();

@@ -1,12 +1,12 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/mnrow.h"
-#include "qt/fls/forms/ui_mnrow.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/mnrow.h"
+#include "qt/rbx/forms/ui_mnrow.h"
+#include "qt/rbx/qtutils.h"
 
 MNRow::MNRow(QWidget *parent) :
     QWidget(parent),

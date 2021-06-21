@@ -1,11 +1,11 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/defaultdialog.h"
-#include "qt/fls/forms/ui_defaultdialog.h"
+#include "qt/rbx/defaultdialog.h"
+#include "qt/rbx/forms/ui_defaultdialog.h"
 #include "guiutil.h"
 
 DefaultDialog::DefaultDialog(QWidget *parent) :

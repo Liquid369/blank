@@ -1,13 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/addressholder.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/addressholder.h"
+#include "qt/rbx/qtutils.h"
 
 void AddressHolder::init(QWidget* holder,const QModelIndex &index, bool isHovered, bool isSelected) const {
     MyAddressRow *row = static_cast<MyAddressRow*>(holder);

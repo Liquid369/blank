@@ -114,12 +114,12 @@
         <translation>接收地址</translation>
     </message>
     <message>
-        <source>These are your FLITS addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>这是用于发送FLS的地址。在发送FLS之前，请认真核查发送金额和接收地址。</translation>
+        <source>These are your Rubus addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>这是用于发送RBX的地址。在发送RBX之前，请认真核查发送金额和接收地址。</translation>
     </message>
     <message>
-        <source>These are your FLITS addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>这是用于接收FLS的钱包地址。建议每一笔交易都使用一个新的钱包地址。</translation>
+        <source>These are your Rubus addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>这是用于接收RBX的钱包地址。建议每一笔交易都使用一个新的钱包地址。</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -348,8 +348,8 @@ for staking</source>
         <translation>删除</translation>
     </message>
     <message>
-        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
-        <translation>FLS将关闭以完成加密过程。但是，仅仅加密您的钱包是不够的，因为它并不能阻止恶意软件从您的电脑里面偷取FLSs。</translation>
+        <source>Rubus will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your RBXs from being stolen by malware infecting your computer.</source>
+        <translation>RBX将关闭以完成加密过程。但是，仅仅加密您的钱包是不够的，因为它并不能阻止恶意软件从您的电脑里面偷取RBXs。</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -425,8 +425,8 @@ for staking</source>
         <translation>存款</translation>
     </message>
     <message>
-        <source>0,00 FLS</source>
-        <translation>0,00 FLS</translation>
+        <source>0,00 RBX</source>
+        <translation>0,00 RBX</translation>
     </message>
     <message>
         <source>address</source>
@@ -467,8 +467,8 @@ for staking</source>
         <translation>币选择</translation>
     </message>
     <message>
-        <source>Select FLS Outputs to Spend</source>
-        <translation>选择FLS支出花费</translation>
+        <source>Select RBX Outputs to Spend</source>
+        <translation>选择RBX支出花费</translation>
     </message>
     <message>
         <source>Dust:</source>
@@ -495,8 +495,8 @@ for staking</source>
         <translation>金额</translation>
     </message>
     <message>
-        <source>0.00 FLS</source>
-        <translation>0.00 FLS</translation>
+        <source>0.00 RBX</source>
+        <translation>0.00 RBX</translation>
     </message>
     <message>
         <source>0</source>
@@ -690,9 +690,9 @@ for staking</source>
         <translation>加载委托时出错：%1</translation>
     </message>
     <message>
-        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
+        <source>You can delegate your RBXs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>您可以委托您的FLS并让一个热节点(24/7在线节点)
+        <translation>您可以委托您的RBX并让一个热节点(24/7在线节点)
 代表你加注，而且保持密钥离线安全。</translation>
     </message>
     <message>
@@ -700,8 +700,8 @@ stake on your behalf, while you keep the keys securely offline.</source>
         <translation>输入所有者地址</translation>
     </message>
     <message>
-        <source>Accept FLS delegation / Delegate FLS</source>
-        <translation>接受FLS委托／委托FLS </translation>
+        <source>Accept RBX delegation / Delegate RBX</source>
+        <translation>接受RBX委托／委托RBX </translation>
     </message>
     <message>
         <source>Cold Staking address</source>
@@ -988,8 +988,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>编辑发送地址</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid FLITS address.</source>
-        <translation>所输入的地址“%1”不是有效的FLS地址。</translation>
+        <source>The entered address "%1" is not a valid Rubus address.</source>
+        <translation>所输入的地址“%1”不是有效的RBX地址。</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1041,15 +1041,15 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>版本</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-位)</translation>
     </message>
     <message>
-        <source>About FLITS Core</source>
+        <source>About Rubus Core</source>
         <translation>关于FLITS Core</translation>
     </message>
     <message>
@@ -1104,16 +1104,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>欢迎</translation>
     </message>
     <message>
-        <source>Welcome to FLITS Core.</source>
-        <translation>欢迎使用 FLITS Core</translation>
+        <source>Welcome to Rubus Core.</source>
+        <translation>欢迎使用 Rubus Core</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where FLITS Core will store its data.</source>
+        <source>As this is the first time the program is launched, you can choose where Rubus Core will store its data.</source>
         <translation>由于这是该程序第一次启动，您可以选择存储FLITS Core 数据的位置。</translation>
     </message>
     <message>
-        <source>FLITS Core will download and store a copy of the FLITS block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>FLITS Core将下载并存储FLS区块链副本。 至少 %1 GB的数据将存储在此目录中，并且会随着时间的推移而增长。 钱包也将存储在此目录中。</translation>
+        <source>Rubus Core will download and store a copy of the Rubus block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>Rubus Core将下载并存储RBX区块链副本。 至少 %1 GB的数据将存储在此目录中，并且会随着时间的推移而增长。 钱包也将存储在此目录中。</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1132,8 +1132,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>好的</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1232,8 +1232,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>创建新的主节点控制器</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;要去创建一个FLS主节点，你必须奉献10,000 FLS（FLS的单位）到网络（但是这些币还是属于你的，一直为你所有）。&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;你可以在任何时候关闭该节点并解锁币。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Rubus Masternode you must dedicate 10,000 RBX (the unit of RBX) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;要去创建一个RBX主节点，你必须奉献10,000 RBX（RBX的单位）到网络（但是这些币还是属于你的，一直为你所有）。&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;你可以在任何时候关闭该节点并解锁币。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1252,8 +1252,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>确保你有这么多币</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 FLS will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;将进行10,000 FLS的交易&lt;/p&gt;&lt;p&gt;到您的钱包空地址&lt;/p&gt;&lt;p&gt;地址被标记在主节点的名称之下&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 RBX will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;将进行10,000 RBX的交易&lt;/p&gt;&lt;p&gt;到您的钱包空地址&lt;/p&gt;&lt;p&gt;地址被标记在主节点的名称之下&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1435,7 +1435,7 @@ Please wait few more minutes (masternode collaterals require %1 confirmations).<
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the fls.conf file
+You will only have to paste the data in the rbx.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1443,7 +1443,7 @@ this controller wallet (select the Masternode in the list and press "start").
 到剪贴板的远程服务器上。
 
 
-您只需将数据粘贴到fls.conf文件中
+您只需将数据粘贴到rbx.conf文件中
 ，然后使用主节点启动它
 这个控制器钱包(在列表中选择主节点并按“开始”)。
 </translation>
@@ -1583,8 +1583,8 @@ Are you sure?</source>
         <translation>解析的数据太大</translation>
     </message>
     <message>
-        <source>Invalid URI, not starting with "fls" prefix</source>
-        <translation>无效的URI，不是以“ fls”前缀开头</translation>
+        <source>Invalid URI, not starting with "rbx" prefix</source>
+        <translation>无效的URI，不是以“ rbx”前缀开头</translation>
     </message>
 </context>
 <context>
@@ -1629,8 +1629,8 @@ Are you sure?</source>
         <translation>如果您要禁用未经确认发送，在至少有一个确认之前&lt;br/&gt;不能更改。&lt;br/&gt;这也将影响您的余额计算。</translation>
     </message>
     <message>
-        <source>Automatically open the FLITS client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>自动打开路由器上的FLS钱包使用的端口。 这只有当您的路由器支持UPnP并且该享生效时才有用。</translation>
+        <source>Automatically open the Rubus client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>自动打开路由器上的RBX钱包使用的端口。 这只有当您的路由器支持UPnP并且该享生效时才有用。</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1649,12 +1649,12 @@ Are you sure?</source>
         <translation>专家</translation>
     </message>
     <message>
-        <source>Automatically start FLITS after logging in to the system.</source>
-        <translation>登录系统后自动启动FLS。</translation>
+        <source>Automatically start Rubus after logging in to the system.</source>
+        <translation>登录系统后自动启动RBX。</translation>
     </message>
     <message>
-        <source>&amp;Start FLITS on system login</source>
-        <translation>&amp;开机启动FLS</translation>
+        <source>&amp;Start Rubus on system login</source>
+        <translation>&amp;开机启动RBX</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1681,58 +1681,58 @@ Are you sure?</source>
         <translation>&amp;网络</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
-        <translation>可以在这里设置用户界面语言。此设置将在重新启动FLS后生效。</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting RBX.</source>
+        <translation>可以在这里设置用户界面语言。此设置将在重新启动RBX后生效。</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/flitsnode/flits-core-project-translations</source>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</source>
         <translation>语言缺失或翻译不完整?帮助贡献翻译在这里:
-https://www.transifex.com/flitsnode/flits-core-project-translations</translation>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>端口使用&amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>启动自动铸造FLS到zFLS</translation>
+        <source>Enable automatic minting of RBX units to zRBX</source>
+        <translation>启动自动铸造RBX到zRBX</translation>
     </message>
     <message>
-        <source>Enable zFLS Automint</source>
-        <translation>启动自动铸造zFLS</translation>
+        <source>Enable zRBX Automint</source>
+        <translation>启动自动铸造zRBX</translation>
     </message>
     <message>
-        <source>Enable automatic zFLS minting from specific addresses</source>
-        <translation>启用从特定地址自动生成zFLS</translation>
+        <source>Enable automatic zRBX minting from specific addresses</source>
+        <translation>启用从特定地址自动生成zRBX</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>启动自动铸造地址</translation>
     </message>
     <message>
-        <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
-        <translation>通过零币协议自动转换为zFLS的传入FLS的百分比(最小:10%)</translation>
+        <source>Percentage of incoming RBX which get automatically converted to zRBX via Zerocoin Protocol (min: 10%)</source>
+        <translation>通过零币协议自动转换为zRBX的传入RBX的百分比(最小:10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zFLS</source>
-        <translation>自动铸造的zFLS百分比</translation>
+        <source>Percentage of autominted zRBX</source>
+        <translation>自动铸造的zRBX百分比</translation>
     </message>
     <message>
-        <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
-        <translation>等待自动转换为零币，直到足够的FLS为这种面额可用</translation>
+        <source>Wait with automatic conversion to Zerocoin until enough RBX for this denomination is available</source>
+        <translation>等待自动转换为零币，直到足够的RBX为这种面额可用</translation>
     </message>
     <message>
-        <source>Preferred Automint zFLS Denomination</source>
-        <translation>首选自动铸造zFLS面额</translation>
+        <source>Preferred Automint zRBX Denomination</source>
+        <translation>首选自动铸造zRBX面额</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
         <translation>股权分割阈值:</translation>
     </message>
     <message>
-        <source>Connect to the FLITS network through a SOCKS5 proxy.</source>
-        <translation>通过SOCKS5代理连接到FLS网络。</translation>
+        <source>Connect to the Rubus network through a SOCKS5 proxy.</source>
+        <translation>通过SOCKS5代理连接到RBX网络。</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -1788,7 +1788,7 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>选择显示发送FLS的默认单位。</translation>
+        <translation>选择显示发送RBX的默认单位。</translation>
     </message>
     <message>
         <source>Decimal digits</source>
@@ -1876,10 +1876,10 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
     </message>
 </context>
 <context>
-    <name>FLSGUI</name>
+    <name>RBXGUI</name>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -1906,8 +1906,8 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
         <translation>关闭应用</translation>
     </message>
     <message>
-        <source>FLITS Core client</source>
-        <translation>FLITS Core 客户端</translation>
+        <source>Rubus Core client</source>
+        <translation>Rubus Core 客户端</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1973,12 +1973,12 @@ Address: %4
         <translation>无效支付地址%1</translation>
     </message>
     <message>
-        <source>Cannot start fls: click-to-pay handler</source>
-        <translation>无法启动fls:点击支付处理程序</translation>
+        <source>Cannot start rbx: click-to-pay handler</source>
+        <translation>无法启动rbx:点击支付处理程序</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
-        <translation>URI不能被解析!这可能是由无效的FLS地址或格式错误的URI参数造成的。</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Rubus address or malformed URI parameters.</source>
+        <translation>URI不能被解析!这可能是由无效的RBX地址或格式错误的URI参数造成的。</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -2063,7 +2063,7 @@ Address: %4
         <translation>金额</translation>
     </message>
     <message>
-        <source>Enter FLITS address (e.g. %1)</source>
+        <source>Enter Rubus address (e.g. %1)</source>
         <translation>输入FLITS a地址(e.g. %1)</translation>
     </message>
     <message>
@@ -2107,12 +2107,12 @@ Address: %4
         <translation>%1 毫秒</translation>
     </message>
     <message>
-        <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
-        <translation>发生了一个致命的错误。FLS不能继续安全，将退出。</translation>
+        <source>A fatal error occurred. Rubus can no longer continue safely and will quit.</source>
+        <translation>发生了一个致命的错误。RBX不能继续安全，将退出。</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -2306,8 +2306,8 @@ Address: %4
         <translation>区块链</translation>
     </message>
     <message>
-        <source>Open the FLITS debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>从当前数据目录打开FLS调试日志文件。对于大型日志文件，这可能需要几秒钟。</translation>
+        <source>Open the Rubus debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>从当前数据目录打开RBX调试日志文件。对于大型日志文件，这可能需要几秒钟。</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -2450,8 +2450,8 @@ Address: %4
         <translation>自定义备份路径:</translation>
     </message>
     <message>
-        <source>Custom zFLS Backup Path:</source>
-        <translation>自定义zFLS备份路径:</translation>
+        <source>Custom zRBX Backup Path:</source>
+        <translation>自定义zRBX备份路径:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -2530,7 +2530,7 @@ Address: %4
         <translation>出：</translation>
     </message>
     <message>
-        <source>Welcome to the FLITS RPC console.</source>
+        <source>Welcome to the Rubus RPC console.</source>
         <translation>欢迎访问FLITS RPC控制台</translation>
     </message>
     <message>
@@ -2770,8 +2770,8 @@ Address: %4
         <translation>金额</translation>
     </message>
     <message>
-        <source>FLS</source>
-        <translation>FLS</translation>
+        <source>RBX</source>
+        <translation>RBX</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -2849,8 +2849,8 @@ Address: %4
         <translation>自定义更改地址</translation>
     </message>
     <message>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" FLITS address</source>
-        <translation>输入值减去输出值所得的值的其余部分归为“更改”FLS地址</translation>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" Rubus address</source>
+        <translation>输入值减去输出值所得的值的其余部分归为“更改”RBX地址</translation>
     </message>
     <message>
         <source>SAVE</source>
@@ -2876,8 +2876,8 @@ Address: %4
         <translation>已推荐</translation>
     </message>
     <message>
-        <source>FLS/kilobyte</source>
-        <translation>FLS/k字节</translation>
+        <source>RBX/kilobyte</source>
+        <translation>RBX/k字节</translation>
     </message>
     <message>
         <source>0.00 KB</source>
@@ -3155,8 +3155,8 @@ These coins will no longer be cold-staked.</source>
         <translation>解密钥匙</translation>
     </message>
     <message>
-        <source>FLITS address</source>
-        <translation>FLS地址</translation>
+        <source>Rubus address</source>
+        <translation>RBX地址</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3280,7 +3280,7 @@ Verify that you have installed a predetermined text editor.</source>
 确认您已经安装了预定的文本编辑器</translation>
     </message>
     <message>
-        <source>Welcome to the FLITS RPC console.</source>
+        <source>Welcome to the Rubus RPC console.</source>
         <translation>欢迎访问FLITS RPC控制台</translation>
     </message>
     <message>
@@ -3390,12 +3390,12 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>导出地址列表</translation>
     </message>
     <message>
-        <source>FLS_tx_csv_export(*.csv)</source>
-        <translation>FLS_tx_csv_export(*.csv)</translation>
+        <source>RBX_tx_csv_export(*.csv)</source>
+        <translation>RBX_tx_csv_export(*.csv)</translation>
     </message>
     <message>
-        <source>FLS_addresses_csv_export(*.csv)</source>
-        <translation>FLS_addresses_csv_export(*.csv)</translation>
+        <source>RBX_addresses_csv_export(*.csv)</source>
+        <translation>RBX_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -3465,45 +3465,45 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>来自</translation>
     </message>
     <message>
-        <source>1) What is FLS?</source>
-        <translation>1）什么是FLS?</translation>
+        <source>1) What is RBX?</source>
+        <translation>1）什么是RBX?</translation>
     </message>
     <message>
-        <source>2) Why are my FLS unspendable?</source>
-        <translation>2) 我的FLS为什么不能用？</translation>
+        <source>2) Why are my RBX unspendable?</source>
+        <translation>2) 我的RBX为什么不能用？</translation>
     </message>
     <message>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <source>What is FLS?</source>
-        <translation>FLS是什么?</translation>
+        <source>What is RBX?</source>
+        <translation>RBX是什么?</translation>
     </message>
     <message>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <source>Why are my FLS unspendable?</source>
-        <translation>我的FLS为什么不能用？</translation>
+        <source>Why are my RBX unspendable?</source>
+        <translation>我的RBX为什么不能用？</translation>
     </message>
     <message>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Newly received FLITS requires 6 confirmations on the network
+                           Newly received Rubus requires 6 confirmations on the network
                            to become eligible for spending which can take ~6 minutes.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           Your FLITS wallet also needs to be completely synchronized
+                           Your Rubus wallet also needs to be completely synchronized
                            to see and spend balances on the network.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
         <translation>
 &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-接收到的FLS需要网络上的6个确认
+接收到的RBX需要网络上的6个确认
 才能成为有资格的花费，可以花~6分钟。
 &lt;/p&gt;&lt;p align="justify"&gt;
-您的FLS钱包也需要完全同步
+您的RBX钱包也需要完全同步
 查看网络收支余额。
 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </translation>
@@ -3537,8 +3537,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>什么是主节点控制器？</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 10,000 FLS collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;主节点控制器钱包是控制器-远程主节点建立期间10,000 FLS抵押可以驻留的地方。这是一个可以激活远程主节点钱包(s)的钱包，可以让你的抵押币离线但远程主节点保持在线。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 10,000 RBX collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;主节点控制器钱包是控制器-远程主节点建立期间10,000 RBX抵押可以驻留的地方。这是一个可以激活远程主节点钱包(s)的钱包，可以让你的抵押币离线但远程主节点保持在线。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
@@ -3648,8 +3648,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>无法打开备份文件夹</translation>
     </message>
     <message>
-        <source>Unable to open fls.conf with default application</source>
-        <translation>无法使用默认应用程序打开fls.conf</translation>
+        <source>Unable to open rbx.conf with default application</source>
+        <translation>无法使用默认应用程序打开rbx.conf</translation>
     </message>
     <message>
         <source>In:</source>
@@ -3699,8 +3699,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>脚本&amp;验证线程数</translation>
     </message>
     <message>
-        <source>Start FLITS on system login</source>
-        <translation>开机启动FLS</translation>
+        <source>Start Rubus on system login</source>
+        <translation>开机启动RBX</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -3787,8 +3787,8 @@ Are you sure?
         <translation>查看列表</translation>
     </message>
     <message>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures.</source>
-        <translation>成熟以后，多重花费允许您自动发送高达 100% 的股权或主节点奖励到其他FLS地址列表</translation>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other Rubus addresses after it matures.</source>
+        <translation>成熟以后，多重花费允许您自动发送高达 100% 的股权或主节点奖励到其他RBX地址列表</translation>
     </message>
     <message>
         <source>Active</source>
@@ -3906,8 +3906,8 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation>消息 </translation>
     </message>
     <message>
-        <source>FLITS address or contact label</source>
-        <translation>FLITS 地址或者联系人标签</translation>
+        <source>Rubus address or contact label</source>
+        <translation>Rubus 地址或者联系人标签</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -4183,7 +4183,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation>常见问题</translation>
     </message>
     <message>
-        <source>About FLS</source>
+        <source>About RBX</source>
         <translation>关于FLITS </translation>
     </message>
     <message>
@@ -4250,8 +4250,8 @@ Are you sure?
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>FLITS Core is shutting down...</source>
-        <translation>FLITS 核心正在关闭...</translation>
+        <source>Rubus Core is shutting down...</source>
+        <translation>Rubus 核心正在关闭...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -4280,8 +4280,8 @@ Are you sure?
         <translation>正在下载…</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
 </context>
 <context>
@@ -4677,8 +4677,8 @@ backup will be created.
         <translation>来自</translation>
     </message>
     <message>
-        <source>+0.000585 FLS</source>
-        <translation>+0.000585 FLS</translation>
+        <source>+0.000585 RBX</source>
+        <translation>+0.000585 RBX</translation>
     </message>
     </context>
 <context>
@@ -4728,25 +4728,25 @@ backup will be created.
     </message>
     <message>
         <source>Welcome to
-FLITS Core Wallet</source>
+Rubus Core Wallet</source>
         <translation>欢迎
-FLS核心钱包</translation>
+RBX核心钱包</translation>
     </message>
     <message>
-        <source>FLITS is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>FLS是世界上最先进的隐私保护技术，由经验丰富的开发人员和密码专家开发。</translation>
+        <source>Rubus is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <translation>RBX是世界上最先进的隐私保护技术，由经验丰富的开发人员和密码专家开发。</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - FLITS believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;正如我们的宣言所说:隐私是一项不容协商的基本人权;它赋予用户随时随地与任何人共享数据的自由——FLS相信自我主权&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - Rubus believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;正如我们的宣言所说:隐私是一项不容协商的基本人权;它赋予用户随时随地与任何人共享数据的自由——RBX相信自我主权&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>主节点网络是FLS在区块链之上的第二层网络，它使我们的DAO能够提供去中心的治理。</translation>
+        <source>The masternode network is RBX's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <translation>主节点网络是RBX在区块链之上的第二层网络，它使我们的DAO能够提供去中心的治理。</translation>
     </message>
     <message>
-        <source>How FLITS respects your privacy?</source>
-        <translation>FLITS 到底是怎么尊重你的隐私的？</translation>
+        <source>How Rubus respects your privacy?</source>
+        <translation>Rubus 到底是怎么尊重你的隐私的？</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -4758,7 +4758,7 @@ FLS核心钱包</translation>
     </message>
 </context>
 <context>
-    <name>fls-core</name>
+    <name>rbx-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>允许来自指定源的JSON-RPC连接。适用于&lt;ip&gt;单一IP(如1.2.3.4)、网络/网掩码(如1.2.3.4/255.255.255.0)或网络/CIDR(如1.2.3.4/24)。可以多次指定此选项</translation>
@@ -4912,8 +4912,8 @@ FLS核心钱包</translation>
         <translation>网络版本字符串的总长度(%i)超过最大长度(%i)。减少任务的数量或大小。</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. FLITS Core is probably already running.</source>
-        <translation>无法绑定到此计算机上的%s。FLS核心可能已经在运行了。</translation>
+        <source>Unable to bind to %s on this computer. Rubus Core is probably already running.</source>
+        <translation>无法绑定到此计算机上的%s。RBX核心可能已经在运行了。</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -4928,8 +4928,8 @@ FLS核心钱包</translation>
         <translation>警告:-支付tx费用设置的非常高!这是您发送交易时要支付的交易费。</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
-        <translation>注意：请检查您的电脑的日期和时间是否正确！ 如果您的时间设置不正确，FLITS Core将无法正常工作。</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Rubus Core will not work properly.</source>
+        <translation>注意：请检查您的电脑的日期和时间是否正确！ 如果您的时间设置不正确，Rubus Core将无法正常工作。</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -5000,8 +5000,8 @@ FLS核心钱包</translation>
         <translation>版权所有(C) 2014-%i的达世核心开发者</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The FLITS Core Developers</source>
-        <translation>版权所有(C) 2015-%i FLS核心开发者</translation>
+        <source>Copyright (C) 2015-%i The Rubus Core Developers</source>
+        <translation>版权所有(C) 2015-%i RBX核心开发者</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -5324,8 +5324,8 @@ FLS核心钱包</translation>
         <translation>准备重新同步……</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
-        <translation>请检查您的电脑的日期和时间是否正确!如果你的时间错误，FLITS Core将无法正常工作。</translation>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong Rubus Core will not work properly.</source>
+        <translation>请检查您的电脑的日期和时间是否正确!如果你的时间错误，Rubus Core将无法正常工作。</translation>
     </message>
     <message>
         <source>Specify location of debug log file: this can be an absolute path or a path relative to the data directory (default: %s)</source>
@@ -5576,8 +5576,8 @@ FLS核心钱包</translation>
         <translation>正在验证钱包……</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart FLITS Core to complete</source>
-        <translation>钱包需要重写:重新启动FLS核心完成</translation>
+        <source>Wallet needed to be rewritten: restart Rubus Core to complete</source>
+        <translation>钱包需要重写:重新启动RBX核心完成</translation>
     </message>
     <message>
         <source>Wallet options:</source>
@@ -5631,8 +5631,8 @@ FLS核心钱包</translation>
         <translation>发送</translation>
     </message>
     <message>
-        <source>FLITS address or contact label</source>
-        <translation>FLITS 地址或者联系人标签</translation>
+        <source>Rubus address or contact label</source>
+        <translation>Rubus 地址或者联系人标签</translation>
     </message>
     <message>
         <source>Amount</source>

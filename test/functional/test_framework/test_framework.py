@@ -70,13 +70,13 @@ TEST_EXIT_PASSED = 0
 TEST_EXIT_FAILED = 1
 TEST_EXIT_SKIPPED = 77
 
-TMPDIR_PREFIX = "fls_func_test_"
+TMPDIR_PREFIX = "rbx_func_test_"
 
 
-class FlsTestFramework():
-    """Base class for a fls test script.
+class RbxTestFramework():
+    """Base class for a rbx test script.
 
-    Individual fls test scripts should subclass this class and override the set_test_params() and run_test() methods.
+    Individual rbx test scripts should subclass this class and override the set_test_params() and run_test() methods.
 
     Individual tests can also override the following methods to customize the test setup:
 
@@ -105,11 +105,11 @@ class FlsTestFramework():
 
         parser = optparse.OptionParser(usage="%prog [options]")
         parser.add_option("--nocleanup", dest="nocleanup", default=False, action="store_true",
-                          help="Leave flsds and test.* datadir on exit or error")
+                          help="Leave rbxds and test.* datadir on exit or error")
         parser.add_option("--noshutdown", dest="noshutdown", default=False, action="store_true",
-                          help="Don't stop flsds after the test execution")
+                          help="Don't stop rbxds after the test execution")
         parser.add_option("--srcdir", dest="srcdir", default=os.path.normpath(os.path.dirname(os.path.realpath(__file__))+"/../../../src"),
-                          help="Source directory containing flsd/fls-cli (default: %default)")
+                          help="Source directory containing rbxd/rbx-cli (default: %default)")
         parser.add_option("--cachedir", dest="cachedir", default=os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + "/../../cache"),
                           help="Directory for caching pregenerated datadirs")
         parser.add_option("--tmpdir", dest="tmpdir", help="Root directory for datadirs")
@@ -132,7 +132,7 @@ class FlsTestFramework():
         parser.add_option("--pdbonfailure", dest="pdbonfailure", default=False, action="store_true",
                           help="Attach a python debugger if test fails")
         parser.add_option("--usecli", dest="usecli", default=False, action="store_true",
-                          help="use fls-cli instead of RPC for all commands")
+                          help="use rbx-cli instead of RPC for all commands")
         self.add_options(parser)
         (self.options, self.args) = parser.parse_args()
 
@@ -187,7 +187,7 @@ class FlsTestFramework():
         else:
             for node in self.nodes:
                 node.cleanup_on_exit = False
-            self.log.info("Note: flsds were not stopped and may still be running")
+            self.log.info("Note: rbxds were not stopped and may still be running")
 
         if not self.options.nocleanup and not self.options.noshutdown and success != TestStatus.FAILED:
             self.log.info("Cleaning up")
@@ -278,7 +278,7 @@ class FlsTestFramework():
             self.nodes.append(TestNode(i, self.options.tmpdir, extra_args[i], rpchost, timewait=self.rpc_timewait, binary=binary[i], stderr=None, mocktime=self.mocktime, coverage_dir=self.options.coveragedir, use_cli=self.options.usecli))
 
     def start_node(self, i, *args, **kwargs):
-        """Start a flsd"""
+        """Start a rbxd"""
 
         node = self.nodes[i]
 
@@ -291,7 +291,7 @@ class FlsTestFramework():
             coverage.write_all_rpc_commands(self.options.coveragedir, node.rpc)
 
     def start_nodes(self, extra_args=None, *args, **kwargs):
-        """Start multiple flsds"""
+        """Start multiple rbxds"""
 
         if extra_args is None:
             extra_args = [None] * self.num_nodes
@@ -313,12 +313,12 @@ class FlsTestFramework():
                 coverage.write_all_rpc_commands(self.options.coveragedir, node.rpc)
 
     def stop_node(self, i):
-        """Stop a flsd test node"""
+        """Stop a rbxd test node"""
         self.nodes[i].stop_node()
         self.nodes[i].wait_until_stopped()
 
     def stop_nodes(self):
-        """Stop multiple flsd test nodes"""
+        """Stop multiple rbxd test nodes"""
         for node in self.nodes:
             # Issue RPC to stop nodes
             node.stop_node()
@@ -339,7 +339,7 @@ class FlsTestFramework():
                 self.start_node(i, extra_args, stderr=log_stderr, *args, **kwargs)
                 self.stop_node(i)
             except Exception as e:
-                assert 'flsd exited' in str(e)  # node must have shutdown
+                assert 'rbxd exited' in str(e)  # node must have shutdown
                 self.nodes[i].running = False
                 self.nodes[i].process = None
                 if expected_msg is not None:
@@ -349,9 +349,9 @@ class FlsTestFramework():
                         raise AssertionError("Expected error \"" + expected_msg + "\" not found in:\n" + stderr)
             else:
                 if expected_msg is None:
-                    assert_msg = "flsd should have exited with an error"
+                    assert_msg = "rbxd should have exited with an error"
                 else:
-                    assert_msg = "flsd should have exited with expected error " + expected_msg
+                    assert_msg = "rbxd should have exited with expected error " + expected_msg
                 raise AssertionError(assert_msg)
 
     def wait_for_node_exit(self, i, timeout):
@@ -448,7 +448,7 @@ class FlsTestFramework():
         # User can provide log level as a number or string (eg DEBUG). loglevel was caught as a string, so try to convert it to an int
         ll = int(self.options.loglevel) if self.options.loglevel.isdigit() else self.options.loglevel.upper()
         ch.setLevel(ll)
-        # Format logs the same as flsd's debug.log with microprecision (so log files can be concatenated and sorted)
+        # Format logs the same as rbxd's debug.log with microprecision (so log files can be concatenated and sorted)
         formatter = logging.Formatter(fmt='%(asctime)s.%(msecs)03d000 %(name)s (%(levelname)s): %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
         formatter.converter = time.gmtime
         fh.setFormatter(formatter)
@@ -477,7 +477,7 @@ class FlsTestFramework():
                 from_dir = get_datadir_path(origin, i)
                 to_dir = get_datadir_path(destination, i)
                 shutil.copytree(from_dir, to_dir)
-                initialize_datadir(destination, i)  # Overwrite port/rpcport in fls.conf
+                initialize_datadir(destination, i)  # Overwrite port/rpcport in rbx.conf
 
         def clone_cache_from_node_1(cachedir, from_num=4):
             """ Clones cache subdir from node 1 to nodes from 'from_num' to MAX_NODES"""
@@ -492,7 +492,7 @@ class FlsTestFramework():
                 for subdir in ["blocks", "chainstate", "sporks", "zerocoin"]:
                     copy_and_overwrite(os.path.join(node_0_datadir, subdir),
                                     os.path.join(node_i_datadir, subdir))
-                initialize_datadir(cachedir, i)  # Overwrite port/rpcport in fls.conf
+                initialize_datadir(cachedir, i)  # Overwrite port/rpcport in rbx.conf
 
         def cachedir_valid(cachedir):
             for i in range(MAX_NODES):
@@ -539,7 +539,7 @@ class FlsTestFramework():
                     # Add .incomplete flagfile
                     # (removed at the end during clean_cache_subdir)
                     open(os.path.join(datadir, ".incomplete"), 'a').close()
-                args = [os.getenv("BITCOIND", "flsd"), "-spendzeroconfchange=1", "-server", "-keypool=1",
+                args = [os.getenv("BITCOIND", "rbxd"), "-spendzeroconfchange=1", "-server", "-keypool=1",
                         "-datadir=" + datadir, "-discover=0"]
                 self.nodes.append(
                     TestNode(i, ddir, extra_args=[], rpchost=None, timewait=self.rpc_timewait, binary=None, stderr=None,
@@ -573,7 +573,7 @@ class FlsTestFramework():
             # blocks are created with timestamps 1 minutes apart
             # starting from 331 minutes in the past
 
-            # Create cache directories, run flsds:
+            # Create cache directories, run rbxds:
             create_cachedir(powcachedir)
             self.log.info("Creating 'PoW-chain': 200 blocks")
             start_nodes_from_dir(powcachedir, 4)
@@ -626,7 +626,7 @@ class FlsTestFramework():
             initialize_datadir(self.options.tmpdir, i)
 
 
-    ### FLITS Specific TestFramework ###
+    ### Rubus Specific TestFramework ###
     ###################################
     def init_dummy_key(self):
         self.DUMMY_KEY = CECKey()
@@ -1106,10 +1106,10 @@ class FlsTestFramework():
 
 ### ------------------------------------------------------
 
-class ComparisonTestFramework(FlsTestFramework):
+class ComparisonTestFramework(RbxTestFramework):
     """Test framework for doing p2p comparison testing
 
-    Sets up some flsd binaries:
+    Sets up some rbxd binaries:
     - 1 binary: test binary
     - 2 binaries: 1 test binary, 1 ref binary
     - n>2 binaries: 1 test binary, n-1 ref binaries"""
@@ -1120,11 +1120,11 @@ class ComparisonTestFramework(FlsTestFramework):
 
     def add_options(self, parser):
         parser.add_option("--testbinary", dest="testbinary",
-                          default=os.getenv("BITCOIND", "flsd"),
-                          help="flsd binary to test")
+                          default=os.getenv("BITCOIND", "rbxd"),
+                          help="rbxd binary to test")
         parser.add_option("--refbinary", dest="refbinary",
-                          default=os.getenv("BITCOIND", "flsd"),
-                          help="flsd binary to use for reference nodes (if any)")
+                          default=os.getenv("BITCOIND", "rbxd"),
+                          help="rbxd binary to use for reference nodes (if any)")
 
     def setup_network(self):
         extra_args = [['-whitelist=127.0.0.1']] * self.num_nodes
@@ -1142,10 +1142,10 @@ class SkipTest(Exception):
 
 
 '''
-FlsTestFramework extensions
+RbxTestFramework extensions
 '''
 
-class FlsTier2TestFramework(FlsTestFramework):
+class RbxTier2TestFramework(RbxTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True

@@ -3,7 +3,7 @@
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 from test_framework.util import (
     assert_fee_amount,
     assert_equal,
@@ -36,7 +36,7 @@ def check_outputs(outputs, dec_tx):
     return True
 
 
-class RawTransactionsTest(FlsTestFramework):
+class RawTransactionsTest(RbxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 4
@@ -195,7 +195,7 @@ class RawTransactionsTest(FlsTestFramework):
         self.log.info("test with an invalid change address")
         outputs = {self.nodes[0].getnewaddress(): 1.0}
         rawtx = self.nodes[2].createrawtransaction([], outputs)
-        assert_raises_rpc_error(-8, "changeAddress must be a valid FLITS address",
+        assert_raises_rpc_error(-8, "changeAddress must be a valid Rubus address",
                                 self.nodes[2].fundrawtransaction, rawtx, {'changeAddress': 'foobar'})
 
     def test_valid_change_address(self):
@@ -345,7 +345,7 @@ class RawTransactionsTest(FlsTestFramework):
         addrs = [self.nodes[2].getnewaddress() for _ in range(2)]
         mSigAddr = self.nodes[2].addmultisigaddress(2, addrs)
 
-        # Send 50.1 FLS to mSigAddr.
+        # Send 50.1 RBX to mSigAddr.
         self.nodes[0].sendtoaddress(mSigAddr, 50.1)
         self.nodes[0].generate(1)
         self.sync_all()

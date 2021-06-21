@@ -1,13 +1,13 @@
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/balancebubble.h"
-#include "qt/fls/forms/ui_balancebubble.h"
+#include "qt/rbx/balancebubble.h"
+#include "qt/rbx/forms/ui_balancebubble.h"
 
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/qtutils.h"
 
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>

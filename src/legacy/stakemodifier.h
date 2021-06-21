@@ -2,13 +2,13 @@
 // Copyright (c) 2013-2014 The NovaCoin Developers
 // Copyright (c) 2014-2018 The BlackCoin Developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_LEGACY_MODIFIER_H
-#define FLS_LEGACY_MODIFIER_H
+#ifndef RBX_LEGACY_MODIFIER_H
+#define RBX_LEGACY_MODIFIER_H
 
 #include "chain.h"
 #include "stakeinput.h"
@@ -17,4 +17,4 @@
 bool GetOldStakeModifier(CStakeInput* stake, uint64_t& nStakeModifier);
 bool ComputeNextStakeModifier(const CBlockIndex* pindexPrev, uint64_t& nStakeModifier, bool& fGeneratedStakeModifier);
 
-#endif // FLS_LEGACY_MODIFIER_H
+#endif // RBX_LEGACY_MODIFIER_H

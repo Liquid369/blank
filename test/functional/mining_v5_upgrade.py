@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 from test_framework.util import *
 
 """
 Simple test checking chain movement after v5 enforcement.
 """
 
-class MiningV5UpgradeTest(FlsTestFramework):
+class MiningV5UpgradeTest(RbxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 1

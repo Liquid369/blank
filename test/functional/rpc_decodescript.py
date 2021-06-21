@@ -4,12 +4,12 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test decoding scripts via decodescript RPC command."""
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 from test_framework.util import *
 from test_framework.mininode import *
 from io import BytesIO
 
-class DecodeScriptTest(FlsTestFramework):
+class DecodeScriptTest(RbxTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

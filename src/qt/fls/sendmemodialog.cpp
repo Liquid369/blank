@@ -1,13 +1,13 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/sendmemodialog.h"
-#include "qt/fls/forms/ui_sendmemodialog.h"
-#include "qt/fls/snackbar.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/sendmemodialog.h"
+#include "qt/rbx/forms/ui_sendmemodialog.h"
+#include "qt/rbx/snackbar.h"
+#include "qt/rbx/qtutils.h"
 
 SendMemoDialog::SendMemoDialog(QWidget* parent, WalletModel* model) :
     FocusedDialog(parent),

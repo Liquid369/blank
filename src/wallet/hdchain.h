@@ -1,11 +1,11 @@
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_HDCHAIN_H
-#define FLS_HDCHAIN_H
+#ifndef RBX_HDCHAIN_H
+#define RBX_HDCHAIN_H
 
 #include "key.h"
 
@@ -74,4 +74,4 @@ public:
     }
 };
 
-#endif // FLS_HDCHAIN_H
+#endif // RBX_HDCHAIN_H

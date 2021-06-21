@@ -255,7 +255,7 @@ padding-top:2px;
              <string notr="true">margin-left:8px;</string>
             </property>
             <property name="text">
-             <string>FLITS address or contact label</string>
+             <string>Rubus address or contact label</string>
             </property>
            </widget>
           </item>
@@ -578,7 +578,7 @@ padding-top:2px;
                      <item>
                       <widget class="QLabel" name="labelAmountSend">
                        <property name="text">
-                        <string notr="true">0.00 FLS</string>
+                        <string notr="true">0.00 RBX</string>
                        </property>
                       </widget>
                      </item>
@@ -834,7 +834,7 @@ padding-top:2px;
   <customwidget>
    <class>OptionButton</class>
    <extends>QWidget</extends>
-   <header>qt/fls/optionbutton.h</header>
+   <header>qt/rbx/optionbutton.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

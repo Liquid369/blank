@@ -10,10 +10,10 @@
 
 /**
  * Name of client reported in the 'version' message. Report the same name
- * for both flsd and fls-qt, to make it harder for attackers to
+ * for both rbxd and rbx-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("FLITS Core");
+const std::string CLIENT_NAME("Rubus Core");
 
 /**
  * Client version number

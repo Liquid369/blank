@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -9,14 +9,14 @@
 #ifndef REQUESTDIALOG_H
 #define REQUESTDIALOG_H
 
-#include "qt/fls/focuseddialog.h"
-#include "qt/fls/snackbar.h"
+#include "qt/rbx/focuseddialog.h"
+#include "qt/rbx/snackbar.h"
 #include "walletmodel.h"
 
 #include <QPixmap>
 
 class WalletModel;
-class FLSGUI;
+class RBXGUI;
 
 namespace Ui {
 class RequestDialog;

@@ -32,7 +32,7 @@ std::string HelpMessageCli()
     std::string strUsage;
     strUsage += HelpMessageGroup(_("Options:"));
     strUsage += HelpMessageOpt("-?", _("This help message"));
-    strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), FLS_CONF_FILENAME));
+    strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), RBX_CONF_FILENAME));
     strUsage += HelpMessageOpt("-datadir=<dir>", _("Specify data directory"));
     AppendParamsHelpMessages(strUsage);
     strUsage += HelpMessageOpt("-rpcconnect=<ip>", strprintf(_("Send commands to node running on <ip> (default: %s)"), DEFAULT_RPCCONNECT));
@@ -69,12 +69,12 @@ static bool AppInitRPC(int argc, char* argv[])
     //
     gArgs.ParseParameters(argc, argv);
     if (argc < 2 || gArgs.IsArgSet("-?") || gArgs.IsArgSet("-h") || gArgs.IsArgSet("-help") || gArgs.IsArgSet("-version")) {
-        std::string strUsage = _("FLITS Core RPC client version") + " " + FormatFullVersion() + "\n";
+        std::string strUsage = _("Rubus Core RPC client version") + " " + FormatFullVersion() + "\n";
         if (!gArgs.IsArgSet("-version")) {
             strUsage += "\n" + _("Usage:") + "\n" +
-                        "  fls-cli [options] <command> [params]  " + _("Send command to FLITS Core") + "\n" +
-                        "  fls-cli [options] help                " + _("List commands") + "\n" +
-                        "  fls-cli [options] help <command>      " + _("Get help for a command") + "\n";
+                        "  rbx-cli [options] <command> [params]  " + _("Send command to Rubus Core") + "\n" +
+                        "  rbx-cli [options] help                " + _("List commands") + "\n" +
+                        "  rbx-cli [options] help <command>      " + _("Get help for a command") + "\n";
 
             strUsage += "\n" + HelpMessageCli();
         }

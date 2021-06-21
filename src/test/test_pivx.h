@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_TEST_test_fls_H
-#define FLS_TEST_test_fls_H
+#ifndef RBX_TEST_test_rbx_H
+#define RBX_TEST_test_rbx_H
 
 #include "fs.h"
 #include "scheduler.h"

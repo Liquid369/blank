@@ -1,6 +1,6 @@
 // Copyright (c) 2016-2020 The ZCash developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(TransparentToSapling)
     auto pk = *ivk.address(d);
 
     // Create a shielding transaction from transparent to Sapling
-    // 0.5 t-FLS in, 0.4 shielded-FLS out, 0.1 t-FLS fee
+    // 0.5 t-RBX in, 0.4 shielded-RBX out, 0.1 t-RBX fee
     auto builder = TransactionBuilder(consensusParams, 1, &keystore);
     builder.AddTransparentInput(COutPoint(uint256S("1234"), 0), scriptPubKey, 50000000);
     builder.AddSaplingOutput(fvk_from.ovk, pk, 40000000, {});
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(SaplingToSapling) {
     auto pa = sk.default_address();
 
     // Create a Sapling-only transaction
-    // --- 0.4 shielded-FLS in, 0.299 shielded-FLS out, 0.1 shielded-FLS fee, 0.001 shielded-FLS change (added to fee)
+    // --- 0.4 shielded-RBX in, 0.299 shielded-RBX out, 0.1 shielded-RBX fee, 0.001 shielded-RBX change (added to fee)
     auto testNote = GetTestSaplingNote(pa, 40000000);
     auto builder = TransactionBuilder(consensusParams, 2);
     builder.AddSaplingSpend(expsk, testNote.note, testNote.tree.root(), testNote.tree.witness());
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(SaplingToSapling) {
     BOOST_CHECK(SaplingValidation::ContextualCheckTransaction(tx, state, Params(), 3, true, false));
     BOOST_CHECK_EQUAL(state.GetRejectReason(), "");
 
-    // --- Now try with 1 shielded-FLS in, 0.5 shielded-FLS out, 0.1 shielded-FLS fee, 0.4 shielded-FLS change
+    // --- Now try with 1 shielded-RBX in, 0.5 shielded-RBX out, 0.1 shielded-RBX fee, 0.4 shielded-RBX change
     auto testNote2 = GetTestSaplingNote(pa, 100000000);
     auto builder2 = TransactionBuilder(consensusParams, 2);
     builder2.AddSaplingSpend(expsk, testNote2.note, testNote2.tree.root(), testNote2.tree.witness());
@@ -156,25 +156,25 @@ BOOST_AUTO_TEST_CASE(FailsWithNegativeChange)
     auto scriptPubKey = GetScriptForDestination(tkeyid);
     CTxDestination taddr = tkeyid;
 
-    // Generate a 0.5 FLS note
+    // Generate a 0.5 RBX note
     auto testNote = GetTestSaplingNote(pa, 59990000);
 
     // Fail if there is only a Sapling output
-    // 0.5 shielded-FLS out, 0.1 t-FLS fee
+    // 0.5 shielded-RBX out, 0.1 t-RBX fee
     auto builder = TransactionBuilder(consensusParams, 1);
     builder.AddSaplingOutput(fvk.ovk, pa, 50000000, {});
     builder.SetFee(10000000);
     BOOST_CHECK_EQUAL("Change cannot be negative", builder.Build().GetError());
 
     // Fail if there is only a transparent output
-    // 0.5 t-FLS out, 0.1 t-FLS fee
+    // 0.5 t-RBX out, 0.1 t-RBX fee
     builder = TransactionBuilder(consensusParams, 1, &keystore);
     builder.AddTransparentOutput(taddr, 50000000);
     builder.SetFee(10000000);
     BOOST_CHECK_EQUAL("Change cannot be negative", builder.Build().GetError());
 
     // Fails if there is insufficient input
-    // 0.5 t-FLS out, 0.1 t-FLS fee, 0.59999 shielded-FLS in
+    // 0.5 t-RBX out, 0.1 t-RBX fee, 0.59999 shielded-RBX in
     builder.AddSaplingSpend(expsk, testNote.note, testNote.tree.root(), testNote.tree.witness());
     BOOST_CHECK_EQUAL("Change cannot be negative", builder.Build().GetError());
 

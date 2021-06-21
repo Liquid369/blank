@@ -1,24 +1,24 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsinformationwidget.h"
-#include "qt/fls/settings/forms/ui_settingsinformationwidget.h"
+#include "qt/rbx/settings/settingsinformationwidget.h"
+#include "qt/rbx/settings/forms/ui_settingsinformationwidget.h"
 
 #include "clientmodel.h"
 #include "chainparams.h"
 #include "db.h"
 #include "util.h"
 #include "guiutil.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/qtutils.h"
 
 #include <QDir>
 
 #define REQUEST_UPDATE_COUNTS 0
 
-SettingsInformationWidget::SettingsInformationWidget(FLSGUI* _window,QWidget *parent) :
+SettingsInformationWidget::SettingsInformationWidget(RBXGUI* _window,QWidget *parent) :
     PWidget(_window,parent),
     ui(new Ui::SettingsInformationWidget)
 {
@@ -104,7 +104,7 @@ SettingsInformationWidget::SettingsInformationWidget(FLSGUI* _window,QWidget *pa
     });
     connect(ui->pushButtonFile, &QPushButton::clicked, [this](){
         if (!GUIUtil::openConfigfile())
-            inform(tr("Unable to open fls.conf with default application"));
+            inform(tr("Unable to open rbx.conf with default application"));
     });
     connect(ui->pushButtonNetworkMonitor, &QPushButton::clicked, this, &SettingsInformationWidget::openNetworkMonitor);
 }

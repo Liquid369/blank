@@ -482,7 +482,7 @@
   <customwidget>
    <class>OptionButton</class>
    <extends>QWidget</extends>
-   <header>qt/fls/optionbutton.h</header>
+   <header>qt/rbx/optionbutton.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

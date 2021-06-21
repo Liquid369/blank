@@ -1,12 +1,12 @@
 // Copyright (c) 2018 The Zcash developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_CONSENSUS_UPGRADES_H
-#define FLS_CONSENSUS_UPGRADES_H
+#ifndef RBX_CONSENSUS_UPGRADES_H
+#define RBX_CONSENSUS_UPGRADES_H
 
 #include "consensus/params.h"
 #include "optional.h"
@@ -83,4 +83,4 @@ Optional<int> NextActivationHeight(
         int nHeight,
         const Consensus::Params& params);
 
-#endif // FLS_CONSENSUS_UPGRADES_H
+#endif // RBX_CONSENSUS_UPGRADES_H

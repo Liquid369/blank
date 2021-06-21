@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -10,8 +10,8 @@
 #define SETTINGSBITTOOLWIDGET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
-#include "qt/fls/contactsdropdown.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/contactsdropdown.h"
 #include "key.h"
 
 namespace Ui {
@@ -23,7 +23,7 @@ class SettingsBitToolWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsBitToolWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsBitToolWidget(RBXGUI* _window, QWidget *parent = nullptr);
     ~SettingsBitToolWidget();
 protected:
     void resizeEvent(QResizeEvent *event) override;

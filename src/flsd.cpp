@@ -22,8 +22,8 @@
  *
  * \section intro_sec Introduction
  *
- * This is the developer documentation of the reference client for an experimental new digital currency called FLITS (http://www.flitswallet.app),
- * which enables instant payments to anyone, anywhere in the world. FLITS uses peer-to-peer technology to operate
+ * This is the developer documentation of the reference client for an experimental new digital currency called Rubus (http://www.flitswallet.app),
+ * which enables instant payments to anyone, anywhere in the world. Rubus uses peer-to-peer technology to operate
  * with no central authority: managing transactions and issuing money are carried out collectively by the network.
  *
  * The software is a community-driven open source project, released under the MIT license.
@@ -56,7 +56,7 @@ bool AppInit(int argc, char* argv[])
     //
     // Parameters
     //
-    // If Qt is used, parameters/fls.conf are parsed in qt/fls.cpp's main()
+    // If Qt is used, parameters/rbx.conf are parsed in qt/rbx.cpp's main()
     gArgs.ParseParameters(argc, argv);
 
     // Process help and version before taking care about datadir
@@ -67,7 +67,7 @@ bool AppInit(int argc, char* argv[])
             strUsage += LicenseInfo();
         } else {
             strUsage += "\n" + _("Usage:") + "\n" +
-                        "  flsd [options]                     " + _("Start Pivx Core Daemon") + "\n";
+                        "  rbxd [options]                     " + _("Start Pivx Core Daemon") + "\n";
 
             strUsage += "\n" + HelpMessage(HMM_BITCOIND);
         }
@@ -131,7 +131,7 @@ bool AppInit(int argc, char* argv[])
 #ifndef WIN32
         fDaemon = gArgs.GetBoolArg("-daemon", false);
         if (fDaemon) {
-            fprintf(stdout, "Flits server starting\n");
+            fprintf(stdout, "Rubus server starting\n");
 
             // Daemonize
             pid_t pid = fork();
@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
 {
     SetupEnvironment();
 
-    // Connect flsd signal handlers
+    // Connect rbxd signal handlers
     noui_connect();
 
     return (AppInit(argc, argv) ? 0 : 1);

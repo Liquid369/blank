@@ -6,7 +6,7 @@
 // Unit tests for block.CheckBlock()
 //
 
-#include "test/test_fls.h"
+#include "test/test_rbx.h"
 
 #include "clientversion.h"
 #include "fs.h"

@@ -122,12 +122,12 @@
         <translation>Адреса получения</translation>
     </message>
     <message>
-        <source>These are your FLITS addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Это ваши FLS-адреса для отправки платежей. Перед отправкой монет всегда проверяйте сумму и адрес получателя.</translation>
+        <source>These are your Rubus addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Это ваши RBX-адреса для отправки платежей. Перед отправкой монет всегда проверяйте сумму и адрес получателя.</translation>
     </message>
     <message>
-        <source>These are your FLITS addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Это ваши FLS-адреса для получения платежей. Для каждой транзакции рекомендуется использовать новый адрес получения.</translation>
+        <source>These are your Rubus addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Это ваши RBX-адреса для получения платежей. Для каждой транзакции рекомендуется использовать новый адрес получения.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -363,8 +363,8 @@ for staking</source>
         <translation>ОТМЕНА</translation>
     </message>
     <message>
-        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
-        <translation>FLITS сейчас закроется, чтобы завершить процесс шифрования. Помните, что шифрование вашего кошелька не может полностью защитить ваши FLITS от кражи с использованием вредоносного ПО.</translation>
+        <source>Rubus will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your RBXs from being stolen by malware infecting your computer.</source>
+        <translation>Rubus сейчас закроется, чтобы завершить процесс шифрования. Помните, что шифрование вашего кошелька не может полностью защитить ваши Rubus от кражи с использованием вредоносного ПО.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -456,8 +456,8 @@ for staking</source>
         <translation>Сбережения</translation>
     </message>
     <message>
-        <source>0,00 FLS</source>
-        <translation>0.00 FLS</translation>
+        <source>0,00 RBX</source>
+        <translation>0.00 RBX</translation>
     </message>
     <message>
         <source>address</source>
@@ -498,8 +498,8 @@ for staking</source>
         <translation>Выбор монеты</translation>
     </message>
     <message>
-        <source>Select FLS Outputs to Spend</source>
-        <translation>Выберите FLS выходы для расходов</translation>
+        <source>Select RBX Outputs to Spend</source>
+        <translation>Выберите RBX выходы для расходов</translation>
     </message>
     <message>
         <source>Dust:</source>
@@ -526,8 +526,8 @@ for staking</source>
         <translation>Сумма</translation>
     </message>
     <message>
-        <source>0.00 FLS</source>
-        <translation>0.00 FLS </translation>
+        <source>0.00 RBX</source>
+        <translation>0.00 RBX </translation>
     </message>
     <message>
         <source>0</source>
@@ -725,17 +725,17 @@ for staking</source>
         <translation>Ошибка при загрузке делегаций: %1</translation>
     </message>
     <message>
-        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
+        <source>You can delegate your RBXs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>Вы можете делегировать свои FLS, позволяя горячему узлу (онлайн-узлу, работаещему 24/7) делать стекинг от вашего имени, в то время как ключи надежно хранятся в автономном режиме.</translation>
+        <translation>Вы можете делегировать свои RBX, позволяя горячему узлу (онлайн-узлу, работаещему 24/7) делать стекинг от вашего имени, в то время как ключи надежно хранятся в автономном режиме.</translation>
     </message>
     <message>
         <source>Enter owner address</source>
         <translation>Введите адрес владельца</translation>
     </message>
     <message>
-        <source>Accept FLS delegation / Delegate FLS</source>
-        <translation>Принять делегацию FLS / Делегировать FLS</translation>
+        <source>Accept RBX delegation / Delegate RBX</source>
+        <translation>Принять делегацию RBX / Делегировать RBX</translation>
     </message>
     <message>
         <source>Cold Staking address</source>
@@ -939,8 +939,8 @@ address</source>
         <translation>Обзор истории вашего аккаунта</translation>
     </message>
     <message>
-        <source>How to get FLS</source>
-        <translation>Как получить FLS</translation>
+        <source>How to get RBX</source>
+        <translation>Как получить RBX</translation>
     </message>
     <message>
         <source>Sort by</source>
@@ -1055,8 +1055,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>Изменить адрес отправки</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid FLITS address.</source>
-        <translation>Введенный адрес "%1" не является FLITS адресом.</translation>
+        <source>The entered address "%1" is not a valid Rubus address.</source>
+        <translation>Введенный адрес "%1" не является Rubus адресом.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1108,16 +1108,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>версия</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-бит)</translation>
     </message>
     <message>
-        <source>About FLITS Core</source>
-        <translation>О FLITS Core</translation>
+        <source>About Rubus Core</source>
+        <translation>О Rubus Core</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1171,16 +1171,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>Добро пожаловать</translation>
     </message>
     <message>
-        <source>Welcome to FLITS Core.</source>
-        <translation>Добро пожаловать в FLITS Core.</translation>
+        <source>Welcome to Rubus Core.</source>
+        <translation>Добро пожаловать в Rubus Core.</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where FLITS Core will store its data.</source>
-        <translation>Поскольку это первый запуск программы, вы можете выбрать, где будут храниться данные FLITS Core.</translation>
+        <source>As this is the first time the program is launched, you can choose where Rubus Core will store its data.</source>
+        <translation>Поскольку это первый запуск программы, вы можете выбрать, где будут храниться данные Rubus Core.</translation>
     </message>
     <message>
-        <source>FLITS Core will download and store a copy of the FLITS block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>FLITS Core загрузит и сохранит копию цепочки блоков FLS. Каталог будет занимать около %1GB и со временем размер будет увеличиваться. Кроме того, в этом каталоге будет храниться кошелек.</translation>
+        <source>Rubus Core will download and store a copy of the Rubus block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>Rubus Core загрузит и сохранит копию цепочки блоков RBX. Каталог будет занимать около %1GB и со временем размер будет увеличиваться. Кроме того, в этом каталоге будет храниться кошелек.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1199,8 +1199,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>ХОРОШО</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1323,8 +1323,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>Убедитесь, что у вас есть такое количество монет.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 FLS will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;На новый пустой адрес в вашем кошельке&lt;/p&gt;&lt;p&gt; будет сделана транзакция в 10 000 FLS. &lt;/p&gt;&lt;p&gt;Адрес отмечен под именем мастерноды.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 RBX will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;На новый пустой адрес в вашем кошельке&lt;/p&gt;&lt;p&gt; будет сделана транзакция в 10 000 RBX. &lt;/p&gt;&lt;p&gt;Адрес отмечен под именем мастерноды.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1529,7 +1529,7 @@ Please wait few more minutes (masternode collaterals require %1 confirmations).<
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the fls.conf file
+You will only have to paste the data in the rbx.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1537,7 +1537,7 @@ this controller wallet (select the Masternode in the list and press "start").
 на удаленном сервере в буфер обмена.
 
 
-Вам необходимо только вставить данные в файл fls.conf
+Вам необходимо только вставить данные в файл rbx.conf
 вашего удаленного сервера и запустить его, а затем запустить мастерноду,
 используя этот кошелек контроллера (выберите мастерноду из списка и нажмите «Старт»).
 </translation>
@@ -1727,8 +1727,8 @@ STAKING</source>
         <translation>Проанализированные данные слишком большие</translation>
     </message>
     <message>
-        <source>Invalid URI, not starting with "fls" prefix</source>
-        <translation>Неверный URI, не начинается с префикса "fls"</translation>
+        <source>Invalid URI, not starting with "rbx" prefix</source>
+        <translation>Неверный URI, не начинается с префикса "rbx"</translation>
     </message>
 </context>
 <context>
@@ -1773,8 +1773,8 @@ STAKING</source>
         <translation>Отключив проведение неподтвержденных изменений все изменения о транзакции &lt;br/&gt;не будут использованы пока транзакция не получит хотя бы одно подтверждение.&lt;br/&gt;Также это влияет на расчет вашего баланса.</translation>
     </message>
     <message>
-        <source>Automatically open the FLITS client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Автоматически открыть клиентский порт FLITS через роутер. Ваш роутер должен поддерживать UPnP, а сам сервис должен быть включен.</translation>
+        <source>Automatically open the Rubus client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Автоматически открыть клиентский порт Rubus через роутер. Ваш роутер должен поддерживать UPnP, а сам сервис должен быть включен.</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1793,12 +1793,12 @@ STAKING</source>
         <translation>Эксперт</translation>
     </message>
     <message>
-        <source>Automatically start FLITS after logging in to the system.</source>
-        <translation>Автоматически запускать FLITS после входа в систему.</translation>
+        <source>Automatically start Rubus after logging in to the system.</source>
+        <translation>Автоматически запускать Rubus после входа в систему.</translation>
     </message>
     <message>
-        <source>&amp;Start FLITS on system login</source>
-        <translation>&amp;Запускать FLITS при входе в систему</translation>
+        <source>&amp;Start Rubus on system login</source>
+        <translation>&amp;Запускать Rubus при входе в систему</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1825,58 +1825,58 @@ STAKING</source>
         <translation>&amp;Сеть</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
-        <translation>Здесь можно выставить язык интерфейса. Изменения вступят в силу после перезапуска FLS.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting RBX.</source>
+        <translation>Здесь можно выставить язык интерфейса. Изменения вступят в силу после перезапуска RBX.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/flitsnode/flits-core-project-translations</source>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</source>
         <translation>Отсутствует ваш язык или заметили незавершенный перевод? Вы можете помочь нам стать лучше:
-https://www.transifex.com/flitsnode/flits-core-project-translations</translation>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Карта порта, использующего &amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>Невозможно автоматически отчеканить единицы FLS для zFLS</translation>
+        <source>Enable automatic minting of RBX units to zRBX</source>
+        <translation>Невозможно автоматически отчеканить единицы RBX для zRBX</translation>
     </message>
     <message>
-        <source>Enable zFLS Automint</source>
-        <translation>Невозможно авточеканка  zFLS</translation>
+        <source>Enable zRBX Automint</source>
+        <translation>Невозможно авточеканка  zRBX</translation>
     </message>
     <message>
-        <source>Enable automatic zFLS minting from specific addresses</source>
-        <translation>Включить автоматическое чеканку zFLS с определенных адресов</translation>
+        <source>Enable automatic zRBX minting from specific addresses</source>
+        <translation>Включить автоматическое чеканку zRBX с определенных адресов</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Включить адреса с автоматической чеканкой</translation>
     </message>
     <message>
-        <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
-        <translation>Процент приходящих FLS, которые автоматически конвертируются в zFLS благодаря Zerocoin протоколу (min: 10%)</translation>
+        <source>Percentage of incoming RBX which get automatically converted to zRBX via Zerocoin Protocol (min: 10%)</source>
+        <translation>Процент приходящих RBX, которые автоматически конвертируются в zRBX благодаря Zerocoin протоколу (min: 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zFLS</source>
-        <translation>Процент  авточеканненых zFLS</translation>
+        <source>Percentage of autominted zRBX</source>
+        <translation>Процент  авточеканненых zRBX</translation>
     </message>
     <message>
-        <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
-        <translation>Подождите с автоматическим преобразованием в Zerocoin, пока не будет достаточно FLS для этой номинации.</translation>
+        <source>Wait with automatic conversion to Zerocoin until enough RBX for this denomination is available</source>
+        <translation>Подождите с автоматическим преобразованием в Zerocoin, пока не будет достаточно RBX для этой номинации.</translation>
     </message>
     <message>
-        <source>Preferred Automint zFLS Denomination</source>
-        <translation>Предпочитаемый номинал авточеканной  монеты  zFLS</translation>
+        <source>Preferred Automint zRBX Denomination</source>
+        <translation>Предпочитаемый номинал авточеканной  монеты  zRBX</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
         <translation>Порог разделения доли:</translation>
     </message>
     <message>
-        <source>Connect to the FLITS network through a SOCKS5 proxy.</source>
-        <translation>Подключиться к сети FLITS через SOCKS5 прокси.</translation>
+        <source>Connect to the Rubus network through a SOCKS5 proxy.</source>
+        <translation>Подключиться к сети Rubus через SOCKS5 прокси.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -2020,10 +2020,10 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
     </message>
 </context>
 <context>
-    <name>FLSGUI</name>
+    <name>RBXGUI</name>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -2050,8 +2050,8 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
         <translation>Завершить работу</translation>
     </message>
     <message>
-        <source>FLITS Core client</source>
-        <translation>Клиент FLITS Core</translation>
+        <source>Rubus Core client</source>
+        <translation>Клиент Rubus Core</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2117,12 +2117,12 @@ Address: %4
         <translation>Неверный адрес оплаты %1</translation>
     </message>
     <message>
-        <source>Cannot start fls: click-to-pay handler</source>
-        <translation>Не удалось запустить fls: обработчик click-to-pay </translation>
+        <source>Cannot start rbx: click-to-pay handler</source>
+        <translation>Не удалось запустить rbx: обработчик click-to-pay </translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
-        <translation>URI не интерпретируется! Причиной этому может быть неверный FLITS адрес или неверные параметеры URI.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Rubus address or malformed URI parameters.</source>
+        <translation>URI не интерпретируется! Причиной этому может быть неверный Rubus адрес или неверные параметеры URI.</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -2207,8 +2207,8 @@ Address: %4
         <translation>Сумма</translation>
     </message>
     <message>
-        <source>Enter FLITS address (e.g. %1)</source>
-        <translation>Введите адрес FLITS (например, %1)</translation>
+        <source>Enter Rubus address (e.g. %1)</source>
+        <translation>Введите адрес Rubus (например, %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2251,12 +2251,12 @@ Address: %4
         <translation>%1 мс</translation>
     </message>
     <message>
-        <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
-        <translation>Произошла фатальная ошибка. FLITS больше не может безопасно продолжать работу и завершит работу.</translation>
+        <source>A fatal error occurred. Rubus can no longer continue safely and will quit.</source>
+        <translation>Произошла фатальная ошибка. Rubus больше не может безопасно продолжать работу и завершит работу.</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -2506,8 +2506,8 @@ Address: %4
         <translation>Блокчейн</translation>
     </message>
     <message>
-        <source>Open the FLITS debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Открыть протокол отладки FLS. Это может занять некоторе время, если файл протокола очень большой.</translation>
+        <source>Open the Rubus debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Открыть протокол отладки RBX. Это может занять некоторе время, если файл протокола очень большой.</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -2650,8 +2650,8 @@ Address: %4
         <translation>Пользовательский путь резервного копирования:</translation>
     </message>
     <message>
-        <source>Custom zFLS Backup Path:</source>
-        <translation>Пользовательский путь резервного копирования zFLS:</translation>
+        <source>Custom zRBX Backup Path:</source>
+        <translation>Пользовательский путь резервного копирования zRBX:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -2731,8 +2731,8 @@ Address: %4
         <translation>Вывод:</translation>
     </message>
     <message>
-        <source>Welcome to the FLITS RPC console.</source>
-        <translation>Добро пожаловать в окружение FLITS RPC.</translation>
+        <source>Welcome to the Rubus RPC console.</source>
+        <translation>Добро пожаловать в окружение Rubus RPC.</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -2869,8 +2869,8 @@ Address: %4
         <translation>Вид</translation>
     </message>
     <message>
-        <source>Scan the QR code or copy the address to receive FLS</source>
-        <translation>Сканируйте QR-код или скопируйте адрес для получения FLS</translation>
+        <source>Scan the QR code or copy the address to receive RBX</source>
+        <translation>Сканируйте QR-код или скопируйте адрес для получения RBX</translation>
     </message>
     <message>
         <source>Add Label</source>
@@ -2995,12 +2995,12 @@ Address: %4
         <translation>Сумма</translation>
     </message>
     <message>
-        <source>FLS</source>
-        <translation>FLS</translation>
+        <source>RBX</source>
+        <translation>RBX</translation>
     </message>
     <message>
-        <source>Instead of sharing only a FLITS address, you can create a payment request, bundling up more information</source>
-        <translation>Вместо того, чтобы делиться только адресом FLS, вы можете создать запрос на оплату, связывая больше информации</translation>
+        <source>Instead of sharing only a Rubus address, you can create a payment request, bundling up more information</source>
+        <translation>Вместо того, чтобы делиться только адресом RBX, вы можете создать запрос на оплату, связывая больше информации</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -3090,8 +3090,8 @@ Address: %4
         <translation>Смена адреса</translation>
     </message>
     <message>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" FLITS address</source>
-        <translation>Остаточная часть значения, полученного от значения входов минус выходов, идет на «изменение» адреса FLS</translation>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" Rubus address</source>
+        <translation>Остаточная часть значения, полученного от значения входов минус выходов, идет на «изменение» адреса RBX</translation>
     </message>
     <message>
         <source>SAVE</source>
@@ -3121,8 +3121,8 @@ Address: %4
         <translation>рекомендуемые</translation>
     </message>
     <message>
-        <source>FLS/kilobyte</source>
-        <translation>FLS/килобайт</translation>
+        <source>RBX/kilobyte</source>
+        <translation>RBX/килобайт</translation>
     </message>
     <message>
         <source>0.00 KB</source>
@@ -3420,9 +3420,9 @@ Remember to write it down and store it safely, otherwise you might lose access t
         <translation>Инструмент BIP38</translation>
     </message>
     <message>
-        <source>Encrypt your FLITS addresses (key pair actually) using BIP38 encryption.
+        <source>Encrypt your Rubus addresses (key pair actually) using BIP38 encryption.
 Using this mechanism you can share your keys without middle-man risk, only need to store your passphrase safely</source>
-        <translation>Зашифруйте свои адреса FLITS (фактически, пару ключей), используя шифрование BIP38.
+        <translation>Зашифруйте свои адреса Rubus (фактически, пару ключей), используя шифрование BIP38.
 С помощью этого механизма вы можете делиться своими ключами без риска посредника, вам нужно только безопасно хранить вашу парольную фразу</translation>
     </message>
     <message>
@@ -3458,8 +3458,8 @@ Using this mechanism you can share your keys without middle-man risk, only need 
         <translation>Расшифровать ключ</translation>
     </message>
     <message>
-        <source>FLITS address</source>
-        <translation>Адрес FLS</translation>
+        <source>Rubus address</source>
+        <translation>Адрес RBX</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3591,8 +3591,8 @@ Verify that you have installed a predetermined text editor.</source>
 Убедитесь, что вы установили заранее установленный текстовый редактор.</translation>
     </message>
     <message>
-        <source>Welcome to the FLITS RPC console.</source>
-        <translation>Добро пожаловать в окружение FLITS RPC.</translation>
+        <source>Welcome to the Rubus RPC console.</source>
+        <translation>Добро пожаловать в окружение Rubus RPC.</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
@@ -3701,12 +3701,12 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>Экспорт списка адресов</translation>
     </message>
     <message>
-        <source>FLS_tx_csv_export(*.csv)</source>
-        <translation>FLS_tx_csv_export(*.csv)</translation>
+        <source>RBX_tx_csv_export(*.csv)</source>
+        <translation>RBX_tx_csv_export(*.csv)</translation>
     </message>
     <message>
-        <source>FLS_addresses_csv_export(*.csv)</source>
-        <translation>FLS_addresses_csv_export(*.csv)</translation>
+        <source>RBX_addresses_csv_export(*.csv)</source>
+        <translation>RBX_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -3775,12 +3775,12 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>Вид</translation>
     </message>
     <message>
-        <source>1) What is FLS?</source>
-        <translation>1) Что такое FLS?</translation>
+        <source>1) What is RBX?</source>
+        <translation>1) Что такое RBX?</translation>
     </message>
     <message>
-        <source>2) Why are my FLS unspendable?</source>
-        <translation>2) Почему мои FLS невозможно потратить?</translation>
+        <source>2) Why are my RBX unspendable?</source>
+        <translation>2) Почему мои RBX невозможно потратить?</translation>
     </message>
     <message>
         <source>https://flitswallet.app/</source>
@@ -3791,33 +3791,33 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>1</translation>
     </message>
     <message>
-        <source>What is FLS?</source>
-        <translation>Что такое FLS?</translation>
+        <source>What is RBX?</source>
+        <translation>Что такое RBX?</translation>
     </message>
     <message>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <source>Why are my FLS unspendable?</source>
-        <translation>Почему мои FLS невозможно потратить?</translation>
+        <source>Why are my RBX unspendable?</source>
+        <translation>Почему мои RBX невозможно потратить?</translation>
     </message>
     <message>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Newly received FLITS requires 6 confirmations on the network
+                           Newly received Rubus requires 6 confirmations on the network
                            to become eligible for spending which can take ~6 minutes.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           Your FLITS wallet also needs to be completely synchronized
+                           Your Rubus wallet also needs to be completely synchronized
                            to see and spend balances on the network.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
         <translation>
 &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-Недавно полученным FLITS требуется 6 подтверждений в сети,
+Недавно полученным Rubus требуется 6 подтверждений в сети,
 чтобы получить право быть расходуемыми. Это может занять примерно 6 минут.
 &lt;/p&gt;&lt;p align="justify"&gt;
-Ваш кошелек FLITS также должен быть полностью синхронизирован,
+Ваш кошелек Rubus также должен быть полностью синхронизирован,
 чтобы видеть баланс и расходовать его в сети.
  &lt;/p&gt;&lt;/body&gt;&lt;/html&gt; </translation>
     </message>
@@ -3826,8 +3826,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>3</translation>
     </message>
     <message>
-        <source>How do I stake FLS?</source>
-        <translation>Как мне запустить стекинг FLS?</translation>
+        <source>How do I stake RBX?</source>
+        <translation>Как мне запустить стекинг RBX?</translation>
     </message>
     <message>
         <source>4</source>
@@ -3860,8 +3860,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>Часто задаваемые вопросы</translation>
     </message>
     <message>
-        <source>3) How do I stake FLS?</source>
-        <translation>3) Как мне запустить стекинг FLS?</translation>
+        <source>3) How do I stake RBX?</source>
+        <translation>3) Как мне запустить стекинг RBX?</translation>
     </message>
     <message>
         <source>4) Where I should go if I need support?</source>
@@ -3979,8 +3979,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>Невозможно открыть папку резервных копий</translation>
     </message>
     <message>
-        <source>Unable to open fls.conf with default application</source>
-        <translation>Невозможно открыть fls.conf с приложением по умолчанию</translation>
+        <source>Unable to open rbx.conf with default application</source>
+        <translation>Невозможно открыть rbx.conf с приложением по умолчанию</translation>
     </message>
     <message>
         <source>In:</source>
@@ -4034,8 +4034,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>Количество потоков проверки скрипта</translation>
     </message>
     <message>
-        <source>Start FLITS on system login</source>
-        <translation>Запускать FLITS при входе в систему</translation>
+        <source>Start Rubus on system login</source>
+        <translation>Запускать Rubus при входе в систему</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -4122,8 +4122,8 @@ Are you sure?
         <translation>Флажок</translation>
     </message>
     <message>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures.</source>
-        <translation>MultiSend позволяет автоматически отправлять до 100% ваших вознаграждений от стекинга или мастернод в список других адресов FLITS после его созревания.</translation>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other Rubus addresses after it matures.</source>
+        <translation>MultiSend позволяет автоматически отправлять до 100% ваших вознаграждений от стекинга или мастернод в список других адресов Rubus после его созревания.</translation>
     </message>
     <message>
         <source>Active</source>
@@ -4249,8 +4249,8 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation>Сообщение</translation>
     </message>
     <message>
-        <source>FLITS address or contact label</source>
-        <translation>FLITS адрес или лейбл контакта</translation>
+        <source>Rubus address or contact label</source>
+        <translation>Rubus адрес или лейбл контакта</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -4570,8 +4570,8 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation>ЧаВо</translation>
     </message>
     <message>
-        <source>About FLS</source>
-        <translation>О FLS</translation>
+        <source>About RBX</source>
+        <translation>О RBX</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4641,8 +4641,8 @@ Are you sure?
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>FLITS Core is shutting down...</source>
-        <translation>FLITS Core выключается...</translation>
+        <source>Rubus Core is shutting down...</source>
+        <translation>Rubus Core выключается...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -4671,8 +4671,8 @@ Are you sure?
         <translation>Загрузка...</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
 </context>
 <context>
@@ -5148,8 +5148,8 @@ backup will be created.
         <translation>Вид</translation>
     </message>
     <message>
-        <source>+0.000585 FLS</source>
-        <translation>+0.000585 FLS</translation>
+        <source>+0.000585 RBX</source>
+        <translation>+0.000585 RBX</translation>
     </message>
     </context>
 <context>
@@ -5210,25 +5210,25 @@ Select fewer inputs with coin control.</source>
     </message>
     <message>
         <source>Welcome to
-FLITS Core Wallet</source>
+Rubus Core Wallet</source>
         <translation>Добро пожаловать
-в основной кошелек FLS</translation>
+в основной кошелек RBX</translation>
     </message>
     <message>
-        <source>FLITS is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>FLITS - самая инновационная в мире технология на основе блокчейна Proof of Stake. Разработана командой опытных разработчиков и криптографов.</translation>
+        <source>Rubus is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <translation>Rubus - самая инновационная в мире технология на основе блокчейна Proof of Stake. Разработана командой опытных разработчиков и криптографов.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - FLITS believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Как говорится в нашем манифесте: конфиденциальность является не подлежащим обсуждению основным правом человека; это дает пользователям свободу делиться своими данными в любое время и с кем угодно, ведь FLITS верит в собственный суверенитет.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - Rubus believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Как говорится в нашем манифесте: конфиденциальность является не подлежащим обсуждению основным правом человека; это дает пользователям свободу делиться своими данными в любое время и с кем угодно, ведь Rubus верит в собственный суверенитет.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>Сеть мастернод - это сеть второго уровня FLITS поверх блокчейна, которая позволяет нашему ДАО обеспечивать децентрализованное управление и казначейство.</translation>
+        <source>The masternode network is RBX's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <translation>Сеть мастернод - это сеть второго уровня Rubus поверх блокчейна, которая позволяет нашему ДАО обеспечивать децентрализованное управление и казначейство.</translation>
     </message>
     <message>
-        <source>How FLITS respects your privacy?</source>
-        <translation>Как FLITS уважает вашу конфиденциальность?</translation>
+        <source>How Rubus respects your privacy?</source>
+        <translation>Как Rubus уважает вашу конфиденциальность?</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -5240,7 +5240,7 @@ FLITS Core Wallet</source>
     </message>
 </context>
 <context>
-    <name>fls-core</name>
+    <name>rbx-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>Разрешить соединения JSON-RPC из указанного источника. Действительно для  &lt;ip&gt; одного IP (например, 1.2.3.4), сетевой / сетевой маски (например, 1.2.3.4/255.255.255.0) или сети / CIDR (например, 1.2.3.4/24). Эта опция может быть указана несколько раз</translation>
@@ -5394,8 +5394,8 @@ FLITS Core Wallet</source>
         <translation>Общая длина строки версии сети (%i) превышает максимальную длину (%i). Уменьшите количество или размер uacomments.</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. FLITS Core is probably already running.</source>
-        <translation>Не удалось привязать к %s на этом компьютере. FLITS Core, вероятно, уже запущен.</translation>
+        <source>Unable to bind to %s on this computer. Rubus Core is probably already running.</source>
+        <translation>Не удалось привязать к %s на этом компьютере. Rubus Core, вероятно, уже запущен.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -5410,8 +5410,8 @@ FLITS Core Wallet</source>
         <translation>Предупреждение: -paytxfee установлен очень высоко! Это комиссия за транзакцию, которую вы заплатите, если вы отправляете транзакцию.</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
-        <translation>Внимание: проверьте правильность даты и времени вашего компьютера! Если ваши часы ошибочны, FLITS Core не будет работать должным образом.</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Rubus Core will not work properly.</source>
+        <translation>Внимание: проверьте правильность даты и времени вашего компьютера! Если ваши часы ошибочны, Rubus Core не будет работать должным образом.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -5482,8 +5482,8 @@ FLITS Core Wallet</source>
         <translation>Copyright (C) 2014-%i Разработчики Dash Core</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The FLITS Core Developers</source>
-        <translation>Copyright (C) 2015-%i Разработчики FLITS Core</translation>
+        <source>Copyright (C) 2015-%i The Rubus Core Developers</source>
+        <translation>Copyright (C) 2015-%i Разработчики Rubus Core</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -5838,12 +5838,12 @@ FLITS Core Wallet</source>
         <translation>Комиссия (в %s/Кбайт) меньше этого значения считается с нулевой комиссией за создание транзакции (по умолчанию: %s)</translation>
     </message>
     <message>
-        <source>Minimum positive amount (in FLS) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
-        <translation>Минимальная положительная сумма (в FLS), разрешенная GUI и RPC для порога разделения стекинга (по умолчанию: %s)</translation>
+        <source>Minimum positive amount (in RBX) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
+        <translation>Минимальная положительная сумма (в RBX), разрешенная GUI и RPC для порога разделения стекинга (по умолчанию: %s)</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
-        <translation>Пожалуйста, проверьте правильность даты и времени на вашем компьютере! Если ваши часы не точны, FLITS Core не будет работать должным образом.</translation>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong Rubus Core will not work properly.</source>
+        <translation>Пожалуйста, проверьте правильность даты и времени на вашем компьютере! Если ваши часы не точны, Rubus Core не будет работать должным образом.</translation>
     </message>
     <message>
         <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect/-noconnect)</source>
@@ -6184,8 +6184,8 @@ FLITS Core Wallet</source>
         <translation>Проверка кошелька ...</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart FLITS Core to complete</source>
-        <translation>Кошелек необходимо переписать: перезапустите FLITS Core, чтобы завершить</translation>
+        <source>Wallet needed to be rewritten: restart Rubus Core to complete</source>
+        <translation>Кошелек необходимо переписать: перезапустите Rubus Core, чтобы завершить</translation>
     </message>
     <message>
         <source>Wallet options:</source>
@@ -6239,8 +6239,8 @@ FLITS Core Wallet</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <source>FLITS address or contact label</source>
-        <translation>FLITS адрес или лейбл контакта</translation>
+        <source>Rubus address or contact label</source>
+        <translation>Rubus адрес или лейбл контакта</translation>
     </message>
     <message>
         <source>Amount</source>

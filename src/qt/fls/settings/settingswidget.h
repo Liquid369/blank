@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -8,20 +8,20 @@
 #define SETTINGSWIDGET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
-#include "qt/fls/settings/settingsbackupwallet.h"
-#include "qt/fls/settings/settingsexportcsv.h"
-#include "qt/fls/settings/settingsbittoolwidget.h"
-#include "qt/fls/settings/settingssignmessagewidgets.h"
-#include "qt/fls/settings/settingswalletrepairwidget.h"
-#include "qt/fls/settings/settingswalletoptionswidget.h"
-#include "qt/fls/settings/settingsmainoptionswidget.h"
-#include "qt/fls/settings/settingsdisplayoptionswidget.h"
-#include "qt/fls/settings/settingsmultisendwidget.h"
-#include "qt/fls/settings/settingsinformationwidget.h"
-#include "qt/fls/settings/settingsconsolewidget.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/settings/settingsbackupwallet.h"
+#include "qt/rbx/settings/settingsexportcsv.h"
+#include "qt/rbx/settings/settingsbittoolwidget.h"
+#include "qt/rbx/settings/settingssignmessagewidgets.h"
+#include "qt/rbx/settings/settingswalletrepairwidget.h"
+#include "qt/rbx/settings/settingswalletoptionswidget.h"
+#include "qt/rbx/settings/settingsmainoptionswidget.h"
+#include "qt/rbx/settings/settingsdisplayoptionswidget.h"
+#include "qt/rbx/settings/settingsmultisendwidget.h"
+#include "qt/rbx/settings/settingsinformationwidget.h"
+#include "qt/rbx/settings/settingsconsolewidget.h"
 
-class FLSGUI;
+class RBXGUI;
 
 QT_BEGIN_NAMESPACE
 class QDataWidgetMapper;
@@ -36,7 +36,7 @@ class SettingsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWidget(FLSGUI* parent);
+    explicit SettingsWidget(RBXGUI* parent);
     ~SettingsWidget();
 
     void loadClientModel() override;

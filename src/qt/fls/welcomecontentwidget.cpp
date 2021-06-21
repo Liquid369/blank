@@ -1,13 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/welcomecontentwidget.h"
-#include "qt/fls/forms/ui_welcomecontentwidget.h"
+#include "qt/rbx/welcomecontentwidget.h"
+#include "qt/rbx/forms/ui_welcomecontentwidget.h"
 
 #include "guiutil.h"
 

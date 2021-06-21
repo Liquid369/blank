@@ -1,22 +1,22 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/pwidget.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/loadingdialog.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/qtutils.h"
+#include "qt/rbx/loadingdialog.h"
 #include <QRunnable>
 #include <QThreadPool>
 
-PWidget::PWidget(FLSGUI* _window, QWidget *parent) : QWidget((parent) ? parent : _window), window(_window) { init(); }
+PWidget::PWidget(RBXGUI* _window, QWidget *parent) : QWidget((parent) ? parent : _window), window(_window) { init(); }
 PWidget::PWidget(PWidget* parent) : QWidget(parent), window(parent->getWindow()) { init(); }
 
 void PWidget::init()
 {
     if (window)
-        connect(window, &FLSGUI::themeChanged, this, &PWidget::onChangeTheme);
+        connect(window, &RBXGUI::themeChanged, this, &PWidget::onChangeTheme);
 }
 
 void PWidget::setClientModel(ClientModel* model)

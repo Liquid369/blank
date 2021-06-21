@@ -1,11 +1,11 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_ZFLSCHAIN_H
-#define FLS_ZFLSCHAIN_H
+#ifndef RBX_ZRBXCHAIN_H
+#define RBX_ZRBXCHAIN_H
 
 #include "chain.h"
 #include "libzerocoin/Coin.h"
@@ -27,4 +27,4 @@ bool IsSerialInBlockchain(const CBigNum& bnSerial, int& nHeightTx);
 libzerocoin::CoinSpend TxInToZerocoinSpend(const CTxIn& txin);
 bool TxOutToPublicCoin(const CTxOut& txout, libzerocoin::PublicCoin& pubCoin, CValidationState& state);
 
-#endif //FLS_ZFLSCHAIN_H
+#endif //RBX_ZRBXCHAIN_H

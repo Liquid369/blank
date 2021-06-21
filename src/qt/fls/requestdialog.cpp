@@ -1,16 +1,16 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/requestdialog.h"
-#include "qt/fls/forms/ui_requestdialog.h"
+#include "qt/rbx/requestdialog.h"
+#include "qt/rbx/forms/ui_requestdialog.h"
 #include <QListView>
 
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/qtutils.h"
 #include "guiutil.h"
 #include "amount.h"
 #include "pairresult.h"

@@ -1,15 +1,15 @@
 // Copyright (c) 2017-2019 The PIVX developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_MINTPOOL_H
-#define FLS_MINTPOOL_H
+#ifndef RBX_MINTPOOL_H
+#define RBX_MINTPOOL_H
 
 #include <map>
 #include <list>
 
-#include "zfls/zerocoin.h"
+#include "zrbx/zerocoin.h"
 #include "libzerocoin/bignum.h"
 #include "uint256.h"
 
@@ -51,4 +51,4 @@ public:
 };
 
 
-#endif //FLS_MINTPOOL_H
+#endif //RBX_MINTPOOL_H

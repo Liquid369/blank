@@ -1,7 +1,7 @@
 // Copyright (c) 2012-2013 The Bitcoin Core developers
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT/X11 software license, see the accompanying
@@ -11,7 +11,7 @@
 #include "serialize.h"
 #include "streams.h"
 #include "hash.h"
-#include "test/test_fls.h"
+#include "test/test_rbx.h"
 
 #include <stdint.h>
 

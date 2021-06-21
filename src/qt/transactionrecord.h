@@ -1,7 +1,7 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2016 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -78,7 +78,7 @@ public:
         Other,
         Generated,
         StakeMint,
-        StakeZFLS,
+        StakeZRBX,
         SendToAddress,
         SendToOther,
         RecvWithAddress,
@@ -88,7 +88,7 @@ public:
         ZerocoinMint,
         ZerocoinSpend,
         RecvFromZerocoinSpend,
-        ZerocoinSpend_Change_zFls,
+        ZerocoinSpend_Change_zRbx,
         ZerocoinSpend_FromMe,
         StakeDelegated, // Received cold stake (owner)
         StakeHot, // Staked via a delegated P2CS.
@@ -102,7 +102,7 @@ public:
         SendToSelfShieldedAddress, // Shielded send to self
         SendToSelfShieldToTransparent, // Unshield coins to self
         SendToSelfShieldToShieldChangeAddress, // Changing coins from one shielded address to another inside the wallet.
-        SendToNobody // Burned FLSs, op_return output.
+        SendToNobody // Burned RBXs, op_return output.
     };
 
     /** Number of confirmation recommended for accepting a transaction */

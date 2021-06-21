@@ -1,25 +1,25 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/coldstakingwidget.h"
-#include "qt/fls/forms/ui_coldstakingwidget.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/coldstakingwidget.h"
+#include "qt/rbx/forms/ui_coldstakingwidget.h"
+#include "qt/rbx/qtutils.h"
 #include "amount.h"
 #include "guiutil.h"
-#include "qt/fls/requestdialog.h"
-#include "qt/fls/tooltipmenu.h"
-#include "qt/fls/furlistrow.h"
-#include "qt/fls/sendconfirmdialog.h"
-#include "qt/fls/addnewcontactdialog.h"
-#include "qt/fls/guitransactionsutils.h"
+#include "qt/rbx/requestdialog.h"
+#include "qt/rbx/tooltipmenu.h"
+#include "qt/rbx/furlistrow.h"
+#include "qt/rbx/sendconfirmdialog.h"
+#include "qt/rbx/addnewcontactdialog.h"
+#include "qt/rbx/guitransactionsutils.h"
 #include "walletmodel.h"
 #include "optionsmodel.h"
 #include "coincontroldialog.h"
 #include "coincontrol.h"
-#include "qt/fls/csrow.h"
+#include "qt/rbx/csrow.h"
 
 #define DECORATION_SIZE 70
 #define NUM_ITEMS 3
@@ -73,7 +73,7 @@ private:
     CSRow *cachedRow = nullptr;
 };
 
-ColdStakingWidget::ColdStakingWidget(FLSGUI* parent) :
+ColdStakingWidget::ColdStakingWidget(RBXGUI* parent) :
     PWidget(parent),
     ui(new Ui::ColdStakingWidget),
     isLoading(false)

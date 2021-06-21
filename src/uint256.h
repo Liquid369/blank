@@ -2,13 +2,13 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_UINT256_H
-#define FLS_UINT256_H
+#ifndef RBX_UINT256_H
+#define RBX_UINT256_H
 
 #include "arith_uint256.h"
 #include <assert.h>
@@ -143,4 +143,4 @@ const uint256 UINT256_ZERO = uint256();
 const uint256 UINT256_ONE = uint256("0000000000000000000000000000000000000000000000000000000000000001");
 const uint256 UINT256_MAX = uint256("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
 
-#endif // FLS_UINT256_H
+#endif // RBX_UINT256_H

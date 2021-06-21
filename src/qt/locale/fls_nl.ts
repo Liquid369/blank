@@ -122,12 +122,12 @@
         <translation>Ontvangstadressen</translation>
     </message>
     <message>
-        <source>These are your FLITS addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Dit zijn uw FLITS adressen om betalingen mee te verzenden. Controleer altijd zowel het bedrag als het ontvangstadres voor het verzenden van geld.</translation>
+        <source>These are your Rubus addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Dit zijn uw Rubus adressen om betalingen mee te verzenden. Controleer altijd zowel het bedrag als het ontvangstadres voor het verzenden van geld.</translation>
     </message>
     <message>
-        <source>These are your FLITS addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Dit zijn uw FLITS adressen waarop betalingen kunnen worden ontvangen. Het wordt aangeraden om een nieuw ontvangstadres voor elke transactie te gebruiken.</translation>
+        <source>These are your Rubus addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Dit zijn uw Rubus adressen waarop betalingen kunnen worden ontvangen. Het wordt aangeraden om een nieuw ontvangstadres voor elke transactie te gebruiken.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -364,8 +364,8 @@ voor bewijs van Inzet</translation>
         <translation>Annuleren</translation>
     </message>
     <message>
-        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
-        <translation>FLITS zal nu afsluiten om het versleutelingsproces te voltooien. Onthoud dat het versleutelen van uw portemonnee u niet volledig kan beschermen tegen malware infecties op uw computer die uw FLS's kunnen stelen.</translation>
+        <source>Rubus will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your RBXs from being stolen by malware infecting your computer.</source>
+        <translation>Rubus zal nu afsluiten om het versleutelingsproces te voltooien. Onthoud dat het versleutelen van uw portemonnee u niet volledig kan beschermen tegen malware infecties op uw computer die uw RBX's kunnen stelen.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -439,8 +439,8 @@ voor bewijs van Inzet</translation>
         <translation>Transparant</translation>
     </message>
     <message>
-        <source>0.00 fls</source>
-        <translation>0.00 fls</translation>
+        <source>0.00 rbx</source>
+        <translation>0.00 rbx</translation>
     </message>
     <message>
         <source>Shielded</source>
@@ -469,8 +469,8 @@ voor bewijs van Inzet</translation>
         <translation>Besparingen</translation>
     </message>
     <message>
-        <source>0,00 FLS</source>
-        <translation>0,00 FLS</translation>
+        <source>0,00 RBX</source>
+        <translation>0,00 RBX</translation>
     </message>
     <message>
         <source>address</source>
@@ -511,8 +511,8 @@ voor bewijs van Inzet</translation>
         <translation>Munt Selectie</translation>
     </message>
     <message>
-        <source>Select FLS Outputs to Spend</source>
-        <translation>Selecteer FLS Outputs om te besteden</translation>
+        <source>Select RBX Outputs to Spend</source>
+        <translation>Selecteer RBX Outputs om te besteden</translation>
     </message>
     <message>
         <source>Dust:</source>
@@ -539,8 +539,8 @@ voor bewijs van Inzet</translation>
         <translation>Bedrag</translation>
     </message>
     <message>
-        <source>0.00 FLS</source>
-        <translation>0.00 FLS</translation>
+        <source>0.00 RBX</source>
+        <translation>0.00 RBX</translation>
     </message>
     <message>
         <source>0</source>
@@ -738,9 +738,9 @@ voor bewijs van Inzet</translation>
         <translation>Fout bij laden delegaties: %1</translation>
     </message>
     <message>
-        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
+        <source>You can delegate your RBXs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>Je kan jouw FLSs delegeren en een hot node (24/7 online node)
+        <translation>Je kan jouw RBXs delegeren en een hot node (24/7 online node)
 voor je laten staken, terwijl je de sleutels veilig offline opslag bewaart.</translation>
     </message>
     <message>
@@ -748,8 +748,8 @@ voor je laten staken, terwijl je de sleutels veilig offline opslag bewaart.</tra
         <translation>Voer eigenaarsadres in</translation>
     </message>
     <message>
-        <source>Accept FLS delegation / Delegate FLS</source>
-        <translation>Accepteer FLS delegatie / Delegeer FLS</translation>
+        <source>Accept RBX delegation / Delegate RBX</source>
+        <translation>Accepteer RBX delegatie / Delegeer RBX</translation>
     </message>
     <message>
         <source>Cold Staking address</source>
@@ -953,8 +953,8 @@ address</source>
         <translation>Bekijk de geschiedenis van uw account</translation>
     </message>
     <message>
-        <source>How to get FLS</source>
-        <translation>Hoe FLS verkrijgen</translation>
+        <source>How to get RBX</source>
+        <translation>Hoe RBX verkrijgen</translation>
     </message>
     <message>
         <source>Sort by</source>
@@ -1069,8 +1069,8 @@ Het zal automatisch starten zodra de portemonnee voldoende bevestigingen heeft o
         <translation>Wijzig verzend adres</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid FLITS address.</source>
-        <translation>Het ingevoerde adres: "%1" is geen geldig FLITS adres.</translation>
+        <source>The entered address "%1" is not a valid Rubus address.</source>
+        <translation>Het ingevoerde adres: "%1" is geen geldig Rubus adres.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1122,16 +1122,16 @@ Het zal automatisch starten zodra de portemonnee voldoende bevestigingen heeft o
         <translation>versie</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-bit)</translation>
     </message>
     <message>
-        <source>About FLITS Core</source>
-        <translation>Over FLITS Core</translation>
+        <source>About Rubus Core</source>
+        <translation>Over Rubus Core</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1185,16 +1185,16 @@ Het zal automatisch starten zodra de portemonnee voldoende bevestigingen heeft o
         <translation>Welkom</translation>
     </message>
     <message>
-        <source>Welcome to FLITS Core.</source>
-        <translation>Welkom bij FLITS Core.</translation>
+        <source>Welcome to Rubus Core.</source>
+        <translation>Welkom bij Rubus Core.</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where FLITS Core will store its data.</source>
-        <translation>Aangezien dit de eerste keer is dat het programma is gestart, kun je kiezen waar FLITS Core zijn data opslaat.</translation>
+        <source>As this is the first time the program is launched, you can choose where Rubus Core will store its data.</source>
+        <translation>Aangezien dit de eerste keer is dat het programma is gestart, kun je kiezen waar Rubus Core zijn data opslaat.</translation>
     </message>
     <message>
-        <source>FLITS Core will download and store a copy of the FLITS block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>FLITS Core zal een kopie van de FLITS blockchain downloaden en opslaan. Tenminste %1GB aan data zal worden opgeslagen in deze map en het zal over de tijd groeien. De portemonnee zal ook in deze map worden opgeslagen.</translation>
+        <source>Rubus Core will download and store a copy of the Rubus block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>Rubus Core zal een kopie van de Rubus blockchain downloaden en opslaan. Tenminste %1GB aan data zal worden opgeslagen in deze map en het zal over de tijd groeien. De portemonnee zal ook in deze map worden opgeslagen.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1213,8 +1213,8 @@ Het zal automatisch starten zodra de portemonnee voldoende bevestigingen heeft o
         <translation>Akkoord</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1321,8 +1321,8 @@ Het zal automatisch starten zodra de portemonnee voldoende bevestigingen heeft o
         <translation>Creëer Nieuwe Masternode Controller</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om een FLITS Masternode te creëren moet u 10.000 FLS (de eenheid van FLS) aan het netwerk wijden (deze munten zijn echter nog steeds van u en zullen nooit uw bezit verlaten). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;U kunt de node op elk gewenst moment deactiveren en de munten ontgrendelen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Rubus Masternode you must dedicate 10,000 RBX (the unit of RBX) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Om een Rubus Masternode te creëren moet u 10.000 RBX (de eenheid van RBX) aan het netwerk wijden (deze munten zijn echter nog steeds van u en zullen nooit uw bezit verlaten). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;U kunt de node op elk gewenst moment deactiveren en de munten ontgrendelen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1341,8 +1341,8 @@ Het zal automatisch starten zodra de portemonnee voldoende bevestigingen heeft o
         <translation>Zorg ervoor dat je deze hoeveelheid munten hebt.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 FLS will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Een transactie van 10,000 FLS zal gemaakt worden&lt;/p&gt;&lt;p&gt;naar een nieuw leeg adres in uw portemonnee.&lt;/p&gt;&lt;p&gt;Het adres is gelabeld onder de masternode's naam.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 RBX will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Een transactie van 10,000 RBX zal gemaakt worden&lt;/p&gt;&lt;p&gt;naar een nieuw leeg adres in uw portemonnee.&lt;/p&gt;&lt;p&gt;Het adres is gelabeld onder de masternode's naam.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1548,7 +1548,7 @@ Gelieve nog enkele minuten te wachten (het onderpand van een masternode vereist 
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the fls.conf file
+You will only have to paste the data in the rbx.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1556,7 +1556,7 @@ this controller wallet (select the Masternode in the list and press "start").
 op een externe server aan uw klembord.
 
 
-U hoeft alleen de gegevens in het fls.conf bestand te plakken
+U hoeft alleen de gegevens in het rbx.conf bestand te plakken
 van uw externe server en start deze vervolgens de Masternode met
 deze controller portemonnee (selecteer de Masternode in de lijst en druk op "start").
 </translation>
@@ -1746,8 +1746,8 @@ STAKING</translation>
         <translation>Ingelezen data te groot</translation>
     </message>
     <message>
-        <source>Invalid URI, not starting with "fls" prefix</source>
-        <translation>Ongeldige URI, begint niet met de "fls" prefix</translation>
+        <source>Invalid URI, not starting with "rbx" prefix</source>
+        <translation>Ongeldige URI, begint niet met de "rbx" prefix</translation>
     </message>
 </context>
 <context>
@@ -1792,8 +1792,8 @@ STAKING</translation>
         <translation>Als je de uitgaven van onbevestigde wijzigingen uitschakelt, de wijziging van een transactie&lt;br/&gt;kan niet worden gebruikt tot die transactie tenminste één bevestiging heeft.&lt;br/&gt;Dit beïnvloedt ook hoe uw saldo is berekend.</translation>
     </message>
     <message>
-        <source>Automatically open the FLITS client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Open de FLITS client poort automatisch op de router. Dit werkt alleen als je router UPnP ondersteunt en het is ingeschakeld.</translation>
+        <source>Automatically open the Rubus client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Open de Rubus client poort automatisch op de router. Dit werkt alleen als je router UPnP ondersteunt en het is ingeschakeld.</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1812,12 +1812,12 @@ STAKING</translation>
         <translation>Expert</translation>
     </message>
     <message>
-        <source>Automatically start FLITS after logging in to the system.</source>
-        <translation>FLITS automatisch opstarten na inloggen op het systeem.</translation>
+        <source>Automatically start Rubus after logging in to the system.</source>
+        <translation>Rubus automatisch opstarten na inloggen op het systeem.</translation>
     </message>
     <message>
-        <source>&amp;Start FLITS on system login</source>
-        <translation>&amp;FLITS starten bij systeemlogin</translation>
+        <source>&amp;Start Rubus on system login</source>
+        <translation>&amp;Rubus starten bij systeemlogin</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1844,58 +1844,58 @@ STAKING</translation>
         <translation>&amp;Netwerk</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
-        <translation>De gebruikersinterface taal kan hier ingesteld worden. Deze instelling zal uitgevoerd na herstart van FLS.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting RBX.</source>
+        <translation>De gebruikersinterface taal kan hier ingesteld worden. Deze instelling zal uitgevoerd na herstart van RBX.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/flitsnode/flits-core-project-translations</source>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</source>
         <translation>Taal ontbreekt of vertaling onvolledig? Help om bij te dragen aan vertalingen:
-https://www.transifex.com/flitsnode/flits-core-project-translations</translation>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Map poort gebruikt &amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>Schakel automatisch slaan van FLS-eenheden in op zFLS</translation>
+        <source>Enable automatic minting of RBX units to zRBX</source>
+        <translation>Schakel automatisch slaan van RBX-eenheden in op zRBX</translation>
     </message>
     <message>
-        <source>Enable zFLS Automint</source>
-        <translation>Schakel zFLS Automint in</translation>
+        <source>Enable zRBX Automint</source>
+        <translation>Schakel zRBX Automint in</translation>
     </message>
     <message>
-        <source>Enable automatic zFLS minting from specific addresses</source>
-        <translation>Automatische zFLS munting inschakelen vanuit specifiek adres</translation>
+        <source>Enable automatic zRBX minting from specific addresses</source>
+        <translation>Automatische zRBX munting inschakelen vanuit specifiek adres</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Automint Adressen Inschakelen</translation>
     </message>
     <message>
-        <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
-        <translation>Percentage inkomende FLS die automatisch wordt omgezet naar zFLS via Zerocoin Protocol (min: 10%)</translation>
+        <source>Percentage of incoming RBX which get automatically converted to zRBX via Zerocoin Protocol (min: 10%)</source>
+        <translation>Percentage inkomende RBX die automatisch wordt omgezet naar zRBX via Zerocoin Protocol (min: 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zFLS</source>
-        <translation>Percentage autominted zFLS</translation>
+        <source>Percentage of autominted zRBX</source>
+        <translation>Percentage autominted zRBX</translation>
     </message>
     <message>
-        <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
-        <translation>Wacht met automatische omzetting naar Zerocoin totdat er genoeg FLS voor deze denominatie beschikbaar is</translation>
+        <source>Wait with automatic conversion to Zerocoin until enough RBX for this denomination is available</source>
+        <translation>Wacht met automatische omzetting naar Zerocoin totdat er genoeg RBX voor deze denominatie beschikbaar is</translation>
     </message>
     <message>
-        <source>Preferred Automint zFLS Denomination</source>
-        <translation>Gewenste Automint zFLS denominatie</translation>
+        <source>Preferred Automint zRBX Denomination</source>
+        <translation>Gewenste Automint zRBX denominatie</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
         <translation>Stake splitsdrempel:</translation>
     </message>
     <message>
-        <source>Connect to the FLITS network through a SOCKS5 proxy.</source>
-        <translation>Maak verbinding met het FLITS netwerk via een SOCKS5 proxy.</translation>
+        <source>Connect to the Rubus network through a SOCKS5 proxy.</source>
+        <translation>Maak verbinding met het Rubus netwerk via een SOCKS5 proxy.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -2039,10 +2039,10 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
     </message>
 </context>
 <context>
-    <name>FLSGUI</name>
+    <name>RBXGUI</name>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -2069,8 +2069,8 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
         <translation>Programma afsluiten</translation>
     </message>
     <message>
-        <source>FLITS Core client</source>
-        <translation>FLITS Core client</translation>
+        <source>Rubus Core client</source>
+        <translation>Rubus Core client</translation>
     </message>
     <message>
         <source>Alert!</source>
@@ -2140,12 +2140,12 @@ Adres: %4
         <translation>Ongeldig betalingsadres %1</translation>
     </message>
     <message>
-        <source>Cannot start fls: click-to-pay handler</source>
-        <translation>Kan fls niet starten: click-to-pay handler</translation>
+        <source>Cannot start rbx: click-to-pay handler</source>
+        <translation>Kan rbx niet starten: click-to-pay handler</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
-        <translation>URL kan niet ontleed worden! Dit kan worden veroorzaakt door een ongeldig FLITS adres of misvormde URL parameters.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Rubus address or malformed URI parameters.</source>
+        <translation>URL kan niet ontleed worden! Dit kan worden veroorzaakt door een ongeldig Rubus adres of misvormde URL parameters.</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -2234,8 +2234,8 @@ Adres: %4
         <translation>Bedrag</translation>
     </message>
     <message>
-        <source>Enter FLITS address (e.g. %1)</source>
-        <translation>Voer een FLITS adres in (b.v. %1)</translation>
+        <source>Enter Rubus address (e.g. %1)</source>
+        <translation>Voer een Rubus adres in (b.v. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2278,12 +2278,12 @@ Adres: %4
         <translation>%1 ms</translation>
     </message>
     <message>
-        <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
-        <translation>Een kritieke fout is opgelopen. FLITS kan niet langer veilig uitgevoerd worden en zal afsluiten.</translation>
+        <source>A fatal error occurred. Rubus can no longer continue safely and will quit.</source>
+        <translation>Een kritieke fout is opgelopen. Rubus kan niet langer veilig uitgevoerd worden en zal afsluiten.</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -2537,8 +2537,8 @@ Adres: %4
         <translation>Blockchain</translation>
     </message>
     <message>
-        <source>Open the FLITS debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Open het FLITS debug log bestand uit de huidige data directory. Dit kan enkele seconden duren voor grote logbestanden.</translation>
+        <source>Open the Rubus debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Open het Rubus debug log bestand uit de huidige data directory. Dit kan enkele seconden duren voor grote logbestanden.</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -2681,8 +2681,8 @@ Adres: %4
         <translation>Aangepast back-up pad:</translation>
     </message>
     <message>
-        <source>Custom zFLS Backup Path:</source>
-        <translation>Aangepast zFLS back-up pad:</translation>
+        <source>Custom zRBX Backup Path:</source>
+        <translation>Aangepast zRBX back-up pad:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -2761,8 +2761,8 @@ Adres: %4
         <translation>Uit:</translation>
     </message>
     <message>
-        <source>Welcome to the FLITS RPC console.</source>
-        <translation>Welkom bij de FLITS RPC console.</translation>
+        <source>Welcome to the Rubus RPC console.</source>
+        <translation>Welkom bij de Rubus RPC console.</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -2899,8 +2899,8 @@ Adres: %4
         <translation>Formulier</translation>
     </message>
     <message>
-        <source>Scan the QR code or copy the address to receive FLS</source>
-        <translation>Scan de QR code of kopieer het adres om FLS te ontvangen</translation>
+        <source>Scan the QR code or copy the address to receive RBX</source>
+        <translation>Scan de QR code of kopieer het adres om RBX te ontvangen</translation>
     </message>
     <message>
         <source>Transparent</source>
@@ -3033,12 +3033,12 @@ Adres: %4
         <translation>Bedrag</translation>
     </message>
     <message>
-        <source>FLS</source>
-        <translation>FLS</translation>
+        <source>RBX</source>
+        <translation>RBX</translation>
     </message>
     <message>
-        <source>Instead of sharing only a FLITS address, you can create a payment request, bundling up more information</source>
-        <translation>In plaats van een FLS-adres te delen, kunt u een betalingsverzoek creëren dat meer informatie bundelt.</translation>
+        <source>Instead of sharing only a Rubus address, you can create a payment request, bundling up more information</source>
+        <translation>In plaats van een RBX-adres te delen, kunt u een betalingsverzoek creëren dat meer informatie bundelt.</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -3128,8 +3128,8 @@ Adres: %4
         <translation>Aangepast wijzigingsadres</translation>
     </message>
     <message>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" FLITS address</source>
-        <translation>De rest van de waarde die resulteert uit de ingangen minus de waarde van de uitgangen gaat naar het "wijzig" FLS-adres</translation>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" Rubus address</source>
+        <translation>De rest van de waarde die resulteert uit de ingangen minus de waarde van de uitgangen gaat naar het "wijzig" RBX-adres</translation>
     </message>
     <message>
         <source>SAVE</source>
@@ -3159,8 +3159,8 @@ Adres: %4
         <translation>Aanbevolen</translation>
     </message>
     <message>
-        <source>FLS/kilobyte</source>
-        <translation>FLS/kilobyte</translation>
+        <source>RBX/kilobyte</source>
+        <translation>RBX/kilobyte</translation>
     </message>
     <message>
         <source>0.00 KB</source>
@@ -3458,9 +3458,9 @@ Vergeet deze niet op te schrijven en veilig te bewaren, anders verlies je mogeli
         <translation>BIP38 Tool</translation>
     </message>
     <message>
-        <source>Encrypt your FLITS addresses (key pair actually) using BIP38 encryption.
+        <source>Encrypt your Rubus addresses (key pair actually) using BIP38 encryption.
 Using this mechanism you can share your keys without middle-man risk, only need to store your passphrase safely</source>
-        <translation>Encrypteer uw FLS-adressen (met key pair) gebruikmakende van BIP38 versleuteling.
+        <translation>Encrypteer uw RBX-adressen (met key pair) gebruikmakende van BIP38 versleuteling.
 Door gebruik te maken van dit mechanisme kan je jouw sleutels delen zonder het risico van een tussenpersoon, je moet enkel je wachtwoordzin veilig opbergen</translation>
     </message>
     <message>
@@ -3496,8 +3496,8 @@ Door gebruik te maken van dit mechanisme kan je jouw sleutels delen zonder het r
         <translation>DECRYPTEER SLEUTEL</translation>
     </message>
     <message>
-        <source>FLITS address</source>
-        <translation>FLITS adres</translation>
+        <source>Rubus address</source>
+        <translation>Rubus adres</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3629,8 +3629,8 @@ Verify that you have installed a predetermined text editor.</source>
 Controleer of u een vooraf bepaalde teksteditor hebt geïnstalleerd.</translation>
     </message>
     <message>
-        <source>Welcome to the FLITS RPC console.</source>
-        <translation>Welkom bij de FLITS RPC console.</translation>
+        <source>Welcome to the Rubus RPC console.</source>
+        <translation>Welkom bij de Rubus RPC console.</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
@@ -3739,12 +3739,12 @@ Controleer of u een vooraf bepaalde teksteditor hebt geïnstalleerd.</translatio
         <translation>Exporteer Adreslijst</translation>
     </message>
     <message>
-        <source>FLS_tx_csv_export(*.csv)</source>
-        <translation>FLS_tx_csv_export(*.csv)</translation>
+        <source>RBX_tx_csv_export(*.csv)</source>
+        <translation>RBX_tx_csv_export(*.csv)</translation>
     </message>
     <message>
-        <source>FLS_addresses_csv_export(*.csv)</source>
-        <translation>FLS_addresses_csv_export(*.csv)</translation>
+        <source>RBX_addresses_csv_export(*.csv)</source>
+        <translation>RBX_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -3814,12 +3814,12 @@ Er was een fout opgetreden tijdens het opslaan van deze adreslijst naar %1. Prob
         <translation>Formulier</translation>
     </message>
     <message>
-        <source>1) What is FLS?</source>
-        <translation>1) Wat is FLS?</translation>
+        <source>1) What is RBX?</source>
+        <translation>1) Wat is RBX?</translation>
     </message>
     <message>
-        <source>2) Why are my FLS unspendable?</source>
-        <translation>2) Waarom is mijn FLS niet besteedbaar?</translation>
+        <source>2) Why are my RBX unspendable?</source>
+        <translation>2) Waarom is mijn RBX niet besteedbaar?</translation>
     </message>
     <message>
         <source>https://flitswallet.app/</source>
@@ -3830,33 +3830,33 @@ Er was een fout opgetreden tijdens het opslaan van deze adreslijst naar %1. Prob
         <translation>1</translation>
     </message>
     <message>
-        <source>What is FLS?</source>
-        <translation>Wat is FLS?</translation>
+        <source>What is RBX?</source>
+        <translation>Wat is RBX?</translation>
     </message>
     <message>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <source>Why are my FLS unspendable?</source>
-        <translation>Waarom is mijn FLS niet besteedbaar?</translation>
+        <source>Why are my RBX unspendable?</source>
+        <translation>Waarom is mijn RBX niet besteedbaar?</translation>
     </message>
     <message>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Newly received FLITS requires 6 confirmations on the network
+                           Newly received Rubus requires 6 confirmations on the network
                            to become eligible for spending which can take ~6 minutes.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           Your FLITS wallet also needs to be completely synchronized
+                           Your Rubus wallet also needs to be completely synchronized
                            to see and spend balances on the network.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
         <translation>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Nieuw ontvangen FLITS vereist 6 bevestigingen op het netwerk
+                           Nieuw ontvangen Rubus vereist 6 bevestigingen op het netwerk
                            om in aanmerking te komen voor uitgaven die ongeveer 6 minuten in beslag kunnen nemen.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           Uw FLITS portemonnee moet ook volledig gesynchroniseerd zijn
+                           Uw Rubus portemonnee moet ook volledig gesynchroniseerd zijn
                            om de balans te zien en uit te geven op het netwerk.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </translation>
@@ -3866,12 +3866,12 @@ Er was een fout opgetreden tijdens het opslaan van deze adreslijst naar %1. Prob
         <translation>3</translation>
     </message>
     <message>
-        <source>How do I stake FLS?</source>
-        <translation>Hoe stake ik FLS?</translation>
+        <source>How do I stake RBX?</source>
+        <translation>Hoe stake ik RBX?</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You must have a balance of FLITS with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (fls-cli); the command &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zorg ervoor dat uw portemonnee volledig gesynchroniseerd is en je op de juiste versie zit. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Je moet een balans van FLITS hebben met een minimum van 600 bevestigingen. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Uw portemonnee moet steeds online en ontgrendeld blijven voor stakingsdoeleinden. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Van zodra al deze stappen gevolgd zijn, zou staking ingeschakeld moeten zijn. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Je kan de stakingsstatus controleren door over het pakketicoontje te gaan gaan met je muis. Deze staat op de linker van de portemonnee interface. Dit pakketje zal oplichten en zal &amp;quot;Staking Inschakeld&amp;quot; vermelden om aan te geven dat staking actief is. Als je gebruik maakt van de command line interface (fls-cli); het commando &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; zal bevestigen dat staking actief is. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You must have a balance of Rubus with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (rbx-cli); the command &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Zorg ervoor dat uw portemonnee volledig gesynchroniseerd is en je op de juiste versie zit. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Je moet een balans van Rubus hebben met een minimum van 600 bevestigingen. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Uw portemonnee moet steeds online en ontgrendeld blijven voor stakingsdoeleinden. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Van zodra al deze stappen gevolgd zijn, zou staking ingeschakeld moeten zijn. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Je kan de stakingsstatus controleren door over het pakketicoontje te gaan gaan met je muis. Deze staat op de linker van de portemonnee interface. Dit pakketje zal oplichten en zal &amp;quot;Staking Inschakeld&amp;quot; vermelden om aan te geven dat staking actief is. Als je gebruik maakt van de command line interface (rbx-cli); het commando &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; zal bevestigen dat staking actief is. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>4</source>
@@ -3898,8 +3898,8 @@ Er was een fout opgetreden tijdens het opslaan van deze adreslijst naar %1. Prob
         <translation>Wat is een Masternode Controller</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 10,000 FLS collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Een Masternode Controller portemonnee is waar de 10.000 FLS onderpand zich kan bevinden tijdens een Controller-Remote masternode setup. Het is een portemonnee die de remote masternode portemonnee(s) kan activeren en waarmee u uw ondergepande munten offline kunt houden terwijl de remote masternode online blijft. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 10,000 RBX collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Een Masternode Controller portemonnee is waar de 10.000 RBX onderpand zich kan bevinden tijdens een Controller-Remote masternode setup. Het is een portemonnee die de remote masternode portemonnee(s) kan activeren en waarmee u uw ondergepande munten offline kunt houden terwijl de remote masternode online blijft. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
@@ -3910,8 +3910,8 @@ Er was een fout opgetreden tijdens het opslaan van deze adreslijst naar %1. Prob
         <translation>FAQ Sluiten</translation>
     </message>
     <message>
-        <source>3) How do I stake FLS?</source>
-        <translation>3) Hoe stake ik FLS?</translation>
+        <source>3) How do I stake RBX?</source>
+        <translation>3) Hoe stake ik RBX?</translation>
     </message>
     <message>
         <source>4) Where I should go if I need support?</source>
@@ -4029,8 +4029,8 @@ Er was een fout opgetreden tijdens het opslaan van deze adreslijst naar %1. Prob
         <translation>Kan de back-upmap niet openen</translation>
     </message>
     <message>
-        <source>Unable to open fls.conf with default application</source>
-        <translation>Kan fls.conf niet openen met de standaard applicatie</translation>
+        <source>Unable to open rbx.conf with default application</source>
+        <translation>Kan rbx.conf niet openen met de standaard applicatie</translation>
     </message>
     <message>
         <source>In:</source>
@@ -4088,8 +4088,8 @@ Er was een fout opgetreden tijdens het opslaan van deze adreslijst naar %1. Prob
         <translation>Aantal van script verificatiethreads</translation>
     </message>
     <message>
-        <source>Start FLITS on system login</source>
-        <translation>Start FLITS bij systeemlogin</translation>
+        <source>Start Rubus on system login</source>
+        <translation>Start Rubus bij systeemlogin</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -4176,8 +4176,8 @@ Weet u het zeker?
         <translation>Selectievakje</translation>
     </message>
     <message>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures.</source>
-        <translation>Met MultiSend kunt u automatisch tot 100% van uw inzet of masternode beloning naar een lijst met andere FLS-adressen sturen nadat deze volwaardig zijn geworden.</translation>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other Rubus addresses after it matures.</source>
+        <translation>Met MultiSend kunt u automatisch tot 100% van uw inzet of masternode beloning naar een lijst met andere RBX-adressen sturen nadat deze volwaardig zijn geworden.</translation>
     </message>
     <message>
         <source>Active</source>
@@ -4303,8 +4303,8 @@ Vink één of beide selectievakjes aan om beloningen op de inzet en/of masternod
         <translation>Bericht</translation>
     </message>
     <message>
-        <source>FLITS address or contact label</source>
-        <translation>FLITS adres of contactlabel</translation>
+        <source>Rubus address or contact label</source>
+        <translation>Rubus adres of contactlabel</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -4624,8 +4624,8 @@ Vink één of beide selectievakjes aan om beloningen op de inzet en/of masternod
         <translation>Veelgestelde vragen</translation>
     </message>
     <message>
-        <source>About FLS</source>
-        <translation>Over FLS</translation>
+        <source>About RBX</source>
+        <translation>Over RBX</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4695,8 +4695,8 @@ Weet je zeker dat?
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>FLITS Core is shutting down...</source>
-        <translation>FLITS Core is aan het afsluiten...</translation>
+        <source>Rubus Core is shutting down...</source>
+        <translation>Rubus Core is aan het afsluiten...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -4725,8 +4725,8 @@ Weet je zeker dat?
         <translation>Laden...</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
 </context>
 <context>
@@ -5214,12 +5214,12 @@ nieuwe back-up aangemaakt worden.
         <translation>Formulier</translation>
     </message>
     <message>
-        <source>+0.000585 FLS</source>
-        <translation>+0.000585 FLS</translation>
+        <source>+0.000585 RBX</source>
+        <translation>+0.000585 RBX</translation>
     </message>
     <message>
-        <source>-0.000585 FLS</source>
-        <translation>-0.000585 FLS</translation>
+        <source>-0.000585 RBX</source>
+        <translation>-0.000585 RBX</translation>
     </message>
 </context>
 <context>
@@ -5281,25 +5281,25 @@ Selecteer minder invoeren met muntcontrole.</translation>
     </message>
     <message>
         <source>Welcome to
-FLITS Core Wallet</source>
+Rubus Core Wallet</source>
         <translation>Welkom bij
-FLITS Core Portemonnee</translation>
+Rubus Core Portemonnee</translation>
     </message>
     <message>
-        <source>FLITS is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>FLITS is 's werelds meest innovatieve Proof of Stake blockchain gebaseerde technologie. Ontwikkeld door een team van zeer ervaren ontwikkelaars en cryptografen.</translation>
+        <source>Rubus is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <translation>Rubus is 's werelds meest innovatieve Proof of Stake blockchain gebaseerde technologie. Ontwikkeld door een team van zeer ervaren ontwikkelaars en cryptografen.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - FLITS believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zoals ons manifest zegt: Privacy is een niet-onderhandelbaar fundamenteel mensenrecht; het geeft gebruikers de vrijheid om hun gegevens te delen wanneer en met wie ze maar willen - FLITS gelooft in soevereiniteit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - Rubus believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zoals ons manifest zegt: Privacy is een niet-onderhandelbaar fundamenteel mensenrecht; het geeft gebruikers de vrijheid om hun gegevens te delen wanneer en met wie ze maar willen - Rubus gelooft in soevereiniteit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>Het masternode netwerk is FLS's tweedelaagse netwerk bovenop de blockchain die onze DAO in staat stelt om gedecentraliseerd bestuur, treasury te leveren</translation>
+        <source>The masternode network is RBX's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <translation>Het masternode netwerk is RBX's tweedelaagse netwerk bovenop de blockchain die onze DAO in staat stelt om gedecentraliseerd bestuur, treasury te leveren</translation>
     </message>
     <message>
-        <source>How FLITS respects your privacy?</source>
-        <translation>Hoe respecteert FLITS uw privacy?</translation>
+        <source>How Rubus respects your privacy?</source>
+        <translation>Hoe respecteert Rubus uw privacy?</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -5311,7 +5311,7 @@ FLITS Core Portemonnee</translation>
     </message>
 </context>
 <context>
-    <name>fls-core</name>
+    <name>rbx-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>Sta JSON-RPC connecties toe van de opgegeven bron. Geldig voor&lt;ip&gt;zijn een enkel IP (bijvoorbeeld 1.2.3.4), een netwerk/netmask (bijvoorbeeld 1.2.3.4/255.255.255.0) of een netwerk/CIDR (bijvoorbeeld 1.2.3.4/24). Deze optie kan meerdere keren worden opgegeven</translation>
@@ -5465,8 +5465,8 @@ FLITS Core Portemonnee</translation>
         <translation>De totale lengte van de netwerkversie (%i) overschrijdt de maximale lengte (%i). Verminder het aantal of de grootte van uacommentaren.</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. FLITS Core is probably already running.</source>
-        <translation>Niet mogelijk te binden aan %s op deze computer. FLITS Core loopt waarschijnlijk al.</translation>
+        <source>Unable to bind to %s on this computer. Rubus Core is probably already running.</source>
+        <translation>Niet mogelijk te binden aan %s op deze computer. Rubus Core loopt waarschijnlijk al.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -5481,8 +5481,8 @@ FLITS Core Portemonnee</translation>
         <translation>Waarschuwing: -paytxfee is zeer hoog ingesteld! Dit zijn de transactie kosten die je betaalt als je een transactie verstuurt.</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
-        <translation>Waarschuwing: Controleer of de datum en tijd van je computer juist zijn! Als je klok verkeerd staat, werkt FLITS Core niet goed.</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Rubus Core will not work properly.</source>
+        <translation>Waarschuwing: Controleer of de datum en tijd van je computer juist zijn! Als je klok verkeerd staat, werkt Rubus Core niet goed.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -5553,8 +5553,8 @@ FLITS Core Portemonnee</translation>
         <translation>Copyright (C) 2014-%i The Dash Kernontwikkelaars</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The FLITS Core Developers</source>
-        <translation>Copyright (C) 2015-%i The FLITS Kernontwikkelaars</translation>
+        <source>Copyright (C) 2015-%i The Rubus Core Developers</source>
+        <translation>Copyright (C) 2015-%i The Rubus Kernontwikkelaars</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -5773,8 +5773,8 @@ Voer alstublieft 'sapling-fetch-params' of './util/fetch-params.sh' uit en herst
         <translation>Error bij het laden van %s: Portemonnee beschadigd</translation>
     </message>
     <message>
-        <source>Error loading %s: Wallet requires newer version of FLITS Core</source>
-        <translation>Error bij het laden van %s: Portemonnee vereist een nieuwere versie van FLITS Core</translation>
+        <source>Error loading %s: Wallet requires newer version of Rubus Core</source>
+        <translation>Error bij het laden van %s: Portemonnee vereist een nieuwere versie van Rubus Core</translation>
     </message>
     <message>
         <source>Error loading %s
@@ -5967,12 +5967,12 @@ Voer alstublieft 'sapling-fetch-params' of './util/fetch-params.sh' uit en herst
         <translation>Kosten (in %s/Kb) kleiner dan dit worden beschouwd als zero fee voor transactie verrichting (standaard: %s)</translation>
     </message>
     <message>
-        <source>Minimum positive amount (in FLS) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
-        <translation>Minimum geldige waarde (in FLS) toegestaan bij GUI en RPC voor de staking splitsdrempel (standaard: %s)</translation>
+        <source>Minimum positive amount (in RBX) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
+        <translation>Minimum geldige waarde (in RBX) toegestaan bij GUI en RPC voor de staking splitsdrempel (standaard: %s)</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
-        <translation>Controleer of de datum en tijd van je computer juist zijn! Als je klok verkeerd ingesteld staat, werkt FLITS Core niet goed.</translation>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong Rubus Core will not work properly.</source>
+        <translation>Controleer of de datum en tijd van je computer juist zijn! Als je klok verkeerd ingesteld staat, werkt Rubus Core niet goed.</translation>
     </message>
     <message>
         <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect/-noconnect)</source>
@@ -6325,8 +6325,8 @@ Voer alstublieft 'sapling-fetch-params' of './util/fetch-params.sh' uit en herst
         <translation>Portemonnee verifiëren...</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart FLITS Core to complete</source>
-        <translation>Wallet moest worden herschreven: start FLITS Core opnieuw om te voltooien</translation>
+        <source>Wallet needed to be rewritten: restart Rubus Core to complete</source>
+        <translation>Wallet moest worden herschreven: start Rubus Core opnieuw om te voltooien</translation>
     </message>
     <message>
         <source>Wallet options:</source>
@@ -6388,8 +6388,8 @@ Voer alstublieft 'sapling-fetch-params' of './util/fetch-params.sh' uit en herst
         <translation>Shielded</translation>
     </message>
     <message>
-        <source>FLITS address or contact label</source>
-        <translation>FLITS adres of contactlabel</translation>
+        <source>Rubus address or contact label</source>
+        <translation>Rubus adres of contactlabel</translation>
     </message>
     <message>
         <source>Amount</source>

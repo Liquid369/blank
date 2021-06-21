@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -10,10 +10,10 @@
 #define MASTERNODEWIZARDDIALOG_H
 
 #include "walletmodel.h"
-#include "qt/fls/focuseddialog.h"
-#include "qt/fls/snackbar.h"
+#include "qt/rbx/focuseddialog.h"
+#include "qt/rbx/snackbar.h"
 #include "masternodeconfig.h"
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 
 class WalletModel;
 

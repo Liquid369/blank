@@ -1,13 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/splash.h"
-#include "qt/fls/forms/ui_splash.h"
+#include "qt/rbx/splash.h"
+#include "qt/rbx/forms/ui_splash.h"
 #include "QFile"
 
 #include "interfaces/handler.h"
@@ -32,7 +32,7 @@ Splash::Splash(const NetworkStyle* networkStyle) :
     QWidget(nullptr), ui(new Ui::Splash)
 {
     ui->setupUi(this);
-    QString titleText = tr("FLITS Core");
+    QString titleText = tr("Rubus Core");
     QString titleAddText = networkStyle->getTitleAddText();
     setWindowTitle(titleText + " " + titleAddText);
 

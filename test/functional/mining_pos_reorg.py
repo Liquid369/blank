@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # Copyright (c) 2019-2020 The PIVX developers
-# Copyright (c) 2019-2020 The Flits Developers
+# Copyright (c) 2019-2020 The Rubus Developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -15,7 +15,7 @@ from test_framework.util import (
     DecimalAmt,
 )
 
-class ReorgStakeTest(FlsTestFramework):
+class ReorgStakeTest(RbxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 3
@@ -51,11 +51,11 @@ class ReorgStakeTest(FlsTestFramework):
         assert_equal(self.nodes[nodeid].getblockcount(), wi['last_processed_block'])
         return wi['balance'] + wi['immature_balance']
 
-    def check_money_supply(self, expected_fls):
-        # verify that nodes have the expected FLS supply
-        fls_supply = [self.nodes[i].getsupplyinfo(True)['transparentsupply']
+    def check_money_supply(self, expected_rbx):
+        # verify that nodes have the expected RBX supply
+        rbx_supply = [self.nodes[i].getsupplyinfo(True)['transparentsupply']
                       for i in range(self.num_nodes)]
-        assert_equal(fls_supply, [DecimalAmt(expected_fls)] * self.num_nodes)
+        assert_equal(rbx_supply, [DecimalAmt(expected_rbx)] * self.num_nodes)
 
 
     def run_test(self):
@@ -66,7 +66,7 @@ class ReorgStakeTest(FlsTestFramework):
                     return True, x
             return False, None
 
-        # FLS supply: block rewards
+        # RBX supply: block rewards
         expected_money_supply = 250.0 * 200
         self.check_money_supply(expected_money_supply)
         block_time_0 = block_time_1 = self.mocktime
@@ -162,8 +162,8 @@ class ReorgStakeTest(FlsTestFramework):
         res, utxo = findUtxoInList(stakeinput["txid"], stakeinput["vout"], self.nodes[0].listunspent())
         assert (not res or not utxo["spendable"])
 
-        # Verify that FLS supply was properly updated after the reorgs
-        self.log.info("Check FLS supply...")
+        # Verify that RBX supply was properly updated after the reorgs
+        self.log.info("Check RBX supply...")
         expected_money_supply += 250.0 * (self.nodes[1].getblockcount() - 200)
         self.check_money_supply(expected_money_supply)
         self.log.info("Supply checks out.")

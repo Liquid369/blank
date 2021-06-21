@@ -1,6 +1,6 @@
 // Copyright (c) 2014-2016 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -19,7 +19,7 @@
 #define MAKE_SPORK_DEF(name, defaultValue) CSporkDef(name, defaultValue, #name)
 
 std::vector<CSporkDef> sporkDefs = {
-    MAKE_SPORK_DEF(SPORK_5_MAX_VALUE,                       1000),          // 1000 FLS
+    MAKE_SPORK_DEF(SPORK_5_MAX_VALUE,                       1000),          // 1000 RBX
     MAKE_SPORK_DEF(SPORK_8_MASTERNODE_PAYMENT_ENFORCEMENT,  4070908800ULL), // OFF
     MAKE_SPORK_DEF(SPORK_9_MASTERNODE_BUDGET_ENFORCEMENT,   4070908800ULL), // OFF
     MAKE_SPORK_DEF(SPORK_13_ENABLE_SUPERBLOCKS,             4070908800ULL), // OFF
@@ -48,7 +48,7 @@ void CSporkManager::Clear()
     mapSporksActive.clear();
 }
 
-// FLS: on startup load spork values from previous session if they exist in the sporkDB
+// RBX: on startup load spork values from previous session if they exist in the sporkDB
 void CSporkManager::LoadSporksFromDB()
 {
     for (const auto& sporkDef : sporkDefs) {
@@ -181,7 +181,7 @@ int CSporkManager::ProcessSporkMsg(CSporkMessage& spork)
     }
     spork.Relay();
 
-    // FLS: add to spork database.
+    // RBX: add to spork database.
     pSporkDB->WriteSpork(spork.nSporkID, spork);
     // All good.
     return 0;

@@ -1,20 +1,20 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/sendmultirow.h"
-#include "qt/fls/forms/ui_sendmultirow.h"
+#include "qt/rbx/sendmultirow.h"
+#include "qt/rbx/forms/ui_sendmultirow.h"
 
 #include "optionsmodel.h"
 #include "addresstablemodel.h"
 #include "guiutil.h"
 #include "bitcoinunits.h"
-#include "qt/fls/sendmemodialog.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/sendmemodialog.h"
+#include "qt/rbx/qtutils.h"
 
-SendMultiRow::SendMultiRow(FLSGUI* _window, PWidget *parent) :
+SendMultiRow::SendMultiRow(RBXGUI* _window, PWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SendMultiRow),
     iconNumber(new QPushButton())

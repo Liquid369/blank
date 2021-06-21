@@ -1,9 +1,9 @@
-// Copyright (c) 2020 The FLITS Core developers
+// Copyright (c) 2020 The Rubus Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_SAPLINGSCRIPTPUBKEYMAN_H
-#define FLS_SAPLINGSCRIPTPUBKEYMAN_H
+#ifndef RBX_SAPLINGSCRIPTPUBKEYMAN_H
+#define RBX_SAPLINGSCRIPTPUBKEYMAN_H
 
 #include "consensus/consensus.h"
 #include "sapling/note.h"
@@ -423,4 +423,4 @@ private:
     TxNullifiers mapTxSaplingNullifiers;
 };
 
-#endif //FLS_SAPLINGSCRIPTPUBKEYMAN_H
+#endif //RBX_SAPLINGSCRIPTPUBKEYMAN_H

@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -9,7 +9,7 @@
 #ifndef SETTINGSMAINOPTIONSWIDGET_H
 #define SETTINGSMAINOPTIONSWIDGET_H
 
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 
 #include <QWidget>
 
@@ -26,7 +26,7 @@ class SettingsMainOptionsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsMainOptionsWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsMainOptionsWidget(RBXGUI* _window, QWidget *parent = nullptr);
     ~SettingsMainOptionsWidget();
 
     void setMapper(QDataWidgetMapper *mapper);

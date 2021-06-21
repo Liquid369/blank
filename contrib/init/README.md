@@ -1,11 +1,11 @@
 Sample configuration files for:
 ```
-SystemD: flsd.service
-Upstart: flsd.conf
-OpenRC:  flsd.openrc
-         flsd.openrcconf
-CentOS:  flsd.init
-macOS:    org.fls.flsd.plist
+SystemD: rbxd.service
+Upstart: rbxd.conf
+OpenRC:  rbxd.openrc
+         rbxd.openrcconf
+CentOS:  rbxd.init
+macOS:    org.rbx.rbxd.plist
 ```
 have been made available to assist packagers in creating node packages here.
 

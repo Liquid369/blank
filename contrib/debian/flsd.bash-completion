@@ -1,2 +1,2 @@
-contrib/flsd.bash-completion	flsd
-contrib/fls-cli.bash-completion fls-cli
+contrib/rbxd.bash-completion	rbxd
+contrib/rbx-cli.bash-completion rbx-cli

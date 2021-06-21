@@ -1,11 +1,11 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/loadingdialog.h"
-#include "qt/fls/forms/ui_loadingdialog.h"
+#include "qt/rbx/loadingdialog.h"
+#include "qt/rbx/forms/ui_loadingdialog.h"
 #include <QMovie>
 
 void Worker::process(){

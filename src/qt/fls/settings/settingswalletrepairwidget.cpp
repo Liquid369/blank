@@ -1,16 +1,16 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingswalletrepairwidget.h"
-#include "qt/fls/settings/forms/ui_settingswalletrepairwidget.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/settings/settingswalletrepairwidget.h"
+#include "qt/rbx/settings/forms/ui_settingswalletrepairwidget.h"
+#include "qt/rbx/qtutils.h"
 
-SettingsWalletRepairWidget::SettingsWalletRepairWidget(FLSGUI* _window, QWidget *parent) :
+SettingsWalletRepairWidget::SettingsWalletRepairWidget(RBXGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsWalletRepairWidget)
 {
@@ -122,7 +122,7 @@ void SettingsWalletRepairWidget::buildParameterlist(QString arg)
     // Append repair parameter to command line.
     args.append(arg);
 
-    // Send command-line arguments to FLSGUI::handleRestart()
+    // Send command-line arguments to RBXGUI::handleRestart()
     Q_EMIT handleRestart(args);
 }
 

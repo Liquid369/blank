@@ -1,13 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_ADDRESSBOOK_H
-#define FLS_ADDRESSBOOK_H
+#ifndef RBX_ADDRESSBOOK_H
+#define RBX_ADDRESSBOOK_H
 
 #include <map>
 #include <string>
@@ -52,4 +52,4 @@ namespace AddressBook {
 
 }
 
-#endif //FLS_ADDRESSBOOK_H
+#endif //RBX_ADDRESSBOOK_H

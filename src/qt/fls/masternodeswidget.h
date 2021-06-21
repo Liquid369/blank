@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,10 +7,10 @@
 #ifndef MASTERNODESWIDGET_H
 #define MASTERNODESWIDGET_H
 
-#include "qt/fls/pwidget.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
-#include "qt/fls/mnmodel.h"
-#include "qt/fls/tooltipmenu.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/furabstractlistitemdelegate.h"
+#include "qt/rbx/mnmodel.h"
+#include "qt/rbx/tooltipmenu.h"
 #include "walletmodel.h"
 
 #include <atomic>
@@ -18,7 +18,7 @@
 #include <QTimer>
 #include <QWidget>
 
-class FLSGUI;
+class RBXGUI;
 
 namespace Ui {
 class MasterNodesWidget;
@@ -34,7 +34,7 @@ class MasterNodesWidget : public PWidget
 
 public:
 
-    explicit MasterNodesWidget(FLSGUI *parent = nullptr);
+    explicit MasterNodesWidget(RBXGUI *parent = nullptr);
     ~MasterNodesWidget();
 
     void loadWalletModel() override;

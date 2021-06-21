@@ -1,24 +1,24 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsmainoptionswidget.h"
-#include "qt/fls/settings/forms/ui_settingsmainoptionswidget.h"
+#include "qt/rbx/settings/settingsmainoptionswidget.h"
+#include "qt/rbx/settings/forms/ui_settingsmainoptionswidget.h"
 #include "QListView"
 
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h"
+#include "config/rbx-config.h"
 #endif
 
 #include "bitcoinunits.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
 #include "clientmodel.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/qtutils.h"
 
 #include "netbase.h"
 #include "txdb.h" // for -dbcache defaults
@@ -33,7 +33,7 @@
 #include <QTimer>
 
 
-SettingsMainOptionsWidget::SettingsMainOptionsWidget(FLSGUI* _window, QWidget *parent) :
+SettingsMainOptionsWidget::SettingsMainOptionsWidget(RBXGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsMainOptionsWidget)
 {
@@ -55,7 +55,7 @@ SettingsMainOptionsWidget::SettingsMainOptionsWidget(FLSGUI* _window, QWidget *p
     setCssProperty({ui->labelTitleSizeDb, ui->labelTitleThreads}, "text-main-settings");
 
     // Switch
-    ui->pushSwitchStart->setText(tr("Start FLITS on system login"));
+    ui->pushSwitchStart->setText(tr("Start Rubus on system login"));
     ui->pushSwitchStart->setProperty("cssClass", "btn-switch");
 
     // Combobox

@@ -16,14 +16,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "FLS"
-            VALUE "FileDescription",    "fls-tx (CLI FLITS transaction editor utility)"
+            VALUE "CompanyName",        "RBX"
+            VALUE "FileDescription",    "rbx-tx (CLI Rubus transaction editor utility)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
-            VALUE "InternalName",       "fls-tx"
+            VALUE "InternalName",       "rbx-tx"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
-            VALUE "OriginalFilename",   "fls-tx.exe"
-            VALUE "ProductName",        "fls-tx"
+            VALUE "OriginalFilename",   "rbx-tx.exe"
+            VALUE "ProductName",        "rbx-tx"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

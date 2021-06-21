@@ -1,12 +1,12 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsbittoolwidget.h"
-#include "qt/fls/settings/forms/ui_settingsbittoolwidget.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/settings/settingsbittoolwidget.h"
+#include "qt/rbx/settings/forms/ui_settingsbittoolwidget.h"
+#include "qt/rbx/qtutils.h"
 
 #include "guiutil.h"
 #include "walletmodel.h"
@@ -21,7 +21,7 @@
 #include <vector>
 
 
-SettingsBitToolWidget::SettingsBitToolWidget(FLSGUI* _window, QWidget *parent) :
+SettingsBitToolWidget::SettingsBitToolWidget(RBXGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsBitToolWidget)
 {

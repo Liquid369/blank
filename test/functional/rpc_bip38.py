@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # Copyright (c) 2019-2020 The PIVX developers
-# Copyright (c) 2019-2020 The Flits Developers
+# Copyright (c) 2019-2020 The Rubus Developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test RPC commands for BIP38 encrypting and decrypting addresses."""
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 from test_framework.util import assert_equal
 
-class Bip38Test(FlsTestFramework):
+class Bip38Test(RbxTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2

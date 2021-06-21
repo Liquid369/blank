@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -10,8 +10,8 @@
 #define SETTINGSSIGNMESSAGEWIDGETS_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
-#include "qt/fls/contactsdropdown.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/contactsdropdown.h"
 
 namespace Ui {
 class SettingsSignMessageWidgets;
@@ -22,7 +22,7 @@ class SettingsSignMessageWidgets : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsSignMessageWidgets(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsSignMessageWidgets(RBXGUI* _window, QWidget *parent = nullptr);
     ~SettingsSignMessageWidgets();
 
     void setAddress_SM(const QString& address);

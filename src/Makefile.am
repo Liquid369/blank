@@ -117,11 +117,11 @@ TESTS =
 BENCHMARKS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += flsd
+  bin_PROGRAMS += rbxd
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += fls-cli fls-tx
+  bin_PROGRAMS += rbx-cli rbx-tx
 endif
 
 LIBSAPLING_H = \
@@ -143,7 +143,7 @@ LIBSAPLING_H = \
   sapling/sapling_operation.h
 
 .PHONY: FORCE cargo-build check-symbols check-security
-# flits core #
+# Rubus core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrdb.h \
@@ -292,10 +292,10 @@ BITCOIN_CORE_H = \
   wallet/wallet.h \
   wallet/walletdb.h \
   warnings.h \
-  zflschain.h \
-  zfls/mintpool.h \
-  zfls/zerocoin.h \
-  zfls/zpos.h \
+  zrbxchain.h \
+  zrbx/mintpool.h \
+  zrbx/zerocoin.h \
+  zrbx/zpos.h \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h \
   zmq/zmqnotificationinterface.h \
@@ -307,7 +307,7 @@ obj/build.h: FORCE
 	  "$(abs_top_srcdir)"
 libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between flsd and fls-qt
+# server: shared between rbxd and rbx-qt
 libbitcoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libbitcoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_server_a_SOURCES = \
@@ -355,7 +355,7 @@ libbitcoin_server_a_SOURCES = \
   txmempool.cpp \
   validation.cpp \
   validationinterface.cpp \
-  zflschain.cpp \
+  zrbxchain.cpp \
   $(BITCOIN_CORE_H) \
   $(LIBSAPLING_H)
 
@@ -368,7 +368,7 @@ libbitcoin_zmq_a_SOURCES = \
   zmq/zmqpublishnotifier.cpp
 endif
 
-# wallet: shared between flsd and fls-qt, but only linked
+# wallet: shared between rbxd and rbx-qt, but only linked
 # when wallet enabled
 libbitcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -402,10 +402,10 @@ libbitcoin_wallet_a_SOURCES = \
   destination_io.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
-  zfls/zerocoin.cpp \
-  zfls/mintpool.cpp \
+  zrbx/zerocoin.cpp \
+  zrbx/mintpool.cpp \
   stakeinput.cpp \
-  zfls/zpos.cpp \
+  zrbx/zpos.cpp \
   $(BITCOIN_CORE_H) \
   $(LIBSAPLING_H)
 
@@ -464,7 +464,7 @@ libzerocoin_libbitcoin_zerocoin_a_SOURCES = \
   libzerocoin/Params.h \
   libzerocoin/SpendType.h \
   libzerocoin/ZerocoinDefines.h \
-  zfls/zflsmodule.h \
+  zrbx/zrbxmodule.h \
   libzerocoin/bignum.cpp \
   libzerocoin/Accumulator.cpp \
   libzerocoin/Coin.cpp \
@@ -473,7 +473,7 @@ libzerocoin_libbitcoin_zerocoin_a_SOURCES = \
   libzerocoin/Denominations.cpp \
   libzerocoin/ParamGeneration.cpp \
   libzerocoin/Params.cpp \
-  zfls/zflsmodule.cpp
+  zrbx/zrbxmodule.cpp
 if USE_NUM_GMP
   libzerocoin_libbitcoin_zerocoin_a_SOURCES += libzerocoin/bignum_gmp.cpp
 endif
@@ -481,7 +481,7 @@ if USE_NUM_OPENSSL
   libzerocoin_libbitcoin_zerocoin_a_SOURCES += libzerocoin/bignum_openssl.cpp
 endif
 
-# common: shared between flsd, and fls-qt and non-server tools
+# common: shared between rbxd, and rbx-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_common_a_SOURCES = \
@@ -495,7 +495,7 @@ libbitcoin_common_a_SOURCES = \
   consensus/merkle.cpp \
   primitives/block.cpp \
   primitives/transaction.cpp \
-  zfls/zerocoin.cpp \
+  zrbx/zerocoin.cpp \
   core_read.cpp \
   core_write.cpp \
   hash.cpp \
@@ -580,7 +580,7 @@ libsapling_a_SOURCES += compat/glibc_compat.cpp
 AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
-# cli: shared between fls-cli and fls-qt
+# cli: shared between rbx-cli and rbx-qt
 libbitcoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_cli_a_SOURCES = \
@@ -591,16 +591,16 @@ libbitcoin_cli_a_SOURCES = \
 nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# flsd binary #
-flsd_SOURCES = flsd.cpp
-flsd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-flsd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-flsd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# rbxd binary #
+rbxd_SOURCES = rbxd.cpp
+rbxd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+rbxd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+rbxd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-flsd_SOURCES += flsd-res.rc
+rbxd_SOURCES += rbxd-res.rc
 endif
-flsd_LDADD = \
+rbxd_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_COMMON) \
@@ -617,19 +617,19 @@ flsd_LDADD = \
   $(LIBRUSTZCASH) \
   $(LIBZCASH_LIBS)
 
-flsd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+rbxd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
-# fls-cli binary #
-fls_cli_SOURCES = fls-cli.cpp
-fls_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-fls_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-fls_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# rbx-cli binary #
+rbx_cli_SOURCES = rbx-cli.cpp
+rbx_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+rbx_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+rbx_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-fls_cli_SOURCES += fls-cli-res.rc
+rbx_cli_SOURCES += rbx-cli-res.rc
 endif
 
-fls_cli_LDADD = \
+rbx_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
@@ -638,20 +638,20 @@ fls_cli_LDADD = \
   $(LIBRUSTZCASH) \
   $(LIBZCASH_LIBS)
 
-fls_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+rbx_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
-# fls-tx binary #
-fls_tx_SOURCES = fls-tx.cpp
-fls_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-fls_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-fls_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# rbx-tx binary #
+rbx_tx_SOURCES = rbx-tx.cpp
+rbx_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+rbx_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+rbx_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-fls_tx_SOURCES += fls-tx-res.rc
+rbx_tx_SOURCES += rbx-tx-res.rc
 endif
 
-fls_tx_LDADD = \
+rbx_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_ZEROCOIN) \
@@ -662,7 +662,7 @@ fls_tx_LDADD = \
   $(LIBRUSTZCASH) \
   $(LIBZCASH_LIBS)
 
-fls_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+rbx_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
 # bitcoinconsensus library #
@@ -721,7 +721,7 @@ CLEANFILES += util/*.gcda util/*.gcno
 CLEANFILES += wallet/*.gcda wallet/*.gcno
 CLEANFILES += wallet/test/*.gcda wallet/test/*.gcno
 CLEANFILES += zmq/*.gcda zmq/*.gcno
-CLEANFILES += zfls/*.gcda zfls/*.gcno
+CLEANFILES += zrbx/*.gcda zrbx/*.gcno
 CLEANFILES += obj/build.h
 
 CTAES_DIST =  crypto/ctaes/bench.c
@@ -733,12 +733,12 @@ CTAES_DIST += crypto/ctaes/test.c
 EXTRA_DIST = $(CTAES_DIST) rust
 
 
-config/fls-config.h: config/stamp-h1
+config/rbx-config.h: config/stamp-h1
 	@$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-config/stamp-h1: $(top_srcdir)/$(subdir)/config/fls-config.h.in $(top_builddir)/config.status
+config/stamp-h1: $(top_srcdir)/$(subdir)/config/rbx-config.h.in $(top_builddir)/config.status
 	$(AM_V_at)$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-$(top_srcdir)/$(subdir)/config/fls-config.h.in:  $(am__configure_deps)
-	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/fls-config.h.in
+$(top_srcdir)/$(subdir)/config/rbx-config.h.in:  $(am__configure_deps)
+	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/rbx-config.h.in
 
 clean-local:
 	-$(MAKE) -C secp256k1 clean

@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,11 +7,11 @@
 #ifndef DASHBOARDWIDGET_H
 #define DASHBOARDWIDGET_H
 
-#include "qt/fls/pwidget.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
-#include "qt/fls/furlistrow.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/furabstractlistitemdelegate.h"
+#include "qt/rbx/furlistrow.h"
 #include "transactiontablemodel.h"
-#include "qt/fls/txviewholder.h"
+#include "qt/rbx/txviewholder.h"
 #include "transactionfilterproxy.h"
 
 #include <atomic>
@@ -21,7 +21,7 @@
 #include <QMap>
 
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h" /* for USE_QTCHARTS */
+#include "config/rbx-config.h" /* for USE_QTCHARTS */
 #endif
 
 #ifdef USE_QTCHARTS
@@ -39,7 +39,7 @@ using namespace QtCharts;
 
 #endif
 
-class FLSGUI;
+class RBXGUI;
 class WalletModel;
 
 namespace Ui {
@@ -82,10 +82,10 @@ public:
 
     QMap<int, std::pair<qint64, qint64>> amountsByCache;
     qreal maxValue = 0;
-    qint64 totalFls = 0;
-    qint64 totalZfls = 0;
-    QList<qreal> valuesFls;
-    QList<qreal> valueszFls;
+    qint64 totalRbx = 0;
+    qint64 totalZrbx = 0;
+    QList<qreal> valuesRbx;
+    QList<qreal> valueszRbx;
     QStringList xLabels;
 };
 
@@ -98,7 +98,7 @@ class DashboardWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit DashboardWidget(FLSGUI* _window);
+    explicit DashboardWidget(RBXGUI* _window);
     ~DashboardWidget();
 
     void loadWalletModel() override;
@@ -167,7 +167,7 @@ private:
     int yearFilter{0};
     int monthFilter{0};
     int dayStart{1};
-    bool hasZflsStakes{false};
+    bool hasZrbxStakes{false};
 
     ChartData* chartData{nullptr};
     bool hasStakes{false};

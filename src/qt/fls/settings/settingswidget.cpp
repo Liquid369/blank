@@ -1,13 +1,13 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingswidget.h"
-#include "qt/fls/settings/forms/ui_settingswidget.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/defaultdialog.h"
+#include "qt/rbx/settings/settingswidget.h"
+#include "qt/rbx/settings/forms/ui_settingswidget.h"
+#include "qt/rbx/qtutils.h"
+#include "qt/rbx/defaultdialog.h"
 #include "optionsmodel.h"
 #include "clientmodel.h"
 #include "utilitydialog.h"
@@ -15,7 +15,7 @@
 #include <QScrollBar>
 #include <QDataWidgetMapper>
 
-SettingsWidget::SettingsWidget(FLSGUI* parent) :
+SettingsWidget::SettingsWidget(RBXGUI* parent) :
     PWidget(parent),
     ui(new Ui::SettingsWidget)
 {

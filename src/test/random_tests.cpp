@@ -4,7 +4,7 @@
 
 #include "random.h"
 
-#include "test/test_fls.h"
+#include "test/test_rbx.h"
 
 #include <boost/test/unit_test.hpp>
 

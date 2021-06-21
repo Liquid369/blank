@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,17 +7,17 @@
 #ifndef ADDRESSESWIDGET_H
 #define ADDRESSESWIDGET_H
 
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 #include "addresstablemodel.h"
-#include "qt/fls/tooltipmenu.h"
+#include "qt/rbx/tooltipmenu.h"
 #include "furabstractlistitemdelegate.h"
-#include "qt/fls/addressfilterproxymodel.h"
+#include "qt/rbx/addressfilterproxymodel.h"
 
 #include <QWidget>
 
 class AddressViewDelegate;
 class TooltipMenu;
-class FLSGUI;
+class RBXGUI;
 class WalletModel;
 
 namespace Ui {
@@ -33,7 +33,7 @@ class AddressesWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit AddressesWidget(FLSGUI* parent);
+    explicit AddressesWidget(RBXGUI* parent);
     ~AddressesWidget();
 
     void loadWalletModel() override;

@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -10,10 +10,10 @@
 #define CONTACTSDROPDOWN_H
 
 #include "addresstablemodel.h"
-#include "qt/fls/pwidget.h"
-#include "qt/fls/contactdropdownrow.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
-#include "qt/fls/addressfilterproxymodel.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/contactdropdownrow.h"
+#include "qt/rbx/furabstractlistitemdelegate.h"
+#include "qt/rbx/addressfilterproxymodel.h"
 #include <QListView>
 #include <QObject>
 #include <QWidget>

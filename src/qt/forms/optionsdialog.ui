@@ -30,10 +30,10 @@
        <item>
         <widget class="QCheckBox" name="bitcoinAtStartup">
          <property name="toolTip">
-          <string>Automatically start FLITS after logging in to the system.</string>
+          <string>Automatically start Rubus after logging in to the system.</string>
          </property>
          <property name="text">
-          <string>&amp;Start FLITS on system login</string>
+          <string>&amp;Start Rubus on system login</string>
          </property>
         </widget>
        </item>
@@ -131,8 +131,8 @@
         </spacer>
        </item>
        <item>
-        <widget class="QWidget" name="verticalZflsOptionsWidget" native="true">
-         <layout class="QVBoxLayout" name="verticalZflsOptionsLayout">
+        <widget class="QWidget" name="verticalZrbxOptionsWidget" native="true">
+         <layout class="QVBoxLayout" name="verticalZrbxOptionsLayout">
           <property name="margin">
            <number>0</number>
           </property>
@@ -141,20 +141,20 @@
             <item>
              <widget class="QCheckBox" name="checkBoxZeromintEnable">
               <property name="toolTip">
-               <string>Enable automatic minting of FLS units to zFLS</string>
+               <string>Enable automatic minting of RBX units to zRBX</string>
               </property>
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>Enable zFLS Automint</string>
+               <string>Enable zRBX Automint</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBoxZeromintAddresses">
               <property name="toolTip">
-               <string>Enable automatic zFLS minting from specific addresses</string>
+               <string>Enable automatic zRBX minting from specific addresses</string>
               </property>
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
@@ -171,10 +171,10 @@
             <item>
              <widget class="QLabel" name="percentage_label">
               <property name="toolTip">
-               <string>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</string>
+               <string>Percentage of incoming RBX which get automatically converted to zRBX via Zerocoin Protocol (min: 10%)</string>
               </property>
               <property name="text">
-               <string>Percentage of autominted zFLS</string>
+               <string>Percentage of autominted zRBX</string>
               </property>
              </widget>
             </item>
@@ -204,10 +204,10 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</string>
+               <string>Wait with automatic conversion to Zerocoin until enough RBX for this denomination is available</string>
               </property>
               <property name="text">
-               <string>Preferred Automint zFLS Denomination</string>
+               <string>Preferred Automint zRBX Denomination</string>
               </property>
              </widget>
             </item>
@@ -220,7 +220,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</string>
+               <string>Wait with automatic conversion to Zerocoin until enough RBX for this denomination is available</string>
               </property>
               <property name="maxVisibleItems">
                <number>9</number>
@@ -325,7 +325,7 @@
        <item>
         <widget class="QCheckBox" name="mapPortUpnp">
          <property name="toolTip">
-          <string>Automatically open the FLITS client port on the router. This only works when your router supports UPnP and it is enabled.</string>
+          <string>Automatically open the Rubus client port on the router. This only works when your router supports UPnP and it is enabled.</string>
          </property>
          <property name="text">
           <string>Map port using &amp;UPnP</string>
@@ -345,7 +345,7 @@
        <item>
         <widget class="QCheckBox" name="connectSocks">
          <property name="toolTip">
-          <string>Connect to the FLITS network through a SOCKS5 proxy.</string>
+          <string>Connect to the Rubus network through a SOCKS5 proxy.</string>
          </property>
          <property name="text">
           <string>&amp;Connect through SOCKS5 proxy (default proxy):</string>
@@ -511,7 +511,7 @@
          <item>
           <widget class="QValueComboBox" name="lang">
            <property name="toolTip">
-            <string>The user interface language can be set here. This setting will take effect after restarting FLS.</string>
+            <string>The user interface language can be set here. This setting will take effect after restarting RBX.</string>
            </property>
           </widget>
          </item>
@@ -533,7 +533,7 @@
          </property>
          <property name="text">
           <string>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/flitsnode/flits-core-project-translations</string>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -561,8 +561,8 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</string>
         </layout>
        </item>
        <item>
-        <widget class="QWidget" name="verticalZflsDisplayWidget" native="true">
-         <layout class="QVBoxLayout" name="verticalZflsDisplayLayout">
+        <widget class="QWidget" name="verticalZrbxDisplayWidget" native="true">
+         <layout class="QVBoxLayout" name="verticalZrbxDisplayLayout">
           <property name="margin">
            <number>0</number>
           </property>

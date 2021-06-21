@@ -5,7 +5,7 @@
 // Copyright (c) 2013-2014 The NovaCoin Developers
 // Copyright (c) 2014-2018 The BlackCoin Developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -51,9 +51,9 @@
 #include "utilmoneystr.h"
 #include "validationinterface.h"
 #include "warnings.h"
-#include "zflschain.h"
-#include "zfls/zerocoin.h"
-#include "zfls/zflsmodule.h"
+#include "zrbxchain.h"
+#include "zrbx/zerocoin.h"
+#include "zrbx/zrbxmodule.h"
 
 #include <future>
 
@@ -64,7 +64,7 @@
 
 
 #if defined(NDEBUG)
-#error "FLITS cannot be compiled without assertions."
+#error "Rubus cannot be compiled without assertions."
 #endif
 
 /**
@@ -105,7 +105,7 @@ size_t nCoinCacheUsage = 5000 * 300;
 /* If the tip is older than this (in seconds), the node is considered to be in initial block download. */
 int64_t nMaxTipAge = DEFAULT_MAX_TIP_AGE;
 
-/** Fees smaller than this (in ufls) are considered zero fee (for relaying, mining and transaction creation)
+/** Fees smaller than this (in urbx) are considered zero fee (for relaying, mining and transaction creation)
  * We are ~100 times smaller then bitcoin now (2015-06-23), set minRelayTxFee only 10 times higher
  * so it's still 10 times lower comparing to bitcoin.
  */
@@ -1415,7 +1415,7 @@ static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck()
 {
-    util::ThreadRename("fls-scriptch");
+    util::ThreadRename("rbx-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -1584,7 +1584,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                 if (isPublicSpend) {
                     libzerocoin::ZerocoinParams* params = consensus.Zerocoin_Params(false);
                     PublicCoinSpend publicSpend(params);
-                    if (!ZFLSModule::ParseZerocoinPublicSpend(txIn, tx, state, publicSpend)){
+                    if (!ZRBXModule::ParseZerocoinPublicSpend(txIn, tx, state, publicSpend)){
                         return false;
                     }
                     nValueIn += publicSpend.getDenomination() * COIN;
@@ -2766,7 +2766,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                 nHeight = (*mi).second->nHeight + 1;
         }
 
-        // FLS
+        // RBX
         // It is entierly possible that we don't have enough data and this could fail
         // (i.e. the block could indeed be valid). Store the block for later consideration
         // but issue an initial reject message.
@@ -2857,11 +2857,11 @@ bool CheckWork(const CBlock& block, const CBlockIndex* const pindexPrev)
     }
 
     if (block.nBits != nBitsRequired) {
-        // fls Specific reference to the block with the wrong threshold was used.
+        // rbx Specific reference to the block with the wrong threshold was used.
         const Consensus::Params& consensus = Params().GetConsensus();
-        if (block.nTime >= (uint32_t) consensus.nFlsBadBlockTime){
+        if (block.nTime >= (uint32_t) consensus.nRbxBadBlockTime){
             if (pindexPrev->nHeight + 1 >= 800000) {
-            // accept FLS block minted with incorrect proof of work threshold
+            // accept RBX block minted with incorrect proof of work threshold
                 return error("%s : incorrect proof of work at %d", __func__, pindexPrev->nHeight + 1);
             }
         }
@@ -3124,18 +3124,18 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         const CTransaction &stakeTxIn = *block.vtx[1];
 
         // Inputs
-        std::vector<CTxIn> flsInputs;
-        std::vector<CTxIn> zFLSInputs;
+        std::vector<CTxIn> rbxInputs;
+        std::vector<CTxIn> zRBXInputs;
 
         for (const CTxIn& stakeIn : stakeTxIn.vin) {
             if(stakeIn.IsZerocoinSpend()){
-                zFLSInputs.push_back(stakeIn);
+                zRBXInputs.push_back(stakeIn);
             }else{
-                flsInputs.push_back(stakeIn);
+                rbxInputs.push_back(stakeIn);
             }
         }
-        const bool hasFLSInputs = !flsInputs.empty();
-        const bool hasZFLSInputs = !zFLSInputs.empty();
+        const bool hasRBXInputs = !rbxInputs.empty();
+        const bool hasZRBXInputs = !zRBXInputs.empty();
 
         // ZC started after PoS.
         // Check for serial double spent on the same block, TODO: Move this to the proper method..
@@ -3158,7 +3158,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
                         if (isPublicSpend) {
                             libzerocoin::ZerocoinParams* params = consensus.Zerocoin_Params(false);
                             PublicCoinSpend publicSpend(params);
-                            if (!ZFLSModule::ParseZerocoinPublicSpend(in, tx, state, publicSpend)){
+                            if (!ZRBXModule::ParseZerocoinPublicSpend(in, tx, state, publicSpend)){
                                 return false;
                             }
                             spend = publicSpend;
@@ -3174,10 +3174,10 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
                     }
                 }
                 if(tx.IsCoinStake()) continue;
-                if(hasFLSInputs) {
+                if(hasRBXInputs) {
                     // Check if coinstake input is double spent inside the same block
-                    for (const CTxIn& flsIn : flsInputs)
-                        if(flsIn.prevout == in.prevout)
+                    for (const CTxIn& rbxIn : rbxInputs)
+                        if(rbxIn.prevout == in.prevout)
                             // double spent coinstake input inside block
                             return error("%s: double spent coinstake input inside block", __func__);
                 }
@@ -3217,12 +3217,12 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
                     for (const CTxIn& in: t.vin) {
                         // If this input is a zerocoin spend, and the coinstake has zerocoin inputs
                         // then store the serials for later check
-                        if(hasZFLSInputs && in.IsZerocoinSpend())
+                        if(hasZRBXInputs && in.IsZerocoinSpend())
                             vBlockSerials.push_back(TxInToZerocoinSpend(in).getCoinSerialNumber());
 
                         // Loop through every input of the staking tx
-                        if (hasFLSInputs) {
-                            for (const CTxIn& stakeIn : flsInputs)
+                        if (hasRBXInputs) {
+                            for (const CTxIn& stakeIn : rbxInputs)
                                 // check if the tx input is double spending any coinstake input
                                 if (stakeIn.prevout == in.prevout)
                                     return state.DoS(100, error("%s: input already spent on a previous block", __func__));
@@ -3241,10 +3241,10 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
             // Split height
             splitHeight = prev->nHeight;
 
-            // Now that this loop if completed. Check if we have zFLS inputs.
-            if(hasZFLSInputs) {
-                for (const CTxIn& zFlsInput : zFLSInputs) {
-                    libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zFlsInput);
+            // Now that this loop if completed. Check if we have zRBX inputs.
+            if(hasZRBXInputs) {
+                for (const CTxIn& zRbxInput : zRBXInputs) {
+                    libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zRbxInput);
 
                     // First check if the serials were not already spent on the forked blocks.
                     CBigNum coinSerial = spend.getCoinSerialNumber();
@@ -3264,7 +3264,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
 
                     if (!ContextualCheckZerocoinSpendNoSerialCheck(stakeTxIn, &spend, pindex->nHeight, UINT256_ZERO))
                         return state.DoS(100,error("%s: forked chain ContextualCheckZerocoinSpend failed for tx %s", __func__,
-                                                   stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zfls");
+                                                   stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zrbx");
 
                 }
             }
@@ -3284,11 +3284,11 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
             }
         } else {
             if(!isBlockFromFork)
-                for (const CTxIn& zFlsInput : zFLSInputs) {
-                        libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zFlsInput);
+                for (const CTxIn& zRbxInput : zRBXInputs) {
+                        libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zRbxInput);
                         if (!ContextualCheckZerocoinSpend(stakeTxIn, &spend, pindex->nHeight, UINT256_ZERO))
                             return state.DoS(100,error("%s: main chain ContextualCheckZerocoinSpend failed for tx %s", __func__,
-                                    stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zfls");
+                                    stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zrbx");
                 }
 
         }

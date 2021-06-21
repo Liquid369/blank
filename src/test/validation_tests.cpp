@@ -1,10 +1,10 @@
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#include "test/test_fls.h"
+#include "test/test_rbx.h"
 #include "primitives/transaction.h"
 #include "sapling/sapling_validation.h"
 #include "tiertwo/specialtx_validation.h"

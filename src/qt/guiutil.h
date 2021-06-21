@@ -1,6 +1,6 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -44,7 +44,7 @@ public:
     GUIException(const std::string &message) : message(message) {}
 };
 
-/** Utility functions used by the FLITS Qt UI.
+/** Utility functions used by the Rubus Qt UI.
  */
 namespace GUIUtil
 {
@@ -53,15 +53,15 @@ QString dateTimeStr(const QDateTime& datetime);
 QString dateTimeStrWithSeconds(const QDateTime& date);
 QString dateTimeStr(qint64 nTime);
 
-// Render FLITS addresses in monospace font
+// Render Rubus addresses in monospace font
 QFont bitcoinAddressFont();
 
 // Parse string into a CAmount value
 CAmount parseValue(const QString& text, int displayUnit, bool* valid_out = 0);
 
 // Format an amount
-QString formatBalance(CAmount amount, int nDisplayUnit = 0, bool isZfls = false);
-QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit = 0, bool isZfls = false);
+QString formatBalance(CAmount amount, int nDisplayUnit = 0, bool isZrbx = false);
+QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit = 0, bool isZrbx = false);
 
 
 // Set up widgets for address and amounts
@@ -71,7 +71,7 @@ void setupAmountWidget(QLineEdit* widget, QWidget* parent);
 // Update the cursor of the widget after a text change
 void updateWidgetTextAndCursorPosition(QLineEdit* widget, const QString& str);
 
-// Parse "fls:" URI into recipient object, return true on successful parsing
+// Parse "rbx:" URI into recipient object, return true on successful parsing
 bool parseBitcoinURI(const QUrl& uri, SendCoinsRecipient* out);
 bool parseBitcoinURI(QString uri, SendCoinsRecipient* out);
 QString formatBitcoinURI(const SendCoinsRecipient& info);
@@ -140,7 +140,7 @@ bool isObscured(QWidget* w);
 // Open debug.log
 bool openDebugLogfile();
 
-// Open fls.conf
+// Open rbx.conf
 bool openConfigfile();
 
 // Open masternode.conf

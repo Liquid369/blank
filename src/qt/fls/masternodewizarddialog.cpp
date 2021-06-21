@@ -1,18 +1,18 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/masternodewizarddialog.h"
-#include "qt/fls/forms/ui_masternodewizarddialog.h"
+#include "qt/rbx/masternodewizarddialog.h"
+#include "qt/rbx/forms/ui_masternodewizarddialog.h"
 
 #include "activemasternode.h"
 #include "optionsmodel.h"
 #include "pairresult.h"
-#include "qt/fls/mnmodel.h"
-#include "qt/fls/guitransactionsutils.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/mnmodel.h"
+#include "qt/rbx/guitransactionsutils.h"
+#include "qt/rbx/qtutils.h"
 
 #include <QFile>
 #include <QIntValidator>

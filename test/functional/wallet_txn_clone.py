@@ -5,12 +5,12 @@
 """Test the wallet accounts properly when there are cloned transactions with malleated scriptsigs."""
 
 import io
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 from test_framework.util import *
 from test_framework.messages import CTransaction, COIN
 
 
-class TxnMallTest(FlsTestFramework):
+class TxnMallTest(RbxTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
 
@@ -25,7 +25,7 @@ class TxnMallTest(FlsTestFramework):
         disconnect_nodes(self.nodes[2], 1)
 
     def run_test(self):
-        # All nodes should start with 6,250 FLS:
+        # All nodes should start with 6,250 RBX:
         starting_balance = 6250
         for i in range(4):
             assert_equal(self.nodes[i].getbalance(), starting_balance)

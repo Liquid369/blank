@@ -1,16 +1,16 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/masternodeswidget.h"
-#include "qt/fls/forms/ui_masternodeswidget.h"
+#include "qt/rbx/masternodeswidget.h"
+#include "qt/rbx/forms/ui_masternodeswidget.h"
 
-#include "qt/fls/qtutils.h"
-#include "qt/fls/mnrow.h"
-#include "qt/fls/mninfodialog.h"
-#include "qt/fls/masternodewizarddialog.h"
+#include "qt/rbx/qtutils.h"
+#include "qt/rbx/mnrow.h"
+#include "qt/rbx/mninfodialog.h"
+#include "qt/rbx/masternodewizarddialog.h"
 
 #include "activemasternode.h"
 #include "clientmodel.h"
@@ -24,7 +24,7 @@
 #include "wallet/wallet.h"
 #include "askpassphrasedialog.h"
 #include "util.h"
-#include "qt/fls/optionbutton.h"
+#include "qt/rbx/optionbutton.h"
 #include <iostream>
 #include <fstream>
 
@@ -67,7 +67,7 @@ public:
     MNRow* cachedRow = nullptr;
 };
 
-MasterNodesWidget::MasterNodesWidget(FLSGUI *parent) :
+MasterNodesWidget::MasterNodesWidget(RBXGUI *parent) :
     PWidget(parent),
     ui(new Ui::MasterNodesWidget),
     isLoading(false)
@@ -352,7 +352,7 @@ void MasterNodesWidget::onInfoMNClicked()
     if (dialog->exportMN) {
         if (ask(tr("Remote Masternode Data"),
                 tr("You are just about to export the required data to run a Masternode\non a remote server to your clipboard.\n\n\n"
-                   "You will only have to paste the data in the fls.conf file\nof your remote server and start it, "
+                   "You will only have to paste the data in the rbx.conf file\nof your remote server and start it, "
                    "then start the Masternode using\nthis controller wallet (select the Masternode in the list and press \"start\").\n"
                 ))) {
             // export data

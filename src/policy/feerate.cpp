@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2017 The Bitcoin developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -10,7 +10,7 @@
 
 #include "tinyformat.h"
 
-const std::string CURRENCY_UNIT = "FLS";
+const std::string CURRENCY_UNIT = "RBX";
 
 CFeeRate::CFeeRate(const CAmount& nFeePaid, size_t nSize)
 {

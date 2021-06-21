@@ -1,13 +1,13 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2016 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_QT_WALLETMODEL_H
-#define FLS_QT_WALLETMODEL_H
+#ifndef RBX_QT_WALLETMODEL_H
+#define RBX_QT_WALLETMODEL_H
 
 #include "askpassphrasedialog.h"
 #include "paymentrequestplus.h"
@@ -116,7 +116,7 @@ public:
     }
 };
 
-/** Interface to FLITS wallet from Qt view code. */
+/** Interface to Rubus wallet from Qt view code. */
 class WalletModel : public QObject
 {
     Q_OBJECT
@@ -435,4 +435,4 @@ public Q_SLOTS:
     bool updateAddressBookLabels(const CWDestination& address, const std::string& strName, const std::string& strPurpose);
 };
 
-#endif // FLS_QT_WALLETMODEL_H
+#endif // RBX_QT_WALLETMODEL_H

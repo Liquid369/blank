@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -11,7 +11,7 @@
 
 #include <QWidget>
 #include <QDataWidgetMapper>
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 
 namespace Ui {
 class SettingsDisplayOptionsWidget;
@@ -22,7 +22,7 @@ class SettingsDisplayOptionsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsDisplayOptionsWidget(FLSGUI* _window = nullptr, QWidget *parent = nullptr);
+    explicit SettingsDisplayOptionsWidget(RBXGUI* _window = nullptr, QWidget *parent = nullptr);
     ~SettingsDisplayOptionsWidget();
 
     void setMapper(QDataWidgetMapper *mapper);

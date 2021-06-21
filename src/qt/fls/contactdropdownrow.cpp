@@ -1,13 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/contactdropdownrow.h"
-#include "qt/fls/forms/ui_contactdropdownrow.h"
+#include "qt/rbx/contactdropdownrow.h"
+#include "qt/rbx/forms/ui_contactdropdownrow.h"
 
 ContactDropdownRow::ContactDropdownRow(QWidget *parent) :
     QWidget(parent),

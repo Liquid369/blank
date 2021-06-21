@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# Copyright (c) 2021 The FLITS developers
+# Copyright (c) 2021 The Rubus developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 from test_framework.util import (
     assert_equal,
 )
@@ -11,7 +11,7 @@ from test_framework.util import (
 import random
 
 # Test getblockindexstats RPC results
-class BlockIndexStatsTest(FlsTestFramework):
+class BlockIndexStatsTest(RbxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 2
@@ -30,7 +30,7 @@ class BlockIndexStatsTest(FlsTestFramework):
                 utxo = spendable.pop()
                 inputs.append({"txid": utxo["txid"], "vout": utxo["vout"]})
                 outVal += float(utxo["amount"])
-            # add 1 FLS "change" output 50% of the times
+            # add 1 RBX "change" output 50% of the times
             if random.randint(1, 2) == 1 and outVal > 1.0 + fee:
                 outputs = {node_to.getnewaddress(): round(outVal - 1.0 - fee, 8),
                            node_from.getnewaddress(): 1.0}
@@ -48,7 +48,7 @@ class BlockIndexStatsTest(FlsTestFramework):
                 outVal += float(spendable.pop()["amount"])
             dest = node_to.getnewshieldaddress() if fToShield else node_to.getnewaddress()
             from_str = "from_shield" if fFromShield else "from_transparent"
-            # add 1 FLS "change" output 50% of the times
+            # add 1 RBX "change" output 50% of the times
             if random.randint(1, 2) == 1 and outVal > 1.0 + fee:
                 change_dest = node_from.getnewshieldaddress() if fFromShield else node_from.getnewaddress()
                 outputs = [{"address": dest, "amount": round(outVal - 1.0 - fee, 8)},
@@ -79,7 +79,7 @@ class BlockIndexStatsTest(FlsTestFramework):
         self.sync_all()
 
         # Mine 2 blocks. For each block, the miner creates 30 shield notes.
-        # miner creates 20 notes of 10 FLS + 9 notes of 5 FLS + 1 note of 4 FLS (using 1.0 fee)
+        # miner creates 20 notes of 10 RBX + 9 notes of 5 RBX + 1 note of 4 RBX (using 1.0 fee)
         self.log.info("Creating 60 Shield notes...")
         for _ in range(2):
             outputs = []

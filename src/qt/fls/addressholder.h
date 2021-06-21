@@ -1,18 +1,18 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_ADDRESSHOLDER_H
-#define FLS_ADDRESSHOLDER_H
+#ifndef RBX_ADDRESSHOLDER_H
+#define RBX_ADDRESSHOLDER_H
 
 #include <QWidget>
 #include <QColor>
-#include "qt/fls/myaddressrow.h"
-#include "qt/fls/furlistrow.h"
+#include "qt/rbx/myaddressrow.h"
+#include "qt/rbx/furlistrow.h"
 #include "guiutil.h"
 
 
@@ -42,4 +42,4 @@ public:
 };
 
 
-#endif //FLS_ADDRESSHOLDER_H
+#endif //RBX_ADDRESSHOLDER_H

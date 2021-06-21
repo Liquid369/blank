@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # Copyright (c) 2020 The PIVX Developers
-# Copyright (c) 2020 The Flits Developers
+# Copyright (c) 2020 The Rubus Developers
 
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 
 from test_framework.util import (
     assert_greater_than,
@@ -25,7 +25,7 @@ def timed(f):
 
 MAX_SHIELDED_BLOCKSIZE = 750000
 
-class SaplingFillBlockTest(FlsTestFramework):
+class SaplingFillBlockTest(RbxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 2
@@ -41,7 +41,7 @@ class SaplingFillBlockTest(FlsTestFramework):
         sorted(utxos, key=lambda utxo: utxo["amount"], reverse=True)
         # pick the first N
         utxos = utxos[:n_inputs]
-        # split each one in 100 (use fixed 0.05 FLS fee)
+        # split each one in 100 (use fixed 0.05 RBX fee)
         for u in utxos:
             prevout = [{"txid": u["txid"], "vout": u["vout"]}]
             output_amt = satoshi_round((u["amount"] - Decimal("0.05")) / 100)
@@ -92,7 +92,7 @@ class SaplingFillBlockTest(FlsTestFramework):
 
         ## -- First check that the miner never produces blocks with more than 750kB of shielded txes
 
-        # Split 10 utxos (of 250 FLS each) in 1000 new utxos of ~2.5 FLS each (to alice)
+        # Split 10 utxos (of 250 RBX each) in 1000 new utxos of ~2.5 RBX each (to alice)
         UTXOS_TO_SPLIT = 10
         UTXOS_TO_SHIELD = UTXOS_TO_SPLIT * 100
         self.log.info("Creating %d utxos..." % UTXOS_TO_SHIELD)
@@ -103,7 +103,7 @@ class SaplingFillBlockTest(FlsTestFramework):
         new_utxos = alice.listunspent()
         assert_equal(len(new_utxos), UTXOS_TO_SHIELD)
 
-        # Now alice shields the new utxos individually (fixed 0.2 FLS fee --> ~2.3 FLS notes)
+        # Now alice shields the new utxos individually (fixed 0.2 RBX fee --> ~2.3 RBX notes)
         self.log.info("Shielding utxos...")
         alice_z_addr = alice.getnewshieldaddress()
         shield_to = [{"address": alice_z_addr, "amount": new_utxos[0]["amount"] - Decimal("0.2")}]

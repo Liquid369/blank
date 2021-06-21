@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2015 The Bitcoin Core developers
-// Copyright (c) 2021 The FLITS Core developers
+// Copyright (c) 2021 The Rubus Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_BLOCKASSEMBLER_H
-#define FLS_BLOCKASSEMBLER_H
+#ifndef RBX_BLOCKASSEMBLER_H
+#define RBX_BLOCKASSEMBLER_H
 
 #include "primitives/block.h"
 #include "txmempool.h"
@@ -103,4 +103,4 @@ bool CreateCoinbaseTx(CBlock* pblock, const CScript& scriptPubKeyIn, CBlockIndex
 // Visible for testing purposes only
 uint256 CalculateSaplingTreeRoot(CBlock* pblock, int nHeight, const CChainParams& chainparams);
 
-#endif // FLS_BLOCKASSEMBLER_H
+#endif // RBX_BLOCKASSEMBLER_H

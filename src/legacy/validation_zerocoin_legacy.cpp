@@ -1,5 +1,5 @@
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
@@ -7,13 +7,13 @@
 
 #include "libzerocoin/CoinSpend.h"
 #include "wallet/wallet.h"
-#include "zflschain.h"
-#include "zfls/zflsmodule.h"
+#include "zrbxchain.h"
+#include "zrbx/zrbxmodule.h"
 
 bool DisconnectZerocoinTx(const CTransaction& tx, CZerocoinDB* zerocoinDB)
 {
     /** UNDO ZEROCOIN DATABASING
-         * note we only undo zerocoin databasing in the following statement, value to and from FLS
+         * note we only undo zerocoin databasing in the following statement, value to and from RBX
          * addresses should still be handled by the typical bitcoin based undo code
          * */
     if (tx.ContainsZerocoins()) {
@@ -27,7 +27,7 @@ bool DisconnectZerocoinTx(const CTransaction& tx, CZerocoinDB* zerocoinDB)
                     if (isPublicSpend) {
                         PublicCoinSpend publicSpend(params);
                         CValidationState state;
-                        if (!ZFLSModule::ParseZerocoinPublicSpend(txin, tx, state, publicSpend)) {
+                        if (!ZRBXModule::ParseZerocoinPublicSpend(txin, tx, state, publicSpend)) {
                             return error("Failed to parse public spend");
                         }
                         serial = publicSpend.getCoinSerialNumber();

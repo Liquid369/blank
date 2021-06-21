@@ -122,12 +122,12 @@
         <translation>받을 주소</translation>
     </message>
     <message>
-        <source>These are your FLITS addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>이 주소들은 송금할 FLITS 주소입니다. 송금하기 전 항상 금액과 주소를 확인해주세요.</translation>
+        <source>These are your Rubus addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>이 주소들은 송금할 Rubus 주소입니다. 송금하기 전 항상 금액과 주소를 확인해주세요.</translation>
     </message>
     <message>
-        <source>These are your FLITS addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>이 주소들은 입금 받을 FLITS 주소입니다. 매 거래마다 새로운 입금 주소를 사용하는 것이 좋습니다.</translation>
+        <source>These are your Rubus addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>이 주소들은 입금 받을 Rubus 주소입니다. 매 거래마다 새로운 입금 주소를 사용하는 것이 좋습니다.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -361,8 +361,8 @@ for staking</source>
         <translation>취소</translation>
     </message>
     <message>
-        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
-        <translation>FLS는 이제 암호화 프로세스를 마치기 위해 닫힐것입니다. 지갑을 암호화하더라도 맬웨어로 인한 FLSs 의 도난당하는 것을 완벽하게 보호 할 수는 없습니다.</translation>
+        <source>Rubus will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your RBXs from being stolen by malware infecting your computer.</source>
+        <translation>RBX는 이제 암호화 프로세스를 마치기 위해 닫힐것입니다. 지갑을 암호화하더라도 맬웨어로 인한 RBXs 의 도난당하는 것을 완벽하게 보호 할 수는 없습니다.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -436,8 +436,8 @@ for staking</source>
         <translation>Transparent</translation>
     </message>
     <message>
-        <source>0.00 fls</source>
-        <translation>0.00 fls</translation>
+        <source>0.00 rbx</source>
+        <translation>0.00 rbx</translation>
     </message>
     <message>
         <source>Shielded</source>
@@ -466,8 +466,8 @@ for staking</source>
         <translation>계좌</translation>
     </message>
     <message>
-        <source>0,00 FLS</source>
-        <translation>0,00 FLS</translation>
+        <source>0,00 RBX</source>
+        <translation>0,00 RBX</translation>
     </message>
     <message>
         <source>address</source>
@@ -508,8 +508,8 @@ for staking</source>
         <translation>코인 선택</translation>
     </message>
     <message>
-        <source>Select FLS Outputs to Spend</source>
-        <translation>사용할 FLS 아웃풋 선택</translation>
+        <source>Select RBX Outputs to Spend</source>
+        <translation>사용할 RBX 아웃풋 선택</translation>
     </message>
     <message>
         <source>Dust:</source>
@@ -536,8 +536,8 @@ for staking</source>
         <translation>금액</translation>
     </message>
     <message>
-        <source>0.00 FLS</source>
-        <translation>0.00 FLS</translation>
+        <source>0.00 RBX</source>
+        <translation>0.00 RBX</translation>
     </message>
     <message>
         <source>0</source>
@@ -739,17 +739,17 @@ for staking</source>
         <translation>위임 데이터 로딩 에러: %1</translation>
     </message>
     <message>
-        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
+        <source>You can delegate your RBXs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>안전히 개인 프라이빗 키를 오프라인으로 보관한 상태로, 가지고 계신 FLS 를 매일 24시간 온라인으로 돌아가는 핫 노드로 위임하여, 대신 스테이킹을 하게 할수 있습니다. </translation>
+        <translation>안전히 개인 프라이빗 키를 오프라인으로 보관한 상태로, 가지고 계신 RBX 를 매일 24시간 온라인으로 돌아가는 핫 노드로 위임하여, 대신 스테이킹을 하게 할수 있습니다. </translation>
     </message>
     <message>
         <source>Enter owner address</source>
         <translation>Owner 주소 입력</translation>
     </message>
     <message>
-        <source>Accept FLS delegation / Delegate FLS</source>
-        <translation>FLS 위임권 수락하기 / FLS 위임 하기</translation>
+        <source>Accept RBX delegation / Delegate RBX</source>
+        <translation>RBX 위임권 수락하기 / RBX 위임 하기</translation>
     </message>
     <message>
         <source>Cold Staking address</source>
@@ -953,8 +953,8 @@ address</source>
         <translation>계정의 거래 이력 보기</translation>
     </message>
     <message>
-        <source>How to get FLS</source>
-        <translation>FLS를 얻을 수 있는 방법</translation>
+        <source>How to get RBX</source>
+        <translation>RBX를 얻을 수 있는 방법</translation>
     </message>
     <message>
         <source>Sort by</source>
@@ -1068,8 +1068,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>보내는 주소 수정</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid FLITS address.</source>
-        <translation>입력된 주소 "%1"는 올바른 FLITS 주소가 아닙니다.</translation>
+        <source>The entered address "%1" is not a valid Rubus address.</source>
+        <translation>입력된 주소 "%1"는 올바른 Rubus 주소가 아닙니다.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1121,16 +1121,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>버전</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-bit)</translation>
     </message>
     <message>
-        <source>About FLITS Core</source>
-        <translation>FLITS Core 정보</translation>
+        <source>About Rubus Core</source>
+        <translation>Rubus Core 정보</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1184,16 +1184,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>환영합니다</translation>
     </message>
     <message>
-        <source>Welcome to FLITS Core.</source>
-        <translation>FLITS Core에 오신 것을 환영합니다.</translation>
+        <source>Welcome to Rubus Core.</source>
+        <translation>Rubus Core에 오신 것을 환영합니다.</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where FLITS Core will store its data.</source>
-        <translation>이 프로그램이 처음 실행되었으므로 FLITS Core가 데이터를 저장할 위치를 선택할 수 있습니다.</translation>
+        <source>As this is the first time the program is launched, you can choose where Rubus Core will store its data.</source>
+        <translation>이 프로그램이 처음 실행되었으므로 Rubus Core가 데이터를 저장할 위치를 선택할 수 있습니다.</translation>
     </message>
     <message>
-        <source>FLITS Core will download and store a copy of the FLITS block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>FLITS Core는 FLITS 블록체인을 다운로드하여 저장합니다. 최소 %1GB의 데이터가 디렉토리에 저장되며 시간이 지날수록 증가합니다. 또한 지갑도 해당 디렉토리에 저장됩니다.</translation>
+        <source>Rubus Core will download and store a copy of the Rubus block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>Rubus Core는 Rubus 블록체인을 다운로드하여 저장합니다. 최소 %1GB의 데이터가 디렉토리에 저장되며 시간이 지날수록 증가합니다. 또한 지갑도 해당 디렉토리에 저장됩니다.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1212,8 +1212,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>선택</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1320,8 +1320,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>새로운 마스터노드 컨트롤러 만들기</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FLITS 마스터노드를 생성하기 위해서는 10,000 FLS (FLITS 단위)를 네트워크에 예치해야 합니다. (예치한 코인은 계속 본인의 소유입니다.) &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;언제든지 노드를 비활성화 시키고 코인을 잠금해제할 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Rubus Masternode you must dedicate 10,000 RBX (the unit of RBX) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rubus 마스터노드를 생성하기 위해서는 10,000 RBX (Rubus 단위)를 네트워크에 예치해야 합니다. (예치한 코인은 계속 본인의 소유입니다.) &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;언제든지 노드를 비활성화 시키고 코인을 잠금해제할 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1340,8 +1340,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>이만큼의 코인을 보유하고 있는지 확인하십시오.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 FLS will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10,000 FLS의 트랜잭션은&lt;/p&gt;&lt;p&gt;지갑의 새로운 빈 주소로 만들어질 것입니다.&lt;/p&gt;&lt;p&gt;그 주소는 마스터노드 이름에 따라 레이블링됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 RBX will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10,000 RBX의 트랜잭션은&lt;/p&gt;&lt;p&gt;지갑의 새로운 빈 주소로 만들어질 것입니다.&lt;/p&gt;&lt;p&gt;그 주소는 마스터노드 이름에 따라 레이블링됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1546,7 +1546,7 @@ Please wait few more minutes (masternode collaterals require %1 confirmations).<
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the fls.conf file
+You will only have to paste the data in the rbx.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1554,7 +1554,7 @@ this controller wallet (select the Masternode in the list and press "start").
 클립보드로 내보내려고 합니다.
 
 
-그 데이터를 리모트 서버의 fls.conf 파일에
+그 데이터를 리모트 서버의 rbx.conf 파일에
 붙여넣고 시작합니다. 그리고 컨트롤러 지갑에서 마스터노드를
 시작합니다. (리스트에서 마스터노드를 선택하고 "시작"을 누르십시오.)
 </translation>
@@ -1743,8 +1743,8 @@ STAKING</source>
         <translation>구문 분석된 데이터가 너무 큽니다.</translation>
     </message>
     <message>
-        <source>Invalid URI, not starting with "fls" prefix</source>
-        <translation>"fls"로 시작하지 않아 유효하지 않은 URI</translation>
+        <source>Invalid URI, not starting with "rbx" prefix</source>
+        <translation>"rbx"로 시작하지 않아 유효하지 않은 URI</translation>
     </message>
 </context>
 <context>
@@ -1789,8 +1789,8 @@ STAKING</source>
         <translation>확인되지 않은 잔엑을 사용하지 않도록 설정하면 해당 트랜잭션에 하나 이상의 컨펌이 진행되야&lt;br/&gt;트랜잭션의 잔액을 전송할 수 있습니다.&lt;br/&gt;또한 이것은 잔액 계산 방식에도 영향을 줍니다.</translation>
     </message>
     <message>
-        <source>Automatically open the FLITS client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>라우터에서 FLITS 클라이언트 포트를 자동으로 엽니다. 이 기능은 라우터가 UPnP를 지원하고 활성화 된 경우에만 사용할 수 있습니다.</translation>
+        <source>Automatically open the Rubus client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>라우터에서 Rubus 클라이언트 포트를 자동으로 엽니다. 이 기능은 라우터가 UPnP를 지원하고 활성화 된 경우에만 사용할 수 있습니다.</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1809,12 +1809,12 @@ STAKING</source>
         <translation>전문적</translation>
     </message>
     <message>
-        <source>Automatically start FLITS after logging in to the system.</source>
-        <translation>시스템 로그인 후 FLS을 자동으로 시작합니다.</translation>
+        <source>Automatically start Rubus after logging in to the system.</source>
+        <translation>시스템 로그인 후 RBX을 자동으로 시작합니다.</translation>
     </message>
     <message>
-        <source>&amp;Start FLITS on system login</source>
-        <translation>&amp;시스템 로그인시 FLITS 시작</translation>
+        <source>&amp;Start Rubus on system login</source>
+        <translation>&amp;시스템 로그인시 Rubus 시작</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1841,58 +1841,58 @@ STAKING</source>
         <translation>&amp;네트워크</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
-        <translation>사용자 인터페이스 언어를 설정할 수 있습니다. 이 설정은 FLS을 다시 시작한 후에 적용됩니다.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting RBX.</source>
+        <translation>사용자 인터페이스 언어를 설정할 수 있습니다. 이 설정은 RBX을 다시 시작한 후에 적용됩니다.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/flitsnode/flits-core-project-translations</source>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</source>
         <translation>지원 언어가 없거나 번역이 불완전한가요? 번역을 도와주세요 :
-https://www.transifex.com/flitsnode/flits-core-project-translations</translation>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>&amp;UPnp를 사용하여 포트 매핑</translation>
     </message>
     <message>
-        <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>보상받은 FLS를 zFLS로 자동변환 활성화</translation>
+        <source>Enable automatic minting of RBX units to zRBX</source>
+        <translation>보상받은 RBX를 zRBX로 자동변환 활성화</translation>
     </message>
     <message>
-        <source>Enable zFLS Automint</source>
-        <translation>zFLS 자동생성 활성화</translation>
+        <source>Enable zRBX Automint</source>
+        <translation>zRBX 자동생성 활성화</translation>
     </message>
     <message>
-        <source>Enable automatic zFLS minting from specific addresses</source>
-        <translation>특정 주소들로부터 자동으로 zFLS 민트되는 것을 허용</translation>
+        <source>Enable automatic zRBX minting from specific addresses</source>
+        <translation>특정 주소들로부터 자동으로 zRBX 민트되는 것을 허용</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Automint 주소 사용</translation>
     </message>
     <message>
-        <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
-        <translation>FLS수신시 자동변환 zFLS 비율 (최소값:10%)</translation>
+        <source>Percentage of incoming RBX which get automatically converted to zRBX via Zerocoin Protocol (min: 10%)</source>
+        <translation>RBX수신시 자동변환 zRBX 비율 (최소값:10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zFLS</source>
-        <translation>자동 변환되는 zFLS 비율</translation>
+        <source>Percentage of autominted zRBX</source>
+        <translation>자동 변환되는 zRBX 비율</translation>
     </message>
     <message>
-        <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
-        <translation>이 디노미네이션의 FLS가 충분해질 때까지 Zerocoin으로 자동전환은 보류됩니다.</translation>
+        <source>Wait with automatic conversion to Zerocoin until enough RBX for this denomination is available</source>
+        <translation>이 디노미네이션의 RBX가 충분해질 때까지 Zerocoin으로 자동전환은 보류됩니다.</translation>
     </message>
     <message>
-        <source>Preferred Automint zFLS Denomination</source>
-        <translation>선호하는 자동생성 zFLS 디노미네이션 </translation>
+        <source>Preferred Automint zRBX Denomination</source>
+        <translation>선호하는 자동생성 zRBX 디노미네이션 </translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
         <translation>Stake split threshold:</translation>
     </message>
     <message>
-        <source>Connect to the FLITS network through a SOCKS5 proxy.</source>
-        <translation>SOCKS5 프록시를 통해 FLITS 네트워크에 연결해주세요.</translation>
+        <source>Connect to the Rubus network through a SOCKS5 proxy.</source>
+        <translation>SOCKS5 프록시를 통해 Rubus 네트워크에 연결해주세요.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -2036,10 +2036,10 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
     </message>
 </context>
 <context>
-    <name>FLSGUI</name>
+    <name>RBXGUI</name>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -2066,8 +2066,8 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
         <translation>어플리케이션 종료</translation>
     </message>
     <message>
-        <source>FLITS Core client</source>
-        <translation>FLITS Core 클라이언트</translation>
+        <source>Rubus Core client</source>
+        <translation>Rubus Core 클라이언트</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2133,12 +2133,12 @@ Address: %4
         <translation>잘못된 결제 주소 %1</translation>
     </message>
     <message>
-        <source>Cannot start fls: click-to-pay handler</source>
-        <translation>FLS을 시작할 수 없습니다: 결제하기 위한 클릭 처리</translation>
+        <source>Cannot start rbx: click-to-pay handler</source>
+        <translation>RBX을 시작할 수 없습니다: 결제하기 위한 클릭 처리</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
-        <translation>URI를 분석할 수 없습니다! 이는 잘못된 FLITS 주소 또는 URI 매개변수 손상으로 인해 발생할 수 있습니다.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Rubus address or malformed URI parameters.</source>
+        <translation>URI를 분석할 수 없습니다! 이는 잘못된 Rubus 주소 또는 URI 매개변수 손상으로 인해 발생할 수 있습니다.</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -2227,8 +2227,8 @@ Address: %4
         <translation>금액</translation>
     </message>
     <message>
-        <source>Enter FLITS address (e.g. %1)</source>
-        <translation>FLITS 주소 입력(예 : %1)</translation>
+        <source>Enter Rubus address (e.g. %1)</source>
+        <translation>Rubus 주소 입력(예 : %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2271,12 +2271,12 @@ Address: %4
         <translation>%1 ms</translation>
     </message>
     <message>
-        <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
-        <translation>치명적인 오류가 발생하였습니다. FLS는 더 이상 안전하게 계속될 수 없으며, 곧 종료됩니다.</translation>
+        <source>A fatal error occurred. Rubus can no longer continue safely and will quit.</source>
+        <translation>치명적인 오류가 발생하였습니다. RBX는 더 이상 안전하게 계속될 수 없으며, 곧 종료됩니다.</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -2506,8 +2506,8 @@ Address: %4
         <translation>블록체인</translation>
     </message>
     <message>
-        <source>Open the FLITS debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>현재 데이터 디렉토리에서 FLITS 디버그 로그 파일을 엽니다. 로그 파일이 클 경우, 약간의 시간이 걸릴 수 있습니다.</translation>
+        <source>Open the Rubus debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>현재 데이터 디렉토리에서 Rubus 디버그 로그 파일을 엽니다. 로그 파일이 클 경우, 약간의 시간이 걸릴 수 있습니다.</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -2650,8 +2650,8 @@ Address: %4
         <translation>맞춤 백업 경로 :</translation>
     </message>
     <message>
-        <source>Custom zFLS Backup Path:</source>
-        <translation>맞춤 zFLS 백업 경로 :</translation>
+        <source>Custom zRBX Backup Path:</source>
+        <translation>맞춤 zRBX 백업 경로 :</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -2731,8 +2731,8 @@ Address: %4
         <translation>출력:</translation>
     </message>
     <message>
-        <source>Welcome to the FLITS RPC console.</source>
-        <translation>FLITS RPC 콘솔에 오신 것을 환영합니다.</translation>
+        <source>Welcome to the Rubus RPC console.</source>
+        <translation>Rubus RPC 콘솔에 오신 것을 환영합니다.</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -2873,8 +2873,8 @@ Address: %4
         <translation>Shielded</translation>
     </message>
     <message>
-        <source>Accept transparent or shielded FLS</source>
-        <translation>Transparent / Shielded FLS 받기 주소 선택</translation>
+        <source>Accept transparent or shielded RBX</source>
+        <translation>Transparent / Shielded RBX 받기 주소 선택</translation>
     </message>
     <message>
         <source>Add Label</source>
@@ -2983,8 +2983,8 @@ Address: %4
         <translation>금액</translation>
     </message>
     <message>
-        <source>FLS</source>
-        <translation>FLS</translation>
+        <source>RBX</source>
+        <translation>RBX</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -3073,8 +3073,8 @@ Address: %4
         <translation>권장</translation>
     </message>
     <message>
-        <source>FLS/kilobyte</source>
-        <translation>FLS/Kilobyte</translation>
+        <source>RBX/kilobyte</source>
+        <translation>RBX/Kilobyte</translation>
     </message>
     <message>
         <source>0.00 KB</source>
@@ -3242,8 +3242,8 @@ Do you wish to proceed without memo?
         <translation>선택할 수 있는 %1을 가지고 있지 않습니다.</translation>
     </message>
     <message>
-        <source>You don't have any transparent FLSs to shield.</source>
-        <translation>Shield 가 가능한 Transparent FLS 가 없습니다.</translation>
+        <source>You don't have any transparent RBXs to shield.</source>
+        <translation>Shield 가 가능한 Transparent RBX 가 없습니다.</translation>
     </message>
     <message>
         <source>No contacts available, you can go to the contacts screen and add some there!</source>
@@ -3372,8 +3372,8 @@ Do you wish to proceed without memo?
         <translation>키 암호 해재</translation>
     </message>
     <message>
-        <source>FLITS address</source>
-        <translation>FLITS 주소</translation>
+        <source>Rubus address</source>
+        <translation>Rubus 주소</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3489,8 +3489,8 @@ Verify that you have installed a predetermined text editor.</source>
 미리 결정된 텍스트 에디터를 인스톨했는지 확인하세요.</translation>
     </message>
     <message>
-        <source>Welcome to the FLITS RPC console.</source>
-        <translation>FLITS RPC 콘솔에 오신 것을 환영합니다.</translation>
+        <source>Welcome to the Rubus RPC console.</source>
+        <translation>Rubus RPC 콘솔에 오신 것을 환영합니다.</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
@@ -3749,8 +3749,8 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>백업 폴더를 열 수 없습니다.</translation>
     </message>
     <message>
-        <source>Unable to open fls.conf with default application</source>
-        <translation>fls.conf 파일을 기본 앱으로 열 수 없습니다.</translation>
+        <source>Unable to open rbx.conf with default application</source>
+        <translation>rbx.conf 파일을 기본 앱으로 열 수 없습니다.</translation>
     </message>
     <message>
         <source>In:</source>
@@ -3800,8 +3800,8 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>스크립트 검증 스레드 개수</translation>
     </message>
     <message>
-        <source>Start FLITS on system login</source>
-        <translation>시스템 로그인시 FLITS 지갑 시작</translation>
+        <source>Start Rubus on system login</source>
+        <translation>시스템 로그인시 Rubus 지갑 시작</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -3888,7 +3888,7 @@ Are you sure?
         <translation>체크박스</translation>
     </message>
     <message>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures.</source>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other Rubus addresses after it matures.</source>
         <translation>멀티 전송 기능은 확인된 새로 받은 스테이킹 혹은 마스터노드 보상을 100% 전부 까지 지정된 다른 주소로 자동 전송할수 있는 기능입니다.</translation>
     </message>
     <message>
@@ -3981,8 +3981,8 @@ Please check the address and try again.</source>
         <translation>메세지</translation>
     </message>
     <message>
-        <source>FLITS address or contact label</source>
-        <translation>FLITS 주소 / 연락처 라벨</translation>
+        <source>Rubus address or contact label</source>
+        <translation>Rubus 주소 / 연락처 라벨</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -4250,8 +4250,8 @@ Please check the address and try again.</source>
         <translation>FAQ</translation>
     </message>
     <message>
-        <source>About FLS</source>
-        <translation>FLITS 정보</translation>
+        <source>About RBX</source>
+        <translation>Rubus 정보</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4317,8 +4317,8 @@ Are you sure?
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>FLITS Core is shutting down...</source>
-        <translation>FLITS Core가 종료됩니다...</translation>
+        <source>Rubus Core is shutting down...</source>
+        <translation>Rubus Core가 종료됩니다...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -4347,8 +4347,8 @@ Are you sure?
         <translation>로딩중...</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
 </context>
 <context>
@@ -4754,8 +4754,8 @@ NOTE: 업그레이드 이후에는
         <translation>양식</translation>
     </message>
     <message>
-        <source>+0.000585 FLS</source>
-        <translation>+0.000585 FLS</translation>
+        <source>+0.000585 RBX</source>
+        <translation>+0.000585 RBX</translation>
     </message>
     </context>
 <context>
@@ -4805,25 +4805,25 @@ NOTE: 업그레이드 이후에는
     </message>
     <message>
         <source>Welcome to
-FLITS Core Wallet</source>
+Rubus Core Wallet</source>
         <translation>환영합니다.
-FLITS Core Wallet</translation>
+Rubus Core Wallet</translation>
     </message>
     <message>
-        <source>FLITS is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>FLITS 는 많은 경험과 뛰어난 실력을 겸비한 개발자와 암호학자로 구성된 팀이 개발하고 있으며, 혁신적인 지분증명 (Proof of Stake) 블록체인 기반의 오픈소스 프로젝트입니다.</translation>
+        <source>Rubus is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <translation>Rubus 는 많은 경험과 뛰어난 실력을 겸비한 개발자와 암호학자로 구성된 팀이 개발하고 있으며, 혁신적인 지분증명 (Proof of Stake) 블록체인 기반의 오픈소스 프로젝트입니다.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - FLITS believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FLITS 선언서(manifesto) 내용: 프라이버시는 타협할 수 없는 인간의 기본적인 인권입니다. 사용자가 원한다면 언제든 누구에게든 정보를 공유할 수 있는 자유를 보장합니다. FLS는 자기 주권(self sovereignty)을 추구합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - Rubus believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rubus 선언서(manifesto) 내용: 프라이버시는 타협할 수 없는 인간의 기본적인 인권입니다. 사용자가 원한다면 언제든 누구에게든 정보를 공유할 수 있는 자유를 보장합니다. RBX는 자기 주권(self sovereignty)을 추구합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>마스터노드 네트워크는 FLITS 블록체인의 상위의 2nd 레이어 네트워크입니다. 이를 통해 탈중앙화 거버넌스 및 예산 관리가 가능한 DAO를 구현합니다.</translation>
+        <source>The masternode network is RBX's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <translation>마스터노드 네트워크는 Rubus 블록체인의 상위의 2nd 레이어 네트워크입니다. 이를 통해 탈중앙화 거버넌스 및 예산 관리가 가능한 DAO를 구현합니다.</translation>
     </message>
     <message>
-        <source>How FLITS respects your privacy?</source>
-        <translation>FLS는 프라이버시를 얼마나 중요하게 생각하나요?</translation>
+        <source>How Rubus respects your privacy?</source>
+        <translation>RBX는 프라이버시를 얼마나 중요하게 생각하나요?</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -4835,7 +4835,7 @@ FLITS Core Wallet</translation>
     </message>
 </context>
 <context>
-    <name>fls-core</name>
+    <name>rbx-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>지정된 소스에서 JSON-RPC 연결을 허용하십시오. 단일 IP (예 : 1.2.3.4), 네트워크/넷마스크 (예 : 1.2.3.4/255.255.255.0) 또는 네트워크 / CIDR (예 : 1.2.3.4/24)에 대해 &lt;ip&gt; 가 유효합니다. 이 옵션은 여러번 지정할 수 있습니다.</translation>
@@ -4965,8 +4965,8 @@ FLITS Core Wallet</translation>
         <translation>이 제품은 OpenSSL이 개발한 Open SSL 툴킷 &lt;https://www.openssl.org/&gt; 에서 사용하기 위한 프로젝트 소프트웨어, Eric Young이 개발한 암호화 소프트웨어, Thomas Bernard가 개발한 UPnP 소프트웨어가 포함되어 있습니다.</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. FLITS Core is probably already running.</source>
-        <translation>이 컴퓨터를 %s 로 지정하는것은 불가능합니다. FLITS Core는 이미 실행 중입니다.</translation>
+        <source>Unable to bind to %s on this computer. Rubus Core is probably already running.</source>
+        <translation>이 컴퓨터를 %s 로 지정하는것은 불가능합니다. Rubus Core는 이미 실행 중입니다.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -4981,8 +4981,8 @@ FLITS Core Wallet</translation>
         <translation>경고 : -paytxfee가 매우 높게 설정되었습니다! 이것은 전송할 경우 지불 할 트랜잭션 수수료입니다.</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
-        <translation>경고: 컴퓨터의 날짜와 시간이 올바르게 설정되어 있는지 확인해 주세요! 만일 시계가 잘못되어 있다면 FLITS 코어는 정상적으로 작동하지 않을 수 있습니다.</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Rubus Core will not work properly.</source>
+        <translation>경고: 컴퓨터의 날짜와 시간이 올바르게 설정되어 있는지 확인해 주세요! 만일 시계가 잘못되어 있다면 Rubus 코어는 정상적으로 작동하지 않을 수 있습니다.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -5049,8 +5049,8 @@ FLITS Core Wallet</translation>
         <translation>Copyright (C) 2014-%i The Dash Core 개발자들</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The FLITS Core Developers</source>
-        <translation>Copyright (C) 2015-%i The FLITS Core 개발자</translation>
+        <source>Copyright (C) 2015-%i The Rubus Core Developers</source>
+        <translation>Copyright (C) 2015-%i The Rubus Core 개발자</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -5361,8 +5361,8 @@ FLITS Core Wallet</translation>
         <translation>재동기화 준비중...</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
-        <translation>컴퓨터의 날짜와 시간이 올바르게 설정되어 있는지 확인해 주세요! 만일 시계가 잘못되어 있다면 FLITS 코어는 정상적으로 작동하지 않을 수 있습니다.</translation>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong Rubus Core will not work properly.</source>
+        <translation>컴퓨터의 날짜와 시간이 올바르게 설정되어 있는지 확인해 주세요! 만일 시계가 잘못되어 있다면 Rubus 코어는 정상적으로 작동하지 않을 수 있습니다.</translation>
     </message>
     <message>
         <source>Cannot resolve -%s address: '%s'</source>
@@ -5601,8 +5601,8 @@ FLITS Core Wallet</translation>
         <translation>지갑 인증 중...</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart FLITS Core to complete</source>
-        <translation>지갑을 다시 작성해야 합니다: 완료하려면 FLITS 코어를 재시작해야 합니다</translation>
+        <source>Wallet needed to be rewritten: restart Rubus Core to complete</source>
+        <translation>지갑을 다시 작성해야 합니다: 완료하려면 Rubus 코어를 재시작해야 합니다</translation>
     </message>
     <message>
         <source>Wallet options:</source>
@@ -5672,8 +5672,8 @@ FLITS Core Wallet</translation>
         <translation>전송할 투명 / 쉴드 코인 선택 </translation>
     </message>
     <message>
-        <source>FLITS address or contact label</source>
-        <translation>FLITS 주소 / 연락처 라벨</translation>
+        <source>Rubus address or contact label</source>
+        <translation>Rubus 주소 / 연락처 라벨</translation>
     </message>
     <message>
         <source>Amount</source>

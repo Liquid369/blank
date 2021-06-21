@@ -1,16 +1,16 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h"
+#include "config/rbx-config.h"
 #endif
 
-#include "qt/fls/flsgui.h"
+#include "qt/rbx/rbxgui.h"
 
 #include "clientmodel.h"
 #include "guiconstants.h"
@@ -19,8 +19,8 @@
 #include "net.h"
 #include "networkstyle.h"
 #include "optionsmodel.h"
-#include "qt/fls/splash.h"
-#include "qt/fls/welcomecontentwidget.h"
+#include "qt/rbx/splash.h"
+#include "qt/rbx/welcomecontentwidget.h"
 #include "utilitydialog.h"
 #include "winshutdownmonitor.h"
 
@@ -85,7 +85,7 @@ static void InitMessage(const std::string& message)
  */
 static std::string Translate(const char* psz)
 {
-    return QCoreApplication::translate("fls-core", psz).toStdString();
+    return QCoreApplication::translate("rbx-core", psz).toStdString();
 }
 
 static QString GetLangTerritory(bool forceLangFromSetting = false)
@@ -132,11 +132,11 @@ static void initTranslations(QTranslator& qtTranslatorBase, QTranslator& qtTrans
     if (qtTranslator.load("qt_" + lang_territory, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
         QApplication::installTranslator(&qtTranslator);
 
-    // Load e.g. bitcoin_de.qm (shortcut "de" needs to be defined in fls.qrc)
+    // Load e.g. bitcoin_de.qm (shortcut "de" needs to be defined in rbx.qrc)
     if (translatorBase.load(lang, ":/translations/"))
         QApplication::installTranslator(&translatorBase);
 
-    // Load e.g. bitcoin_de_DE.qm (shortcut "de_DE" needs to be defined in fls.qrc)
+    // Load e.g. bitcoin_de_DE.qm (shortcut "de_DE" needs to be defined in rbx.qrc)
     if (translator.load(lang_territory, ":/translations/"))
         QApplication::installTranslator(&translator);
 }
@@ -152,7 +152,7 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 }
 
-/** Class encapsulating FLITS Core startup and shutdown.
+/** Class encapsulating Rubus Core startup and shutdown.
  * Allows running startup and shutdown in a different thread from the UI thread.
  */
 class BitcoinCore : public QObject
@@ -179,7 +179,7 @@ private:
     void handleRunawayException(const std::exception* e);
 };
 
-/** Main FLITS application object */
+/** Main Rubus application object */
 class BitcoinApplication : public QApplication
 {
     Q_OBJECT
@@ -211,7 +211,7 @@ public:
     /// Get process return value
     int getReturnValue() { return returnValue; }
 
-    /// Get window identifier of QMainWindow (FLSGUI)
+    /// Get window identifier of QMainWindow (RBXGUI)
     WId getMainWinId() const;
 
 public Q_SLOTS:
@@ -232,7 +232,7 @@ private:
     QThread* coreThread{nullptr};
     OptionsModel* optionsModel{nullptr};
     ClientModel* clientModel{nullptr};
-    FLSGUI* window{nullptr};
+    RBXGUI* window{nullptr};
     QTimer* pollShutdownTimer{nullptr};
 #ifdef ENABLE_WALLET
     PaymentServer* paymentServer{nullptr};
@@ -244,7 +244,7 @@ private:
     void startThread();
 };
 
-#include "fls.moc"
+#include "rbx.moc"
 
 BitcoinCore::BitcoinCore() : QObject()
 {
@@ -374,10 +374,10 @@ void BitcoinApplication::createOptionsModel()
 
 void BitcoinApplication::createWindow(const NetworkStyle* networkStyle)
 {
-    window = new FLSGUI(networkStyle, 0);
+    window = new RBXGUI(networkStyle, 0);
 
     pollShutdownTimer = new QTimer(window);
-    connect(pollShutdownTimer, &QTimer::timeout, window, &FLSGUI::detectShutdown);
+    connect(pollShutdownTimer, &QTimer::timeout, window, &RBXGUI::detectShutdown);
 }
 
 void BitcoinApplication::createSplashScreen(const NetworkStyle* networkStyle)
@@ -424,7 +424,7 @@ void BitcoinApplication::startThread()
     connect(executor, &BitcoinCore::runawayException, this, &BitcoinApplication::handleRunawayException);
     connect(this, &BitcoinApplication::requestedInitialize, executor, &BitcoinCore::initialize);
     connect(this, &BitcoinApplication::requestedShutdown, executor, &BitcoinCore::shutdown);
-    connect(window, &FLSGUI::requestedRestart, executor, &BitcoinCore::restart);
+    connect(window, &RBXGUI::requestedRestart, executor, &BitcoinCore::restart);
     /*  make sure executor object is deleted in its own thread */
     connect(this, &BitcoinApplication::stopThread, executor, &QObject::deleteLater);
     connect(this, &BitcoinApplication::stopThread, coreThread, &QThread::quit);
@@ -494,8 +494,8 @@ void BitcoinApplication::initializeResult(int retval)
             walletModel = new WalletModel(pwalletMain, optionsModel);
             walletModel->setClientModel(clientModel);
 
-            window->addWallet(FLSGUI::DEFAULT_WALLET, walletModel);
-            window->setCurrentWallet(FLSGUI::DEFAULT_WALLET);
+            window->addWallet(RBXGUI::DEFAULT_WALLET, walletModel);
+            window->setCurrentWallet(RBXGUI::DEFAULT_WALLET);
 
             connect(walletModel, &WalletModel::coinsSent,
                     paymentServer, &PaymentServer::fetchPaymentACK);
@@ -512,9 +512,9 @@ void BitcoinApplication::initializeResult(int retval)
 
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
-        // FLS: URIs or payment requests:
-        //connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &FLSGUI::handlePaymentRequest);
-        connect(window, &FLSGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
+        // RBX: URIs or payment requests:
+        //connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &RBXGUI::handlePaymentRequest);
+        connect(window, &RBXGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
         connect(paymentServer, &PaymentServer::message, [this](const QString& title, const QString& message, unsigned int style) {
           window->message(title, message, style);
         });
@@ -534,7 +534,7 @@ void BitcoinApplication::shutdownResult(int retval)
 
 void BitcoinApplication::handleRunawayException(const QString& message)
 {
-    QMessageBox::critical(0, "Runaway exception", QObject::tr("A fatal error occurred. FLITS can no longer continue safely and will quit.") + QString("\n\n") + message);
+    QMessageBox::critical(0, "Runaway exception", QObject::tr("A fatal error occurred. Rubus can no longer continue safely and will quit.") + QString("\n\n") + message);
     ::exit(1);
 }
 
@@ -558,8 +558,8 @@ int main(int argc, char* argv[])
 // Do not refer to data directory yet, this can be overridden by Intro::pickDataDirectory
 
 /// 2. Basic Qt initialization (not dependent on parameters or configuration)
-    Q_INIT_RESOURCE(fls_locale);
-    Q_INIT_RESOURCE(fls);
+    Q_INIT_RESOURCE(rbx_locale);
+    Q_INIT_RESOURCE(rbx);
 
     // Generate high-dpi pixmaps
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
@@ -606,17 +606,17 @@ int main(int argc, char* argv[])
     if (!Intro::pickDataDirectory())
         return 0;
 
-    /// 6. Determine availability of data directory and parse fls.conf
+    /// 6. Determine availability of data directory and parse rbx.conf
     /// - Do not call GetDataDir(true) before this step finishes
     if (!fs::is_directory(GetDataDir(false))) {
-        QMessageBox::critical(0, QObject::tr("FLITS Core"),
+        QMessageBox::critical(0, QObject::tr("Rubus Core"),
             QObject::tr("Error: Specified data directory \"%1\" does not exist.").arg(QString::fromStdString(gArgs.GetArg("-datadir", ""))));
         return 1;
     }
     try {
         gArgs.ReadConfigFile();
     } catch (const std::exception& e) {
-        QMessageBox::critical(0, QObject::tr("FLITS Core"),
+        QMessageBox::critical(0, QObject::tr("Rubus Core"),
             QObject::tr("Error: Cannot parse configuration file: %1. Only use key=value syntax.").arg(e.what()));
         return 0;
     }
@@ -631,7 +631,7 @@ int main(int argc, char* argv[])
     try {
         SelectParams(ChainNameFromCommandLine());
     } catch(const std::exception& e) {
-        QMessageBox::critical(0, QObject::tr("FLITS Core"), QObject::tr("Error: %1").arg(e.what()));
+        QMessageBox::critical(0, QObject::tr("Rubus Core"), QObject::tr("Error: %1").arg(e.what()));
         return 1;
     }
 #ifdef ENABLE_WALLET
@@ -650,7 +650,7 @@ int main(int argc, char* argv[])
     /// 7a. parse masternode.conf
     std::string strErr;
     if (!masternodeConfig.read(strErr)) {
-        QMessageBox::critical(0, QObject::tr("FLITS Core"),
+        QMessageBox::critical(0, QObject::tr("Rubus Core"),
             QObject::tr("Error reading masternode configuration file: %1").arg(strErr.c_str()));
         return 0;
     }
@@ -665,7 +665,7 @@ int main(int argc, char* argv[])
         exit(0);
 
     // Start up the payment server early, too, so impatient users that click on
-    // fls: links repeatedly have their payment requests routed to this process:
+    // rbx: links repeatedly have their payment requests routed to this process:
     app.createPaymentServer();
 #endif
 

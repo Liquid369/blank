@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT/X11 software license, see the accompanying
@@ -11,7 +11,7 @@
 
 #include "guiutil.h"
 #include "walletmodel.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/qtutils.h"
 
 #include <QUrl>
 #include <QFile>
@@ -21,7 +21,7 @@ OpenURIDialog::OpenURIDialog(QWidget* parent) : QDialog(parent, Qt::WindowSystem
 {
     ui->setupUi(this);
     this->setStyleSheet(parent->styleSheet());
-    ui->uriEdit->setPlaceholderText("fls:");
+    ui->uriEdit->setPlaceholderText("rbx:");
 
     ui->labelSubtitle->setText("URI");
     setCssProperty(ui->labelSubtitle, "text-title2-dialog");
@@ -83,8 +83,8 @@ void OpenURIDialog::on_selectFileButton_clicked()
         }
 
         QString str = QString::fromStdString(std::string(r.constData(), r.length()));
-        if (!str.startsWith("fls")) {
-            inform(tr("Invalid URI, not starting with \"fls\" prefix"));
+        if (!str.startsWith("rbx")) {
+            inform(tr("Invalid URI, not starting with \"rbx\" prefix"));
         }
         ui->uriEdit->setText(str);
     }

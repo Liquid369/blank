@@ -1,14 +1,14 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/txrow.h"
-#include "qt/fls/forms/ui_txrow.h"
+#include "qt/rbx/txrow.h"
+#include "qt/rbx/forms/ui_txrow.h"
 
 #include "guiutil.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/qtutils.h"
 
 TxRow::TxRow(QWidget *parent) :
     QWidget(parent),
@@ -77,7 +77,7 @@ void TxRow::setType(bool isLightTheme, int type, bool isConfirmed)
             css = "text-list-amount-send";
             break;
         case TransactionRecord::Generated:
-        case TransactionRecord::StakeZFLS:
+        case TransactionRecord::StakeZRBX:
         case TransactionRecord::MNReward:
         case TransactionRecord::StakeMint:
             path = "://ic-transaction-staked";
@@ -93,7 +93,7 @@ void TxRow::setType(bool isLightTheme, int type, bool isConfirmed)
         case TransactionRecord::SendToAddress:
         case TransactionRecord::SendToOther:
         case TransactionRecord::ZerocoinSpend:
-        case TransactionRecord::ZerocoinSpend_Change_zFls:
+        case TransactionRecord::ZerocoinSpend_Change_zRbx:
         case TransactionRecord::ZerocoinSpend_FromMe:
         case TransactionRecord::SendToShielded:
         case TransactionRecord::SendToNobody:

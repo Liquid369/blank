@@ -1,10 +1,10 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/guitransactionsutils.h"
+#include "qt/rbx/guitransactionsutils.h"
 #include "bitcoinunits.h"
 #include "optionsmodel.h"
 

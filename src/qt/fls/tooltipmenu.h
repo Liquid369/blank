@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -9,11 +9,11 @@
 #ifndef TOOLTIPMENU_H
 #define TOOLTIPMENU_H
 
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 #include <QWidget>
 #include <QModelIndex>
 
-class FLSGUI;
+class RBXGUI;
 class WalletModel;
 
 namespace Ui {
@@ -29,7 +29,7 @@ class TooltipMenu : public PWidget
     Q_OBJECT
 
 public:
-    explicit TooltipMenu(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit TooltipMenu(RBXGUI* _window, QWidget *parent = nullptr);
     ~TooltipMenu() override;
 
     void setIndex(const QModelIndex &index);

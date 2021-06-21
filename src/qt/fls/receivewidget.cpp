@@ -1,17 +1,17 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/receivewidget.h"
-#include "qt/fls/forms/ui_receivewidget.h"
-#include "qt/fls/requestdialog.h"
-#include "qt/fls/addnewcontactdialog.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/myaddressrow.h"
-#include "qt/fls/furlistrow.h"
-#include "qt/fls/addressholder.h"
+#include "qt/rbx/receivewidget.h"
+#include "qt/rbx/forms/ui_receivewidget.h"
+#include "qt/rbx/requestdialog.h"
+#include "qt/rbx/addnewcontactdialog.h"
+#include "qt/rbx/qtutils.h"
+#include "qt/rbx/myaddressrow.h"
+#include "qt/rbx/furlistrow.h"
+#include "qt/rbx/addressholder.h"
 #include "walletmodel.h"
 #include "guiutil.h"
 #include "pairresult.h"
@@ -23,7 +23,7 @@
 #define DECORATION_SIZE 70
 #define NUM_ITEMS 3
 
-ReceiveWidget::ReceiveWidget(FLSGUI* parent) :
+ReceiveWidget::ReceiveWidget(RBXGUI* parent) :
     PWidget(parent),
     ui(new Ui::ReceiveWidget)
 {

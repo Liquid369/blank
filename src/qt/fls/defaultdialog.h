@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,7 +7,7 @@
 #ifndef DEFAULTDIALOG_H
 #define DEFAULTDIALOG_H
 
-#include "qt/fls/focuseddialog.h"
+#include "qt/rbx/focuseddialog.h"
 
 namespace Ui {
 class DefaultDialog;

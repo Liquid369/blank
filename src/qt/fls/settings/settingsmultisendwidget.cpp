@@ -1,13 +1,13 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsmultisendwidget.h"
-#include "qt/fls/settings/forms/ui_settingsmultisendwidget.h"
-#include "qt/fls/settings/settingsmultisenddialog.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/settings/settingsmultisendwidget.h"
+#include "qt/rbx/settings/forms/ui_settingsmultisendwidget.h"
+#include "qt/rbx/settings/settingsmultisenddialog.h"
+#include "qt/rbx/qtutils.h"
 #include "addresstablemodel.h"
 #include "base58.h"
 #include "init.h"
@@ -163,7 +163,7 @@ SettingsMultisendWidget::SettingsMultisendWidget(PWidget *parent) :
     ui->labelTitle->setText("Multisend");
     setCssTitleScreen(ui->labelTitle);
 
-    ui->labelSubtitle1->setText(tr("MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures."));
+    ui->labelSubtitle1->setText(tr("MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other Rubus addresses after it matures."));
     setCssSubtitleScreen(ui->labelSubtitle1);
 
     //Button Group

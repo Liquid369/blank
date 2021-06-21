@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,14 +7,14 @@
 #ifndef COLDSTAKINGWIDGET_H
 #define COLDSTAKINGWIDGET_H
 
-#include "qt/fls/pwidget.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
-#include "qt/fls/txviewholder.h"
-#include "qt/fls/tooltipmenu.h"
-#include "qt/fls/sendmultirow.h"
-#include "qt/fls/coldstakingmodel.h"
-#include "qt/fls/contactsdropdown.h"
-#include "qt/fls/addressholder.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/furabstractlistitemdelegate.h"
+#include "qt/rbx/txviewholder.h"
+#include "qt/rbx/tooltipmenu.h"
+#include "qt/rbx/sendmultirow.h"
+#include "qt/rbx/coldstakingmodel.h"
+#include "qt/rbx/contactsdropdown.h"
+#include "qt/rbx/addressholder.h"
 #include "transactiontablemodel.h"
 #include "addresstablemodel.h"
 #include "addressfilterproxymodel.h"
@@ -26,7 +26,7 @@
 #include <QSpacerItem>
 #include <atomic>
 
-class FLSGUI;
+class RBXGUI;
 class WalletModel;
 class CSDelegationHolder;
 
@@ -43,7 +43,7 @@ class ColdStakingWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit ColdStakingWidget(FLSGUI* parent);
+    explicit ColdStakingWidget(RBXGUI* parent);
     ~ColdStakingWidget();
 
     void loadWalletModel() override;

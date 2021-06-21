@@ -1,10 +1,10 @@
 // Copyright (c) 2017-2019 The PIVX developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_CSPORKDB_H
-#define FLS_CSPORKDB_H
+#ifndef RBX_CSPORKDB_H
+#define RBX_CSPORKDB_H
 
 #include "fs.h"
 #include "dbwrapper.h"
@@ -26,4 +26,4 @@ public:
 };
 
 
-#endif //FLS_CSPORKDB_H
+#endif //RBX_CSPORKDB_H

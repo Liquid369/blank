@@ -5,8 +5,8 @@ Release Process
 
 ### Before every release candidate
 
-* Update translations (ping Fuzzbawls on Discord) see [translation_process.md](https://github.com/flitsnode/flits-core/blob/master/doc/translation_process.md#synchronising-translations).
-* Update manpages, see [gen-manpages.sh](https://github.com/flitsnode/flits-core/blob/master/contrib/devtools/README.md#gen-manpagessh).
+* Update translations (ping Fuzzbawls on Discord) see [translation_process.md](https://github.com/flitsnode/Rubus-core/blob/master/doc/translation_process.md#synchronising-translations).
+* Update manpages, see [gen-manpages.sh](https://github.com/flitsnode/Rubus-core/blob/master/contrib/devtools/README.md#gen-manpagessh).
 * Update release candidate version in `configure.ac` (`CLIENT_VERSION_RC`)
 
 ### Before every major and minor release
@@ -49,12 +49,12 @@ If you're using the automated script (found in [contrib/gitian-build.py](/contri
 Check out the source code in the following directory hierarchy.
 
     cd /path/to/your/toplevel/build
-    git clone https://github.com/fls-project/gitian.sigs.git
-    git clone https://github.com/flitsnode/flits-core-detached-sigs.git
+    git clone https://github.com/rbx-project/gitian.sigs.git
+    git clone https://github.com/flitsnode/Rubus-core-detached-sigs.git
     git clone https://github.com/devrandom/gitian-builder.git
-    git clone https://github.com/flitsnode/flits-core.git
+    git clone https://github.com/flitsnode/Rubus-core.git
 
-### FLITS maintainers/release engineers, suggestion for writing release notes
+### Rubus maintainers/release engineers, suggestion for writing release notes
 
 Write release notes. git shortlog helps a lot, for example:
 
@@ -75,7 +75,7 @@ If you're using the automated script (found in [contrib/gitian-build.py](/contri
 
 Setup Gitian descriptors:
 
-    pushd ./fls
+    pushd ./rbx
     export SIGNER=(your Gitian key, ie bluematt, sipa, etc)
     export VERSION=(new version, e.g. 0.8.0)
     git fetch
@@ -108,10 +108,10 @@ Create the macOS SDK tarball, see the [macOS build instructions](build-osx.md#de
 
 NOTE: Gitian is sometimes unable to download files. If you have errors, try the step below.
 
-By default, Gitian will fetch source files as needed. To cache them ahead of time, make sure you have checked out the tag you want to build in fls, then:
+By default, Gitian will fetch source files as needed. To cache them ahead of time, make sure you have checked out the tag you want to build in rbx, then:
 
     pushd ./gitian-builder
-    make -C ../fls/depends download SOURCES_PATH=`pwd`/cache/common
+    make -C ../rbx/depends download SOURCES_PATH=`pwd`/cache/common
     popd
 
 Only missing files will be fetched, so this is safe to re-run for each build.
@@ -119,50 +119,50 @@ Only missing files will be fetched, so this is safe to re-run for each build.
 NOTE: Offline builds must use the --url flag to ensure Gitian fetches only from local URLs. For example:
 
     pushd ./gitian-builder
-    ./bin/gbuild --url fls=/path/to/fls,signature=/path/to/sigs {rest of arguments}
+    ./bin/gbuild --url rbx=/path/to/rbx,signature=/path/to/sigs {rest of arguments}
     popd
 
 The gbuild invocations below <b>DO NOT DO THIS</b> by default.
 
-### Build and sign FLITS Core for Linux, Windows, and macOS:
+### Build and sign Rubus Core for Linux, Windows, and macOS:
 
     pushd ./gitian-builder
-    ./bin/gbuild --num-make 2 --memory 3000 --commit fls=v${VERSION} ../fls/contrib/gitian-descriptors/gitian-linux.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-linux --destination ../gitian.sigs/ ../fls/contrib/gitian-descriptors/gitian-linux.yml
-    mv build/out/fls-*.tar.gz build/out/src/fls-*.tar.gz ../
+    ./bin/gbuild --num-make 2 --memory 3000 --commit rbx=v${VERSION} ../rbx/contrib/gitian-descriptors/gitian-linux.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-linux --destination ../gitian.sigs/ ../rbx/contrib/gitian-descriptors/gitian-linux.yml
+    mv build/out/rbx-*.tar.gz build/out/src/rbx-*.tar.gz ../
 
-    ./bin/gbuild --num-make 2 --memory 3000 --commit fls=v${VERSION} ../fls/contrib/gitian-descriptors/gitian-win.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../fls/contrib/gitian-descriptors/gitian-win.yml
-    mv build/out/fls-*-win-unsigned.tar.gz inputs/fls-win-unsigned.tar.gz
-    mv build/out/fls-*.zip build/out/fls-*.exe ../
+    ./bin/gbuild --num-make 2 --memory 3000 --commit rbx=v${VERSION} ../rbx/contrib/gitian-descriptors/gitian-win.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../rbx/contrib/gitian-descriptors/gitian-win.yml
+    mv build/out/rbx-*-win-unsigned.tar.gz inputs/rbx-win-unsigned.tar.gz
+    mv build/out/rbx-*.zip build/out/rbx-*.exe ../
 
-    ./bin/gbuild --num-make 2 --memory 3000 --commit fls=v${VERSION} ../fls/contrib/gitian-descriptors/gitian-osx.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../fls/contrib/gitian-descriptors/gitian-osx.yml
-    mv build/out/fls-*-osx-unsigned.tar.gz inputs/fls-osx-unsigned.tar.gz
-    mv build/out/fls-*.tar.gz build/out/fls-*.dmg ../
+    ./bin/gbuild --num-make 2 --memory 3000 --commit rbx=v${VERSION} ../rbx/contrib/gitian-descriptors/gitian-osx.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../rbx/contrib/gitian-descriptors/gitian-osx.yml
+    mv build/out/rbx-*-osx-unsigned.tar.gz inputs/rbx-osx-unsigned.tar.gz
+    mv build/out/rbx-*.tar.gz build/out/rbx-*.dmg ../
     popd
 
 Build output expected:
 
-  1. source tarball (`fls-${VERSION}.tar.gz`)
-  2. linux 32-bit and 64-bit dist tarballs (`fls-${VERSION}-linux[32|64].tar.gz`)
-  3. windows 32-bit and 64-bit unsigned installers and dist zips (`fls-${VERSION}-win[32|64]-setup-unsigned.exe`, `fls-${VERSION}-win[32|64].zip`)
-  4. macOS unsigned installer and dist tarball (`fls-${VERSION}-osx-unsigned.dmg`, `fls-${VERSION}-osx64.tar.gz`)
+  1. source tarball (`rbx-${VERSION}.tar.gz`)
+  2. linux 32-bit and 64-bit dist tarballs (`rbx-${VERSION}-linux[32|64].tar.gz`)
+  3. windows 32-bit and 64-bit unsigned installers and dist zips (`rbx-${VERSION}-win[32|64]-setup-unsigned.exe`, `rbx-${VERSION}-win[32|64].zip`)
+  4. macOS unsigned installer and dist tarball (`rbx-${VERSION}-osx-unsigned.dmg`, `rbx-${VERSION}-osx64.tar.gz`)
   5. Gitian signatures (in `gitian.sigs/${VERSION}-<linux|{win,osx}-unsigned>/(your Gitian key)/`)
 
 ### Verify other gitian builders signatures to your own. (Optional)
 
 Add other gitian builders keys to your gpg keyring, and/or refresh keys.
 
-    gpg --import fls/contrib/gitian-keys/*.pgp
+    gpg --import rbx/contrib/gitian-keys/*.pgp
     gpg --refresh-keys
 
 Verify the signatures
 
     pushd ./gitian-builder
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../fls/contrib/gitian-descriptors/gitian-linux.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../fls/contrib/gitian-descriptors/gitian-win.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../fls/contrib/gitian-descriptors/gitian-osx.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../rbx/contrib/gitian-descriptors/gitian-linux.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../rbx/contrib/gitian-descriptors/gitian-win.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../rbx/contrib/gitian-descriptors/gitian-osx.yml
     popd
 
 ### Next steps:
@@ -183,22 +183,22 @@ Codesigner only: Create Windows/macOS detached signatures:
 
 Codesigner only: Sign the macOS binary:
 
-    transfer fls-osx-unsigned.tar.gz to macOS for signing
-    tar xf fls-osx-unsigned.tar.gz
+    transfer rbx-osx-unsigned.tar.gz to macOS for signing
+    tar xf rbx-osx-unsigned.tar.gz
     ./detached-sig-create.sh -s "Key ID"
     Enter the keychain password and authorize the signature
     Move signature-osx.tar.gz back to the gitian host
 
 Codesigner only: Sign the windows binaries:
 
-    tar xf fls-win-unsigned.tar.gz
+    tar xf rbx-win-unsigned.tar.gz
     ./detached-sig-create.sh -key /path/to/codesign.key
     Enter the passphrase for the key when prompted
     signature-win.tar.gz will be created
 
 Codesigner only: Commit the detached codesign payloads:
 
-    cd ~/fls-detached-sigs
+    cd ~/rbx-detached-sigs
     checkout the appropriate branch for this release series
     rm -rf *
     tar xf signature-osx.tar.gz
@@ -211,24 +211,24 @@ Codesigner only: Commit the detached codesign payloads:
 Non-codesigners: wait for Windows/macOS detached signatures:
 
 - Once the Windows/macOS builds each have 3 matching signatures, they will be signed with their respective release keys.
-- Detached signatures will then be committed to the [fls-detached-sigs](https://github.com/flitsnode/flits-core-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
+- Detached signatures will then be committed to the [rbx-detached-sigs](https://github.com/flitsnode/Rubus-core-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
 
 Create (and optionally verify) the signed macOS binary:
 
     pushd ./gitian-builder
-    ./bin/gbuild -i --commit signature=v${VERSION} ../fls/contrib/gitian-descriptors/gitian-osx-signer.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../fls/contrib/gitian-descriptors/gitian-osx-signer.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../fls/contrib/gitian-descriptors/gitian-osx-signer.yml
-    mv build/out/fls-osx-signed.dmg ../fls-${VERSION}-osx.dmg
+    ./bin/gbuild -i --commit signature=v${VERSION} ../rbx/contrib/gitian-descriptors/gitian-osx-signer.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../rbx/contrib/gitian-descriptors/gitian-osx-signer.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../rbx/contrib/gitian-descriptors/gitian-osx-signer.yml
+    mv build/out/rbx-osx-signed.dmg ../rbx-${VERSION}-osx.dmg
     popd
 
 Create (and optionally verify) the signed Windows binaries:
 
     pushd ./gitian-builder
-    ./bin/gbuild -i --commit signature=v${VERSION} ../fls/contrib/gitian-descriptors/gitian-win-signer.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../fls/contrib/gitian-descriptors/gitian-win-signer.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../fls/contrib/gitian-descriptors/gitian-win-signer.yml
-    mv build/out/fls-*win64-setup.exe ../fls-${VERSION}-win64-setup.exe
+    ./bin/gbuild -i --commit signature=v${VERSION} ../rbx/contrib/gitian-descriptors/gitian-win-signer.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../rbx/contrib/gitian-descriptors/gitian-win-signer.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../rbx/contrib/gitian-descriptors/gitian-win-signer.yml
+    mv build/out/rbx-*win64-setup.exe ../rbx-${VERSION}-win64-setup.exe
     popd
 
 Commit your signature for the signed macOS/Windows binaries:
@@ -250,16 +250,16 @@ sha256sum * > SHA256SUMS
 
 The list of files should be:
 ```
-fls-${VERSION}-aarch64-linux-gnu.tar.gz
-fls-${VERSION}-arm-linux-gnueabihf.tar.gz
-fls-${VERSION}-i686-pc-linux-gnu.tar.gz
-fls-${VERSION}-riscv64-linux-gnu.tar.gz
-fls-${VERSION}-x86_64-linux-gnu.tar.gz
-fls-${VERSION}-osx64.tar.gz
-fls-${VERSION}-osx.dmg
-fls-${VERSION}.tar.gz
-fls-${VERSION}-win64-setup.exe
-fls-${VERSION}-win64.zip
+rbx-${VERSION}-aarch64-linux-gnu.tar.gz
+rbx-${VERSION}-arm-linux-gnueabihf.tar.gz
+rbx-${VERSION}-i686-pc-linux-gnu.tar.gz
+rbx-${VERSION}-riscv64-linux-gnu.tar.gz
+rbx-${VERSION}-x86_64-linux-gnu.tar.gz
+rbx-${VERSION}-osx64.tar.gz
+rbx-${VERSION}-osx.dmg
+rbx-${VERSION}.tar.gz
+rbx-${VERSION}-win64-setup.exe
+rbx-${VERSION}-win64.zip
 ```
 The `*-debug*` files generated by the gitian build contain debug symbols
 for troubleshooting by developers. It is assumed that anyone that is interested
@@ -281,10 +281,10 @@ Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spur
 
   - bitcointalk announcement thread
 
-  - Optionally twitter, reddit /r/fls, ... but this will usually sort out itself
+  - Optionally twitter, reddit /r/rbx, ... but this will usually sort out itself
 
   - Archive release notes for the new version to `doc/release-notes/` (branch `master` and branch of the release)
 
-  - Create a [new GitHub release](https://github.com/flitsnode/flits-core/releases/new) with a link to the archived release notes.
+  - Create a [new GitHub release](https://github.com/flitsnode/Rubus-core/releases/new) with a link to the archived release notes.
 
   - Celebrate

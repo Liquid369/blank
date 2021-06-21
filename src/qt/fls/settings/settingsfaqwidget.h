@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -11,7 +11,7 @@
 
 #include <QDialog>
 
-class FLSGUI;
+class RBXGUI;
 
 namespace Ui {
 class SettingsFaqWidget;
@@ -30,7 +30,7 @@ public:
         MNCONTROLLER
     };
 
-    explicit SettingsFaqWidget(FLSGUI *parent = nullptr);
+    explicit SettingsFaqWidget(RBXGUI *parent = nullptr);
     ~SettingsFaqWidget();
 
     void showEvent(QShowEvent *event) override;

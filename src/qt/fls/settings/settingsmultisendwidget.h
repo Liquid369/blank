@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -11,10 +11,10 @@
 
 #include <QWidget>
 #include <QAbstractTableModel>
-#include "qt/fls/pwidget.h"
-#include "qt/fls/furabstractlistitemdelegate.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/furabstractlistitemdelegate.h"
 
-class FLSGUI;
+class RBXGUI;
 
 namespace Ui {
 class SettingsMultisendWidget;

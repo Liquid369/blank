@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -11,7 +11,7 @@
 
 #include <QWidget>
 #include <QDataWidgetMapper>
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 namespace Ui {
 class SettingsWalletOptionsWidget;
 }
@@ -21,7 +21,7 @@ class SettingsWalletOptionsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWalletOptionsWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsWalletOptionsWidget(RBXGUI* _window, QWidget *parent = nullptr);
     ~SettingsWalletOptionsWidget();
 
     void setMapper(QDataWidgetMapper *mapper);

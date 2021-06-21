@@ -1,5 +1,5 @@
 ---
-name: "fls-dmg-signer"
+name: "rbx-dmg-signer"
 distro: "ubuntu"
 suites:
 - "bionic"
@@ -8,10 +8,10 @@ architectures:
 packages:
 - "faketime"
 remotes:
-- "url": "https://github.com/flitsnode/flits-core-detached-sigs.git"
+- "url": "https://github.com/flitsnode/Rubus-core-detached-sigs.git"
   "dir": "signature"
 files:
-- "fls-osx-unsigned.tar.gz"
+- "rbx-osx-unsigned.tar.gz"
 script: |
   set -e -o pipefail
 
@@ -30,8 +30,8 @@ script: |
     chmod +x ${WRAP_DIR}/${prog}
   done
 
-  UNSIGNED=fls-osx-unsigned.tar.gz
-  SIGNED=fls-osx-signed.dmg
+  UNSIGNED=rbx-osx-unsigned.tar.gz
+  SIGNED=rbx-osx-signed.dmg
 
   tar -xf ${UNSIGNED}
   OSX_VOLNAME="$(cat osx_volname)"

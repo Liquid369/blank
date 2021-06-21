@@ -1,16 +1,16 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/snackbar.h"
-#include "qt/fls/forms/ui_snackbar.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/snackbar.h"
+#include "qt/rbx/forms/ui_snackbar.h"
+#include "qt/rbx/qtutils.h"
 #include <QTimer>
 
 
-SnackBar::SnackBar(FLSGUI* _window, QWidget *parent) :
+SnackBar::SnackBar(RBXGUI* _window, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SnackBar),
     window(_window),
@@ -25,7 +25,7 @@ SnackBar::SnackBar(FLSGUI* _window, QWidget *parent) :
 
     connect(ui->pushButton, &QPushButton::clicked, this, &SnackBar::close);
     if (window)
-        connect(window, &FLSGUI::windowResizeEvent, this, &SnackBar::windowResizeEvent);
+        connect(window, &RBXGUI::windowResizeEvent, this, &SnackBar::windowResizeEvent);
     else {
         ui->horizontalLayout->setContentsMargins(0,0,0,0);
         ui->label->setStyleSheet("font-size: 15px; color:white;");

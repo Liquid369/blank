@@ -1,21 +1,21 @@
 
 Debian
 ====================
-This directory contains files used to package flsd/fls-qt
-for Debian-based Linux systems. If you compile flsd/fls-qt yourself, there are some useful files here.
+This directory contains files used to package rbxd/rbx-qt
+for Debian-based Linux systems. If you compile rbxd/rbx-qt yourself, there are some useful files here.
 
-## fls: URI support ##
+## rbx: URI support ##
 
 
-fls-qt.desktop  (Gnome / Open Desktop)
+rbx-qt.desktop  (Gnome / Open Desktop)
 To install:
 
-	sudo desktop-file-install fls-qt.desktop
+	sudo desktop-file-install rbx-qt.desktop
 	sudo update-desktop-database
 
 If you build yourself, you will either need to modify the paths in
-the .desktop file or copy or symlink your fls-qt binary to `/usr/bin`
-and the `../../share/pixmaps/fls128.png` to `/usr/share/pixmaps`
+the .desktop file or copy or symlink your rbx-qt binary to `/usr/bin`
+and the `../../share/pixmaps/rbx128.png` to `/usr/share/pixmaps`
 
-fls-qt.protocol (KDE)
+rbx-qt.protocol (KDE)
 

@@ -1,14 +1,14 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/qtutils.h"
 
 #include "guiconstants.h"
 #include "qrencode.h"
-#include "qt/fls/snackbar.h"
+#include "qt/rbx/snackbar.h"
 
 #include <QFile>
 #include <QGraphicsDropShadowEffect>
@@ -38,7 +38,7 @@ bool openDialog(QDialog* widget, QWidget* gui)
     return widget->exec();
 }
 
-void closeDialog(QDialog* widget, FLSGUI* gui)
+void closeDialog(QDialog* widget, RBXGUI* gui)
 {
     widget->setWindowFlags(Qt::CustomizeWindowHint);
     widget->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -59,7 +59,7 @@ void openDialogFullScreen(QWidget* parent, QWidget* dialog)
     dialog->resize(parent->width(), parent->height());
 }
 
-bool openDialogWithOpaqueBackgroundY(QDialog* widget, FLSGUI* gui, double posX, int posY)
+bool openDialogWithOpaqueBackgroundY(QDialog* widget, RBXGUI* gui, double posX, int posY)
 {
     widget->setWindowFlags(Qt::CustomizeWindowHint);
     widget->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -76,12 +76,12 @@ bool openDialogWithOpaqueBackgroundY(QDialog* widget, FLSGUI* gui, double posX, 
     return res;
 }
 
-bool openDialogWithOpaqueBackground(QDialog* widget, FLSGUI* gui, double posX)
+bool openDialogWithOpaqueBackground(QDialog* widget, RBXGUI* gui, double posX)
 {
     return openDialogWithOpaqueBackgroundY(widget, gui, posX, 5);
 }
 
-bool openDialogWithOpaqueBackgroundFullScreen(QDialog* widget, FLSGUI* gui)
+bool openDialogWithOpaqueBackgroundFullScreen(QDialog* widget, RBXGUI* gui)
 {
     widget->setWindowFlags(Qt::CustomizeWindowHint);
     widget->setAttribute(Qt::WA_TranslucentBackground, true);

@@ -1,15 +1,15 @@
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_CONSENSUS_ZEROCOIN_VERIFY_H
-#define FLS_CONSENSUS_ZEROCOIN_VERIFY_H
+#ifndef RBX_CONSENSUS_ZEROCOIN_VERIFY_H
+#define RBX_CONSENSUS_ZEROCOIN_VERIFY_H
 
 #include "consensus/consensus.h"
 #include "script/interpreter.h"
-#include "zflschain.h"
+#include "zrbxchain.h"
 
 /** Context-independent validity checks */
 bool CheckZerocoinSpend(const CTransaction& tx, bool fVerifySignature, CValidationState& state, bool fFakeSerialAttack = false);
@@ -22,4 +22,4 @@ bool CheckPublicCoinSpendVersion(int version);
 bool ContextualCheckZerocoinSpend(const CTransaction& tx, const libzerocoin::CoinSpend* spend, int nHeight, const uint256& hashBlock);
 bool ContextualCheckZerocoinSpendNoSerialCheck(const CTransaction& tx, const libzerocoin::CoinSpend* spend, int nHeight, const uint256& hashBlock);
 
-#endif //FLS_CONSENSUS_ZEROCOIN_VERIFY_H
+#endif //RBX_CONSENSUS_ZEROCOIN_VERIFY_H

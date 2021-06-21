@@ -276,7 +276,7 @@
                </size>
               </property>
               <property name="text">
-               <string>FLITS address or contact label</string>
+               <string>Rubus address or contact label</string>
               </property>
              </widget>
             </item>

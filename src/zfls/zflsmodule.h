@@ -1,11 +1,11 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 //
-#ifndef FLS_ZFLSMODULE_H
-#define FLS_ZFLSMODULE_H
+#ifndef RBX_ZRBXMODULE_H
+#define RBX_ZRBXMODULE_H
 
 #include "libzerocoin/bignum.h"
 #include "libzerocoin/Denominations.h"
@@ -19,7 +19,7 @@
 #include "uint256.h"
 #include <streams.h>
 #include <utilstrencodings.h>
-#include "zfls/zerocoin.h"
+#include "zrbx/zerocoin.h"
 #include "chainparams.h"
 
 static int const PUBSPEND_SCHNORR = 4;
@@ -76,7 +76,7 @@ public:
 
 class CValidationState;
 
-namespace ZFLSModule {
+namespace ZRBXModule {
     CDataStream ScriptSigToSerializedSpend(const CScript& scriptSig);
     PublicCoinSpend parseCoinSpend(const CTxIn &in);
     bool parseCoinSpend(const CTxIn &in, const CTransaction& tx, const CTxOut &prevOut, PublicCoinSpend& publicCoinSpend);
@@ -94,4 +94,4 @@ namespace ZFLSModule {
 };
 
 
-#endif //FLS_ZFLSMODULE_H
+#endif //RBX_ZRBXMODULE_H

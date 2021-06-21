@@ -1,7 +1,7 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -69,7 +69,7 @@ extern double NSAppKitVersionNumber;
 #endif
 #endif
 
-#define URI_SCHEME "fls"
+#define URI_SCHEME "rbx"
 
 #if defined(Q_OS_MAC)
 #pragma GCC diagnostic push
@@ -123,14 +123,14 @@ CAmount parseValue(const QString& text, int displayUnit, bool* valid_out)
     return valid ? val : 0;
 }
 
-QString formatBalance(CAmount amount, int nDisplayUnit, bool isZfls)
+QString formatBalance(CAmount amount, int nDisplayUnit, bool isZrbx)
 {
-    return (amount == 0) ? ("0.00 " + BitcoinUnits::name(nDisplayUnit, isZfls)) : BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, amount, false, BitcoinUnits::separatorAlways, true, isZfls);
+    return (amount == 0) ? ("0.00 " + BitcoinUnits::name(nDisplayUnit, isZrbx)) : BitcoinUnits::floorHtmlWithUnit(nDisplayUnit, amount, false, BitcoinUnits::separatorAlways, true, isZrbx);
 }
 
-QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit, bool isZfls)
+QString formatBalanceWithoutHtml(CAmount amount, int nDisplayUnit, bool isZrbx)
 {
-    return (amount == 0) ? ("0.00 " + BitcoinUnits::name(nDisplayUnit, isZfls)) : BitcoinUnits::floorWithUnit(nDisplayUnit, amount, false, BitcoinUnits::separatorAlways, true, isZfls);
+    return (amount == 0) ? ("0.00 " + BitcoinUnits::name(nDisplayUnit, isZrbx)) : BitcoinUnits::floorWithUnit(nDisplayUnit, amount, false, BitcoinUnits::separatorAlways, true, isZrbx);
 }
 
 void setupAddressWidget(QValidatedLineEdit* widget, QWidget* parent)
@@ -140,7 +140,7 @@ void setupAddressWidget(QValidatedLineEdit* widget, QWidget* parent)
     widget->setFont(bitcoinAddressFont());
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter FLITS address (e.g. %1)").arg("D7VFR83SQbiezrW72hjcWJtcfip5krte2Z"));
+    widget->setPlaceholderText(QObject::tr("Enter Rubus address (e.g. %1)").arg("D7VFR83SQbiezrW72hjcWJtcfip5krte2Z"));
     widget->setValidator(new BitcoinAddressEntryValidator(parent));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent));
 }
@@ -162,7 +162,7 @@ void updateWidgetTextAndCursorPosition(QLineEdit* widget, const QString& str)
 
 bool parseBitcoinURI(const QUrl& uri, SendCoinsRecipient* out)
 {
-    // return if URI is not valid or is no FLS: URI
+    // return if URI is not valid or is no RBX: URI
     if (!uri.isValid() || uri.scheme() != QString(URI_SCHEME))
         return false;
 
@@ -193,7 +193,7 @@ bool parseBitcoinURI(const QUrl& uri, SendCoinsRecipient* out)
             fShouldReturnFalse = false;
         } else if (i->first == "amount") {
             if (!i->second.isEmpty()) {
-                if (!BitcoinUnits::parse(BitcoinUnits::FLS, i->second, &rv.amount)) {
+                if (!BitcoinUnits::parse(BitcoinUnits::RBX, i->second, &rv.amount)) {
                     return false;
                 }
             }
@@ -211,9 +211,9 @@ bool parseBitcoinURI(const QUrl& uri, SendCoinsRecipient* out)
 
 bool parseBitcoinURI(QString uri, SendCoinsRecipient* out)
 {
-    // Convert fls:// to fls:
+    // Convert rbx:// to rbx:
     //
-    //    Cannot handle this later, because fls:// will cause Qt to see the part after // as host,
+    //    Cannot handle this later, because rbx:// will cause Qt to see the part after // as host,
     //    which will lower-case it (and thus invalidate the address).
     if (uri.startsWith(URI_SCHEME "://", Qt::CaseInsensitive)) {
         uri.replace(0, std::strlen(URI_SCHEME) + 3, URI_SCHEME ":");
@@ -228,7 +228,7 @@ QString formatBitcoinURI(const SendCoinsRecipient& info)
     int paramCount = 0;
 
     if (info.amount) {
-        ret += QString("?amount=%1").arg(BitcoinUnits::format(BitcoinUnits::FLS, info.amount, false, BitcoinUnits::separatorNever));
+        ret += QString("?amount=%1").arg(BitcoinUnits::format(BitcoinUnits::RBX, info.amount, false, BitcoinUnits::separatorNever));
         paramCount++;
     }
 
@@ -633,16 +633,16 @@ bool DHMSTableWidgetItem::operator<(QTableWidgetItem const& item) const
 fs::path static StartupShortcutPath()
 {
     if (gArgs.GetBoolArg("-testnet", false))
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "FLITS (testnet).lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "Rubus (testnet).lnk";
     else if (gArgs.GetBoolArg("-regtest", false))
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "FLITS (regtest).lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "Rubus (regtest).lnk";
 
-    return GetSpecialFolderPath(CSIDL_STARTUP) / "FLS.lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / "RBX.lnk";
 }
 
 bool GetStartOnSystemStartup()
 {
-    // check for FLS*.lnk
+    // check for RBX*.lnk
     return fs::exists(StartupShortcutPath());
 }
 
@@ -713,7 +713,7 @@ fs::path static GetAutostartDir()
 
 fs::path static GetAutostartFilePath()
 {
-    return GetAutostartDir() / "fls.desktop";
+    return GetAutostartDir() / "rbx.desktop";
 }
 
 bool GetStartOnSystemStartup()
@@ -750,15 +750,15 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         fs::ofstream optionFile(GetAutostartFilePath(), std::ios_base::out | std::ios_base::trunc);
         if (!optionFile.good())
             return false;
-        // Write a fls.desktop file to the autostart directory:
+        // Write a rbx.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
         if (gArgs.GetBoolArg("-testnet", false))
-            optionFile << "Name=FLITS (testnet)\n";
+            optionFile << "Name=Rubus (testnet)\n";
         else if (gArgs.GetBoolArg("-regtest", false))
-            optionFile << "Name=FLITS (regtest)\n";
+            optionFile << "Name=Rubus (regtest)\n";
         else
-            optionFile << "Name=FLS\n";
+            optionFile << "Name=RBX\n";
         optionFile << "Exec=" << pszExePath << strprintf(" -min -testnet=%d -regtest=%d\n", gArgs.GetBoolArg("-testnet", false), gArgs.GetBoolArg("-regtest", false));
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";
@@ -774,7 +774,7 @@ bool SetStartOnSystemStartup(bool fAutoStart)
 LSSharedFileListItemRef findStartupItemInList(LSSharedFileListRef list, CFURLRef findUrl);
 LSSharedFileListItemRef findStartupItemInList(LSSharedFileListRef list, CFURLRef findUrl)
 {
-    // loop through the list of startup items and try to find the fls app
+    // loop through the list of startup items and try to find the rbx app
     CFArrayRef listSnapshot = LSSharedFileListCopySnapshot(list, NULL);
     for (int i = 0; i < CFArrayGetCount(listSnapshot); i++) {
         LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(listSnapshot, i);
@@ -819,7 +819,7 @@ bool SetStartOnSystemStartup(bool fAutoStart)
     LSSharedFileListItemRef foundItem = findStartupItemInList(loginItems, bitcoinAppUrl);
 
     if (fAutoStart && !foundItem) {
-        // add fls app to startup item list
+        // add rbx app to startup item list
         LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, NULL, NULL, bitcoinAppUrl, NULL, NULL);
     } else if (!fAutoStart && foundItem) {
         // remove item

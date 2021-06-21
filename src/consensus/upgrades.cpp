@@ -1,6 +1,6 @@
 // Copyright (c) 2018 The Zcash developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -17,7 +17,7 @@
 const struct NUInfo NetworkUpgradeInfo[Consensus::MAX_NETWORK_UPGRADES] = {
         {
                 /*.strName =*/ "Base",
-                /*.strInfo =*/ "FLITS network",
+                /*.strInfo =*/ "Rubus network",
         },
         {
                 /*.strName =*/ "PoS",
@@ -44,11 +44,11 @@ const struct NUInfo NetworkUpgradeInfo[Consensus::MAX_NETWORK_UPGRADES] = {
                 /*.strInfo =*/ "activation of zerocoin public spends (spend v3)",
         },
         {
-                /*.strName =*/ "FLS_v3.4",
+                /*.strName =*/ "RBX_v3.4",
                 /*.strInfo =*/ "new 256-bit stake modifier - start block v6",
         },
         {
-                /*.strName =*/ "FLS_v4.0",
+                /*.strName =*/ "RBX_v4.0",
                 /*.strInfo =*/ "new message sigs - start block v7 - time protocol - zc spend v4",
         },
         {

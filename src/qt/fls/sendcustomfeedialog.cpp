@@ -1,19 +1,19 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/sendcustomfeedialog.h"
-#include "qt/fls/forms/ui_sendcustomfeedialog.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/sendcustomfeedialog.h"
+#include "qt/rbx/forms/ui_sendcustomfeedialog.h"
+#include "qt/rbx/qtutils.h"
 #include "walletmodel.h"
 #include "optionsmodel.h"
 #include "guiutil.h"
 #include <QListView>
 #include <QComboBox>
 
-SendCustomFeeDialog::SendCustomFeeDialog(FLSGUI* parent, WalletModel* model) :
+SendCustomFeeDialog::SendCustomFeeDialog(RBXGUI* parent, WalletModel* model) :
     FocusedDialog(parent),
     ui(new Ui::SendCustomFeeDialog),
     walletModel(model)
@@ -56,7 +56,7 @@ SendCustomFeeDialog::SendCustomFeeDialog(FLSGUI* parent, WalletModel* model) :
     connect(ui->comboBoxRecommended, static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
         this, &SendCustomFeeDialog::updateFee);
     if (parent)
-        connect(parent, &FLSGUI::themeChanged, this, &SendCustomFeeDialog::onChangeTheme);
+        connect(parent, &RBXGUI::themeChanged, this, &SendCustomFeeDialog::onChangeTheme);
     ui->checkBoxRecommended->setChecked(true);
 }
 

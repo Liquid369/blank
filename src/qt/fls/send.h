@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -10,19 +10,19 @@
 #include <QWidget>
 #include <QPushButton>
 
-#include "qt/fls/pwidget.h"
-#include "qt/fls/contactsdropdown.h"
-#include "qt/fls/sendmultirow.h"
-#include "qt/fls/sendcustomfeedialog.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/contactsdropdown.h"
+#include "qt/rbx/sendmultirow.h"
+#include "qt/rbx/sendcustomfeedialog.h"
 #include "walletmodel.h"
 #include "coincontroldialog.h"
-#include "qt/fls/tooltipmenu.h"
+#include "qt/rbx/tooltipmenu.h"
 
 #include <atomic>
 
 static const int MAX_SEND_POPUP_ENTRIES = 8;
 
-class FLSGUI;
+class RBXGUI;
 class ClientModel;
 class OperationResult;
 class WalletModel;
@@ -38,7 +38,7 @@ class SendWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SendWidget(FLSGUI* parent);
+    explicit SendWidget(RBXGUI* parent);
     ~SendWidget();
 
     void addEntry();
@@ -72,7 +72,7 @@ protected:
     void onError(QString error, int type) override;
 
 private Q_SLOTS:
-    void onFLSSelected(bool _isTransparent);
+    void onRBXSelected(bool _isTransparent);
     void onSendClicked();
     void onContactsClicked(SendMultiRow* entry);
     void onMenuClicked(SendMultiRow* entry);

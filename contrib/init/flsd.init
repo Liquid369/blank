@@ -1,31 +1,31 @@
 #!/bin/bash
 #
-#  flsd The PIVX core server.
+#  rbxd The PIVX core server.
 #
 #
 # chkconfig: 345 80 20
-# description: flsd
-# processname: flsd
+# description: rbxd
+# processname: rbxd
 #
 
 # Source function library.
 . /etc/init.d/functions
 
-# you can override defaults in /etc/sysconfig/flsd, see below
-if [ -f /etc/sysconfig/flsd ]; then
-        . /etc/sysconfig/flsd
+# you can override defaults in /etc/sysconfig/rbxd, see below
+if [ -f /etc/sysconfig/rbxd ]; then
+        . /etc/sysconfig/rbxd
 fi
 
 RETVAL=0
 
-prog=flsd
-# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/flsd
-lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/flsd}
+prog=rbxd
+# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/rbxd
+lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/rbxd}
 
-# flsd defaults to /usr/bin/flsd, override with BITCOIND_BIN
-bitcoind=${BITCOIND_BIN-/usr/bin/flsd}
+# rbxd defaults to /usr/bin/rbxd, override with BITCOIND_BIN
+bitcoind=${BITCOIND_BIN-/usr/bin/rbxd}
 
-# flsd opts default to -disablewallet, override with BITCOIND_OPTS
+# rbxd opts default to -disablewallet, override with BITCOIND_OPTS
 bitcoind_opts=${BITCOIND_OPTS}
 
 start() {

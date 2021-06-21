@@ -1,6 +1,6 @@
 // Copyright (c) 2014 The Bitcoin developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -13,8 +13,8 @@
 #include <vector>
 
 /**
- * CBaseChainParams defines the base parameters (shared between fls-cli and flsd)
- * of a given instance of the Fls system.
+ * CBaseChainParams defines the base parameters (shared between rbx-cli and rbxd)
+ * of a given instance of the Rbx system.
  */
 class CBaseChainParams
 {

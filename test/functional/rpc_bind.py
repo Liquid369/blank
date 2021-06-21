@@ -7,11 +7,11 @@
 import socket
 import sys
 
-from test_framework.test_framework import FlsTestFramework, SkipTest
+from test_framework.test_framework import RbxTestFramework, SkipTest
 from test_framework.util import *
 from test_framework.netutil import *
 
-class RPCBindTest(FlsTestFramework):
+class RPCBindTest(RbxTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

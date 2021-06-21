@@ -1,12 +1,12 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/coldstakingmodel.h"
+#include "qt/rbx/coldstakingmodel.h"
 #include "uint256.h"
 #include "bitcoinunits.h"
 #include "guiutil.h"

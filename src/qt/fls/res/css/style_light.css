@@ -1771,7 +1771,7 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 }
 
 *[cssClass="img-splash-logo"] {
-    qproperty-icon: url("://img-logo-fls");
+    qproperty-icon: url("://img-logo-rbx");
     qproperty-iconSize: 300px 100px;
     border:0;
     background-color:transparent;
@@ -1825,28 +1825,28 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
     font-size:20px;
 }
 
-*[cssClass="text-stake-fls"] {
+*[cssClass="text-stake-rbx"] {
     color:#365ace;
     font-size:16px;
     padding:10px;
     border-bottom: 5px solid #365ace;
 }
 
-*[cssClass="text-stake-fls-disable"] {
+*[cssClass="text-stake-rbx-disable"] {
     color:#d7d5da;
     font-size:16px;
     padding:10px;
     border-bottom: 5px solid #bbb8c0;
 }
 
-*[cssClass="text-stake-zfls"] {
+*[cssClass="text-stake-zrbx"] {
     color:#365ace;
     font-size:16px;
     padding:10px;
     border-bottom: 5px solid #365ace;
 }
 
-*[cssClass="text-stake-zfls-disable"] {
+*[cssClass="text-stake-zrbx-disable"] {
     color:#d7d5da;
     font-size:16px;
     padding:10px;
@@ -1858,24 +1858,24 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
     font-size:16px;
 }
 
-*[cssClass="text-chart-zfls"] {
+*[cssClass="text-chart-zrbx"] {
     color:#365ace;
     font-size:16px;
     padding-left:4px;
 }
 
-*[cssClass="text-chart-fls"] {
+*[cssClass="text-chart-rbx"] {
     color:#365ace;
     font-size:16px;
     padding-left:4px;
 }
 
-*[cssClass="square-chart-zfls"] {
+*[cssClass="square-chart-zrbx"] {
     background-color:#365ace;
     border:none;
 }
 
-*[cssClass="square-chart-fls"] {
+*[cssClass="square-chart-rbx"] {
     background-color:#365ace;
     border:none;
 }
@@ -2457,18 +2457,18 @@ HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH*/
 }
 
 
-*[cssClass="coin-icon-fls"] {
-    qproperty-icon: url("://ic-coin-fls") off,
-    url("://ic-coin-fls") on ;
+*[cssClass="coin-icon-rbx"] {
+    qproperty-icon: url("://ic-coin-rbx") off,
+    url("://ic-coin-rbx") on ;
     qproperty-iconSize: 24px 24px;
     background-color: #F6F6F6;
     border:  2px solid #F6F6F6;
     border-radius: 12px;
 }
 
-*[cssClass="coin-icon-zfls"] {
-    qproperty-icon: url("://ic-coin-zfls") off,
-    url("://ic-coin-zfls") on ;
+*[cssClass="coin-icon-zrbx"] {
+    qproperty-icon: url("://ic-coin-zrbx") off,
+    url("://ic-coin-zrbx") on ;
     qproperty-iconSize: 24px 24px;
     background-position:center;
     background-repeat:no-repeat;

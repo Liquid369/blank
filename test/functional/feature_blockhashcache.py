@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # Copyright (c) 2019-2020 The PIVX developers
-# Copyright (c) 2019-2020 The Flits Developers
+# Copyright (c) 2019-2020 The Rubus Developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 from test_framework.util import (
     assert_equal,
 )
 import random
 from time import sleep
 
-class BlockHashCacheTest(FlsTestFramework):
+class BlockHashCacheTest(RbxTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 1

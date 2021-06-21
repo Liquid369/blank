@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -10,7 +10,7 @@
 #define SETTINGSINFORMATIONWIDGET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 #include "rpcconsole.h"
 
 namespace Ui {
@@ -22,7 +22,7 @@ class SettingsInformationWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsInformationWidget(FLSGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsInformationWidget(RBXGUI* _window, QWidget *parent = nullptr);
     ~SettingsInformationWidget() override;
 
     void loadClientModel() override;

@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -8,14 +8,14 @@
 #define TOPBAR_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
-#include "qt/fls/lockunlock.h"
+#include "qt/rbx/pwidget.h"
+#include "qt/rbx/lockunlock.h"
 #include "amount.h"
 #include <QTimer>
 #include <QProgressBar>
 
 class BalanceBubble;
-class FLSGUI;
+class RBXGUI;
 class WalletModel;
 class ClientModel;
 
@@ -28,7 +28,7 @@ class TopBar : public PWidget
     Q_OBJECT
 
 public:
-    explicit TopBar(FLSGUI* _mainWindow, QWidget *parent = nullptr);
+    explicit TopBar(RBXGUI* _mainWindow, QWidget *parent = nullptr);
     ~TopBar();
 
     void showTop();

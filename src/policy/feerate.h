@@ -1,12 +1,12 @@
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_POLICY_FEERATE_H
-#define FLS_POLICY_FEERATE_H
+#ifndef RBX_POLICY_FEERATE_H
+#define RBX_POLICY_FEERATE_H
 
 #include "amount.h"
 #include "serialize.h"
@@ -16,7 +16,7 @@
 extern const std::string CURRENCY_UNIT;
 
 /**
- * Fee rate in FLS per kilobyte: CAmount / kB
+ * Fee rate in RBX per kilobyte: CAmount / kB
  */
 class CFeeRate
 {
@@ -47,4 +47,4 @@ public:
     }
 };
 
-#endif //  FLS_POLICY_FEERATE_H
+#endif //  RBX_POLICY_FEERATE_H

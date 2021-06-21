@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>org.fls.flsd</string>
+	<string>org.rbx.rbxd</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/local/bin/flsd</string>
+		<string>/usr/local/bin/rbxd</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>

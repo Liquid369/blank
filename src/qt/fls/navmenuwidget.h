@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -8,9 +8,9 @@
 #define NAVMENUWIDGET_H
 
 #include <QWidget>
-#include "qt/fls/pwidget.h"
+#include "qt/rbx/pwidget.h"
 
-class FLSGUI;
+class RBXGUI;
 
 namespace Ui {
 class NavMenuWidget;
@@ -21,7 +21,7 @@ class NavMenuWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit NavMenuWidget(FLSGUI* mainWindow, QWidget *parent = nullptr);
+    explicit NavMenuWidget(RBXGUI* mainWindow, QWidget *parent = nullptr);
     ~NavMenuWidget();
 
     void loadWalletModel() override;

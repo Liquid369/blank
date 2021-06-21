@@ -122,12 +122,12 @@
         <translation>Adrese za primanje</translation>
     </message>
     <message>
-        <source>These are your FLITS addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>To su vaše FLITS adrese za slanje plaćanja. Uvijek provjerite iznos i adresu primatelja prije slanja novca.</translation>
+        <source>These are your Rubus addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>To su vaše Rubus adrese za slanje plaćanja. Uvijek provjerite iznos i adresu primatelja prije slanja novca.</translation>
     </message>
     <message>
-        <source>These are your FLITS addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>To su vaše FLITS adrese za primanje uplata. Preporuča se upotreba nove adrese primatelja za svaku transakciju.</translation>
+        <source>These are your Rubus addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>To su vaše Rubus adrese za primanje uplata. Preporuča se upotreba nove adrese primatelja za svaku transakciju.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -364,8 +364,8 @@ za staking</translation>
         <translation>PONIŠTI</translation>
     </message>
     <message>
-        <source>FLITS will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your FLSs from being stolen by malware infecting your computer.</source>
-        <translation>FLITS će se sada zatvoriti kako bi se dovršio proces šifriranja. Ne zaboravite da šifriranje Vašeg novčanika ne može u potpunosti zaštititi vaše FLS od krađje zlonamjernog softvera koji zarazi vaše računalo.</translation>
+        <source>Rubus will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your RBXs from being stolen by malware infecting your computer.</source>
+        <translation>Rubus će se sada zatvoriti kako bi se dovršio proces šifriranja. Ne zaboravite da šifriranje Vašeg novčanika ne može u potpunosti zaštititi vaše RBX od krađje zlonamjernog softvera koji zarazi vaše računalo.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -439,8 +439,8 @@ za staking</translation>
         <translation>Transparentno</translation>
     </message>
     <message>
-        <source>0.00 fls</source>
-        <translation>0.00 fls</translation>
+        <source>0.00 rbx</source>
+        <translation>0.00 rbx</translation>
     </message>
     <message>
         <source>Shielded</source>
@@ -469,8 +469,8 @@ za staking</translation>
         <translation>Ušteđjevina</translation>
     </message>
     <message>
-        <source>0,00 FLS</source>
-        <translation>0,00 FLS</translation>
+        <source>0,00 RBX</source>
+        <translation>0,00 RBX</translation>
     </message>
     <message>
         <source>address</source>
@@ -511,8 +511,8 @@ za staking</translation>
         <translation>Odabir novčića</translation>
     </message>
     <message>
-        <source>Select FLS Outputs to Spend</source>
-        <translation>Odaberi FLS za potrošiti</translation>
+        <source>Select RBX Outputs to Spend</source>
+        <translation>Odaberi RBX za potrošiti</translation>
     </message>
     <message>
         <source>Dust:</source>
@@ -539,8 +539,8 @@ za staking</translation>
         <translation>Iznos</translation>
     </message>
     <message>
-        <source>0.00 FLS</source>
-        <translation>0.00 FLS</translation>
+        <source>0.00 RBX</source>
+        <translation>0.00 RBX</translation>
     </message>
     <message>
         <source>0</source>
@@ -746,7 +746,7 @@ za staking</translation>
         <translation>Greška pri učitavanju delegacija: %1</translation>
     </message>
     <message>
-        <source>You can delegate your FLSs, letting a hot node (24/7 online node)
+        <source>You can delegate your RBXs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation>Možete delegirati vaše novčiće, dozvoljavajući drugom novčaniku (koji radi 24/7)
 staking u vaše ime, dok su vaši novčići spremljeni na sigurnom.</translation>
@@ -756,8 +756,8 @@ staking u vaše ime, dok su vaši novčići spremljeni na sigurnom.</translation
         <translation>Unesi adresu vlasnika</translation>
     </message>
     <message>
-        <source>Accept FLS delegation / Delegate FLS</source>
-        <translation>Prihvati FLS delegaciju / Delegiraj FLS</translation>
+        <source>Accept RBX delegation / Delegate RBX</source>
+        <translation>Prihvati RBX delegaciju / Delegiraj RBX</translation>
     </message>
     <message>
         <source>Cold Staking address</source>
@@ -961,8 +961,8 @@ vlasnika</translation>
         <translation>Pogledajte povijest vašeg novčanika</translation>
     </message>
     <message>
-        <source>How to get FLS</source>
-        <translation>Kako dobiti FLS</translation>
+        <source>How to get RBX</source>
+        <translation>Kako dobiti RBX</translation>
     </message>
     <message>
         <source>Sort by</source>
@@ -1077,8 +1077,8 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>Uredi adresu pošiljatelja</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid FLITS address.</source>
-        <translation>Unesena adresa "%1" nije ispravna FLITS adresa.</translation>
+        <source>The entered address "%1" is not a valid Rubus address.</source>
+        <translation>Unesena adresa "%1" nije ispravna Rubus adresa.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1130,16 +1130,16 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>verzija</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-bit)</translation>
     </message>
     <message>
-        <source>About FLITS Core</source>
-        <translation>O FLITS Core-u</translation>
+        <source>About Rubus Core</source>
+        <translation>O Rubus Core-u</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1193,16 +1193,16 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>Dobrodošli</translation>
     </message>
     <message>
-        <source>Welcome to FLITS Core.</source>
-        <translation>Dobrodošli u FLITS Core.</translation>
+        <source>Welcome to Rubus Core.</source>
+        <translation>Dobrodošli u Rubus Core.</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where FLITS Core will store its data.</source>
-        <translation>Budući da je prvi put pokrenut program, možete odabrati gdje će FLITS Core pohraniti svoje podatke.</translation>
+        <source>As this is the first time the program is launched, you can choose where Rubus Core will store its data.</source>
+        <translation>Budući da je prvi put pokrenut program, možete odabrati gdje će Rubus Core pohraniti svoje podatke.</translation>
     </message>
     <message>
-        <source>FLITS Core will download and store a copy of the FLITS block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>FLITS Core preuzima i pohranjuje kopiju FLITS blok-lanca. Barem će %1GB podataka biti pohranjeno u ovom direktoriju i to će s vremenom rasti. Novčanik će također biti pohranjena u ovom direktoriju.</translation>
+        <source>Rubus Core will download and store a copy of the Rubus block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>Rubus Core preuzima i pohranjuje kopiju Rubus blok-lanca. Barem će %1GB podataka biti pohranjeno u ovom direktoriju i to će s vremenom rasti. Novčanik će također biti pohranjena u ovom direktoriju.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1221,8 +1221,8 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>OK</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1329,8 +1329,8 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>Stvori novi Masternode Controller</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a FLITS Masternode you must dedicate 10,000 FLS (the unit of FLS) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Da biste stvoriti FLITS Masternode, morate odvojiti 10,000 FLS (jedinica FLS-a) prema mreži (međjutim, ti novčići su i dalje vaši i nikad neće napustiti vaše vlasništvo). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt; Možete isključiti node i otključati novčiće u bilo kojem trenutku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Rubus Masternode you must dedicate 10,000 RBX (the unit of RBX) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Da biste stvoriti Rubus Masternode, morate odvojiti 10,000 RBX (jedinica RBX-a) prema mreži (međjutim, ti novčići su i dalje vaši i nikad neće napustiti vaše vlasništvo). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt; Možete isključiti node i otključati novčiće u bilo kojem trenutku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1349,8 +1349,8 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>Obavezno imajte tu količinu novčića.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 FLS will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transakcija od 10,000 FLS će biti napravljena&lt;/p&gt;&lt;p&gt;u novu praznu adresu u Vašem novčaniku.&lt;/p&gt;&lt;p&gt;Adresa je označena pod imenom Masternode-a.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 10,000 RBX will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transakcija od 10,000 RBX će biti napravljena&lt;/p&gt;&lt;p&gt;u novu praznu adresu u Vašem novčaniku.&lt;/p&gt;&lt;p&gt;Adresa je označena pod imenom Masternode-a.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1556,7 +1556,7 @@ Molimo pričekajte nekoliko minuta (zalog za Masternode zahtjeva %1 potvrda).</t
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the fls.conf file
+You will only have to paste the data in the rbx.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1564,7 +1564,7 @@ this controller wallet (select the Masternode in the list and press "start").
 na udaljenom poslužitelju u medjuspremnik.
 
 
-Podatke ćete morati zalijepiti u datoteku fls.conf
+Podatke ćete morati zalijepiti u datoteku rbx.conf
 na udaljenom poslužitelju i pokrenuti ga, a zatim pokrenite Masternode
 koristeći ovaj controller novčanik (na popisu odaberite Masternode i pritisnite "start").
 </translation>
@@ -1754,8 +1754,8 @@ STAKING</translation>
         <translation>Parsirani podaci preveliki</translation>
     </message>
     <message>
-        <source>Invalid URI, not starting with "fls" prefix</source>
-        <translation>Nevažeći URI, ne počinje "fls" prefiksom</translation>
+        <source>Invalid URI, not starting with "rbx" prefix</source>
+        <translation>Nevažeći URI, ne počinje "rbx" prefiksom</translation>
     </message>
 </context>
 <context>
@@ -1800,8 +1800,8 @@ STAKING</translation>
         <translation>Ako onemogućite potrošnju nepotvrđjenog ostatka, ostatak od transakcije &lt;br/&gt;ne može se koristiti dok ta transakcija nema barem jednu potvrdu. &lt;br/&gt;Ovo takođjer utječe na izračun vašeg salda.</translation>
     </message>
     <message>
-        <source>Automatically open the FLITS client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automatski otvorite FLITS klijentski ulaz na ruteru. To funkcionira samo kada vaš ruter podržava UPnP i omogućen je.</translation>
+        <source>Automatically open the Rubus client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatski otvorite Rubus klijentski ulaz na ruteru. To funkcionira samo kada vaš ruter podržava UPnP i omogućen je.</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1820,12 +1820,12 @@ STAKING</translation>
         <translation>Stručnjak</translation>
     </message>
     <message>
-        <source>Automatically start FLITS after logging in to the system.</source>
-        <translation>Automatski pokrenite FLITS nakon prijave u sustav.</translation>
+        <source>Automatically start Rubus after logging in to the system.</source>
+        <translation>Automatski pokrenite Rubus nakon prijave u sustav.</translation>
     </message>
     <message>
-        <source>&amp;Start FLITS on system login</source>
-        <translation>&amp;Pokrenite FLITS pri pokretanju sustava</translation>
+        <source>&amp;Start Rubus on system login</source>
+        <translation>&amp;Pokrenite Rubus pri pokretanju sustava</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1852,58 +1852,58 @@ STAKING</translation>
         <translation>&amp;Mreža</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting FLS.</source>
-        <translation>Jezik korisničkog sučelja možete postaviti ovdje. Postavke će stupiti na snagu nakon ponovnog pokretanja FLITS novčanika.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting RBX.</source>
+        <translation>Jezik korisničkog sučelja možete postaviti ovdje. Postavke će stupiti na snagu nakon ponovnog pokretanja Rubus novčanika.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/flitsnode/flits-core-project-translations</source>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</source>
         <translation>Jezik nedostaje ili prijevod nije potpun? Pomozite s prijevodom ovdje:
-https://www.transifex.com/flitsnode/flits-core-project-translations</translation>
+https://www.transifex.com/flitsnode/Rubus-core-project-translations</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Mapiranje porta koristeći &amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of FLS units to zFLS</source>
-        <translation>Omogući automatsko stvaranje FLS jedinica na zFLS</translation>
+        <source>Enable automatic minting of RBX units to zRBX</source>
+        <translation>Omogući automatsko stvaranje RBX jedinica na zRBX</translation>
     </message>
     <message>
-        <source>Enable zFLS Automint</source>
-        <translation>Omogući automatsko stvaranje zFLS-a</translation>
+        <source>Enable zRBX Automint</source>
+        <translation>Omogući automatsko stvaranje zRBX-a</translation>
     </message>
     <message>
-        <source>Enable automatic zFLS minting from specific addresses</source>
-        <translation>Omogući automatsko stvaranje zFLS-a s određjenih adresa</translation>
+        <source>Enable automatic zRBX minting from specific addresses</source>
+        <translation>Omogući automatsko stvaranje zRBX-a s određjenih adresa</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Omogući Automint adrese</translation>
     </message>
     <message>
-        <source>Percentage of incoming FLS which get automatically converted to zFLS via Zerocoin Protocol (min: 10%)</source>
-        <translation>Postotak dolaznih FLS koji se automatski pretvara u zFLS putem Zerocoin Protokola (min: 10%)</translation>
+        <source>Percentage of incoming RBX which get automatically converted to zRBX via Zerocoin Protocol (min: 10%)</source>
+        <translation>Postotak dolaznih RBX koji se automatski pretvara u zRBX putem Zerocoin Protokola (min: 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zFLS</source>
-        <translation>Postotak automatski stvorenog zFLS-a</translation>
+        <source>Percentage of autominted zRBX</source>
+        <translation>Postotak automatski stvorenog zRBX-a</translation>
     </message>
     <message>
-        <source>Wait with automatic conversion to Zerocoin until enough FLS for this denomination is available</source>
-        <translation>Pričekajte s automatskom pretvorbom u Zerocoin dok ne bude dostupno dovoljno FLS-a za ovu denominaciju</translation>
+        <source>Wait with automatic conversion to Zerocoin until enough RBX for this denomination is available</source>
+        <translation>Pričekajte s automatskom pretvorbom u Zerocoin dok ne bude dostupno dovoljno RBX-a za ovu denominaciju</translation>
     </message>
     <message>
-        <source>Preferred Automint zFLS Denomination</source>
-        <translation>Preferirana denominacija za automatsko stvaranje zFLS-a</translation>
+        <source>Preferred Automint zRBX Denomination</source>
+        <translation>Preferirana denominacija za automatsko stvaranje zRBX-a</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
         <translation>Prag dijeljenja Stake-a:</translation>
     </message>
     <message>
-        <source>Connect to the FLITS network through a SOCKS5 proxy.</source>
-        <translation>Povežite se s FLITS mrežom putem SOCKS5 proxy poslužitelja.</translation>
+        <source>Connect to the Rubus network through a SOCKS5 proxy.</source>
+        <translation>Povežite se s Rubus mrežom putem SOCKS5 proxy poslužitelja.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -2047,10 +2047,10 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
     </message>
 </context>
 <context>
-    <name>FLSGUI</name>
+    <name>RBXGUI</name>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -2077,8 +2077,8 @@ https://www.transifex.com/flitsnode/flits-core-project-translations</translation
         <translation>Napusti aplikaciju</translation>
     </message>
     <message>
-        <source>FLITS Core client</source>
-        <translation>FLSIX Core Klijent</translation>
+        <source>Rubus Core client</source>
+        <translation>RBXIX Core Klijent</translation>
     </message>
     <message>
         <source>Alert!</source>
@@ -2148,12 +2148,12 @@ Adresa: %4
         <translation>Nevažeća adresa za plaćanje %1</translation>
     </message>
     <message>
-        <source>Cannot start fls: click-to-pay handler</source>
-        <translation>Ne može se pokrenuti fls: clik-to-pay handler</translation>
+        <source>Cannot start rbx: click-to-pay handler</source>
+        <translation>Ne može se pokrenuti rbx: clik-to-pay handler</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid FLITS address or malformed URI parameters.</source>
-        <translation>URI se ne može analizirati! To može biti uzrokovana nevažećom FLITS adresom ili nepravilnim URI parametrima.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Rubus address or malformed URI parameters.</source>
+        <translation>URI se ne može analizirati! To može biti uzrokovana nevažećom Rubus adresom ili nepravilnim URI parametrima.</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -2242,8 +2242,8 @@ Adresa: %4
         <translation>Iznos</translation>
     </message>
     <message>
-        <source>Enter FLITS address (e.g. %1)</source>
-        <translation>Upišite FLITS adresu (npr. %1)</translation>
+        <source>Enter Rubus address (e.g. %1)</source>
+        <translation>Upišite Rubus adresu (npr. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2286,12 +2286,12 @@ Adresa: %4
         <translation>%1 ms</translation>
     </message>
     <message>
-        <source>A fatal error occurred. FLITS can no longer continue safely and will quit.</source>
-        <translation>Dogodila se fatalna pogreška. FLITS ne može sigurno nastaviti i izaći će.</translation>
+        <source>A fatal error occurred. Rubus can no longer continue safely and will quit.</source>
+        <translation>Dogodila se fatalna pogreška. Rubus ne može sigurno nastaviti i izaći će.</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -2561,8 +2561,8 @@ Adresa: %4
         <translation>Block chain</translation>
     </message>
     <message>
-        <source>Open the FLITS debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Otvorite FLITS debug log datoteku iz aktualnog direktorija podataka. To može potrajati nekoliko sekundi za velike datoteke zapisnika.</translation>
+        <source>Open the Rubus debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Otvorite Rubus debug log datoteku iz aktualnog direktorija podataka. To može potrajati nekoliko sekundi za velike datoteke zapisnika.</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -2705,8 +2705,8 @@ Adresa: %4
         <translation>Put prilagođenog sigurnosnog kopiranja:</translation>
     </message>
     <message>
-        <source>Custom zFLS Backup Path:</source>
-        <translation>Prilagođeni put zFLS sigurnosne kopije:</translation>
+        <source>Custom zRBX Backup Path:</source>
+        <translation>Prilagođeni put zRBX sigurnosne kopije:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -2785,8 +2785,8 @@ Adresa: %4
         <translation>Iz:</translation>
     </message>
     <message>
-        <source>Welcome to the FLITS RPC console.</source>
-        <translation>Dobrodošli na FLITS RPC konzolu.</translation>
+        <source>Welcome to the Rubus RPC console.</source>
+        <translation>Dobrodošli na Rubus RPC konzolu.</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -2923,8 +2923,8 @@ Adresa: %4
         <translation>Obrazac</translation>
     </message>
     <message>
-        <source>Scan the QR code or copy the address to receive FLS</source>
-        <translation>Skeniraj QR kod ili kopiraj adresu da bi primio FLS</translation>
+        <source>Scan the QR code or copy the address to receive RBX</source>
+        <translation>Skeniraj QR kod ili kopiraj adresu da bi primio RBX</translation>
     </message>
     <message>
         <source>Transparent</source>
@@ -2935,8 +2935,8 @@ Adresa: %4
         <translation>Zaštićeno</translation>
     </message>
     <message>
-        <source>Accept transparent or shielded FLS</source>
-        <translation>Prihvati transparentan ili zaštićeni FLS</translation>
+        <source>Accept transparent or shielded RBX</source>
+        <translation>Prihvati transparentan ili zaštićeni RBX</translation>
     </message>
     <message>
         <source>Add Label</source>
@@ -3067,12 +3067,12 @@ pokušajte otključati novčanik</translation>
         <translation>Iznos</translation>
     </message>
     <message>
-        <source>FLS</source>
-        <translation>FLS</translation>
+        <source>RBX</source>
+        <translation>RBX</translation>
     </message>
     <message>
-        <source>Instead of sharing only a FLITS address, you can create a payment request, bundling up more information</source>
-        <translation>Umjesto da dijelite samo FLITS adresu, možete stvoriti zahtjev za plaćanjem, skupljajući više informacija</translation>
+        <source>Instead of sharing only a Rubus address, you can create a payment request, bundling up more information</source>
+        <translation>Umjesto da dijelite samo Rubus adresu, možete stvoriti zahtjev za plaćanjem, skupljajući više informacija</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -3162,8 +3162,8 @@ pokušajte otključati novčanik</translation>
         <translation>Prilagođjena adresa za ostatak</translation>
     </message>
     <message>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" FLITS address</source>
-        <translation>Ostatak vrijednosti koja proizlazi iz ulaza umanjen za izlaznu vrijednost ide na FLITS adresu za "ostatak"</translation>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" Rubus address</source>
+        <translation>Ostatak vrijednosti koja proizlazi iz ulaza umanjen za izlaznu vrijednost ide na Rubus adresu za "ostatak"</translation>
     </message>
     <message>
         <source>SAVE</source>
@@ -3193,8 +3193,8 @@ pokušajte otključati novčanik</translation>
         <translation>Preporučeno</translation>
     </message>
     <message>
-        <source>FLS/kilobyte</source>
-        <translation>FLS/kilobajt</translation>
+        <source>RBX/kilobyte</source>
+        <translation>RBX/kilobajt</translation>
     </message>
     <message>
         <source>0.00 KB</source>
@@ -3477,12 +3477,12 @@ Uz naknadu %2
 </translation>
     </message>
     <message>
-        <source>Error generating address to shield FLSs</source>
-        <translation>Pogreška pri generiranju adrese za zaštićene FLS-ove</translation>
+        <source>Error generating address to shield RBXs</source>
+        <translation>Pogreška pri generiranju adrese za zaštićene RBX-ove</translation>
     </message>
     <message>
-        <source>You don't have any transparent FLSs to shield.</source>
-        <translation>Nemate nikakvih transparentnih FLS za zaštititi.</translation>
+        <source>You don't have any transparent RBXs to shield.</source>
+        <translation>Nemate nikakvih transparentnih RBX za zaštititi.</translation>
     </message>
     <message>
         <source>No contacts available, you can go to the contacts screen and add some there!</source>
@@ -3595,9 +3595,9 @@ Ne zaboravite zapisati i sigurno pohraniti novu lozinku, jer u protivnom ćete i
         <translation>BIP38 alat</translation>
     </message>
     <message>
-        <source>Encrypt your FLITS addresses (key pair actually) using BIP38 encryption.
+        <source>Encrypt your Rubus addresses (key pair actually) using BIP38 encryption.
 Using this mechanism you can share your keys without middle-man risk, only need to store your passphrase safely</source>
-        <translation>Kriptirajte vašu FLITS adresu (odnosno par ključeva) koristeći BIP38 enkripciju.
+        <translation>Kriptirajte vašu Rubus adresu (odnosno par ključeva) koristeći BIP38 enkripciju.
 Korištenjem ovog mehanizma možete dijeliti vaše ključeve bez rizika posredništva, samo trebate sigurno pohraniti lozinku</translation>
     </message>
     <message>
@@ -3633,8 +3633,8 @@ Korištenjem ovog mehanizma možete dijeliti vaše ključeve bez rizika posredni
         <translation>DEŠIFRIRAJ KLJUČ</translation>
     </message>
     <message>
-        <source>FLITS address</source>
-        <translation>FLITS adresa</translation>
+        <source>Rubus address</source>
+        <translation>Rubus adresa</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3766,8 +3766,8 @@ Verify that you have installed a predetermined text editor.</source>
 Provjerite jeste li instalirali unaprijed određjeni uređjivač teksta.</translation>
     </message>
     <message>
-        <source>Welcome to the FLITS RPC console.</source>
-        <translation>Dobrodošli na FLITS RPC konzolu.</translation>
+        <source>Welcome to the Rubus RPC console.</source>
+        <translation>Dobrodošli na Rubus RPC konzolu.</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
@@ -3877,12 +3877,12 @@ podatke</translation>
         <translation>Izvezi popis adresa</translation>
     </message>
     <message>
-        <source>FLS_tx_csv_export(*.csv)</source>
-        <translation>FLS_transakcije_csv_izvoz(*.csv)</translation>
+        <source>RBX_tx_csv_export(*.csv)</source>
+        <translation>RBX_transakcije_csv_izvoz(*.csv)</translation>
     </message>
     <message>
-        <source>FLS_addresses_csv_export(*.csv)</source>
-        <translation>FLS_adrese_csv_izvoz(*.csv)</translation>
+        <source>RBX_addresses_csv_export(*.csv)</source>
+        <translation>RBX_adrese_csv_izvoz(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -3952,12 +3952,12 @@ Došlo je do greške prilikom spremanja popisa adresa u %1. Molimo pokušajte po
         <translation>Obrazac</translation>
     </message>
     <message>
-        <source>1) What is FLS?</source>
-        <translation>1) Što je FLS?</translation>
+        <source>1) What is RBX?</source>
+        <translation>1) Što je RBX?</translation>
     </message>
     <message>
-        <source>2) Why are my FLS unspendable?</source>
-        <translation>2) Zašto se moji FLS ne mogu potrošiti?</translation>
+        <source>2) Why are my RBX unspendable?</source>
+        <translation>2) Zašto se moji RBX ne mogu potrošiti?</translation>
     </message>
     <message>
         <source>https://flitswallet.app/</source>
@@ -3968,33 +3968,33 @@ Došlo je do greške prilikom spremanja popisa adresa u %1. Molimo pokušajte po
         <translation>1</translation>
     </message>
     <message>
-        <source>What is FLS?</source>
-        <translation>Što je FLS?</translation>
+        <source>What is RBX?</source>
+        <translation>Što je RBX?</translation>
     </message>
     <message>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <source>Why are my FLS unspendable?</source>
-        <translation>Zašto se moji FLS ne mogu potrošiti?</translation>
+        <source>Why are my RBX unspendable?</source>
+        <translation>Zašto se moji RBX ne mogu potrošiti?</translation>
     </message>
     <message>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Newly received FLITS requires 6 confirmations on the network
+                           Newly received Rubus requires 6 confirmations on the network
                            to become eligible for spending which can take ~6 minutes.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           Your FLITS wallet also needs to be completely synchronized
+                           Your Rubus wallet also needs to be completely synchronized
                            to see and spend balances on the network.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
         <translation>
 &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-Novoprimljeni FLITS zahtjeva 6 potvrda na mreži
+Novoprimljeni Rubus zahtjeva 6 potvrda na mreži
 da bi se mogao potrošiti što može potrajati ~6 minuta.
 &lt;/p&gt;&lt;p align="justify"&gt;
-Vaš FLITS novčanik takođjer treba biti u potpunosti sinkroniziran
+Vaš Rubus novčanik takođjer treba biti u potpunosti sinkroniziran
 da biste vidjeli i mogli potrošiti sredstva na mreži.
 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </translation>
@@ -4004,12 +4004,12 @@ da biste vidjeli i mogli potrošiti sredstva na mreži.
         <translation>3</translation>
     </message>
     <message>
-        <source>How do I stake FLS?</source>
-        <translation>Kako stakeat FLS?</translation>
+        <source>How do I stake RBX?</source>
+        <translation>Kako stakeat RBX?</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You must have a balance of FLITS with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (fls-cli); the command &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Provjerite da je vaš novčanik u potpunosti sinkroniziran i da koristite najnoviju verziju novčanika. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Morate imati iznos FLITS novčića s najmanje 600 potvrda na blockchainu. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Novčanik mora biti upaljen i otključan za staking. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Kada se prate svi ti koraci, staking bi trebao biti omogućen. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Status stakinga možete vidjeti prolaskom miša preko staking ikonice u gornjem desnom kutu. Staking ikona (kutija) će svijetliti i prikazivati &amp;quot;Staking omogućen&amp;quot; i naznačiti da se aktivno stake-a. Koristeći sučelje naredbene trake (fls-cli); naredba &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; će potvrditi da je staking aktivan. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You must have a balance of Rubus with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (rbx-cli); the command &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style="margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;"&gt;&lt;li align="justify" style=" margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Provjerite da je vaš novčanik u potpunosti sinkroniziran i da koristite najnoviju verziju novčanika. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Morate imati iznos Rubus novčića s najmanje 600 potvrda na blockchainu. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Novčanik mora biti upaljen i otključan za staking. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Kada se prate svi ti koraci, staking bi trebao biti omogućen. &lt;/li&gt;&lt;li align="justify" style=" margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Status stakinga možete vidjeti prolaskom miša preko staking ikonice u gornjem desnom kutu. Staking ikona (kutija) će svijetliti i prikazivati &amp;quot;Staking omogućen&amp;quot; i naznačiti da se aktivno stake-a. Koristeći sučelje naredbene trake (rbx-cli); naredba &lt;span style=" font-style:italic;"&gt;getstakingstatus&lt;/span&gt; će potvrditi da je staking aktivan. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>4</source>
@@ -4030,14 +4030,14 @@ da biste vidjeli i mogli potrošiti sredstva na mreži.
     <message>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           FLITS is a form of digital online money using blockchain technology
+                           Rubus is a form of digital online money using blockchain technology
                            that can be easily transferred globally, instantly, and with near
-                           zero fees.  FLITS incorporates market leading security &amp;
+                           zero fees.  Rubus incorporates market leading security &amp;
                            privacy and is also the first PoS (Proof of Stake) Cryptocurrency
                            to implement Sapling(SHIELD), a zk-SNARKs based privacy protocol.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           FLITS utilizes a Proof of Stake (PoS) consensus system algorithm,
-                           allowing all owners of FLITS to participate in earning block rewards
+                           Rubus utilizes a Proof of Stake (PoS) consensus system algorithm,
+                           allowing all owners of Rubus to participate in earning block rewards
                            while securing the network with full node wallets, as well as to
                            run Masternodes to create and vote on proposals.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
@@ -4045,14 +4045,14 @@ da biste vidjeli i mogli potrošiti sredstva na mreži.
         <translation>
 
 &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-FLITS je oblik digitalnog online novca koji koristi blockchain tehnologiju
+Rubus je oblik digitalnog online novca koji koristi blockchain tehnologiju
 koji se lako može slati i primati globalno, trenutno, i gotovo bez naknade.
-FLITS uključuje vodeću sigurnost  i privatnost na tržištu
+Rubus uključuje vodeću sigurnost  i privatnost na tržištu
 i takođjer je prva PoS (Proof of Stake) kriptovaluta
 koja je implementirala Sapling (SHIELD) i anoniman zk-SNARKs baziran protokol.
 &lt;/p&gt;&lt;p align="justify"&gt;
-FLITS koristi algoritam konsenzusa Proof of Stake (PoS),
-omogućujući svim vlasnicima FLS-a sudjelovanje u zarađi blokovih nagrada
+Rubus koristi algoritam konsenzusa Proof of Stake (PoS),
+omogućujući svim vlasnicima RBX-a sudjelovanje u zarađi blokovih nagrada
 dok osiguravaju mrežu full node novčanicima, kao i
 vodjenje Masternode-ova za stvaranje i glasanje o prijedlozima.
 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
@@ -4067,8 +4067,8 @@ vodjenje Masternode-ova za stvaranje i glasanje o prijedlozima.
         <translation>Što je Masternode Controller?</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 10,000 FLS collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Masternode Controller novčanik je mjesto gdje zalog od 10,000 FLS može stajati tijekom Controller-Remote podešavanja masternode-a. To je novčanik koji može aktivirati Remote masternode novčanik(e) i omogućiti Vam držanje zaloga novčića offline dok Remote masternode novčanik ostaje online.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 10,000 RBX collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Masternode Controller novčanik je mjesto gdje zalog od 10,000 RBX može stajati tijekom Controller-Remote podešavanja masternode-a. To je novčanik koji može aktivirati Remote masternode novčanik(e) i omogućiti Vam držanje zaloga novčića offline dok Remote masternode novčanik ostaje online.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
@@ -4080,8 +4080,8 @@ pitanja</translation>
         <translation>Zatvori FAQ</translation>
     </message>
     <message>
-        <source>3) How do I stake FLS?</source>
-        <translation>3) Kako stake-am FLS?</translation>
+        <source>3) How do I stake RBX?</source>
+        <translation>3) Kako stake-am RBX?</translation>
     </message>
     <message>
         <source>4) Where I should go if I need support?</source>
@@ -4199,8 +4199,8 @@ pitanja</translation>
         <translation>Ne može se otvoriti mapa sigurnosne kopije</translation>
     </message>
     <message>
-        <source>Unable to open fls.conf with default application</source>
-        <translation>Nije moguće otvoriti fls.conf sa zadanom aplikacijom</translation>
+        <source>Unable to open rbx.conf with default application</source>
+        <translation>Nije moguće otvoriti rbx.conf sa zadanom aplikacijom</translation>
     </message>
     <message>
         <source>In:</source>
@@ -4258,8 +4258,8 @@ pitanja</translation>
         <translation>Number of script verification threads</translation>
     </message>
     <message>
-        <source>Start FLITS on system login</source>
-        <translation>Pokrenite FLITS pri pokretanju računala</translation>
+        <source>Start Rubus on system login</source>
+        <translation>Pokrenite Rubus pri pokretanju računala</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -4346,8 +4346,8 @@ Jeste li sigurni?
         <translation>PotvrdniOkvir</translation>
     </message>
     <message>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other FLITS addresses after it matures.</source>
-        <translation>MultiSend vam omogućuje da automatski pošaljete do 100% svog uloga ili nagrade masternode na popis drugih FLITS adresa nakon što sazriju.</translation>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other Rubus addresses after it matures.</source>
+        <translation>MultiSend vam omogućuje da automatski pošaljete do 100% svog uloga ili nagrade masternode na popis drugih Rubus adresa nakon što sazriju.</translation>
     </message>
     <message>
         <source>Active</source>
@@ -4473,8 +4473,8 @@ Označite jedan ili oba polja za potvrdu da biste poslali staking i/ili masterno
         <translation>Poruka</translation>
     </message>
     <message>
-        <source>FLITS address or contact label</source>
-        <translation>FLITS adresa ili naziv kontakta</translation>
+        <source>Rubus address or contact label</source>
+        <translation>Rubus adresa ili naziv kontakta</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -4795,8 +4795,8 @@ podatke</translation>
         <translation>Najčešće postavljena pitanja</translation>
     </message>
     <message>
-        <source>About FLS</source>
-        <translation>O FLS-u</translation>
+        <source>About RBX</source>
+        <translation>O RBX-u</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4866,8 +4866,8 @@ Jeste li sigurni?
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>FLITS Core is shutting down...</source>
-        <translation>FLITS Core se zatvara...</translation>
+        <source>Rubus Core is shutting down...</source>
+        <translation>Rubus Core se zatvara...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -4896,8 +4896,8 @@ Jeste li sigurni?
         <translation>Učitavanje...</translation>
     </message>
     <message>
-        <source>FLITS Core</source>
-        <translation>FLITS Core</translation>
+        <source>Rubus Core</source>
+        <translation>Rubus Core</translation>
     </message>
 </context>
 <context>
@@ -5274,8 +5274,8 @@ stvorit će se nova sigurnosna kopija.
         <translation>Zaštićeno slanje na</translation>
     </message>
     <message>
-        <source>Burned FLSs</source>
-        <translation>Uništeni FLSovi</translation>
+        <source>Burned RBXs</source>
+        <translation>Uništeni RBXovi</translation>
     </message>
     <message>
         <source>watch-only</source>
@@ -5448,12 +5448,12 @@ stvorit će se nova sigurnosna kopija.
         <translation>Obrazac</translation>
     </message>
     <message>
-        <source>+0.000585 FLS</source>
-        <translation>+0.000585 FLS</translation>
+        <source>+0.000585 RBX</source>
+        <translation>+0.000585 RBX</translation>
     </message>
     <message>
-        <source>-0.000585 FLS</source>
-        <translation>-0.000585 FLS</translation>
+        <source>-0.000585 RBX</source>
+        <translation>-0.000585 RBX</translation>
     </message>
 </context>
 <context>
@@ -5515,25 +5515,25 @@ Odaberite manje ulaza pomoću Upravljanja novčićima.</translation>
     </message>
     <message>
         <source>Welcome to
-FLITS Core Wallet</source>
+Rubus Core Wallet</source>
         <translation>Dobrodošli u
-FLITS temeljni novčanik</translation>
+Rubus temeljni novčanik</translation>
     </message>
     <message>
-        <source>FLITS is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>FLITS je najinovativnija blockchain tehnologija na svijetu bazirana na Proof of Stake tehnologiji. Razvijena je od strane vrlo iskusnih programera i kriptografa.</translation>
+        <source>Rubus is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <translation>Rubus je najinovativnija blockchain tehnologija na svijetu bazirana na Proof of Stake tehnologiji. Razvijena je od strane vrlo iskusnih programera i kriptografa.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - FLITS believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kao što naš manifest kaže: Privatnost je osnovno ljudsko pravo o kojemu se ne pregovara; korisnicima daje slobodu dijeljenja svojih podataka kad god i s kim god žele - FLITS vjeruje u suverenitet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - Rubus believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kao što naš manifest kaže: Privatnost je osnovno ljudsko pravo o kojemu se ne pregovara; korisnicima daje slobodu dijeljenja svojih podataka kad god i s kim god žele - Rubus vjeruje u suverenitet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is FLS's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>Masternode mreža je mreža drugog sloja FLS-a na vrhu blockchaina koja omogućuje našem DAO-u pružanje decentraliziranog upravljanja i riznice.</translation>
+        <source>The masternode network is RBX's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <translation>Masternode mreža je mreža drugog sloja RBX-a na vrhu blockchaina koja omogućuje našem DAO-u pružanje decentraliziranog upravljanja i riznice.</translation>
     </message>
     <message>
-        <source>How FLITS respects your privacy?</source>
-        <translation>Kako FLITS poštuje Vašu privatnost?</translation>
+        <source>How Rubus respects your privacy?</source>
+        <translation>Kako Rubus poštuje Vašu privatnost?</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -5545,7 +5545,7 @@ FLITS temeljni novčanik</translation>
     </message>
 </context>
 <context>
-    <name>fls-core</name>
+    <name>rbx-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>Dopusti JSON-RPC veze od određenog izvora. Vrijedi za jednu IP (npr. 1.2.3.4), mrežu / mrežnu masku (npr. 1.2.3.4/255.255.255.0) ili mrežu / CIDR (npr. 1.2.3.4/24). Ova se opcija može odrediti više puta</translation>
@@ -5699,8 +5699,8 @@ FLITS temeljni novčanik</translation>
         <translation>Ukupna duljina teksta mrežne verzije (%i) prelazi maksimalnu duljinu (%i). Smanjite broj ili veličinu uacommentsa.</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. FLITS Core is probably already running.</source>
-        <translation>Nije moguće vezati se na %s na ovom računalu. FLITS Core vjerojatno već radi.</translation>
+        <source>Unable to bind to %s on this computer. Rubus Core is probably already running.</source>
+        <translation>Nije moguće vezati se na %s na ovom računalu. Rubus Core vjerojatno već radi.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -5715,8 +5715,8 @@ FLITS temeljni novčanik</translation>
         <translation>Upozorenje: -paytxfee je vrlo visoka! To je transakcijska naknada koju ćete platiti ako šaljete transakciju.</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
-        <translation>Upozorenje: Provjerite jesu li datum i vrijeme vašeg računala točni! Ako je vaš sat pogrešan, FLITS Core neće raditi ispravno.</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Rubus Core will not work properly.</source>
+        <translation>Upozorenje: Provjerite jesu li datum i vrijeme vašeg računala točni! Ako je vaš sat pogrešan, Rubus Core neće raditi ispravno.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -5787,8 +5787,8 @@ FLITS temeljni novčanik</translation>
         <translation>Autorska prava (C) 2014-%i The Dash Core Developers</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The FLITS Core Developers</source>
-        <translation>Autorska prava (C) 2015-%i The FLITS Core Developers</translation>
+        <source>Copyright (C) 2015-%i The Rubus Core Developers</source>
+        <translation>Autorska prava (C) 2015-%i The Rubus Core Developers</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -6000,8 +6000,8 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Nije moguće nadograditi na novčanik Sapling (već ima Sapling podršku). Verzija: %d</translation>
     </message>
     <message>
-        <source>Disable all FLITS specific functionality (Masternodes, Budgeting) (0-1, default: %u)</source>
-        <translation>Onemogućite sve FLITS specifične funkcionalnosti (Masternode, proračun) (0-1, zadano: %u)</translation>
+        <source>Disable all Rubus specific functionality (Masternodes, Budgeting) (0-1, default: %u)</source>
+        <translation>Onemogućite sve Rubus specifične funkcionalnosti (Masternode, proračun) (0-1, zadano: %u)</translation>
     </message>
     <message>
         <source>This file contains all of your private keys in plain text. DO NOT send this file to anyone!</source>
@@ -6036,8 +6036,8 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Greška pri učitavanju %s: Novčanik oštećen</translation>
     </message>
     <message>
-        <source>Error loading %s: Wallet requires newer version of FLITS Core</source>
-        <translation>Pogreška pri učitavanju %s: Novčanik zahtijeva noviju verziju FLITS Core</translation>
+        <source>Error loading %s: Wallet requires newer version of Rubus Core</source>
+        <translation>Pogreška pri učitavanju %s: Novčanik zahtijeva noviju verziju Rubus Core</translation>
     </message>
     <message>
         <source>Error loading %s
@@ -6234,12 +6234,12 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Naknade (u %s/Kb) manje od ovoga će se smatrati kao da nema naknade za stvaranje transakcije (default: %s)</translation>
     </message>
     <message>
-        <source>Minimum positive amount (in FLS) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
-        <translation>Najmanji dozvoljeni iznos (u FLS) kroz GUI RPC za prag dijeljenja stake-a (default: %s)</translation>
+        <source>Minimum positive amount (in RBX) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
+        <translation>Najmanji dozvoljeni iznos (u RBX) kroz GUI RPC za prag dijeljenja stake-a (default: %s)</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong FLITS Core will not work properly.</source>
-        <translation>Provjerite jesu li datum i vrijeme vašeg računala točni! Ako je vaš sat pogrešan, FLITS Core neće raditi ispravno.</translation>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong Rubus Core will not work properly.</source>
+        <translation>Provjerite jesu li datum i vrijeme vašeg računala točni! Ako je vaš sat pogrešan, Rubus Core neće raditi ispravno.</translation>
     </message>
     <message>
         <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect/-noconnect)</source>
@@ -6592,8 +6592,8 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Provjera novčanika...</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart FLITS Core to complete</source>
-        <translation>Potrebno je prepisati novčanik: ponovo pokrenite FLITS Core</translation>
+        <source>Wallet needed to be rewritten: restart Rubus Core to complete</source>
+        <translation>Potrebno je prepisati novčanik: ponovo pokrenite Rubus Core</translation>
     </message>
     <message>
         <source>Wallet options:</source>
@@ -6663,8 +6663,8 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Odaberi koje novčiće ćeš trošiti</translation>
     </message>
     <message>
-        <source>FLITS address or contact label</source>
-        <translation>FLITS adresa ili naziv kontakta</translation>
+        <source>Rubus address or contact label</source>
+        <translation>Rubus adresa ili naziv kontakta</translation>
     </message>
     <message>
         <source>Amount</source>

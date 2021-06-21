@@ -1,11 +1,11 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/settings/settingsdisplayoptionswidget.h"
-#include "qt/fls/settings/forms/ui_settingsdisplayoptionswidget.h"
+#include "qt/rbx/settings/settingsdisplayoptionswidget.h"
+#include "qt/rbx/settings/forms/ui_settingsdisplayoptionswidget.h"
 #include <QListView>
 #include <QSettings>
 #include <QDir>
@@ -13,9 +13,9 @@
 #include "clientmodel.h"
 #include "optionsmodel.h"
 #include "bitcoinunits.h"
-#include "qt/fls/qtutils.h"
+#include "qt/rbx/qtutils.h"
 
-SettingsDisplayOptionsWidget::SettingsDisplayOptionsWidget(FLSGUI* _window, QWidget *parent) :
+SettingsDisplayOptionsWidget::SettingsDisplayOptionsWidget(RBXGUI* _window, QWidget *parent) :
     PWidget(_window,parent),
     ui(new Ui::SettingsDisplayOptionsWidget)
 {

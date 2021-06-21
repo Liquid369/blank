@@ -1,14 +1,14 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_CORE_NEW_GUI_FLSGUI_H
-#define FLS_CORE_NEW_GUI_FLSGUI_H
+#ifndef RBX_CORE_NEW_GUI_RBXGUI_H
+#define RBX_CORE_NEW_GUI_RBXGUI_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/fls-config.h"
+#include "config/rbx-config.h"
 #endif
 
 #include <QMainWindow>
@@ -16,17 +16,17 @@
 #include <QSystemTrayIcon>
 #include <QLabel>
 
-#include "qt/fls/navmenuwidget.h"
-#include "qt/fls/topbar.h"
-#include "qt/fls/dashboardwidget.h"
-#include "qt/fls/send.h"
-#include "qt/fls/receivewidget.h"
-#include "qt/fls/addresseswidget.h"
-#include "qt/fls/coldstakingwidget.h"
-#include "qt/fls/masternodeswidget.h"
-#include "qt/fls/snackbar.h"
-#include "qt/fls/settings/settingswidget.h"
-#include "qt/fls/settings/settingsfaqwidget.h"
+#include "qt/rbx/navmenuwidget.h"
+#include "qt/rbx/topbar.h"
+#include "qt/rbx/dashboardwidget.h"
+#include "qt/rbx/send.h"
+#include "qt/rbx/receivewidget.h"
+#include "qt/rbx/addresseswidget.h"
+#include "qt/rbx/coldstakingwidget.h"
+#include "qt/rbx/masternodeswidget.h"
+#include "qt/rbx/snackbar.h"
+#include "qt/rbx/settings/settingswidget.h"
+#include "qt/rbx/settings/settingsfaqwidget.h"
 #include "qt/rpcconsole.h"
 
 namespace interfaces {
@@ -40,18 +40,18 @@ class WalletModel;
 
 
 /**
-  FLITS GUI main class. This class represents the main window of the FLITS UI. It communicates with both the client and
+  Rubus GUI main class. This class represents the main window of the Rubus UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
 */
-class FLSGUI : public QMainWindow
+class RBXGUI : public QMainWindow
 {
     Q_OBJECT
 
 public:
     static const QString DEFAULT_WALLET;
 
-    explicit FLSGUI(const NetworkStyle* networkStyle, QWidget* parent = 0);
-    ~FLSGUI();
+    explicit RBXGUI(const NetworkStyle* networkStyle, QWidget* parent = 0);
+    ~RBXGUI();
 
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
@@ -197,4 +197,4 @@ Q_SIGNALS:
 };
 
 
-#endif //FLS_CORE_NEW_GUI_FLSGUI_H
+#endif //RBX_CORE_NEW_GUI_RBXGUI_H

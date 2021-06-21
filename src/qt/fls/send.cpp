@@ -1,18 +1,18 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/fls/send.h"
-#include "qt/fls/forms/ui_send.h"
-#include "qt/fls/addnewcontactdialog.h"
-#include "qt/fls/qtutils.h"
-#include "qt/fls/sendchangeaddressdialog.h"
-#include "qt/fls/optionbutton.h"
-#include "qt/fls/sendconfirmdialog.h"
-#include "qt/fls/guitransactionsutils.h"
-#include "qt/fls/loadingdialog.h"
+#include "qt/rbx/send.h"
+#include "qt/rbx/forms/ui_send.h"
+#include "qt/rbx/addnewcontactdialog.h"
+#include "qt/rbx/qtutils.h"
+#include "qt/rbx/sendchangeaddressdialog.h"
+#include "qt/rbx/optionbutton.h"
+#include "qt/rbx/sendconfirmdialog.h"
+#include "qt/rbx/guitransactionsutils.h"
+#include "qt/rbx/loadingdialog.h"
 #include "clientmodel.h"
 #include "optionsmodel.h"
 #include "operationresult.h"
@@ -24,7 +24,7 @@
 #define REQUEST_PREPARE_TX 1
 #define REQUEST_REFRESH_BALANCE 2
 
-SendWidget::SendWidget(FLSGUI* parent) :
+SendWidget::SendWidget(RBXGUI* parent) :
     PWidget(parent),
     ui(new Ui::send),
     coinIcon(new QPushButton())
@@ -107,7 +107,7 @@ SendWidget::SendWidget(FLSGUI* parent) :
     coinIcon->show();
     coinIcon->raise();
 
-    setCssProperty(coinIcon, "coin-icon-fls");
+    setCssProperty(coinIcon, "coin-icon-rbx");
 
     QSize BUTTON_SIZE = QSize(24, 24);
     coinIcon->setMinimumSize(BUTTON_SIZE);
@@ -124,8 +124,8 @@ SendWidget::SendWidget(FLSGUI* parent) :
     setCustomFeeSelected(false);
 
     // Connect
-    connect(ui->pushLeft, &QPushButton::clicked, [this](){onFLSSelected(true);});
-    connect(ui->pushRight,  &QPushButton::clicked, [this](){onFLSSelected(false);});
+    connect(ui->pushLeft, &QPushButton::clicked, [this](){onRBXSelected(true);});
+    connect(ui->pushRight,  &QPushButton::clicked, [this](){onRBXSelected(false);});
     connect(ui->pushButtonSave, &QPushButton::clicked, this, &SendWidget::onSendClicked);
     connect(ui->pushButtonAddRecipient, &QPushButton::clicked, this, &SendWidget::onAddEntryClicked);
     connect(ui->pushButtonClear, &QPushButton::clicked, [this](){clearAll(true);});
@@ -356,7 +356,7 @@ void SendWidget::setFocusOnLastEntry()
 void SendWidget::showHideCheckBoxDelegations(CAmount delegationBalance)
 {
     // Show checkbox only when there is any available owned delegation and
-    // coincontrol is not selected, and we are trying to spend transparent FLSs.
+    // coincontrol is not selected, and we are trying to spend transparent RBXs.
     const bool isCControl = coinControlDialog ? coinControlDialog->coinControl->HasSelected() : false;
     const bool hasDel = delegationBalance > 0;
 
@@ -754,7 +754,7 @@ void SendWidget::onShieldCoinsClicked()
             auto res = walletModel->getNewShieldedAddress(strAddress, "");
             // Check for generation errors
             if (!res.result) {
-                inform(tr("Error generating address to shield FLSs"));
+                inform(tr("Error generating address to shield RBXs"));
                 return false;
             }
             recipients.back().address = strAddress;
@@ -762,7 +762,7 @@ void SendWidget::onShieldCoinsClicked()
             return true;
         });
     } else {
-        inform(tr("You don't have any transparent FLSs to shield."));
+        inform(tr("You don't have any transparent RBXs to shield."));
     }
 }
 
@@ -791,7 +791,7 @@ void SendWidget::onCheckBoxChanged()
     }
 }
 
-void SendWidget::onFLSSelected(bool _isTransparent)
+void SendWidget::onRBXSelected(bool _isTransparent)
 {
     isTransparent = _isTransparent;
 
@@ -899,14 +899,14 @@ void SendWidget::onContactMultiClicked()
         }
 
         bool isStakingAddr = false;
-        auto flsAdd = Standard::DecodeDestination(address.toStdString(), isStakingAddr);
+        auto rbxAdd = Standard::DecodeDestination(address.toStdString(), isStakingAddr);
 
-        if (!Standard::IsValidDestination(flsAdd) || isStakingAddr) {
+        if (!Standard::IsValidDestination(rbxAdd) || isStakingAddr) {
             inform(tr("Invalid address"));
             return;
         }
 
-        if (walletModel->isMine(flsAdd)) {
+        if (walletModel->isMine(rbxAdd)) {
             inform(tr("Cannot store your own address as contact"));
             return;
         }
@@ -926,7 +926,7 @@ void SendWidget::onContactMultiClicked()
             if (label == dialog->getLabel()) {
                 return;
             }
-            if (walletModel->updateAddressBookLabels(flsAdd, dialog->getLabel().toStdString(),
+            if (walletModel->updateAddressBookLabels(rbxAdd, dialog->getLabel().toStdString(),
                     AddressBook::AddressBookPurpose::SEND)) {
                 inform(tr("New Contact Stored"));
             } else {

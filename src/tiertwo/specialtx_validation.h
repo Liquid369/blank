@@ -1,10 +1,10 @@
     // Copyright (c) 2017 The Dash Core developers
-// Copyright (c) 2020 The FLITS Core developers
+// Copyright (c) 2020 The Rubus Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef FLS_SPECIALTX_H
-#define FLS_SPECIALTX_H
+#ifndef RBX_SPECIALTX_H
+#define RBX_SPECIALTX_H
 
 #include "streams.h"
 #include "version.h"
@@ -27,4 +27,4 @@ bool CheckSpecialTx(const CTransaction& tx, CValidationState& state, bool fIsSap
 bool ProcessSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindexPrev, CValidationState& state);
 bool UndoSpecialTxsInBlock(const CBlock& block, const CBlockIndex* pindexPrev);
 
-#endif //FLS_SAPLING_VALIDATION_H
+#endif //RBX_SAPLING_VALIDATION_H

@@ -1,6 +1,6 @@
 // Copyright (c) 2011-2013 The Bitcoin developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The Flits Developers
+// Copyright (c) 2020 The Rubus Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
@@ -140,17 +140,17 @@ int TransactionFilterProxy::rowCount(const QModelIndex& parent) const
 bool TransactionFilterProxy::isOrphan(const int status, const int type)
 {
     return ( (type == TransactionRecord::Generated || type == TransactionRecord::StakeMint ||
-            type == TransactionRecord::StakeZFLS || type == TransactionRecord::MNReward)
+            type == TransactionRecord::StakeZRBX || type == TransactionRecord::MNReward)
             && (status == TransactionStatus::Conflicted || status == TransactionStatus::NotAccepted) );
 }
 
 bool TransactionFilterProxy::isZcTx(int type) const {
-    return (type == TransactionRecord::ZerocoinMint || type == TransactionRecord::ZerocoinSpend || type == TransactionRecord::ZerocoinSpend_Change_zFls
+    return (type == TransactionRecord::ZerocoinMint || type == TransactionRecord::ZerocoinSpend || type == TransactionRecord::ZerocoinSpend_Change_zRbx
             || type == TransactionRecord::ZerocoinSpend_FromMe || type == TransactionRecord::RecvFromZerocoinSpend);
 }
 
 bool TransactionFilterProxy::isStakeTx(int type) const {
-    return type == TransactionRecord::StakeMint || type == TransactionRecord::Generated || type == TransactionRecord::StakeZFLS || type == TransactionRecord::StakeDelegated;
+    return type == TransactionRecord::StakeMint || type == TransactionRecord::Generated || type == TransactionRecord::StakeZRBX || type == TransactionRecord::StakeDelegated;
 }
 
 bool TransactionFilterProxy::isColdStake(int type) const {

@@ -4,11 +4,11 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the wallet accounts properly when there is a double-spend conflict."""
 
-from test_framework.test_framework import FlsTestFramework
+from test_framework.test_framework import RbxTestFramework
 from test_framework.util import *
 import time
 
-class TxnMallTest(FlsTestFramework):
+class TxnMallTest(RbxTestFramework):
     def set_test_params(self):
         self.num_nodes = 4
 
@@ -23,7 +23,7 @@ class TxnMallTest(FlsTestFramework):
         disconnect_nodes(self.nodes[2], 1)
 
     def run_test(self):
-        # All nodes should start with 6,250 FLS:
+        # All nodes should start with 6,250 RBX:
         starting_balance = 6250
         for i in range(4):
             assert_equal(self.nodes[i].getbalance(), starting_balance)
@@ -44,7 +44,7 @@ class TxnMallTest(FlsTestFramework):
         # Coins are sent to node1_address
         node1_address = self.nodes[1].getnewaddress()
 
-        # First: use raw transaction API to send 1240 * 5 FLS to node1_address,
+        # First: use raw transaction API to send 1240 * 5 RBX to node1_address,
         # but don't broadcast:
         doublespend_fee = Decimal('-.02')
         rawtx_input_0 = {}
