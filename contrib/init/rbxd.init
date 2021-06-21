@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#  rbxd The PIVX core server.
+#  rbxd The Rubus Core server.
 #
 #
 # chkconfig: 345 80 20

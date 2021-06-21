@@ -2,10 +2,10 @@
 
 [Desktop Entry]
 Encoding=UTF-8
-Name=PIVX Core
-Comment=PIVX Core QT main network
+Name=Rubus Core
+Comment=Rubus Core QT main network
 GenericName=PIVX Digital Currency QT client main network
-Exec=pivx-core.qt %u
+Exec=rubus-core.qt %u
 Terminal=false
 Type=Application
 Icon=${SNAP}/share/pixmaps/pivx.png

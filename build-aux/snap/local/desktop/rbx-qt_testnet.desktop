@@ -2,13 +2,13 @@
 
 [Desktop Entry]
 Encoding=UTF-8
-Name=PIVX Core
-Comment=PIVX Core QT test network
+Name=Rubus Core
+Comment=Rubus Core QT test network
 GenericName=PIVX Digital Currency QT client testnet network
-Exec=pivx-core.qt-testnet %u
+Exec=rubus-core.qt-testnet %u
 Terminal=false
 Type=Application
-Icon=${SNAP}/share/pixmaps/pivx_testnet.png
+Icon=${SNAP}/share/pixmaps/rbx_testnet.png
 MimeType=x-scheme-handler/piv;
 Categories=X-Office;X-Finance;
 Keywords=internet;pivx;zrbx;tpiv;core;wallet;qt;testnet;snap;launchpad;crypto;digital;currency;coin;token;zerocoin;

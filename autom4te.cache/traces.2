@@ -3160,7 +3160,7 @@ m4trace:build-aux/m4/bitcoin_find_bdb48.m4:5: -1- AC_DEFUN([BITCOIN_FIND_BDB48],
 m4trace:build-aux/m4/bitcoin_qt.m4:7: -1- AC_DEFUN([BITCOIN_QT_FAIL], [
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      AC_MSG_WARN([$1; pivx-qt frontend will not be built])
+      AC_MSG_WARN([$1; rbx-qt frontend will not be built])
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -3193,7 +3193,7 @@ m4trace:build-aux/m4/bitcoin_qt.m4:53: -1- AC_DEFUN([BITCOIN_QT_INIT], [
   dnl enable Qt support
   AC_ARG_WITH([gui],
     [AS_HELP_STRING([--with-gui@<:@=no|qt5|auto@:>@],
-    [build pivx-qt GUI (default=auto)])],
+    [build rbx-qt GUI (default=auto)])],
     [
      bitcoin_qt_want_version=$withval
      if test "x$bitcoin_qt_want_version" = xyes; then
@@ -5191,8 +5191,8 @@ m4trace:configure.ac:997: -2- BITCOIN_QT_FAIL([QtSvg not found])
 m4trace:configure.ac:997: -1- PKG_CHECK_MODULES([QT_SVG], [${QT_LIB_PREFIX}Svg], [QT_SVG_INCLUDES="$QT_SVG_CFLAGS"; QT_LIBS="$QT_LIBS $QT_SVG_LIBS"], [], [
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: QtSvg not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: QtSvg not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: QtSvg not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: QtSvg not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -5214,8 +5214,8 @@ m4trace:configure.ac:997: -2- BITCOIN_QT_FAIL([QtConcurrent not found])
 m4trace:configure.ac:997: -1- PKG_CHECK_MODULES([QT_CONCURRENT], [${QT_LIB_PREFIX}Concurrent], [QT_INCLUDES="$QT_INCLUDES $QT_CONCURRENT_CFLAGS"; QT_LIBS="$QT_LIBS $QT_CONCURRENT_LIBS"], [], [
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: QtConcurrent not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: QtConcurrent not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: QtConcurrent not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: QtConcurrent not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -5744,8 +5744,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib${QT_LIB_PREFIX}Core not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib${QT_LIB_PREFIX}Core not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib${QT_LIB_PREFIX}Core not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib${QT_LIB_PREFIX}Core not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -5799,8 +5799,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib${QT_LIB_PREFIX}Gui not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib${QT_LIB_PREFIX}Gui not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib${QT_LIB_PREFIX}Gui not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib${QT_LIB_PREFIX}Gui not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -5854,8 +5854,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib${QT_LIB_PREFIX}Network not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib${QT_LIB_PREFIX}Network not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib${QT_LIB_PREFIX}Network not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib${QT_LIB_PREFIX}Network not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -5909,8 +5909,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib${QT_LIB_PREFIX}Widgets not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib${QT_LIB_PREFIX}Widgets not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib${QT_LIB_PREFIX}Widgets not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib${QT_LIB_PREFIX}Widgets not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -5964,8 +5964,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib${QT_LIB_PREFIX}Concurrent not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib${QT_LIB_PREFIX}Concurrent not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib${QT_LIB_PREFIX}Concurrent not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib${QT_LIB_PREFIX}Concurrent not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -6172,8 +6172,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXPlatformSupport not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXPlatformSupport not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXPlatformSupport not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXPlatformSupport not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -6227,8 +6227,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXFontDatabaseSupport not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXFontDatabaseSupport not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXFontDatabaseSupport not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXFontDatabaseSupport not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -6282,8 +6282,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXEventDispatcherSupport not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXEventDispatcherSupport not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXEventDispatcherSupport not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXEventDispatcherSupport not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -6337,8 +6337,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXThemeSupport not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXThemeSupport not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXThemeSupport not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXThemeSupport not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -6392,8 +6392,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXFbSupport not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXFbSupport not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXFbSupport not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXFbSupport not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -6447,8 +6447,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXDeviceDiscoverySupport not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXDeviceDiscoverySupport not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXDeviceDiscoverySupport not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXDeviceDiscoverySupport not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -6502,8 +6502,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXAccessibilitySupport not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXAccessibilitySupport not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: lib$QT_LIB_PREFIXAccessibilitySupport not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: lib$QT_LIB_PREFIXAccessibilitySupport not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no
@@ -6855,8 +6855,8 @@ else
   
   if test "x$bitcoin_qt_want_version" = xauto && test "x$bitcoin_qt_force" != xyes; then
     if test "x$bitcoin_enable_qt" != xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: libprotobuf not found; pivx-qt frontend will not be built" >&5
-$as_echo "$as_me: WARNING: libprotobuf not found; pivx-qt frontend will not be built" >&2;}
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: libprotobuf not found; rbx-qt frontend will not be built" >&5
+$as_echo "$as_me: WARNING: libprotobuf not found; rbx-qt frontend will not be built" >&2;}
     fi
     bitcoin_enable_qt=no
     bitcoin_enable_qt_test=no

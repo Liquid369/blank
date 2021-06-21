@@ -1,71 +1,71 @@
 # Copyright (c) 2018-2019 The Ion developers
-# Copyright (c) 2019 The PIVX developers
-name: pivx-core
+# Copyright (c) 2019 The Rubus developers
+name: rubus-core
 base: core18
 version: 5.0.99
-summary:   PIVX (Private – Instant – Verified – Transaction)
+summary:   Rubus (Private – Instant – Verified – Transaction)
 description: |
-  PIVX is an MIT licensed,
+  Rubus is an MIT licensed,
   open source, blockchain-based cryptocurrency with
   ultra fast transactions, low fees, high network decentralization, and
   Zero Knowledge cryptography proofs for industry-leading
   transaction anonymity.
 
-  - [Download](https://pivx.org/wp-content/uploads/2018/10/PIVX-White.pdf) PIVX White Paper PDF
+  - [Download](https://pivx.org/wp-content/uploads/2018/10/Rubus-White.pdf) Rubus White Paper PDF
 grade: devel
 confinement: strict
 
 apps:
   daemon:
-    command: pivxd
+    command: rbxd
     plugs: [network, network-bind, home, removable-media]
-    desktop: pivxd.desktop
+    desktop: rbxd.desktop
     environment:
       XDG_DATA_DIRS: $SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
       HOME: $SNAP_USER_COMMON
   daemon-testnet:
-    command: pivxd --testnet
+    command: rbxd --testnet
     plugs: [network, network-bind, home, removable-media]
-    desktop: pivxd_testnet.desktop
+    desktop: rbxd_testnet.desktop
     environment:
       XDG_DATA_DIRS: $SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
       HOME: $SNAP_USER_COMMON
   qt:
-    command: desktop-launch pivx-qt
+    command: desktop-launch rbx-qt
     plugs: [network, network-bind, network-status, unity7, desktop, desktop-legacy, wayland, x11, mir, opengl, home, gsettings, removable-media, screen-inhibit-control, pulseaudio, media-hub]
-    desktop: pivx-qt.desktop
+    desktop: rbx-qt.desktop
     environment:
       QT_XKB_CONFIG_ROOT: $SNAP_USER_DATA:$SNAP/usr/share:$QT_XKB_CONFIG_ROOT
       XDG_DATA_DIRS: $SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
       HOME: $SNAP_USER_COMMON
   qt-testnet:
-    command: desktop-launch pivx-qt --testnet
+    command: desktop-launch rbx-qt --testnet
     plugs: [network, network-bind, network-status, unity7, desktop, desktop-legacy, wayland, x11, mir, opengl, home, gsettings, removable-media, screen-inhibit-control, pulseaudio, media-hub]
-    desktop: pivx-qt_testnet.desktop
+    desktop: rbx-qt_testnet.desktop
     environment:
       QT_XKB_CONFIG_ROOT: $SNAP_USER_DATA:$SNAP/usr/share:$QT_XKB_CONFIG_ROOT
       XDG_DATA_DIRS: $SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
       HOME: $SNAP_USER_COMMON
   cli:
-    command: pivx-cli
+    command: rbx-cli
     plugs: [network, network-bind, home, removable-media]
     environment:
       XDG_DATA_DIRS: $SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
       HOME: $SNAP_USER_COMMON
   cli-testnet:
-    command: pivx-cli --testnet
+    command: rbx-cli --testnet
     plugs: [network, network-bind, home, removable-media]
     environment:
       XDG_DATA_DIRS: $SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
       HOME: $SNAP_USER_COMMON
   tx:
-    command: pivx-tx
+    command: rbx-tx
     plugs: [home]
   test:
-    command: test_pivx
+    command: test_rbx
     plugs: [home]
   testqt:
-    command: test_pivx-qt
+    command: test_rbx-qt
     plugs: [home]
 
 layout:
@@ -105,8 +105,8 @@ parts:
       - xdg-user-dirs
       - fcitx-frontend-qt5
 
-  pivx-core:
-    source: https://github.com/PIVX-Project/PIVX
+  rubus-core:
+    source: https://github.com/Rubus-Project/Rubus
     source-type: git
     source-tag: master
     plugin: nil
@@ -228,7 +228,7 @@ parts:
       echo "+++++++++++++++++++++++++++++++++++++++++++++++"
       make install prefix=${SNAPCRAFT_PART_INSTALL}
       install -m 0644 -D -T $SNAPCRAFT_PART_BUILD/src/qt/res/icons/bitcoin.png $SNAPCRAFT_PART_INSTALL/share/pixmaps/pivx.png
-      install -m 0644 -D -T $SNAPCRAFT_PART_BUILD/src/qt/res/icons/bitcoin_testnet.png $SNAPCRAFT_PART_INSTALL/share/pixmaps/pivx_testnet.png
+      install -m 0644 -D -T $SNAPCRAFT_PART_BUILD/src/qt/res/icons/bitcoin_testnet.png $SNAPCRAFT_PART_INSTALL/share/pixmaps/rbx_testnet.png
       echo "-----------------------------------------------"
       echo "+++++++++++++++++++++++++++++++++++++++++++++++"
       echo "POST INSTALL SCRIPTS OF ${BINPREF}-${SNAPCRAFT_PROJECT_VERSION}" # run make install with a prefix where to install

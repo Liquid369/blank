@@ -2,13 +2,13 @@
 
 [Desktop Entry]
 Encoding=UTF-8
-Name=PIVX Core Daemon SNAP
+Name=Rubus Core Daemon SNAP
 Comment=testnet
 GenericName=PIVX Digital Currency Daemon Client testnet network
-Exec=pivx-core.daemon-testnet %u
+Exec=rubus-core.daemon-testnet %u
 Terminal=true
 Type=Application
-Icon=${SNAP}/share/pixmaps/pivx_testnet.png
+Icon=${SNAP}/share/pixmaps/rbx_testnet.png
 MimeType=x-scheme-handler/piv;
 Categories=X-Office;X-Finance;
 Keywords=internet;pivx;zrbx;core;wallet;daemon;testnet;snap;launchpad;crypto;digital;currency;coin;token;zerocoin;
