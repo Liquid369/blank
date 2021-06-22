@@ -4,12 +4,12 @@
 Encoding=UTF-8
 Name=Rubus Core Daemon SNAP
 Comment=main
-GenericName=PIVX Digital Currency Daemon Client main network
+GenericName=Rubus Digital Currency Daemon Client main network
 Exec=rubus-core.daemon %u
 Terminal=true
 Type=Application
-Icon=${SNAP}/share/pixmaps/pivx.png
-MimeType=x-scheme-handler/piv;
+Icon=${SNAP}/share/pixmaps/rbx.png
+MimeType=x-scheme-handler/rbx;
 Categories=X-Office;X-Finance;
-Keywords=internet;pivx;zrbx;core;wallet;daemon;main;snap;launchpad;crypto;digital;currency;coin;token;zerocoin;
+Keywords=internet;rbx;zrbx;core;wallet;daemon;main;snap;launchpad;crypto;digital;currency;coin;token;zerocoin;
 Version=1.0
