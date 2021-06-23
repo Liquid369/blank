@@ -342,7 +342,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int n
             bool nPayday = false;
             int nDevPayPeriod = nHeight % Params().GetConsensus().nBudgetCycleBlocks;
             if (nDevPayPeriod == 0) {
-                CTxDestination destination = CBitcoinAddress(Params().GetConsensus.DevAddress()).Get();
+                CTxDestination destination = CBitcoinAddress(Params().DevAddress()).Get();
                 CScript DEV_SCRIPT = GetScriptForDestination(destination);
                 txNew.vout.push_back(CTxOut(nDevReward, CScript(DEV_SCRIPT.begin(), DEV_SCRIPT.end())));
                 nPayday = true;
@@ -376,7 +376,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int n
                 bool nPayday = false;
                 int nDevPayPeriod = nHeight % Params().GetConsensus().nBudgetCycleBlocks;
                 if (nDevPayPeriod == 0) {
-                    CTxDestination destination = CBitcoinAddress(Params().GetConsensus.DevAddress()).Get();
+                    CTxDestination destination = CBitcoinAddress(Params().DevAddress()).Get();
                     CScript DEV_SCRIPT = GetScriptForDestination(destination);
                     txNew.vout.push_back(CTxOut(nDevReward, CScript(DEV_SCRIPT.begin(), DEV_SCRIPT.end())));
                     nPayday = true;

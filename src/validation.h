@@ -52,6 +52,15 @@ class CScriptCheck;
 
 struct PrecomputedTransactionData;
 
+//Setup MN Collateral Change
+inline int64_t GetMNCollateral(int nHeight) {
+    if (nHeight >= 1071750) {
+        return 15000 * COIN;
+    } else {
+        return 5000 * COIN;
+    }
+}
+
 /** Default for -limitancestorcount, max number of in-mempool ancestors */
 static const unsigned int DEFAULT_ANCESTOR_LIMIT = 25;
 /** Default for -limitancestorsize, maximum kilobytes of tx + all in-mempool ancestors */

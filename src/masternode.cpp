@@ -196,7 +196,7 @@ bool CMasternode::IsInputAssociatedWithPubkey() const
     uint256 hash;
     if(GetTransaction(vin.prevout.hash, txVin, hash, true)) {
         for (const CTxOut& out : txVin->vout) {
-            if (out.nValue == MN_COLL_AMT && out.scriptPubKey == payee) return true;
+                if (out.nValue == GetMNCollateral(chainActive.Height()) && out.scriptPubKey == payee) return true;
         }
     }
 

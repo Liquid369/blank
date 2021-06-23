@@ -496,7 +496,7 @@ UniValue getmasternodeoutputs (const JSONRPCRequest& request)
     // Find possible candidates
     CWallet::AvailableCoinsFilter coinsFilter;
     coinsFilter.fIncludeDelegated = false;
-    coinsFilter.nCoinType = ONLY_10000;
+    coinsFilter.nCoinType = ONLY_5000;
     std::vector<COutput> possibleCoins;
     pwalletMain->AvailableCoins(&possibleCoins, nullptr, coinsFilter);
 
