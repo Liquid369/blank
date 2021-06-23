@@ -214,7 +214,7 @@ bool MasterNodeWizardDialog::createMN()
         SendCoinsRecipient sendCoinsRecipient(
                 QString::fromStdString(dest.ToString()),
                 QString::fromStdString(alias),
-                CAmount(10000) * COIN,
+                CAmount(2500) * COIN,
                 "");
 
         // Send the 10 tx to one of your address
@@ -264,7 +264,7 @@ bool MasterNodeWizardDialog::createMN()
         int indexOut = -1;
         for (int i=0; i < (int)walletTx->vout.size(); i++) {
             const CTxOut& out = walletTx->vout[i];
-            if (out.nValue == MN_COLL_AMT) {
+            if (out.nValue == GetMNCollateral(chainActive.Height())) {
                 indexOut = i;
                 break;
             }
