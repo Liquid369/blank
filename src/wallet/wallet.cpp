@@ -1685,7 +1685,7 @@ CAmount CWalletTx::GetLockedCredit() const
         }
 
         // Add masternode collaterals which are handled like locked coins
-        else if (fMasterNode && tx->vout[i].nValue == MN_COLL_AMT) {
+        else if (fMasterNode && tx->vout[i].nValue == GetMNCollateral(chainActive.Height())) {
             nCredit += pwallet->GetCredit(txout, ISMINE_SPENDABLE);
         }
 
@@ -2384,8 +2384,8 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& 
     CTxOut txOut = wtx->tx->vout[nOutputIndex];
 
     // Masternode collateral value
-    if (txOut.nValue != MN_COLL_AMT) {
-        strError = "Invalid collateral tx value, must be 10,000 DOGEC";
+    if (txOut.nValue != GetMNCollateral(chainActive.Height())) {
+        strError = "Invalid collateral tx value, must be 5,000 DOGEC or 15,000 DOGEC";
         return error("%s: tx %s, index %d not a masternode collateral", __func__, strTxHash, nOutputIndex);
     }
 
@@ -2438,8 +2438,8 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
 {
     OutputAvailabilityResult res;
 
-    // Check for only 10k utxo
-    if (nCoinType == ONLY_10000 && output.nValue != MN_COLL_AMT) return res;
+    // Check for only 5k utxo
+    if (nCoinType == ONLY_5000 && output.nValue != GetMNCollateral(chainActive.Height())) return res;
 
     // Check for stakeable utxo
     if (nCoinType == STAKEABLE_COINS && output.IsZerocoinMint()) return res;
@@ -2456,7 +2456,7 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
     if (mine == ISMINE_WATCH_ONLY && coinControl && !coinControl->fAllowWatchOnly) return res;
 
     // Skip locked utxo
-    if (!fIncludeLocked && IsLockedCoin(wtxid, outIndex) && nCoinType != ONLY_10000) return res;
+    if (!fIncludeLocked && IsLockedCoin(wtxid, outIndex) && nCoinType != ONLY_5000) return res;
 
     // Check if we should include zero value utxo
     if (output.nValue <= 0) return res;
