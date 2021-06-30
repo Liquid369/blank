@@ -172,24 +172,24 @@ public:
                 Consensus::NetworkUpgrade::NO_ACTIVATION_HEIGHT;
         consensus.vUpgrades[Consensus::UPGRADE_POS].nActivationHeight           = 365;
         consensus.vUpgrades[Consensus::UPGRADE_POS_V2].nActivationHeight        = 116570;
-        consensus.vUpgrades[Consensus::UPGRADE_ZC].nActivationHeight            = 365;
-        consensus.vUpgrades[Consensus::UPGRADE_ZC_V2].nActivationHeight         = 365;
+        consensus.vUpgrades[Consensus::UPGRADE_ZC].nActivationHeight            = Consensus::NetworkUpgrade::NO_ACTIVATION_HEIGHT;
+        consensus.vUpgrades[Consensus::UPGRADE_ZC_V2].nActivationHeight         = Consensus::NetworkUpgrade::NO_ACTIVATION_HEIGHT;
         consensus.vUpgrades[Consensus::UPGRADE_BIP65].nActivationHeight         = 1;
-        consensus.vUpgrades[Consensus::UPGRADE_ZC_PUBLIC].nActivationHeight     = INT_MAX;
-        consensus.vUpgrades[Consensus::UPGRADE_V3_4].nActivationHeight          = 1;
+        consensus.vUpgrades[Consensus::UPGRADE_ZC_PUBLIC].nActivationHeight     = Consensus::NetworkUpgrade::NO_ACTIVATION_HEIGHT;
+        consensus.vUpgrades[Consensus::UPGRADE_V3_4].nActivationHeight          = Consensus::NetworkUpgrade::NO_ACTIVATION_HEIGHT;
         consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight          = 116570;
         consensus.vUpgrades[Consensus::UPGRADE_V5_0].nActivationHeight          = 850000;
 
         consensus.vUpgrades[Consensus::UPGRADE_ZC].hashActivationBlock =
-                uint256S("0x00000012d23589e2406768255ad87ec1cabe4d0c1c9eaac154c6792d8331e481");
+                uint256S("0x0000");
         consensus.vUpgrades[Consensus::UPGRADE_ZC_V2].hashActivationBlock =
-                uint256S("0x00000012d23589e2406768255ad87ec1cabe4d0c1c9eaac154c6792d8331e481");
+                uint256S("0x00000");
         consensus.vUpgrades[Consensus::UPGRADE_BIP65].hashActivationBlock =
                 uint256S("0x00000562b9ede2630c86ca78294e4601fa08c28f85770aa9fd3a408e24cb4f10");
         consensus.vUpgrades[Consensus::UPGRADE_ZC_PUBLIC].hashActivationBlock =
-                uint256S("0x00000012d23589e2406768255ad87ec1cabe4d0c1c9eaac154c6792d8331e481");
+                uint256S("0x00000");
         consensus.vUpgrades[Consensus::UPGRADE_V3_4].hashActivationBlock =
-                uint256S("0x00000562b9ede2630c86ca78294e4601fa08c28f85770aa9fd3a408e24cb4f10");
+                uint256S("0x0000");
         consensus.vUpgrades[Consensus::UPGRADE_V4_0].hashActivationBlock =
                 uint256S("0x22c7da9cc4efe67fa471c5f6dca3a571d917aea8fd0feaa958f92a07d89b50ff");
 
