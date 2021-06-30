@@ -72,7 +72,8 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits
  * + Contains no strange transactions
  */
 static Checkpoints::MapCheckpoints mapCheckpoints = {
-    {  0, uint256("0x000000a944318a84b834b0e4e4aeb66d86390f66728efacfc9070111ac5ed01e")}
+    {  0, uint256("0x000000a944318a84b834b0e4e4aeb66d86390f66728efacfc9070111ac5ed01e")},
+    {  2, uint256("0x00000cc63a32ea7d3b75f71e5a60d6dfa2db8466a986725e6142f840d71e9a16")}
 };
 
 static const Checkpoints::CCheckpointData data = {
