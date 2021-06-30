@@ -781,9 +781,10 @@ double ConvertBitsToDouble(unsigned int nBits)
 CAmount GetBlockValue(int nHeight)
 {
     int64_t nSubsidy = 0;
-    if (Params().NetworkID() == CBaseChainParams::TESTNET) {
+    const bool isTestNet = Params().IsTestNet();
+    if (isTestNet) {
         if (nHeight == 0) {
-	    snSubsidy = 0 * COIN;
+	    nSubsidy = 0 * COIN;
     	} else if (nHeight == 1) {
         nSubsidy = 2000000 * COIN;
 	} else if (nHeight <= 365 && nHeight > 1) { //end PoW
@@ -799,7 +800,8 @@ CAmount GetBlockValue(int nHeight)
 	}
     }
 
-    if (Params().NetworkID() == CBaseChainParams::REGTEST) {
+    const bool isRegTestNet = Params().IsRegTestNet();
+    if (isRegTestNet) {
         if (nHeight == 0) {
 	    nSubsidy = 0 * COIN;
     	} else if (nHeight == 1) {
