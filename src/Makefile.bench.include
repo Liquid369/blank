@@ -36,8 +36,6 @@ bench_bench_rbx_LDADD = \
   $(LIBSECP256K1) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_ZEROCOIN) \
-  $(LIBSAPLING) \
-  $(LIBRUSTZCASH) \
   $(LIBZCASH_LIBS)
 
 if ENABLE_ZMQ
