@@ -781,8 +781,8 @@ double ConvertBitsToDouble(unsigned int nBits)
 CAmount GetBlockValue(int nHeight)
 {
     int64_t nSubsidy = 0;
-    const bool isTestNet = Params().IsTestNet();
-    if (isTestNet) {
+    const bool isTestnet = Params().IsTestnet();
+    if (isTestnet) {
         if (nHeight == 0) {
 	    nSubsidy = 0 * COIN;
     	} else if (nHeight == 1) {
