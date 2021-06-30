@@ -2996,7 +2996,7 @@ bool GetPrevIndex(const CBlock& block, CBlockIndex** pindexPrevRet, CValidationS
                              "prevblk-not-found");
         }
         pindexPrev = (*mi).second;
-        if (pindexPrev >= 50000) {
+        if (pindexPrev->nHeight >= 50000) {
             if (pindexPrev->nStatus & BLOCK_FAILED_MASK) {
                 //If this "invalid" block is an exact match from the checkpoints, then reconsider it
                 if (Checkpoints::CheckBlock(pindexPrev->nHeight, block.hashPrevBlock, true)) {
