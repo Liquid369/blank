@@ -2996,19 +2996,21 @@ bool GetPrevIndex(const CBlock& block, CBlockIndex** pindexPrevRet, CValidationS
                              "prevblk-not-found");
         }
         pindexPrev = (*mi).second;
-        if (pindexPrev->nStatus & BLOCK_FAILED_MASK) {
-            //If this "invalid" block is an exact match from the checkpoints, then reconsider it
-            if (Checkpoints::CheckBlock(pindexPrev->nHeight, block.hashPrevBlock, true)) {
-                LogPrintf("%s : Reconsidering block %s height %d\n", __func__, block.hashPrevBlock.ToString(), pindexPrev->nHeight);
-                CValidationState statePrev;
-                ReconsiderBlock(statePrev, pindexPrev);
-                if (statePrev.IsValid()) {
-                    ActivateBestChain(statePrev);
-                    return true;
+        if (pindexPrev >= 50000) {
+            if (pindexPrev->nStatus & BLOCK_FAILED_MASK) {
+                //If this "invalid" block is an exact match from the checkpoints, then reconsider it
+                if (Checkpoints::CheckBlock(pindexPrev->nHeight, block.hashPrevBlock, true)) {
+                    LogPrintf("%s : Reconsidering block %s height %d\n", __func__, block.hashPrevBlock.ToString(), pindexPrev->nHeight);
+                    CValidationState statePrev;
+                    ReconsiderBlock(statePrev, pindexPrev);
+                    if (statePrev.IsValid()) {
+                        ActivateBestChain(statePrev);
+                        return true;
+                    }
                 }
+                return state.DoS(100, error("%s : prev block %s is invalid, unable to add block %s", __func__, block.hashPrevBlock.GetHex(), block.GetHash().GetHex()),
+                                 REJECT_INVALID, "bad-prevblk");
             }
-            return state.DoS(100, error("%s : prev block %s is invalid, unable to add block %s", __func__, block.hashPrevBlock.GetHex(), block.GetHash().GetHex()),
-                             REJECT_INVALID, "bad-prevblk");
         }
     }
     return true;
