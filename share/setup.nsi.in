@@ -6,7 +6,7 @@ SetCompressor /SOLID lzma
 # General Symbol Definitions
 !define REGKEY "SOFTWARE\$(^Name)"
 !define COMPANY "@PACKAGE_NAME@ project"
-!define URL https://www.flitswallet.app
+!define URL https://www.rubus.io
 
 # MUI Symbol Definitions
 !define MUI_ICON "@abs_top_srcdir@/share/pixmaps/rbx.ico"

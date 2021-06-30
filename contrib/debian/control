@@ -28,7 +28,7 @@ Build-Depends: debhelper,
  libzmq3-dev,
  dh-systemd
 Standards-Version: 3.9.2
-Homepage: http://www.flitswallet.app
+Homepage: http://www.rubus.io
 Vcs-Git: git://github.com/flitsnode/Rubus-core.git
 Vcs-Browser: http://github.com/flitsnode/Rubus-core
 

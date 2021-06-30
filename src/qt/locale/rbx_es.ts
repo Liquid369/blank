@@ -3789,8 +3789,8 @@ Ha habido un error al tratar de guardar la libreta de direcciones en %1. Por fav
         <translation>2) ¿Por qué mis RBX no se pueden gastar?</translation>
     </message>
     <message>
-        <source>https://flitswallet.app/</source>
-        <translation>https://flitswallet.app/</translation>
+        <source>https://rubus.io/</source>
+        <translation>https://rubus.io/</translation>
     </message>
     <message>
         <source>1</source>

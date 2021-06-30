@@ -2064,7 +2064,7 @@ Address: %4
     </message>
     <message>
         <source>Enter Rubus address (e.g. %1)</source>
-        <translation>输入FLITS a地址(e.g. %1)</translation>
+        <translation>输入Rubus a地址(e.g. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2531,7 +2531,7 @@ Address: %4
     </message>
     <message>
         <source>Welcome to the Rubus RPC console.</source>
-        <translation>欢迎访问FLITS RPC控制台</translation>
+        <translation>欢迎访问Rubus RPC控制台</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -3281,7 +3281,7 @@ Verify that you have installed a predetermined text editor.</source>
     </message>
     <message>
         <source>Welcome to the Rubus RPC console.</source>
-        <translation>欢迎访问FLITS RPC控制台</translation>
+        <translation>欢迎访问Rubus RPC控制台</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>

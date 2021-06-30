@@ -3961,8 +3961,8 @@ Es gab ein Problem bei dem Versuch die Adressen unter %1 zu speichern. Bitte ver
         <translation>2) Wieso kann ich meine RBX nicht ausgeben?</translation>
     </message>
     <message>
-        <source>https://flitswallet.app/</source>
-        <translation>https://flitswallet.app/</translation>
+        <source>https://rubus.io/</source>
+        <translation>https://rubus.io/</translation>
     </message>
     <message>
         <source>1</source>
@@ -4012,14 +4012,14 @@ Es gab ein Problem bei dem Versuch die Adressen unter %1 zu speichern. Bitte ver
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
                            We have support channels in most of our official chat groups, for example
-                           &lt;a style='color: #b088ff' href='https://discord.flitswallet.app'&gt;
+                           &lt;a style='color: #b088ff' href='https://discord.rubus.io'&gt;
                            #support in our Discord&lt;/a&gt;.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
         <translation>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
                            Wir haben Support-Kanäle in den meisten unserer offiziellen Chat-Gruppen, zum Beispiel
-                           &lt;a style='color: #b088ff' href='https://discord.flitswallet.app'&gt;
+                           &lt;a style='color: #b088ff' href='https://discord.rubus.io'&gt;
                            #support in unserem Discord&lt;/a&gt;.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </translation>

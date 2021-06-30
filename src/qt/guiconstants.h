@@ -50,7 +50,7 @@ static const int MAX_URI_LENGTH = 255;
 
 
 #define QAPP_ORG_NAME "RBX"
-#define QAPP_ORG_DOMAIN "flitswallet.app"
+#define QAPP_ORG_DOMAIN "rubus.io"
 #define QAPP_APP_NAME_DEFAULT "RBX-Qt"
 #define QAPP_APP_NAME_TESTNET "RBX-Qt-testnet"
 

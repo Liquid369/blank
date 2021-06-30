@@ -3,7 +3,7 @@ Rubus Core
 
 Setup
 ---------------------
-[Rubus Core](http://flitswallet.app/wallet) is the original Rubus client and it builds the backbone of the network. However, it downloads and stores the entire history of Rubus transactions; depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more. Thankfully you only have to do this once.
+[Rubus Core](http://rubus.io/wallet) is the original Rubus client and it builds the backbone of the network. However, it downloads and stores the entire history of Rubus transactions; depending on the speed of your computer and network connection, the synchronization process can take anywhere from a few hours to a day or more. Thankfully you only have to do this once.
 
 Running
 ---------------------
@@ -30,8 +30,8 @@ Drag RBX-Qt to your applications folder, and then run RBX-Qt.
 
 * See the documentation at the [Rubus Wiki](https://github.com/flitsnode/Rubus-core/wiki)
 for help and more information.
-* Ask for help on [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or on the [Rubus Forum](http://forum.flitswallet.app/).
-* Join our Discord server [Discord Server](https://discord.flitswallet.app)
+* Ask for help on [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or on the [Rubus Forum](http://forum.rubus.io/).
+* Join our Discord server [Discord Server](https://discord.rubus.io)
 
 Building
 ---------------------
@@ -58,8 +58,8 @@ The Rubus repo's [root README](/README.md) contains relevant information on the 
 - [Dnsseed Policy](dnsseed-policy.md)
 
 ### Resources
-* Discuss on the [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or the [RBX](http://forum.flitswallet.app/) forum.
-* Join the [Rubus Discord](https://discord.flitswallet.app).
+* Discuss on the [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or the [RBX](http://forum.rubus.io/) forum.
+* Join the [Rubus Discord](https://discord.rubus.io).
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)

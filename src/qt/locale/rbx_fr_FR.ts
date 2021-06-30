@@ -3933,8 +3933,8 @@ Il y a eu une erreur de sauvegarde de la liste d'adresses vers %1. SVP rééssay
         <translation>2) Pourquoi mes RBX ne peuvent pas être dépensés?</translation>
     </message>
     <message>
-        <source>https://flitswallet.app/</source>
-        <translation>https://flitswallet.app/</translation>
+        <source>https://rubus.io/</source>
+        <translation>https://rubus.io/</translation>
     </message>
     <message>
         <source>1</source>

@@ -3960,8 +3960,8 @@ Došlo je do greške prilikom spremanja popisa adresa u %1. Molimo pokušajte po
         <translation>2) Zašto se moji RBX ne mogu potrošiti?</translation>
     </message>
     <message>
-        <source>https://flitswallet.app/</source>
-        <translation>https://flitswallet.app/</translation>
+        <source>https://rubus.io/</source>
+        <translation>https://rubus.io/</translation>
     </message>
     <message>
         <source>1</source>
