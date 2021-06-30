@@ -180,7 +180,7 @@ static const double UNLIKELY_PCT = .5;
 static const double SUFFICIENT_FEETXS = 1;
 
 // Minimum and Maximum values for tracking feerates
-static constexpr double MIN_FEERATE = 10;
+static constexpr double MIN_FEERATE = 1000;
 static const double MAX_FEERATE = 1e7;
 static const double INF_FEERATE = 1e16;
 static const double INF_PRIORITY = 1e25;
