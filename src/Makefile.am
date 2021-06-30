@@ -124,8 +124,26 @@ if BUILD_BITCOIN_UTILS
   bin_PROGRAMS += rbx-cli rbx-tx
 endif
 
-.PHONY: FORCE check-symbols check-security
-# __decenomy__ core #
+LIBSAPLING_H = \
+  sapling/sapling.h \
+  bech32.h \
+  sapling/key_io_sapling.h \
+  sapling/sapling_core_write.h \
+  sapling/sapling_util.h \
+  sapling/prf.h \
+  sapling/noteencryption.h \
+  sapling/address.h \
+  sapling/note.h \
+  sapling/zip32.h \
+  sapling/saplingscriptpubkeyman.h \
+  sapling/incrementalmerkletree.h \
+  sapling/proof.h \
+  sapling/sapling_transaction.h \
+  sapling/transaction_builder.h \
+  sapling/sapling_operation.h
+
+.PHONY: FORCE cargo-build check-symbols check-security
+# Rubus core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrdb.h \

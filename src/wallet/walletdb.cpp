@@ -346,7 +346,9 @@ bool CWalletDB::WriteHDChain(const CHDChain& chain)
 {
     nWalletDBUpdateCounter++;
     std::string key = std::string("hdchain");
-    return Write(key, chain);
+    if (chain.chainType == HDChain::ChainCounterType::Sapling)
+        key += std::string("_sap");
+    return batch.Write(key, chain);
 }
 
 DBErrors CWalletDB::ReorderTransactions(CWallet* pwallet)

@@ -328,7 +328,7 @@ BOOST_AUTO_TEST_CASE(test_Get)
 
 BOOST_AUTO_TEST_CASE(test_big_witness_transaction) {
     CMutableTransaction mtx;
-    mtx.nVersion = 2;
+    mtx.nVersion = 2; // Sapling future version
 
     CKey key;
     key.MakeNewKey(false);

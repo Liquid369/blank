@@ -16,7 +16,13 @@ JSON_TEST_FILES = \
   test/data/script_invalid.json \
   test/data/tx_invalid.json \
   test/data/tx_valid.json \
-  test/data/sighash.json
+  test/data/sighash.json \
+  test/data/merkle_roots_sapling.json \
+  test/data/merkle_serialization_sapling.json \
+  test/data/merkle_witness_serialization_sapling.json \
+  test/data/merkle_path_sapling.json \
+  test/data/merkle_commitments_sapling.json \
+  test/data/sapling_key_components.json
 
 RAW_TEST_FILES =
 
@@ -133,10 +139,10 @@ if ENABLE_WALLET
 test_test_rbx_LDADD += $(LIBBITCOIN_WALLET)
 endif
 
-test_test_pivx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+test_test_rbx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
-test_test_pivx_LDADD += $(LIBBITCOIN_CONSENSUS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(LIBZCASH_LIBS)
-test_test_pivx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) -static
+test_test_rbx_LDADD += $(LIBRUSTZCASH) $(LIBBITCOIN_CONSENSUS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(LIBZCASH_LIBS)
+test_test_rbx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) -static
 
 if ENABLE_ZMQ
 test_test_rbx_LDADD += $(ZMQ_LIBS)
