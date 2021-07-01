@@ -802,11 +802,11 @@ CAmount GetBlockValue(int nHeight)
 
     const bool isRegTestNet = Params().IsRegTestNet();
     if (isRegTestNet) {
-        if (nHeight == 0) {
+        if (nHeight <= 1) {
 	    nSubsidy = 0 * COIN;
-    	} else if (nHeight == 1) {
+    	} else if (nHeight == 2) {
         nSubsidy = 2000000 * COIN;
-	} else if (nHeight <= 365 && nHeight > 1) { //end PoW
+	} else if (nHeight <= 365 && nHeight > 2) { //end PoW
         nSubsidy = 2 * COIN;
 	} else if (nHeight <= 238620 && nHeight > 365) { //Start PoS
         nSubsidy = 2 * COIN;
@@ -3059,6 +3059,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
     AssertLockHeld(cs_main);
 
     CBlockIndex*& pindex = *ppindex;
+    int nHeight = pindex->nHeight;
 
     const Consensus::Params& consensus = Params().GetConsensus();
 
@@ -3071,7 +3072,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         return false;
 
     bool isPoS = block.IsProofOfStake();
-    if (pindex->nHeight >= 100000) {
+    if (nHeight > 100000) {
         if (isPoS) {
             std::string strError;
             if (!CheckProofOfStake(block, strError, pindexPrev))
@@ -3089,7 +3090,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         return true;
     }
 
-    if (pindex->nHeight > 100000)
+    if (nHeight > 100000)
     {
         if (!CheckBlock(block, state) || !ContextualCheckBlock(block, state, pindex->pprev)) {
             if (state.IsInvalid() && !state.CorruptionPossible()) {
@@ -3100,7 +3101,6 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         }
     }
 
-    int nHeight = pindex->nHeight;
     int splitHeight = -1;
 
     if (isPoS) {
