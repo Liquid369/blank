@@ -3070,9 +3070,9 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
 
     if (block.GetHash() != consensus.hashGenesisBlock && !CheckWork(block, pindexPrev))
         return false;
-
+    
     bool isPoS = block.IsProofOfStake();
-        if (isPoS) {
+        if (isPoS && (block.nTime >= 1625157122)) {
             std::string strError;
             if (!CheckProofOfStake(block, strError, pindexPrev) && nHeight > 100000)
                 return state.DoS(100, error("%s: proof of stake check failed (%s)", __func__, strError));
@@ -3088,7 +3088,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         return true;
     }
     int nHeight = pindex->nHeight;
-    if (nHeight > 100000)
+    if (block.nTime >= 1625157122)
     {
         if (!CheckBlock(block, state) || !ContextualCheckBlock(block, state, pindex->pprev)) {
             if (state.IsInvalid() && !state.CorruptionPossible()) {
