@@ -155,9 +155,11 @@ bool CheckProofOfStake(const CBlock& block, std::string& strError, const CBlockI
     const int nHeight = pindexPrev->nHeight + 1;
     // Initialize stake input
     std::unique_ptr<CStakeInput> stakeInput;
-    if (!LoadStakeInput(block, pindexPrev, stakeInput)) {
-        strError = "stake input initialization failed";
-        return false;
+    if(nHeight >= 50000) {
+        if (!LoadStakeInput(block, pindexPrev, stakeInput)) {
+            strError = "stake input initialization failed";
+            return false;
+        }
     }
 
     // Stake input contextual checks
@@ -209,8 +211,10 @@ bool GetStakeKernelHash(uint256& hashRet, const CBlock& block, const CBlockIndex
 {
     // Initialize stake input
     std::unique_ptr<CStakeInput> stakeInput;
-    if (!LoadStakeInput(block, pindexPrev, stakeInput))
-        return error("%s : stake input initialization failed", __func__);
+    if(pindexPrev->nHeight >= 50000) {
+        if (!LoadStakeInput(block, pindexPrev, stakeInput))
+            return error("%s : stake input initialization failed", __func__);
+    }
 
     CStakeKernel stakeKernel(pindexPrev, stakeInput.get(), block.nBits, block.nTime);
     hashRet = stakeKernel.GetHash();
