@@ -820,11 +820,11 @@ CAmount GetBlockValue(int nHeight)
 
     }
 	
-    if (nHeight == 0) {
+    if (nHeight >= 1) {
 	    nSubsidy = 0 * COIN;
-    	} else if (nHeight == 1) {
+    	} else if (nHeight == 2) {
         nSubsidy = 2000000 * COIN;
-	} else if (nHeight <= 365 && nHeight > 1) { //end PoW
+	} else if (nHeight <= 365 && nHeight > 2) { //end PoW
         nSubsidy = 2 * COIN;
 	} else if (nHeight <= 238620 && nHeight > 365) { //Start PoS
         nSubsidy = 2 * COIN;
