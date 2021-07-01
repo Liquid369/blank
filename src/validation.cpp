@@ -3059,7 +3059,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
     AssertLockHeld(cs_main);
 
     CBlockIndex*& pindex = *ppindex;
-    int nHeight = pindex->nHeight;
+    
 
     const Consensus::Params& consensus = Params().GetConsensus();
 
@@ -3087,7 +3087,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         LogPrintf("AcceptBlock() : already have block %d %s", pindex->nHeight, pindex->GetBlockHash().ToString());
         return true;
     }
-
+    int nHeight = pindex->nHeight;
     if (nHeight > 100000)
     {
         if (!CheckBlock(block, state) || !ContextualCheckBlock(block, state, pindex->pprev)) {
