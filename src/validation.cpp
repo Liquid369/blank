@@ -820,7 +820,7 @@ CAmount GetBlockValue(int nHeight)
 
     }
 	
-    if (nHeight >= 1) {
+    if (nHeight <= 1) {
 	    nSubsidy = 0 * COIN;
     	} else if (nHeight == 2) {
         nSubsidy = 2000000 * COIN;
