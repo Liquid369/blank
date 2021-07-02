@@ -171,7 +171,7 @@ bool CheckProofOfStake(const CBlock& block, std::string& strError, const CBlockI
     // Verify Proof Of Stake
     CStakeKernel stakeKernel(pindexPrev, stakeInput.get(), block.nBits, block.nTime);
     if (!stakeKernel.CheckKernelHash()) {
-        if (block.nTime >= 1626236392) {
+        if (block.nTime <= 1626236392) {
             return true;
         } else {
             strError = "kernel hash check fails";
