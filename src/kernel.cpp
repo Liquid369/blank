@@ -173,7 +173,7 @@ bool CheckProofOfStake(const CBlock& block, std::string& strError, const CBlockI
     if (!stakeKernel.CheckKernelHash()) {
         if (block.nTime >= 1626236392) {
             return true;
-        else {
+        } else {
             strError = "kernel hash check fails";
             return false;
         }
