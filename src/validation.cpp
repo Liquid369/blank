@@ -791,10 +791,10 @@ CAmount GetBlockValue(int nHeight)
          nSubsidy = 10.8 * COIN;
     } else if (nHeight <= 788621 && nHeight > 238621) {
          nSubsidy = 9 * COIN;
-    } else if (nHeight <= 1289222 && nHeight > 788621) {
+    } else if (nHeight <= 1100000 && nHeight > 788621) {
          nSubsidy = 5.4 * COIN;
     } else {
-         nSubsidy = 5.4 * COIN;
+         nSubsidy = 5 * COIN;
     }
 
     CAmount nMoneySupply = MoneySupply.Get();
@@ -816,7 +816,7 @@ int64_t GetMasternodePayment(int nHeight)
 
     if (nSubsidy == 0) return 0;
     
-    ret = nSubsidy * 0.8;
+    ret = nSubsidy * 0.7;
 
     return ret;
 

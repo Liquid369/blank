@@ -54,7 +54,7 @@ struct PrecomputedTransactionData;
 
 //Setup MN Collateral Change
 inline int64_t GetMNCollateral(int nHeight) {
-    if (nHeight >= 1071750) {
+    if (nHeight >= 1100000) {
         return 15000 * COIN;
     } else {
         return 5000 * COIN;
