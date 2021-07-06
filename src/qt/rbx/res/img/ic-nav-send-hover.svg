@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generator: Adobe Illustrator 23.0.5, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="24px" height="40px" viewBox="0 0 24 40" enable-background="new 0 0 24 40" xml:space="preserve">
+	 viewBox="0 0 24 40" style="enable-background:new 0 0 24 40;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#AD4DFD;}
+</style>
 <title>Send Off</title>
 <desc>Created with Sketch.</desc>
 <g id="Send-Off">
-	<polygon id="Path_18865" fill="#007BFE" points="0.352,21.1 7.562,25.605 9.014,24.154 4.914,21.59 19.714,16.283 14.407,31.083 
-		11.842,26.982 10.391,28.434 14.9,35.648 23.025,12.975 	"/>
-	<polygon id="Rectangle_4394" fill="#007BFE" points="8.288,26.298 13.945,20.641 15.359,22.055 9.702,27.712 	"/>
+	<polygon id="Path_18865" class="st0" points="0.4,21.1 7.6,25.6 9,24.2 4.9,21.6 19.7,16.3 14.4,31.1 11.8,27 10.4,28.4 14.9,35.6 
+		23,13 	"/>
+	<polygon id="Rectangle_4394" class="st0" points="8.3,26.3 13.9,20.6 15.4,22.1 9.7,27.7 	"/>
 </g>
 </svg>
