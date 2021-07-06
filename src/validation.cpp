@@ -783,11 +783,11 @@ CAmount GetBlockValue(int nHeight)
     int64_t nSubsidy = 0;
     const bool isTestnet = Params().IsTestnet();
     if (isTestnet) {
-        if (nHeight == 0) {
+        if (nHeight <= 1) {
 	    nSubsidy = 0 * COIN;
-    	} else if (nHeight == 1) {
+    	} else if (nHeight == 2) {
         nSubsidy = 2000000 * COIN;
-	} else if (nHeight <= 365 && nHeight > 1) { //end PoW
+	} else if (nHeight <= 365 && nHeight > 2) { //end PoW
         nSubsidy = 2 * COIN;
 	} else if (nHeight <= 238620 && nHeight > 365) { //Start PoS
         nSubsidy = 2 * COIN;
@@ -802,11 +802,11 @@ CAmount GetBlockValue(int nHeight)
 
     const bool isRegTestNet = Params().IsRegTestNet();
     if (isRegTestNet) {
-        if (nHeight == 0) {
+        if (nHeight <= 1) {
 	    nSubsidy = 0 * COIN;
-    	} else if (nHeight == 1) {
+    	} else if (nHeight == 2) {
         nSubsidy = 2000000 * COIN;
-	} else if (nHeight <= 365 && nHeight > 1) { //end PoW
+	} else if (nHeight <= 365 && nHeight > 2) { //end PoW
         nSubsidy = 2 * COIN;
 	} else if (nHeight <= 238620 && nHeight > 365) { //Start PoS
         nSubsidy = 2 * COIN;
@@ -820,11 +820,11 @@ CAmount GetBlockValue(int nHeight)
 
     }
 	
-    if (nHeight == 0) {
+    if (nHeight <= 1) {
 	    nSubsidy = 0 * COIN;
-    	} else if (nHeight == 1) {
+    	} else if (nHeight == 2) {
         nSubsidy = 2000000 * COIN;
-	} else if (nHeight <= 365 && nHeight > 1) { //end PoW
+	} else if (nHeight <= 365 && nHeight > 2) { //end PoW
         nSubsidy = 2 * COIN;
 	} else if (nHeight <= 238620 && nHeight > 365) { //Start PoS
         nSubsidy = 2 * COIN;
@@ -2996,19 +2996,21 @@ bool GetPrevIndex(const CBlock& block, CBlockIndex** pindexPrevRet, CValidationS
                              "prevblk-not-found");
         }
         pindexPrev = (*mi).second;
-        if (pindexPrev->nStatus & BLOCK_FAILED_MASK) {
-            //If this "invalid" block is an exact match from the checkpoints, then reconsider it
-            if (Checkpoints::CheckBlock(pindexPrev->nHeight, block.hashPrevBlock, true)) {
-                LogPrintf("%s : Reconsidering block %s height %d\n", __func__, block.hashPrevBlock.ToString(), pindexPrev->nHeight);
-                CValidationState statePrev;
-                ReconsiderBlock(statePrev, pindexPrev);
-                if (statePrev.IsValid()) {
-                    ActivateBestChain(statePrev);
-                    return true;
+        if (pindexPrev->nHeight >= 50000) {
+            if (pindexPrev->nStatus & BLOCK_FAILED_MASK) {
+                //If this "invalid" block is an exact match from the checkpoints, then reconsider it
+                if (Checkpoints::CheckBlock(pindexPrev->nHeight, block.hashPrevBlock, true)) {
+                    LogPrintf("%s : Reconsidering block %s height %d\n", __func__, block.hashPrevBlock.ToString(), pindexPrev->nHeight);
+                    CValidationState statePrev;
+                    ReconsiderBlock(statePrev, pindexPrev);
+                    if (statePrev.IsValid()) {
+                        ActivateBestChain(statePrev);
+                        return true;
+                    }
                 }
+                return state.DoS(100, error("%s : prev block %s is invalid, unable to add block %s", __func__, block.hashPrevBlock.GetHex(), block.GetHash().GetHex()),
+                                 REJECT_INVALID, "bad-prevblk");
             }
-            return state.DoS(100, error("%s : prev block %s is invalid, unable to add block %s", __func__, block.hashPrevBlock.GetHex(), block.GetHash().GetHex()),
-                             REJECT_INVALID, "bad-prevblk");
         }
     }
     return true;
@@ -3057,6 +3059,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
     AssertLockHeld(cs_main);
 
     CBlockIndex*& pindex = *ppindex;
+    
 
     const Consensus::Params& consensus = Params().GetConsensus();
 
@@ -3067,13 +3070,13 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
 
     if (block.GetHash() != consensus.hashGenesisBlock && !CheckWork(block, pindexPrev))
         return false;
-
+    
     bool isPoS = block.IsProofOfStake();
-    if (isPoS) {
-        std::string strError;
-        if (!CheckProofOfStake(block, strError, pindexPrev))
-            return state.DoS(100, error("%s: proof of stake check failed (%s)", __func__, strError));
-    }
+        if (isPoS && (block.nTime >= 1625157122)) {
+            std::string strError;
+            if (!CheckProofOfStake(block, strError, pindexPrev))
+                return state.DoS(100, error("%s: proof of stake check failed (%s)", __func__, strError));
+        }
 
     if (!AcceptBlockHeader(block, state, &pindex, pindexPrev))
         return false;
@@ -3084,8 +3087,8 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         LogPrintf("AcceptBlock() : already have block %d %s", pindex->nHeight, pindex->GetBlockHash().ToString());
         return true;
     }
-
-    if (pindex->nHeight > 100000)
+    int nHeight = pindex->nHeight;
+    if (block.nTime >= 1625157122)
     {
         if (!CheckBlock(block, state) || !ContextualCheckBlock(block, state, pindex->pprev)) {
             if (state.IsInvalid() && !state.CorruptionPossible()) {
@@ -3096,7 +3099,6 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         }
     }
 
-    int nHeight = pindex->nHeight;
     int splitHeight = -1;
 
     if (isPoS) {

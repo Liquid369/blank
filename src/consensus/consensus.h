@@ -13,11 +13,11 @@
 #include <stdint.h>
 
 /** The maximum allowed size for a block, in bytes (only for buffer size limits) */
-static const unsigned int MAX_BLOCK_SIZE_CURRENT = 2000000;
+static const unsigned int MAX_BLOCK_SIZE_CURRENT = 2500000;
 static const unsigned int MAX_BLOCK_SIZE_LEGACY = 1000000;
 
 /** The maximum size of a transaction after Sapling activation (network rule) */
-static const unsigned int MAX_TX_SIZE_AFTER_SAPLING = 400000;
+static const unsigned int MAX_TX_SIZE_AFTER_SAPLING = 2000000;
 
 /** The maximum cumulative size of all Shielded txes inside a block */
 static const unsigned int MAX_BLOCK_SHIELDED_TXES_SIZE = 750000;
