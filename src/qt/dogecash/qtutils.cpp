@@ -243,11 +243,11 @@ QColor getRowColor(bool isLightTheme, bool isHovered, bool isSelected)
         }
     } else {
         if (isSelected) {
-            return QColor("#9c7019");
+            return QColor("#18171D");
         } else if (isHovered) {
-            return QColor("#bababa");
+            return QColor("#18171D");
         } else {
-            return QColor("#16110b");
+            return QColor("#18171D");
         }
     }
 }
