@@ -157,7 +157,7 @@ TopBar::TopBar(RBXGUI* _mainWindow, QWidget *parent) :
 void TopBar::onThemeClicked()
 {
     // Store theme
-    bool lightTheme = !isLightTheme();
+    bool lightTheme = false;
 
     setTheme(lightTheme);
 
