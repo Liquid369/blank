@@ -6647,7 +6647,7 @@ Pokrenite 'sapling-fetch-params' ili '.util/fetch-params.sh' te ponovno pokrenit
         <translation>Pošalji</translation>
     </message>
     <message>
-        <source>Transfer coins publicly or privately</source>
+        <source>Transfer coins</source>
         <translation>Pošalji novčiće javno ili privatno</translation>
     </message>
     <message>

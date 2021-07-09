@@ -39,6 +39,7 @@ void BalanceBubble::updateValues(int64_t nTransparentBalance, int64_t nShieldedB
 
     ui->textTransparent->setText(valueTrans);
     ui->textShielded->setText(valueShield);
+    ui->textShielded->setVisible(false);
     adjustSize();
 }
 

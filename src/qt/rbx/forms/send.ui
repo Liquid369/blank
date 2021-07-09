@@ -81,7 +81,7 @@
             <item>
              <widget class="QLabel" name="labelSubtitle1">
               <property name="text">
-               <string>Transfer coins publicly or privately</string>
+               <string>Transfer coins</string>
               </property>
              </widget>
             </item>

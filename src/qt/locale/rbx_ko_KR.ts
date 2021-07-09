@@ -5656,7 +5656,7 @@ Rubus Core Wallet</translation>
         <translation>보내기</translation>
     </message>
     <message>
-        <source>Transfer coins publicly or privately</source>
+        <source>Transfer coins</source>
         <translation>투명 / 쉴드 코인 전송 하기</translation>
     </message>
     <message>

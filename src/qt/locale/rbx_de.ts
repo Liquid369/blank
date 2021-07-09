@@ -6791,7 +6791,7 @@ Der Schwellenwert darf nicht kleiner sein als %s</translation>
         <translation>Senden</translation>
     </message>
     <message>
-        <source>Transfer coins publicly or privately</source>
+        <source>Transfer coins</source>
         <translation>Coins öffentlich oder privat transferieren</translation>
     </message>
     <message>

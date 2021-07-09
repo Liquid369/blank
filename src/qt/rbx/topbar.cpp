@@ -79,6 +79,7 @@ TopBar::TopBar(RBXGUI* _mainWindow, QWidget *parent) :
     setCssProperty({ui->labelAmountTopRbx, ui->labelAmountTopShieldedRbx}, "amount-small-topbar");
     setCssProperty({ui->labelAmountRbx}, "amount-topbar");
     setCssProperty({ui->labelPendingRbx, ui->labelImmatureRbx}, "amount-small-topbar");
+    ui->labelAmountTopShieldedRbx->setVisible(false);
 
     // Progress Sync
     progressBar = new QProgressBar(ui->layoutSync);

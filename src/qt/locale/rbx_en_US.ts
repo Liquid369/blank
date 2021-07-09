@@ -6829,8 +6829,8 @@ Please run 'sapling-fetch-params' or './util/fetch-params.sh' and then restart.<
         <translation>Send</translation>
     </message>
     <message>
-        <source>Transfer coins publicly or privately</source>
-        <translation>Transfer coins publicly or privately</translation>
+        <source>Transfer coins</source>
+        <translation>Transfer coins</translation>
     </message>
     <message>
         <source>Transparent</source>

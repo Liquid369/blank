@@ -51,6 +51,7 @@ SendWidget::SendWidget(RBXGUI* parent) :
     setCssProperty(ui->pushLeft, "btn-check-left");
     ui->pushLeft->setChecked(true);
     setCssProperty(ui->pushRight, "btn-check-right");
+    ui->pushRight->setVisible(false);
 
     /* Subtitle */
     setCssProperty({ui->labelSubtitle1, ui->labelSubtitle2}, "text-subtitle");

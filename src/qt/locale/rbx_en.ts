@@ -8383,7 +8383,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="-619"/>
-        <source>Transfer coins publicly or privately</source>
+        <source>Transfer coins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -6603,7 +6603,7 @@ SVP éxécutez 'sapling-fetch-params' ou './util/fetch-params.sh' et redémarrez
         <translation>Envoyer</translation>
     </message>
     <message>
-        <source>Transfer coins publicly or privately</source>
+        <source>Transfer coins</source>
         <translation>Envoyer des pièces publiques ou privées</translation>
     </message>
     <message>
