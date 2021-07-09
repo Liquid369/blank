@@ -3961,8 +3961,8 @@ Es gab ein Problem bei dem Versuch die Adressen unter %1 zu speichern. Bitte ver
         <translation>2) Wieso kann ich meine RBX nicht ausgeben?</translation>
     </message>
     <message>
-        <source>https://rubus.io/</source>
-        <translation>https://rubus.io/</translation>
+        <source>https://rubus.network//</source>
+        <translation>https://rubus.network//</translation>
     </message>
     <message>
         <source>1</source>

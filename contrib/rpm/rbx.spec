@@ -20,8 +20,8 @@ Summary:	Peer to Peer Cryptographic Currency
 
 Group:		Applications/System
 License:	MIT
-URL:		https://rubus.io/
-Source0:	https://rubus.io/bin/rbx-core-%{version}/rbx-%{version}.tar.gz
+URL:		https://rubus.network//
+Source0:	https://rubus.network//bin/rbx-core-%{version}/rbx-%{version}.tar.gz
 Source1:	http://download.oracle.com/berkeley-db/db-%{bdbv}.NC.tar.gz
 
 Source10:	https://raw.githubusercontent.com/flitsnode/Rubus-core/v%{version}/contrib/debian/examples/rbx.conf

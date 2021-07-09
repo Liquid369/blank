@@ -3822,8 +3822,8 @@ Er was een fout opgetreden tijdens het opslaan van deze adreslijst naar %1. Prob
         <translation>2) Waarom is mijn RBX niet besteedbaar?</translation>
     </message>
     <message>
-        <source>https://rubus.io/</source>
-        <translation>https://rubus.io/</translation>
+        <source>https://rubus.network//</source>
+        <translation>https://rubus.network//</translation>
     </message>
     <message>
         <source>1</source>

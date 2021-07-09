@@ -3813,8 +3813,8 @@ Wystąpił błąd podczas próby zapisania listy adresów w %1. Proszę spróbuj
         <translation>2) Dlaczego mojego RBX nie można wydać?</translation>
     </message>
     <message>
-        <source>https://rubus.io/</source>
-        <translation>https://rubus.io/</translation>
+        <source>https://rubus.network//</source>
+        <translation>https://rubus.network//</translation>
     </message>
     <message>
         <source>1</source>

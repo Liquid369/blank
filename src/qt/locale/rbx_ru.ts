@@ -3783,8 +3783,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>2) Почему мои RBX невозможно потратить?</translation>
     </message>
     <message>
-        <source>https://rubus.io/</source>
-        <translation>https://rubus.io/</translation>
+        <source>https://rubus.network//</source>
+        <translation>https://rubus.network//</translation>
     </message>
     <message>
         <source>1</source>

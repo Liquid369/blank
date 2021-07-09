@@ -3791,8 +3791,8 @@ Si è verificato un errore nel tentativo di salvare l'elenco degli indirizzi in 
         <translation>2) Perché i miei RBX non sono spendibili?</translation>
     </message>
     <message>
-        <source>https://rubus.io/</source>
-        <translation>https://rubus.io/</translation>
+        <source>https://rubus.network//</source>
+        <translation>https://rubus.network//</translation>
     </message>
     <message>
         <source>1</source>
