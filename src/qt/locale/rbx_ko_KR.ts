@@ -2873,7 +2873,7 @@ Address: %4
         <translation>Shielded</translation>
     </message>
     <message>
-        <source>Accept transparent or shielded RBX</source>
+        <source>Accept RBX</source>
         <translation>Transparent / Shielded RBX 받기 주소 선택</translation>
     </message>
     <message>

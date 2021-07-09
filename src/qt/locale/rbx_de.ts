@@ -2943,7 +2943,7 @@ Adresse: %4
         <translation>Abgeschirmt</translation>
     </message>
     <message>
-        <source>Accept transparent or shielded RBX</source>
+        <source>Accept RBX</source>
         <translation>Transparente oder abgeschirmte RBX akzeptieren</translation>
     </message>
     <message>
@@ -4012,14 +4012,14 @@ Es gab ein Problem bei dem Versuch die Adressen unter %1 zu speichern. Bitte ver
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
                            We have support channels in most of our official chat groups, for example
-                           &lt;a style='color: #b088ff' href='https://discord.rubus.io'&gt;
+                           &lt;a style='color: #b088ff' href='https://discord.rubus.network/'&gt;
                            #support in our Discord&lt;/a&gt;.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
         <translation>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
                            Wir haben Support-Kanäle in den meisten unserer offiziellen Chat-Gruppen, zum Beispiel
-                           &lt;a style='color: #b088ff' href='https://discord.rubus.io'&gt;
+                           &lt;a style='color: #b088ff' href='https://discord.rubus.network/'&gt;
                            #support in unserem Discord&lt;/a&gt;.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </translation>
@@ -4125,9 +4125,7 @@ Es gab ein Problem bei dem Versuch die Adressen unter %1 zu speichern. Bitte ver
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
                            Rubus is a form of digital online money using blockchain technology
                            that can be easily transferred globally, instantly, and with near
-                           zero fees.  Rubus incorporates market leading security &amp;
-                           privacy and is also the first PoS (Proof of Stake) Cryptocurrency
-                           to implement Sapling(SHIELD), a zk-SNARKs based privacy protocol.
+                           zero fees. 
                            &lt;/p&gt;&lt;p align="justify"&gt;
                            Rubus utilizes a Proof of Stake (PoS) consensus system algorithm,
                            allowing all owners of Rubus to participate in earning block rewards

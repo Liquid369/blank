@@ -2872,7 +2872,7 @@ Adres: %4
         <translation>Shielded</translation>
     </message>
     <message>
-        <source>Accept transparent or shielded RBX</source>
+        <source>Accept RBX</source>
         <translation>Zaakceptuj transparent albo shielded RBX</translation>
     </message>
     <message>

@@ -3681,7 +3681,7 @@ Address: %4
     </message>
     <message>
         <location line="+19"/>
-        <source>Accept transparent or shielded RBX</source>
+        <source>Accept RBX</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4991,7 +4991,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
                            We have support channels in most of our official chat groups, for example
-                           &lt;a style=&apos;color: #b088ff&apos; href=&apos;https://discord.rubus.io&apos;&gt;
+                           &lt;a style=&apos;color: #b088ff&apos; href=&apos;https://discord.rubus.network/&apos;&gt;
                            #support in our Discord&lt;/a&gt;.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
@@ -5063,9 +5063,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
                            Rubus is a form of digital online money using blockchain technology
                            that can be easily transferred globally, instantly, and with near
-                           zero fees.  Rubus incorporates market leading security &amp;
-                           privacy and is also the first PoS (Proof of Stake) Cryptocurrency
-                           to implement Sapling(SHIELD), a zk-SNARKs based privacy protocol.
+                           zero fees. 
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
                            Rubus utilizes a Proof of Stake (PoS) consensus system algorithm,
                            allowing all owners of Rubus to participate in earning block rewards

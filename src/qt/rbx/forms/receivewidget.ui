@@ -201,7 +201,7 @@
              <item alignment="Qt::AlignHCenter|Qt::AlignTop">
               <widget class="QLabel" name="labelSubtitle2">
                <property name="text">
-                <string>Accept transparent or shielded RBX</string>
+                <string>Accept RBX</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

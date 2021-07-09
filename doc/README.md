@@ -31,7 +31,7 @@ Drag RBX-Qt to your applications folder, and then run RBX-Qt.
 * See the documentation at the [Rubus Wiki](https://github.com/flitsnode/Rubus-core/wiki)
 for help and more information.
 * Ask for help on [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or on the [Rubus Forum](http://forum.rubus.io/).
-* Join our Discord server [Discord Server](https://discord.rubus.io)
+* Join our Discord server [Discord Server](https://discord.rubus.network/)
 
 Building
 ---------------------
@@ -59,7 +59,7 @@ The Rubus repo's [root README](/README.md) contains relevant information on the 
 
 ### Resources
 * Discuss on the [BitcoinTalk](https://bitcointalk.org/index.php?topic=1262920.0) or the [RBX](http://forum.rubus.io/) forum.
-* Join the [Rubus Discord](https://discord.rubus.io).
+* Join the [Rubus Discord](https://discord.rubus.network/).
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)

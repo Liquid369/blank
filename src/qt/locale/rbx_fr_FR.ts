@@ -2920,7 +2920,7 @@ Adresse : %4
         <translation>Protégé</translation>
     </message>
     <message>
-        <source>Accept transparent or shielded RBX</source>
+        <source>Accept RBX</source>
         <translation>Accepte des RBX transparents ou protégés</translation>
     </message>
     <message>
@@ -4005,9 +4005,7 @@ pour voir votre solde de monnaie dépensable sur le réseau.
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
                            Rubus is a form of digital online money using blockchain technology
                            that can be easily transferred globally, instantly, and with near
-                           zero fees.  Rubus incorporates market leading security &amp;
-                           privacy and is also the first PoS (Proof of Stake) Cryptocurrency
-                           to implement Sapling(SHIELD), a zk-SNARKs based privacy protocol.
+                           zero fees. 
                            &lt;/p&gt;&lt;p align="justify"&gt;
                            Rubus utilizes a Proof of Stake (PoS) consensus system algorithm,
                            allowing all owners of Rubus to participate in earning block rewards
