@@ -52,6 +52,7 @@ ReceiveWidget::ReceiveWidget(RBXGUI* parent) :
     /* Button Group */
     setCssProperty(ui->pushLeft, "btn-check-left");
     setCssProperty(ui->pushRight, "btn-check-right");
+    ui->pushRight->setVisible(false);
     setCssSubtitleScreen(ui->labelSubtitle2);
     ui->labelSubtitle2->setContentsMargins(0,2,4,0);
 

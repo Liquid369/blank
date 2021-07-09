@@ -56,8 +56,10 @@ DashboardWidget::DashboardWidget(RBXGUI* parent) :
     setCssSubtitleScreen(ui->labelMessage);
     setCssProperty(ui->labelSquareRbx, "square-chart-rbx");
     setCssProperty(ui->labelSquarezRbx, "square-chart-zrbx");
+    ui->labelSquarezRbx->setVisible(false);
     setCssProperty(ui->labelRbx, "text-chart-rbx");
     setCssProperty(ui->labelZrbx, "text-chart-zrbx");
+    ui->labelZrbx->setVisible(false);
 
     // Staking Amount
     QFont fontBold;
@@ -693,6 +695,7 @@ void DashboardWidget::onChartRefreshed()
     forceUpdateStyle({ui->labelAmountRbx, ui->labelAmountZrbx});
     ui->labelAmountRbx->setText(GUIUtil::formatBalance(chartData->totalRbx, nDisplayUnit));
     ui->labelAmountZrbx->setText(GUIUtil::formatBalance(chartData->totalZrbx, nDisplayUnit, true));
+    ui->labelAmountZrbx->setVisible(false);
 
     series->append(set0);
     if (hasZrbxStakes)
