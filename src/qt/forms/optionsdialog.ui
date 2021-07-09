@@ -141,20 +141,20 @@
             <item>
              <widget class="QCheckBox" name="checkBoxZeromintEnable">
               <property name="toolTip">
-               <string>Enable automatic minting of RBX units to zRBX</string>
+               <string></string>
               </property>
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>Enable zRBX Automint</string>
+               <string>Enable Automint</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBoxZeromintAddresses">
               <property name="toolTip">
-               <string>Enable automatic zRBX minting from specific addresses</string>
+               <string>Enable automatic minting from specific addresses</string>
               </property>
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
@@ -171,10 +171,10 @@
             <item>
              <widget class="QLabel" name="percentage_label">
               <property name="toolTip">
-               <string>Percentage of incoming RBX which get automatically converted to zRBX via Zerocoin Protocol (min: 10%)</string>
+               <string>Percentage of incoming RBX which get automatically converted</string>
               </property>
               <property name="text">
-               <string>Percentage of autominted zRBX</string>
+               <string>Percentage of autominted</string>
               </property>
              </widget>
             </item>

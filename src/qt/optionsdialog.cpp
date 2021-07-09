@@ -190,9 +190,12 @@ void OptionsDialog::setMapper()
     // Zeromint Enabled
     mapper->addMapping(ui->checkBoxZeromintEnable, OptionsModel::ZeromintEnable);
     // Zeromint Addresses
+    ui->checkBoxZeromintEnable->setVisible(false);
     mapper->addMapping(ui->checkBoxZeromintAddresses, OptionsModel::ZeromintAddresses);
+    ui->checkBoxZeromintAddresses->setVisible(false);
     // Zerocoin mint percentage
     mapper->addMapping(ui->zeromintPercentage, OptionsModel::ZeromintPercentage);
+    ui->zeromintPercentage->setVisible(false);
     // Zerocoin preferred denomination
     mapper->addMapping(ui->preferredDenom, OptionsModel::ZeromintPrefDenom);
 
