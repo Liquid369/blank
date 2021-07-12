@@ -117,13 +117,11 @@ TopBar::TopBar(DOGECGUI* _mainWindow, QWidget *parent) :
 
     ui->pushButtonLock->setButtonClassStyle("cssClass", "btn-check-lock");
 
-    if (isLightTheme()) {
-        ui->pushButtonTheme->setButtonClassStyle("cssClass", "btn-check-theme-light");
-        ui->pushButtonTheme->setButtonText(tr("Light Theme"));
-    } else {
-        ui->pushButtonTheme->setButtonClassStyle("cssClass", "btn-check-theme-dark");
-        ui->pushButtonTheme->setButtonText(tr("Dark Theme"));
-    }
+
+    ui->pushButtonTheme->setButtonClassStyle("cssClass", "btn-check-theme-dark");
+    ui->pushButtonTheme->setButtonText(tr("Dark Theme"));
+    ui->btn-check-theme-light->setVisible(false);
+    ui->btn-check-theme-dark->setVisible(false);
 
     setCssProperty(ui->qrContainer, "container-qr");
     setCssProperty(ui->pushButtonQR, "btn-qr");
@@ -160,17 +158,14 @@ TopBar::TopBar(DOGECGUI* _mainWindow, QWidget *parent) :
 void TopBar::onThemeClicked()
 {
     // Store theme
-    bool lightTheme = !isLightTheme();
+    bool lightTheme = false;
 
     setTheme(lightTheme);
 
-    if (lightTheme) {
-        ui->pushButtonTheme->setButtonClassStyle("cssClass", "btn-check-theme-light",  true);
-        ui->pushButtonTheme->setButtonText(tr("Light Theme"));
-    } else {
-        ui->pushButtonTheme->setButtonClassStyle("cssClass", "btn-check-theme-dark", true);
-        ui->pushButtonTheme->setButtonText(tr("Dark Theme"));
-    }
+    
+    ui->pushButtonTheme->setButtonClassStyle("cssClass", "btn-check-theme-dark", true);
+    ui->pushButtonTheme->setButtonText(tr("Dark Theme"));
+    
     updateStyle(ui->pushButtonTheme);
 
     Q_EMIT themeChanged(lightTheme);
