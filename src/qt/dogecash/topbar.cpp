@@ -120,8 +120,7 @@ TopBar::TopBar(DOGECGUI* _mainWindow, QWidget *parent) :
 
     ui->pushButtonTheme->setButtonClassStyle("cssClass", "btn-check-theme-dark");
     ui->pushButtonTheme->setButtonText(tr("Dark Theme"));
-    ui->btn-check-theme-light->setVisible(false);
-    ui->btn-check-theme-dark->setVisible(false);
+    ui->pushButtonTheme->setVisible(false);
 
     setCssProperty(ui->qrContainer, "container-qr");
     setCssProperty(ui->pushButtonQR, "btn-qr");
@@ -161,10 +160,6 @@ void TopBar::onThemeClicked()
     bool lightTheme = false;
 
     setTheme(lightTheme);
-
-    
-    ui->pushButtonTheme->setButtonClassStyle("cssClass", "btn-check-theme-dark", true);
-    ui->pushButtonTheme->setButtonText(tr("Dark Theme"));
     
     updateStyle(ui->pushButtonTheme);
 
