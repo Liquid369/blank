@@ -970,7 +970,7 @@ std::string WalletModel::getLabelForAddress(const CTxDestination& address)
     return label;
 }
 
-// returns a COutPoint of 15000 DOGEC if found
+// returns a COutPoint of 10000 DOGEC if found
 bool WalletModel::getMNCollateralCandidate(COutPoint& outPoint)
 {
     CWallet::AvailableCoinsFilter coinsFilter;

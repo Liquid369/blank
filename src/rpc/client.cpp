@@ -106,6 +106,8 @@ static const CRPCConvertParam vRPCConvertParams[] = {
     { "createrawtransaction", 2 },
     { "fundrawtransaction", 1 },
     { "signrawtransaction", 1 },
+    {"getaddressutxos", 1},
+    {"getaddressutxos", 2},
     { "signrawtransaction", 2 },
     { "sendrawtransaction", 1 },
     { "sethdseed", 0 },
@@ -139,6 +141,7 @@ static const CRPCConvertParam vRPCConvertParams[] = {
     { "submitbudget", 3 },
     { "submitbudget", 5 },
     { "submitbudget", 7 },
+    // Address Index
     // TODO: remove this and switch over to proper arg parsing in rpc/masternode.cpp for the second argument
     //{"startmasternode", 1},
     { "startmasternode", 3 },

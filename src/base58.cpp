@@ -12,6 +12,7 @@
 
 #include <boost/variant/apply_visitor.hpp>
 #include <boost/variant/static_visitor.hpp>
+#include <script/standard.h>
 
 #include <algorithm>
 #include <assert.h>
