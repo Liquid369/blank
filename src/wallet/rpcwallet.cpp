@@ -3773,8 +3773,8 @@ UniValue burn(const UniValue& params, bool fHelp)
     // Amount (Use <amount> parameter if it's larger than 0, else, use a single zen)
     int64_t nAmount = AmountFromValue(params[0].get_real() > 0 ? params[0] : 0.00000001);
     CTxDestination address1;
-    CWalletTx wtx;
-    BurnMoney(scriptPubKey, nAmount, wtx, false);
+    CTransactionRef tx;
+    BurnMoney(scriptPubKey, nAmount, tx, false);
 
     EnsureWalletIsUnlocked();
     return wtx.GetHash().GetHex();
@@ -4303,7 +4303,6 @@ static const CRPCCommand commands[] =
     { "wallet",             "gettransaction",           &gettransaction,           false },
     { "wallet",             "getstakesplitthreshold",   &getstakesplitthreshold,   false },
     { "wallet",             "getunconfirmedbalance",    &getunconfirmedbalance,    false },
-    { "wallet",             "burn",                     &burn,                     true  },
     { "wallet",             "getwalletinfo",            &getwalletinfo,            false },
     { "wallet",             "getstakingstatus",         &getstakingstatus,         false },
     { "wallet",             "importprivkey",            &importprivkey,            true  },
