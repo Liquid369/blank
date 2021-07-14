@@ -3710,7 +3710,7 @@ void BurnMoney(const CScript scriptPubKeyIn, CAmount nValue, CWalletTx& wtxNew, 
     if (nValue <= 0)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid amount");
 
-    if (nValue > pwalletMain->GetBalance())
+    if (nValue > pwalletMain->GetAvailableBalance())
         throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "Insufficient funds");
 
     std::string strError;
@@ -3727,7 +3727,7 @@ void BurnMoney(const CScript scriptPubKeyIn, CAmount nValue, CWalletTx& wtxNew, 
     CReserveKey reservekey(pwalletMain);
     CAmount nFeeRequired;
     if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, wtxNew, reservekey, nFeeRequired, strError, NULL, ALL_COINS, fUseIX, (CAmount)0)) {
-        if (nValue + nFeeRequired > pwalletMain->GetBalance())
+        if (nValue + nFeeRequired > pwalletMain->GetAvailableBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         LogPrintf("BurnMoney() : %s\n", strError);
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
