@@ -3704,7 +3704,7 @@ UniValue settxfee(const JSONRPCRequest& request)
     return true;
 }
 
-void BurnMoney(const CScript scriptPubKeyIn, CAmount nValue, CWalletTx& wtxNew, bool fUseIX = false)
+void BurnMoney(const CScript scriptPubKeyIn, CAmount nValue, CTransactionRef& tx, bool fUseIX = false)
 {
     // Check amount
     if (nValue <= 0)
@@ -3726,15 +3726,16 @@ void BurnMoney(const CScript scriptPubKeyIn, CAmount nValue, CWalletTx& wtxNew, 
     // Create and send the transaction
     CReserveKey reservekey(pwalletMain);
     CAmount nFeeRequired;
-    if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, wtxNew, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0)) {
+    if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, tx, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0)) {
         if (nValue + nFeeRequired > pwalletMain->GetAvailableBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         LogPrintf("BurnMoney() : %s\n", strError);
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
     }
 
-    if (!pwalletMain->CommitTransaction(wtxNew, reservekey, (!fUseIX ? "tx" : "ix")))
-        throw JSONRPCError(RPC_WALLET_ERROR, "Error: The transaction was rejected! This might happen if some of the coins in your wallet were already spent, such as if you used a copy of wallet.dat and coins were spent in the copy but not marked as spent here.");
+    const CWallet::CommitResult&& res = pwalletMain->CommitTransaction(tx, reservekey, g_connman.get());
+    if (res.status != CWallet::CommitStatus::OK)
+        throw JSONRPCError(RPC_WALLET_ERROR, res.ToString());
 }
 
 UniValue burn(const UniValue& params, bool fHelp)
@@ -3742,7 +3743,7 @@ UniValue burn(const UniValue& params, bool fHelp)
     if (fHelp || params.size() < 1 || params.size() > 2)
         throw std::runtime_error(
             "burn <amount> [\"optional string\"]\n"
-            "This command is used to burn SSS and optionally write custom data into the burn transaction, \n"
+            "This command is used to burn RBX and optionally write custom data into the burn transaction, \n"
             "<amount> is real and is rounded to the nearest zen (ex: 0.00000001).\n"
             "You may use 0 as the <amount> to skip a specific burn amount, for only writing data into the chain."
             + HelpRequiringPassphrase());
@@ -4271,7 +4272,7 @@ extern UniValue dumpwallet(const JSONRPCRequest& request);
 extern UniValue importwallet(const JSONRPCRequest& request);
 extern UniValue bip38encrypt(const JSONRPCRequest& request);
 extern UniValue bip38decrypt(const JSONRPCRequest& request);
-extern UniValue burn(const Univalue& params, bool fHelp);
+extern UniValue burn(const UniValue& params, bool fHelp);
 
 extern UniValue exportsaplingkey(const JSONRPCRequest& request);
 extern UniValue importsaplingkey(const JSONRPCRequest& request);
