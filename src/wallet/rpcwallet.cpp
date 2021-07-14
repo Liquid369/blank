@@ -3726,7 +3726,7 @@ void BurnMoney(const CScript scriptPubKeyIn, CAmount nValue, CWalletTx& wtxNew, 
     // Create and send the transaction
     CReserveKey reservekey(pwalletMain);
     CAmount nFeeRequired;
-    if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, wtxNew, reservekey, nFeeRequired, strError, NULL, ALL_COINS, fUseIX, (CAmount)0, fUseDelegated)) {
+    if (!pwalletMain->CreateTransaction(scriptPubKey, nValue, wtxNew, reservekey, nFeeRequired, strError, nullptr, ALL_COINS, (CAmount)0)) {
         if (nValue + nFeeRequired > pwalletMain->GetAvailableBalance())
             strError = strprintf("Error: This transaction requires a transaction fee of at least %s because of its amount, complexity, or use of recently received funds!", FormatMoney(nFeeRequired));
         LogPrintf("BurnMoney() : %s\n", strError);
