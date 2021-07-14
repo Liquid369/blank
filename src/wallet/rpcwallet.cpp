@@ -3777,7 +3777,7 @@ UniValue burn(const UniValue& params, bool fHelp)
     BurnMoney(scriptPubKey, nAmount, tx, false);
 
     EnsureWalletIsUnlocked();
-    return wtx.GetHash().GetHex();
+    return tx.GetHash().GetHex();
 }
 
 UniValue getwalletinfo(const JSONRPCRequest& request)
