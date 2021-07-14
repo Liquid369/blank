@@ -478,7 +478,7 @@ void MasterNodesWidget::onCreateMNClicked()
         return;
     }
 
-    if (walletModel->getBalance() <= (COIN * 10000)) {
+    if (walletModel->getBalance() <= (COIN * 2500)) {
         inform(tr("Not enough balance to create a masternode, 2,500 %1 required.").arg(CURRENCY_UNIT.c_str()));
         return;
     }
