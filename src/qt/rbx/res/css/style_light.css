@@ -2934,28 +2934,28 @@ QPushButton[cssClass="ic-step-confirm-welcome"] {
 }
 
 *[cssClass="container-welcome-step1"] {
-    background-image: url("://img-welcome-step1");
+    background-image: url("://bg-welcome");
     background-position:left bottom;
     background-repeat:no-repeat;
     background-color: transparent;
 }
 
 *[cssClass="container-welcome-step2"] {
-    background-image: url("://img-welcome-step2");
+    background-image: url("://bg-welcome");
     background-position:left bottom;
     background-repeat:no-repeat;
     background-color: transparent;
 }
 
 *[cssClass="container-welcome-step3"] {
-    background-image: url("://img-welcome-step3");
+    background-image: url("://bg-welcome");
     background-position:left bottom;
     background-repeat:no-repeat;
     background-color: transparent;
 }
 
 *[cssClass="container-welcome-step4"] {
-    background-image: url("://img-welcome-step4");
+    background-image: url("://bg-welcome");
     background-position:left bottom;
     background-repeat:no-repeat;
     background-color: transparent;

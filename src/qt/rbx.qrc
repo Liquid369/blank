@@ -31,10 +31,10 @@
         <file alias="img-nav-logo-rbx">rbx/res/img/img-nav-logo-rbx.png</file>
         <file alias="img-qr-test-big">rbx/res/img/img-qr-test-big.png</file>
         <file alias="img-qr-test">rbx/res/img/img-qr-test.png</file>
-        <file alias="img-welcome-step1">rbx/res/img/img-welcome-step1.png</file>
-        <file alias="img-welcome-step2">rbx/res/img/img-welcome-step2.png</file>
-        <file alias="img-welcome-step3">rbx/res/img/img-welcome-step3.png</file>
-        <file alias="img-welcome-step4">rbx/res/img/img-welcome-step4.png</file>
+        <file alias="img-welcome-step1">rbx/res/img/bg-welcome.png</file>
+        <file alias="img-welcome-step2">rbx/res/img/bg-welcome.png</file>
+        <file alias="img-welcome-step3">rbx/res/img/bg-welcome.png</file>
+        <file alias="img-welcome-step4">rbx/res/img/bg-welcome.png</file>
         <file alias="bg-multi-number-dark">rbx/res/img/bg-multi-number-dark.svg</file>
         <file alias="bg-multi-number">rbx/res/img/bg-multi-number.svg</file>
         <file alias="btn-radio-active">rbx/res/img/btn-radio-active.svg</file>

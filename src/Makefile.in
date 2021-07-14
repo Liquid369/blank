@@ -990,24 +990,20 @@ am__qt_libbitcoinqt_a_SOURCES_DIST = qt/bantablemodel.cpp \
 	qt/rbx/res/img/dark/ic-transaction-mint-inactive.svg \
 	qt/rbx/res/img/ic-transaction-received-inactive.svg \
 	qt/rbx/res/img/dark/ic-transaction-received-inactive.svg \
-	qt/rbx/res/img/img-welcome-step1.png \
 	qt/rbx/res/img/ic-check-connect.svg \
 	qt/rbx/res/img/ic-menu-hover.svg \
 	qt/rbx/res/img/ic-transaction-sent.svg \
 	qt/rbx/res/img/ic-transaction-sent-inactive.svg \
 	qt/rbx/res/img/dark/ic-transaction-sent.svg \
 	qt/rbx/res/img/dark/ic-transaction-sent-inactive.svg \
-	qt/rbx/res/img/img-welcome-step2.png \
 	qt/rbx/res/img/ic-check-dark.svg qt/rbx/res/img/ic-mint.svg \
 	qt/rbx/res/img/ic-transaction-staked.svg \
 	qt/rbx/res/img/ic-transaction-staked-inactive.svg \
 	qt/rbx/res/img/dark/ic-transaction-staked.svg \
 	qt/rbx/res/img/dark/ic-transaction-staked-inactive.svg \
-	qt/rbx/res/img/img-welcome-step3.png \
 	qt/rbx/res/img/ic-check-liliac-on.svg \
 	qt/rbx/res/img/ic-nav-address-active.svg \
 	qt/rbx/res/img/ic-unlock-staking.svg \
-	qt/rbx/res/img/img-welcome-step4.png \
 	qt/rbx/res/img/ic-check-locked-off.svg \
 	qt/rbx/res/img/ic-nav-address-hover.svg \
 	qt/rbx/res/img/ic-update-liliac.svg \
@@ -3599,25 +3595,21 @@ EXTRA_DIST = $(CTAES_DIST) rust
 @ENABLE_QT_TRUE@  qt/rbx/res/img/dark/ic-transaction-mint-inactive.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-transaction-received-inactive.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/dark/ic-transaction-received-inactive.svg \
-@ENABLE_QT_TRUE@  qt/rbx/res/img/img-welcome-step1.png \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-check-connect.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-menu-hover.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-transaction-sent.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-transaction-sent-inactive.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/dark/ic-transaction-sent.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/dark/ic-transaction-sent-inactive.svg \
-@ENABLE_QT_TRUE@  qt/rbx/res/img/img-welcome-step2.png \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-check-dark.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-mint.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-transaction-staked.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-transaction-staked-inactive.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/dark/ic-transaction-staked.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/dark/ic-transaction-staked-inactive.svg \
-@ENABLE_QT_TRUE@  qt/rbx/res/img/img-welcome-step3.png \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-check-liliac-on.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-nav-address-active.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-unlock-staking.svg \
-@ENABLE_QT_TRUE@  qt/rbx/res/img/img-welcome-step4.png \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-check-locked-off.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-nav-address-hover.svg \
 @ENABLE_QT_TRUE@  qt/rbx/res/img/ic-update-liliac.svg \
