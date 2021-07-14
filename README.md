@@ -18,7 +18,7 @@ Rubus is an open source community-driven cryptocurrency, focused on five main as
 
 (5) Ease of Use: Rubus is determined to offer the best possible graphical interface for a core node/wallet. A full featured graphical product for new and advanced users.
 
-A lot more information and specs at [rubus.io](https://www.rubus.io/). Join the community at [Rubus Discord](https://discordapp.com/invite/jzqVsJd).
+A lot more information and specs at [rubus.io](https://www.rubus.network). Join the community at [Rubus Discord](https://discordapp.com/invite/jzqVsJd).
 
 ## License
 Rubus Core is released under the terms of the MIT license. See [COPYING](https://github.com/flitsnode/Rubus-core/blob/master/COPYING) for more information or see https://opensource.org/licenses/MIT.
