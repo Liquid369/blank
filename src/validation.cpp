@@ -863,7 +863,7 @@ CAmount GetBlockValue(int nHeight)
          nSubsidy = 10.8 * COIN;
     } else if (nHeight <= 788621 && nHeight > 238621) {
          nSubsidy = 9 * COIN;
-    } else if (nHeight <= 1100000 && nHeight > 788621) {
+    } else if (nHeight <= 1122000 && nHeight > 788621) {
          nSubsidy = 5.4 * COIN;
     } else {
          nSubsidy = 5 * COIN;
@@ -3093,10 +3093,8 @@ bool CheckWork(const CBlock& block, const CBlockIndex* const pindexPrev)
         // dogecash Specific reference to the block with the wrong threshold was used.
         const Consensus::Params& consensus = Params().GetConsensus();
         if (block.nTime >= (uint32_t) consensus.nDogeCashBadBlockTime){
-            if (pindexPrev->nHeight + 1 >= 800000) {
-            // accept DOGEC block minted with incorrect proof of work threshold
-                return error("%s : incorrect proof of work at %d", __func__, pindexPrev->nHeight + 1);
-            }
+            // reject DOGEC block minted with incorrect proof of work threshold
+            return error("%s : incorrect proof of work at %d", __func__, pindexPrev->nHeight + 1);
         }
     }
 
