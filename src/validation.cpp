@@ -3072,7 +3072,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         return false;
     
     bool isPoS = block.IsProofOfStake();
-        if (isPoS && (block.nTime >= 1625157122)) {
+        if (isPoS && (block.nTime >= 1628157122)) {
             std::string strError;
             if (!CheckProofOfStake(block, strError, pindexPrev))
                 return state.DoS(100, error("%s: proof of stake check failed (%s)", __func__, strError));
