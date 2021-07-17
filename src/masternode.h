@@ -20,11 +20,6 @@
 /* Depth of the block pinged by masternodes */
 static const unsigned int MNPING_DEPTH = 12;
 
-/* Masternode collateral amount */
-static const CAmount MN_COLL_AMT = 5000 * COIN;
-static const CAmount MN_COLL_2 = 15000 * COIN;
-
-
 class CMasternode;
 class CMasternodeBroadcast;
 class CMasternodePing;
