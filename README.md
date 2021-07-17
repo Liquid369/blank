@@ -1,8 +1,8 @@
 Rubus Core integration/staging repository
 =====================================
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/flitsnode/Rubus-core?color=%23365ace&cacheSeconds=3600)](https://github.com/flitsnode/Rubus-core/releases)
-[![GitHub Release Date](https://img.shields.io/github/release-date/flitsnode/Rubus-core?color=%23365ace&cacheSeconds=3600)](https://github.com/flitsnode/Rubus-core/releases)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Simple-Software-Solutions/Rubus-core?color=%23365ace&cacheSeconds=3600)](https://github.com/Simple-Software-Solutions/Rubus-core/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/Simple-Software-Solutions/Rubus-core?color=%23365ace&cacheSeconds=3600)](https://github.com/Simple-Software-Solutions/Rubus-core/releases)
 
 ## What is RBX?
 
@@ -18,16 +18,16 @@ Rubus is an open source community-driven cryptocurrency, focused on five main as
 
 (5) Ease of Use: Rubus is determined to offer the best possible graphical interface for a core node/wallet. A full featured graphical product for new and advanced users.
 
-A lot more information and specs at [rubus.io](https://www.rubus.io/). Join the community at [Rubus Discord](https://discordapp.com/invite/jzqVsJd).
+A lot more information and specs at [rubus.network](https://www.rubus.network). Join the community at [Rubus Discord](https://discordapp.com/invite/jzqVsJd).
 
 ## License
-Rubus Core is released under the terms of the MIT license. See [COPYING](https://github.com/flitsnode/Rubus-core/blob/master/COPYING) for more information or see https://opensource.org/licenses/MIT.
+Rubus Core is released under the terms of the MIT license. See [COPYING](https://github.com/Simple-Software-Solutions/Rubus-core/blob/master/COPYING) for more information or see https://opensource.org/licenses/MIT.
 
 ## Development Process
 
-The master branch is regularly built (see doc/build-*.md for instructions) and tested, but it is not guaranteed to be completely stable. [Tags](https://github.com/flitsnode/Rubus-core/tags) are created regularly from release branches to indicate new official, stable release versions of Rubus Core.
+The master branch is regularly built (see doc/build-*.md for instructions) and tested, but it is not guaranteed to be completely stable. [Tags](https://github.com/Simple-Software-Solutions/Rubus-core/tags) are created regularly from release branches to indicate new official, stable release versions of Rubus Core.
 
-The contribution workflow is described in [CONTRIBUTING.md](https://github.com/flitsnode/Rubus-core/blob/master/CONTRIBUTING.md) and useful hints for developers can be found in [doc/developer-notes.md](https://github.com/flitsnode/Rubus-core/blob/master/doc/developer-notes.md).
+The contribution workflow is described in [CONTRIBUTING.md](https://github.com/Simple-Software-Solutions/Rubus-core/blob/master/CONTRIBUTING.md) and useful hints for developers can be found in [doc/developer-notes.md](https://github.com/Simple-Software-Solutions/Rubus-core/blob/master/doc/developer-notes.md).
 
 ## Testing
 
@@ -35,7 +35,7 @@ Testing and code review is the bottleneck for development; we get more pull requ
 
 ## Automated Testing
 
-Developers are strongly encouraged to write [unit tests](https://github.com/flitsnode/Rubus-core/blob/master/src/test/README.md) for new code, and to submit new unit tests for old code. Unit tests can be compiled and run (assuming they weren't disabled in configure) with: make check. Further details on running and extending unit tests can be found in [/src/test/README.md](https://github.com/flitsnode/Rubus-core/blob/master/src/test/README.md).
+Developers are strongly encouraged to write [unit tests](https://github.com/Simple-Software-Solutions/Rubus-core/blob/master/src/test/README.md) for new code, and to submit new unit tests for old code. Unit tests can be compiled and run (assuming they weren't disabled in configure) with: make check. Further details on running and extending unit tests can be found in [/src/test/README.md](https://github.com/Simple-Software-Solutions/Rubus-core/blob/master/src/test/README.md).
 
 There are also regression and integration tests, written in Python. These tests can be run (if the test dependencies are installed) with: test/functional/test_runner.py`
 
