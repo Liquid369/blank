@@ -210,7 +210,7 @@ QSettings* getSettings()
 
 bool isLightTheme()
 {
-    return getSettings()->value("lightTheme", true).toBool();
+    return getSettings()->value("lightTheme", false).toBool();
 }
 
 void setTheme(bool isLight)
@@ -233,7 +233,6 @@ void updateStyle(QWidget* widget)
 
 QColor getRowColor(bool isLightTheme, bool isHovered, bool isSelected)
 {
-
     if (isSelected) {
         return QColor("#18171d");
     } else if (isHovered) {

@@ -876,7 +876,7 @@ QString loadStyleSheet()
     QString styleSheet;
     QSettings settings;
     QString cssName;
-    QString theme = settings.value("theme", "").toString();
+    QString theme = settings.value("theme", "default-dark").toString();
 
     if (isExternal(theme)) {
         // External CSS
@@ -886,12 +886,8 @@ QString loadStyleSheet()
     } else {
         // Build-in CSS
         settings.setValue("fCSSexternal", false);
-        if (!theme.isEmpty()) {
-            cssName = QString(":/css/") + theme;
-        } else {
-            cssName = QString(":/css/default-dark");
-            settings.setValue("theme", "default-dark");
-        }
+        cssName = QString(":/css/default-dark");
+        settings.setValue("theme", "default-dark");
     }
 
     QFile qFile(cssName);

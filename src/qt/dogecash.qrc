@@ -14,7 +14,7 @@
     <qresource prefix="/css">
         <file>res/css/default.css</file>
         <file alias="default-dark">dogecash/res/css/style_dark.css</file>
-        <file alias="default">dogecash/res/css/style_light.css</file>
+        <file alias="default">dogecash/res/css/style_dark.css</file>
     </qresource>
     <qresource prefix="/images">
         <file alias="about">res/images/about.png</file>
