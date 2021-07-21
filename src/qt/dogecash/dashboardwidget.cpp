@@ -463,18 +463,12 @@ void DashboardWidget::changeChartColors()
     QColor linePenColorY;
     QColor backgroundColor;
     QColor gridY;
-    if (isLightTheme()) {
-        gridLineColorX = QColor(255,255,255);
-        linePenColorY = gridLineColorX;
-        backgroundColor = linePenColorY;
-        axisY->setGridLineColor(QColor("#000000"));
-    } else {
-        gridY = QColor("#40ffffff");
-        axisY->setGridLineColor(gridY);
-        gridLineColorX = QColor(0,0,0);
-        linePenColorY =  gridLineColorX;
-        backgroundColor = linePenColorY;
-    }
+    
+    gridY = QColor("#A8633A");
+    axisY->setGridLineColor(gridY);
+    gridLineColorX = QColor(24, 23, 29);
+    linePenColorY =  gridLineColorX;
+    backgroundColor = linePenColorY;
 
     axisX->setGridLineColor(gridLineColorX);
     axisY->setLinePenColor(linePenColorY);
@@ -668,8 +662,8 @@ void DashboardWidget::onChartRefreshed()
     // init sets
     set0 = new QBarSet(CURRENCY_UNIT.c_str());
     set1 = new QBarSet("z" + QString(CURRENCY_UNIT.c_str()));
-    set0->setColor(QColor(60, 49, 26));
-    set1->setColor(QColor(255, 223, 136));
+    set0->setColor(QColor(168, 99, 58));
+    set1->setColor(QColor(168, 99, 58));
 
     if (!series) {
         series = new QBarSeries();
