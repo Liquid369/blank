@@ -661,4 +661,8 @@ public:
     size_t DynamicMemoryUsage() const;
 };
 
+// contextual flag to guard the new rules for P2CS.
+// can be removed once v6 enforcement is activated.
+extern std::atomic<bool> g_IsV6Active;
+
 #endif // BITCOIN_SCRIPT_SCRIPT_H

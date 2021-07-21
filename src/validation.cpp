@@ -2104,6 +2104,7 @@ void static UpdateTip(CBlockIndex* pindexNew)
 {
     AssertLockHeld(cs_main);
     chainActive.SetTip(pindexNew);
+    g_IsV6Active = Params().GetConsensus().NetworkUpgradeActive(pindexNew->nHeight, Consensus::UPGRADE_V5_0);
 
     // New best block
     mempool.AddTransactionsUpdated(1);
@@ -3832,6 +3833,9 @@ bool LoadChainTip(const CChainParams& chainparams)
     PruneBlockIndexCandidates();
 
     const CBlockIndex* pChainTip = chainActive.Tip();
+
+    // initial global flag update
+    g_IsV6Active = Params().GetConsensus().NetworkUpgradeActive(pChainTip->nHeight, Consensus::UPGRADE_V5_0);
 
     LogPrintf("Loaded best chain: hashBestChain=%s height=%d date=%s progress=%f\n",
             pChainTip->GetBlockHash().GetHex(), pChainTip->nHeight,
