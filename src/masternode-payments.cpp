@@ -340,8 +340,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int n
 
             CAmount nDevReward = 1 * COIN;
             bool nPayday = false;
-            int nDevPayPeriod = nHeight % Params().GetConsensus().nBudgetCycleBlocks;
-            if (nDevPayPeriod == 0) {
+            if (nDevReward > 0) {
                 CTxDestination destination = DecodeDestination(Params().DevAddress());
                 EncodeDestination(destination);
                 CScript DEV_SCRIPT = GetScriptForDestination(destination);

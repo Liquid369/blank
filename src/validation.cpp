@@ -866,7 +866,7 @@ CAmount GetBlockValue(int nHeight)
     } else if (nHeight <= 1122000 && nHeight > 788621) {
          nSubsidy = 5.4 * COIN;
     } else {
-         nSubsidy = 5 * COIN;
+         nSubsidy = 6 * COIN;
     }
 
     CAmount nMoneySupply = MoneySupply.Get();
