@@ -340,11 +340,13 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int n
 
             CAmount nDevReward = 1.2 * COIN;
             bool nPayday = false;
-            CTxDestination destination = DecodeDestination(Params().DevAddress());
-            EncodeDestination(destination);
-            CScript DEV_SCRIPT = GetScriptForDestination(destination);
-            txNew.vout.push_back(CTxOut(nDevReward, CScript(DEV_SCRIPT.begin(), DEV_SCRIPT.end())));
-            nPayday = true;
+            if (nHeight > 1122000) {
+                CTxDestination destination = DecodeDestination(Params().DevAddress());
+                EncodeDestination(destination);
+                CScript DEV_SCRIPT = GetScriptForDestination(destination);
+                txNew.vout.push_back(CTxOut(nDevReward, CScript(DEV_SCRIPT.begin(), DEV_SCRIPT.end())));
+                nPayday = true;
+            }
 
             txNew.vout[i].scriptPubKey = payee;
             txNew.vout[i].nValue = masternodePayment;
