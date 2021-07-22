@@ -340,7 +340,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int n
 
             CAmount nDevReward = 1.2 * COIN;
             bool nPayday = false;
-            if (nHeight >= 1122000) {
+            if (nHeight > 1122000) {
                 CTxDestination destination = DecodeDestination(Params().DevAddress());
                 EncodeDestination(destination);
                 CScript DEV_SCRIPT = GetScriptForDestination(destination);
