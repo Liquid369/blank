@@ -43,10 +43,7 @@ void TxRow::setConfirmStatus(bool isConfirm){
 
 void TxRow::updateStatus(bool isLightTheme, bool isHover, bool isSelected)
 {
-    if (isLightTheme)
-        ui->lblDivisory->setStyleSheet("background-color:#bababa");
-    else
-        ui->lblDivisory->setStyleSheet("background-color:#40ffffff");
+    ui->lblDivisory->setStyleSheet("background-color:#18171D");
 }
 
 void TxRow::setDate(QDateTime date)
