@@ -363,7 +363,7 @@ for staking</source>
         <translation>ОТМЕНА</translation>
     </message>
     <message>
-        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DEVs from being stolen by malware infecting your computer.</source>
         <translation>Deviant сейчас закроется, чтобы завершить процесс шифрования. Помните, что шифрование вашего кошелька не может полностью защитить ваши Deviant от кражи с использованием вредоносного ПО.</translation>
     </message>
     <message>
@@ -725,7 +725,7 @@ for staking</source>
         <translation>Ошибка при загрузке делегаций: %1</translation>
     </message>
     <message>
-        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
+        <source>You can delegate your DEVs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation>Вы можете делегировать свои DEV, позволяя горячему узлу (онлайн-узлу, работаещему 24/7) делать стекинг от вашего имени, в то время как ключи надежно хранятся в автономном режиме.</translation>
     </message>
@@ -1839,36 +1839,36 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
         <translation>Карта порта, использующего &amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of DEV units to zDOGEC</source>
-        <translation>Невозможно автоматически отчеканить единицы DEV для zDOGEC</translation>
+        <source>Enable automatic minting of DEV units to zDEV</source>
+        <translation>Невозможно автоматически отчеканить единицы DEV для zDEV</translation>
     </message>
     <message>
-        <source>Enable zDOGEC Automint</source>
-        <translation>Невозможно авточеканка  zDOGEC</translation>
+        <source>Enable zDEV Automint</source>
+        <translation>Невозможно авточеканка  zDEV</translation>
     </message>
     <message>
-        <source>Enable automatic zDOGEC minting from specific addresses</source>
-        <translation>Включить автоматическое чеканку zDOGEC с определенных адресов</translation>
+        <source>Enable automatic zDEV minting from specific addresses</source>
+        <translation>Включить автоматическое чеканку zDEV с определенных адресов</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Включить адреса с автоматической чеканкой</translation>
     </message>
     <message>
-        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
-        <translation>Процент приходящих DEV, которые автоматически конвертируются в zDOGEC благодаря Zerocoin протоколу (min: 10%)</translation>
+        <source>Percentage of incoming DEV which get automatically converted to zDEV via Zerocoin Protocol (min: 10%)</source>
+        <translation>Процент приходящих DEV, которые автоматически конвертируются в zDEV благодаря Zerocoin протоколу (min: 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zDOGEC</source>
-        <translation>Процент  авточеканненых zDOGEC</translation>
+        <source>Percentage of autominted zDEV</source>
+        <translation>Процент  авточеканненых zDEV</translation>
     </message>
     <message>
         <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
         <translation>Подождите с автоматическим преобразованием в Zerocoin, пока не будет достаточно DEV для этой номинации.</translation>
     </message>
     <message>
-        <source>Preferred Automint zDOGEC Denomination</source>
-        <translation>Предпочитаемый номинал авточеканной  монеты  zDOGEC</translation>
+        <source>Preferred Automint zDEV Denomination</source>
+        <translation>Предпочитаемый номинал авточеканной  монеты  zDEV</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -2020,7 +2020,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
 </context>
 <context>
-    <name>DOGECGUI</name>
+    <name>DEVGUI</name>
     <message>
         <source>Deviant Core</source>
         <translation>Deviant Core</translation>
@@ -2650,8 +2650,8 @@ Address: %4
         <translation>Пользовательский путь резервного копирования:</translation>
     </message>
     <message>
-        <source>Custom zDOGEC Backup Path:</source>
-        <translation>Пользовательский путь резервного копирования zDOGEC:</translation>
+        <source>Custom zDEV Backup Path:</source>
+        <translation>Пользовательский путь резервного копирования zDEV:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -3701,12 +3701,12 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>Экспорт списка адресов</translation>
     </message>
     <message>
-        <source>DOGEC_tx_csv_export(*.csv)</source>
-        <translation>DOGEC_tx_csv_export(*.csv)</translation>
+        <source>DEV_tx_csv_export(*.csv)</source>
+        <translation>DEV_tx_csv_export(*.csv)</translation>
     </message>
     <message>
-        <source>DOGEC_addresses_csv_export(*.csv)</source>
-        <translation>DOGEC_addresses_csv_export(*.csv)</translation>
+        <source>DEV_addresses_csv_export(*.csv)</source>
+        <translation>DEV_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>

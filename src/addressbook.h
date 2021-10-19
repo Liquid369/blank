@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_ADDRESSBOOK_H
-#define DOGEC_ADDRESSBOOK_H
+#ifndef DEV_ADDRESSBOOK_H
+#define DEV_ADDRESSBOOK_H
 
 #include <map>
 #include <string>
@@ -52,4 +52,4 @@ namespace AddressBook {
 
 }
 
-#endif //DOGEC_ADDRESSBOOK_H
+#endif //DEV_ADDRESSBOOK_H

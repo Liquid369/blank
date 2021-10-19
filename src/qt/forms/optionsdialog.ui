@@ -141,20 +141,20 @@
             <item>
              <widget class="QCheckBox" name="checkBoxZeromintEnable">
               <property name="toolTip">
-               <string>Enable automatic minting of DEV units to zDOGEC</string>
+               <string>Enable automatic minting of DEV units to zDEV</string>
               </property>
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>Enable zDOGEC Automint</string>
+               <string>Enable zDEV Automint</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBoxZeromintAddresses">
               <property name="toolTip">
-               <string>Enable automatic zDOGEC minting from specific addresses</string>
+               <string>Enable automatic zDEV minting from specific addresses</string>
               </property>
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
@@ -171,10 +171,10 @@
             <item>
              <widget class="QLabel" name="percentage_label">
               <property name="toolTip">
-               <string>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</string>
+               <string>Percentage of incoming DEV which get automatically converted to zDEV via Zerocoin Protocol (min: 10%)</string>
               </property>
               <property name="text">
-               <string>Percentage of autominted zDOGEC</string>
+               <string>Percentage of autominted zDEV</string>
               </property>
              </widget>
             </item>
@@ -207,7 +207,7 @@
                <string>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</string>
               </property>
               <property name="text">
-               <string>Preferred Automint zDOGEC Denomination</string>
+               <string>Preferred Automint zDEV Denomination</string>
               </property>
              </widget>
             </item>

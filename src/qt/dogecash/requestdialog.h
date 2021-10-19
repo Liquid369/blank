@@ -16,7 +16,7 @@
 #include <QPixmap>
 
 class WalletModel;
-class DOGECGUI;
+class DEVGUI;
 
 namespace Ui {
 class RequestDialog;

@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_UINT512_H
-#define DOGEC_UINT512_H
+#ifndef DEV_UINT512_H
+#define DEV_UINT512_H
 
 #include "arith_uint256.h"
 #include "blob_uint256.h"
@@ -41,4 +41,4 @@ inline blob_uint512 blob_uint512S(const char* str)
     return rv;
 }
 
-#endif // DOGEC_UINT512_H
+#endif // DEV_UINT512_H

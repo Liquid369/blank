@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_INVALID_H
-#define DOGEC_INVALID_H
+#ifndef DEV_INVALID_H
+#define DEV_INVALID_H
 
 #include <set>
 #include <string>
@@ -25,4 +25,4 @@ namespace invalid_out
     bool LoadOutpoints();
 }
 
-#endif //DOGEC_INVALID_H
+#endif //DEV_INVALID_H

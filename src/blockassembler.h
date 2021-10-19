@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_BLOCKASSEMBLER_H
-#define DOGEC_BLOCKASSEMBLER_H
+#ifndef DEV_BLOCKASSEMBLER_H
+#define DEV_BLOCKASSEMBLER_H
 
 #include "primitives/block.h"
 #include "txmempool.h"
@@ -103,4 +103,4 @@ bool CreateCoinbaseTx(CBlock* pblock, const CScript& scriptPubKeyIn, CBlockIndex
 // Visible for testing purposes only
 uint256 CalculateSaplingTreeRoot(CBlock* pblock, int nHeight, const CChainParams& chainparams);
 
-#endif // DOGEC_BLOCKASSEMBLER_H
+#endif // DEV_BLOCKASSEMBLER_H

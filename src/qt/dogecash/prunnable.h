@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_CORE_NEW_GUI_PRUNNABLE_H
-#define DOGEC_CORE_NEW_GUI_PRUNNABLE_H
+#ifndef DEV_CORE_NEW_GUI_PRUNNABLE_H
+#define DEV_CORE_NEW_GUI_PRUNNABLE_H
 
 class Runnable {
 public:
@@ -15,4 +15,4 @@ public:
     virtual void onError(QString error, int type) = 0;
 };
 
-#endif //DOGEC_CORE_NEW_GUI_PRUNNABLE_H
+#endif //DEV_CORE_NEW_GUI_PRUNNABLE_H

@@ -22,7 +22,7 @@
 
 static const int MAX_SEND_POPUP_ENTRIES = 8;
 
-class DOGECGUI;
+class DEVGUI;
 class ClientModel;
 class OperationResult;
 class WalletModel;
@@ -38,7 +38,7 @@ class SendWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SendWidget(DOGECGUI* parent);
+    explicit SendWidget(DEVGUI* parent);
     ~SendWidget();
 
     void addEntry();
@@ -72,7 +72,7 @@ protected:
     void onError(QString error, int type) override;
 
 private Q_SLOTS:
-    void onDOGECSelected(bool _isTransparent);
+    void onDEVSelected(bool _isTransparent);
     void onSendClicked();
     void onContactsClicked(SendMultiRow* entry);
     void onMenuClicked(SendMultiRow* entry);

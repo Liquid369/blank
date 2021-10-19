@@ -348,7 +348,7 @@ Stake için kaldırın</translation>
         <translation>İPTAL</translation>
     </message>
     <message>
-        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DEVs from being stolen by malware infecting your computer.</source>
         <translation>Deviant şifreleme işlemini tamamlamak için şimdi kapanacaktır. Cüzdanınızı şifrelemenin, DEV'lerinizi bilgisayarınıza bulaşan kötücül yazılımlar tarafından çalınmasına tamamen engelleyemediğini unutmayın</translation>
     </message>
     <message>
@@ -686,7 +686,7 @@ Stake için kaldırın</translation>
         <translation>Delegasyonların yüklenmesinde hata:%1</translation>
     </message>
     <message>
-        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
+        <source>You can delegate your DEVs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation>Sıcak bir düğüme izin vererek DEV'lerinizi devredebilirsiniz (7/24 çevrimiçi düğüm)
 anahtarları çevrimdışı bir şekilde güvenli tutarken, kendi adınıza stake yapın.</translation>
@@ -1546,36 +1546,36 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
         <translation>Map port using &amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of DEV units to zDOGEC</source>
-        <translation>DEV birimlerinin zDOGEC'e otomatik basımını ektinleştir</translation>
+        <source>Enable automatic minting of DEV units to zDEV</source>
+        <translation>DEV birimlerinin zDEV'e otomatik basımını ektinleştir</translation>
     </message>
     <message>
-        <source>Enable zDOGEC Automint</source>
-        <translation>zDOGEC Otomatik basımı etkinleştir</translation>
+        <source>Enable zDEV Automint</source>
+        <translation>zDEV Otomatik basımı etkinleştir</translation>
     </message>
     <message>
-        <source>Enable automatic zDOGEC minting from specific addresses</source>
-        <translation>Belirli bir adresten otomatik zDOGEC minting yapılmasını etkinleştir</translation>
+        <source>Enable automatic zDEV minting from specific addresses</source>
+        <translation>Belirli bir adresten otomatik zDEV minting yapılmasını etkinleştir</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Automint adreslerini etkinleştir</translation>
     </message>
     <message>
-        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
-        <translation>Zerocoin Protokolü üzerinden otomatik olarak zDOGEC'ye dönüştürülen gelen DEV yüzdesi (dakika: 10%)</translation>
+        <source>Percentage of incoming DEV which get automatically converted to zDEV via Zerocoin Protocol (min: 10%)</source>
+        <translation>Zerocoin Protokolü üzerinden otomatik olarak zDEV'ye dönüştürülen gelen DEV yüzdesi (dakika: 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zDOGEC</source>
-        <translation>Otomatikleştirilmiş zDOGEC yüzdesi</translation>
+        <source>Percentage of autominted zDEV</source>
+        <translation>Otomatikleştirilmiş zDEV yüzdesi</translation>
     </message>
     <message>
         <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
         <translation>Bu bölen için yeterli DEV bulunana kadar Zerocoin'e otomatik dönüştürmede kalın</translation>
     </message>
     <message>
-        <source>Preferred Automint zDOGEC Denomination</source>
-        <translation>Tercih edilen Automint zDOGEC Nominal değeri</translation>
+        <source>Preferred Automint zDEV Denomination</source>
+        <translation>Tercih edilen Automint zDEV Nominal değeri</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -1727,7 +1727,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
 </context>
 <context>
-    <name>DOGECGUI</name>
+    <name>DEVGUI</name>
     <message>
         <source>Deviant Core</source>
         <translation>Deviant Core</translation>
@@ -2245,8 +2245,8 @@ Adres: %4
         <translation>Özel Yedekleme Yolu:</translation>
     </message>
     <message>
-        <source>Custom zDOGEC Backup Path:</source>
-        <translation>Özel zDOGEC Yedekleme Yolu:</translation>
+        <source>Custom zDEV Backup Path:</source>
+        <translation>Özel zDEV Yedekleme Yolu:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>

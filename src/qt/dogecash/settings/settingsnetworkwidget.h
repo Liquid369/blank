@@ -22,7 +22,7 @@ class SettingsNetworkWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsNetworkWidget(DOGECGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsNetworkWidget(DEVGUI* _window, QWidget *parent = nullptr);
     ~SettingsNetworkWidget();
 
     void setMapper(QDataWidgetMapper *mapper);

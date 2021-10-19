@@ -577,7 +577,7 @@
           <item>
            <widget class="QLabel" name="labelAmountzdev">
             <property name="text">
-             <string notr="true">0 zDOGEC</string>
+             <string notr="true">0 zDEV</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -736,7 +736,7 @@
                 <item>
                  <widget class="QLabel" name="labelzdev">
                   <property name="text">
-                   <string notr="true">zDOGEC</string>
+                   <string notr="true">zDEV</string>
                   </property>
                  </widget>
                 </item>

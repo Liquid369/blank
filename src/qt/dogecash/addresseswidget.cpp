@@ -63,7 +63,7 @@ public:
 };
 
 
-AddressesWidget::AddressesWidget(DOGECGUI* parent) :
+AddressesWidget::AddressesWidget(DEVGUI* parent) :
     PWidget(parent),
     ui(new Ui::AddressesWidget)
 {

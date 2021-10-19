@@ -17,7 +17,7 @@
 
 class AddressViewDelegate;
 class TooltipMenu;
-class DOGECGUI;
+class DEVGUI;
 class WalletModel;
 
 namespace Ui {
@@ -33,7 +33,7 @@ class AddressesWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit AddressesWidget(DOGECGUI* parent);
+    explicit AddressesWidget(DEVGUI* parent);
     ~AddressesWidget();
 
     void loadWalletModel() override;

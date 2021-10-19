@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_SAPLING_TRANSACTION_H
-#define DOGEC_SAPLING_TRANSACTION_H
+#ifndef DEV_SAPLING_TRANSACTION_H
+#define DEV_SAPLING_TRANSACTION_H
 
 #include "serialize.h"
 #include "streams.h"
@@ -162,4 +162,4 @@ public:
 };
 
 
-#endif //DOGEC_SAPLING_TRANSACTION_H
+#endif //DEV_SAPLING_TRANSACTION_H

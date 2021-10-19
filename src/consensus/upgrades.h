@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_CONSENSUS_UPGRADES_H
-#define DOGEC_CONSENSUS_UPGRADES_H
+#ifndef DEV_CONSENSUS_UPGRADES_H
+#define DEV_CONSENSUS_UPGRADES_H
 
 #include "consensus/params.h"
 #include "optional.h"
@@ -83,4 +83,4 @@ Optional<int> NextActivationHeight(
         int nHeight,
         const Consensus::Params& params);
 
-#endif // DOGEC_CONSENSUS_UPGRADES_H
+#endif // DEV_CONSENSUS_UPGRADES_H

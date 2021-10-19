@@ -140,7 +140,7 @@ int TransactionFilterProxy::rowCount(const QModelIndex& parent) const
 bool TransactionFilterProxy::isOrphan(const int status, const int type)
 {
     return ( (type == TransactionRecord::Generated || type == TransactionRecord::StakeMint ||
-            type == TransactionRecord::StakeZDOGEC || type == TransactionRecord::MNReward || 
+            type == TransactionRecord::StakeZDEV || type == TransactionRecord::MNReward || 
             type == TransactionRecord::DevReward)
             && (status == TransactionStatus::Conflicted || status == TransactionStatus::NotAccepted) );
 }
@@ -151,7 +151,7 @@ bool TransactionFilterProxy::isZcTx(int type) const {
 }
 
 bool TransactionFilterProxy::isStakeTx(int type) const {
-    return type == TransactionRecord::StakeMint || type == TransactionRecord::Generated || type == TransactionRecord::StakeZDOGEC || type == TransactionRecord::StakeDelegated;
+    return type == TransactionRecord::StakeMint || type == TransactionRecord::Generated || type == TransactionRecord::StakeZDEV || type == TransactionRecord::StakeDelegated;
 }
 
 bool TransactionFilterProxy::isColdStake(int type) const {

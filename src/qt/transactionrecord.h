@@ -78,7 +78,7 @@ public:
         Other,
         Generated,
         StakeMint,
-        StakeZDOGEC,
+        StakeZDEV,
         SendToAddress,
         SendToOther,
         RecvWithAddress,
@@ -103,7 +103,7 @@ public:
         SendToSelfShieldedAddress, // Shielded send to self
         SendToSelfShieldToTransparent, // Unshield coins to self
         SendToSelfShieldToShieldChangeAddress, // Changing coins from one shielded address to another inside the wallet.
-        SendToNobody // Burned DOGECs, op_return output.
+        SendToNobody // Burned DEVs, op_return output.
     };
 
     /** Number of confirmation recommended for accepting a transaction */

@@ -2,8 +2,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_TEST_test_deviant_H
-#define DOGEC_TEST_test_deviant_H
+#ifndef DEV_TEST_test_deviant_H
+#define DEV_TEST_test_deviant_H
 
 #include "fs.h"
 #include "scheduler.h"

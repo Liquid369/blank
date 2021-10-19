@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_SAPLING_TEST_FIXTURE_H
-#define DOGEC_SAPLING_TEST_FIXTURE_H
+#ifndef DEV_SAPLING_TEST_FIXTURE_H
+#define DEV_SAPLING_TEST_FIXTURE_H
 
 #include "test/test_deviant.h"
 
@@ -18,4 +18,4 @@ struct SaplingTestingSetup : public TestingSetup {
 };
 
 
-#endif //DOGEC_SAPLING_TEST_FIXTURE_H
+#endif //DEV_SAPLING_TEST_FIXTURE_H

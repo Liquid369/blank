@@ -22,7 +22,7 @@ class SettingsDisplayOptionsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsDisplayOptionsWidget(DOGECGUI* _window = nullptr, QWidget *parent = nullptr);
+    explicit SettingsDisplayOptionsWidget(DEVGUI* _window = nullptr, QWidget *parent = nullptr);
     ~SettingsDisplayOptionsWidget();
 
     void setMapper(QDataWidgetMapper *mapper);

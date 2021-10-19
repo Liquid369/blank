@@ -29,7 +29,7 @@ def getDelegatedUtxos(utxos):
     return [x for x in utxos if x["scriptPubKey"][:10] == '76a97b63d1']
 
 
-class DOGEC_ColdStakingTest(DeviantTestFramework):
+class DEV_ColdStakingTest(DeviantTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 3
@@ -483,4 +483,4 @@ class DOGEC_ColdStakingTest(DeviantTestFramework):
 
 
 if __name__ == '__main__':
-    DOGEC_ColdStakingTest().main()
+    DEV_ColdStakingTest().main()

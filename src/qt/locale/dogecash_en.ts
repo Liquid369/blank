@@ -448,7 +448,7 @@ for staking</source>
     </message>
     <message>
         <location line="+161"/>
-        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DEVs from being stolen by malware infecting your computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -937,7 +937,7 @@ for staking</source>
     </message>
     <message>
         <location filename="../deviant/forms/coldstakingwidget.ui" line="-603"/>
-        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
+        <source>You can delegate your DEVs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2279,17 +2279,17 @@ https://www.transifex.com/Deviant/Deviant-project-translations</source>
     </message>
     <message>
         <location line="-187"/>
-        <source>Enable automatic minting of DEV units to zDOGEC</source>
+        <source>Enable automatic minting of DEV units to zDEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
-        <source>Enable zDOGEC Automint</source>
+        <source>Enable zDEV Automint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>Enable automatic zDOGEC minting from specific addresses</source>
+        <source>Enable automatic zDEV minting from specific addresses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2299,12 +2299,12 @@ https://www.transifex.com/Deviant/Deviant-project-translations</source>
     </message>
     <message>
         <location line="+11"/>
-        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
+        <source>Percentage of incoming DEV which get automatically converted to zDEV via Zerocoin Protocol (min: 10%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Percentage of autominted zDOGEC</source>
+        <source>Percentage of autominted zDEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2315,7 +2315,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</source>
     </message>
     <message>
         <location line="-13"/>
-        <source>Preferred Automint zDOGEC Denomination</source>
+        <source>Preferred Automint zDEV Denomination</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2508,7 +2508,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</source>
     </message>
 </context>
 <context>
-    <name>DOGECGUI</name>
+    <name>DEVGUI</name>
     <message>
         <location filename="../deviant/deviantgui.cpp" line="+69"/>
         <location line="+301"/>
@@ -3390,7 +3390,7 @@ Address: %4
     </message>
     <message>
         <location line="+29"/>
-        <source>Custom zDOGEC Backup Path:</source>
+        <source>Custom zDEV Backup Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4333,12 +4333,12 @@ Do you want to continue?
     </message>
     <message>
         <location line="+14"/>
-        <source>Error generating address to shield DOGECs</source>
+        <source>Error generating address to shield DEVs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>You don&apos;t have any transparent DOGECs to shield.</source>
+        <source>You don&apos;t have any transparent DEVs to shield.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4832,12 +4832,12 @@ Verify that you have installed a predetermined text editor.</source>
     </message>
     <message>
         <location line="+1"/>
-        <source>DOGEC_tx_csv_export(*.csv)</source>
+        <source>DEV_tx_csv_export(*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>DOGEC_addresses_csv_export(*.csv)</source>
+        <source>DEV_addresses_csv_export(*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6624,7 +6624,7 @@ backup will be created.
     </message>
     <message>
         <location line="+2"/>
-        <source>Burned DOGECs</source>
+        <source>Burned DEVs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

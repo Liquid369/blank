@@ -13,7 +13,7 @@
 #include "clientmodel.h"
 #include "qt/deviant/qtutils.h"
 
-SettingsWalletOptionsWidget::SettingsWalletOptionsWidget(DOGECGUI* _window, QWidget *parent) :
+SettingsWalletOptionsWidget::SettingsWalletOptionsWidget(DEVGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsWalletOptionsWidget)
 {

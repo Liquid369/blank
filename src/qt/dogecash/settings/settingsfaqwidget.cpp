@@ -12,7 +12,7 @@
 #include <QMetaObject>
 #include "qt/deviant/qtutils.h"
 
-SettingsFaqWidget::SettingsFaqWidget(DOGECGUI *parent) :
+SettingsFaqWidget::SettingsFaqWidget(DEVGUI *parent) :
     QDialog(parent),
     ui(new Ui::SettingsFaqWidget)
 {
@@ -31,7 +31,7 @@ SettingsFaqWidget::SettingsFaqWidget(DOGECGUI *parent) :
     // Content
     setCssProperty({
            ui->labelNumber_Intro,
-           ui->labelNumber_UnspendableDOGEC,
+           ui->labelNumber_UnspendableDEV,
            ui->labelNumber_Stake,
            ui->labelNumber_Support,
            ui->labelNumber_Masternode,
@@ -40,7 +40,7 @@ SettingsFaqWidget::SettingsFaqWidget(DOGECGUI *parent) :
 
     setCssProperty({
               ui->labelSubtitle_Intro,
-              ui->labelSubtitle_UnspendableDOGEC,
+              ui->labelSubtitle_UnspendableDEV,
               ui->labelSubtitle_Stake,
               ui->labelSubtitle_Support,
               ui->labelSubtitle_Masternode,
@@ -50,7 +50,7 @@ SettingsFaqWidget::SettingsFaqWidget(DOGECGUI *parent) :
 
     setCssProperty({
               ui->labelContent_Intro,
-              ui->labelContent_UnspendableDOGEC,
+              ui->labelContent_UnspendableDEV,
               ui->labelContent_Stake,
               ui->labelContent_Support,
               ui->labelContent_Masternode,
@@ -60,7 +60,7 @@ SettingsFaqWidget::SettingsFaqWidget(DOGECGUI *parent) :
 
     setCssProperty({
               ui->pushButton_Intro,
-              ui->pushButton_UnspendableDOGEC,
+              ui->pushButton_UnspendableDEV,
               ui->pushButton_Stake,
               ui->pushButton_Support,
               ui->pushButton_Masternode,
@@ -79,14 +79,14 @@ SettingsFaqWidget::SettingsFaqWidget(DOGECGUI *parent) :
     // Buttons
     connect(ui->pushButtonExit, &QPushButton::clicked, this, &SettingsFaqWidget::close);
     connect(ui->pushButton_Intro, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_Intro);});
-    connect(ui->pushButton_UnspendableDOGEC, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_UnspendableDOGEC);});
+    connect(ui->pushButton_UnspendableDEV, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_UnspendableDEV);});
     connect(ui->pushButton_Stake, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_Stake);});
     connect(ui->pushButton_Support, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_Support);});
     connect(ui->pushButton_Masternode, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_Masternode);});
     connect(ui->pushButton_MNController, &QPushButton::clicked, [this](){onFaqClicked(ui->widget_MNController);});
 
     if (parent)
-        connect(parent, &DOGECGUI::windowResizeEvent, this, &SettingsFaqWidget::windowResizeEvent);
+        connect(parent, &DEVGUI::windowResizeEvent, this, &SettingsFaqWidget::windowResizeEvent);
 }
 
 void SettingsFaqWidget::showEvent(QShowEvent *event)
@@ -117,7 +117,7 @@ std::vector<QPushButton*> SettingsFaqWidget::getButtons()
 {
     return {
             ui->pushButton_Intro,
-            ui->pushButton_UnspendableDOGEC,
+            ui->pushButton_UnspendableDEV,
             ui->pushButton_Stake,
             ui->pushButton_Support,
             ui->pushButton_Masternode,

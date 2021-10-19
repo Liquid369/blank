@@ -18,7 +18,7 @@
 
 #define REQUEST_UPDATE_COUNTS 0
 
-SettingsInformationWidget::SettingsInformationWidget(DOGECGUI* _window,QWidget *parent) :
+SettingsInformationWidget::SettingsInformationWidget(DEVGUI* _window,QWidget *parent) :
     PWidget(_window,parent),
     ui(new Ui::SettingsInformationWidget)
 {

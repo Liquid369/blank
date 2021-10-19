@@ -39,7 +39,7 @@ using namespace QtCharts;
 
 #endif
 
-class DOGECGUI;
+class DEVGUI;
 class WalletModel;
 
 namespace Ui {
@@ -98,7 +98,7 @@ class DashboardWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit DashboardWidget(DOGECGUI* _window);
+    explicit DashboardWidget(DEVGUI* _window);
     ~DashboardWidget();
 
     void loadWalletModel() override;

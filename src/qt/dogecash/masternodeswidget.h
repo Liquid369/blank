@@ -18,7 +18,7 @@
 #include <QTimer>
 #include <QWidget>
 
-class DOGECGUI;
+class DEVGUI;
 
 namespace Ui {
 class MasterNodesWidget;
@@ -34,7 +34,7 @@ class MasterNodesWidget : public PWidget
 
 public:
 
-    explicit MasterNodesWidget(DOGECGUI *parent = nullptr);
+    explicit MasterNodesWidget(DEVGUI *parent = nullptr);
     ~MasterNodesWidget();
 
     void loadWalletModel() override;

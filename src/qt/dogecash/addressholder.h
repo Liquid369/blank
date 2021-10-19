@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_ADDRESSHOLDER_H
-#define DOGEC_ADDRESSHOLDER_H
+#ifndef DEV_ADDRESSHOLDER_H
+#define DEV_ADDRESSHOLDER_H
 
 #include <QWidget>
 #include <QColor>
@@ -42,4 +42,4 @@ public:
 };
 
 
-#endif //DOGEC_ADDRESSHOLDER_H
+#endif //DEV_ADDRESSHOLDER_H

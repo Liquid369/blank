@@ -27,7 +27,7 @@ bool IsSerialInBlockchain(const CBigNum& bnSerial, int& nHeightTx)
 
 libzerocoin::CoinSpend TxInToZerocoinSpend(const CTxIn& txin)
 {
-    CDataStream serializedCoinSpend = ZDOGECModule::ScriptSigToSerializedSpend(txin.scriptSig);
+    CDataStream serializedCoinSpend = ZDEVModule::ScriptSigToSerializedSpend(txin.scriptSig);
     return libzerocoin::CoinSpend(serializedCoinSpend);
 }
 

@@ -22,7 +22,7 @@ class SettingsInformationWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsInformationWidget(DOGECGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsInformationWidget(DEVGUI* _window, QWidget *parent = nullptr);
     ~SettingsInformationWidget() override;
 
     void loadClientModel() override;

@@ -25,7 +25,7 @@
 #define REQUEST_LOAD_TASK 1
 #define CHART_LOAD_MIN_TIME_INTERVAL 15
 
-DashboardWidget::DashboardWidget(DOGECGUI* parent) :
+DashboardWidget::DashboardWidget(DEVGUI* parent) :
     PWidget(parent),
     ui(new Ui::DashboardWidget)
 {
@@ -146,7 +146,7 @@ bool hasCharts = false;
     connect(ui->pushButtonMonth, &QPushButton::clicked, [this](){setChartShow(MONTH);});
     connect(ui->pushButtonAll, &QPushButton::clicked, [this](){setChartShow(ALL);});
     if (window)
-        connect(window, &DOGECGUI::windowResizeEvent, this, &DashboardWidget::windowResizeEvent);
+        connect(window, &DEVGUI::windowResizeEvent, this, &DashboardWidget::windowResizeEvent);
 #endif
 
     if (hasCharts) {
@@ -514,7 +514,7 @@ void DashboardWidget::updateStakeFilter()
     }
 }
 
-// pair DEV, zDOGEC
+// pair DEV, zDEV
 const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
 {
     if (filterUpdateNeeded) {
@@ -528,7 +528,7 @@ const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
         QModelIndex modelIndex = stakesFilter->index(i, TransactionTableModel::ToAddress);
         qint64 amount = llabs(modelIndex.data(TransactionTableModel::AmountRole).toLongLong());
         QDate date = modelIndex.data(TransactionTableModel::DateRole).toDateTime().date();
-        bool isDeviant = modelIndex.data(TransactionTableModel::TypeRole).toInt() != TransactionRecord::StakeZDOGEC;
+        bool isDeviant = modelIndex.data(TransactionTableModel::TypeRole).toInt() != TransactionRecord::StakeZDEV;
 
         int time = 0;
         switch (chartShow) {
@@ -573,7 +573,7 @@ bool DashboardWidget::loadChartData(bool withMonthNames)
     }
 
     chartData = new ChartData();
-    chartData->amountsByCache = getAmountBy(); // pair DEV, zDOGEC
+    chartData->amountsByCache = getAmountBy(); // pair DEV, zDEV
 
     std::pair<int,int> range = getChartRange(chartData->amountsByCache);
     if (range.first == 0 && range.second == 0) {

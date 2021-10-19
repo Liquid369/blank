@@ -21,7 +21,7 @@
 #include <vector>
 
 
-SettingsBitToolWidget::SettingsBitToolWidget(DOGECGUI* _window, QWidget *parent) :
+SettingsBitToolWidget::SettingsBitToolWidget(DEVGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsBitToolWidget)
 {

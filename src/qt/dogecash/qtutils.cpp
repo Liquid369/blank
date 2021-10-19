@@ -38,7 +38,7 @@ bool openDialog(QDialog* widget, QWidget* gui)
     return widget->exec();
 }
 
-void closeDialog(QDialog* widget, DOGECGUI* gui)
+void closeDialog(QDialog* widget, DEVGUI* gui)
 {
     widget->setWindowFlags(Qt::CustomizeWindowHint);
     widget->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -59,7 +59,7 @@ void openDialogFullScreen(QWidget* parent, QWidget* dialog)
     dialog->resize(parent->width(), parent->height());
 }
 
-bool openDialogWithOpaqueBackgroundY(QDialog* widget, DOGECGUI* gui, double posX, int posY)
+bool openDialogWithOpaqueBackgroundY(QDialog* widget, DEVGUI* gui, double posX, int posY)
 {
     widget->setWindowFlags(Qt::CustomizeWindowHint);
     widget->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -76,12 +76,12 @@ bool openDialogWithOpaqueBackgroundY(QDialog* widget, DOGECGUI* gui, double posX
     return res;
 }
 
-bool openDialogWithOpaqueBackground(QDialog* widget, DOGECGUI* gui, double posX)
+bool openDialogWithOpaqueBackground(QDialog* widget, DEVGUI* gui, double posX)
 {
     return openDialogWithOpaqueBackgroundY(widget, gui, posX, 5);
 }
 
-bool openDialogWithOpaqueBackgroundFullScreen(QDialog* widget, DOGECGUI* gui)
+bool openDialogWithOpaqueBackgroundFullScreen(QDialog* widget, DEVGUI* gui)
 {
     widget->setWindowFlags(Qt::CustomizeWindowHint);
     widget->setAttribute(Qt::WA_TranslucentBackground, true);

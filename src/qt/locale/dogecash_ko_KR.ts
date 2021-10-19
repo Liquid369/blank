@@ -361,8 +361,8 @@ for staking</source>
         <translation>취소</translation>
     </message>
     <message>
-        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
-        <translation>DOGEC는 이제 암호화 프로세스를 마치기 위해 닫힐것입니다. 지갑을 암호화하더라도 맬웨어로 인한 DOGECs 의 도난당하는 것을 완벽하게 보호 할 수는 없습니다.</translation>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DEVs from being stolen by malware infecting your computer.</source>
+        <translation>DEV는 이제 암호화 프로세스를 마치기 위해 닫힐것입니다. 지갑을 암호화하더라도 맬웨어로 인한 DEVs 의 도난당하는 것을 완벽하게 보호 할 수는 없습니다.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -739,7 +739,7 @@ for staking</source>
         <translation>위임 데이터 로딩 에러: %1</translation>
     </message>
     <message>
-        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
+        <source>You can delegate your DEVs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation>안전히 개인 프라이빗 키를 오프라인으로 보관한 상태로, 가지고 계신 DEV 를 매일 24시간 온라인으로 돌아가는 핫 노드로 위임하여, 대신 스테이킹을 하게 할수 있습니다. </translation>
     </message>
@@ -954,7 +954,7 @@ address</source>
     </message>
     <message>
         <source>How to get DEV</source>
-        <translation>DOGEC를 얻을 수 있는 방법</translation>
+        <translation>DEV를 얻을 수 있는 방법</translation>
     </message>
     <message>
         <source>Sort by</source>
@@ -1341,7 +1341,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;15,000 DOGEC의 트랜잭션은&lt;/p&gt;&lt;p&gt;지갑의 새로운 빈 주소로 만들어질 것입니다.&lt;/p&gt;&lt;p&gt;그 주소는 마스터노드 이름에 따라 레이블링됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;15,000 DEV의 트랜잭션은&lt;/p&gt;&lt;p&gt;지갑의 새로운 빈 주소로 만들어질 것입니다.&lt;/p&gt;&lt;p&gt;그 주소는 마스터노드 이름에 따라 레이블링됩니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1810,7 +1810,7 @@ STAKING</source>
     </message>
     <message>
         <source>Automatically start Deviant after logging in to the system.</source>
-        <translation>시스템 로그인 후 DOGEC을 자동으로 시작합니다.</translation>
+        <translation>시스템 로그인 후 DEV을 자동으로 시작합니다.</translation>
     </message>
     <message>
         <source>&amp;Start Deviant on system login</source>
@@ -1842,7 +1842,7 @@ STAKING</source>
     </message>
     <message>
         <source>The user interface language can be set here. This setting will take effect after restarting DEV.</source>
-        <translation>사용자 인터페이스 언어를 설정할 수 있습니다. 이 설정은 DOGEC을 다시 시작한 후에 적용됩니다.</translation>
+        <translation>사용자 인터페이스 언어를 설정할 수 있습니다. 이 설정은 DEV을 다시 시작한 후에 적용됩니다.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
@@ -1855,36 +1855,36 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
         <translation>&amp;UPnp를 사용하여 포트 매핑</translation>
     </message>
     <message>
-        <source>Enable automatic minting of DEV units to zDOGEC</source>
-        <translation>보상받은 DOGEC를 zDOGEC로 자동변환 활성화</translation>
+        <source>Enable automatic minting of DEV units to zDEV</source>
+        <translation>보상받은 DEV를 zDEV로 자동변환 활성화</translation>
     </message>
     <message>
-        <source>Enable zDOGEC Automint</source>
-        <translation>zDOGEC 자동생성 활성화</translation>
+        <source>Enable zDEV Automint</source>
+        <translation>zDEV 자동생성 활성화</translation>
     </message>
     <message>
-        <source>Enable automatic zDOGEC minting from specific addresses</source>
-        <translation>특정 주소들로부터 자동으로 zDOGEC 민트되는 것을 허용</translation>
+        <source>Enable automatic zDEV minting from specific addresses</source>
+        <translation>특정 주소들로부터 자동으로 zDEV 민트되는 것을 허용</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Automint 주소 사용</translation>
     </message>
     <message>
-        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
-        <translation>DOGEC수신시 자동변환 zDOGEC 비율 (최소값:10%)</translation>
+        <source>Percentage of incoming DEV which get automatically converted to zDEV via Zerocoin Protocol (min: 10%)</source>
+        <translation>DEV수신시 자동변환 zDEV 비율 (최소값:10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zDOGEC</source>
-        <translation>자동 변환되는 zDOGEC 비율</translation>
+        <source>Percentage of autominted zDEV</source>
+        <translation>자동 변환되는 zDEV 비율</translation>
     </message>
     <message>
         <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
-        <translation>이 디노미네이션의 DOGEC가 충분해질 때까지 Zerocoin으로 자동전환은 보류됩니다.</translation>
+        <translation>이 디노미네이션의 DEV가 충분해질 때까지 Zerocoin으로 자동전환은 보류됩니다.</translation>
     </message>
     <message>
-        <source>Preferred Automint zDOGEC Denomination</source>
-        <translation>선호하는 자동생성 zDOGEC 디노미네이션 </translation>
+        <source>Preferred Automint zDEV Denomination</source>
+        <translation>선호하는 자동생성 zDEV 디노미네이션 </translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -2036,7 +2036,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
 </context>
 <context>
-    <name>DOGECGUI</name>
+    <name>DEVGUI</name>
     <message>
         <source>Deviant Core</source>
         <translation>Deviant Core</translation>
@@ -2134,7 +2134,7 @@ Address: %4
     </message>
     <message>
         <source>Cannot start deviant: click-to-pay handler</source>
-        <translation>DOGEC을 시작할 수 없습니다: 결제하기 위한 클릭 처리</translation>
+        <translation>DEV을 시작할 수 없습니다: 결제하기 위한 클릭 처리</translation>
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid Deviant address or malformed URI parameters.</source>
@@ -2272,7 +2272,7 @@ Address: %4
     </message>
     <message>
         <source>A fatal error occurred. Deviant can no longer continue safely and will quit.</source>
-        <translation>치명적인 오류가 발생하였습니다. DOGEC는 더 이상 안전하게 계속될 수 없으며, 곧 종료됩니다.</translation>
+        <translation>치명적인 오류가 발생하였습니다. DEV는 더 이상 안전하게 계속될 수 없으며, 곧 종료됩니다.</translation>
     </message>
     <message>
         <source>Deviant Core</source>
@@ -2650,8 +2650,8 @@ Address: %4
         <translation>맞춤 백업 경로 :</translation>
     </message>
     <message>
-        <source>Custom zDOGEC Backup Path:</source>
-        <translation>맞춤 zDOGEC 백업 경로 :</translation>
+        <source>Custom zDEV Backup Path:</source>
+        <translation>맞춤 zDEV 백업 경로 :</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -3242,7 +3242,7 @@ Do you wish to proceed without memo?
         <translation>선택할 수 있는 %1을 가지고 있지 않습니다.</translation>
     </message>
     <message>
-        <source>You don't have any transparent DOGECs to shield.</source>
+        <source>You don't have any transparent DEVs to shield.</source>
         <translation>Shield 가 가능한 Transparent DEV 가 없습니다.</translation>
     </message>
     <message>
@@ -4815,7 +4815,7 @@ Deviant Core Wallet</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - Deviant believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deviant 선언서(manifesto) 내용: 프라이버시는 타협할 수 없는 인간의 기본적인 인권입니다. 사용자가 원한다면 언제든 누구에게든 정보를 공유할 수 있는 자유를 보장합니다. DOGEC는 자기 주권(self sovereignty)을 추구합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deviant 선언서(manifesto) 내용: 프라이버시는 타협할 수 없는 인간의 기본적인 인권입니다. 사용자가 원한다면 언제든 누구에게든 정보를 공유할 수 있는 자유를 보장합니다. DEV는 자기 주권(self sovereignty)을 추구합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>The masternode network is DEV's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
@@ -4823,7 +4823,7 @@ Deviant Core Wallet</translation>
     </message>
     <message>
         <source>How Deviant respects your privacy?</source>
-        <translation>DOGEC는 프라이버시를 얼마나 중요하게 생각하나요?</translation>
+        <translation>DEV는 프라이버시를 얼마나 중요하게 생각하나요?</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>

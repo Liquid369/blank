@@ -364,8 +364,8 @@ pour le staking</translation>
         <translation>ANNULER</translation>
     </message>
     <message>
-        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
-        <translation>Deviant va maintenant se fermer pour finir le processus de cryptage. Notez que le cryptage de votre portefeuille ne peut pas complètement protéger vos DOGECs d'un vol par un malware ayant infecté votre ordinateur. </translation>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DEVs from being stolen by malware infecting your computer.</source>
+        <translation>Deviant va maintenant se fermer pour finir le processus de cryptage. Notez que le cryptage de votre portefeuille ne peut pas complètement protéger vos DEVs d'un vol par un malware ayant infecté votre ordinateur. </translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -738,9 +738,9 @@ pour le staking</translation>
         <translation>Erreur lors du chargement des délégations: %1</translation>
     </message>
     <message>
-        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
+        <source>You can delegate your DEVs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>Vous pouvez déléguer vos DOGECs et laissez un noeud à chaud (en ligne 24/7) faire du staking en votre nom, tout en conservant les clés privées hors ligne.</translation>
+        <translation>Vous pouvez déléguer vos DEVs et laissez un noeud à chaud (en ligne 24/7) faire du staking en votre nom, tout en conservant les clés privées hors ligne.</translation>
     </message>
     <message>
         <source>Enter owner address</source>
@@ -1855,36 +1855,36 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
         <translation>Répertorier les port utilisant UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of DEV units to zDOGEC</source>
-        <translation>Activé l'auto-monnayage de DEV unités en zDOGEC</translation>
+        <source>Enable automatic minting of DEV units to zDEV</source>
+        <translation>Activé l'auto-monnayage de DEV unités en zDEV</translation>
     </message>
     <message>
-        <source>Enable zDOGEC Automint</source>
-        <translation>Activer l'Auto-monnayage zDOGEC </translation>
+        <source>Enable zDEV Automint</source>
+        <translation>Activer l'Auto-monnayage zDEV </translation>
     </message>
     <message>
-        <source>Enable automatic zDOGEC minting from specific addresses</source>
-        <translation>Activer la frappe zDOGEC automatique à partir d'adresses spécifiques</translation>
+        <source>Enable automatic zDEV minting from specific addresses</source>
+        <translation>Activer la frappe zDEV automatique à partir d'adresses spécifiques</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Activer les Adresses Automint</translation>
     </message>
     <message>
-        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
-        <translation>Pourcentage des DEV entrants qui seront automatiquement convertis en zDOGEC via le protocole Zerocoin (min. 10%)</translation>
+        <source>Percentage of incoming DEV which get automatically converted to zDEV via Zerocoin Protocol (min: 10%)</source>
+        <translation>Pourcentage des DEV entrants qui seront automatiquement convertis en zDEV via le protocole Zerocoin (min. 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zDOGEC</source>
-        <translation>Pourcentage de zDOGEC auto-monnayé</translation>
+        <source>Percentage of autominted zDEV</source>
+        <translation>Pourcentage de zDEV auto-monnayé</translation>
     </message>
     <message>
         <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
         <translation>Met en attente la conversion automatique Zerocoin jusqu'à ce qu'il y ai suffisament de DEV disponibles pour la dénomination demandée</translation>
     </message>
     <message>
-        <source>Preferred Automint zDOGEC Denomination</source>
-        <translation>Dénomination préférée pour l'auto-monnayage zDOGEC</translation>
+        <source>Preferred Automint zDEV Denomination</source>
+        <translation>Dénomination préférée pour l'auto-monnayage zDEV</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -2036,7 +2036,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
 </context>
 <context>
-    <name>DOGECGUI</name>
+    <name>DEVGUI</name>
     <message>
         <source>Deviant Core</source>
         <translation>Deviant Core</translation>
@@ -2690,8 +2690,8 @@ Adresse : %4
         <translation>Chemin du répertoire de sauvegarde personnalisé:</translation>
     </message>
     <message>
-        <source>Custom zDOGEC Backup Path:</source>
-        <translation>Chemin du répertoire de sauvegarde zDOGEC personnalisé:</translation>
+        <source>Custom zDEV Backup Path:</source>
+        <translation>Chemin du répertoire de sauvegarde zDEV personnalisé:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -3451,11 +3451,11 @@ Voulez-vous continuer?
 </translation>
     </message>
     <message>
-        <source>Error generating address to shield DOGECs</source>
+        <source>Error generating address to shield DEVs</source>
         <translation>Erreur lors de la génération de l'adresse pour protéger les DEV</translation>
     </message>
     <message>
-        <source>You don't have any transparent DOGECs to shield.</source>
+        <source>You don't have any transparent DEVs to shield.</source>
         <translation>Vous n'avez aucun DEV transparent à convertir.</translation>
     </message>
     <message>
@@ -3850,12 +3850,12 @@ Vérifiez que vous avez installé un logiciel éditeur de texte.</translation>
         <translation>Exporter la liste des adresses</translation>
     </message>
     <message>
-        <source>DOGEC_tx_csv_export(*.csv)</source>
-        <translation>DOGEC_tx_csv_export(*.csv)</translation>
+        <source>DEV_tx_csv_export(*.csv)</source>
+        <translation>DEV_tx_csv_export(*.csv)</translation>
     </message>
     <message>
-        <source>DOGEC_addresses_csv_export(*.csv)</source>
-        <translation>DOGEC_addresses_csv_export(*.csv)</translation>
+        <source>DEV_addresses_csv_export(*.csv)</source>
+        <translation>DEV_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -5244,8 +5244,8 @@ nouvelle sauvegarde sera créée.
         <translation>Envoi protégé vers</translation>
     </message>
     <message>
-        <source>Burned DOGECs</source>
-        <translation>DOGECs détruits</translation>
+        <source>Burned DEVs</source>
+        <translation>DEVs détruits</translation>
     </message>
     <message>
         <source>watch-only</source>
@@ -5905,7 +5905,7 @@ Portefeuille Deviant Core</translation>
     </message>
     <message>
         <source>Specify custom backup path to add a copy of any wallet backup. If set as dir, every backup generates a timestamped file. If set as file, will rewrite to that file every backup.</source>
-        <translation>Spécifier un chemin de sauvegarde personnalisé pour y ajouter les sauvegardes automatiques zDOGEC. S'il est paramétré comme un dossier, chaque sauvegarde génère un fichier horodaté. S'il est paramétré comme fichier, chaque sauvegarde écrasera la précédente.</translation>
+        <translation>Spécifier un chemin de sauvegarde personnalisé pour y ajouter les sauvegardes automatiques zDEV. S'il est paramétré comme un dossier, chaque sauvegarde génère un fichier horodaté. S'il est paramétré comme fichier, chaque sauvegarde écrasera la précédente.</translation>
     </message>
     <message>
         <source>&lt;category&gt; can be:</source>

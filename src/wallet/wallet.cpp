@@ -3164,7 +3164,7 @@ bool CWallet::CreateCoinStake(
         }
 
         // This should never happen
-        if (stakeInput.IsZDOGEC()) {
+        if (stakeInput.IsZDEV()) {
            logPrintf("%s: ERROR - zPOS is disabled\n", __func__);
             it++;
             continue;

@@ -45,9 +45,9 @@ public:
     boost::signals2::signal<std::string (const char* psz)> Translate;
 };
 
-extern const char * const DOGEC_CONF_FILENAME;
-extern const char * const DOGEC_PID_FILENAME;
-extern const char * const DOGEC_MASTERNODE_CONF_FILENAME;
+extern const char * const DEV_CONF_FILENAME;
+extern const char * const DEV_PID_FILENAME;
+extern const char * const DEV_MASTERNODE_CONF_FILENAME;
 extern const char * const DEFAULT_DEBUGLOGFILE;
 
 //Deviant only features

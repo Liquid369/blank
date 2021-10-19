@@ -15,7 +15,7 @@ if [ -n "${1:-}" ]; then
     PARAMS_DIR="$1"
 else
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        PARAMS_DIR="$HOME/Library/Application Support/DOGECParams"
+        PARAMS_DIR="$HOME/Library/Application Support/DEVParams"
     else
         PARAMS_DIR="$HOME/.deviant-params"
     fi

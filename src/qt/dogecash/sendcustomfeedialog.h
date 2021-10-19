@@ -11,7 +11,7 @@
 #include "qt/deviant/focuseddialog.h"
 #include "qt/deviant/snackbar.h"
 
-class DOGECGUI;
+class DEVGUI;
 class WalletModel;
 
 namespace Ui {
@@ -23,7 +23,7 @@ class SendCustomFeeDialog : public FocusedDialog
     Q_OBJECT
 
 public:
-    explicit SendCustomFeeDialog(DOGECGUI* parent, WalletModel* model);
+    explicit SendCustomFeeDialog(DEVGUI* parent, WalletModel* model);
     ~SendCustomFeeDialog();
 
     void showEvent(QShowEvent* event) override;

@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_POLICY_FEERATE_H
-#define DOGEC_POLICY_FEERATE_H
+#ifndef DEV_POLICY_FEERATE_H
+#define DEV_POLICY_FEERATE_H
 
 #include "amount.h"
 #include "serialize.h"
@@ -47,4 +47,4 @@ public:
     }
 };
 
-#endif //  DOGEC_POLICY_FEERATE_H
+#endif //  DEV_POLICY_FEERATE_H

@@ -14,7 +14,7 @@
 #include "qt/deviant/sendmemodialog.h"
 #include "qt/deviant/qtutils.h"
 
-SendMultiRow::SendMultiRow(DOGECGUI* _window, PWidget *parent) :
+SendMultiRow::SendMultiRow(DEVGUI* _window, PWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SendMultiRow),
     iconNumber(new QPushButton())

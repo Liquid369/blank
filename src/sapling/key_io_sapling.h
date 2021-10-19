@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_KEY_IO_SAPLING_H
-#define DOGEC_KEY_IO_SAPLING_H
+#ifndef DEV_KEY_IO_SAPLING_H
+#define DEV_KEY_IO_SAPLING_H
 
 #include "chainparams.h"
 #include "sapling/zip32.h"
@@ -25,4 +25,4 @@ namespace KeyIO {
     libzcash::SpendingKey DecodeSpendingKey(const std::string& str);
 }
 
-#endif //DOGEC_KEY_IO_SAPLING_H
+#endif //DEV_KEY_IO_SAPLING_H

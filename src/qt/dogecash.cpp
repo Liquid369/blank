@@ -211,7 +211,7 @@ public:
     /// Get process return value
     int getReturnValue() { return returnValue; }
 
-    /// Get window identifier of QMainWindow (DOGECGUI)
+    /// Get window identifier of QMainWindow (DEVGUI)
     WId getMainWinId() const;
 
 public Q_SLOTS:
@@ -232,7 +232,7 @@ private:
     QThread* coreThread{nullptr};
     OptionsModel* optionsModel{nullptr};
     ClientModel* clientModel{nullptr};
-    DOGECGUI* window{nullptr};
+    DEVGUI* window{nullptr};
     QTimer* pollShutdownTimer{nullptr};
 #ifdef ENABLE_WALLET
     PaymentServer* paymentServer{nullptr};
@@ -374,10 +374,10 @@ void BitcoinApplication::createOptionsModel()
 
 void BitcoinApplication::createWindow(const NetworkStyle* networkStyle)
 {
-    window = new DOGECGUI(networkStyle, 0);
+    window = new DEVGUI(networkStyle, 0);
 
     pollShutdownTimer = new QTimer(window);
-    connect(pollShutdownTimer, &QTimer::timeout, window, &DOGECGUI::detectShutdown);
+    connect(pollShutdownTimer, &QTimer::timeout, window, &DEVGUI::detectShutdown);
 }
 
 void BitcoinApplication::createSplashScreen(const NetworkStyle* networkStyle)
@@ -424,7 +424,7 @@ void BitcoinApplication::startThread()
     connect(executor, &BitcoinCore::runawayException, this, &BitcoinApplication::handleRunawayException);
     connect(this, &BitcoinApplication::requestedInitialize, executor, &BitcoinCore::initialize);
     connect(this, &BitcoinApplication::requestedShutdown, executor, &BitcoinCore::shutdown);
-    connect(window, &DOGECGUI::requestedRestart, executor, &BitcoinCore::restart);
+    connect(window, &DEVGUI::requestedRestart, executor, &BitcoinCore::restart);
     /*  make sure executor object is deleted in its own thread */
     connect(this, &BitcoinApplication::stopThread, executor, &QObject::deleteLater);
     connect(this, &BitcoinApplication::stopThread, coreThread, &QThread::quit);
@@ -494,8 +494,8 @@ void BitcoinApplication::initializeResult(int retval)
             walletModel = new WalletModel(pwalletMain, optionsModel);
             walletModel->setClientModel(clientModel);
 
-            window->addWallet(DOGECGUI::DEFAULT_WALLET, walletModel);
-            window->setCurrentWallet(DOGECGUI::DEFAULT_WALLET);
+            window->addWallet(DEVGUI::DEFAULT_WALLET, walletModel);
+            window->setCurrentWallet(DEVGUI::DEFAULT_WALLET);
 
             connect(walletModel, &WalletModel::coinsSent,
                     paymentServer, &PaymentServer::fetchPaymentACK);
@@ -513,8 +513,8 @@ void BitcoinApplication::initializeResult(int retval)
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
         // DEV: URIs or payment requests:
-        //connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &DOGECGUI::handlePaymentRequest);
-        connect(window, &DOGECGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
+        //connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &DEVGUI::handlePaymentRequest);
+        connect(window, &DEVGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
         connect(paymentServer, &PaymentServer::message, [this](const QString& title, const QString& message, unsigned int style) {
           window->message(title, message, style);
         });

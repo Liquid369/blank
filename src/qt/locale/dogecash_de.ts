@@ -363,8 +363,8 @@ for staking</source>
         <translation>ABBRECHEN</translation>
     </message>
     <message>
-        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
-        <translation>Die Anwendung wird nun geschlossen um die Verschlüsselung abzuschließen. Bitte bedenken Sie, dass auch die Verschlüsselung nicht vollständig vor Diebstahl Ihrer DOGECs durch Schadsoftware schützt, die Ihren Computer befällt.</translation>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DEVs from being stolen by malware infecting your computer.</source>
+        <translation>Die Anwendung wird nun geschlossen um die Verschlüsselung abzuschließen. Bitte bedenken Sie, dass auch die Verschlüsselung nicht vollständig vor Diebstahl Ihrer DEVs durch Schadsoftware schützt, die Ihren Computer befällt.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -745,9 +745,9 @@ for staking</source>
         <translation>Fehler beim Laden der Zuweisungen: %1</translation>
     </message>
     <message>
-        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
+        <source>You can delegate your DEVs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>Sie können Ihre DOGECs zuweisen und einen Node (24/7) für Sie staken lassen, während Sie Ihre Schlüssel sicher offline verwahren. </translation>
+        <translation>Sie können Ihre DEVs zuweisen und einen Node (24/7) für Sie staken lassen, während Sie Ihre Schlüssel sicher offline verwahren. </translation>
     </message>
     <message>
         <source>Enter owner address</source>
@@ -1866,36 +1866,36 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
         <translation>Port mit &amp;UPnP mappen</translation>
     </message>
     <message>
-        <source>Enable automatic minting of DEV units to zDOGEC</source>
-        <translation>Aktivieren Sie die automatische Prägung von DEV-Einheiten zu zDOGEC</translation>
+        <source>Enable automatic minting of DEV units to zDEV</source>
+        <translation>Aktivieren Sie die automatische Prägung von DEV-Einheiten zu zDEV</translation>
     </message>
     <message>
-        <source>Enable zDOGEC Automint</source>
-        <translation>Aktivieren Sie zDOGEC Automint</translation>
+        <source>Enable zDEV Automint</source>
+        <translation>Aktivieren Sie zDEV Automint</translation>
     </message>
     <message>
-        <source>Enable automatic zDOGEC minting from specific addresses</source>
-        <translation>Automatisches zDOGEC Minting von spezifischen Adressen erlauben</translation>
+        <source>Enable automatic zDEV minting from specific addresses</source>
+        <translation>Automatisches zDEV Minting von spezifischen Adressen erlauben</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Automint Adressen aktivieren</translation>
     </message>
     <message>
-        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
-        <translation>Anteil des eingehenden DEV, welcher automatisch zu zDOGEC via Zerocoin Protokoll konvertiert wird (min: 10%)</translation>
+        <source>Percentage of incoming DEV which get automatically converted to zDEV via Zerocoin Protocol (min: 10%)</source>
+        <translation>Anteil des eingehenden DEV, welcher automatisch zu zDEV via Zerocoin Protokoll konvertiert wird (min: 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zDOGEC</source>
-        <translation>Prozentsatz der automatisierten zDOGEC</translation>
+        <source>Percentage of autominted zDEV</source>
+        <translation>Prozentsatz der automatisierten zDEV</translation>
     </message>
     <message>
         <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
         <translation>Warte mit automatischer Konvertierung zu Zerocoin, bis genügend DEV für diese Stückelung verfügbar ist</translation>
     </message>
     <message>
-        <source>Preferred Automint zDOGEC Denomination</source>
-        <translation>Bevorzugte automatisierte zDOGEC Stückelung </translation>
+        <source>Preferred Automint zDEV Denomination</source>
+        <translation>Bevorzugte automatisierte zDEV Stückelung </translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -2047,7 +2047,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
 </context>
 <context>
-    <name>DOGECGUI</name>
+    <name>DEVGUI</name>
     <message>
         <source>Deviant Core</source>
         <translation>Deviant Core</translation>
@@ -2713,8 +2713,8 @@ Adresse: %4
         <translation>Benutzerdefinierter Sicherungspfad:</translation>
     </message>
     <message>
-        <source>Custom zDOGEC Backup Path:</source>
-        <translation>Benutzerdefinierter zDOGEC Sicherungspfad:</translation>
+        <source>Custom zDEV Backup Path:</source>
+        <translation>Benutzerdefinierter zDEV Sicherungspfad:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -3480,12 +3480,12 @@ Möchten Sie fortfahren?
 </translation>
     </message>
     <message>
-        <source>Error generating address to shield DOGECs</source>
-        <translation>Fehlererzeugende Adresse zur Abschirmung von DOGECs</translation>
+        <source>Error generating address to shield DEVs</source>
+        <translation>Fehlererzeugende Adresse zur Abschirmung von DEVs</translation>
     </message>
     <message>
-        <source>You don't have any transparent DOGECs to shield.</source>
-        <translation>Sie haben keine transparenten DOGECs zu schützen.</translation>
+        <source>You don't have any transparent DEVs to shield.</source>
+        <translation>Sie haben keine transparenten DEVs zu schützen.</translation>
     </message>
     <message>
         <source>No contacts available, you can go to the contacts screen and add some there!</source>
@@ -3878,12 +3878,12 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>Adressliste exportieren</translation>
     </message>
     <message>
-        <source>DOGEC_tx_csv_export(*.csv)</source>
-        <translation>DOGEC_tx_csv_export(*.csv)</translation>
+        <source>DEV_tx_csv_export(*.csv)</source>
+        <translation>DEV_tx_csv_export(*.csv)</translation>
     </message>
     <message>
-        <source>DOGEC_addresses_csv_export(*.csv)</source>
-        <translation>DOGEC_addresses_csv_export(*.csv)</translation>
+        <source>DEV_addresses_csv_export(*.csv)</source>
+        <translation>DEV_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -5379,8 +5379,8 @@ wird ein Backup erstellt.
         <translation>Abgeschirmt senden an</translation>
     </message>
     <message>
-        <source>Burned DOGECs</source>
-        <translation>Verbrannte DOGECs</translation>
+        <source>Burned DEVs</source>
+        <translation>Verbrannte DEVs</translation>
     </message>
     <message>
         <source>watch-only</source>
@@ -5565,7 +5565,7 @@ wird ein Backup erstellt.
     <name>WalletModel</name>
     <message>
         <source>Send Coins</source>
-        <translation>DOGECs überweisen</translation>
+        <translation>DEVs überweisen</translation>
     </message>
     <message>
         <source>Transaction creation failed!

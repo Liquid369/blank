@@ -95,7 +95,7 @@ const uint256 PublicCoinSpend::signatureHash() const
     return h.GetHash();
 }
 
-namespace ZDOGECModule {
+namespace ZDEVModule {
 
     // Return stream of CoinSpend from tx input scriptsig
     CDataStream ScriptSigToSerializedSpend(const CScript& scriptSig)
@@ -154,7 +154,7 @@ namespace ZDOGECModule {
             return state.DoS(100, error("%s: public zerocoin spend prev output not found, prevTx %s, index %d",
                                         __func__, txIn.prevout.hash.GetHex(), txIn.prevout.n));
         }
-        if (!ZDOGECModule::parseCoinSpend(txIn, tx, prevOut, publicSpend)) {
+        if (!ZDEVModule::parseCoinSpend(txIn, tx, prevOut, publicSpend)) {
             return state.Invalid(error("%s: invalid public coin spend parse %s\n", __func__,
                                        tx.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdev");
         }

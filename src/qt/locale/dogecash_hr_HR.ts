@@ -364,7 +364,7 @@ za staking</translation>
         <translation>PONIŠTI</translation>
     </message>
     <message>
-        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DEVs from being stolen by malware infecting your computer.</source>
         <translation>Deviant će se sada zatvoriti kako bi se dovršio proces šifriranja. Ne zaboravite da šifriranje Vašeg novčanika ne može u potpunosti zaštititi vaše DEV od krađje zlonamjernog softvera koji zarazi vaše računalo.</translation>
     </message>
     <message>
@@ -746,7 +746,7 @@ za staking</translation>
         <translation>Greška pri učitavanju delegacija: %1</translation>
     </message>
     <message>
-        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
+        <source>You can delegate your DEVs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation>Možete delegirati vaše novčiće, dozvoljavajući drugom novčaniku (koji radi 24/7)
 staking u vaše ime, dok su vaši novčići spremljeni na sigurnom.</translation>
@@ -1866,36 +1866,36 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
         <translation>Mapiranje porta koristeći &amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of DEV units to zDOGEC</source>
-        <translation>Omogući automatsko stvaranje DEV jedinica na zDOGEC</translation>
+        <source>Enable automatic minting of DEV units to zDEV</source>
+        <translation>Omogući automatsko stvaranje DEV jedinica na zDEV</translation>
     </message>
     <message>
-        <source>Enable zDOGEC Automint</source>
-        <translation>Omogući automatsko stvaranje zDOGEC-a</translation>
+        <source>Enable zDEV Automint</source>
+        <translation>Omogući automatsko stvaranje zDEV-a</translation>
     </message>
     <message>
-        <source>Enable automatic zDOGEC minting from specific addresses</source>
-        <translation>Omogući automatsko stvaranje zDOGEC-a s određjenih adresa</translation>
+        <source>Enable automatic zDEV minting from specific addresses</source>
+        <translation>Omogući automatsko stvaranje zDEV-a s određjenih adresa</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Omogući Automint adrese</translation>
     </message>
     <message>
-        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
-        <translation>Postotak dolaznih DEV koji se automatski pretvara u zDOGEC putem Zerocoin Protokola (min: 10%)</translation>
+        <source>Percentage of incoming DEV which get automatically converted to zDEV via Zerocoin Protocol (min: 10%)</source>
+        <translation>Postotak dolaznih DEV koji se automatski pretvara u zDEV putem Zerocoin Protokola (min: 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zDOGEC</source>
-        <translation>Postotak automatski stvorenog zDOGEC-a</translation>
+        <source>Percentage of autominted zDEV</source>
+        <translation>Postotak automatski stvorenog zDEV-a</translation>
     </message>
     <message>
         <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
         <translation>Pričekajte s automatskom pretvorbom u Zerocoin dok ne bude dostupno dovoljno DEV-a za ovu denominaciju</translation>
     </message>
     <message>
-        <source>Preferred Automint zDOGEC Denomination</source>
-        <translation>Preferirana denominacija za automatsko stvaranje zDOGEC-a</translation>
+        <source>Preferred Automint zDEV Denomination</source>
+        <translation>Preferirana denominacija za automatsko stvaranje zDEV-a</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -2047,7 +2047,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
 </context>
 <context>
-    <name>DOGECGUI</name>
+    <name>DEVGUI</name>
     <message>
         <source>Deviant Core</source>
         <translation>Deviant Core</translation>
@@ -2078,7 +2078,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
     <message>
         <source>Deviant Core client</source>
-        <translation>DOGECIX Core Klijent</translation>
+        <translation>DEVIX Core Klijent</translation>
     </message>
     <message>
         <source>Alert!</source>
@@ -2705,8 +2705,8 @@ Adresa: %4
         <translation>Put prilagođenog sigurnosnog kopiranja:</translation>
     </message>
     <message>
-        <source>Custom zDOGEC Backup Path:</source>
-        <translation>Prilagođeni put zDOGEC sigurnosne kopije:</translation>
+        <source>Custom zDEV Backup Path:</source>
+        <translation>Prilagođeni put zDEV sigurnosne kopije:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -3477,11 +3477,11 @@ Uz naknadu %2
 </translation>
     </message>
     <message>
-        <source>Error generating address to shield DOGECs</source>
+        <source>Error generating address to shield DEVs</source>
         <translation>Pogreška pri generiranju adrese za zaštićene DEV-ove</translation>
     </message>
     <message>
-        <source>You don't have any transparent DOGECs to shield.</source>
+        <source>You don't have any transparent DEVs to shield.</source>
         <translation>Nemate nikakvih transparentnih DEV za zaštititi.</translation>
     </message>
     <message>
@@ -3877,12 +3877,12 @@ podatke</translation>
         <translation>Izvezi popis adresa</translation>
     </message>
     <message>
-        <source>DOGEC_tx_csv_export(*.csv)</source>
-        <translation>DOGEC_transakcije_csv_izvoz(*.csv)</translation>
+        <source>DEV_tx_csv_export(*.csv)</source>
+        <translation>DEV_transakcije_csv_izvoz(*.csv)</translation>
     </message>
     <message>
-        <source>DOGEC_addresses_csv_export(*.csv)</source>
-        <translation>DOGEC_adrese_csv_izvoz(*.csv)</translation>
+        <source>DEV_addresses_csv_export(*.csv)</source>
+        <translation>DEV_adrese_csv_izvoz(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -5274,8 +5274,8 @@ stvorit će se nova sigurnosna kopija.
         <translation>Zaštićeno slanje na</translation>
     </message>
     <message>
-        <source>Burned DOGECs</source>
-        <translation>Uništeni DOGECovi</translation>
+        <source>Burned DEVs</source>
+        <translation>Uništeni DEVovi</translation>
     </message>
     <message>
         <source>watch-only</source>

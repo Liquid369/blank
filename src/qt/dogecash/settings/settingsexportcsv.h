@@ -21,7 +21,7 @@ class SettingsExportCSV : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsExportCSV(DOGECGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsExportCSV(DEVGUI* _window, QWidget *parent = nullptr);
     ~SettingsExportCSV();
 
 private Q_SLOTS:

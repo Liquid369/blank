@@ -25,8 +25,8 @@ QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
     unitlist.append(DEV);
-    unitlist.append(mDOGEC);
-    unitlist.append(uDOGEC);
+    unitlist.append(mDEV);
+    unitlist.append(uDEV);
     return unitlist;
 }
 
@@ -34,8 +34,8 @@ bool BitcoinUnits::valid(int unit)
 {
     switch (unit) {
     case DEV:
-    case mDOGEC:
-    case uDOGEC:
+    case mDEV:
+    case uDEV:
         return true;
     default:
         return false;
@@ -47,9 +47,9 @@ QString BitcoinUnits::id(int unit)
     switch (unit) {
     case DEV:
         return QString("deviant");
-    case mDOGEC:
+    case mDEV:
         return QString("mdeviant");
-    case uDOGEC:
+    case uDEV:
         return QString::fromUtf8("udeviant");
     default:
         return QString("???");
@@ -65,9 +65,9 @@ QString BitcoinUnits::name(int unit, bool iszdev)
         switch (unit) {
         case DEV:
             return z + CURR_UNIT;
-        case mDOGEC:
+        case mDEV:
             return z + QString("m") + CURR_UNIT;
-        case uDOGEC:
+        case uDEV:
             return z + QString::fromUtf8("μ") + CURR_UNIT;
         default:
             return QString("???");
@@ -76,9 +76,9 @@ QString BitcoinUnits::name(int unit, bool iszdev)
         switch (unit) {
         case DEV:
             return z + QString("t") + CURR_UNIT;
-        case mDOGEC:
+        case mDEV:
             return z + QString("mt") + CURR_UNIT;
-        case uDOGEC:
+        case uDEV:
             return z + QString::fromUtf8("μt") + CURR_UNIT;
         default:
             return QString("???");
@@ -93,9 +93,9 @@ QString BitcoinUnits::description(int unit)
         switch (unit) {
         case DEV:
             return CURR_UNIT;
-        case mDOGEC:
+        case mDEV:
             return QString("Milli-") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000)");
-        case uDOGEC:
+        case uDEV:
             return QString("Micro-") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
         default:
             return QString("???");
@@ -104,9 +104,9 @@ QString BitcoinUnits::description(int unit)
         switch (unit) {
         case DEV:
             return QString("Test") + CURR_UNIT;
-        case mDOGEC:
+        case mDEV:
             return QString("Milli-Test") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000)");
-        case uDOGEC:
+        case uDEV:
             return QString("Micro-Test") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
         default:
             return QString("???");
@@ -119,9 +119,9 @@ qint64 BitcoinUnits::factor(int unit)
     switch (unit) {
     case DEV:
         return 100000000;
-    case mDOGEC:
+    case mDEV:
         return 100000;
-    case uDOGEC:
+    case uDEV:
         return 100;
     default:
         return 100000000;
@@ -133,9 +133,9 @@ int BitcoinUnits::decimals(int unit)
     switch (unit) {
     case DEV:
         return 8;
-    case mDOGEC:
+    case mDEV:
         return 5;
-    case uDOGEC:
+    case uDEV:
         return 2;
     default:
         return 0;
@@ -217,7 +217,7 @@ QString BitcoinUnits::formatHtmlWithUnit(int unit, const CAmount& amount, bool p
     return QString("<span style='white-space: nowrap;'>%1</span>").arg(str);
 }
 
-QString BitcoinUnits::floorWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators, bool cleanRemainderZeros, bool isZDOGEC)
+QString BitcoinUnits::floorWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators, bool cleanRemainderZeros, bool isZDEV)
 {
     QSettings settings;
     int digits = settings.value("digits").toInt();
@@ -234,12 +234,12 @@ QString BitcoinUnits::floorWithUnit(int unit, const CAmount& amount, bool plussi
         }
     }
 
-    return result + QString(" ") + name(unit, isZDOGEC);
+    return result + QString(" ") + name(unit, isZDEV);
 }
 
-QString BitcoinUnits::floorHtmlWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators, bool cleanRemainderZeros, bool isZDOGEC)
+QString BitcoinUnits::floorHtmlWithUnit(int unit, const CAmount& amount, bool plussign, SeparatorStyle separators, bool cleanRemainderZeros, bool isZDEV)
 {
-    QString str(floorWithUnit(unit, amount, plussign, separators, cleanRemainderZeros, isZDOGEC));
+    QString str(floorWithUnit(unit, amount, plussign, separators, cleanRemainderZeros, isZDEV));
     str.replace(QChar(THIN_SP_CP), QString(COMMA_HTML));
     return QString("<span style='white-space: nowrap;'>%1</span>").arg(str);
 }

@@ -23,7 +23,7 @@
 #define DECORATION_SIZE 70
 #define NUM_ITEMS 3
 
-ReceiveWidget::ReceiveWidget(DOGECGUI* parent) :
+ReceiveWidget::ReceiveWidget(DEVGUI* parent) :
     PWidget(parent),
     ui(new Ui::ReceiveWidget)
 {

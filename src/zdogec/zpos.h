@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_LEGACY_ZPOS_H
-#define DOGEC_LEGACY_ZPOS_H
+#ifndef DEV_LEGACY_ZPOS_H
+#define DEV_LEGACY_ZPOS_H
 
 #include "stakeinput.h"
 #include "txdb.h"
@@ -22,7 +22,7 @@ public:
 
     explicit CLegacyzdevStake(const libzerocoin::CoinSpend& spend);
     bool InitFromTxIn(const CTxIn& txin) override;
-    bool IsZDOGEC() const override { return true; }
+    bool IsZDEV() const override { return true; }
     uint32_t GetChecksum() const { return nChecksum; }
     const CBlockIndex* GetIndexFrom() const override;
     CAmount GetValue() const override;
@@ -33,4 +33,4 @@ public:
     virtual bool ContextCheck(int nHeight, uint32_t nTime) override;
 };
 
-#endif //DOGEC_LEGACY_ZPOS_H
+#endif //DEV_LEGACY_ZPOS_H

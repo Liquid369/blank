@@ -241,7 +241,7 @@ void RPCExecutor::requestCommand(const QString& command)
     }
 }
 
-SettingsConsoleWidget::SettingsConsoleWidget(DOGECGUI* _window, QWidget *parent) :
+SettingsConsoleWidget::SettingsConsoleWidget(DEVGUI* _window, QWidget *parent) :
     PWidget(_window,parent),
     ui(new Ui::SettingsConsoleWidget)
 {

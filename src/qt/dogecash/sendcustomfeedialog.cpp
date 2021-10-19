@@ -13,7 +13,7 @@
 #include <QListView>
 #include <QComboBox>
 
-SendCustomFeeDialog::SendCustomFeeDialog(DOGECGUI* parent, WalletModel* model) :
+SendCustomFeeDialog::SendCustomFeeDialog(DEVGUI* parent, WalletModel* model) :
     FocusedDialog(parent),
     ui(new Ui::SendCustomFeeDialog),
     walletModel(model)
@@ -56,7 +56,7 @@ SendCustomFeeDialog::SendCustomFeeDialog(DOGECGUI* parent, WalletModel* model) :
     connect(ui->comboBoxRecommended, static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::currentIndexChanged),
         this, &SendCustomFeeDialog::updateFee);
     if (parent)
-        connect(parent, &DOGECGUI::themeChanged, this, &SendCustomFeeDialog::onChangeTheme);
+        connect(parent, &DEVGUI::themeChanged, this, &SendCustomFeeDialog::onChangeTheme);
     ui->checkBoxRecommended->setChecked(true);
 }
 

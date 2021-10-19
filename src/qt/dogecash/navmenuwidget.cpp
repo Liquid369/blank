@@ -12,7 +12,7 @@
 #include "optionsmodel.h"
 #include <QScrollBar>
 
-NavMenuWidget::NavMenuWidget(DOGECGUI *mainWindow, QWidget *parent) :
+NavMenuWidget::NavMenuWidget(DEVGUI *mainWindow, QWidget *parent) :
     PWidget(mainWindow, parent),
     ui(new Ui::NavMenuWidget)
 {

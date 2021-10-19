@@ -177,7 +177,7 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="pushButton_UnspendableDOGEC">
+                    <widget class="QPushButton" name="pushButton_UnspendableDEV">
                      <property name="minimumSize">
                       <size>
                        <width>0</width>
@@ -563,10 +563,10 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QWidget" name="widget_UnspendableDOGEC" native="true">
-                   <layout class="QHBoxLayout" name="horizontalPage_UnspendableDOGEC" stretch="0,1">
+                  <widget class="QWidget" name="widget_UnspendableDEV" native="true">
+                   <layout class="QHBoxLayout" name="horizontalPage_UnspendableDEV" stretch="0,1">
                     <item alignment="Qt::AlignTop">
-                     <widget class="QLabel" name="labelNumber_UnspendableDOGEC">
+                     <widget class="QLabel" name="labelNumber_UnspendableDEV">
                       <property name="minimumSize">
                        <size>
                         <width>24</width>
@@ -588,7 +588,7 @@
                      </widget>
                     </item>
                     <item>
-                     <layout class="QVBoxLayout" name="verticalLayout_UnspendableDOGEC">
+                     <layout class="QVBoxLayout" name="verticalLayout_UnspendableDEV">
                       <property name="spacing">
                        <number>0</number>
                       </property>
@@ -599,7 +599,7 @@
                        <number>20</number>
                       </property>
                       <item>
-                       <widget class="QLabel" name="labelSubtitle_UnspendableDOGEC">
+                       <widget class="QLabel" name="labelSubtitle_UnspendableDEV">
                         <property name="text">
                          <string>Why are my DEV unspendable?</string>
                         </property>
@@ -609,7 +609,7 @@
                        </widget>
                       </item>
                       <item>
-                       <spacer name="verticalSpacer1_UnspendableDOGEC">
+                       <spacer name="verticalSpacer1_UnspendableDEV">
                         <property name="orientation">
                          <enum>Qt::Vertical</enum>
                         </property>
@@ -625,7 +625,7 @@
                        </spacer>
                       </item>
                       <item>
-                       <widget class="QLabel" name="labelContent_UnspendableDOGEC">
+                       <widget class="QLabel" name="labelContent_UnspendableDEV">
                         <property name="text">
                          <string>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
@@ -646,7 +646,7 @@
                        </widget>
                       </item>
                       <item>
-                       <spacer name="verticalSpacer2_UnspendableDOGEC">
+                       <spacer name="verticalSpacer2_UnspendableDEV">
                         <property name="orientation">
                          <enum>Qt::Vertical</enum>
                         </property>

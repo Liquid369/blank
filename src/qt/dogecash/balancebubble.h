@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_BALANCEBUBBLE_H
-#define DOGEC_BALANCEBUBBLE_H
+#ifndef DEV_BALANCEBUBBLE_H
+#define DEV_BALANCEBUBBLE_H
 
 #include <QWidget>
 #include <QString>
@@ -34,4 +34,4 @@ private:
     QTimer* hideTimer{nullptr};
 };
 
-#endif //DOGEC_BALANCEBUBBLE_H
+#endif //DEV_BALANCEBUBBLE_H

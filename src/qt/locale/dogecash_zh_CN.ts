@@ -115,11 +115,11 @@
     </message>
     <message>
         <source>These are your Deviant addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>这是用于发送DOGEC的地址。在发送DOGEC之前，请认真核查发送金额和接收地址。</translation>
+        <translation>这是用于发送DEV的地址。在发送DEV之前，请认真核查发送金额和接收地址。</translation>
     </message>
     <message>
         <source>These are your Deviant addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>这是用于接收DOGEC的钱包地址。建议每一笔交易都使用一个新的钱包地址。</translation>
+        <translation>这是用于接收DEV的钱包地址。建议每一笔交易都使用一个新的钱包地址。</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -348,8 +348,8 @@ for staking</source>
         <translation>删除</translation>
     </message>
     <message>
-        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
-        <translation>DOGEC将关闭以完成加密过程。但是，仅仅加密您的钱包是不够的，因为它并不能阻止恶意软件从您的电脑里面偷取DOGECs。</translation>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DEVs from being stolen by malware infecting your computer.</source>
+        <translation>DEV将关闭以完成加密过程。但是，仅仅加密您的钱包是不够的，因为它并不能阻止恶意软件从您的电脑里面偷取DEVs。</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -468,7 +468,7 @@ for staking</source>
     </message>
     <message>
         <source>Select DEV Outputs to Spend</source>
-        <translation>选择DOGEC支出花费</translation>
+        <translation>选择DEV支出花费</translation>
     </message>
     <message>
         <source>Dust:</source>
@@ -690,9 +690,9 @@ for staking</source>
         <translation>加载委托时出错：%1</translation>
     </message>
     <message>
-        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
+        <source>You can delegate your DEVs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>您可以委托您的DOGEC并让一个热节点(24/7在线节点)
+        <translation>您可以委托您的DEV并让一个热节点(24/7在线节点)
 代表你加注，而且保持密钥离线安全。</translation>
     </message>
     <message>
@@ -701,7 +701,7 @@ stake on your behalf, while you keep the keys securely offline.</source>
     </message>
     <message>
         <source>Accept DEV delegation / Delegate DEV</source>
-        <translation>接受DOGEC委托／委托DOGEC </translation>
+        <translation>接受DEV委托／委托DEV </translation>
     </message>
     <message>
         <source>Cold Staking address</source>
@@ -989,7 +989,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <source>The entered address "%1" is not a valid Deviant address.</source>
-        <translation>所输入的地址“%1”不是有效的DOGEC地址。</translation>
+        <translation>所输入的地址“%1”不是有效的DEV地址。</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1113,7 +1113,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <source>Deviant Core will download and store a copy of the Deviant block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>Deviant Core将下载并存储DOGEC区块链副本。 至少 %1 GB的数据将存储在此目录中，并且会随着时间的推移而增长。 钱包也将存储在此目录中。</translation>
+        <translation>Deviant Core将下载并存储DEV区块链副本。 至少 %1 GB的数据将存储在此目录中，并且会随着时间的推移而增长。 钱包也将存储在此目录中。</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1233,7 +1233,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Deviant Masternode you must dedicate 15,000 DEV (the unit of DEV) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;要去创建一个DOGEC主节点，你必须奉献15,000 DEV（DOGEC的单位）到网络（但是这些币还是属于你的，一直为你所有）。&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;你可以在任何时候关闭该节点并解锁币。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;要去创建一个DEV主节点，你必须奉献15,000 DEV（DEV的单位）到网络（但是这些币还是属于你的，一直为你所有）。&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;你可以在任何时候关闭该节点并解锁币。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1253,7 +1253,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;将进行15,000 DOGEC的交易&lt;/p&gt;&lt;p&gt;到您的钱包空地址&lt;/p&gt;&lt;p&gt;地址被标记在主节点的名称之下&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;将进行15,000 DEV的交易&lt;/p&gt;&lt;p&gt;到您的钱包空地址&lt;/p&gt;&lt;p&gt;地址被标记在主节点的名称之下&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1630,7 +1630,7 @@ Are you sure?</source>
     </message>
     <message>
         <source>Automatically open the Deviant client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>自动打开路由器上的DOGEC钱包使用的端口。 这只有当您的路由器支持UPnP并且该享生效时才有用。</translation>
+        <translation>自动打开路由器上的DEV钱包使用的端口。 这只有当您的路由器支持UPnP并且该享生效时才有用。</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1650,11 +1650,11 @@ Are you sure?</source>
     </message>
     <message>
         <source>Automatically start Deviant after logging in to the system.</source>
-        <translation>登录系统后自动启动DOGEC。</translation>
+        <translation>登录系统后自动启动DEV。</translation>
     </message>
     <message>
         <source>&amp;Start Deviant on system login</source>
-        <translation>&amp;开机启动DOGEC</translation>
+        <translation>&amp;开机启动DEV</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1682,7 +1682,7 @@ Are you sure?</source>
     </message>
     <message>
         <source>The user interface language can be set here. This setting will take effect after restarting DEV.</source>
-        <translation>可以在这里设置用户界面语言。此设置将在重新启动DOGEC后生效。</translation>
+        <translation>可以在这里设置用户界面语言。此设置将在重新启动DEV后生效。</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
@@ -1695,36 +1695,36 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
         <translation>端口使用&amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of DEV units to zDOGEC</source>
-        <translation>启动自动铸造DOGEC到zDOGEC</translation>
+        <source>Enable automatic minting of DEV units to zDEV</source>
+        <translation>启动自动铸造DEV到zDEV</translation>
     </message>
     <message>
-        <source>Enable zDOGEC Automint</source>
-        <translation>启动自动铸造zDOGEC</translation>
+        <source>Enable zDEV Automint</source>
+        <translation>启动自动铸造zDEV</translation>
     </message>
     <message>
-        <source>Enable automatic zDOGEC minting from specific addresses</source>
-        <translation>启用从特定地址自动生成zDOGEC</translation>
+        <source>Enable automatic zDEV minting from specific addresses</source>
+        <translation>启用从特定地址自动生成zDEV</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>启动自动铸造地址</translation>
     </message>
     <message>
-        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
-        <translation>通过零币协议自动转换为zDOGEC的传入DOGEC的百分比(最小:10%)</translation>
+        <source>Percentage of incoming DEV which get automatically converted to zDEV via Zerocoin Protocol (min: 10%)</source>
+        <translation>通过零币协议自动转换为zDEV的传入DEV的百分比(最小:10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zDOGEC</source>
-        <translation>自动铸造的zDOGEC百分比</translation>
+        <source>Percentage of autominted zDEV</source>
+        <translation>自动铸造的zDEV百分比</translation>
     </message>
     <message>
         <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
-        <translation>等待自动转换为零币，直到足够的DOGEC为这种面额可用</translation>
+        <translation>等待自动转换为零币，直到足够的DEV为这种面额可用</translation>
     </message>
     <message>
-        <source>Preferred Automint zDOGEC Denomination</source>
-        <translation>首选自动铸造zDOGEC面额</translation>
+        <source>Preferred Automint zDEV Denomination</source>
+        <translation>首选自动铸造zDEV面额</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -1732,7 +1732,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
     <message>
         <source>Connect to the Deviant network through a SOCKS5 proxy.</source>
-        <translation>通过SOCKS5代理连接到DOGEC网络。</translation>
+        <translation>通过SOCKS5代理连接到DEV网络。</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -1788,7 +1788,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
     <message>
         <source>Choose the default subdivision unit to show in the interface and when sending coins.</source>
-        <translation>选择显示发送DOGEC的默认单位。</translation>
+        <translation>选择显示发送DEV的默认单位。</translation>
     </message>
     <message>
         <source>Decimal digits</source>
@@ -1876,7 +1876,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
 </context>
 <context>
-    <name>DOGECGUI</name>
+    <name>DEVGUI</name>
     <message>
         <source>Deviant Core</source>
         <translation>Deviant Core</translation>
@@ -1978,7 +1978,7 @@ Address: %4
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid Deviant address or malformed URI parameters.</source>
-        <translation>URI不能被解析!这可能是由无效的DOGEC地址或格式错误的URI参数造成的。</translation>
+        <translation>URI不能被解析!这可能是由无效的DEV地址或格式错误的URI参数造成的。</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -2108,7 +2108,7 @@ Address: %4
     </message>
     <message>
         <source>A fatal error occurred. Deviant can no longer continue safely and will quit.</source>
-        <translation>发生了一个致命的错误。DOGEC不能继续安全，将退出。</translation>
+        <translation>发生了一个致命的错误。DEV不能继续安全，将退出。</translation>
     </message>
     <message>
         <source>Deviant Core</source>
@@ -2307,7 +2307,7 @@ Address: %4
     </message>
     <message>
         <source>Open the Deviant debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>从当前数据目录打开DOGEC调试日志文件。对于大型日志文件，这可能需要几秒钟。</translation>
+        <translation>从当前数据目录打开DEV调试日志文件。对于大型日志文件，这可能需要几秒钟。</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -2450,8 +2450,8 @@ Address: %4
         <translation>自定义备份路径:</translation>
     </message>
     <message>
-        <source>Custom zDOGEC Backup Path:</source>
-        <translation>自定义zDOGEC备份路径:</translation>
+        <source>Custom zDEV Backup Path:</source>
+        <translation>自定义zDEV备份路径:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -2850,7 +2850,7 @@ Address: %4
     </message>
     <message>
         <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" Deviant address</source>
-        <translation>输入值减去输出值所得的值的其余部分归为“更改”DOGEC地址</translation>
+        <translation>输入值减去输出值所得的值的其余部分归为“更改”DEV地址</translation>
     </message>
     <message>
         <source>SAVE</source>
@@ -3156,7 +3156,7 @@ These coins will no longer be cold-staked.</source>
     </message>
     <message>
         <source>Deviant address</source>
-        <translation>DOGEC地址</translation>
+        <translation>DEV地址</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3390,12 +3390,12 @@ Verify that you have installed a predetermined text editor.</source>
         <translation>导出地址列表</translation>
     </message>
     <message>
-        <source>DOGEC_tx_csv_export(*.csv)</source>
-        <translation>DOGEC_tx_csv_export(*.csv)</translation>
+        <source>DEV_tx_csv_export(*.csv)</source>
+        <translation>DEV_tx_csv_export(*.csv)</translation>
     </message>
     <message>
-        <source>DOGEC_addresses_csv_export(*.csv)</source>
-        <translation>DOGEC_addresses_csv_export(*.csv)</translation>
+        <source>DEV_addresses_csv_export(*.csv)</source>
+        <translation>DEV_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>
@@ -3466,11 +3466,11 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <source>1) What is DEV?</source>
-        <translation>1）什么是DOGEC?</translation>
+        <translation>1）什么是DEV?</translation>
     </message>
     <message>
         <source>2) Why are my DEV unspendable?</source>
-        <translation>2) 我的DOGEC为什么不能用？</translation>
+        <translation>2) 我的DEV为什么不能用？</translation>
     </message>
     <message>
         <source>1</source>
@@ -3478,7 +3478,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <source>What is DEV?</source>
-        <translation>DOGEC是什么?</translation>
+        <translation>DEV是什么?</translation>
     </message>
     <message>
         <source>2</source>
@@ -3486,7 +3486,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <source>Why are my DEV unspendable?</source>
-        <translation>我的DOGEC为什么不能用？</translation>
+        <translation>我的DEV为什么不能用？</translation>
     </message>
     <message>
         <source>
@@ -3500,10 +3500,10 @@ There was an error trying to save the address list to %1. Please try again.</sou
                          </source>
         <translation>
 &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-接收到的DOGEC需要网络上的6个确认
+接收到的DEV需要网络上的6个确认
 才能成为有资格的花费，可以花~6分钟。
 &lt;/p&gt;&lt;p align="justify"&gt;
-您的DOGEC钱包也需要完全同步
+您的DEV钱包也需要完全同步
 查看网络收支余额。
 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </translation>
@@ -3538,7 +3538,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 15,000 DEV collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;主节点控制器钱包是控制器-远程主节点建立期间15,000 DOGEC抵押可以驻留的地方。这是一个可以激活远程主节点钱包(s)的钱包，可以让你的抵押币离线但远程主节点保持在线。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;主节点控制器钱包是控制器-远程主节点建立期间15,000 DEV抵押可以驻留的地方。这是一个可以激活远程主节点钱包(s)的钱包，可以让你的抵押币离线但远程主节点保持在线。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
@@ -3700,7 +3700,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <source>Start Deviant on system login</source>
-        <translation>开机启动DOGEC</translation>
+        <translation>开机启动DEV</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -3788,7 +3788,7 @@ Are you sure?
     </message>
     <message>
         <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other Deviant addresses after it matures.</source>
-        <translation>成熟以后，多重花费允许您自动发送高达 100% 的股权或主节点奖励到其他DOGEC地址列表</translation>
+        <translation>成熟以后，多重花费允许您自动发送高达 100% 的股权或主节点奖励到其他DEV地址列表</translation>
     </message>
     <message>
         <source>Active</source>
@@ -4730,19 +4730,19 @@ backup will be created.
         <source>Welcome to
 Deviant Core Wallet</source>
         <translation>欢迎
-DOGEC核心钱包</translation>
+DEV核心钱包</translation>
     </message>
     <message>
         <source>Deviant is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>DOGEC是世界上最先进的隐私保护技术，由经验丰富的开发人员和密码专家开发。</translation>
+        <translation>DEV是世界上最先进的隐私保护技术，由经验丰富的开发人员和密码专家开发。</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - Deviant believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;正如我们的宣言所说:隐私是一项不容协商的基本人权;它赋予用户随时随地与任何人共享数据的自由——DOGEC相信自我主权&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;正如我们的宣言所说:隐私是一项不容协商的基本人权;它赋予用户随时随地与任何人共享数据的自由——DEV相信自我主权&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>The masternode network is DEV's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>主节点网络是DOGEC在区块链之上的第二层网络，它使我们的DAO能够提供去中心的治理。</translation>
+        <translation>主节点网络是DEV在区块链之上的第二层网络，它使我们的DAO能够提供去中心的治理。</translation>
     </message>
     <message>
         <source>How Deviant respects your privacy?</source>
@@ -4913,7 +4913,7 @@ DOGEC核心钱包</translation>
     </message>
     <message>
         <source>Unable to bind to %s on this computer. Deviant Core is probably already running.</source>
-        <translation>无法绑定到此计算机上的%s。DOGEC核心可能已经在运行了。</translation>
+        <translation>无法绑定到此计算机上的%s。DEV核心可能已经在运行了。</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -5001,7 +5001,7 @@ DOGEC核心钱包</translation>
     </message>
     <message>
         <source>Copyright (C) 2015-%i The Deviant Core Developers</source>
-        <translation>版权所有(C) 2015-%i DOGEC核心开发者</translation>
+        <translation>版权所有(C) 2015-%i DEV核心开发者</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -5577,7 +5577,7 @@ DOGEC核心钱包</translation>
     </message>
     <message>
         <source>Wallet needed to be rewritten: restart Deviant Core to complete</source>
-        <translation>钱包需要重写:重新启动DOGEC核心完成</translation>
+        <translation>钱包需要重写:重新启动DEV核心完成</translation>
     </message>
     <message>
         <source>Wallet options:</source>

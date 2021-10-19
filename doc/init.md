@@ -124,7 +124,7 @@ use old versions of Upstart and do not supply the start-stop-daemon utility.
 Copy deviantd.init to /etc/init.d/deviantd. Test by running `service deviantd start`.
 
 Using this script, you can adjust the path and flags to the deviantd program by
-setting the DOGECD and FLAGS environment variables in the file
+setting the DEVD and FLAGS environment variables in the file
 /etc/sysconfig/deviantd. You can also use the DAEMONOPTS environment variable here.
 
 ### macOS

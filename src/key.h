@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_KEY_H
-#define DOGEC_KEY_H
+#ifndef DEV_KEY_H
+#define DEV_KEY_H
 
 #include "allocators.h"
 #include "serialize.h"
@@ -183,4 +183,4 @@ void ECC_Stop(void);
 /** Check that required EC support is available at runtime. */
 bool ECC_InitSanityCheck(void);
 
-#endif // DOGEC_KEY_H
+#endif // DEV_KEY_H

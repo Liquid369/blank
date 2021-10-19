@@ -67,7 +67,7 @@ public:
     MNRow* cachedRow = nullptr;
 };
 
-MasterNodesWidget::MasterNodesWidget(DOGECGUI *parent) :
+MasterNodesWidget::MasterNodesWidget(DEVGUI *parent) :
     PWidget(parent),
     ui(new Ui::MasterNodesWidget),
     isLoading(false)

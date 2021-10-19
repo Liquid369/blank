@@ -24,7 +24,7 @@
 #define REQUEST_PREPARE_TX 1
 #define REQUEST_REFRESH_BALANCE 2
 
-SendWidget::SendWidget(DOGECGUI* parent) :
+SendWidget::SendWidget(DEVGUI* parent) :
     PWidget(parent),
     ui(new Ui::send),
     coinIcon(new QPushButton())
@@ -124,8 +124,8 @@ SendWidget::SendWidget(DOGECGUI* parent) :
     setCustomFeeSelected(false);
 
     // Connect
-    connect(ui->pushLeft, &QPushButton::clicked, [this](){onDOGECSelected(true);});
-    connect(ui->pushRight,  &QPushButton::clicked, [this](){onDOGECSelected(false);});
+    connect(ui->pushLeft, &QPushButton::clicked, [this](){onDEVSelected(true);});
+    connect(ui->pushRight,  &QPushButton::clicked, [this](){onDEVSelected(false);});
     connect(ui->pushButtonSave, &QPushButton::clicked, this, &SendWidget::onSendClicked);
     connect(ui->pushButtonAddRecipient, &QPushButton::clicked, this, &SendWidget::onAddEntryClicked);
     connect(ui->pushButtonClear, &QPushButton::clicked, [this](){clearAll(true);});
@@ -356,7 +356,7 @@ void SendWidget::setFocusOnLastEntry()
 void SendWidget::showHideCheckBoxDelegations(CAmount delegationBalance)
 {
     // Show checkbox only when there is any available owned delegation and
-    // coincontrol is not selected, and we are trying to spend transparent DOGECs.
+    // coincontrol is not selected, and we are trying to spend transparent DEVs.
     const bool isCControl = coinControlDialog ? coinControlDialog->coinControl->HasSelected() : false;
     const bool hasDel = delegationBalance > 0;
 
@@ -754,7 +754,7 @@ void SendWidget::onShieldCoinsClicked()
             auto res = walletModel->getNewShieldedAddress(strAddress, "");
             // Check for generation errors
             if (!res.result) {
-                inform(tr("Error generating address to shield DOGECs"));
+                inform(tr("Error generating address to shield DEVs"));
                 return false;
             }
             recipients.back().address = strAddress;
@@ -762,7 +762,7 @@ void SendWidget::onShieldCoinsClicked()
             return true;
         });
     } else {
-        inform(tr("You don't have any transparent DOGECs to shield."));
+        inform(tr("You don't have any transparent DEVs to shield."));
     }
 }
 
@@ -791,7 +791,7 @@ void SendWidget::onCheckBoxChanged()
     }
 }
 
-void SendWidget::onDOGECSelected(bool _isTransparent)
+void SendWidget::onDEVSelected(bool _isTransparent)
 {
     isTransparent = _isTransparent;
 

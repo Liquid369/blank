@@ -21,7 +21,7 @@
 #include "qt/deviant/settings/settingsinformationwidget.h"
 #include "qt/deviant/settings/settingsconsolewidget.h"
 
-class DOGECGUI;
+class DEVGUI;
 
 QT_BEGIN_NAMESPACE
 class QDataWidgetMapper;
@@ -36,7 +36,7 @@ class SettingsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWidget(DOGECGUI* parent);
+    explicit SettingsWidget(DEVGUI* parent);
     ~SettingsWidget();
 
     void loadClientModel() override;

@@ -35,11 +35,11 @@ const QString RESYNC("-resync");
 extern Qt::Modifier SHORT_KEY;
 
 bool openDialog(QDialog* widget, QWidget* gui);
-void closeDialog(QDialog* widget, DOGECGUI* gui);
+void closeDialog(QDialog* widget, DEVGUI* gui);
 void openDialogFullScreen(QWidget* parent, QWidget* dialog);
-bool openDialogWithOpaqueBackgroundY(QDialog* widget, DOGECGUI* gui, double posX = 3, int posY = 5);
-bool openDialogWithOpaqueBackground(QDialog* widget, DOGECGUI* gui, double posX = 3);
-bool openDialogWithOpaqueBackgroundFullScreen(QDialog* widget, DOGECGUI* gui);
+bool openDialogWithOpaqueBackgroundY(QDialog* widget, DEVGUI* gui, double posX = 3, int posY = 5);
+bool openDialogWithOpaqueBackground(QDialog* widget, DEVGUI* gui, double posX = 3);
+bool openDialogWithOpaqueBackgroundFullScreen(QDialog* widget, DEVGUI* gui);
 
 //
 QPixmap encodeToQr(QString str, QString& errorStr, QColor qrColor = Qt::black);

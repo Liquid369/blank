@@ -14,7 +14,7 @@
 #include "qt/deviant/pwidget.h"
 #include "qt/deviant/furabstractlistitemdelegate.h"
 
-class DOGECGUI;
+class DEVGUI;
 
 namespace Ui {
 class SettingsMultisendWidget;

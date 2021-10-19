@@ -4,8 +4,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_MONEYSUPPLY_H
-#define DOGEC_MONEYSUPPLY_H
+#ifndef DEV_MONEYSUPPLY_H
+#define DEV_MONEYSUPPLY_H
 
 #include "amount.h"
 #include "sync.h"
@@ -34,4 +34,4 @@ public:
     int64_t GetCacheHeight() const { LOCK(cs); return nHeight; }
 };
 
-#endif // DOGEC_MONEYSUPPLY_H
+#endif // DEV_MONEYSUPPLY_H

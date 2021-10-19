@@ -15,7 +15,7 @@
 #include <QScrollBar>
 #include <QDataWidgetMapper>
 
-SettingsWidget::SettingsWidget(DOGECGUI* parent) :
+SettingsWidget::SettingsWidget(DEVGUI* parent) :
     PWidget(parent),
     ui(new Ui::SettingsWidget)
 {

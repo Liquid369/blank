@@ -4,8 +4,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_ZDOGECCHAIN_H
-#define DOGEC_ZDOGECCHAIN_H
+#ifndef DEV_ZDEVCHAIN_H
+#define DEV_ZDEVCHAIN_H
 
 #include "chain.h"
 #include "libzerocoin/Coin.h"
@@ -27,4 +27,4 @@ bool IsSerialInBlockchain(const CBigNum& bnSerial, int& nHeightTx);
 libzerocoin::CoinSpend TxInToZerocoinSpend(const CTxIn& txin);
 bool TxOutToPublicCoin(const CTxOut& txout, libzerocoin::PublicCoin& pubCoin, CValidationState& state);
 
-#endif //DOGEC_ZDOGECCHAIN_H
+#endif //DEV_ZDEVCHAIN_H

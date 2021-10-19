@@ -85,9 +85,9 @@
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
 
-const char * const DOGEC_CONF_FILENAME = "deviant.conf";
-const char * const DOGEC_PID_FILENAME = "deviant.pid";
-const char * const DOGEC_MASTERNODE_CONF_FILENAME = "masternode.conf";
+const char * const DEV_CONF_FILENAME = "deviant.conf";
+const char * const DEV_PID_FILENAME = "deviant.pid";
+const char * const DEV_MASTERNODE_CONF_FILENAME = "masternode.conf";
 
 
 // Deviant only features
@@ -382,13 +382,13 @@ static RecursiveMutex csPathCached;
 static fs::path ZC_GetBaseParamsDir()
 {
     // Copied from GetDefaultDataDir and adapter for zcash params.
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\DOGECParams
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\DOGECParams
-    // Mac: ~/Library/Application Support/DOGECParams
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\DEVParams
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\DEVParams
+    // Mac: ~/Library/Application Support/DEVParams
     // Unix: ~/.deviant-params
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "DOGECParams";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "DEVParams";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -400,7 +400,7 @@ static fs::path ZC_GetBaseParamsDir()
     // Mac
     pathRet /= "Library/Application Support";
     TryCreateDirectory(pathRet);
-    return pathRet / "DOGECParams";
+    return pathRet / "DEVParams";
 #else
     // Unix
     return pathRet / ".deviant-params";
@@ -546,13 +546,13 @@ void ClearDatadirCache()
 
 fs::path GetConfigFile()
 {
-    fs::path pathConfigFile(gArgs.GetArg("-conf", DOGEC_CONF_FILENAME));
+    fs::path pathConfigFile(gArgs.GetArg("-conf", DEV_CONF_FILENAME));
     return AbsPathForConfigVal(pathConfigFile, false);
 }
 
 fs::path GetMasternodeConfigFile()
 {
-    fs::path pathConfigFile(gArgs.GetArg("-mnconf", DOGEC_MASTERNODE_CONF_FILENAME));
+    fs::path pathConfigFile(gArgs.GetArg("-mnconf", DEV_MASTERNODE_CONF_FILENAME));
     return AbsPathForConfigVal(pathConfigFile);
 }
 
@@ -597,7 +597,7 @@ fs::path AbsPathForConfigVal(const fs::path& path, bool net_specific)
 #ifndef WIN32
 fs::path GetPidFile()
 {
-    fs::path pathPidFile(gArgs.GetArg("-pid", DOGEC_PID_FILENAME));
+    fs::path pathPidFile(gArgs.GetArg("-pid", DEV_PID_FILENAME));
     return AbsPathForConfigVal(pathPidFile);
 }
 

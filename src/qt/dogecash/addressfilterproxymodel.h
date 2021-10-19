@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_CORE_NEW_GUI_ADDRESSFILTERPROXYMODEL_H
-#define DOGEC_CORE_NEW_GUI_ADDRESSFILTERPROXYMODEL_H
+#ifndef DEV_CORE_NEW_GUI_ADDRESSFILTERPROXYMODEL_H
+#define DEV_CORE_NEW_GUI_ADDRESSFILTERPROXYMODEL_H
 
 #include <QSortFilterProxyModel>
 #include "addresstablemodel.h"
@@ -48,4 +48,4 @@ private:
 };
 
 
-#endif //DOGEC_CORE_NEW_GUI_ADDRESSFILTERPROXYMODEL_H
+#endif //DEV_CORE_NEW_GUI_ADDRESSFILTERPROXYMODEL_H

@@ -6,8 +6,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_AMOUNT_H
-#define DOGEC_AMOUNT_H
+#ifndef DEV_AMOUNT_H
+#define DEV_AMOUNT_H
 
 #include <stdint.h>
 
@@ -17,4 +17,4 @@ typedef int64_t CAmount;
 static const CAmount COIN = 100000000;
 static const CAmount CENT = 1000000;
 
-#endif //  DOGEC_AMOUNT_H
+#endif //  DEV_AMOUNT_H

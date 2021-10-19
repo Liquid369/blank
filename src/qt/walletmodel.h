@@ -6,8 +6,8 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_QT_WALLETMODEL_H
-#define DOGEC_QT_WALLETMODEL_H
+#ifndef DEV_QT_WALLETMODEL_H
+#define DEV_QT_WALLETMODEL_H
 
 #include "askpassphrasedialog.h"
 #include "paymentrequestplus.h"
@@ -435,4 +435,4 @@ public Q_SLOTS:
     bool updateAddressBookLabels(const CWDestination& address, const std::string& strName, const std::string& strPurpose);
 };
 
-#endif // DOGEC_QT_WALLETMODEL_H
+#endif // DEV_QT_WALLETMODEL_H

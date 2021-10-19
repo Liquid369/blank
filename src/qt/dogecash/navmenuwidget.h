@@ -10,7 +10,7 @@
 #include <QWidget>
 #include "qt/deviant/pwidget.h"
 
-class DOGECGUI;
+class DEVGUI;
 
 namespace Ui {
 class NavMenuWidget;
@@ -21,7 +21,7 @@ class NavMenuWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit NavMenuWidget(DOGECGUI* mainWindow, QWidget *parent = nullptr);
+    explicit NavMenuWidget(DEVGUI* mainWindow, QWidget *parent = nullptr);
     ~NavMenuWidget();
 
     void loadWalletModel() override;

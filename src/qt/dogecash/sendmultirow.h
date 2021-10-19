@@ -29,7 +29,7 @@ class SendMultiRow : public PWidget
     Q_OBJECT
 
 public:
-    explicit SendMultiRow(DOGECGUI* _window, PWidget *parent = nullptr);
+    explicit SendMultiRow(DEVGUI* _window, PWidget *parent = nullptr);
     ~SendMultiRow();
 
     void hideLabels();

@@ -27,7 +27,7 @@ bool DisconnectZerocoinTx(const CTransaction& tx, CZerocoinDB* zerocoinDB)
                     if (isPublicSpend) {
                         PublicCoinSpend publicSpend(params);
                         CValidationState state;
-                        if (!ZDOGECModule::ParseZerocoinPublicSpend(txin, tx, state, publicSpend)) {
+                        if (!ZDEVModule::ParseZerocoinPublicSpend(txin, tx, state, publicSpend)) {
                             return error("Failed to parse public spend");
                         }
                         serial = publicSpend.getCoinSerialNumber();

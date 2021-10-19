@@ -15,7 +15,7 @@
 #include "bitcoinunits.h"
 #include "qt/deviant/qtutils.h"
 
-SettingsDisplayOptionsWidget::SettingsDisplayOptionsWidget(DOGECGUI* _window, QWidget *parent) :
+SettingsDisplayOptionsWidget::SettingsDisplayOptionsWidget(DEVGUI* _window, QWidget *parent) :
     PWidget(_window,parent),
     ui(new Ui::SettingsDisplayOptionsWidget)
 {

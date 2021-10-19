@@ -1713,7 +1713,7 @@ static bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockInd
                 if (isPublicSpend) {
                     libzerocoin::ZerocoinParams* params = consensus.Zerocoin_Params(false);
                     PublicCoinSpend publicSpend(params);
-                    if (!ZDOGECModule::ParseZerocoinPublicSpend(txIn, tx, state, publicSpend)){
+                    if (!ZDEVModule::ParseZerocoinPublicSpend(txIn, tx, state, publicSpend)){
                         return false;
                     }
                     nValueIn += publicSpend.getDenomination() * COIN;
@@ -3362,17 +3362,17 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
 
         // Inputs
         std::vector<CTxIn> deviantInputs;
-        std::vector<CTxIn> zDOGECInputs;
+        std::vector<CTxIn> zDEVInputs;
 
         for (const CTxIn& stakeIn : stakeTxIn.vin) {
             if(stakeIn.IsZerocoinSpend()){
-                zDOGECInputs.push_back(stakeIn);
+                zDEVInputs.push_back(stakeIn);
             }else{
                 deviantInputs.push_back(stakeIn);
             }
         }
-        const bool hasDOGECInputs = !deviantInputs.empty();
-        const bool hasZDOGECInputs = !zDOGECInputs.empty();
+        const bool hasDEVInputs = !deviantInputs.empty();
+        const bool hasZDEVInputs = !zDEVInputs.empty();
 
         // ZC started after PoS.
         // Check for serial double spent on the same block, TODO: Move this to the proper method..
@@ -3395,7 +3395,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
                         if (isPublicSpend) {
                             libzerocoin::ZerocoinParams* params = consensus.Zerocoin_Params(false);
                             PublicCoinSpend publicSpend(params);
-                            if (!ZDOGECModule::ParseZerocoinPublicSpend(in, tx, state, publicSpend)){
+                            if (!ZDEVModule::ParseZerocoinPublicSpend(in, tx, state, publicSpend)){
                                 return false;
                             }
                             spend = publicSpend;
@@ -3411,7 +3411,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
                     }
                 }
                 if(tx.IsCoinStake()) continue;
-                if(hasDOGECInputs) {
+                if(hasDEVInputs) {
                     // Check if coinstake input is double spent inside the same block
                     for (const CTxIn& deviantIn : deviantInputs)
                         if(deviantIn.prevout == in.prevout)
@@ -3454,11 +3454,11 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
                     for (const CTxIn& in: t.vin) {
                         // If this input is a zerocoin spend, and the coinstake has zerocoin inputs
                         // then store the serials for later check
-                        if(hasZDOGECInputs && in.IsZerocoinSpend())
+                        if(hasZDEVInputs && in.IsZerocoinSpend())
                             vBlockSerials.push_back(TxInToZerocoinSpend(in).getCoinSerialNumber());
 
                         // Loop through every input of the staking tx
-                        if (hasDOGECInputs) {
+                        if (hasDEVInputs) {
                             for (const CTxIn& stakeIn : deviantInputs)
                                 // check if the tx input is double spending any coinstake input
                                 if (stakeIn.prevout == in.prevout)
@@ -3478,9 +3478,9 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
             // Split height
             splitHeight = prev->nHeight;
 
-            // Now that this loop if completed. Check if we have zDOGEC inputs.
-            if(hasZDOGECInputs) {
-                for (const CTxIn& zdevInput : zDOGECInputs) {
+            // Now that this loop if completed. Check if we have zDEV inputs.
+            if(hasZDEVInputs) {
+                for (const CTxIn& zdevInput : zDEVInputs) {
                     libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zdevInput);
 
                     // First check if the serials were not already spent on the forked blocks.
@@ -3521,7 +3521,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
             }
         } else {
             if(!isBlockFromFork)
-                for (const CTxIn& zdevInput : zDOGECInputs) {
+                for (const CTxIn& zdevInput : zDEVInputs) {
                         libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zdevInput);
                         if (!ContextualCheckZerocoinSpend(stakeTxIn, &spend, pindex->nHeight, UINT256_ZERO))
                             return state.DoS(100,error("%s: main chain ContextualCheckZerocoinSpend failed for tx %s", __func__,

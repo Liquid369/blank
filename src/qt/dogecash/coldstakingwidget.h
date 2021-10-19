@@ -26,7 +26,7 @@
 #include <QSpacerItem>
 #include <atomic>
 
-class DOGECGUI;
+class DEVGUI;
 class WalletModel;
 class CSDelegationHolder;
 
@@ -43,7 +43,7 @@ class ColdStakingWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit ColdStakingWidget(DOGECGUI* parent);
+    explicit ColdStakingWidget(DEVGUI* parent);
     ~ColdStakingWidget();
 
     void loadWalletModel() override;

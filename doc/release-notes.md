@@ -26,7 +26,7 @@ For the following packages, no action is required by the user:
 
 For the other packages, the user must save the param files in the proper location, before being able to run Deviant v5.0.0:
 - macOS/Linux `tar.gz` tarballs include a bash script (`install-params.sh`) to copy the parameters in the appropriate location.
-- Windows `.zip` users need to manually copy the files from the `share/deviant` folder to the `%APPDATA%\DOGECParams` directory.
+- Windows `.zip` users need to manually copy the files from the `share/deviant` folder to the `%APPDATA%\DEVParams` directory.
 - self compilers can run the script from the repository sources (`params/install-params.sh`), or copy the files directly from the `params` subdirectory.
 
 Compatibility

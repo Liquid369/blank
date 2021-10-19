@@ -26,7 +26,7 @@ class SettingsMainOptionsWidget : public PWidget
     Q_OBJECT
 
 public:
-    explicit SettingsMainOptionsWidget(DOGECGUI* _window, QWidget *parent = nullptr);
+    explicit SettingsMainOptionsWidget(DEVGUI* _window, QWidget *parent = nullptr);
     ~SettingsMainOptionsWidget();
 
     void setMapper(QDataWidgetMapper *mapper);

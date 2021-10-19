@@ -51,7 +51,7 @@ public:
     }
 };
 
-TopBar::TopBar(DOGECGUI* _mainWindow, QWidget *parent) :
+TopBar::TopBar(DEVGUI* _mainWindow, QWidget *parent) :
     PWidget(_mainWindow, parent),
     ui(new Ui::TopBar)
 {

@@ -11,7 +11,7 @@ from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import set_node_times, assert_equal
 
 
-class DOGEC_RPCSporkTest(DeviantTestFramework):
+class DEV_RPCSporkTest(DeviantTestFramework):
 
     def set_test_params(self):
         self.setup_clean_chain = True
@@ -72,5 +72,5 @@ class DOGEC_RPCSporkTest(DeviantTestFramework):
 
 
 if __name__ == '__main__':
-    DOGEC_RPCSporkTest().main()
+    DEV_RPCSporkTest().main()
 

@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_INTERFACES_WALLET_H
-#define DOGEC_INTERFACES_WALLET_H
+#ifndef DEV_INTERFACES_WALLET_H
+#define DEV_INTERFACES_WALLET_H
 
 #include <amount.h>
 #include "wallet/wallet.h"

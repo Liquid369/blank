@@ -11,7 +11,7 @@
 #include "optionsmodel.h"
 #include "qt/deviant/qtutils.h"
 
-SettingsNetworkWidget::SettingsNetworkWidget(DOGECGUI* _window, QWidget *parent) :
+SettingsNetworkWidget::SettingsNetworkWidget(DEVGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsNetworkWidget)
 {

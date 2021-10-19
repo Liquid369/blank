@@ -14,7 +14,7 @@
 
 #include <QGraphicsDropShadowEffect>
 
-SettingsBackupWallet::SettingsBackupWallet(DOGECGUI* _window, QWidget *parent) :
+SettingsBackupWallet::SettingsBackupWallet(DEVGUI* _window, QWidget *parent) :
     PWidget(_window, parent),
     ui(new Ui::SettingsBackupWallet)
 {

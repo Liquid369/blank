@@ -5,8 +5,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
-#ifndef DOGEC_UTIL_TEST_H
-#define DOGEC_UTIL_TEST_H
+#ifndef DEV_UTIL_TEST_H
+#define DEV_UTIL_TEST_H
 
 #include "sapling/address.h"
 #include "sapling/incrementalmerkletree.h"
@@ -79,4 +79,4 @@ CWalletTx GetValidSaplingReceive(const Consensus::Params& consensusParams,
                                  bool genNewKey = false,
                                  const CWallet* pwalletIn = nullptr);
 
-#endif // DOGEC_UTIL_TEST_H
+#endif // DEV_UTIL_TEST_H

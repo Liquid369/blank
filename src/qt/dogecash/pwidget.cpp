@@ -10,13 +10,13 @@
 #include <QRunnable>
 #include <QThreadPool>
 
-PWidget::PWidget(DOGECGUI* _window, QWidget *parent) : QWidget((parent) ? parent : _window), window(_window) { init(); }
+PWidget::PWidget(DEVGUI* _window, QWidget *parent) : QWidget((parent) ? parent : _window), window(_window) { init(); }
 PWidget::PWidget(PWidget* parent) : QWidget(parent), window(parent->getWindow()) { init(); }
 
 void PWidget::init()
 {
     if (window)
-        connect(window, &DOGECGUI::themeChanged, this, &PWidget::onChangeTheme);
+        connect(window, &DEVGUI::themeChanged, this, &PWidget::onChangeTheme);
 }
 
 void PWidget::setClientModel(ClientModel* model)

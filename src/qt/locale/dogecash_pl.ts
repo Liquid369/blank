@@ -365,7 +365,7 @@ do stakingu</translation>
         <translation>ANULUJ</translation>
     </message>
     <message>
-        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DEVs from being stolen by malware infecting your computer.</source>
         <translation>Deviant zamknie się teraz, aby zakończyć proces szyfrowania. Pamiętaj, że zaszyfrowanie portfela nie chroni w pełni Twoich DEV przed kradzieżą przez złośliwe oprogramowanie infekujące Twój komputer.</translation>
     </message>
     <message>
@@ -739,7 +739,7 @@ do stakingu</translation>
         <translation>Błąd ładowania delegacji: %1</translation>
     </message>
     <message>
-        <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
+        <source>You can delegate your DEVs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation>Możesz delegować swoje DEV, używając gorącego węzła (węzeł online 24/7)
 stake w Twoim imieniu, podczas gdy klucze są bezpiecznie offline.</translation>
@@ -1851,36 +1851,36 @@ https://www.transifex.com/Deviant/Deviant-project-translations </translation>
         <translation>Mapuj port za pomocą &amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of DEV units to zDOGEC</source>
-        <translation>Włącz automatyczny minting DEV do zDOGEC</translation>
+        <source>Enable automatic minting of DEV units to zDEV</source>
+        <translation>Włącz automatyczny minting DEV do zDEV</translation>
     </message>
     <message>
-        <source>Enable zDOGEC Automint</source>
-        <translation>Włącz zDOGEC Automint</translation>
+        <source>Enable zDEV Automint</source>
+        <translation>Włącz zDEV Automint</translation>
     </message>
     <message>
-        <source>Enable automatic zDOGEC minting from specific addresses</source>
-        <translation>Włącz automatyczne wybijanie zDOGEC-ów z określonych adresów</translation>
+        <source>Enable automatic zDEV minting from specific addresses</source>
+        <translation>Włącz automatyczne wybijanie zDEV-ów z określonych adresów</translation>
     </message>
     <message>
         <source>Enable Automint Addresses</source>
         <translation>Włącz adresy Automint</translation>
     </message>
     <message>
-        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
-        <translation>Procent DEV, które są automatycznie konwertowane na zDOGEC za pomocą protokołu Zerocoin (min: 10%)</translation>
+        <source>Percentage of incoming DEV which get automatically converted to zDEV via Zerocoin Protocol (min: 10%)</source>
+        <translation>Procent DEV, które są automatycznie konwertowane na zDEV za pomocą protokołu Zerocoin (min: 10%)</translation>
     </message>
     <message>
-        <source>Percentage of autominted zDOGEC</source>
-        <translation>Procent automint zDOGEC</translation>
+        <source>Percentage of autominted zDEV</source>
+        <translation>Procent automint zDEV</translation>
     </message>
     <message>
         <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
         <translation>Zaczekaj z automatyczną konwersją na Zerocoin, aż będzie dostępna wystarczająca wartość DEV dla tego nominału</translation>
     </message>
     <message>
-        <source>Preferred Automint zDOGEC Denomination</source>
-        <translation>Preferowane nominały Automint zDOGEC</translation>
+        <source>Preferred Automint zDEV Denomination</source>
+        <translation>Preferowane nominały Automint zDEV</translation>
     </message>
     <message>
         <source>Stake split threshold:</source>
@@ -2032,7 +2032,7 @@ https://www.transifex.com/Deviant/Deviant-project-translations </translation>
     </message>
 </context>
 <context>
-    <name>DOGECGUI</name>
+    <name>DEVGUI</name>
     <message>
         <source>Deviant Core</source>
         <translation>Deviant Core</translation>
@@ -2642,8 +2642,8 @@ Adres: %4
         <translation>Standardowa ścieżka kopii zapasowej:</translation>
     </message>
     <message>
-        <source>Custom zDOGEC Backup Path:</source>
-        <translation>standardowa ścieżka kopii zapasowej zDOGEC:</translation>
+        <source>Custom zDEV Backup Path:</source>
+        <translation>standardowa ścieżka kopii zapasowej zDEV:</translation>
     </message>
     <message>
         <source>Custom Backups Threshold:</source>
@@ -3349,12 +3349,12 @@ Monety te nie będą już cold-staked.</translation>
         <translation>Nie masz żadnego %1 do wybrania.</translation>
     </message>
     <message>
-        <source>Error generating address to shield DOGECs</source>
+        <source>Error generating address to shield DEVs</source>
         <translation>Błąd podczas generowania adresu dla shield DEV</translation>
     </message>
     <message>
-        <source>You don't have any transparent DOGECs to shield.</source>
-        <translation>Nie masz żadnych transparentnych DOGECs do shield.</translation>
+        <source>You don't have any transparent DEVs to shield.</source>
+        <translation>Nie masz żadnych transparentnych DEVs do shield.</translation>
     </message>
     <message>
         <source>No contacts available, you can go to the contacts screen and add some there!</source>
@@ -3730,12 +3730,12 @@ Sprawdź, czy zainstalowałeś określony edytor tekstu.</translation>
         <translation>Eksportuj listę adresów</translation>
     </message>
     <message>
-        <source>DOGEC_tx_csv_export(*.csv)</source>
-        <translation>DOGEC_tx_csv_export(*.csv)</translation>
+        <source>DEV_tx_csv_export(*.csv)</source>
+        <translation>DEV_tx_csv_export(*.csv)</translation>
     </message>
     <message>
-        <source>DOGEC_addresses_csv_export(*.csv)</source>
-        <translation>DOGEC_addresses_csv_export(*.csv)</translation>
+        <source>DEV_addresses_csv_export(*.csv)</source>
+        <translation>DEV_addresses_csv_export(*.csv)</translation>
     </message>
     <message>
         <source>Please select a folder to export the csv file first.</source>

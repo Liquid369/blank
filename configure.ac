@@ -26,9 +26,9 @@ fi
 
 AC_CANONICAL_HOST
 
-AH_TOP([#ifndef DOGEC_CONFIG_H])
-AH_TOP([#define DOGEC_CONFIG_H])
-AH_BOTTOM([#endif //DOGEC_CONFIG_H])
+AH_TOP([#ifndef DEV_CONFIG_H])
+AH_TOP([#define DEV_CONFIG_H])
+AH_BOTTOM([#endif //DEV_CONFIG_H])
 
 dnl faketime breaks configure and is only needed for make. Disable it here.
 unset FAKETIME

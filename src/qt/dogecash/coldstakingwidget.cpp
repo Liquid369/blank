@@ -73,7 +73,7 @@ private:
     CSRow *cachedRow = nullptr;
 };
 
-ColdStakingWidget::ColdStakingWidget(DOGECGUI* parent) :
+ColdStakingWidget::ColdStakingWidget(DEVGUI* parent) :
     PWidget(parent),
     ui(new Ui::ColdStakingWidget),
     isLoading(false)

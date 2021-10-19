@@ -3,8 +3,8 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DOGEC_INTERFACES_HANDLER_H
-#define DOGEC_INTERFACES_HANDLER_H
+#ifndef DEV_INTERFACES_HANDLER_H
+#define DEV_INTERFACES_HANDLER_H
 
 #include <memory>
 
@@ -33,4 +33,4 @@ std::unique_ptr<Handler> MakeHandler(boost::signals2::connection connection);
 
 } // namespace interfaces
 
-#endif // DOGEC_INTERFACES_HANDLER_H
+#endif // DEV_INTERFACES_HANDLER_H
