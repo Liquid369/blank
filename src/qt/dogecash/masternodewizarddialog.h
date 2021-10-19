@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -10,10 +10,10 @@
 #define MASTERNODEWIZARDDIALOG_H
 
 #include "walletmodel.h"
-#include "qt/dogecash/focuseddialog.h"
-#include "qt/dogecash/snackbar.h"
+#include "qt/deviant/focuseddialog.h"
+#include "qt/deviant/snackbar.h"
 #include "masternodeconfig.h"
-#include "qt/dogecash/pwidget.h"
+#include "qt/deviant/pwidget.h"
 
 class WalletModel;
 

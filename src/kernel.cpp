@@ -2,7 +2,7 @@
 // Copyright (c) 2013-2014 The NovaCoin Developers
 // Copyright (c) 2014-2018 The BlackCoin Developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -17,8 +17,8 @@
 #include "util.h"
 #include "utilmoneystr.h"
 #include "validation.h"
-#include "zdogecchain.h"
-#include "zdogec/zpos.h"
+#include "zdevchain.h"
+#include "zdev/zpos.h"
 
 /**
  * CStakeKernel Constructor
@@ -109,8 +109,8 @@ bool LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::uni
     // Construct the stakeinput object
     const CTxIn& txin = block.vtx[1]->vin[0];
     stake = txin.IsZerocoinSpend() ?
-            std::unique_ptr<CStakeInput>(new CLegacyzdogecStake()) :
-            std::unique_ptr<CStakeInput>(CDogeCashStake::NewDogeCashStake(txin));
+            std::unique_ptr<CStakeInput>(new CLegacyzdevStake()) :
+            std::unique_ptr<CStakeInput>(CDeviantStake::NewDeviantStake(txin));
 
     return stake && stake->InitFromTxIn(txin);
 }

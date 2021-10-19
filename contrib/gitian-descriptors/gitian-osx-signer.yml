@@ -1,5 +1,5 @@
 ---
-name: "dogecash-dmg-signer"
+name: "deviant-dmg-signer"
 distro: "ubuntu"
 suites:
 - "bionic"
@@ -8,10 +8,10 @@ architectures:
 packages:
 - "faketime"
 remotes:
-- "url": "https://github.com/dogecash/dogecash-detached-sigs.git"
+- "url": "https://github.com/deviant/deviant-detached-sigs.git"
   "dir": "signature"
 files:
-- "dogecash-osx-unsigned.tar.gz"
+- "deviant-osx-unsigned.tar.gz"
 script: |
   set -e -o pipefail
 
@@ -30,8 +30,8 @@ script: |
     chmod +x ${WRAP_DIR}/${prog}
   done
 
-  UNSIGNED=dogecash-osx-unsigned.tar.gz
-  SIGNED=dogecash-osx-signed.dmg
+  UNSIGNED=deviant-osx-unsigned.tar.gz
+  SIGNED=deviant-osx-signed.dmg
 
   tar -xf ${UNSIGNED}
   OSX_VOLNAME="$(cat osx_volname)"

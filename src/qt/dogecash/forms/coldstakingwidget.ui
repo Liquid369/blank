@@ -235,7 +235,7 @@ stake on your behalf, while you keep the keys securely offline.</string>
                 <item alignment="Qt::AlignTop">
                  <widget class="QLabel" name="labelSubtitle2">
                   <property name="text">
-                   <string>Accept DOGEC delegation / Delegate DOGEC</string>
+                   <string>Accept DEV delegation / Delegate DEV</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -878,7 +878,7 @@ stake on your behalf, while you keep the keys securely offline.</string>
   <customwidget>
    <class>OptionButton</class>
    <extends>QWidget</extends>
-   <header>qt/dogecash/optionbutton.h</header>
+   <header>qt/deviant/optionbutton.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

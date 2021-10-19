@@ -1,17 +1,17 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/settings/settingswalletoptionswidget.h"
-#include "qt/dogecash/settings/forms/ui_settingswalletoptionswidget.h"
+#include "qt/deviant/settings/settingswalletoptionswidget.h"
+#include "qt/deviant/settings/forms/ui_settingswalletoptionswidget.h"
 #include <QListView>
 #include "optionsmodel.h"
 #include "clientmodel.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/qtutils.h"
 
 SettingsWalletOptionsWidget::SettingsWalletOptionsWidget(DOGECGUI* _window, QWidget *parent) :
     PWidget(_window, parent),

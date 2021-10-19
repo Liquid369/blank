@@ -117,11 +117,11 @@ TESTS =
 BENCHMARKS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += dogecashd
+  bin_PROGRAMS += deviantd
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += dogecash-cli dogecash-tx
+  bin_PROGRAMS += deviant-cli deviant-tx
 endif
 
 LIBSAPLING_H = \
@@ -143,7 +143,7 @@ LIBSAPLING_H = \
   sapling/sapling_operation.h
 
 .PHONY: FORCE cargo-build check-symbols check-security
-# DogeCash Core #
+# Deviant Core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrdb.h \
@@ -295,10 +295,10 @@ BITCOIN_CORE_H = \
   wallet/wallet.h \
   wallet/walletdb.h \
   warnings.h \
-  zdogecchain.h \
-  zdogec/mintpool.h \
-  zdogec/zerocoin.h \
-  zdogec/zpos.h \
+  zdevchain.h \
+  zdev/mintpool.h \
+  zdev/zerocoin.h \
+  zdev/zpos.h \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h \
   zmq/zmqnotificationinterface.h \
@@ -310,7 +310,7 @@ obj/build.h: FORCE
 	  "$(abs_top_srcdir)"
 libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between dogecashd and dogecash-qt
+# server: shared between deviantd and deviant-qt
 libbitcoin_server_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
 libbitcoin_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_server_a_SOURCES = \
@@ -358,7 +358,7 @@ libbitcoin_server_a_SOURCES = \
   txmempool.cpp \
   validation.cpp \
   validationinterface.cpp \
-  zdogecchain.cpp \
+  zdevchain.cpp \
   $(BITCOIN_CORE_H) \
   $(LIBSAPLING_H)
 
@@ -371,7 +371,7 @@ libbitcoin_zmq_a_SOURCES = \
   zmq/zmqpublishnotifier.cpp
 endif
 
-# wallet: shared between dogecashd and dogecash-qt, but only linked
+# wallet: shared between deviantd and deviant-qt, but only linked
 # when wallet enabled
 libbitcoin_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
@@ -405,10 +405,10 @@ libbitcoin_wallet_a_SOURCES = \
   destination_io.cpp \
   wallet/wallet.cpp \
   wallet/walletdb.cpp \
-  zdogec/zerocoin.cpp \
-  zdogec/mintpool.cpp \
+  zdev/zerocoin.cpp \
+  zdev/mintpool.cpp \
   stakeinput.cpp \
-  zdogec/zpos.cpp \
+  zdev/zpos.cpp \
   $(BITCOIN_CORE_H) \
   $(LIBSAPLING_H)
 
@@ -467,7 +467,7 @@ libzerocoin_libbitcoin_zerocoin_a_SOURCES = \
   libzerocoin/Params.h \
   libzerocoin/SpendType.h \
   libzerocoin/ZerocoinDefines.h \
-  zdogec/zdogecmodule.h \
+  zdev/zdevmodule.h \
   libzerocoin/bignum.cpp \
   libzerocoin/Accumulator.cpp \
   libzerocoin/Coin.cpp \
@@ -476,7 +476,7 @@ libzerocoin_libbitcoin_zerocoin_a_SOURCES = \
   libzerocoin/Denominations.cpp \
   libzerocoin/ParamGeneration.cpp \
   libzerocoin/Params.cpp \
-  zdogec/zdogecmodule.cpp
+  zdev/zdevmodule.cpp
 if USE_NUM_GMP
   libzerocoin_libbitcoin_zerocoin_a_SOURCES += libzerocoin/bignum_gmp.cpp
 endif
@@ -484,7 +484,7 @@ if USE_NUM_OPENSSL
   libzerocoin_libbitcoin_zerocoin_a_SOURCES += libzerocoin/bignum_openssl.cpp
 endif
 
-# common: shared between dogecashd, and dogecash-qt and non-server tools
+# common: shared between deviantd, and deviant-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_common_a_SOURCES = \
@@ -498,7 +498,7 @@ libbitcoin_common_a_SOURCES = \
   consensus/merkle.cpp \
   primitives/block.cpp \
   primitives/transaction.cpp \
-  zdogec/zerocoin.cpp \
+  zdev/zerocoin.cpp \
   core_read.cpp \
   core_write.cpp \
   hash.cpp \
@@ -583,7 +583,7 @@ libsapling_a_SOURCES += compat/glibc_compat.cpp
 AM_LDFLAGS += $(COMPAT_LDFLAGS)
 endif
 
-# cli: shared between dogecash-cli and dogecash-qt
+# cli: shared between deviant-cli and deviant-qt
 libbitcoin_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
 libbitcoin_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 libbitcoin_cli_a_SOURCES = \
@@ -594,16 +594,16 @@ libbitcoin_cli_a_SOURCES = \
 nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# dogecashd binary #
-dogecashd_SOURCES = dogecashd.cpp
-dogecashd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-dogecashd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-dogecashd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# deviantd binary #
+deviantd_SOURCES = deviantd.cpp
+deviantd_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+deviantd_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+deviantd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-dogecashd_SOURCES += dogecashd-res.rc
+deviantd_SOURCES += deviantd-res.rc
 endif
-dogecashd_LDADD = \
+deviantd_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_COMMON) \
@@ -620,19 +620,19 @@ dogecashd_LDADD = \
   $(LIBRUSTZCASH) \
   $(LIBZCASH_LIBS)
 
-dogecashd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
+deviantd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS)
 
-# dogecash-cli binary #
-dogecash_cli_SOURCES = dogecash-cli.cpp
-dogecash_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-dogecash_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-dogecash_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# deviant-cli binary #
+deviant_cli_SOURCES = deviant-cli.cpp
+deviant_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+deviant_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+deviant_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-dogecash_cli_SOURCES += dogecash-cli-res.rc
+deviant_cli_SOURCES += deviant-cli-res.rc
 endif
 
-dogecash_cli_LDADD = \
+deviant_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
@@ -641,20 +641,20 @@ dogecash_cli_LDADD = \
   $(LIBRUSTZCASH) \
   $(LIBZCASH_LIBS)
 
-dogecash_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+deviant_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
-# dogecash-tx binary #
-dogecash_tx_SOURCES = dogecash-tx.cpp
-dogecash_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-dogecash_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-dogecash_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# deviant-tx binary #
+deviant_tx_SOURCES = deviant-tx.cpp
+deviant_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+deviant_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+deviant_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-dogecash_tx_SOURCES += dogecash-tx-res.rc
+deviant_tx_SOURCES += deviant-tx-res.rc
 endif
 
-dogecash_tx_LDADD = \
+deviant_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_ZEROCOIN) \
@@ -665,7 +665,7 @@ dogecash_tx_LDADD = \
   $(LIBRUSTZCASH) \
   $(LIBZCASH_LIBS)
 
-dogecash_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+deviant_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
 # bitcoinconsensus library #
@@ -724,7 +724,7 @@ CLEANFILES += util/*.gcda util/*.gcno
 CLEANFILES += wallet/*.gcda wallet/*.gcno
 CLEANFILES += wallet/test/*.gcda wallet/test/*.gcno
 CLEANFILES += zmq/*.gcda zmq/*.gcno
-CLEANFILES += zdogec/*.gcda zdogec/*.gcno
+CLEANFILES += zdev/*.gcda zdev/*.gcno
 CLEANFILES += obj/build.h
 
 CTAES_DIST =  crypto/ctaes/bench.c
@@ -736,12 +736,12 @@ CTAES_DIST += crypto/ctaes/test.c
 EXTRA_DIST = $(CTAES_DIST) rust
 
 
-config/dogecash-config.h: config/stamp-h1
+config/deviant-config.h: config/stamp-h1
 	@$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-config/stamp-h1: $(top_srcdir)/$(subdir)/config/dogecash-config.h.in $(top_builddir)/config.status
+config/stamp-h1: $(top_srcdir)/$(subdir)/config/deviant-config.h.in $(top_builddir)/config.status
 	$(AM_V_at)$(MAKE) -C $(top_builddir) $(subdir)/$(@)
-$(top_srcdir)/$(subdir)/config/dogecash-config.h.in:  $(am__configure_deps)
-	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/dogecash-config.h.in
+$(top_srcdir)/$(subdir)/config/deviant-config.h.in:  $(am__configure_deps)
+	$(AM_V_at)$(MAKE) -C $(top_srcdir) $(subdir)/config/deviant-config.h.in
 
 clean-local:
 	-$(MAKE) -C secp256k1 clean

@@ -121,7 +121,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalPercentagezdogec">
+         <layout class="QHBoxLayout" name="horizontalPercentagezdev">
           <item>
            <widget class="QLabel" name="labelTitleUnit">
             <property name="text">
@@ -130,7 +130,7 @@
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacerPercentagezdogec">
+           <spacer name="horizontalSpacerPercentagezdev">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -161,7 +161,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalDenomzdogec">
+         <layout class="QHBoxLayout" name="horizontalDenomzdev">
           <item>
            <widget class="QLabel" name="labelTitleDigits">
             <property name="text">
@@ -170,7 +170,7 @@
            </widget>
           </item>
           <item>
-           <spacer name="horizontalDenomzdogec_1">
+           <spacer name="horizontalDenomzdev_1">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>

@@ -7,7 +7,7 @@ from decimal import Decimal
 from io import BytesIO
 
 from test_framework.mininode import CTransaction
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import (
     assert_array_result,
     hex_str_to_bytes,
@@ -19,7 +19,7 @@ def txFromHex(hexstring):
     tx.deserialize(f)
     return tx
 
-class ListTransactionsTest(DogeCashTestFramework):
+class ListTransactionsTest(DeviantTestFramework):
     def set_test_params(self):
         self.num_nodes = 2
         self.enable_mocktime()

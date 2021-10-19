@@ -13,7 +13,7 @@ static const int MODEL_UPDATE_DELAY = 1000;
 /* AskPassphraseDialog -- Maximum passphrase length */
 static const int MAX_PASSPHRASE_SIZE = 1024;
 
-/* DogeCash GUI -- Size of icons in status bar */
+/* Deviant GUI -- Size of icons in status bar */
 static const int STATUSBAR_ICONSIZE = 16;
 
 static const bool DEFAULT_SPLASHSCREEN = true;
@@ -49,9 +49,9 @@ static const int MAX_URI_LENGTH = 255;
 #define EXPORT_IMAGE_SIZE 256
 
 
-#define QAPP_ORG_NAME "DOGEC"
-#define QAPP_ORG_DOMAIN "dogec.io"
-#define QAPP_APP_NAME_DEFAULT "DogeCash-Qt"
-#define QAPP_APP_NAME_TESTNET "DogeCash-Qt-testnet"
+#define QAPP_ORG_NAME "DEV"
+#define QAPP_ORG_DOMAIN "dev.io"
+#define QAPP_APP_NAME_DEFAULT "Deviant-Qt"
+#define QAPP_APP_NAME_TESTNET "Deviant-Qt-testnet"
 
 #endif // BITCOIN_QT_GUICONSTANTS_H

@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT/X11 software license, see the accompanying
@@ -11,7 +11,7 @@
 
 #include "guiutil.h"
 #include "walletmodel.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/qtutils.h"
 
 #include <QUrl>
 #include <QFile>
@@ -21,7 +21,7 @@ OpenURIDialog::OpenURIDialog(QWidget* parent) : QDialog(parent, Qt::WindowSystem
 {
     ui->setupUi(this);
     this->setStyleSheet(parent->styleSheet());
-    ui->uriEdit->setPlaceholderText("dogecash:");
+    ui->uriEdit->setPlaceholderText("deviant:");
 
     ui->labelSubtitle->setText("URI");
     setCssProperty(ui->labelSubtitle, "text-title2-dialog");
@@ -83,8 +83,8 @@ void OpenURIDialog::on_selectFileButton_clicked()
         }
 
         QString str = QString::fromStdString(std::string(r.constData(), r.length()));
-        if (!str.startsWith("dogecash")) {
-            inform(tr("Invalid URI, not starting with \"dogecash\" prefix"));
+        if (!str.startsWith("deviant")) {
+            inform(tr("Invalid URI, not starting with \"deviant\" prefix"));
         }
         ui->uriEdit->setText(str);
     }

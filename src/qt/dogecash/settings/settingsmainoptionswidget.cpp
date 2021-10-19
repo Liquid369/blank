@@ -1,24 +1,24 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/settings/settingsmainoptionswidget.h"
-#include "qt/dogecash/settings/forms/ui_settingsmainoptionswidget.h"
+#include "qt/deviant/settings/settingsmainoptionswidget.h"
+#include "qt/deviant/settings/forms/ui_settingsmainoptionswidget.h"
 #include "QListView"
 
 #if defined(HAVE_CONFIG_H)
-#include "config/dogecash-config.h"
+#include "config/deviant-config.h"
 #endif
 
 #include "bitcoinunits.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
 #include "clientmodel.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/qtutils.h"
 
 #include "netbase.h"
 #include "txdb.h" // for -dbcache defaults
@@ -55,7 +55,7 @@ SettingsMainOptionsWidget::SettingsMainOptionsWidget(DOGECGUI* _window, QWidget 
     setCssProperty({ui->labelTitleSizeDb, ui->labelTitleThreads}, "text-main-settings");
 
     // Switch
-    ui->pushSwitchStart->setText(tr("Start DogeCash on system login"));
+    ui->pushSwitchStart->setText(tr("Start Deviant on system login"));
     ui->pushSwitchStart->setProperty("cssClass", "btn-switch");
 
     // Combobox

@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -10,8 +10,8 @@
 #define SETTINGSBITTOOLWIDGET_H
 
 #include <QWidget>
-#include "qt/dogecash/pwidget.h"
-#include "qt/dogecash/contactsdropdown.h"
+#include "qt/deviant/pwidget.h"
+#include "qt/deviant/contactsdropdown.h"
 #include "key.h"
 
 namespace Ui {

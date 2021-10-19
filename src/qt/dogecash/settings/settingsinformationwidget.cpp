@@ -1,18 +1,18 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/settings/settingsinformationwidget.h"
-#include "qt/dogecash/settings/forms/ui_settingsinformationwidget.h"
+#include "qt/deviant/settings/settingsinformationwidget.h"
+#include "qt/deviant/settings/forms/ui_settingsinformationwidget.h"
 
 #include "clientmodel.h"
 #include "chainparams.h"
 #include "db.h"
 #include "util.h"
 #include "guiutil.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/qtutils.h"
 
 #include <QDir>
 
@@ -104,7 +104,7 @@ SettingsInformationWidget::SettingsInformationWidget(DOGECGUI* _window,QWidget *
     });
     connect(ui->pushButtonFile, &QPushButton::clicked, [this](){
         if (!GUIUtil::openConfigfile())
-            inform(tr("Unable to open dogecash.conf with default application"));
+            inform(tr("Unable to open deviant.conf with default application"));
     });
     connect(ui->pushButtonNetworkMonitor, &QPushButton::clicked, this, &SettingsInformationWidget::openNetworkMonitor);
 }

@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -14,7 +14,7 @@
 #include <QAction>
 #include "walletmodel.h"
 #include "amount.h"
-#include "qt/dogecash/pwidget.h"
+#include "qt/deviant/pwidget.h"
 
 class WalletModel;
 class SendCoinsRecipient;

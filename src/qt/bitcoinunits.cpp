@@ -1,7 +1,7 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -24,7 +24,7 @@ BitcoinUnits::BitcoinUnits(QObject* parent) : QAbstractListModel(parent),
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(DOGEC);
+    unitlist.append(DEV);
     unitlist.append(mDOGEC);
     unitlist.append(uDOGEC);
     return unitlist;
@@ -33,7 +33,7 @@ QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 bool BitcoinUnits::valid(int unit)
 {
     switch (unit) {
-    case DOGEC:
+    case DEV:
     case mDOGEC:
     case uDOGEC:
         return true;
@@ -45,25 +45,25 @@ bool BitcoinUnits::valid(int unit)
 QString BitcoinUnits::id(int unit)
 {
     switch (unit) {
-    case DOGEC:
-        return QString("dogecash");
+    case DEV:
+        return QString("deviant");
     case mDOGEC:
-        return QString("mdogecash");
+        return QString("mdeviant");
     case uDOGEC:
-        return QString::fromUtf8("udogecash");
+        return QString::fromUtf8("udeviant");
     default:
         return QString("???");
     }
 }
 
-QString BitcoinUnits::name(int unit, bool iszdogec)
+QString BitcoinUnits::name(int unit, bool iszdev)
 {
     const QString CURR_UNIT = QString(CURRENCY_UNIT.c_str());
     QString z = "";
-    if(iszdogec) z = "z";
+    if(iszdev) z = "z";
     if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         switch (unit) {
-        case DOGEC:
+        case DEV:
             return z + CURR_UNIT;
         case mDOGEC:
             return z + QString("m") + CURR_UNIT;
@@ -74,7 +74,7 @@ QString BitcoinUnits::name(int unit, bool iszdogec)
         }
     } else {
         switch (unit) {
-        case DOGEC:
+        case DEV:
             return z + QString("t") + CURR_UNIT;
         case mDOGEC:
             return z + QString("mt") + CURR_UNIT;
@@ -91,7 +91,7 @@ QString BitcoinUnits::description(int unit)
     const QString CURR_UNIT = QString(CURRENCY_UNIT.c_str());
     if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         switch (unit) {
-        case DOGEC:
+        case DEV:
             return CURR_UNIT;
         case mDOGEC:
             return QString("Milli-") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000)");
@@ -102,7 +102,7 @@ QString BitcoinUnits::description(int unit)
         }
     } else {
         switch (unit) {
-        case DOGEC:
+        case DEV:
             return QString("Test") + CURR_UNIT;
         case mDOGEC:
             return QString("Milli-Test") + CURR_UNIT + QString(" (1 / 1" THIN_SP_UTF8 "000)");
@@ -117,7 +117,7 @@ QString BitcoinUnits::description(int unit)
 qint64 BitcoinUnits::factor(int unit)
 {
     switch (unit) {
-    case DOGEC:
+    case DEV:
         return 100000000;
     case mDOGEC:
         return 100000;
@@ -131,7 +131,7 @@ qint64 BitcoinUnits::factor(int unit)
 int BitcoinUnits::decimals(int unit)
 {
     switch (unit) {
-    case DOGEC:
+    case DEV:
         return 8;
     case mDOGEC:
         return 5;

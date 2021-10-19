@@ -255,7 +255,7 @@ padding-top:2px;
              <string notr="true">margin-left:8px;</string>
             </property>
             <property name="text">
-             <string>DogeCash address or contact label</string>
+             <string>Deviant address or contact label</string>
             </property>
            </widget>
           </item>
@@ -578,7 +578,7 @@ padding-top:2px;
                      <item>
                       <widget class="QLabel" name="labelAmountSend">
                        <property name="text">
-                        <string notr="true">0.00 DOGEC</string>
+                        <string notr="true">0.00 DEV</string>
                        </property>
                       </widget>
                      </item>
@@ -834,7 +834,7 @@ padding-top:2px;
   <customwidget>
    <class>OptionButton</class>
    <extends>QWidget</extends>
-   <header>qt/dogecash/optionbutton.h</header>
+   <header>qt/deviant/optionbutton.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

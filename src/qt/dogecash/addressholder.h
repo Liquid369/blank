@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -11,8 +11,8 @@
 
 #include <QWidget>
 #include <QColor>
-#include "qt/dogecash/myaddressrow.h"
-#include "qt/dogecash/furlistrow.h"
+#include "qt/deviant/myaddressrow.h"
+#include "qt/deviant/furlistrow.h"
 #include "guiutil.h"
 
 

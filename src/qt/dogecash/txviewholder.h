@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -9,8 +9,8 @@
 #ifndef TXVIEWHOLDER_H
 #define TXVIEWHOLDER_H
 
-#include "qt/dogecash/furlistrow.h"
-#include "qt/dogecash/txrow.h"
+#include "qt/deviant/furlistrow.h"
+#include "qt/deviant/txrow.h"
 #include "bitcoinunits.h"
 #include <transactionfilterproxy.h>
 

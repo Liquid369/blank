@@ -12,13 +12,13 @@ Two nodes. Node1 is under test. Node0 is providing transactions and generating b
 - connect node1 to node0. Verify that they sync and node1 receives its funds."""
 import shutil
 
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import (
     assert_equal,
     connect_nodes,
 )
 
-class KeypoolRestoreTest(DogeCashTestFramework):
+class KeypoolRestoreTest(DeviantTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 2

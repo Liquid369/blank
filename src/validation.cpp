@@ -6,7 +6,7 @@
 // Copyright (c) 2014-2018 The BlackCoin Developers
 // Copyright (c) 2019 MicroBitcoin developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -52,9 +52,9 @@
 #include "utilmoneystr.h"
 #include "validationinterface.h"
 #include "warnings.h"
-#include "zdogecchain.h"
-#include "zdogec/zerocoin.h"
-#include "zdogec/zdogecmodule.h"
+#include "zdevchain.h"
+#include "zdev/zerocoin.h"
+#include "zdev/zdevmodule.h"
 
 #include <future>
 
@@ -65,7 +65,7 @@
 
 
 #if defined(NDEBUG)
-#error "DogeCash cannot be compiled without assertions."
+#error "Deviant cannot be compiled without assertions."
 #endif
 
 /**
@@ -109,7 +109,7 @@ size_t nCoinCacheUsage = 5000 * 300;
 /* If the tip is older than this (in seconds), the node is considered to be in initial block download. */
 int64_t nMaxTipAge = DEFAULT_MAX_TIP_AGE;
 
-/** Fees smaller than this (in udogecash) are considered zero fee (for relaying, mining and transaction creation)
+/** Fees smaller than this (in udeviant) are considered zero fee (for relaying, mining and transaction creation)
  * We are ~100 times smaller then bitcoin now (2015-06-23), set minRelayTxFee only 10 times higher
  * so it's still 10 times lower comparing to bitcoin.
  */
@@ -1539,7 +1539,7 @@ static CCheckQueue<CScriptCheck> scriptcheckqueue(128);
 
 void ThreadScriptCheck()
 {
-    util::ThreadRename("dogecash-scriptch");
+    util::ThreadRename("deviant-scriptch");
     scriptcheckqueue.Thread();
 }
 
@@ -3005,7 +3005,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, bool fCheckPOW, bo
                 nHeight = (*mi).second->nHeight + 1;
         }
 
-        // DOGEC
+        // DEV
         // It is entierly possible that we don't have enough data and this could fail
         // (i.e. the block could indeed be valid). Store the block for later consideration
         // but issue an initial reject message.
@@ -3096,10 +3096,10 @@ bool CheckWork(const CBlock& block, const CBlockIndex* const pindexPrev)
     }
 
     if (block.nBits != nBitsRequired) {
-        // dogecash Specific reference to the block with the wrong threshold was used.
+        // deviant Specific reference to the block with the wrong threshold was used.
         const Consensus::Params& consensus = Params().GetConsensus();
-        if (block.nTime >= (uint32_t) consensus.nDogeCashBadBlockTime){
-            // reject DOGEC block minted with incorrect proof of work threshold
+        if (block.nTime >= (uint32_t) consensus.nDeviantBadBlockTime){
+            // reject DEV block minted with incorrect proof of work threshold
             return error("%s : incorrect proof of work at %d", __func__, pindexPrev->nHeight + 1);
         }
     }
@@ -3361,17 +3361,17 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
         const CTransaction &stakeTxIn = *block.vtx[1];
 
         // Inputs
-        std::vector<CTxIn> dogecashInputs;
+        std::vector<CTxIn> deviantInputs;
         std::vector<CTxIn> zDOGECInputs;
 
         for (const CTxIn& stakeIn : stakeTxIn.vin) {
             if(stakeIn.IsZerocoinSpend()){
                 zDOGECInputs.push_back(stakeIn);
             }else{
-                dogecashInputs.push_back(stakeIn);
+                deviantInputs.push_back(stakeIn);
             }
         }
-        const bool hasDOGECInputs = !dogecashInputs.empty();
+        const bool hasDOGECInputs = !deviantInputs.empty();
         const bool hasZDOGECInputs = !zDOGECInputs.empty();
 
         // ZC started after PoS.
@@ -3413,8 +3413,8 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
                 if(tx.IsCoinStake()) continue;
                 if(hasDOGECInputs) {
                     // Check if coinstake input is double spent inside the same block
-                    for (const CTxIn& dogecashIn : dogecashInputs)
-                        if(dogecashIn.prevout == in.prevout)
+                    for (const CTxIn& deviantIn : deviantInputs)
+                        if(deviantIn.prevout == in.prevout)
                             // double spent coinstake input inside block
                             return error("%s: double spent coinstake input inside block", __func__);
                 }
@@ -3459,7 +3459,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
 
                         // Loop through every input of the staking tx
                         if (hasDOGECInputs) {
-                            for (const CTxIn& stakeIn : dogecashInputs)
+                            for (const CTxIn& stakeIn : deviantInputs)
                                 // check if the tx input is double spending any coinstake input
                                 if (stakeIn.prevout == in.prevout)
                                     return state.DoS(100, error("%s: input already spent on a previous block", __func__));
@@ -3480,8 +3480,8 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
 
             // Now that this loop if completed. Check if we have zDOGEC inputs.
             if(hasZDOGECInputs) {
-                for (const CTxIn& zdogecInput : zDOGECInputs) {
-                    libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zdogecInput);
+                for (const CTxIn& zdevInput : zDOGECInputs) {
+                    libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zdevInput);
 
                     // First check if the serials were not already spent on the forked blocks.
                     CBigNum coinSerial = spend.getCoinSerialNumber();
@@ -3501,7 +3501,7 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
 
                     if (!ContextualCheckZerocoinSpendNoSerialCheck(stakeTxIn, &spend, pindex->nHeight, UINT256_ZERO))
                         return state.DoS(100,error("%s: forked chain ContextualCheckZerocoinSpend failed for tx %s", __func__,
-                                                   stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdogec");
+                                                   stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdev");
 
                 }
             }
@@ -3521,11 +3521,11 @@ bool AcceptBlock(const CBlock& block, CValidationState& state, CBlockIndex** ppi
             }
         } else {
             if(!isBlockFromFork)
-                for (const CTxIn& zdogecInput : zDOGECInputs) {
-                        libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zdogecInput);
+                for (const CTxIn& zdevInput : zDOGECInputs) {
+                        libzerocoin::CoinSpend spend = TxInToZerocoinSpend(zdevInput);
                         if (!ContextualCheckZerocoinSpend(stakeTxIn, &spend, pindex->nHeight, UINT256_ZERO))
                             return state.DoS(100,error("%s: main chain ContextualCheckZerocoinSpend failed for tx %s", __func__,
-                                    stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdogec");
+                                    stakeTxIn.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdev");
                 }
 
         }

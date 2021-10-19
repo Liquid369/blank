@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # Copyright (c) 2018 The Zcash developers
 # Copyright (c) 2020 The PIVX Developers
-# Copyright (c) 2020 The DogeCash Developers
+# Copyright (c) 2020 The Deviant Developers
 
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php .
 
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 
 from test_framework.messages import (
     CTransaction,
@@ -21,7 +21,7 @@ from test_framework.util import (
 from decimal import Decimal
 from io import BytesIO
 
-class MalleableSigsTest(DogeCashTestFramework):
+class MalleableSigsTest(DeviantTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 1
@@ -36,8 +36,8 @@ class MalleableSigsTest(DogeCashTestFramework):
         z_addr = node.getnewshieldaddress()
         shield_to = [{"address": z_addr, "amount": Decimal('10')}]
 
-        # Create rawtx shielding 10 DOGEC
-        self.log.info("Shielding 10 DOGEC...")
+        # Create rawtx shielding 10 DEV
+        self.log.info("Shielding 10 DEV...")
         rawtx_hex = node.rawshieldsendmany("from_transparent", shield_to)
         self.log.info("Raw tx created")
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# Copyright (c) 2020 The DogeCash Core developers
+# Copyright (c) 2020 The Deviant Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -12,7 +12,7 @@ from test_framework.util import (
 from decimal import Decimal
 
 # Test mempool interaction with Sapling transactions
-class SaplingMempoolTest(DogeCashTestFramework):
+class SaplingMempoolTest(DeviantTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 2
@@ -32,7 +32,7 @@ class SaplingMempoolTest(DogeCashTestFramework):
         # Sanity-check the test harness
         assert_equal([x.getblockcount() for x in self.nodes], [120] * self.num_nodes)
 
-        # miner sends a 10 DOGEC note to Alice
+        # miner sends a 10 DEV note to Alice
         self.log.info("Shielding some coins for Alice...")
         alice_zaddr = alice.getnewshieldaddress()
         miner.shieldsendmany("from_transparent", [{"address": alice_zaddr, "amount": Decimal('10.00')}], 1, fee)
@@ -72,7 +72,7 @@ class SaplingMempoolTest(DogeCashTestFramework):
                                 alice.sendrawtransaction, rawTx_hex)
         self.log.info("tx_A NOT accepted in the mempool. Good.")
 
-        # miner sends another 10 DOGEC note to Alice
+        # miner sends another 10 DEV note to Alice
         self.log.info("Shielding some more coins for Alice...")
         miner.shieldsendmany("from_transparent", [{"address": alice_zaddr, "amount": Decimal('10.00')}], 1, fee)
         miner.generate(1)

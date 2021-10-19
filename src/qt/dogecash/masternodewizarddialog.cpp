@@ -1,18 +1,18 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/masternodewizarddialog.h"
-#include "qt/dogecash/forms/ui_masternodewizarddialog.h"
+#include "qt/deviant/masternodewizarddialog.h"
+#include "qt/deviant/forms/ui_masternodewizarddialog.h"
 
 #include "activemasternode.h"
 #include "optionsmodel.h"
 #include "pairresult.h"
-#include "qt/dogecash/mnmodel.h"
-#include "qt/dogecash/guitransactionsutils.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/mnmodel.h"
+#include "qt/deviant/guitransactionsutils.h"
+#include "qt/deviant/qtutils.h"
 
 #include <QFile>
 #include <QIntValidator>

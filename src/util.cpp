@@ -2,13 +2,13 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/dogecash-config.h"
+#include "config/deviant-config.h"
 #endif
 
 #include "util.h"
@@ -85,12 +85,12 @@
 #include <openssl/crypto.h>
 #include <openssl/rand.h>
 
-const char * const DOGEC_CONF_FILENAME = "dogecash.conf";
-const char * const DOGEC_PID_FILENAME = "dogecash.pid";
+const char * const DOGEC_CONF_FILENAME = "deviant.conf";
+const char * const DOGEC_PID_FILENAME = "deviant.pid";
 const char * const DOGEC_MASTERNODE_CONF_FILENAME = "masternode.conf";
 
 
-// DogeCash only features
+// Deviant only features
 // Masternode
 std::atomic<bool> fMasterNode{false};
 std::string strMasterNodeAddr = "";
@@ -329,7 +329,7 @@ static std::string FormatException(const std::exception* pex, const char* pszThr
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(NULL, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "dogecash";
+    const char* pszModule = "deviant";
 #endif
     if (pex)
         return strprintf(
@@ -348,13 +348,13 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 
 fs::path GetDefaultDataDir()
 {
-// Windows < Vista: C:\Documents and Settings\Username\Application Data\DOGEC
-// Windows >= Vista: C:\Users\Username\AppData\Roaming\DOGEC
-// Mac: ~/Library/Application Support/DOGEC
-// Unix: ~/.dogecash
+// Windows < Vista: C:\Documents and Settings\Username\Application Data\DEV
+// Windows >= Vista: C:\Users\Username\AppData\Roaming\DEV
+// Mac: ~/Library/Application Support/DEV
+// Unix: ~/.deviant
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "DogeCash Core";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Deviant Core";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -366,10 +366,10 @@ fs::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     TryCreateDirectory(pathRet);
-    return pathRet / "DogeCash Core";
+    return pathRet / "Deviant Core";
 #else
     // Unix
-    return pathRet / ".dogecash";
+    return pathRet / ".deviant";
 #endif
 #endif
 }
@@ -385,7 +385,7 @@ static fs::path ZC_GetBaseParamsDir()
     // Windows < Vista: C:\Documents and Settings\Username\Application Data\DOGECParams
     // Windows >= Vista: C:\Users\Username\AppData\Roaming\DOGECParams
     // Mac: ~/Library/Application Support/DOGECParams
-    // Unix: ~/.dogecash-params
+    // Unix: ~/.deviant-params
 #ifdef WIN32
     // Windows
     return GetSpecialFolderPath(CSIDL_APPDATA) / "DOGECParams";
@@ -403,7 +403,7 @@ static fs::path ZC_GetBaseParamsDir()
     return pathRet / "DOGECParams";
 #else
     // Unix
-    return pathRet / ".dogecash-params";
+    return pathRet / ".deviant-params";
 #endif
 #endif
 }
@@ -469,14 +469,14 @@ void initZKSNARKS()
         CFRelease(mainBundle);
 #else
         // Linux fallback path for debuild/ppa based installs
-        sapling_spend = "/usr/share/dogecash/sapling-spend.params";
-        sapling_output = "/usr/share/dogecash/sapling-output.params";
+        sapling_spend = "/usr/share/deviant/sapling-spend.params";
+        sapling_output = "/usr/share/deviant/sapling-output.params";
         if (fs::exists(sapling_spend) && fs::exists(sapling_output)) {
             fParamsFound = true;
         } else {
             // Linux fallback for local installs
-            sapling_spend = "/usr/local/share/dogecash/sapling-spend.params";
-            sapling_output = "/usr/local/share/dogecash/sapling-output.params";
+            sapling_spend = "/usr/local/share/deviant/sapling-spend.params";
+            sapling_output = "/usr/local/share/deviant/sapling-output.params";
         }
 #endif
         if (fs::exists(sapling_spend) && fs::exists(sapling_output))
@@ -560,7 +560,7 @@ void ArgsManager::ReadConfigFile()
 {
     fs::ifstream streamConfig(GetConfigFile());
     if (!streamConfig.good()) {
-        // Create empty dogecash.conf if it does not exist
+        // Create empty deviant.conf if it does not exist
         FILE* configFile = fsbridge::fopen(GetConfigFile(), "a");
         if (configFile != NULL)
             fclose(configFile);
@@ -573,7 +573,7 @@ void ArgsManager::ReadConfigFile()
         setOptions.insert("*");
 
         for (boost::program_options::detail::config_file_iterator it(streamConfig, setOptions), end; it != end; ++it) {
-            // Don't overwrite existing settings so command line settings override dogecash.conf
+            // Don't overwrite existing settings so command line settings override deviant.conf
             std::string strKey = std::string("-") + it->string_key;
             std::string strValue = it->value[0];
             InterpretNegatedOption(strKey, strValue);

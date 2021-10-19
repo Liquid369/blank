@@ -159,7 +159,7 @@
                <string notr="true"/>
               </property>
               <property name="text">
-               <string>+0.000585 DOGEC</string>
+               <string>+0.000585 DEV</string>
               </property>
              </widget>
             </item>
@@ -169,7 +169,7 @@
                <string notr="true"/>
               </property>
               <property name="text">
-               <string>-0.000585 DOGEC</string>
+               <string>-0.000585 DEV</string>
               </property>
              </widget>
             </item>

@@ -1,6 +1,6 @@
 // Copyright 2014 BitPay, Inc.
 // Copyright (c) 2017-2019 The PIVX developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,7 +9,7 @@
 #include <string>
 #include <map>
 #include <univalue.h>
-#include "test/test_dogecash.h"
+#include "test/test_deviant.h"
 
 #include <boost/test/unit_test.hpp>
 

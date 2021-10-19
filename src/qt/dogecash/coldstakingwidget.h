@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,14 +7,14 @@
 #ifndef COLDSTAKINGWIDGET_H
 #define COLDSTAKINGWIDGET_H
 
-#include "qt/dogecash/pwidget.h"
-#include "qt/dogecash/furabstractlistitemdelegate.h"
-#include "qt/dogecash/txviewholder.h"
-#include "qt/dogecash/tooltipmenu.h"
-#include "qt/dogecash/sendmultirow.h"
-#include "qt/dogecash/coldstakingmodel.h"
-#include "qt/dogecash/contactsdropdown.h"
-#include "qt/dogecash/addressholder.h"
+#include "qt/deviant/pwidget.h"
+#include "qt/deviant/furabstractlistitemdelegate.h"
+#include "qt/deviant/txviewholder.h"
+#include "qt/deviant/tooltipmenu.h"
+#include "qt/deviant/sendmultirow.h"
+#include "qt/deviant/coldstakingmodel.h"
+#include "qt/deviant/contactsdropdown.h"
+#include "qt/deviant/addressholder.h"
 #include "transactiontablemodel.h"
 #include "addresstablemodel.h"
 #include "addressfilterproxymodel.h"

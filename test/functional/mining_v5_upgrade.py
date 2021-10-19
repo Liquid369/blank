@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import *
 
 """
 Simple test checking chain movement after v5 enforcement.
 """
 
-class MiningV5UpgradeTest(DogeCashTestFramework):
+class MiningV5UpgradeTest(DeviantTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 1

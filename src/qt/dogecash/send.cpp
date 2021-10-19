@@ -1,18 +1,18 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/send.h"
-#include "qt/dogecash/forms/ui_send.h"
-#include "qt/dogecash/addnewcontactdialog.h"
-#include "qt/dogecash/qtutils.h"
-#include "qt/dogecash/sendchangeaddressdialog.h"
-#include "qt/dogecash/optionbutton.h"
-#include "qt/dogecash/sendconfirmdialog.h"
-#include "qt/dogecash/guitransactionsutils.h"
-#include "qt/dogecash/loadingdialog.h"
+#include "qt/deviant/send.h"
+#include "qt/deviant/forms/ui_send.h"
+#include "qt/deviant/addnewcontactdialog.h"
+#include "qt/deviant/qtutils.h"
+#include "qt/deviant/sendchangeaddressdialog.h"
+#include "qt/deviant/optionbutton.h"
+#include "qt/deviant/sendconfirmdialog.h"
+#include "qt/deviant/guitransactionsutils.h"
+#include "qt/deviant/loadingdialog.h"
 #include "clientmodel.h"
 #include "optionsmodel.h"
 #include "operationresult.h"
@@ -107,7 +107,7 @@ SendWidget::SendWidget(DOGECGUI* parent) :
     coinIcon->show();
     coinIcon->raise();
 
-    setCssProperty(coinIcon, "coin-icon-dogecash");
+    setCssProperty(coinIcon, "coin-icon-deviant");
 
     QSize BUTTON_SIZE = QSize(24, 24);
     coinIcon->setMinimumSize(BUTTON_SIZE);
@@ -899,14 +899,14 @@ void SendWidget::onContactMultiClicked()
         }
 
         bool isStakingAddr = false;
-        auto dogecashAdd = Standard::DecodeDestination(address.toStdString(), isStakingAddr);
+        auto deviantAdd = Standard::DecodeDestination(address.toStdString(), isStakingAddr);
 
-        if (!Standard::IsValidDestination(dogecashAdd) || isStakingAddr) {
+        if (!Standard::IsValidDestination(deviantAdd) || isStakingAddr) {
             inform(tr("Invalid address"));
             return;
         }
 
-        if (walletModel->isMine(dogecashAdd)) {
+        if (walletModel->isMine(deviantAdd)) {
             inform(tr("Cannot store your own address as contact"));
             return;
         }
@@ -926,7 +926,7 @@ void SendWidget::onContactMultiClicked()
             if (label == dialog->getLabel()) {
                 return;
             }
-            if (walletModel->updateAddressBookLabels(dogecashAdd, dialog->getLabel().toStdString(),
+            if (walletModel->updateAddressBookLabels(deviantAdd, dialog->getLabel().toStdString(),
                     AddressBook::AddressBookPurpose::SEND)) {
                 inform(tr("New Contact Stored"));
             } else {

@@ -1,19 +1,19 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/addresseswidget.h"
-#include "qt/dogecash/forms/ui_addresseswidget.h"
-#include "qt/dogecash/addresslabelrow.h"
-#include "qt/dogecash/addnewaddressdialog.h"
-#include "qt/dogecash/tooltipmenu.h"
+#include "qt/deviant/addresseswidget.h"
+#include "qt/deviant/forms/ui_addresseswidget.h"
+#include "qt/deviant/addresslabelrow.h"
+#include "qt/deviant/addnewaddressdialog.h"
+#include "qt/deviant/tooltipmenu.h"
 
-#include "qt/dogecash/addnewcontactdialog.h"
-#include "qt/dogecash/dogecashgui.h"
+#include "qt/deviant/addnewcontactdialog.h"
+#include "qt/deviant/deviantgui.h"
 #include "guiutil.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/qtutils.h"
 #include "walletmodel.h"
 
 #include <QModelIndex>
@@ -189,15 +189,15 @@ void AddressesWidget::onStoreContactClicked()
         QString address = ui->lineEditAddress->text();
 
         bool isStakingAddress = false;
-        auto dogecashAdd = Standard::DecodeDestination(address.toUtf8().constData(), isStakingAddress);
+        auto deviantAdd = Standard::DecodeDestination(address.toUtf8().constData(), isStakingAddress);
 
-        if (!Standard::IsValidDestination(dogecashAdd)) {
+        if (!Standard::IsValidDestination(deviantAdd)) {
             setCssEditLine(ui->lineEditAddress, false, true);
             inform(tr("Invalid Contact Address"));
             return;
         }
 
-        if (walletModel->isMine(dogecashAdd)) {
+        if (walletModel->isMine(deviantAdd)) {
             setCssEditLine(ui->lineEditAddress, false, true);
             inform(tr("Cannot store your own address as contact"));
             return;
@@ -210,8 +210,8 @@ void AddressesWidget::onStoreContactClicked()
             return;
         }
 
-        bool isShielded = walletModel->IsShieldedDestination(dogecashAdd);
-        if (walletModel->updateAddressBookLabels(dogecashAdd, label.toUtf8().constData(),
+        bool isShielded = walletModel->IsShieldedDestination(deviantAdd);
+        if (walletModel->updateAddressBookLabels(deviantAdd, label.toUtf8().constData(),
                          isShielded ? AddressBook::AddressBookPurpose::SHIELDED_SEND :
                          isStakingAddress ? AddressBook::AddressBookPurpose::COLD_STAKING_SEND : AddressBook::AddressBookPurpose::SEND)
                 ) {

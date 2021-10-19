@@ -952,7 +952,7 @@
                          <enum>Qt::NoFocus</enum>
                         </property>
                         <property name="text">
-                         <string>About DOGEC</string>
+                         <string>About DEV</string>
                         </property>
                         <property name="checkable">
                          <bool>false</bool>

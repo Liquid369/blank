@@ -6,7 +6,7 @@
 
 export LC_ALL=C.UTF-8
 
-cd "build/dogecash-$HOST" || (echo "could not enter distdir build/dogecash-$HOST"; exit 1)
+cd "build/deviant-$HOST" || (echo "could not enter distdir build/deviant-$HOST"; exit 1)
 
 if [ "$RUN_UNIT_TESTS" = "true" ] || [ "$RUN_FUNCTIONAL_TESTS" = "true" ]; then
   BEGIN_FOLD params

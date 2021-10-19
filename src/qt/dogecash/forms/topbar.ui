@@ -108,7 +108,7 @@
              <number>0</number>
             </property>
             <item alignment="Qt::AlignTop">
-             <widget class="QLabel" name="labelAmountTopDogeCash">
+             <widget class="QLabel" name="labelAmountTopDeviant">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -119,7 +119,7 @@
                <string notr="true">padding:0px;margin:0px;</string>
               </property>
               <property name="text">
-               <string notr="true">480.0685 DOGEC</string>
+               <string notr="true">480.0685 DEV</string>
               </property>
              </widget>
             </item>
@@ -187,7 +187,7 @@ border:none;</string>
              </spacer>
             </item>
             <item alignment="Qt::AlignTop">
-             <widget class="QLabel" name="labelAmountTopShieldedDogeCash">
+             <widget class="QLabel" name="labelAmountTopShieldedDeviant">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -195,7 +195,7 @@ border:none;</string>
                </size>
               </property>
               <property name="text">
-               <string notr="true">1.000 DOGEC</string>
+               <string notr="true">1.000 DEV</string>
               </property>
              </widget>
             </item>
@@ -472,9 +472,9 @@ border:none;</string>
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="labelAmountDogeCash">
+              <widget class="QLabel" name="labelAmountDeviant">
                <property name="text">
-                <string notr="true">480.0685 DOGEC</string>
+                <string notr="true">480.0685 DEV</string>
                </property>
               </widget>
              </item>
@@ -527,9 +527,9 @@ border:none;</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLabel" name="labelPendingDogeCash">
+                  <widget class="QLabel" name="labelPendingDeviant">
                    <property name="text">
-                    <string notr="true">6.943 DOGEC</string>
+                    <string notr="true">6.943 DEV</string>
                    </property>
                   </widget>
                  </item>
@@ -581,9 +581,9 @@ border:none;</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLabel" name="labelImmatureDogeCash">
+                  <widget class="QLabel" name="labelImmatureDeviant">
                    <property name="text">
-                    <string notr="true">10 DOGEC</string>
+                    <string notr="true">10 DEV</string>
                    </property>
                   </widget>
                  </item>
@@ -738,13 +738,13 @@ border:none;</string>
   <customwidget>
    <class>ExpandableButton</class>
    <extends>QWidget</extends>
-   <header>qt/dogecash/expandablebutton.h</header>
+   <header>qt/deviant/expandablebutton.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>PFBorderImage</class>
    <extends>QFrame</extends>
-   <header>qt/dogecash/pfborderimage.h</header>
+   <header>qt/deviant/pfborderimage.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

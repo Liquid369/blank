@@ -1,7 +1,7 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2016 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -201,7 +201,7 @@ public:
     static bool HasZcTxesIfNeeded(const TransactionRecord& record) {
         return (record.type == TransactionRecord::ZerocoinMint ||
                 record.type == TransactionRecord::ZerocoinSpend ||
-                record.type == TransactionRecord::ZerocoinSpend_Change_zdogec ||
+                record.type == TransactionRecord::ZerocoinSpend_Change_zdev ||
                 record.type == TransactionRecord::ZerocoinSpend_FromMe);
     }
 
@@ -495,7 +495,7 @@ QString TransactionTableModel::formatTxType(const TransactionRecord* wtx) const
         return tr("Spent z%1").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::RecvFromZerocoinSpend:
         return tr("Received %1 from z%1").arg(CURRENCY_UNIT.c_str());
-    case TransactionRecord::ZerocoinSpend_Change_zdogec:
+    case TransactionRecord::ZerocoinSpend_Change_zdev:
         return tr("Minted Change as z%1 from z%1 Spend").arg(CURRENCY_UNIT.c_str());
     case TransactionRecord::ZerocoinSpend_FromMe:
         return tr("Converted z%1 to %1").arg(CURRENCY_UNIT.c_str());
@@ -561,7 +561,7 @@ QString TransactionTableModel::formatTxToAddress(const TransactionRecord* wtx, b
     case TransactionRecord::SendToNobody:
         return QString::fromStdString(wtx->address); // the address here is storing the op_return data.
     case TransactionRecord::ZerocoinMint:
-    case TransactionRecord::ZerocoinSpend_Change_zdogec:
+    case TransactionRecord::ZerocoinSpend_Change_zdev:
     case TransactionRecord::StakeZDOGEC:
         return tr("Anonymous");
     case TransactionRecord::P2CSDelegation:

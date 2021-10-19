@@ -1,16 +1,16 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "zdogecchain.h"
+#include "zdevchain.h"
 
 #include "guiinterface.h"
 #include "invalid.h"
 #include "txdb.h"
 #include "wallet/wallet.h"
-#include "zdogec/zdogecmodule.h"
+#include "zdev/zdevmodule.h"
 
 // 6 comes from OPCODE (1) + vch.size() (1) + BIGNUM size (4)
 #define SCRIPT_OFFSET 6

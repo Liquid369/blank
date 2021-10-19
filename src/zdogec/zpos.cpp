@@ -1,13 +1,13 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "zdogec/zpos.h"
+#include "zdev/zpos.h"
 
 #include "validation.h"
-#include "zdogecchain.h"
+#include "zdevchain.h"
 
 
 /*
@@ -24,28 +24,28 @@ uint32_t ParseAccChecksum(uint256 nCheckpoint, const libzerocoin::CoinDenominati
     return nCheckpoint.Get32();
 }
 
-bool CLegacyzdogecStake::InitFromTxIn(const CTxIn& txin)
+bool CLegacyzdevStake::InitFromTxIn(const CTxIn& txin)
 {
     // Construct the stakeinput object
     if (!txin.IsZerocoinSpend())
-        return error("%s: unable to initialize CLegacyzdogecStake from non zc-spend", __func__);
+        return error("%s: unable to initialize CLegacyzdevStake from non zc-spend", __func__);
 
     // Check spend type
     libzerocoin::CoinSpend spend = TxInToZerocoinSpend(txin);
     if (spend.getSpendType() != libzerocoin::SpendType::STAKE)
         return error("%s : spend is using the wrong SpendType (%d)", __func__, (int)spend.getSpendType());
 
-    *this = CLegacyzdogecStake(spend);
+    *this = CLegacyzdevStake(spend);
 
     // Find the pindex with the accumulator checksum
     if (!GetIndexFrom())
-        return error("%s : Failed to find the block index for zdogec stake origin", __func__);
+        return error("%s : Failed to find the block index for zdev stake origin", __func__);
 
     // All good
     return true;
 }
 
-CLegacyzdogecStake::CLegacyzdogecStake(const libzerocoin::CoinSpend& spend) : CStakeInput(nullptr)
+CLegacyzdevStake::CLegacyzdevStake(const libzerocoin::CoinSpend& spend) : CStakeInput(nullptr)
 {
     this->nChecksum = spend.getAccumulatorChecksum();
     this->denom = spend.getDenomination();
@@ -53,7 +53,7 @@ CLegacyzdogecStake::CLegacyzdogecStake(const libzerocoin::CoinSpend& spend) : CS
     this->hashSerial = Hash(nSerial.begin(), nSerial.end());
 }
 
-const CBlockIndex* CLegacyzdogecStake::GetIndexFrom() const
+const CBlockIndex* CLegacyzdevStake::GetIndexFrom() const
 {
     // First look in the legacy database
     int nHeightChecksum = 0;
@@ -81,12 +81,12 @@ const CBlockIndex* CLegacyzdogecStake::GetIndexFrom() const
     return nullptr;
 }
 
-CAmount CLegacyzdogecStake::GetValue() const
+CAmount CLegacyzdevStake::GetValue() const
 {
     return denom * COIN;
 }
 
-CDataStream CLegacyzdogecStake::GetUniqueness() const
+CDataStream CLegacyzdevStake::GetUniqueness() const
 {
     CDataStream ss(SER_GETHASH, 0);
     ss << hashSerial;
@@ -94,7 +94,7 @@ CDataStream CLegacyzdogecStake::GetUniqueness() const
 }
 
 // Verify stake contextual checks
-bool CLegacyzdogecStake::ContextCheck(int nHeight, uint32_t nTime)
+bool CLegacyzdevStake::ContextCheck(int nHeight, uint32_t nTime)
 {
     const Consensus::Params& consensus = Params().GetConsensus();
     if (!consensus.NetworkUpgradeActive(nHeight, Consensus::UPGRADE_ZC_V2) || nHeight >= consensus.height_last_ZC_AccumCheckpoint)

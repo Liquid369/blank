@@ -1,6 +1,6 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
@@ -10,10 +10,10 @@
 #define CONTACTSDROPDOWN_H
 
 #include "addresstablemodel.h"
-#include "qt/dogecash/pwidget.h"
-#include "qt/dogecash/contactdropdownrow.h"
-#include "qt/dogecash/furabstractlistitemdelegate.h"
-#include "qt/dogecash/addressfilterproxymodel.h"
+#include "qt/deviant/pwidget.h"
+#include "qt/deviant/contactdropdownrow.h"
+#include "qt/deviant/furabstractlistitemdelegate.h"
+#include "qt/deviant/addressfilterproxymodel.h"
 #include <QListView>
 #include <QObject>
 #include <QWidget>

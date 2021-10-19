@@ -52,16 +52,16 @@ Node1 is unused in tests 3-7:
 """
 
 from test_framework.mininode import *
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import *
 import time
 from test_framework.blocktools import create_block, create_coinbase, create_transaction
 
-class AcceptBlockTest(DogeCashTestFramework):
+class AcceptBlockTest(DeviantTestFramework):
     def add_options(self, parser):
         parser.add_option("--testbinary", dest="testbinary",
-                          default=os.getenv("BITCOIND", "dogecashd"),
-                          help="dogecashd binary to test")
+                          default=os.getenv("BITCOIND", "deviantd"),
+                          help="deviantd binary to test")
 
     def set_test_params(self):
         self.setup_clean_chain = True

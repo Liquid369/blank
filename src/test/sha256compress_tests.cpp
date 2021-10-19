@@ -1,4 +1,4 @@
-#include "test/test_dogecash.h"
+#include "test/test_deviant.h"
 #include "crypto/sha256.h"
 #include "uint256.h"
 

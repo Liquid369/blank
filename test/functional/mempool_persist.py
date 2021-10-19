@@ -34,13 +34,13 @@ Test is as follows:
 from decimal import Decimal
 import os
 
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import (
     assert_equal,
     wait_until,
 )
 
-class MempoolPersistTest(DogeCashTestFramework):
+class MempoolPersistTest(DeviantTestFramework):
     def set_test_params(self):
         self.num_nodes = 3
         self.extra_args = [[], ["-persistmempool=0"], []]

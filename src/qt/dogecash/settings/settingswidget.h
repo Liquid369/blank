@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -8,18 +8,18 @@
 #define SETTINGSWIDGET_H
 
 #include <QWidget>
-#include "qt/dogecash/pwidget.h"
-#include "qt/dogecash/settings/settingsbackupwallet.h"
-#include "qt/dogecash/settings/settingsexportcsv.h"
-#include "qt/dogecash/settings/settingsbittoolwidget.h"
-#include "qt/dogecash/settings/settingssignmessagewidgets.h"
-#include "qt/dogecash/settings/settingswalletrepairwidget.h"
-#include "qt/dogecash/settings/settingswalletoptionswidget.h"
-#include "qt/dogecash/settings/settingsmainoptionswidget.h"
-#include "qt/dogecash/settings/settingsdisplayoptionswidget.h"
-#include "qt/dogecash/settings/settingsmultisendwidget.h"
-#include "qt/dogecash/settings/settingsinformationwidget.h"
-#include "qt/dogecash/settings/settingsconsolewidget.h"
+#include "qt/deviant/pwidget.h"
+#include "qt/deviant/settings/settingsbackupwallet.h"
+#include "qt/deviant/settings/settingsexportcsv.h"
+#include "qt/deviant/settings/settingsbittoolwidget.h"
+#include "qt/deviant/settings/settingssignmessagewidgets.h"
+#include "qt/deviant/settings/settingswalletrepairwidget.h"
+#include "qt/deviant/settings/settingswalletoptionswidget.h"
+#include "qt/deviant/settings/settingsmainoptionswidget.h"
+#include "qt/deviant/settings/settingsdisplayoptionswidget.h"
+#include "qt/deviant/settings/settingsmultisendwidget.h"
+#include "qt/deviant/settings/settingsinformationwidget.h"
+#include "qt/deviant/settings/settingsconsolewidget.h"
 
 class DOGECGUI;
 

@@ -7,7 +7,7 @@
 #include "script/ismine.h"
 #include "script/script.h"
 #include "script/standard.h"
-#include "test/test_dogecash.h"
+#include "test/test_deviant.h"
 
 #include <boost/test/unit_test.hpp>
 

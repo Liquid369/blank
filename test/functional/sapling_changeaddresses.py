@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # Copyright (c) 2019 The Zcash developers
 # Copyright (c) 2020 The PIVX Developers
-# Copyright (c) 2020 The DogeCash Developers
+# Copyright (c) 2020 The Deviant Developers
 
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import *
 
 from decimal import Decimal
 
 # Test wallet change address behaviour
-class WalletChangeAddressesTest(DogeCashTestFramework):
+class WalletChangeAddressesTest(DeviantTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 2

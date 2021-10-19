@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2017 The Bitcoin Core developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -16,7 +16,7 @@
 extern const std::string CURRENCY_UNIT;
 
 /**
- * Fee rate in DOGEC per kilobyte: CAmount / kB
+ * Fee rate in DEV per kilobyte: CAmount / kB
  */
 class CFeeRate
 {

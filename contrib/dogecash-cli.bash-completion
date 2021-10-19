@@ -1,10 +1,10 @@
-# bash programmable completion for dogecash-cli(1)
+# bash programmable completion for deviant-cli(1)
 # Copyright (c) 2012-2016 The Bitcoin Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-# call $dogecash-cli for RPC
-_dogecash_rpc() {
+# call $deviant-cli for RPC
+_deviant_rpc() {
     # determine already specified args necessary for RPC
     local rpcargs=()
     for i in ${COMP_LINE}; do
@@ -14,23 +14,23 @@ _dogecash_rpc() {
                 ;;
         esac
     done
-    $dogecash_cli "${rpcargs[@]}" "$@"
+    $deviant_cli "${rpcargs[@]}" "$@"
 }
 
 # Add wallet accounts to COMPREPLY
-_dogecash_accounts() {
+_deviant_accounts() {
     local accounts
-    accounts=$(_dogecash_rpc listaccounts | awk -F '"' '{ print $2 }')
+    accounts=$(_deviant_rpc listaccounts | awk -F '"' '{ print $2 }')
     COMPREPLY=( "${COMPREPLY[@]}" $( compgen -W "$accounts" -- "$cur" ) )
 }
 
-_dogecash_cli() {
+_deviant_cli() {
     local cur prev words=() cword
-    local dogecash_cli
+    local deviant_cli
 
-    # save and use original argument to invoke dogecash-cli for -help, help and RPC
-    # as dogecash-cli might not be in $PATH
-    dogecash_cli="$1"
+    # save and use original argument to invoke deviant-cli for -help, help and RPC
+    # as deviant-cli might not be in $PATH
+    deviant_cli="$1"
 
     COMPREPLY=()
     _get_comp_words_by_ref -n = cur prev words cword
@@ -60,7 +60,7 @@ _dogecash_cli() {
     if ((cword > 3)); then
         case ${words[cword-3]} in
             addmultisigaddress)
-                _dogecash_accounts
+                _deviant_accounts
                 return 0
                 ;;
             getbalance|gettxout|importaddress|importpubkey|importprivkey|listreceivedbyaccount|listreceivedbyaddress|listsinceblock)
@@ -85,7 +85,7 @@ _dogecash_cli() {
                 return 0
                 ;;
             move|setaccount)
-                _dogecash_accounts
+                _deviant_accounts
                 return 0
                 ;;
         esac
@@ -101,7 +101,7 @@ _dogecash_cli() {
             return 0
             ;;
         getaccountaddress|getaddressesbyaccount|getbalance|getnewaddress|getreceivedbyaccount|listtransactions|move|sendfrom|sendmany)
-            _dogecash_accounts
+            _deviant_accounts
             return 0
             ;;
     esac
@@ -125,12 +125,12 @@ _dogecash_cli() {
 
             # only parse -help if senseful
             if [[ -z "$cur" || "$cur" =~ ^- ]]; then
-                helpopts=$($dogecash_cli -help 2>&1 | awk '$1 ~ /^-/ { sub(/=.*/, "="); print $1 }' )
+                helpopts=$($deviant_cli -help 2>&1 | awk '$1 ~ /^-/ { sub(/=.*/, "="); print $1 }' )
             fi
 
             # only parse help if senseful
             if [[ -z "$cur" || "$cur" =~ ^[a-z] ]]; then
-                commands=$(_dogecash_rpc help 2>/dev/null | awk '$1 ~ /^[a-z]/ { print $1; }')
+                commands=$(_deviant_rpc help 2>/dev/null | awk '$1 ~ /^[a-z]/ { print $1; }')
             fi
 
             COMPREPLY=( $( compgen -W "$helpopts $commands" -- "$cur" ) )
@@ -143,7 +143,7 @@ _dogecash_cli() {
             ;;
     esac
 } &&
-complete -F _dogecash_cli dogecash-cli
+complete -F _deviant_cli deviant-cli
 
 # Local variables:
 # mode: shell-script

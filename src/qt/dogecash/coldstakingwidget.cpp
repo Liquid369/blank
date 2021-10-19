@@ -1,25 +1,25 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/coldstakingwidget.h"
-#include "qt/dogecash/forms/ui_coldstakingwidget.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/coldstakingwidget.h"
+#include "qt/deviant/forms/ui_coldstakingwidget.h"
+#include "qt/deviant/qtutils.h"
 #include "amount.h"
 #include "guiutil.h"
-#include "qt/dogecash/requestdialog.h"
-#include "qt/dogecash/tooltipmenu.h"
-#include "qt/dogecash/furlistrow.h"
-#include "qt/dogecash/sendconfirmdialog.h"
-#include "qt/dogecash/addnewcontactdialog.h"
-#include "qt/dogecash/guitransactionsutils.h"
+#include "qt/deviant/requestdialog.h"
+#include "qt/deviant/tooltipmenu.h"
+#include "qt/deviant/furlistrow.h"
+#include "qt/deviant/sendconfirmdialog.h"
+#include "qt/deviant/addnewcontactdialog.h"
+#include "qt/deviant/guitransactionsutils.h"
 #include "walletmodel.h"
 #include "optionsmodel.h"
 #include "coincontroldialog.h"
 #include "coincontrol.h"
-#include "qt/dogecash/csrow.h"
+#include "qt/deviant/csrow.h"
 
 #define DECORATION_SIZE 70
 #define NUM_ITEMS 3

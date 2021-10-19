@@ -6,14 +6,14 @@ reset-files.bash
 *.tar.gz
 
 *.exe
-src/dogecash
-src/dogecashd
-src/dogecash-cli
-src/dogecash-tx
-src/bench/bench_dogecash
-src/test/test_dogecash
-src/test/test_dogecash_fuzzy
-src/qt/test/test_dogecash-qt
+src/deviant
+src/deviantd
+src/deviant-cli
+src/deviant-tx
+src/bench/bench_deviant
+src/test/test_deviant
+src/test/test_deviant_fuzzy
+src/qt/test/test_deviant-qt
 src/test/fuzz/address_deserialize
 src/test/fuzz/addrman_deserialize
 src/test/fuzz/banentry_deserialize
@@ -61,8 +61,8 @@ confdefs.h
 conftest.cpp
 conftest.err
 libtool
-src/config/dogecash-config.h
-src/config/dogecash-config.h.in
+src/config/deviant-config.h
+src/config/deviant-config.h.in
 src/config/stamp-h1
 share/setup.nsi
 share/qt/Info.plist
@@ -87,7 +87,7 @@ src/qt/test/moc*.cpp
 *.pyc
 *.o
 *.o-*
-.dogecash
+.deviant
 *.a
 *.pb.cc
 *.pb.h
@@ -110,8 +110,8 @@ src/qt/test/moc*.cpp
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-dogecash-qt
-dogecash-Qt.app
+deviant-qt
+deviant-Qt.app
 background.tiff*
 
 # Rust
@@ -121,7 +121,7 @@ target/
 
 # Unit-tests
 Makefile.test
-dogecash-qt_test
+deviant-qt_test
 src/test/buildenv.py
 
 # Resources cpp
@@ -137,7 +137,7 @@ build
 #lcov
 *.gcno
 /*.info
-test_dogecash.coverage/
+test_deviant.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -168,6 +168,6 @@ moc_*
 *.tmp
 ui_*
 build*
-dogecashd.*
-dogecashd-new-gui.*
+deviantd.*
+deviantd-new-gui.*
 /cov-int/

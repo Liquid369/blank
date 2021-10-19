@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -8,7 +8,7 @@
 #define DOGEC_CORE_NEW_GUI_DOGECGUI_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/dogecash-config.h"
+#include "config/deviant-config.h"
 #endif
 
 #include <QMainWindow>
@@ -16,17 +16,17 @@
 #include <QSystemTrayIcon>
 #include <QLabel>
 
-#include "qt/dogecash/navmenuwidget.h"
-#include "qt/dogecash/topbar.h"
-#include "qt/dogecash/dashboardwidget.h"
-#include "qt/dogecash/send.h"
-#include "qt/dogecash/receivewidget.h"
-#include "qt/dogecash/addresseswidget.h"
-#include "qt/dogecash/coldstakingwidget.h"
-#include "qt/dogecash/masternodeswidget.h"
-#include "qt/dogecash/snackbar.h"
-#include "qt/dogecash/settings/settingswidget.h"
-#include "qt/dogecash/settings/settingsfaqwidget.h"
+#include "qt/deviant/navmenuwidget.h"
+#include "qt/deviant/topbar.h"
+#include "qt/deviant/dashboardwidget.h"
+#include "qt/deviant/send.h"
+#include "qt/deviant/receivewidget.h"
+#include "qt/deviant/addresseswidget.h"
+#include "qt/deviant/coldstakingwidget.h"
+#include "qt/deviant/masternodeswidget.h"
+#include "qt/deviant/snackbar.h"
+#include "qt/deviant/settings/settingswidget.h"
+#include "qt/deviant/settings/settingsfaqwidget.h"
 #include "qt/rpcconsole.h"
 
 namespace interfaces {
@@ -40,7 +40,7 @@ class WalletModel;
 
 
 /**
-  DogeCash GUI main class. This class represents the main window of the DogeCash UI. It communicates with both the client and
+  Deviant GUI main class. This class represents the main window of the Deviant UI. It communicates with both the client and
   wallet models to give the user an up-to-date view of the current core state.
 */
 class DOGECGUI : public QMainWindow

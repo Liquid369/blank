@@ -4,10 +4,10 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Test the invalidateblock RPC."""
 
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import *
 
-class InvalidateTest(DogeCashTestFramework):
+class InvalidateTest(DeviantTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 3

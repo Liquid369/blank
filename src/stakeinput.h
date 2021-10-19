@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -35,17 +35,17 @@ public:
 };
 
 
-class CDogeCashStake : public CStakeInput
+class CDeviantStake : public CStakeInput
 {
 private:
     const CTxOut outputFrom;
     const COutPoint outpointFrom;
 
 public:
-    CDogeCashStake(const CTxOut& _from, const COutPoint& _outPointFrom, const CBlockIndex* _pindexFrom) :
+    CDeviantStake(const CTxOut& _from, const COutPoint& _outPointFrom, const CBlockIndex* _pindexFrom) :
             CStakeInput(_pindexFrom), outputFrom(_from), outpointFrom(_outPointFrom) {}
 
-    static CDogeCashStake* NewDogeCashStake(const CTxIn& txin);
+    static CDeviantStake* NewDeviantStake(const CTxIn& txin);
 
     bool InitFromTxIn(const CTxIn& txin) override { return pindexFrom; }
     const CBlockIndex* GetIndexFrom() const override;

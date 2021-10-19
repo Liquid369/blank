@@ -30,10 +30,10 @@
        <item>
         <widget class="QCheckBox" name="bitcoinAtStartup">
          <property name="toolTip">
-          <string>Automatically start DogeCash after logging in to the system.</string>
+          <string>Automatically start Deviant after logging in to the system.</string>
          </property>
          <property name="text">
-          <string>&amp;Start DogeCash on system login</string>
+          <string>&amp;Start Deviant on system login</string>
          </property>
         </widget>
        </item>
@@ -131,8 +131,8 @@
         </spacer>
        </item>
        <item>
-        <widget class="QWidget" name="verticalzdogecOptionsWidget" native="true">
-         <layout class="QVBoxLayout" name="verticalzdogecOptionsLayout">
+        <widget class="QWidget" name="verticalzdevOptionsWidget" native="true">
+         <layout class="QVBoxLayout" name="verticalzdevOptionsLayout">
           <property name="margin">
            <number>0</number>
           </property>
@@ -141,7 +141,7 @@
             <item>
              <widget class="QCheckBox" name="checkBoxZeromintEnable">
               <property name="toolTip">
-               <string>Enable automatic minting of DOGEC units to zDOGEC</string>
+               <string>Enable automatic minting of DEV units to zDOGEC</string>
               </property>
               <property name="layoutDirection">
                <enum>Qt::LeftToRight</enum>
@@ -171,7 +171,7 @@
             <item>
              <widget class="QLabel" name="percentage_label">
               <property name="toolTip">
-               <string>Percentage of incoming DOGEC which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</string>
+               <string>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</string>
               </property>
               <property name="text">
                <string>Percentage of autominted zDOGEC</string>
@@ -204,7 +204,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Wait with automatic conversion to Zerocoin until enough DOGEC for this denomination is available</string>
+               <string>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</string>
               </property>
               <property name="text">
                <string>Preferred Automint zDOGEC Denomination</string>
@@ -220,7 +220,7 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Wait with automatic conversion to Zerocoin until enough DOGEC for this denomination is available</string>
+               <string>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</string>
               </property>
               <property name="maxVisibleItems">
                <number>9</number>
@@ -325,7 +325,7 @@
        <item>
         <widget class="QCheckBox" name="mapPortUpnp">
          <property name="toolTip">
-          <string>Automatically open the DogeCash client port on the router. This only works when your router supports UPnP and it is enabled.</string>
+          <string>Automatically open the Deviant client port on the router. This only works when your router supports UPnP and it is enabled.</string>
          </property>
          <property name="text">
           <string>Map port using &amp;UPnP</string>
@@ -345,7 +345,7 @@
        <item>
         <widget class="QCheckBox" name="connectSocks">
          <property name="toolTip">
-          <string>Connect to the DogeCash network through a SOCKS5 proxy.</string>
+          <string>Connect to the Deviant network through a SOCKS5 proxy.</string>
          </property>
          <property name="text">
           <string>&amp;Connect through SOCKS5 proxy (default proxy):</string>
@@ -511,7 +511,7 @@
          <item>
           <widget class="QValueComboBox" name="lang">
            <property name="toolTip">
-            <string>The user interface language can be set here. This setting will take effect after restarting DOGEC.</string>
+            <string>The user interface language can be set here. This setting will take effect after restarting DEV.</string>
            </property>
           </widget>
          </item>
@@ -533,7 +533,7 @@
          </property>
          <property name="text">
           <string>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/DogeCash/DogeCash-project-translations</string>
+https://www.transifex.com/Deviant/Deviant-project-translations</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
@@ -561,8 +561,8 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</string>
         </layout>
        </item>
        <item>
-        <widget class="QWidget" name="verticalzdogecDisplayWidget" native="true">
-         <layout class="QVBoxLayout" name="verticalzdogecDisplayLayout">
+        <widget class="QWidget" name="verticalzdevDisplayWidget" native="true">
+         <layout class="QVBoxLayout" name="verticalzdevDisplayLayout">
           <property name="margin">
            <number>0</number>
           </property>

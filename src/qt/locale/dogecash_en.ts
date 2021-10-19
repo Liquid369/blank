@@ -4,7 +4,7 @@
 <context>
     <name>AddNewAddressDialog</name>
     <message>
-        <location filename="../dogecash/forms/addnewaddressdialog.ui" line="+14"/>
+        <location filename="../deviant/forms/addnewaddressdialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -37,7 +37,7 @@
 <context>
     <name>AddNewContactDialog</name>
     <message>
-        <location filename="../dogecash/forms/addnewcontactdialog.ui" line="+14"/>
+        <location filename="../deviant/forms/addnewcontactdialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -67,7 +67,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/addnewcontactdialog.cpp" line="+48"/>
+        <location filename="../deviant/addnewcontactdialog.cpp" line="+48"/>
         <source>Edit label for the selected address:
 %1</source>
         <translation type="unfinished"></translation>
@@ -152,12 +152,12 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>These are your DogeCash addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your Deviant addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <source>These are your DogeCash addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <source>These are your Deviant addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -199,7 +199,7 @@
 <context>
     <name>AddressLabelRow</name>
     <message>
-        <location filename="../dogecash/forms/addresslabelrow.ui" line="+20"/>
+        <location filename="../deviant/forms/addresslabelrow.ui" line="+20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -245,7 +245,7 @@
 <context>
     <name>AddressesWidget</name>
     <message>
-        <location filename="../dogecash/forms/addresseswidget.ui" line="+14"/>
+        <location filename="../deviant/forms/addresseswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -280,7 +280,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/addresseswidget.cpp" line="+90"/>
+        <location filename="../deviant/addresseswidget.cpp" line="+90"/>
         <source>Add new contact</source>
         <translation type="unfinished"></translation>
     </message>
@@ -448,7 +448,7 @@ for staking</source>
     </message>
     <message>
         <location line="+161"/>
-        <source>DogeCash will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -537,7 +537,7 @@ for staking</source>
 <context>
     <name>BalanceBubble</name>
     <message>
-        <location filename="../dogecash/forms/balancebubble.ui" line="+26"/>
+        <location filename="../deviant/forms/balancebubble.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -549,7 +549,7 @@ for staking</source>
     <message>
         <location line="+15"/>
         <location line="+26"/>
-        <source>0.00 dogecash</source>
+        <source>0.00 deviant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -574,7 +574,7 @@ for staking</source>
 <context>
     <name>CSRow</name>
     <message>
-        <location filename="../dogecash/forms/csrow.ui" line="+14"/>
+        <location filename="../deviant/forms/csrow.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -585,7 +585,7 @@ for staking</source>
     </message>
     <message>
         <location line="+20"/>
-        <source>0,00 DOGEC</source>
+        <source>0,00 DEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -599,7 +599,7 @@ for staking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/csrow.cpp" line="+27"/>
+        <location filename="../deviant/csrow.cpp" line="+27"/>
         <source>Own delegation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -636,7 +636,7 @@ for staking</source>
     </message>
     <message>
         <location line="+81"/>
-        <source>Select DOGEC Outputs to Spend</source>
+        <source>Select DEV Outputs to Spend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -674,7 +674,7 @@ for staking</source>
         <location line="-393"/>
         <location line="+124"/>
         <location line="+461"/>
-        <source>0.00 DOGEC</source>
+        <source>0.00 DEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -876,7 +876,7 @@ for staking</source>
 <context>
     <name>ColdStakingWidget</name>
     <message>
-        <location filename="../dogecash/forms/coldstakingwidget.ui" line="+14"/>
+        <location filename="../deviant/forms/coldstakingwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -926,7 +926,7 @@ for staking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/coldstakingwidget.cpp" line="+801"/>
+        <location filename="../deviant/coldstakingwidget.cpp" line="+801"/>
         <source>Total Staking: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -936,7 +936,7 @@ for staking</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/forms/coldstakingwidget.ui" line="-603"/>
+        <location filename="../deviant/forms/coldstakingwidget.ui" line="-603"/>
         <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
         <translation type="unfinished"></translation>
@@ -948,7 +948,7 @@ stake on your behalf, while you keep the keys securely offline.</source>
     </message>
     <message>
         <location line="-139"/>
-        <source>Accept DOGEC delegation / Delegate DOGEC</source>
+        <source>Accept DEV delegation / Delegate DEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -957,7 +957,7 @@ stake on your behalf, while you keep the keys securely offline.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/coldstakingwidget.cpp" line="+18"/>
+        <location filename="../deviant/coldstakingwidget.cpp" line="+18"/>
         <source>No receive addresses available, you can go to the receive screen and create some there!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1158,7 +1158,7 @@ address</source>
 <context>
     <name>ContactDropdownRow</name>
     <message>
-        <location filename="../dogecash/forms/contactdropdownrow.ui" line="+20"/>
+        <location filename="../deviant/forms/contactdropdownrow.ui" line="+20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1166,7 +1166,7 @@ address</source>
 <context>
     <name>DashboardWidget</name>
     <message>
-        <location filename="../dogecash/forms/dashboardwidget.ui" line="+14"/>
+        <location filename="../deviant/forms/dashboardwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1192,7 +1192,7 @@ address</source>
     </message>
     <message>
         <location line="+357"/>
-        <source>How to get DOGEC</source>
+        <source>How to get DEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1226,12 +1226,12 @@ address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/dashboardwidget.cpp" line="+115"/>
+        <location filename="../deviant/dashboardwidget.cpp" line="+115"/>
         <source>Please wait until the wallet is fully synced to see your correct balance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/forms/dashboardwidget.ui" line="-658"/>
+        <location filename="../deviant/forms/dashboardwidget.ui" line="-658"/>
         <source>No transactions yet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1242,7 +1242,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/dashboardwidget.cpp" line="+36"/>
+        <location filename="../deviant/dashboardwidget.cpp" line="+36"/>
         <location line="+274"/>
         <source>You have no staking rewards</source>
         <translation type="unfinished"></translation>
@@ -1278,7 +1278,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>DefaultDialog</name>
     <message>
-        <location filename="../dogecash/forms/defaultdialog.ui" line="+14"/>
+        <location filename="../deviant/forms/defaultdialog.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1342,7 +1342,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+67"/>
-        <source>The entered address &quot;%1&quot; is not a valid DogeCash address.</source>
+        <source>The entered address &quot;%1&quot; is not a valid Deviant address.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1364,7 +1364,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>ExpandableButton</name>
     <message>
-        <location filename="../dogecash/forms/expandablebutton.ui" line="+26"/>
+        <location filename="../deviant/forms/expandablebutton.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1406,7 +1406,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+0"/>
-        <source>DogeCash Core</source>
+        <source>Deviant Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1417,7 +1417,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+6"/>
-        <source>About DogeCash Core</source>
+        <source>About Deviant Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1485,17 +1485,17 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+90"/>
-        <source>Welcome to DogeCash Core.</source>
+        <source>Welcome to Deviant Core.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+35"/>
-        <source>As this is the first time the program is launched, you can choose where DogeCash Core will store its data.</source>
+        <source>As this is the first time the program is launched, you can choose where Deviant Core will store its data.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
-        <source>DogeCash Core will download and store a copy of the DogeCash block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <source>Deviant Core will download and store a copy of the Deviant block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1520,7 +1520,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location filename="../intro.cpp" line="+100"/>
-        <source>DogeCash Core</source>
+        <source>Deviant Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1547,7 +1547,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>LoadingDialog</name>
     <message>
-        <location filename="../dogecash/forms/loadingdialog.ui" line="+14"/>
+        <location filename="../deviant/forms/loadingdialog.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1570,7 +1570,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>LockUnlock</name>
     <message>
-        <location filename="../dogecash/forms/lockunlock.ui" line="+14"/>
+        <location filename="../deviant/forms/lockunlock.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1593,12 +1593,12 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>MNRow</name>
     <message>
-        <location filename="../dogecash/forms/mnrow.ui" line="+14"/>
+        <location filename="../deviant/forms/mnrow.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
-        <location filename="../dogecash/mnrow.cpp" line="+24"/>
+        <location filename="../deviant/mnrow.cpp" line="+24"/>
         <source>Collateral tx not found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1611,7 +1611,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>MasterNodeWizardDialog</name>
     <message>
-        <location filename="../dogecash/forms/masternodewizarddialog.ui" line="+14"/>
+        <location filename="../deviant/forms/masternodewizarddialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1652,7 +1652,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+23"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a DogeCash Masternode you must dedicate 15,000 DOGEC (the unit of DOGEC) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Deviant Masternode you must dedicate 15,000 DEV (the unit of DEV) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1677,7 +1677,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
     </message>
     <message>
         <location line="+97"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DOGEC will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node&apos;s name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node&apos;s name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1701,7 +1701,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/masternodewizarddialog.cpp" line="+171"/>
+        <location filename="../deviant/masternodewizarddialog.cpp" line="+171"/>
         <source>address label cannot be empty</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1769,7 +1769,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
 <context>
     <name>MasterNodesWidget</name>
     <message>
-        <location filename="../dogecash/forms/masternodeswidget.ui" line="+14"/>
+        <location filename="../deviant/forms/masternodeswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -1805,7 +1805,7 @@ and vote on the treasury system receiving a periodic reward.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/masternodeswidget.cpp" line="+174"/>
+        <location filename="../deviant/masternodeswidget.cpp" line="+174"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1922,7 +1922,7 @@ Please wait few more minutes (masternode collaterals require %1 confirmations).<
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the dogecash.conf file
+You will only have to paste the data in the deviant.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press &quot;start&quot;).
 </source>
@@ -1970,7 +1970,7 @@ Are you sure?</source>
 <context>
     <name>MnInfoDialog</name>
     <message>
-        <location filename="../dogecash/forms/mninfodialog.ui" line="+20"/>
+        <location filename="../deviant/forms/mninfodialog.ui" line="+20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -2015,7 +2015,7 @@ Are you sure?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/mninfodialog.cpp" line="+27"/>
+        <location filename="../deviant/mninfodialog.cpp" line="+27"/>
         <source>Masternode public key copied</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2028,7 +2028,7 @@ Are you sure?</source>
 <context>
     <name>MyAddressRow</name>
     <message>
-        <location filename="../dogecash/forms/myaddressrow.ui" line="+14"/>
+        <location filename="../deviant/forms/myaddressrow.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -2036,7 +2036,7 @@ Are you sure?</source>
 <context>
     <name>NavMenuWidget</name>
     <message>
-        <location filename="../dogecash/forms/navmenuwidget.ui" line="+14"/>
+        <location filename="../deviant/forms/navmenuwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -2088,7 +2088,7 @@ STAKING</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/navmenuwidget.cpp" line="+23"/>
+        <location filename="../deviant/navmenuwidget.cpp" line="+23"/>
         <source>v%1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2142,14 +2142,14 @@ STAKING</source>
     </message>
     <message>
         <location line="+6"/>
-        <source>Invalid URI, not starting with &quot;dogecash&quot; prefix</source>
+        <source>Invalid URI, not starting with &quot;deviant&quot; prefix</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OptionButton</name>
     <message>
-        <location filename="../dogecash/forms/optionbutton.ui" line="+14"/>
+        <location filename="../deviant/forms/optionbutton.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -2198,7 +2198,7 @@ STAKING</source>
     </message>
     <message>
         <location line="+33"/>
-        <source>Automatically open the DogeCash client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <source>Automatically open the Deviant client port on the router. This only works when your router supports UPnP and it is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2223,12 +2223,12 @@ STAKING</source>
     </message>
     <message>
         <location line="-236"/>
-        <source>Automatically start DogeCash after logging in to the system.</source>
+        <source>Automatically start Deviant after logging in to the system.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>&amp;Start DogeCash on system login</source>
+        <source>&amp;Start Deviant on system login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2263,13 +2263,13 @@ STAKING</source>
     </message>
     <message>
         <location line="+192"/>
-        <source>The user interface language can be set here. This setting will take effect after restarting DOGEC.</source>
+        <source>The user interface language can be set here. This setting will take effect after restarting DEV.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/DogeCash/DogeCash-project-translations</source>
+https://www.transifex.com/Deviant/Deviant-project-translations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2279,7 +2279,7 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</source>
     </message>
     <message>
         <location line="-187"/>
-        <source>Enable automatic minting of DOGEC units to zDOGEC</source>
+        <source>Enable automatic minting of DEV units to zDOGEC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2299,7 +2299,7 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</source>
     </message>
     <message>
         <location line="+11"/>
-        <source>Percentage of incoming DOGEC which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
+        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2310,7 +2310,7 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</source>
     <message>
         <location line="+30"/>
         <location line="+16"/>
-        <source>Wait with automatic conversion to Zerocoin until enough DOGEC for this denomination is available</source>
+        <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2325,7 +2325,7 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</source>
     </message>
     <message>
         <location line="+98"/>
-        <source>Connect to the DogeCash network through a SOCKS5 proxy.</source>
+        <source>Connect to the Deviant network through a SOCKS5 proxy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2510,10 +2510,10 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</source>
 <context>
     <name>DOGECGUI</name>
     <message>
-        <location filename="../dogecash/dogecashgui.cpp" line="+69"/>
+        <location filename="../deviant/deviantgui.cpp" line="+69"/>
         <location line="+301"/>
         <location line="+69"/>
-        <source>DogeCash Core</source>
+        <source>Deviant Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2548,7 +2548,7 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</source>
     </message>
     <message>
         <location line="+39"/>
-        <source>DogeCash Core client</source>
+        <source>Deviant Core client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2641,12 +2641,12 @@ Address: %4
     </message>
     <message>
         <location line="-101"/>
-        <source>Cannot start dogecash: click-to-pay handler</source>
+        <source>Cannot start deviant: click-to-pay handler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+107"/>
-        <source>URI cannot be parsed! This can be caused by an invalid DogeCash address or malformed URI parameters.</source>
+        <source>URI cannot be parsed! This can be caused by an invalid Deviant address or malformed URI parameters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2759,7 +2759,7 @@ Address: %4
     </message>
     <message>
         <location filename="../guiutil.cpp" line="+141"/>
-        <source>Enter DogeCash address (e.g. %1)</source>
+        <source>Enter Deviant address (e.g. %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2814,8 +2814,8 @@ Address: %4
         <translation>%1 ms</translation>
     </message>
     <message>
-        <location filename="../dogecash.cpp" line="+535"/>
-        <source>A fatal error occurred. DogeCash can no longer continue safely and will quit.</source>
+        <location filename="../deviant.cpp" line="+535"/>
+        <source>A fatal error occurred. Deviant can no longer continue safely and will quit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2823,7 +2823,7 @@ Address: %4
         <location line="+7"/>
         <location line="+15"/>
         <location line="+19"/>
-        <source>DogeCash Core</source>
+        <source>Deviant Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2858,25 +2858,25 @@ Address: %4
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../dogecash/qtutils.cpp" line="+136"/>
+        <location filename="../deviant/qtutils.cpp" line="+136"/>
         <source>Receiving</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../dogecash/qtutils.cpp" line="+3"/>
+        <location filename="../deviant/qtutils.cpp" line="+3"/>
         <source>Delegator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../dogecash/qtutils.cpp" line="+1"/>
+        <location filename="../deviant/qtutils.cpp" line="+1"/>
         <source>Delegable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location filename="../dogecash/qtutils.cpp" line="-2"/>
+        <location filename="../deviant/qtutils.cpp" line="-2"/>
         <source>Cold Staking</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2906,7 +2906,7 @@ Address: %4
         <translation type="unfinished">Unknown</translation>
     </message>
     <message>
-        <location filename="../dogecash/qtutils.cpp" line="-3"/>
+        <location filename="../deviant/qtutils.cpp" line="-3"/>
         <location line="+24"/>
         <source>All</source>
         <translation type="unfinished">All</translation>
@@ -3022,7 +3022,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/dashboardwidget.cpp" line="-530"/>
+        <location filename="../deviant/dashboardwidget.cpp" line="-530"/>
         <source>Jan</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3082,7 +3082,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/coldstakingwidget.cpp" line="-711"/>
+        <location filename="../deviant/coldstakingwidget.cpp" line="-711"/>
         <source>Address with no label</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3208,7 +3208,7 @@ Address: %4
     </message>
     <message>
         <location line="+93"/>
-        <source>Open the DogeCash debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <source>Open the Deviant debug log file from the current data directory. This can take a few seconds for large log files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3490,7 +3490,7 @@ Address: %4
     </message>
     <message>
         <location line="-39"/>
-        <source>Welcome to the DogeCash RPC console.</source>
+        <source>Welcome to the Deviant RPC console.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3637,7 +3637,7 @@ Address: %4
 <context>
     <name>ReceiveDialog</name>
     <message>
-        <location filename="../dogecash/forms/receivedialog.ui" line="+14"/>
+        <location filename="../deviant/forms/receivedialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3660,13 +3660,13 @@ Address: %4
 <context>
     <name>ReceiveWidget</name>
     <message>
-        <location filename="../dogecash/forms/receivewidget.ui" line="+20"/>
+        <location filename="../deviant/forms/receivewidget.ui" line="+20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location line="+61"/>
-        <source>Scan the QR code or copy the address to receive DOGEC</source>
+        <source>Scan the QR code or copy the address to receive DEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3681,12 +3681,12 @@ Address: %4
     </message>
     <message>
         <location line="+19"/>
-        <source>Accept transparent or shielded DOGEC</source>
+        <source>Accept transparent or shielded DEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+179"/>
-        <location filename="../dogecash/receivewidget.cpp" line="+183"/>
+        <location filename="../deviant/receivewidget.cpp" line="+183"/>
         <source>Add Label</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3706,7 +3706,7 @@ Address: %4
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/receivewidget.cpp" line="-123"/>
+        <location filename="../deviant/receivewidget.cpp" line="-123"/>
         <source>My Addresses</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3835,7 +3835,7 @@ try unlocking the wallet</source>
 <context>
     <name>RequestDialog</name>
     <message>
-        <location filename="../dogecash/forms/requestdialog.ui" line="+14"/>
+        <location filename="../deviant/forms/requestdialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3846,12 +3846,12 @@ try unlocking the wallet</source>
     </message>
     <message>
         <location line="+74"/>
-        <source>DOGEC</source>
+        <source>DEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-117"/>
-        <source>Instead of sharing only a DogeCash address, you can create a payment request, bundling up more information</source>
+        <source>Instead of sharing only a Deviant address, you can create a payment request, bundling up more information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3900,17 +3900,17 @@ try unlocking the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/requestdialog.cpp" line="+49"/>
+        <location filename="../deviant/requestdialog.cpp" line="+49"/>
         <source>Error</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../dogecash/forms/requestdialog.ui" line="+222"/>
+        <location filename="../deviant/forms/requestdialog.ui" line="+222"/>
         <source>GENERATE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/requestdialog.cpp" line="+27"/>
+        <location filename="../deviant/requestdialog.cpp" line="+27"/>
         <source>Creates an address to receive coin delegations and be able to stake them.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3948,13 +3948,13 @@ try unlocking the wallet</source>
 <context>
     <name>SendChangeAddressDialog</name>
     <message>
-        <location filename="../dogecash/forms/sendchangeaddressdialog.ui" line="+14"/>
+        <location filename="../deviant/forms/sendchangeaddressdialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+238"/>
-        <location filename="../dogecash/sendchangeaddressdialog.cpp" line="+64"/>
+        <location filename="../deviant/sendchangeaddressdialog.cpp" line="+64"/>
         <source>CANCEL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3965,7 +3965,7 @@ try unlocking the wallet</source>
     </message>
     <message>
         <location line="+72"/>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the &quot;change&quot; DogeCash address</source>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the &quot;change&quot; Deviant address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3974,7 +3974,7 @@ try unlocking the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/sendchangeaddressdialog.cpp" line="-17"/>
+        <location filename="../deviant/sendchangeaddressdialog.cpp" line="-17"/>
         <source>RESET</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3992,7 +3992,7 @@ try unlocking the wallet</source>
 <context>
     <name>SendCustomFeeDialog</name>
     <message>
-        <location filename="../dogecash/forms/sendcustomfeedialog.ui" line="+14"/>
+        <location filename="../deviant/forms/sendcustomfeedialog.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4003,7 +4003,7 @@ try unlocking the wallet</source>
     </message>
     <message>
         <location line="+86"/>
-        <source>DOGEC/kilobyte</source>
+        <source>DEV/kilobyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4032,7 +4032,7 @@ try unlocking the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/sendcustomfeedialog.cpp" line="+35"/>
+        <location filename="../deviant/sendcustomfeedialog.cpp" line="+35"/>
         <source>Normal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4047,12 +4047,12 @@ try unlocking the wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/forms/sendcustomfeedialog.ui" line="+260"/>
+        <location filename="../deviant/forms/sendcustomfeedialog.ui" line="+260"/>
         <source>SAVE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/sendcustomfeedialog.cpp" line="+90"/>
+        <location filename="../deviant/sendcustomfeedialog.cpp" line="+90"/>
         <source>Fee too high. Must be below: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4065,7 +4065,7 @@ try unlocking the wallet</source>
 <context>
     <name>SendMemoDialog</name>
     <message>
-        <location filename="../dogecash/forms/sendmemodialog.ui" line="+14"/>
+        <location filename="../deviant/forms/sendmemodialog.ui" line="+14"/>
         <source>Dialog</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4089,7 +4089,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/sendmemodialog.cpp" line="+49"/>
+        <location filename="../deviant/sendmemodialog.cpp" line="+49"/>
         <source>RESET</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4102,7 +4102,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SendMultiRow</name>
     <message>
-        <location filename="../dogecash/forms/sendmultirow.ui" line="+26"/>
+        <location filename="../deviant/forms/sendmultirow.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4122,7 +4122,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/sendmultirow.cpp" line="+92"/>
+        <location filename="../deviant/sendmultirow.cpp" line="+92"/>
         <source>Update memo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4140,7 +4140,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SendWidget</name>
     <message>
-        <location filename="../dogecash/send.cpp" line="+159"/>
+        <location filename="../deviant/send.cpp" line="+159"/>
         <source>Total remaining from the selected UTXO</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4395,7 +4395,7 @@ Do you want to continue?
 <context>
     <name>SettingsBackupWallet</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingsbackupwallet.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingsbackupwallet.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4417,7 +4417,7 @@ This option creates a wallet.dat file that can be used to recover your whole bal
     </message>
     <message>
         <location line="+53"/>
-        <location filename="../dogecash/settings/settingsbackupwallet.cpp" line="+57"/>
+        <location filename="../deviant/settings/settingsbackupwallet.cpp" line="+57"/>
         <source>Select folder...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4434,12 +4434,12 @@ Remember to write it down and store it safely, otherwise you might lose access t
     </message>
     <message>
         <location line="-172"/>
-        <location filename="../dogecash/settings/settingsbackupwallet.cpp" line="-7"/>
+        <location filename="../deviant/settings/settingsbackupwallet.cpp" line="-7"/>
         <source>Backup Wallet</source>
         <translation type="unfinished">Backup Wallet</translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsbackupwallet.cpp" line="+1"/>
+        <location filename="../deviant/settings/settingsbackupwallet.cpp" line="+1"/>
         <source>Wallet Data (*.dat)</source>
         <translation type="unfinished">Wallet Data (*.dat)</translation>
     </message>
@@ -4462,7 +4462,7 @@ Remember to write it down and store it safely, otherwise you might lose access t
 <context>
     <name>SettingsBitToolWidget</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingsbittoolwidget.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingsbittoolwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4478,7 +4478,7 @@ Remember to write it down and store it safely, otherwise you might lose access t
     </message>
     <message>
         <location line="+7"/>
-        <source>Encrypt your DogeCash addresses (key pair actually) using BIP38 encryption.
+        <source>Encrypt your Deviant addresses (key pair actually) using BIP38 encryption.
 Using this mechanism you can share your keys without middle-man risk, only need to store your passphrase safely</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4525,7 +4525,7 @@ Using this mechanism you can share your keys without middle-man risk, only need 
     </message>
     <message>
         <location line="+77"/>
-        <source>DogeCash address</source>
+        <source>Deviant address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4565,7 +4565,7 @@ Using this mechanism you can share your keys without middle-man risk, only need 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsbittoolwidget.cpp" line="+142"/>
+        <location filename="../deviant/settings/settingsbittoolwidget.cpp" line="+142"/>
         <source>The entered passphrase is invalid. </source>
         <translation type="unfinished"></translation>
     </message>
@@ -4655,7 +4655,7 @@ Using this mechanism you can share your keys without middle-man risk, only need 
 <context>
     <name>SettingsConsoleWidget</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingsconsolewidget.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingsconsolewidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4665,12 +4665,12 @@ Using this mechanism you can share your keys without middle-man risk, only need 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsconsolewidget.cpp" line="+264"/>
+        <location filename="../deviant/settings/settingsconsolewidget.cpp" line="+264"/>
         <source>Console input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/forms/settingsconsolewidget.ui" line="+29"/>
+        <location filename="../deviant/settings/forms/settingsconsolewidget.ui" line="+29"/>
         <source>Open Debug File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4685,14 +4685,14 @@ Using this mechanism you can share your keys without middle-man risk, only need 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsconsolewidget.cpp" line="+13"/>
+        <location filename="../deviant/settings/settingsconsolewidget.cpp" line="+13"/>
         <source>Cannot open debug file.
 Verify that you have installed a predetermined text editor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+151"/>
-        <source>Welcome to the DogeCash RPC console.</source>
+        <source>Welcome to the Deviant RPC console.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4714,7 +4714,7 @@ Verify that you have installed a predetermined text editor.</source>
 <context>
     <name>SettingsDisplayOptionsWidget</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingsdisplayoptionswidget.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingsdisplayoptionswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4725,7 +4725,7 @@ Verify that you have installed a predetermined text editor.</source>
     </message>
     <message>
         <location line="+91"/>
-        <location filename="../dogecash/settings/settingsdisplayoptionswidget.cpp" line="+92"/>
+        <location filename="../deviant/settings/settingsdisplayoptionswidget.cpp" line="+92"/>
         <source>Reset to default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4770,7 +4770,7 @@ Verify that you have installed a predetermined text editor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsdisplayoptionswidget.cpp" line="-1"/>
+        <location filename="../deviant/settings/settingsdisplayoptionswidget.cpp" line="-1"/>
         <source>SAVE</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4788,7 +4788,7 @@ Verify that you have installed a predetermined text editor.</source>
 <context>
     <name>SettingsExportCSV</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingsexportcsv.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingsexportcsv.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -4810,7 +4810,7 @@ Verify that you have installed a predetermined text editor.</source>
     <message>
         <location line="+58"/>
         <location line="+115"/>
-        <location filename="../dogecash/settings/settingsexportcsv.cpp" line="+70"/>
+        <location filename="../deviant/settings/settingsexportcsv.cpp" line="+70"/>
         <location line="+7"/>
         <source>Select folder...</source>
         <translation type="unfinished"></translation>
@@ -4821,7 +4821,7 @@ Verify that you have installed a predetermined text editor.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsexportcsv.cpp" line="-16"/>
+        <location filename="../deviant/settings/settingsexportcsv.cpp" line="-16"/>
         <source>Export CSV</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4914,23 +4914,23 @@ There was an error trying to save the address list to %1. Please try again.</sou
 <context>
     <name>SettingsFaqWidget</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingsfaqwidget.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingsfaqwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location line="+152"/>
-        <source>1) What is DOGEC?</source>
+        <source>1) What is DEV?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+31"/>
-        <source>2) Why are my DOGEC unspendable?</source>
+        <source>2) Why are my DEV unspendable?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+148"/>
-        <source>https://dogec.io/</source>
+        <source>https://dev.io/</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4940,7 +4940,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+18"/>
-        <source>What is DOGEC?</source>
+        <source>What is DEV?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4950,17 +4950,17 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+21"/>
-        <source>Why are my DOGEC unspendable?</source>
+        <source>Why are my DEV unspendable?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+26"/>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
-                           Newly received DogeCash requires 6 confirmations on the network
+                           Newly received Deviant requires 6 confirmations on the network
                            to become eligible for spending which can take ~6 minutes.
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
-                           Your DogeCash wallet also needs to be completely synchronized
+                           Your Deviant wallet also needs to be completely synchronized
                            to see and spend balances on the network.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
@@ -4973,12 +4973,12 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+18"/>
-        <source>How do I stake DOGEC?</source>
+        <source>How do I stake DEV?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+26"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You must have a balance of DogeCash with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (dogecash-cli); the command &lt;span style=&quot; font-style:italic;&quot;&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ol style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Make sure your wallet is completely synchronized and you are using the latest release. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You must have a balance of Deviant with a minimum of 600 confirmations. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Your wallet must stay online and be unlocked for staking purposes. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Once all those steps are followed staking should be enabled. &lt;/li&gt;&lt;li align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can see the status of staking in the wallet by mousing over the package icon in the row on the top left of the wallet interface. There package will be lit up and will state &amp;quot;Staking Enabled&amp;quot; to indicate it is staking. Using the command line interface (deviant-cli); the command &lt;span style=&quot; font-style:italic;&quot;&gt;getstakingstatus&lt;/span&gt; will confirm that staking is active. &lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4991,7 +4991,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
                            We have support channels in most of our official chat groups, for example
-                           &lt;a style=&apos;color: #9c7019&apos; href=&apos;https://discord.dogec.io&apos;&gt;
+                           &lt;a style=&apos;color: #9c7019&apos; href=&apos;https://discord.dev.io&apos;&gt;
                            #support in our Discord&lt;/a&gt;.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
@@ -5006,8 +5006,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <location line="+44"/>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
-                           A masternode is a computer running a full node DogeCash Core wallet with a
-                           requirement of 15,000 DOGEC secured collateral to provide extra services
+                           A masternode is a computer running a full node Deviant Core wallet with a
+                           requirement of 15,000 DEV secured collateral to provide extra services
                            to the network and in return, receive a portion of the block reward
                            regularly.  These services include:
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
@@ -5028,17 +5028,17 @@ There was an error trying to save the address list to %1. Please try again.</sou
                            Masternode Perks:
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
                            &lt;ul&gt;
-                           &lt;li&gt;Participate in DogeCash Governance&lt;/li&gt;
+                           &lt;li&gt;Participate in Deviant Governance&lt;/li&gt;
                            &lt;li&gt;Earn Masternode Rewards&lt;/li&gt;
                            &lt;li&gt;Commodity option for future sale&lt;/li&gt;
-                           &lt;li&gt;Help secure the DogeCash network&lt;/li&gt;
+                           &lt;li&gt;Help secure the Deviant network&lt;/li&gt;
                            &lt;/ul&gt;
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
 
                            Requirements:
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
                            &lt;ul&gt;
-                           &lt;li&gt;15,000 DOGEC per single Masternode instance&lt;/li&gt;
+                           &lt;li&gt;15,000 DEV per single Masternode instance&lt;/li&gt;
                            &lt;li&gt;Must be stored in a core wallet&lt;/li&gt;
                            &lt;li&gt;Need dedicated IP address&lt;/li&gt;
                            &lt;li&gt;Masternode wallet to remain online&lt;/li&gt;
@@ -5061,14 +5061,14 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <location line="-268"/>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;
-                           DogeCash is a form of digital online money using blockchain technology
+                           Deviant is a form of digital online money using blockchain technology
                            that can be easily transferred globally, instantly, and with near
-                           zero fees.  DogeCash incorporates market leading security &amp;
+                           zero fees.  Deviant incorporates market leading security &amp;
                            privacy and is also the first PoS (Proof of Stake) Cryptocurrency
                            to implement Sapling(SHIELD), a zk-SNARKs based privacy protocol.
                            &lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;
-                           DogeCash utilizes a Proof of Stake (PoS) consensus system algorithm,
-                           allowing all owners of DogeCash to participate in earning block rewards
+                           Deviant utilizes a Proof of Stake (PoS) consensus system algorithm,
+                           allowing all owners of Deviant to participate in earning block rewards
                            while securing the network with full node wallets, as well as to
                            run Masternodes to create and vote on proposals.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
@@ -5087,7 +5087,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+26"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;A Masternode Controller wallet is where the 15,000 DOGEC collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;A Masternode Controller wallet is where the 15,000 DEV collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5102,7 +5102,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+138"/>
-        <source>3) How do I stake DOGEC?</source>
+        <source>3) How do I stake DEV?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5129,7 +5129,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
 <context>
     <name>SettingsInformationWidget</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingsinformationwidget.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingsinformationwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5224,12 +5224,12 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsinformationwidget.cpp" line="+74"/>
+        <location filename="../deviant/settings/settingsinformationwidget.cpp" line="+74"/>
         <source>Main</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/forms/settingsinformationwidget.ui" line="-587"/>
+        <location filename="../deviant/settings/forms/settingsinformationwidget.ui" line="-587"/>
         <source>Wallet Conf</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5239,7 +5239,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsinformationwidget.cpp" line="+22"/>
+        <location filename="../deviant/settings/settingsinformationwidget.cpp" line="+22"/>
         <source>No information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5250,7 +5250,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
     </message>
     <message>
         <location line="+4"/>
-        <source>Unable to open dogecash.conf with default application</source>
+        <source>Unable to open deviant.conf with default application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5272,7 +5272,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
 <context>
     <name>SettingsMainOptionsWidget</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingsmainoptionswidget.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingsmainoptionswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5322,12 +5322,12 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsmainoptionswidget.cpp" line="+54"/>
-        <source>Start DogeCash on system login</source>
+        <location filename="../deviant/settings/settingsmainoptionswidget.cpp" line="+54"/>
+        <source>Start Deviant on system login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/forms/settingsmainoptionswidget.ui" line="+130"/>
+        <location filename="../deviant/settings/forms/settingsmainoptionswidget.ui" line="+130"/>
         <source>Minimize to the tray instead of the taskbar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5337,7 +5337,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsmainoptionswidget.cpp" line="+30"/>
+        <location filename="../deviant/settings/settingsmainoptionswidget.cpp" line="+30"/>
         <source>Reset Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5358,7 +5358,7 @@ Are you sure?
 <context>
     <name>SettingsMultisendDialog</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingsmultisenddialog.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingsmultisenddialog.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5385,7 +5385,7 @@ Are you sure?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsmultisenddialog.cpp" line="+24"/>
+        <location filename="../deviant/settings/settingsmultisenddialog.cpp" line="+24"/>
         <source>New recipient for multisend</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5408,7 +5408,7 @@ Are you sure?
 <context>
     <name>SettingsMultisendWidget</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingsmultisendwidget.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingsmultisendwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5430,8 +5430,8 @@ Are you sure?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingsmultisendwidget.cpp" line="+164"/>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other DogeCash addresses after it matures.</source>
+        <location filename="../deviant/settings/settingsmultisendwidget.cpp" line="+164"/>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other Deviant addresses after it matures.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5550,7 +5550,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
 <context>
     <name>SettingsSignMessageWidgets</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingssignmessagewidgets.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingssignmessagewidgets.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5575,18 +5575,18 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingssignmessagewidgets.cpp" line="+47"/>
+        <location filename="../deviant/settings/settingssignmessagewidgets.cpp" line="+47"/>
         <source>Select mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/forms/settingssignmessagewidgets.ui" line="-19"/>
+        <location filename="../deviant/settings/forms/settingssignmessagewidgets.ui" line="-19"/>
         <source>Message</source>
         <translation type="unfinished">Message</translation>
     </message>
     <message>
         <location line="-62"/>
-        <source>DogeCash address or contact label</source>
+        <source>Deviant address or contact label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5602,7 +5602,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
     </message>
     <message>
         <location line="+88"/>
-        <location filename="../dogecash/settings/settingssignmessagewidgets.cpp" line="+64"/>
+        <location filename="../deviant/settings/settingssignmessagewidgets.cpp" line="+64"/>
         <source>SIGN</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5612,7 +5612,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingssignmessagewidgets.cpp" line="-1"/>
+        <location filename="../deviant/settings/settingssignmessagewidgets.cpp" line="-1"/>
         <source>You can sign messages with your addresses to prove you own them. Be careful not to sign anything vague, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation type="unfinished">You can sign messages with your addresses to prove you own them. Be careful not to sign anything vague, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</translation>
     </message>
@@ -5701,7 +5701,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
 <context>
     <name>SettingsWalletOptionsWidget</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingswalletoptionswidget.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingswalletoptionswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5737,7 +5737,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
     </message>
     <message>
         <location line="+71"/>
-        <location filename="../dogecash/settings/settingswalletoptionswidget.cpp" line="+38"/>
+        <location filename="../deviant/settings/settingswalletoptionswidget.cpp" line="+38"/>
         <source>Network</source>
         <translation type="unfinished">Network</translation>
     </message>
@@ -5787,7 +5787,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingswalletoptionswidget.cpp" line="+28"/>
+        <location filename="../deviant/settings/settingswalletoptionswidget.cpp" line="+28"/>
         <source>Options reset succeed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5795,13 +5795,13 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
 <context>
     <name>SettingsWalletRepairWidget</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingswalletrepairwidget.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingswalletrepairwidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location line="+94"/>
-        <location filename="../dogecash/settings/settingswalletrepairwidget.cpp" line="+22"/>
+        <location filename="../deviant/settings/settingswalletrepairwidget.cpp" line="+22"/>
         <source>Wallet Repair</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5881,7 +5881,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingswalletrepairwidget.cpp" line="+63"/>
+        <location filename="../deviant/settings/settingswalletrepairwidget.cpp" line="+63"/>
         <source>This will delete your local blockchain folders and the wallet will synchronize the complete Blockchain from scratch.&lt;br /&gt;&lt;br /&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5909,7 +5909,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
 <context>
     <name>SettingsWidget</name>
     <message>
-        <location filename="../dogecash/settings/forms/settingswidget.ui" line="+14"/>
+        <location filename="../deviant/settings/forms/settingswidget.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -5996,7 +5996,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
     </message>
     <message>
         <location line="+31"/>
-        <source>About DOGEC</source>
+        <source>About DEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6005,7 +6005,7 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/settings/settingswidget.cpp" line="+222"/>
+        <location filename="../deviant/settings/settingswidget.cpp" line="+222"/>
         <source>Confirm options reset</source>
         <translation type="unfinished">Confirm options reset</translation>
     </message>
@@ -6078,7 +6078,7 @@ Are you sure?
     <name>ShutdownWindow</name>
     <message>
         <location filename="../utilitydialog.cpp" line="+71"/>
-        <source>DogeCash Core is shutting down...</source>
+        <source>Deviant Core is shutting down...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6090,7 +6090,7 @@ Are you sure?
 <context>
     <name>SnackBar</name>
     <message>
-        <location filename="../dogecash/forms/snackbar.ui" line="+26"/>
+        <location filename="../deviant/forms/snackbar.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -6103,7 +6103,7 @@ Are you sure?
 <context>
     <name>Splash</name>
     <message>
-        <location filename="../dogecash/forms/splash.ui" line="+26"/>
+        <location filename="../deviant/forms/splash.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -6113,8 +6113,8 @@ Are you sure?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/splash.cpp" line="+31"/>
-        <source>DogeCash Core</source>
+        <location filename="../deviant/splash.cpp" line="+31"/>
+        <source>Deviant Core</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6129,7 +6129,7 @@ Are you sure?
 <context>
     <name>TooltipMenu</name>
     <message>
-        <location filename="../dogecash/forms/tooltipmenu.ui" line="+26"/>
+        <location filename="../deviant/forms/tooltipmenu.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -6157,7 +6157,7 @@ Are you sure?
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../dogecash/forms/topbar.ui" line="+26"/>
+        <location filename="../deviant/forms/topbar.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -6173,7 +6173,7 @@ Are you sure?
     </message>
     <message>
         <location line="+213"/>
-        <location filename="../dogecash/topbar.cpp" line="+668"/>
+        <location filename="../deviant/topbar.cpp" line="+668"/>
         <source>Available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6188,7 +6188,7 @@ Are you sure?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/topbar.cpp" line="-369"/>
+        <location filename="../deviant/topbar.cpp" line="-369"/>
         <location line="+341"/>
         <source>Wallet Unlocked for staking</source>
         <translation type="unfinished"></translation>
@@ -6681,13 +6681,13 @@ backup will be created.
 <context>
     <name>TxDetailDialog</name>
     <message>
-        <location filename="../dogecash/forms/sendconfirmdialog.ui" line="+26"/>
+        <location filename="../deviant/forms/sendconfirmdialog.ui" line="+26"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location line="+90"/>
-        <location filename="../dogecash/sendconfirmdialog.cpp" line="+75"/>
+        <location filename="../deviant/sendconfirmdialog.cpp" line="+75"/>
         <source>Transaction Details</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6698,13 +6698,13 @@ backup will be created.
     </message>
     <message>
         <location line="+117"/>
-        <location filename="../dogecash/sendconfirmdialog.cpp" line="+12"/>
+        <location filename="../deviant/sendconfirmdialog.cpp" line="+12"/>
         <source>Previous Transaction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-16"/>
-        <location filename="../dogecash/sendconfirmdialog.cpp" line="+1"/>
+        <location filename="../deviant/sendconfirmdialog.cpp" line="+1"/>
         <source>Output Index</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6789,7 +6789,7 @@ backup will be created.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/sendconfirmdialog.cpp" line="-34"/>
+        <location filename="../deviant/sendconfirmdialog.cpp" line="-34"/>
         <source>Confirm Your Transaction</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6837,18 +6837,18 @@ backup will be created.
 <context>
     <name>TxRow</name>
     <message>
-        <location filename="../dogecash/forms/txrow.ui" line="+20"/>
+        <location filename="../deviant/forms/txrow.ui" line="+20"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location line="+142"/>
-        <source>+0.000585 DOGEC</source>
+        <source>+0.000585 DEV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
-        <source>-0.000585 DOGEC</source>
+        <source>-0.000585 DEV</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6875,7 +6875,7 @@ Select fewer inputs with coin control.</source>
 <context>
     <name>WelcomeContentWidget</name>
     <message>
-        <location filename="../dogecash/forms/welcomecontentwidget.ui" line="+244"/>
+        <location filename="../deviant/forms/welcomecontentwidget.ui" line="+244"/>
         <source>1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6922,27 +6922,27 @@ Select fewer inputs with coin control.</source>
     <message>
         <location line="+89"/>
         <source>Welcome to
-DogeCash Core Wallet</source>
+Deviant Core Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
-        <source>DogeCash is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <source>Deviant is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+93"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - DogeCash believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - Deviant believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+83"/>
-        <source>The masternode network is DOGEC&apos;s second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <source>The masternode network is DEV&apos;s second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="-103"/>
-        <source>How DogeCash respects your privacy?</source>
+        <source>How Deviant respects your privacy?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6951,15 +6951,15 @@ DogeCash Core Wallet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../dogecash/welcomecontentwidget.cpp" line="+178"/>
+        <location filename="../deviant/welcomecontentwidget.cpp" line="+178"/>
         <source>default</source>
         <translation type="unfinished">default</translation>
     </message>
 </context>
 <context>
-    <name>dogecash-core</name>
+    <name>deviant-core</name>
     <message>
-        <location filename="../dogecashstrings.cpp" line="+18"/>
+        <location filename="../deviantstrings.cpp" line="+18"/>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation type="unfinished">Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</translation>
     </message>
@@ -7150,7 +7150,7 @@ DogeCash Core Wallet</source>
     </message>
     <message>
         <location line="+3"/>
-        <source>Unable to bind to %s on this computer. DogeCash Core is probably already running.</source>
+        <source>Unable to bind to %s on this computer. Deviant Core is probably already running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7170,7 +7170,7 @@ DogeCash Core Wallet</source>
     </message>
     <message>
         <location line="+3"/>
-        <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong DogeCash Core will not work properly.</source>
+        <source>Warning: Please check that your computer&apos;s date and time are correct! If your clock is wrong Deviant Core will not work properly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7260,7 +7260,7 @@ DogeCash Core Wallet</source>
     </message>
     <message>
         <location line="+1"/>
-        <source>Copyright (C) 2015-%i The DogeCash Core Developers</source>
+        <source>Copyright (C) 2015-%i The Deviant Core Developers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7522,7 +7522,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+18"/>
-        <source>Disable all DogeCash specific functionality (Masternodes, Budgeting) (0-1, default: %u)</source>
+        <source>Disable all Deviant specific functionality (Masternodes, Budgeting) (0-1, default: %u)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7567,7 +7567,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+1"/>
-        <source>Error loading %s: Wallet requires newer version of DogeCash Core</source>
+        <source>Error loading %s: Wallet requires newer version of Deviant Core</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7828,12 +7828,12 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+28"/>
-        <source>Minimum positive amount (in DOGEC) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
+        <source>Minimum positive amount (in DEV) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>Please check that your computer&apos;s date and time are correct! If your clock is wrong DogeCash Core will not work properly.</source>
+        <source>Please check that your computer&apos;s date and time are correct! If your clock is wrong Deviant Core will not work properly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8314,7 +8314,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+2"/>
-        <source>Wallet needed to be rewritten: restart DogeCash Core to complete</source>
+        <source>Wallet needed to be rewritten: restart Deviant Core to complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8371,7 +8371,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
 <context>
     <name>send</name>
     <message>
-        <location filename="../dogecash/forms/send.ui" line="+14"/>
+        <location filename="../deviant/forms/send.ui" line="+14"/>
         <source>Form</source>
         <translation type="unfinished">Form</translation>
     </message>
@@ -8403,7 +8403,7 @@ Please run &apos;sapling-fetch-params&apos; or &apos;./util/fetch-params.sh&apos
     </message>
     <message>
         <location line="+53"/>
-        <source>DogeCash address or contact label</source>
+        <source>Deviant address or contact label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

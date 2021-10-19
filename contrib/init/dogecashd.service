@@ -5,19 +5,19 @@
 # See "man systemd.service" for details.
 
 # Note that almost all daemon options could be specified in
-# /etc/dogecash/dogecash.conf
+# /etc/deviant/deviant.conf
 
 [Unit]
-Description=DogeCash daemon
+Description=Deviant daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/dogecashd -daemon -conf=/etc/dogecash/dogecash.conf -pid=/run/dogecashd/dogecashd.pid
-# Creates /run/dogecashd owned by dogecash
-RuntimeDirectory=dogecashd
-User=dogecash
+ExecStart=/usr/bin/deviantd -daemon -conf=/etc/deviant/deviant.conf -pid=/run/deviantd/deviantd.pid
+# Creates /run/deviantd owned by deviant
+RuntimeDirectory=deviantd
+User=deviant
 Type=forking
-PIDFile=/run/dogecashd/dogecashd.pid
+PIDFile=/run/deviantd/deviantd.pid
 Restart=on-failure
 
 # Hardening measures

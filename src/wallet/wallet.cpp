@@ -2,7 +2,7 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT softwarelicense, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -22,7 +22,7 @@
 #include "spork.h"
 #include "util.h"
 #include "utilmoneystr.h"
-#include "zdogecchain.h"
+#include "zdevchain.h"
 
 #include <future>
 #include <boost/algorithm/string/replace.hpp>
@@ -41,7 +41,7 @@ bool bSpendZeroConfChange = DEFAULT_SPEND_ZEROCONF_CHANGE;
 const char * DEFAULT_WALLET_DAT = "wallet.dat";
 
 /**
- * Fees smaller than this (in udogecash) are considered zero fee (for transaction creation)
+ * Fees smaller than this (in udeviant) are considered zero fee (for transaction creation)
  * We are ~100 times smaller then bitcoin now (2015-06-23), set minTxFee 10 times higher
  * so it's still 10 timeslower comparing to bitcoin.
  * Override with -mintxfee
@@ -2385,7 +2385,7 @@ bool CWallet::GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet, CKey& 
 
     // Masternode collateral value
     if (txOut.nValue != GetMNCollateral(chainActive.Height())) {
-        strError = "Invalid collateral tx value, must be 5,000 DOGEC or 15,000 DOGEC";
+        strError = "Invalid collateral tx value, must be 5,000 DEV or 15,000 DEV";
         return error("%s: tx %s, index %d not a masternode collateral", __func__, strTxHash, nOutputIndex);
     }
 
@@ -2951,7 +2951,7 @@ bool CWallet::CreateTransaction(const std::vector<CRecipient>& vecSend,
                 if (nChange > 0) {
                     // Fill a vout to ourself
                     // TODO: pass in scriptChange instead of reservekey so
-                    // change transaction isn't always pay-to-dogecash-address
+                    // change transaction isn't always pay-to-deviant-address
                     bool combineChange = false;
 
                     // coin control: send change to custom address
@@ -3146,7 +3146,7 @@ bool CWallet::CreateCoinStake(
     int nAttempts = 0;
     for (auto it = availableCoins->begin(); it != availableCoins->end();) {
         COutPoint outPoint = COutPoint(it->tx->GetHash(), it->i);
-        CDogeCashStake stakeInput(it->tx->tx->vout[it->i],
+        CDeviantStake stakeInput(it->tx->tx->vout[it->i],
                              outPoint,
                              it->pindex);
 
@@ -4142,7 +4142,7 @@ std::string CWallet::GetWalletHelpString(bool showDebug)
     strUsage += HelpMessageOpt("-coldstaking=<n>", strprintf(_("Enable cold staking functionality (0-1, default: %u). Disabled if staking=0"), DEFAULT_COLDSTAKING));
     strUsage += HelpMessageOpt("-gen", strprintf(_("Generate coins (default: %u)"), DEFAULT_GENERATE));
     strUsage += HelpMessageOpt("-genproclimit=<n>", strprintf(_("Set the number of threads for coin generation if enabled (-1 = all cores, default: %d)"), DEFAULT_GENERATE_PROCLIMIT));
-    strUsage += HelpMessageOpt("-minstakesplit=<amt>", strprintf(_("Minimum positive amount (in DOGEC) allowed by GUI and RPC for the stake split threshold (default: %s)"), FormatMoney(DEFAULT_MIN_STAKE_SPLIT_THRESHOLD)));
+    strUsage += HelpMessageOpt("-minstakesplit=<amt>", strprintf(_("Minimum positive amount (in DEV) allowed by GUI and RPC for the stake split threshold (default: %s)"), FormatMoney(DEFAULT_MIN_STAKE_SPLIT_THRESHOLD)));
     strUsage += HelpMessageOpt("-staking=<n>", strprintf(_("Enable staking functionality (0-1, default: %u)"), DEFAULT_STAKING));
     if (showDebug) {
         strUsage += HelpMessageGroup(_("Wallet debugging/testing options:"));
@@ -4192,10 +4192,10 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
             UIWarning(strprintf(_("Warning: error reading %s! All keys read correctly, but transaction data"
                          " or address book entries might be missing or incorrect."), walletFile));
         } else if (nLoadWalletRet == DB_TOO_NEW) {
-            UIError(strprintf(_("Errorloading %s: Wallet requires newer version of DogeCash Core"), walletFile));
+            UIError(strprintf(_("Errorloading %s: Wallet requires newer version of Deviant Core"), walletFile));
             return nullptr;
         } else if (nLoadWalletRet == DB_NEED_REWRITE) {
-            UIError(_("Wallet needed to be rewritten: restart DogeCash Core to complete"));
+            UIError(_("Wallet needed to be rewritten: restart Deviant Core to complete"));
             return nullptr;
         } else {
             UIError(strprintf(_("Errorloading %s\n"), walletFile));
@@ -4216,7 +4216,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
     const bool fLegacyWallet = gArgs.GetBoolArg("-legacywallet", false);
     if (gArgs.GetBoolArg("-upgradewallet", fFirstRun && !fLegacyWallet) ||
             (!walletInstance->IsLocked() && prev_version == FEATURE_PRE_SPLIT_KEYPOOL)) {
-        if (prev_version <= FEATURE_PRE_DogeCash && walletInstance->IsLocked()) {
+        if (prev_version <= FEATURE_PRE_Deviant && walletInstance->IsLocked()) {
             // Cannot upgrade alocked wallet
             UIError("Cannot upgrade alocked wallet.");
             return nullptr;
@@ -4262,7 +4262,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
             }
             // Createlegacy wallet
            logPrintf("Creating Pre-HD Wallet\n");
-            walletInstance->SetMaxVersion(FEATURE_PRE_DogeCash);
+            walletInstance->SetMaxVersion(FEATURE_PRE_Deviant);
         }
 
         // Top up the keypool
@@ -4472,7 +4472,7 @@ void CWallet::SetNull()
     // Stake split threshold
     nStakeSplitThreshold = DEFAULT_STAKE_SPLIT_THRESHOLD;
 
-    // User-defined fee DOGEC/kb
+    // User-defined fee DEV/kb
     fUseCustomFee = false;
     nCustomFee = CWallet::minTxFee.GetFeePerK();
 

@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,10 +7,10 @@
 #ifndef RECEIVEWIDGET_H
 #define RECEIVEWIDGET_H
 
-#include "qt/dogecash/pwidget.h"
+#include "qt/deviant/pwidget.h"
 #include "addresstablemodel.h"
-#include "qt/dogecash/furabstractlistitemdelegate.h"
-#include "qt/dogecash/addressfilterproxymodel.h"
+#include "qt/deviant/furabstractlistitemdelegate.h"
+#include "qt/deviant/addressfilterproxymodel.h"
 
 #include <QSpacerItem>
 #include <QWidget>

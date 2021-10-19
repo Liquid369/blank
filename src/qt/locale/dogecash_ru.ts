@@ -122,12 +122,12 @@
         <translation>Адреса получения</translation>
     </message>
     <message>
-        <source>These are your DogeCash addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Это ваши DOGEC-адреса для отправки платежей. Перед отправкой монет всегда проверяйте сумму и адрес получателя.</translation>
+        <source>These are your Deviant addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Это ваши DEV-адреса для отправки платежей. Перед отправкой монет всегда проверяйте сумму и адрес получателя.</translation>
     </message>
     <message>
-        <source>These are your DogeCash addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
-        <translation>Это ваши DOGEC-адреса для получения платежей. Для каждой транзакции рекомендуется использовать новый адрес получения.</translation>
+        <source>These are your Deviant addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <translation>Это ваши DEV-адреса для получения платежей. Для каждой транзакции рекомендуется использовать новый адрес получения.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -363,8 +363,8 @@ for staking</source>
         <translation>ОТМЕНА</translation>
     </message>
     <message>
-        <source>DogeCash will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
-        <translation>DogeCash сейчас закроется, чтобы завершить процесс шифрования. Помните, что шифрование вашего кошелька не может полностью защитить ваши DogeCash от кражи с использованием вредоносного ПО.</translation>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <translation>Deviant сейчас закроется, чтобы завершить процесс шифрования. Помните, что шифрование вашего кошелька не может полностью защитить ваши Deviant от кражи с использованием вредоносного ПО.</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -456,8 +456,8 @@ for staking</source>
         <translation>Сбережения</translation>
     </message>
     <message>
-        <source>0,00 DOGEC</source>
-        <translation>0.00 DOGEC</translation>
+        <source>0,00 DEV</source>
+        <translation>0.00 DEV</translation>
     </message>
     <message>
         <source>address</source>
@@ -498,8 +498,8 @@ for staking</source>
         <translation>Выбор монеты</translation>
     </message>
     <message>
-        <source>Select DOGEC Outputs to Spend</source>
-        <translation>Выберите DOGEC выходы для расходов</translation>
+        <source>Select DEV Outputs to Spend</source>
+        <translation>Выберите DEV выходы для расходов</translation>
     </message>
     <message>
         <source>Dust:</source>
@@ -526,8 +526,8 @@ for staking</source>
         <translation>Сумма</translation>
     </message>
     <message>
-        <source>0.00 DOGEC</source>
-        <translation>0.00 DOGEC </translation>
+        <source>0.00 DEV</source>
+        <translation>0.00 DEV </translation>
     </message>
     <message>
         <source>0</source>
@@ -727,15 +727,15 @@ for staking</source>
     <message>
         <source>You can delegate your DOGECs, letting a hot node (24/7 online node)
 stake on your behalf, while you keep the keys securely offline.</source>
-        <translation>Вы можете делегировать свои DOGEC, позволяя горячему узлу (онлайн-узлу, работаещему 24/7) делать стекинг от вашего имени, в то время как ключи надежно хранятся в автономном режиме.</translation>
+        <translation>Вы можете делегировать свои DEV, позволяя горячему узлу (онлайн-узлу, работаещему 24/7) делать стекинг от вашего имени, в то время как ключи надежно хранятся в автономном режиме.</translation>
     </message>
     <message>
         <source>Enter owner address</source>
         <translation>Введите адрес владельца</translation>
     </message>
     <message>
-        <source>Accept DOGEC delegation / Delegate DOGEC</source>
-        <translation>Принять делегацию DOGEC / Делегировать DOGEC</translation>
+        <source>Accept DEV delegation / Delegate DEV</source>
+        <translation>Принять делегацию DEV / Делегировать DEV</translation>
     </message>
     <message>
         <source>Cold Staking address</source>
@@ -939,8 +939,8 @@ address</source>
         <translation>Обзор истории вашего аккаунта</translation>
     </message>
     <message>
-        <source>How to get DOGEC</source>
-        <translation>Как получить DOGEC</translation>
+        <source>How to get DEV</source>
+        <translation>Как получить DEV</translation>
     </message>
     <message>
         <source>Sort by</source>
@@ -1055,8 +1055,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>Изменить адрес отправки</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid DogeCash address.</source>
-        <translation>Введенный адрес "%1" не является DogeCash адресом.</translation>
+        <source>The entered address "%1" is not a valid Deviant address.</source>
+        <translation>Введенный адрес "%1" не является Deviant адресом.</translation>
     </message>
     <message>
         <source>The entered address "%1" is already in the address book.</source>
@@ -1108,16 +1108,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>версия</translation>
     </message>
     <message>
-        <source>DogeCash Core</source>
-        <translation>DogeCash Core</translation>
+        <source>Deviant Core</source>
+        <translation>Deviant Core</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-бит)</translation>
     </message>
     <message>
-        <source>About DogeCash Core</source>
-        <translation>О DogeCash Core</translation>
+        <source>About Deviant Core</source>
+        <translation>О Deviant Core</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1171,16 +1171,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>Добро пожаловать</translation>
     </message>
     <message>
-        <source>Welcome to DogeCash Core.</source>
-        <translation>Добро пожаловать в DogeCash Core.</translation>
+        <source>Welcome to Deviant Core.</source>
+        <translation>Добро пожаловать в Deviant Core.</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where DogeCash Core will store its data.</source>
-        <translation>Поскольку это первый запуск программы, вы можете выбрать, где будут храниться данные DogeCash Core.</translation>
+        <source>As this is the first time the program is launched, you can choose where Deviant Core will store its data.</source>
+        <translation>Поскольку это первый запуск программы, вы можете выбрать, где будут храниться данные Deviant Core.</translation>
     </message>
     <message>
-        <source>DogeCash Core will download and store a copy of the DogeCash block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>DogeCash Core загрузит и сохранит копию цепочки блоков DOGEC. Каталог будет занимать около %1GB и со временем размер будет увеличиваться. Кроме того, в этом каталоге будет храниться кошелек.</translation>
+        <source>Deviant Core will download and store a copy of the Deviant block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>Deviant Core загрузит и сохранит копию цепочки блоков DEV. Каталог будет занимать около %1GB и со временем размер будет увеличиваться. Кроме того, в этом каталоге будет храниться кошелек.</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1199,8 +1199,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>ХОРОШО</translation>
     </message>
     <message>
-        <source>DogeCash Core</source>
-        <translation>DogeCash Core</translation>
+        <source>Deviant Core</source>
+        <translation>Deviant Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1323,8 +1323,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>Убедитесь, что у вас есть такое количество монет.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DOGEC will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;На новый пустой адрес в вашем кошельке&lt;/p&gt;&lt;p&gt; будет сделана транзакция в 10 000 DOGEC. &lt;/p&gt;&lt;p&gt;Адрес отмечен под именем мастерноды.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;На новый пустой адрес в вашем кошельке&lt;/p&gt;&lt;p&gt; будет сделана транзакция в 10 000 DEV. &lt;/p&gt;&lt;p&gt;Адрес отмечен под именем мастерноды.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -1529,7 +1529,7 @@ Please wait few more minutes (masternode collaterals require %1 confirmations).<
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the dogecash.conf file
+You will only have to paste the data in the deviant.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1537,7 +1537,7 @@ this controller wallet (select the Masternode in the list and press "start").
 на удаленном сервере в буфер обмена.
 
 
-Вам необходимо только вставить данные в файл dogecash.conf
+Вам необходимо только вставить данные в файл deviant.conf
 вашего удаленного сервера и запустить его, а затем запустить мастерноду,
 используя этот кошелек контроллера (выберите мастерноду из списка и нажмите «Старт»).
 </translation>
@@ -1727,8 +1727,8 @@ STAKING</source>
         <translation>Проанализированные данные слишком большие</translation>
     </message>
     <message>
-        <source>Invalid URI, not starting with "dogecash" prefix</source>
-        <translation>Неверный URI, не начинается с префикса "dogecash"</translation>
+        <source>Invalid URI, not starting with "deviant" prefix</source>
+        <translation>Неверный URI, не начинается с префикса "deviant"</translation>
     </message>
 </context>
 <context>
@@ -1773,8 +1773,8 @@ STAKING</source>
         <translation>Отключив проведение неподтвержденных изменений все изменения о транзакции &lt;br/&gt;не будут использованы пока транзакция не получит хотя бы одно подтверждение.&lt;br/&gt;Также это влияет на расчет вашего баланса.</translation>
     </message>
     <message>
-        <source>Automatically open the DogeCash client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Автоматически открыть клиентский порт DogeCash через роутер. Ваш роутер должен поддерживать UPnP, а сам сервис должен быть включен.</translation>
+        <source>Automatically open the Deviant client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Автоматически открыть клиентский порт Deviant через роутер. Ваш роутер должен поддерживать UPnP, а сам сервис должен быть включен.</translation>
     </message>
     <message>
         <source>Accept connections from outside</source>
@@ -1793,12 +1793,12 @@ STAKING</source>
         <translation>Эксперт</translation>
     </message>
     <message>
-        <source>Automatically start DogeCash after logging in to the system.</source>
-        <translation>Автоматически запускать DogeCash после входа в систему.</translation>
+        <source>Automatically start Deviant after logging in to the system.</source>
+        <translation>Автоматически запускать Deviant после входа в систему.</translation>
     </message>
     <message>
-        <source>&amp;Start DogeCash on system login</source>
-        <translation>&amp;Запускать DogeCash при входе в систему</translation>
+        <source>&amp;Start Deviant on system login</source>
+        <translation>&amp;Запускать Deviant при входе в систему</translation>
     </message>
     <message>
         <source>Whether to show coin control features or not.</source>
@@ -1825,22 +1825,22 @@ STAKING</source>
         <translation>&amp;Сеть</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting DOGEC.</source>
-        <translation>Здесь можно выставить язык интерфейса. Изменения вступят в силу после перезапуска DOGEC.</translation>
+        <source>The user interface language can be set here. This setting will take effect after restarting DEV.</source>
+        <translation>Здесь можно выставить язык интерфейса. Изменения вступят в силу после перезапуска DEV.</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/DogeCash/DogeCash-project-translations</source>
+https://www.transifex.com/Deviant/Deviant-project-translations</source>
         <translation>Отсутствует ваш язык или заметили незавершенный перевод? Вы можете помочь нам стать лучше:
-https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
+https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>Карта порта, использующего &amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of DOGEC units to zDOGEC</source>
-        <translation>Невозможно автоматически отчеканить единицы DOGEC для zDOGEC</translation>
+        <source>Enable automatic minting of DEV units to zDOGEC</source>
+        <translation>Невозможно автоматически отчеканить единицы DEV для zDOGEC</translation>
     </message>
     <message>
         <source>Enable zDOGEC Automint</source>
@@ -1855,16 +1855,16 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
         <translation>Включить адреса с автоматической чеканкой</translation>
     </message>
     <message>
-        <source>Percentage of incoming DOGEC which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
-        <translation>Процент приходящих DOGEC, которые автоматически конвертируются в zDOGEC благодаря Zerocoin протоколу (min: 10%)</translation>
+        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
+        <translation>Процент приходящих DEV, которые автоматически конвертируются в zDOGEC благодаря Zerocoin протоколу (min: 10%)</translation>
     </message>
     <message>
         <source>Percentage of autominted zDOGEC</source>
         <translation>Процент  авточеканненых zDOGEC</translation>
     </message>
     <message>
-        <source>Wait with automatic conversion to Zerocoin until enough DOGEC for this denomination is available</source>
-        <translation>Подождите с автоматическим преобразованием в Zerocoin, пока не будет достаточно DOGEC для этой номинации.</translation>
+        <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
+        <translation>Подождите с автоматическим преобразованием в Zerocoin, пока не будет достаточно DEV для этой номинации.</translation>
     </message>
     <message>
         <source>Preferred Automint zDOGEC Denomination</source>
@@ -1875,8 +1875,8 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
         <translation>Порог разделения доли:</translation>
     </message>
     <message>
-        <source>Connect to the DogeCash network through a SOCKS5 proxy.</source>
-        <translation>Подключиться к сети DogeCash через SOCKS5 прокси.</translation>
+        <source>Connect to the Deviant network through a SOCKS5 proxy.</source>
+        <translation>Подключиться к сети Deviant через SOCKS5 прокси.</translation>
     </message>
     <message>
         <source>Proxy &amp;IP:</source>
@@ -2022,8 +2022,8 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
 <context>
     <name>DOGECGUI</name>
     <message>
-        <source>DogeCash Core</source>
-        <translation>DogeCash Core</translation>
+        <source>Deviant Core</source>
+        <translation>Deviant Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -2050,8 +2050,8 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
         <translation>Завершить работу</translation>
     </message>
     <message>
-        <source>DogeCash Core client</source>
-        <translation>Клиент DogeCash Core</translation>
+        <source>Deviant Core client</source>
+        <translation>Клиент Deviant Core</translation>
     </message>
     <message>
         <source>Error</source>
@@ -2117,12 +2117,12 @@ Address: %4
         <translation>Неверный адрес оплаты %1</translation>
     </message>
     <message>
-        <source>Cannot start dogecash: click-to-pay handler</source>
-        <translation>Не удалось запустить dogecash: обработчик click-to-pay </translation>
+        <source>Cannot start deviant: click-to-pay handler</source>
+        <translation>Не удалось запустить deviant: обработчик click-to-pay </translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid DogeCash address or malformed URI parameters.</source>
-        <translation>URI не интерпретируется! Причиной этому может быть неверный DogeCash адрес или неверные параметеры URI.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Deviant address or malformed URI parameters.</source>
+        <translation>URI не интерпретируется! Причиной этому может быть неверный Deviant адрес или неверные параметеры URI.</translation>
     </message>
     <message>
         <source>Payment request file cannot be read! This can be caused by an invalid payment request file.</source>
@@ -2207,8 +2207,8 @@ Address: %4
         <translation>Сумма</translation>
     </message>
     <message>
-        <source>Enter DogeCash address (e.g. %1)</source>
-        <translation>Введите адрес DogeCash (например, %1)</translation>
+        <source>Enter Deviant address (e.g. %1)</source>
+        <translation>Введите адрес Deviant (например, %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2251,12 +2251,12 @@ Address: %4
         <translation>%1 мс</translation>
     </message>
     <message>
-        <source>A fatal error occurred. DogeCash can no longer continue safely and will quit.</source>
-        <translation>Произошла фатальная ошибка. DogeCash больше не может безопасно продолжать работу и завершит работу.</translation>
+        <source>A fatal error occurred. Deviant can no longer continue safely and will quit.</source>
+        <translation>Произошла фатальная ошибка. Deviant больше не может безопасно продолжать работу и завершит работу.</translation>
     </message>
     <message>
-        <source>DogeCash Core</source>
-        <translation>DogeCash Core</translation>
+        <source>Deviant Core</source>
+        <translation>Deviant Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -2506,8 +2506,8 @@ Address: %4
         <translation>Блокчейн</translation>
     </message>
     <message>
-        <source>Open the DogeCash debug log file from the current data directory. This can take a few seconds for large log files.</source>
-        <translation>Открыть протокол отладки DOGEC. Это может занять некоторе время, если файл протокола очень большой.</translation>
+        <source>Open the Deviant debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <translation>Открыть протокол отладки DEV. Это может занять некоторе время, если файл протокола очень большой.</translation>
     </message>
     <message>
         <source>Number of Masternodes</source>
@@ -2731,8 +2731,8 @@ Address: %4
         <translation>Вывод:</translation>
     </message>
     <message>
-        <source>Welcome to the DogeCash RPC console.</source>
-        <translation>Добро пожаловать в окружение DogeCash RPC.</translation>
+        <source>Welcome to the Deviant RPC console.</source>
+        <translation>Добро пожаловать в окружение Deviant RPC.</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -2869,8 +2869,8 @@ Address: %4
         <translation>Вид</translation>
     </message>
     <message>
-        <source>Scan the QR code or copy the address to receive DOGEC</source>
-        <translation>Сканируйте QR-код или скопируйте адрес для получения DOGEC</translation>
+        <source>Scan the QR code or copy the address to receive DEV</source>
+        <translation>Сканируйте QR-код или скопируйте адрес для получения DEV</translation>
     </message>
     <message>
         <source>Add Label</source>
@@ -2995,12 +2995,12 @@ Address: %4
         <translation>Сумма</translation>
     </message>
     <message>
-        <source>DOGEC</source>
-        <translation>DOGEC</translation>
+        <source>DEV</source>
+        <translation>DEV</translation>
     </message>
     <message>
-        <source>Instead of sharing only a DogeCash address, you can create a payment request, bundling up more information</source>
-        <translation>Вместо того, чтобы делиться только адресом DOGEC, вы можете создать запрос на оплату, связывая больше информации</translation>
+        <source>Instead of sharing only a Deviant address, you can create a payment request, bundling up more information</source>
+        <translation>Вместо того, чтобы делиться только адресом DEV, вы можете создать запрос на оплату, связывая больше информации</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -3090,8 +3090,8 @@ Address: %4
         <translation>Смена адреса</translation>
     </message>
     <message>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" DogeCash address</source>
-        <translation>Остаточная часть значения, полученного от значения входов минус выходов, идет на «изменение» адреса DOGEC</translation>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" Deviant address</source>
+        <translation>Остаточная часть значения, полученного от значения входов минус выходов, идет на «изменение» адреса DEV</translation>
     </message>
     <message>
         <source>SAVE</source>
@@ -3121,8 +3121,8 @@ Address: %4
         <translation>рекомендуемые</translation>
     </message>
     <message>
-        <source>DOGEC/kilobyte</source>
-        <translation>DOGEC/килобайт</translation>
+        <source>DEV/kilobyte</source>
+        <translation>DEV/килобайт</translation>
     </message>
     <message>
         <source>0.00 KB</source>
@@ -3420,9 +3420,9 @@ Remember to write it down and store it safely, otherwise you might lose access t
         <translation>Инструмент BIP38</translation>
     </message>
     <message>
-        <source>Encrypt your DogeCash addresses (key pair actually) using BIP38 encryption.
+        <source>Encrypt your Deviant addresses (key pair actually) using BIP38 encryption.
 Using this mechanism you can share your keys without middle-man risk, only need to store your passphrase safely</source>
-        <translation>Зашифруйте свои адреса DogeCash (фактически, пару ключей), используя шифрование BIP38.
+        <translation>Зашифруйте свои адреса Deviant (фактически, пару ключей), используя шифрование BIP38.
 С помощью этого механизма вы можете делиться своими ключами без риска посредника, вам нужно только безопасно хранить вашу парольную фразу</translation>
     </message>
     <message>
@@ -3458,8 +3458,8 @@ Using this mechanism you can share your keys without middle-man risk, only need 
         <translation>Расшифровать ключ</translation>
     </message>
     <message>
-        <source>DogeCash address</source>
-        <translation>Адрес DOGEC</translation>
+        <source>Deviant address</source>
+        <translation>Адрес DEV</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -3591,8 +3591,8 @@ Verify that you have installed a predetermined text editor.</source>
 Убедитесь, что вы установили заранее установленный текстовый редактор.</translation>
     </message>
     <message>
-        <source>Welcome to the DogeCash RPC console.</source>
-        <translation>Добро пожаловать в окружение DogeCash RPC.</translation>
+        <source>Welcome to the Deviant RPC console.</source>
+        <translation>Добро пожаловать в окружение Deviant RPC.</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
@@ -3775,49 +3775,49 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>Вид</translation>
     </message>
     <message>
-        <source>1) What is DOGEC?</source>
-        <translation>1) Что такое DOGEC?</translation>
+        <source>1) What is DEV?</source>
+        <translation>1) Что такое DEV?</translation>
     </message>
     <message>
-        <source>2) Why are my DOGEC unspendable?</source>
-        <translation>2) Почему мои DOGEC невозможно потратить?</translation>
+        <source>2) Why are my DEV unspendable?</source>
+        <translation>2) Почему мои DEV невозможно потратить?</translation>
     </message>
     <message>
-        <source>https://dogec.io/</source>
-        <translation>https://dogec.io/</translation>
+        <source>https://dev.io/</source>
+        <translation>https://dev.io/</translation>
     </message>
     <message>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <source>What is DOGEC?</source>
-        <translation>Что такое DOGEC?</translation>
+        <source>What is DEV?</source>
+        <translation>Что такое DEV?</translation>
     </message>
     <message>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <source>Why are my DOGEC unspendable?</source>
-        <translation>Почему мои DOGEC невозможно потратить?</translation>
+        <source>Why are my DEV unspendable?</source>
+        <translation>Почему мои DEV невозможно потратить?</translation>
     </message>
     <message>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Newly received DogeCash requires 6 confirmations on the network
+                           Newly received Deviant requires 6 confirmations on the network
                            to become eligible for spending which can take ~6 minutes.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           Your DogeCash wallet also needs to be completely synchronized
+                           Your Deviant wallet also needs to be completely synchronized
                            to see and spend balances on the network.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
         <translation>
 &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-Недавно полученным DogeCash требуется 6 подтверждений в сети,
+Недавно полученным Deviant требуется 6 подтверждений в сети,
 чтобы получить право быть расходуемыми. Это может занять примерно 6 минут.
 &lt;/p&gt;&lt;p align="justify"&gt;
-Ваш кошелек DogeCash также должен быть полностью синхронизирован,
+Ваш кошелек Deviant также должен быть полностью синхронизирован,
 чтобы видеть баланс и расходовать его в сети.
  &lt;/p&gt;&lt;/body&gt;&lt;/html&gt; </translation>
     </message>
@@ -3826,8 +3826,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>3</translation>
     </message>
     <message>
-        <source>How do I stake DOGEC?</source>
-        <translation>Как мне запустить стекинг DOGEC?</translation>
+        <source>How do I stake DEV?</source>
+        <translation>Как мне запустить стекинг DEV?</translation>
     </message>
     <message>
         <source>4</source>
@@ -3860,8 +3860,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>Часто задаваемые вопросы</translation>
     </message>
     <message>
-        <source>3) How do I stake DOGEC?</source>
-        <translation>3) Как мне запустить стекинг DOGEC?</translation>
+        <source>3) How do I stake DEV?</source>
+        <translation>3) Как мне запустить стекинг DEV?</translation>
     </message>
     <message>
         <source>4) Where I should go if I need support?</source>
@@ -3979,8 +3979,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>Невозможно открыть папку резервных копий</translation>
     </message>
     <message>
-        <source>Unable to open dogecash.conf with default application</source>
-        <translation>Невозможно открыть dogecash.conf с приложением по умолчанию</translation>
+        <source>Unable to open deviant.conf with default application</source>
+        <translation>Невозможно открыть deviant.conf с приложением по умолчанию</translation>
     </message>
     <message>
         <source>In:</source>
@@ -4034,8 +4034,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>Количество потоков проверки скрипта</translation>
     </message>
     <message>
-        <source>Start DogeCash on system login</source>
-        <translation>Запускать DogeCash при входе в систему</translation>
+        <source>Start Deviant on system login</source>
+        <translation>Запускать Deviant при входе в систему</translation>
     </message>
     <message>
         <source>Minimize to the tray instead of the taskbar</source>
@@ -4122,8 +4122,8 @@ Are you sure?
         <translation>Флажок</translation>
     </message>
     <message>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other DogeCash addresses after it matures.</source>
-        <translation>MultiSend позволяет автоматически отправлять до 100% ваших вознаграждений от стекинга или мастернод в список других адресов DogeCash после его созревания.</translation>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other Deviant addresses after it matures.</source>
+        <translation>MultiSend позволяет автоматически отправлять до 100% ваших вознаграждений от стекинга или мастернод в список других адресов Deviant после его созревания.</translation>
     </message>
     <message>
         <source>Active</source>
@@ -4249,8 +4249,8 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation>Сообщение</translation>
     </message>
     <message>
-        <source>DogeCash address or contact label</source>
-        <translation>DogeCash адрес или лейбл контакта</translation>
+        <source>Deviant address or contact label</source>
+        <translation>Deviant адрес или лейбл контакта</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -4570,8 +4570,8 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation>ЧаВо</translation>
     </message>
     <message>
-        <source>About DOGEC</source>
-        <translation>О DOGEC</translation>
+        <source>About DEV</source>
+        <translation>О DEV</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4641,8 +4641,8 @@ Are you sure?
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>DogeCash Core is shutting down...</source>
-        <translation>DogeCash Core выключается...</translation>
+        <source>Deviant Core is shutting down...</source>
+        <translation>Deviant Core выключается...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -4671,8 +4671,8 @@ Are you sure?
         <translation>Загрузка...</translation>
     </message>
     <message>
-        <source>DogeCash Core</source>
-        <translation>DogeCash Core</translation>
+        <source>Deviant Core</source>
+        <translation>Deviant Core</translation>
     </message>
 </context>
 <context>
@@ -5148,8 +5148,8 @@ backup will be created.
         <translation>Вид</translation>
     </message>
     <message>
-        <source>+0.000585 DOGEC</source>
-        <translation>+0.000585 DOGEC</translation>
+        <source>+0.000585 DEV</source>
+        <translation>+0.000585 DEV</translation>
     </message>
     </context>
 <context>
@@ -5210,25 +5210,25 @@ Select fewer inputs with coin control.</source>
     </message>
     <message>
         <source>Welcome to
-DogeCash Core Wallet</source>
+Deviant Core Wallet</source>
         <translation>Добро пожаловать
-в основной кошелек DOGEC</translation>
+в основной кошелек DEV</translation>
     </message>
     <message>
-        <source>DogeCash is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
-        <translation>DogeCash - самая инновационная в мире технология на основе блокчейна Proof of Stake. Разработана командой опытных разработчиков и криптографов.</translation>
+        <source>Deviant is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <translation>Deviant - самая инновационная в мире технология на основе блокчейна Proof of Stake. Разработана командой опытных разработчиков и криптографов.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - DogeCash believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Как говорится в нашем манифесте: конфиденциальность является не подлежащим обсуждению основным правом человека; это дает пользователям свободу делиться своими данными в любое время и с кем угодно, ведь DogeCash верит в собственный суверенитет.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - Deviant believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Как говорится в нашем манифесте: конфиденциальность является не подлежащим обсуждению основным правом человека; это дает пользователям свободу делиться своими данными в любое время и с кем угодно, ведь Deviant верит в собственный суверенитет.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is DOGEC's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
-        <translation>Сеть мастернод - это сеть второго уровня DogeCash поверх блокчейна, которая позволяет нашему ДАО обеспечивать децентрализованное управление и казначейство.</translation>
+        <source>The masternode network is DEV's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <translation>Сеть мастернод - это сеть второго уровня Deviant поверх блокчейна, которая позволяет нашему ДАО обеспечивать децентрализованное управление и казначейство.</translation>
     </message>
     <message>
-        <source>How DogeCash respects your privacy?</source>
-        <translation>Как DogeCash уважает вашу конфиденциальность?</translation>
+        <source>How Deviant respects your privacy?</source>
+        <translation>Как Deviant уважает вашу конфиденциальность?</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -5240,7 +5240,7 @@ DogeCash Core Wallet</source>
     </message>
 </context>
 <context>
-    <name>dogecash-core</name>
+    <name>deviant-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>Разрешить соединения JSON-RPC из указанного источника. Действительно для  &lt;ip&gt; одного IP (например, 1.2.3.4), сетевой / сетевой маски (например, 1.2.3.4/255.255.255.0) или сети / CIDR (например, 1.2.3.4/24). Эта опция может быть указана несколько раз</translation>
@@ -5394,8 +5394,8 @@ DogeCash Core Wallet</source>
         <translation>Общая длина строки версии сети (%i) превышает максимальную длину (%i). Уменьшите количество или размер uacomments.</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. DogeCash Core is probably already running.</source>
-        <translation>Не удалось привязать к %s на этом компьютере. DogeCash Core, вероятно, уже запущен.</translation>
+        <source>Unable to bind to %s on this computer. Deviant Core is probably already running.</source>
+        <translation>Не удалось привязать к %s на этом компьютере. Deviant Core, вероятно, уже запущен.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
@@ -5410,8 +5410,8 @@ DogeCash Core Wallet</source>
         <translation>Предупреждение: -paytxfee установлен очень высоко! Это комиссия за транзакцию, которую вы заплатите, если вы отправляете транзакцию.</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong DogeCash Core will not work properly.</source>
-        <translation>Внимание: проверьте правильность даты и времени вашего компьютера! Если ваши часы ошибочны, DogeCash Core не будет работать должным образом.</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Deviant Core will not work properly.</source>
+        <translation>Внимание: проверьте правильность даты и времени вашего компьютера! Если ваши часы ошибочны, Deviant Core не будет работать должным образом.</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -5482,8 +5482,8 @@ DogeCash Core Wallet</source>
         <translation>Copyright (C) 2014-%i Разработчики Dash Core</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The DogeCash Core Developers</source>
-        <translation>Copyright (C) 2015-%i Разработчики DogeCash Core</translation>
+        <source>Copyright (C) 2015-%i The Deviant Core Developers</source>
+        <translation>Copyright (C) 2015-%i Разработчики Deviant Core</translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -5838,12 +5838,12 @@ DogeCash Core Wallet</source>
         <translation>Комиссия (в %s/Кбайт) меньше этого значения считается с нулевой комиссией за создание транзакции (по умолчанию: %s)</translation>
     </message>
     <message>
-        <source>Minimum positive amount (in DOGEC) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
-        <translation>Минимальная положительная сумма (в DOGEC), разрешенная GUI и RPC для порога разделения стекинга (по умолчанию: %s)</translation>
+        <source>Minimum positive amount (in DEV) allowed by GUI and RPC for the stake split threshold (default: %s)</source>
+        <translation>Минимальная положительная сумма (в DEV), разрешенная GUI и RPC для порога разделения стекинга (по умолчанию: %s)</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong DogeCash Core will not work properly.</source>
-        <translation>Пожалуйста, проверьте правильность даты и времени на вашем компьютере! Если ваши часы не точны, DogeCash Core не будет работать должным образом.</translation>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong Deviant Core will not work properly.</source>
+        <translation>Пожалуйста, проверьте правильность даты и времени на вашем компьютере! Если ваши часы не точны, Deviant Core не будет работать должным образом.</translation>
     </message>
     <message>
         <source>Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless -connect/-noconnect)</source>
@@ -6184,8 +6184,8 @@ DogeCash Core Wallet</source>
         <translation>Проверка кошелька ...</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart DogeCash Core to complete</source>
-        <translation>Кошелек необходимо переписать: перезапустите DogeCash Core, чтобы завершить</translation>
+        <source>Wallet needed to be rewritten: restart Deviant Core to complete</source>
+        <translation>Кошелек необходимо переписать: перезапустите Deviant Core, чтобы завершить</translation>
     </message>
     <message>
         <source>Wallet options:</source>
@@ -6239,8 +6239,8 @@ DogeCash Core Wallet</source>
         <translation>Отправить</translation>
     </message>
     <message>
-        <source>DogeCash address or contact label</source>
-        <translation>DogeCash адрес или лейбл контакта</translation>
+        <source>Deviant address or contact label</source>
+        <translation>Deviant адрес или лейбл контакта</translation>
     </message>
     <message>
         <source>Amount</source>

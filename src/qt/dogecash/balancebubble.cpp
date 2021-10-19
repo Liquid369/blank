@@ -1,13 +1,13 @@
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/balancebubble.h"
-#include "qt/dogecash/forms/ui_balancebubble.h"
+#include "qt/deviant/balancebubble.h"
+#include "qt/deviant/forms/ui_balancebubble.h"
 
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/qtutils.h"
 
 #include <QGraphicsOpacityEffect>
 #include <QPropertyAnimation>

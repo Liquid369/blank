@@ -1,7 +1,7 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -13,10 +13,10 @@
 #include "guiconstants.h"
 #include "guiutil.h"
 #include "walletmodel.h"
-#include "qt/dogecash/qtutils.h"
-#include "qt/dogecash/loadingdialog.h"
-#include "qt/dogecash/defaultdialog.h"
-#include "qt/dogecash/dogecashgui.h"
+#include "qt/deviant/qtutils.h"
+#include "qt/deviant/loadingdialog.h"
+#include "qt/deviant/defaultdialog.h"
+#include "qt/deviant/deviantgui.h"
 #include <QDebug>
 
 #include <QKeyEvent>
@@ -349,7 +349,7 @@ void AskPassphraseDialog::warningMessage()
     openStandardDialog(
             tr("Wallet encrypted"),
             "<qt>" +
-            tr("DogeCash will close now to finish the encryption process. "
+            tr("Deviant will close now to finish the encryption process. "
                "Remember that encrypting your wallet cannot fully protect "
                "your DOGECs from being stolen by malware infecting your computer.") +
             "<br><br><b>" +

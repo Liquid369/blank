@@ -1,6 +1,6 @@
 [Protocol]
-exec=dogecash-qt '%u'
-protocol=dogecash
+exec=deviant-qt '%u'
+protocol=deviant
 input=none
 output=none
 helper=true

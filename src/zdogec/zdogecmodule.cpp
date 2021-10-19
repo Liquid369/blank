@@ -1,16 +1,16 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "zdogec/zdogecmodule.h"
+#include "zdev/zdevmodule.h"
 
 #include "hash.h"
 #include "libzerocoin/Commitment.h"
 #include "libzerocoin/Coin.h"
 #include "validation.h"
-#include "zdogecchain.h"
+#include "zdevchain.h"
 
 template <typename Stream>
 PublicCoinSpend::PublicCoinSpend(libzerocoin::ZerocoinParams* params, Stream& strm): pubCoin(params) {
@@ -156,7 +156,7 @@ namespace ZDOGECModule {
         }
         if (!ZDOGECModule::parseCoinSpend(txIn, tx, prevOut, publicSpend)) {
             return state.Invalid(error("%s: invalid public coin spend parse %s\n", __func__,
-                                       tx.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdogec");
+                                       tx.GetHash().GetHex()), REJECT_INVALID, "bad-txns-invalid-zdev");
         }
         return true;
     }

@@ -1,7 +1,7 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
 // Copyright (c) 2014-2016 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -116,7 +116,7 @@ public:
     }
 };
 
-/** Interface to DogeCash wallet from Qt view code. */
+/** Interface to Deviant wallet from Qt view code. */
 class WalletModel : public QObject
 {
     Q_OBJECT

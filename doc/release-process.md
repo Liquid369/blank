@@ -5,8 +5,8 @@ Release Process
 
 ### Before every release candidate
 
-* Update translations (ping Fuzzbawls on Discord) see [translation_process.md](https://github.com/dogecash/dogecash/blob/master/doc/translation_process.md#synchronising-translations).
-* Update manpages, see [gen-manpages.sh](https://github.com/dogecash/dogecash/blob/master/contrib/devtools/README.md#gen-manpagessh).
+* Update translations (ping Fuzzbawls on Discord) see [translation_process.md](https://github.com/deviant/deviant/blob/master/doc/translation_process.md#synchronising-translations).
+* Update manpages, see [gen-manpages.sh](https://github.com/deviant/deviant/blob/master/contrib/devtools/README.md#gen-manpagessh).
 * Update release candidate version in `configure.ac` (`CLIENT_VERSION_RC`)
 
 ### Before every major and minor release
@@ -49,12 +49,12 @@ If you're using the automated script (found in [contrib/gitian-build.py](/contri
 Check out the source code in the following directory hierarchy.
 
     cd /path/to/your/toplevel/build
-    git clone https://github.com/dogecash/gitian.sigs.git
-    git clone https://github.com/dogecash/dogecash-detached-sigs.git
+    git clone https://github.com/deviant/gitian.sigs.git
+    git clone https://github.com/deviant/deviant-detached-sigs.git
     git clone https://github.com/devrandom/gitian-builder.git
-    git clone https://github.com/dogecash/dogecash.git
+    git clone https://github.com/deviant/deviant.git
 
-### DogeCash maintainers/release engineers, suggestion for writing release notes
+### Deviant maintainers/release engineers, suggestion for writing release notes
 
 Write release notes. git shortlog helps a lot, for example:
 
@@ -75,7 +75,7 @@ If you're using the automated script (found in [contrib/gitian-build.py](/contri
 
 Setup Gitian descriptors:
 
-    pushd ./dogecash
+    pushd ./deviant
     export SIGNER=(your Gitian key, ie bluematt, sipa, etc)
     export VERSION=(new version, e.g. 0.8.0)
     git fetch
@@ -108,10 +108,10 @@ Create the macOS SDK tarball, see the [macOS build instructions](build-osx.md#de
 
 NOTE: Gitian is sometimes unable to download files. If you have errors, try the step below.
 
-By default, Gitian will fetch source files as needed. To cache them ahead of time, make sure you have checked out the tag you want to build in dogecash, then:
+By default, Gitian will fetch source files as needed. To cache them ahead of time, make sure you have checked out the tag you want to build in deviant, then:
 
     pushd ./gitian-builder
-    make -C ../dogecash/depends download SOURCES_PATH=`pwd`/cache/common
+    make -C ../deviant/depends download SOURCES_PATH=`pwd`/cache/common
     popd
 
 Only missing files will be fetched, so this is safe to re-run for each build.
@@ -119,50 +119,50 @@ Only missing files will be fetched, so this is safe to re-run for each build.
 NOTE: Offline builds must use the --url flag to ensure Gitian fetches only from local URLs. For example:
 
     pushd ./gitian-builder
-    ./bin/gbuild --url dogecash=/path/to/dogecash,signature=/path/to/sigs {rest of arguments}
+    ./bin/gbuild --url deviant=/path/to/deviant,signature=/path/to/sigs {rest of arguments}
     popd
 
 The gbuild invocations below <b>DO NOT DO THIS</b> by default.
 
-### Build and sign DogeCash Core for Linux, Windows, and macOS:
+### Build and sign Deviant Core for Linux, Windows, and macOS:
 
     pushd ./gitian-builder
-    ./bin/gbuild --num-make 2 --memory 3000 --commit dogecash=v${VERSION} ../dogecash/contrib/gitian-descriptors/gitian-linux.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-linux --destination ../gitian.sigs/ ../dogecash/contrib/gitian-descriptors/gitian-linux.yml
-    mv build/out/dogecash-*.tar.gz build/out/src/dogecash-*.tar.gz ../
+    ./bin/gbuild --num-make 2 --memory 3000 --commit deviant=v${VERSION} ../deviant/contrib/gitian-descriptors/gitian-linux.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-linux --destination ../gitian.sigs/ ../deviant/contrib/gitian-descriptors/gitian-linux.yml
+    mv build/out/deviant-*.tar.gz build/out/src/deviant-*.tar.gz ../
 
-    ./bin/gbuild --num-make 2 --memory 3000 --commit dogecash=v${VERSION} ../dogecash/contrib/gitian-descriptors/gitian-win.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../dogecash/contrib/gitian-descriptors/gitian-win.yml
-    mv build/out/dogecash-*-win-unsigned.tar.gz inputs/dogecash-win-unsigned.tar.gz
-    mv build/out/dogecash-*.zip build/out/dogecash-*.exe ../
+    ./bin/gbuild --num-make 2 --memory 3000 --commit deviant=v${VERSION} ../deviant/contrib/gitian-descriptors/gitian-win.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../deviant/contrib/gitian-descriptors/gitian-win.yml
+    mv build/out/deviant-*-win-unsigned.tar.gz inputs/deviant-win-unsigned.tar.gz
+    mv build/out/deviant-*.zip build/out/deviant-*.exe ../
 
-    ./bin/gbuild --num-make 2 --memory 3000 --commit dogecash=v${VERSION} ../dogecash/contrib/gitian-descriptors/gitian-osx.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../dogecash/contrib/gitian-descriptors/gitian-osx.yml
-    mv build/out/dogecash-*-osx-unsigned.tar.gz inputs/dogecash-osx-unsigned.tar.gz
-    mv build/out/dogecash-*.tar.gz build/out/dogecash-*.dmg ../
+    ./bin/gbuild --num-make 2 --memory 3000 --commit deviant=v${VERSION} ../deviant/contrib/gitian-descriptors/gitian-osx.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../deviant/contrib/gitian-descriptors/gitian-osx.yml
+    mv build/out/deviant-*-osx-unsigned.tar.gz inputs/deviant-osx-unsigned.tar.gz
+    mv build/out/deviant-*.tar.gz build/out/deviant-*.dmg ../
     popd
 
 Build output expected:
 
-  1. source tarball (`dogecash-${VERSION}.tar.gz`)
-  2. linux 32-bit and 64-bit dist tarballs (`dogecash-${VERSION}-linux[32|64].tar.gz`)
-  3. windows 32-bit and 64-bit unsigned installers and dist zips (`dogecash-${VERSION}-win[32|64]-setup-unsigned.exe`, `dogecash-${VERSION}-win[32|64].zip`)
-  4. macOS unsigned installer and dist tarball (`dogecash-${VERSION}-osx-unsigned.dmg`, `dogecash-${VERSION}-osx64.tar.gz`)
+  1. source tarball (`deviant-${VERSION}.tar.gz`)
+  2. linux 32-bit and 64-bit dist tarballs (`deviant-${VERSION}-linux[32|64].tar.gz`)
+  3. windows 32-bit and 64-bit unsigned installers and dist zips (`deviant-${VERSION}-win[32|64]-setup-unsigned.exe`, `deviant-${VERSION}-win[32|64].zip`)
+  4. macOS unsigned installer and dist tarball (`deviant-${VERSION}-osx-unsigned.dmg`, `deviant-${VERSION}-osx64.tar.gz`)
   5. Gitian signatures (in `gitian.sigs/${VERSION}-<linux|{win,osx}-unsigned>/(your Gitian key)/`)
 
 ### Verify other gitian builders signatures to your own. (Optional)
 
 Add other gitian builders keys to your gpg keyring, and/or refresh keys.
 
-    gpg --import dogecash/contrib/gitian-keys/*.pgp
+    gpg --import deviant/contrib/gitian-keys/*.pgp
     gpg --refresh-keys
 
 Verify the signatures
 
     pushd ./gitian-builder
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../dogecash/contrib/gitian-descriptors/gitian-linux.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../dogecash/contrib/gitian-descriptors/gitian-win.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../dogecash/contrib/gitian-descriptors/gitian-osx.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../deviant/contrib/gitian-descriptors/gitian-linux.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../deviant/contrib/gitian-descriptors/gitian-win.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../deviant/contrib/gitian-descriptors/gitian-osx.yml
     popd
 
 ### Next steps:
@@ -183,22 +183,22 @@ Codesigner only: Create Windows/macOS detached signatures:
 
 Codesigner only: Sign the macOS binary:
 
-    transfer dogecash-osx-unsigned.tar.gz to macOS for signing
-    tar xf dogecash-osx-unsigned.tar.gz
+    transfer deviant-osx-unsigned.tar.gz to macOS for signing
+    tar xf deviant-osx-unsigned.tar.gz
     ./detached-sig-create.sh -s "Key ID"
     Enter the keychain password and authorize the signature
     Move signature-osx.tar.gz back to the gitian host
 
 Codesigner only: Sign the windows binaries:
 
-    tar xf dogecash-win-unsigned.tar.gz
+    tar xf deviant-win-unsigned.tar.gz
     ./detached-sig-create.sh -key /path/to/codesign.key
     Enter the passphrase for the key when prompted
     signature-win.tar.gz will be created
 
 Codesigner only: Commit the detached codesign payloads:
 
-    cd ~/dogecash-detached-sigs
+    cd ~/deviant-detached-sigs
     checkout the appropriate branch for this release series
     rm -rf *
     tar xf signature-osx.tar.gz
@@ -211,24 +211,24 @@ Codesigner only: Commit the detached codesign payloads:
 Non-codesigners: wait for Windows/macOS detached signatures:
 
 - Once the Windows/macOS builds each have 3 matching signatures, they will be signed with their respective release keys.
-- Detached signatures will then be committed to the [dogecash-detached-sigs](https://github.com/dogecash/dogecash-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
+- Detached signatures will then be committed to the [deviant-detached-sigs](https://github.com/deviant/deviant-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
 
 Create (and optionally verify) the signed macOS binary:
 
     pushd ./gitian-builder
-    ./bin/gbuild -i --commit signature=v${VERSION} ../dogecash/contrib/gitian-descriptors/gitian-osx-signer.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../dogecash/contrib/gitian-descriptors/gitian-osx-signer.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../dogecash/contrib/gitian-descriptors/gitian-osx-signer.yml
-    mv build/out/dogecash-osx-signed.dmg ../dogecash-${VERSION}-osx.dmg
+    ./bin/gbuild -i --commit signature=v${VERSION} ../deviant/contrib/gitian-descriptors/gitian-osx-signer.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../deviant/contrib/gitian-descriptors/gitian-osx-signer.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../deviant/contrib/gitian-descriptors/gitian-osx-signer.yml
+    mv build/out/deviant-osx-signed.dmg ../deviant-${VERSION}-osx.dmg
     popd
 
 Create (and optionally verify) the signed Windows binaries:
 
     pushd ./gitian-builder
-    ./bin/gbuild -i --commit signature=v${VERSION} ../dogecash/contrib/gitian-descriptors/gitian-win-signer.yml
-    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../dogecash/contrib/gitian-descriptors/gitian-win-signer.yml
-    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../dogecash/contrib/gitian-descriptors/gitian-win-signer.yml
-    mv build/out/dogecash-*win64-setup.exe ../dogecash-${VERSION}-win64-setup.exe
+    ./bin/gbuild -i --commit signature=v${VERSION} ../deviant/contrib/gitian-descriptors/gitian-win-signer.yml
+    ./bin/gsign --signer "$SIGNER" --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../deviant/contrib/gitian-descriptors/gitian-win-signer.yml
+    ./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../deviant/contrib/gitian-descriptors/gitian-win-signer.yml
+    mv build/out/deviant-*win64-setup.exe ../deviant-${VERSION}-win64-setup.exe
     popd
 
 Commit your signature for the signed macOS/Windows binaries:
@@ -250,16 +250,16 @@ sha256sum * > SHA256SUMS
 
 The list of files should be:
 ```
-dogecash-${VERSION}-aarch64-linux-gnu.tar.gz
-dogecash-${VERSION}-arm-linux-gnueabihf.tar.gz
-dogecash-${VERSION}-i686-pc-linux-gnu.tar.gz
-dogecash-${VERSION}-riscv64-linux-gnu.tar.gz
-dogecash-${VERSION}-x86_64-linux-gnu.tar.gz
-dogecash-${VERSION}-osx64.tar.gz
-dogecash-${VERSION}-osx.dmg
-dogecash-${VERSION}.tar.gz
-dogecash-${VERSION}-win64-setup.exe
-dogecash-${VERSION}-win64.zip
+deviant-${VERSION}-aarch64-linux-gnu.tar.gz
+deviant-${VERSION}-arm-linux-gnueabihf.tar.gz
+deviant-${VERSION}-i686-pc-linux-gnu.tar.gz
+deviant-${VERSION}-riscv64-linux-gnu.tar.gz
+deviant-${VERSION}-x86_64-linux-gnu.tar.gz
+deviant-${VERSION}-osx64.tar.gz
+deviant-${VERSION}-osx.dmg
+deviant-${VERSION}.tar.gz
+deviant-${VERSION}-win64-setup.exe
+deviant-${VERSION}-win64.zip
 ```
 The `*-debug*` files generated by the gitian build contain debug symbols
 for troubleshooting by developers. It is assumed that anyone that is interested
@@ -281,10 +281,10 @@ Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spur
 
   - bitcointalk announcement thread
 
-  - Optionally twitter, reddit /r/dogecash, ... but this will usually sort out itself
+  - Optionally twitter, reddit /r/deviant, ... but this will usually sort out itself
 
   - Archive release notes for the new version to `doc/release-notes/` (branch `master` and branch of the release)
 
-  - Create a [new GitHub release](https://github.com/dogecash/dogecash/releases/new) with a link to the archived release notes.
+  - Create a [new GitHub release](https://github.com/deviant/deviant/releases/new) with a link to the archived release notes.
 
   - Celebrate

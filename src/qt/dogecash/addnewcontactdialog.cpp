@@ -1,14 +1,14 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/addnewcontactdialog.h"
-#include "qt/dogecash/forms/ui_addnewcontactdialog.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/addnewcontactdialog.h"
+#include "qt/deviant/forms/ui_addnewcontactdialog.h"
+#include "qt/deviant/qtutils.h"
 
 AddNewContactDialog::AddNewContactDialog(QWidget *parent) :
     FocusedDialog(parent),

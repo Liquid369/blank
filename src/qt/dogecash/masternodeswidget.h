@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,10 +7,10 @@
 #ifndef MASTERNODESWIDGET_H
 #define MASTERNODESWIDGET_H
 
-#include "qt/dogecash/pwidget.h"
-#include "qt/dogecash/furabstractlistitemdelegate.h"
-#include "qt/dogecash/mnmodel.h"
-#include "qt/dogecash/tooltipmenu.h"
+#include "qt/deviant/pwidget.h"
+#include "qt/deviant/furabstractlistitemdelegate.h"
+#include "qt/deviant/mnmodel.h"
+#include "qt/deviant/tooltipmenu.h"
 #include "walletmodel.h"
 
 #include <atomic>

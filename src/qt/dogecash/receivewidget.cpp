@@ -1,17 +1,17 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/receivewidget.h"
-#include "qt/dogecash/forms/ui_receivewidget.h"
-#include "qt/dogecash/requestdialog.h"
-#include "qt/dogecash/addnewcontactdialog.h"
-#include "qt/dogecash/qtutils.h"
-#include "qt/dogecash/myaddressrow.h"
-#include "qt/dogecash/furlistrow.h"
-#include "qt/dogecash/addressholder.h"
+#include "qt/deviant/receivewidget.h"
+#include "qt/deviant/forms/ui_receivewidget.h"
+#include "qt/deviant/requestdialog.h"
+#include "qt/deviant/addnewcontactdialog.h"
+#include "qt/deviant/qtutils.h"
+#include "qt/deviant/myaddressrow.h"
+#include "qt/deviant/furlistrow.h"
+#include "qt/deviant/addressholder.h"
 #include "walletmodel.h"
 #include "guiutil.h"
 #include "pairresult.h"

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # Copyright (c) 2019-2020 The PIVX developers
-# Copyright (c) 2019-2020 The DogeCash Developers
+# Copyright (c) 2019-2020 The Deviant Developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import (
     assert_equal,
     assert_raises_rpc_error,
@@ -15,7 +15,7 @@ from test_framework.util import (
     DecimalAmt,
 )
 
-class ReorgStakeTest(DogeCashTestFramework):
+class ReorgStakeTest(DeviantTestFramework):
 
     def set_test_params(self):
         self.num_nodes = 3
@@ -51,11 +51,11 @@ class ReorgStakeTest(DogeCashTestFramework):
         assert_equal(self.nodes[nodeid].getblockcount(), wi['last_processed_block'])
         return wi['balance'] + wi['immature_balance']
 
-    def check_money_supply(self, expected_dogecash):
-        # verify that nodes have the expected DOGEC supply
-        dogecash_supply = [self.nodes[i].getsupplyinfo(True)['transparentsupply']
+    def check_money_supply(self, expected_deviant):
+        # verify that nodes have the expected DEV supply
+        deviant_supply = [self.nodes[i].getsupplyinfo(True)['transparentsupply']
                       for i in range(self.num_nodes)]
-        assert_equal(dogecash_supply, [DecimalAmt(expected_dogecash)] * self.num_nodes)
+        assert_equal(deviant_supply, [DecimalAmt(expected_deviant)] * self.num_nodes)
 
 
     def run_test(self):
@@ -66,7 +66,7 @@ class ReorgStakeTest(DogeCashTestFramework):
                     return True, x
             return False, None
 
-        # DOGEC supply: block rewards
+        # DEV supply: block rewards
         expected_money_supply = 250.0 * 200
         self.check_money_supply(expected_money_supply)
         block_time_0 = block_time_1 = self.mocktime
@@ -162,8 +162,8 @@ class ReorgStakeTest(DogeCashTestFramework):
         res, utxo = findUtxoInList(stakeinput["txid"], stakeinput["vout"], self.nodes[0].listunspent())
         assert (not res or not utxo["spendable"])
 
-        # Verify that DOGEC supply was properly updated after the reorgs
-        self.log.info("Check DOGEC supply...")
+        # Verify that DEV supply was properly updated after the reorgs
+        self.log.info("Check DEV supply...")
         expected_money_supply += 250.0 * (self.nodes[1].getblockcount() - 200)
         self.check_money_supply(expected_money_supply)
         self.log.info("Supply checks out.")

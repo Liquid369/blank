@@ -5,7 +5,7 @@
 #include "util.h"
 
 #include "allocators.h"
-#include "test/test_dogecash.h"
+#include "test/test_deviant.h"
 
 #include <boost/test/unit_test.hpp>
 

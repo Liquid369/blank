@@ -1,14 +1,14 @@
-bin_PROGRAMS += bench/bench_dogecash
+bin_PROGRAMS += bench/bench_deviant
 BENCH_SRCDIR = bench
-BENCH_BINARY = bench/bench_dogecash$(EXEEXT)
+BENCH_BINARY = bench/bench_deviant$(EXEEXT)
 
 RAW_TEST_FILES = \
   bench/data/block2680960.raw
 
 GENERATED_TEST_FILES = $(RAW_TEST_FILES:.raw=.raw.h)
 
-bench_bench_dogecash_SOURCES = \
-  bench/bench_dogecash.cpp \
+bench_bench_deviant_SOURCES = \
+  bench/bench_deviant.cpp \
   bench/bench.cpp \
   bench/bench.h \
   bench/checkblock.cpp \
@@ -20,11 +20,11 @@ bench_bench_dogecash_SOURCES = \
   bench/perf.h \
   bench/prevector.cpp
 
-nodist_bench_bench_dogecash_SOURCES = $(GENERATED_TEST_FILES)
+nodist_bench_bench_deviant_SOURCES = $(GENERATED_TEST_FILES)
 
-bench_bench_dogecash_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
-bench_bench_dogecash_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-bench_bench_dogecash_LDADD = \
+bench_bench_deviant_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS) -I$(builddir)/bench/
+bench_bench_deviant_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+bench_bench_deviant_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_COMMON) \
@@ -41,11 +41,11 @@ bench_bench_dogecash_LDADD = \
   $(LIBZCASH_LIBS)
 
 if ENABLE_ZMQ
-bench_bench_dogecash_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
+bench_bench_deviant_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
 endif
 
-bench_bench_dogecash_LDADD += $(LIBBITCOIN_CONSENSUS) $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
-bench_bench_dogecash_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+bench_bench_deviant_LDADD += $(LIBBITCOIN_CONSENSUS) $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
+bench_bench_deviant_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 # !TODO: .raw.h generated test files are not removed with make clean
 CLEAN_BITCOIN_BENCH = bench/*.gcda bench/*.gcno $(GENERATED_TEST_FILES)
@@ -60,7 +60,7 @@ bench: $(BENCH_BINARY) FORCE
 	$(BENCH_BINARY)
 
 bitcoin_bench_clean : FORCE
-	rm -f $(CLEAN_BITCOIN_BENCH) $(bench_bench_dogecash_OBJECTS) $(BENCH_BINARY)
+	rm -f $(CLEAN_BITCOIN_BENCH) $(bench_bench_deviant_OBJECTS) $(BENCH_BINARY)
 
 %.raw.h: %.raw
 	@$(MKDIR_P) $(@D)

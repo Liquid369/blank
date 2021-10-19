@@ -1,14 +1,14 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/dashboardwidget.h"
-#include "qt/dogecash/forms/ui_dashboardwidget.h"
-#include "qt/dogecash/sendconfirmdialog.h"
-#include "qt/dogecash/txrow.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/dashboardwidget.h"
+#include "qt/deviant/forms/ui_dashboardwidget.h"
+#include "qt/deviant/sendconfirmdialog.h"
+#include "qt/deviant/txrow.h"
+#include "qt/deviant/qtutils.h"
 #include "guiutil.h"
 #include "walletmodel.h"
 #include "clientmodel.h"
@@ -54,18 +54,18 @@ DashboardWidget::DashboardWidget(DOGECGUI* parent) :
 
     // Staking Information
     setCssSubtitleScreen(ui->labelMessage);
-    setCssProperty(ui->labelSquareDogeCash, "square-chart-dogecash");
-    setCssProperty(ui->labelSquarezdogec, "square-chart-zdogec");
-    setCssProperty(ui->labelDogeCash, "text-chart-dogecash");
-    setCssProperty(ui->labelzdogec, "text-chart-zdogec");
+    setCssProperty(ui->labelSquareDeviant, "square-chart-deviant");
+    setCssProperty(ui->labelSquarezdev, "square-chart-zdev");
+    setCssProperty(ui->labelDeviant, "text-chart-deviant");
+    setCssProperty(ui->labelzdev, "text-chart-zdev");
 
     // Staking Amount
     QFont fontBold;
     fontBold.setWeight(QFont::Bold);
 
     setCssProperty(ui->labelChart, "legend-chart");
-    setCssProperty(ui->labelAmountDogeCash, "text-stake-dogecash-disable");
-    setCssProperty(ui->labelAmountzdogec, "text-stake-zdogec-disable");
+    setCssProperty(ui->labelAmountDeviant, "text-stake-deviant-disable");
+    setCssProperty(ui->labelAmountzdev, "text-stake-zdev-disable");
 
     setCssProperty({ui->pushButtonAll,  ui->pushButtonMonth, ui->pushButtonYear}, "btn-check-time");
     setCssProperty({ui->comboBoxMonths,  ui->comboBoxYears}, "btn-combo-chart-selected");
@@ -218,7 +218,7 @@ void DashboardWidget::loadWalletModel()
                 &DashboardWidget::onHideChartsChanged);
 #endif
     }
-    // update the display unit, to not use the default ("DOGEC")
+    // update the display unit, to not use the default ("DEV")
     updateDisplayUnit();
 }
 
@@ -514,7 +514,7 @@ void DashboardWidget::updateStakeFilter()
     }
 }
 
-// pair DOGEC, zDOGEC
+// pair DEV, zDOGEC
 const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
 {
     if (filterUpdateNeeded) {
@@ -528,7 +528,7 @@ const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
         QModelIndex modelIndex = stakesFilter->index(i, TransactionTableModel::ToAddress);
         qint64 amount = llabs(modelIndex.data(TransactionTableModel::AmountRole).toLongLong());
         QDate date = modelIndex.data(TransactionTableModel::DateRole).toDateTime().date();
-        bool isDogeCash = modelIndex.data(TransactionTableModel::TypeRole).toInt() != TransactionRecord::StakeZDOGEC;
+        bool isDeviant = modelIndex.data(TransactionTableModel::TypeRole).toInt() != TransactionRecord::StakeZDOGEC;
 
         int time = 0;
         switch (chartShow) {
@@ -549,16 +549,16 @@ const QMap<int, std::pair<qint64, qint64>> DashboardWidget::getAmountBy()
                 return amountBy;
         }
         if (amountBy.contains(time)) {
-            if (isDogeCash) {
+            if (isDeviant) {
                 amountBy[time].first += amount;
             } else
                 amountBy[time].second += amount;
         } else {
-            if (isDogeCash) {
+            if (isDeviant) {
                 amountBy[time] = std::make_pair(amount, 0);
             } else {
                 amountBy[time] = std::make_pair(0, amount);
-                haszdogecStakes = true;
+                haszdevStakes = true;
             }
         }
     }
@@ -573,7 +573,7 @@ bool DashboardWidget::loadChartData(bool withMonthNames)
     }
 
     chartData = new ChartData();
-    chartData->amountsByCache = getAmountBy(); // pair DOGEC, zDOGEC
+    chartData->amountsByCache = getAmountBy(); // pair DEV, zDOGEC
 
     std::pair<int,int> range = getChartRange(chartData->amountsByCache);
     if (range.first == 0 && range.second == 0) {
@@ -586,22 +586,22 @@ bool DashboardWidget::loadChartData(bool withMonthNames)
 
     for (int j = range.first; j < range.second; j++) {
         int num = (isOrderedByMonth && j > daysInMonth) ? (j % daysInMonth) : j;
-        qreal dogecash = 0;
-        qreal zdogec = 0;
+        qreal deviant = 0;
+        qreal zdev = 0;
         if (chartData->amountsByCache.contains(num)) {
             std::pair <qint64, qint64> pair = chartData->amountsByCache[num];
-            dogecash = (pair.first != 0) ? pair.first / 100000000 : 0;
-            zdogec = (pair.second != 0) ? pair.second / 100000000 : 0;
-            chartData->totalDogeCash += pair.first;
-            chartData->totalzdogec += pair.second;
+            deviant = (pair.first != 0) ? pair.first / 100000000 : 0;
+            zdev = (pair.second != 0) ? pair.second / 100000000 : 0;
+            chartData->totalDeviant += pair.first;
+            chartData->totalzdev += pair.second;
         }
 
         chartData->xLabels << ((withMonthNames) ? monthsNames[num - 1] : QString::number(num));
 
-        chartData->valuesDogeCash.append(dogecash);
-        chartData->valueszdogec.append(zdogec);
+        chartData->valuesDeviant.append(deviant);
+        chartData->valueszdev.append(zdev);
 
-        int max = std::max(dogecash, zdogec);
+        int max = std::max(deviant, zdev);
         if (max > chartData->maxValue) {
             chartData->maxValue = max;
         }
@@ -672,24 +672,24 @@ void DashboardWidget::onChartRefreshed()
     series->attachAxis(axisX);
     series->attachAxis(axisY);
 
-    set0->append(chartData->valuesDogeCash);
-    set1->append(chartData->valueszdogec);
+    set0->append(chartData->valuesDeviant);
+    set1->append(chartData->valueszdev);
 
     // Total
     nDisplayUnit = walletModel->getOptionsModel()->getDisplayUnit();
-    if (chartData->totalDogeCash > 0 || chartData->totalzdogec > 0) {
-        setCssProperty(ui->labelAmountDogeCash, "text-stake-dogecash");
-        setCssProperty(ui->labelAmountzdogec, "text-stake-zdogec");
+    if (chartData->totalDeviant > 0 || chartData->totalzdev > 0) {
+        setCssProperty(ui->labelAmountDeviant, "text-stake-deviant");
+        setCssProperty(ui->labelAmountzdev, "text-stake-zdev");
     } else {
-        setCssProperty(ui->labelAmountDogeCash, "text-stake-dogecash-disable");
-        setCssProperty(ui->labelAmountzdogec, "text-stake-zdogec-disable");
+        setCssProperty(ui->labelAmountDeviant, "text-stake-deviant-disable");
+        setCssProperty(ui->labelAmountzdev, "text-stake-zdev-disable");
     }
-    forceUpdateStyle({ui->labelAmountDogeCash, ui->labelAmountzdogec});
-    ui->labelAmountDogeCash->setText(GUIUtil::formatBalance(chartData->totalDogeCash, nDisplayUnit));
-    ui->labelAmountzdogec->setText(GUIUtil::formatBalance(chartData->totalzdogec, nDisplayUnit, true));
+    forceUpdateStyle({ui->labelAmountDeviant, ui->labelAmountzdev});
+    ui->labelAmountDeviant->setText(GUIUtil::formatBalance(chartData->totalDeviant, nDisplayUnit));
+    ui->labelAmountzdev->setText(GUIUtil::formatBalance(chartData->totalzdev, nDisplayUnit, true));
 
     series->append(set0);
-    if (haszdogecStakes)
+    if (haszdevStakes)
         series->append(set1);
 
     // bar width

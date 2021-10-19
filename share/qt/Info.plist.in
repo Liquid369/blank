@@ -17,7 +17,7 @@
   <string>APPL</string>
 
   <key>CFBundleGetInfoString</key>
-  <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@.@CLIENT_VERSION_BUILD@, Copyright © 2009-@COPYRIGHT_YEAR@ The Bitcoin Core developers, 2014-@COPYRIGHT_YEAR@ The Dash Core developers, 2015-@COPYRIGHT_YEAR@ The DogeCash Core developers</string>
+  <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@.@CLIENT_VERSION_BUILD@, Copyright © 2009-@COPYRIGHT_YEAR@ The Bitcoin Core developers, 2014-@COPYRIGHT_YEAR@ The Dash Core developers, 2015-@COPYRIGHT_YEAR@ The Deviant Core developers</string>
 
   <key>CFBundleShortVersionString</key>
   <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@</string>
@@ -29,16 +29,16 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>DogeCash-Qt</string>
+  <string>Deviant-Qt</string>
 
   <key>CFBundleName</key>
-  <string>DogeCash-Qt</string>
+  <string>Deviant-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>io.dogecash.DogeCash-Qt</string>
+  <string>io.deviant.Deviant-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,10 +46,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>io.dogecash.DogeCashPayment</string>
+      <string>io.deviant.DeviantPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>dogecash</string>
+        <string>deviant</string>
       </array>
     </dict>
   </array>
@@ -58,9 +58,9 @@
   <array>
     <dict>
       <key>UTTypeIdentifier</key>
-      <string>io.dogecash.paymentrequest</string>
+      <string>io.deviant.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>DogeCash payment request</string>
+      <string>Deviant payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>
@@ -68,10 +68,10 @@
       <key>UTTypeTagSpecification</key>
       <dict>
         <key>public.mime-type</key>
-        <string>application/x-dogecash-payment-request</string>
+        <string>application/x-deviant-payment-request</string>
         <key>public.filename-extension</key>
         <array>
-          <string>dogecashpaymentrequest</string>
+          <string>deviantpaymentrequest</string>
         </array>
       </dict>
     </dict>
@@ -84,7 +84,7 @@
       <string>Editor</string>
       <key>LSItemContentTypes</key>
       <array>
-        <string>io.dogecash.paymentrequest</string>
+        <string>io.deviant.paymentrequest</string>
       </array>
       <key>LSHandlerRank</key>
       <string>Owner</string>

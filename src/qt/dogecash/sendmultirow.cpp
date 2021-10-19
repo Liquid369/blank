@@ -1,18 +1,18 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/sendmultirow.h"
-#include "qt/dogecash/forms/ui_sendmultirow.h"
+#include "qt/deviant/sendmultirow.h"
+#include "qt/deviant/forms/ui_sendmultirow.h"
 
 #include "optionsmodel.h"
 #include "addresstablemodel.h"
 #include "guiutil.h"
 #include "bitcoinunits.h"
-#include "qt/dogecash/sendmemodialog.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/sendmemodialog.h"
+#include "qt/deviant/qtutils.h"
 
 SendMultiRow::SendMultiRow(DOGECGUI* _window, PWidget *parent) :
     PWidget(_window, parent),

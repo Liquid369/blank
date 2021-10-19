@@ -7,11 +7,11 @@
 import socket
 import sys
 
-from test_framework.test_framework import DogeCashTestFramework, SkipTest
+from test_framework.test_framework import DeviantTestFramework, SkipTest
 from test_framework.util import *
 from test_framework.netutil import *
 
-class RPCBindTest(DogeCashTestFramework):
+class RPCBindTest(DeviantTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

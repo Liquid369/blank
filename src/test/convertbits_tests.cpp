@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <utilstrencodings.h>
-#include <test/test_dogecash.h>
+#include <test/test_deviant.h>
 #include "sapling/sapling_util.h"
 
 #include <boost/test/unit_test.hpp>

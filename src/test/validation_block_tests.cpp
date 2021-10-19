@@ -10,7 +10,7 @@
 #include "consensus/validation.h"
 #include "pow.h"
 #include "random.h"
-#include "test/test_dogecash.h"
+#include "test/test_deviant.h"
 #include "validation.h"
 #include "validationinterface.h"
 

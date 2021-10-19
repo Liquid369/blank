@@ -1,16 +1,16 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2014-2015 The Dash developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/dogecash-config.h"
+#include "config/deviant-config.h"
 #endif
 
-#include "qt/dogecash/dogecashgui.h"
+#include "qt/deviant/deviantgui.h"
 
 #include "clientmodel.h"
 #include "guiconstants.h"
@@ -19,8 +19,8 @@
 #include "net.h"
 #include "networkstyle.h"
 #include "optionsmodel.h"
-#include "qt/dogecash/splash.h"
-#include "qt/dogecash/welcomecontentwidget.h"
+#include "qt/deviant/splash.h"
+#include "qt/deviant/welcomecontentwidget.h"
 #include "utilitydialog.h"
 #include "winshutdownmonitor.h"
 
@@ -85,7 +85,7 @@ static void InitMessage(const std::string& message)
  */
 static std::string Translate(const char* psz)
 {
-    return QCoreApplication::translate("dogecash-core", psz).toStdString();
+    return QCoreApplication::translate("deviant-core", psz).toStdString();
 }
 
 static QString GetLangTerritory(bool forceLangFromSetting = false)
@@ -132,11 +132,11 @@ static void initTranslations(QTranslator& qtTranslatorBase, QTranslator& qtTrans
     if (qtTranslator.load("qt_" + lang_territory, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
         QApplication::installTranslator(&qtTranslator);
 
-    // Load e.g. bitcoin_de.qm (shortcut "de" needs to be defined in dogecash.qrc)
+    // Load e.g. bitcoin_de.qm (shortcut "de" needs to be defined in deviant.qrc)
     if (translatorBase.load(lang, ":/translations/"))
         QApplication::installTranslator(&translatorBase);
 
-    // Load e.g. bitcoin_de_DE.qm (shortcut "de_DE" needs to be defined in dogecash.qrc)
+    // Load e.g. bitcoin_de_DE.qm (shortcut "de_DE" needs to be defined in deviant.qrc)
     if (translator.load(lang_territory, ":/translations/"))
         QApplication::installTranslator(&translator);
 }
@@ -152,7 +152,7 @@ void DebugMessageHandler(QtMsgType type, const QMessageLogContext& context, cons
     }
 }
 
-/** Class encapsulating DogeCash Core startup and shutdown.
+/** Class encapsulating Deviant Core startup and shutdown.
  * Allows running startup and shutdown in a different thread from the UI thread.
  */
 class BitcoinCore : public QObject
@@ -179,7 +179,7 @@ private:
     void handleRunawayException(const std::exception* e);
 };
 
-/** Main DogeCash application object */
+/** Main Deviant application object */
 class BitcoinApplication : public QApplication
 {
     Q_OBJECT
@@ -244,7 +244,7 @@ private:
     void startThread();
 };
 
-#include "dogecash.moc"
+#include "deviant.moc"
 
 BitcoinCore::BitcoinCore() : QObject()
 {
@@ -512,7 +512,7 @@ void BitcoinApplication::initializeResult(int retval)
 
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
-        // DOGEC: URIs or payment requests:
+        // DEV: URIs or payment requests:
         //connect(paymentServer, &PaymentServer::receivedPaymentRequest, window, &DOGECGUI::handlePaymentRequest);
         connect(window, &DOGECGUI::receivedURI, paymentServer, &PaymentServer::handleURIOrFile);
         connect(paymentServer, &PaymentServer::message, [this](const QString& title, const QString& message, unsigned int style) {
@@ -534,7 +534,7 @@ void BitcoinApplication::shutdownResult(int retval)
 
 void BitcoinApplication::handleRunawayException(const QString& message)
 {
-    QMessageBox::critical(0, "Runaway exception", QObject::tr("A fatal error occurred. DogeCash can no longer continue safely and will quit.") + QString("\n\n") + message);
+    QMessageBox::critical(0, "Runaway exception", QObject::tr("A fatal error occurred. Deviant can no longer continue safely and will quit.") + QString("\n\n") + message);
     ::exit(1);
 }
 
@@ -558,8 +558,8 @@ int main(int argc, char* argv[])
 // Do not refer to data directory yet, this can be overridden by Intro::pickDataDirectory
 
 /// 2. Basic Qt initialization (not dependent on parameters or configuration)
-    Q_INIT_RESOURCE(dogecash_locale);
-    Q_INIT_RESOURCE(dogecash);
+    Q_INIT_RESOURCE(deviant_locale);
+    Q_INIT_RESOURCE(deviant);
 
     // Generate high-dpi pixmaps
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
@@ -606,17 +606,17 @@ int main(int argc, char* argv[])
     if (!Intro::pickDataDirectory())
         return 0;
 
-    /// 6. Determine availability of data directory and parse dogecash.conf
+    /// 6. Determine availability of data directory and parse deviant.conf
     /// - Do not call GetDataDir(true) before this step finishes
     if (!fs::is_directory(GetDataDir(false))) {
-        QMessageBox::critical(0, QObject::tr("DogeCash Core"),
+        QMessageBox::critical(0, QObject::tr("Deviant Core"),
             QObject::tr("Error: Specified data directory \"%1\" does not exist.").arg(QString::fromStdString(gArgs.GetArg("-datadir", ""))));
         return 1;
     }
     try {
         gArgs.ReadConfigFile();
     } catch (const std::exception& e) {
-        QMessageBox::critical(0, QObject::tr("DogeCash Core"),
+        QMessageBox::critical(0, QObject::tr("Deviant Core"),
             QObject::tr("Error: Cannot parse configuration file: %1. Only use key=value syntax.").arg(e.what()));
         return 0;
     }
@@ -631,7 +631,7 @@ int main(int argc, char* argv[])
     try {
         SelectParams(ChainNameFromCommandLine());
     } catch(const std::exception& e) {
-        QMessageBox::critical(0, QObject::tr("DogeCash Core"), QObject::tr("Error: %1").arg(e.what()));
+        QMessageBox::critical(0, QObject::tr("Deviant Core"), QObject::tr("Error: %1").arg(e.what()));
         return 1;
     }
 #ifdef ENABLE_WALLET
@@ -650,7 +650,7 @@ int main(int argc, char* argv[])
     /// 7a. parse masternode.conf
     std::string strErr;
     if (!masternodeConfig.read(strErr)) {
-        QMessageBox::critical(0, QObject::tr("DogeCash Core"),
+        QMessageBox::critical(0, QObject::tr("Deviant Core"),
             QObject::tr("Error reading masternode configuration file: %1").arg(strErr.c_str()));
         return 0;
     }
@@ -665,7 +665,7 @@ int main(int argc, char* argv[])
         exit(0);
 
     // Start up the payment server early, too, so impatient users that click on
-    // dogecash: links repeatedly have their payment requests routed to this process:
+    // deviant: links repeatedly have their payment requests routed to this process:
     app.createPaymentServer();
 #endif
 

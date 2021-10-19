@@ -1,23 +1,23 @@
 # It is not recommended to modify this file in-place, because it will
 # be overwritten during package upgrades. If you want to add further
 # options or overwrite existing ones then use
-# $ systemctl edit dogecashd.service
+# $ systemctl edit deviantd.service
 # See "man systemd.service" for details.
 
 # Note that almost all daemon options could be specified in
-# /etc/dogecash/dogecash.conf
+# /etc/deviant/deviant.conf
 
 [Unit]
-Description=DogeCash daemon
+Description=Deviant daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/dogecashd -daemon -datadir=/var/lib/dogecash -conf=/etc/dogecash/dogecash.conf -pid=/run/dogecashd/dogecashd.pid
-# Creates /run/dogecashd owned by dogecash
-RuntimeDirectory=dogecashd
-User=dogecash
+ExecStart=/usr/bin/deviantd -daemon -datadir=/var/lib/deviant -conf=/etc/deviant/deviant.conf -pid=/run/deviantd/deviantd.pid
+# Creates /run/deviantd owned by deviant
+RuntimeDirectory=deviantd
+User=deviant
 Type=forking
-PIDFile=/run/dogecashd/dogecashd.pid
+PIDFile=/run/deviantd/deviantd.pid
 Restart=on-failure
 
 # Hardening measures

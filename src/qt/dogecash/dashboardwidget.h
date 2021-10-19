@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -7,11 +7,11 @@
 #ifndef DASHBOARDWIDGET_H
 #define DASHBOARDWIDGET_H
 
-#include "qt/dogecash/pwidget.h"
-#include "qt/dogecash/furabstractlistitemdelegate.h"
-#include "qt/dogecash/furlistrow.h"
+#include "qt/deviant/pwidget.h"
+#include "qt/deviant/furabstractlistitemdelegate.h"
+#include "qt/deviant/furlistrow.h"
 #include "transactiontablemodel.h"
-#include "qt/dogecash/txviewholder.h"
+#include "qt/deviant/txviewholder.h"
 #include "transactionfilterproxy.h"
 
 #include <atomic>
@@ -21,7 +21,7 @@
 #include <QMap>
 
 #if defined(HAVE_CONFIG_H)
-#include "config/dogecash-config.h" /* for USE_QTCHARTS */
+#include "config/deviant-config.h" /* for USE_QTCHARTS */
 #endif
 
 #ifdef USE_QTCHARTS
@@ -82,10 +82,10 @@ public:
 
     QMap<int, std::pair<qint64, qint64>> amountsByCache;
     qreal maxValue = 0;
-    qint64 totalDogeCash = 0;
-    qint64 totalzdogec = 0;
-    QList<qreal> valuesDogeCash;
-    QList<qreal> valueszdogec;
+    qint64 totalDeviant = 0;
+    qint64 totalzdev = 0;
+    QList<qreal> valuesDeviant;
+    QList<qreal> valueszdev;
     QStringList xLabels;
 };
 
@@ -167,7 +167,7 @@ private:
     int yearFilter{0};
     int monthFilter{0};
     int dayStart{1};
-    bool haszdogecStakes{false};
+    bool haszdevStakes{false};
 
     ChartData* chartData{nullptr};
     bool hasStakes{false};

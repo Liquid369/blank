@@ -2,7 +2,7 @@
 #
 # Copyright (c) 2015-2020 The Zcash developers
 # Copyright (c) 2020 The PIVX Developers
-# Copyright (c) 2020 The DogeCash Developers
+# Copyright (c) 2020 The Deviant Developers
 
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -17,7 +17,7 @@ else
     if [[ "$OSTYPE" == "darwin"* ]]; then
         PARAMS_DIR="$HOME/Library/Application Support/DOGECParams"
     else
-        PARAMS_DIR="$HOME/.dogecash-params"
+        PARAMS_DIR="$HOME/.deviant-params"
     fi
 fi
 
@@ -43,7 +43,7 @@ function install_params {
     # if the params don't exist in the current directory, assume we're running from release tarballs
     if ! [ -f "$filename" ]
     then
-        filename="share/dogecash/$filename"
+        filename="share/deviant/$filename"
     fi
 
     if ! [ -f "$output" ]
@@ -93,9 +93,9 @@ function main() {
     || exit_locked_error
 
     cat <<EOF
-DogeCash - install-params.sh
+Deviant - install-params.sh
 
-This script will install the DogeCash zkSNARK parameters and verify their
+This script will install the Deviant zkSNARK parameters and verify their
 integrity with sha256sum.
 
 If they already exist locally, it will exit now and do nothing else.
@@ -107,7 +107,7 @@ EOF
         mkdir -p "$PARAMS_DIR"
         README_PATH="$PARAMS_DIR/README"
         cat >> "$README_PATH" <<EOF
-This directory stores common DogeCash zkSNARK parameters. Note that it is
+This directory stores common Deviant zkSNARK parameters. Note that it is
 distinct from the daemon's -datadir argument because the parameters are
 large and may be shared across multiple distinct -datadir's such as when
 setting up test networks.

@@ -1,13 +1,13 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/txviewholder.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/txviewholder.h"
+#include "qt/deviant/qtutils.h"
 #include "transactiontablemodel.h"
 #include <QModelIndex>
 
@@ -36,7 +36,7 @@ void TxViewHolder::init(QWidget* holder, const QModelIndex &index, bool isHovere
     txRow->showHideSecondAmount(hasDoubleAmount);
 
     if (type != TransactionRecord::ZerocoinMint &&
-            type !=  TransactionRecord::ZerocoinSpend_Change_zdogec &&
+            type !=  TransactionRecord::ZerocoinSpend_Change_zdev &&
             type !=  TransactionRecord::StakeZDOGEC &&
             type != TransactionRecord::Other) {
 

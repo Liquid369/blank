@@ -1,13 +1,13 @@
 // Copyright (c) 2014 The Bitcoin Core developers
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "test/test_dogecash.h"
+#include "test/test_deviant.h"
 
 #include "coins.h"
 #include "script/standard.h"
@@ -808,7 +808,7 @@ BOOST_AUTO_TEST_CASE(updatecoins_simulation_test)
 
             // 2/20 times create a new coinbase
             if (randiter % 20 < 2 || coinbase_coins.size() < 10) {
-                // DOGEC: don't test for duplicate coinbases as those are not possible due to
+                // DEV: don't test for duplicate coinbases as those are not possible due to
                 // BIP34 enforced since the beginning.
                 assert(CTransaction(tx).IsCoinBase());
                 coinbase_coins.insert(COutPoint(tx.GetHash(), 0));
@@ -822,7 +822,7 @@ BOOST_AUTO_TEST_CASE(updatecoins_simulation_test)
                     auto utxod = FindRandomFrom(coinbase_coins);
                     tx = std::get<0>(utxod->second);
                     prevout = tx.vin[0].prevout;
-                    // DOGEC: no duplicates
+                    // DEV: no duplicates
                     BOOST_CHECK(!utxoset.count(prevout));
                     disconnected_coins.erase(utxod->first);
                     continue;
@@ -957,7 +957,7 @@ BOOST_AUTO_TEST_CASE(ccoins_serialization)
     BOOST_CHECK_EQUAL(cc2.out.nValue, 110397);
     BOOST_CHECK_EQUAL(HexStr(cc2.out.scriptPubKey), HexStr(GetScriptForDestination(CKeyID(uint160(ParseHex("8c988f1a4a4de2161e0f50aac7f17e7f9555caa4"))))));
 
-    // DOGEC: Example with fCoinStake
+    // DEV: Example with fCoinStake
     CDataStream ss2b(ParseHex("97b401808b63008c988f1a4a4de2161e0f50aac7f17e7f9555caa4"), SER_DISK, CLIENT_VERSION);
     Coin cc2b;
     ss2b >> cc2b;
@@ -1223,7 +1223,7 @@ BOOST_AUTO_TEST_CASE(ccoins_add)
      * entry in the cache after the modification. Verify behavior with the
      * with the ModifyNewCoin coinbase argument set to false, and to true.
      *
-     * DOGEC: Remove Coinbase argument (ref: https://github.com/dogecash/dogecash/pull/1775)
+     * DEV: Remove Coinbase argument (ref: https://github.com/deviant/deviant/pull/1775)
      *
      *           Cache   Write   Result  Cache        Result
      *           Value   Value   Value   Flags        Flags

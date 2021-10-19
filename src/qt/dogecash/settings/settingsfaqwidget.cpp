@@ -1,16 +1,16 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/settings/settingsfaqwidget.h"
-#include "qt/dogecash/settings/forms/ui_settingsfaqwidget.h"
+#include "qt/deviant/settings/settingsfaqwidget.h"
+#include "qt/deviant/settings/forms/ui_settingsfaqwidget.h"
 #include <QScrollBar>
 #include <QMetaObject>
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/qtutils.h"
 
 SettingsFaqWidget::SettingsFaqWidget(DOGECGUI *parent) :
     QDialog(parent),

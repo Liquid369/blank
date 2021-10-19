@@ -69,12 +69,12 @@ static bool AppInitRPC(int argc, char* argv[])
     //
     gArgs.ParseParameters(argc, argv);
     if (argc < 2 || gArgs.IsArgSet("-?") || gArgs.IsArgSet("-h") || gArgs.IsArgSet("-help") || gArgs.IsArgSet("-version")) {
-        std::string strUsage = _("DogeCash Core RPC client version") + " " + FormatFullVersion() + "\n";
+        std::string strUsage = _("Deviant Core RPC client version") + " " + FormatFullVersion() + "\n";
         if (!gArgs.IsArgSet("-version")) {
             strUsage += "\n" + _("Usage:") + "\n" +
-                        "  dogecash-cli [options] <command> [params]  " + _("Send command to DogeCash Core") + "\n" +
-                        "  dogecash-cli [options] help                " + _("List commands") + "\n" +
-                        "  dogecash-cli [options] help <command>      " + _("Get help for a command") + "\n";
+                        "  deviant-cli [options] <command> [params]  " + _("Send command to Deviant Core") + "\n" +
+                        "  deviant-cli [options] help                " + _("List commands") + "\n" +
+                        "  deviant-cli [options] help <command>      " + _("Get help for a command") + "\n";
 
             strUsage += "\n" + HelpMessageCli();
         }

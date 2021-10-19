@@ -1,31 +1,31 @@
 #!/bin/bash
 #
-#  dogecashd The DogeCash core server.
+#  deviantd The Deviant core server.
 #
 #
 # chkconfig: 345 80 20
-# description: dogecashd
-# processname: dogecashd
+# description: deviantd
+# processname: deviantd
 #
 
 # Source function library.
 . /etc/init.d/functions
 
-# you can override defaults in /etc/sysconfig/dogecashd, see below
-if [ -f /etc/sysconfig/dogecashd ]; then
-        . /etc/sysconfig/dogecashd
+# you can override defaults in /etc/sysconfig/deviantd, see below
+if [ -f /etc/sysconfig/deviantd ]; then
+        . /etc/sysconfig/deviantd
 fi
 
 RETVAL=0
 
-prog=dogecashd
-# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/dogecashd
-lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/dogecashd}
+prog=deviantd
+# you can override the lockfile via BITCOIND_LOCKFILE in /etc/sysconfig/deviantd
+lockfile=${BITCOIND_LOCKFILE-/var/lock/subsys/deviantd}
 
-# dogecashd defaults to /usr/bin/dogecashd, override with BITCOIND_BIN
-bitcoind=${BITCOIND_BIN-/usr/bin/dogecashd}
+# deviantd defaults to /usr/bin/deviantd, override with BITCOIND_BIN
+bitcoind=${BITCOIND_BIN-/usr/bin/deviantd}
 
-# dogecashd opts default to -disablewallet, override with BITCOIND_OPTS
+# deviantd opts default to -disablewallet, override with BITCOIND_OPTS
 bitcoind_opts=${BITCOIND_OPTS}
 
 start() {

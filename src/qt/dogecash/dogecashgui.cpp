@@ -1,10 +1,10 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/dogecashgui.h"
+#include "qt/deviant/deviantgui.h"
 
 #ifdef Q_OS_MAC
 #include "macdockiconhandler.h"
@@ -17,8 +17,8 @@
 #include "networkstyle.h"
 #include "notificator.h"
 #include "guiinterface.h"
-#include "qt/dogecash/qtutils.h"
-#include "qt/dogecash/defaultdialog.h"
+#include "qt/deviant/qtutils.h"
+#include "qt/deviant/defaultdialog.h"
 
 #include "init.h"
 #include "util.h"
@@ -68,7 +68,7 @@ DOGECGUI::DOGECGUI(const NetworkStyle* networkStyle, QWidget* parent) :
 
     QString windowTitle = QString::fromStdString(gArgs.GetArg("-windowtitle", ""));
     if (windowTitle.isEmpty()) {
-        windowTitle = tr("DogeCash Core") + " - ";
+        windowTitle = tr("Deviant Core") + " - ";
         windowTitle += ((enableWallet) ? tr("Wallet") : tr("Node"));
     }
     windowTitle += " " + networkStyle->getTitleAddText();
@@ -212,7 +212,7 @@ void DOGECGUI::createTrayIcon(const NetworkStyle* networkStyle)
 {
 #ifndef Q_OS_MAC
     trayIcon = new QSystemTrayIcon(this);
-    QString toolTip = tr("DogeCash Core client") + " " + networkStyle->getTitleAddText();
+    QString toolTip = tr("Deviant Core client") + " " + networkStyle->getTitleAddText();
     trayIcon->setToolTip(toolTip);
     trayIcon->setIcon(networkStyle->getAppIcon());
     trayIcon->hide();
@@ -369,7 +369,7 @@ void DOGECGUI::messageInfo(const QString& text)
 
 void DOGECGUI::message(const QString& title, const QString& message, unsigned int style, bool* ret)
 {
-    QString strTitle =  tr("DogeCash Core"); // default title
+    QString strTitle =  tr("Deviant Core"); // default title
     // Default to information icon
     int nNotifyIcon = Notificator::Information;
 
@@ -419,7 +419,7 @@ void DOGECGUI::message(const QString& title, const QString& message, unsigned in
     } else if (style & CClientUIInterface::MSG_INFORMATION_SNACK) {
         messageInfo(message);
     } else {
-        // Append title to "DogeCash - "
+        // Append title to "Deviant - "
         if (!msgType.isEmpty())
             strTitle += " - " + msgType;
         notificator->notify(static_cast<Notificator::Class>(nNotifyIcon), strTitle, message);
@@ -438,7 +438,7 @@ bool DOGECGUI::openStandardDialog(QString title, QString body, QString okBtn, QS
     } else {
         dialog = new DefaultDialog();
         dialog->setText(title, body, okBtn);
-        dialog->setWindowTitle(tr("DogeCash Core"));
+        dialog->setWindowTitle(tr("Deviant Core"));
         dialog->adjustSize();
         dialog->raise();
         dialog->exec();

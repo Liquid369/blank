@@ -22,8 +22,8 @@
  *
  * \section intro_sec Introduction
  *
- * This is the developer documentation of the reference client for an experimental new digital currency called DogeCash (http://www.dogec.io),
- * which enables instant payments to anyone, anywhere in the world. DogeCash uses peer-to-peer technology to operate
+ * This is the developer documentation of the reference client for an experimental new digital currency called Deviant (http://www.dev.io),
+ * which enables instant payments to anyone, anywhere in the world. Deviant uses peer-to-peer technology to operate
  * with no central authority: managing transactions and issuing money are carried out collectively by the network.
  *
  * The software is a community-driven open source project, released under the MIT license.
@@ -56,7 +56,7 @@ bool AppInit(int argc, char* argv[])
     //
     // Parameters
     //
-    // If Qt is used, parameters/dogecash.conf are parsed in qt/dogecash.cpp's main()
+    // If Qt is used, parameters/deviant.conf are parsed in qt/deviant.cpp's main()
     gArgs.ParseParameters(argc, argv);
 
     // Process help and version before taking care about datadir
@@ -67,7 +67,7 @@ bool AppInit(int argc, char* argv[])
             strUsage += LicenseInfo();
         } else {
             strUsage += "\n" + _("Usage:") + "\n" +
-                        "  dogecashd [options]                     " + _("Start Pivx Core Daemon") + "\n";
+                        "  deviantd [options]                     " + _("Start Pivx Core Daemon") + "\n";
 
             strUsage += "\n" + HelpMessage(HMM_BITCOIND);
         }
@@ -131,7 +131,7 @@ bool AppInit(int argc, char* argv[])
 #ifndef WIN32
         fDaemon = gArgs.GetBoolArg("-daemon", false);
         if (fDaemon) {
-            fprintf(stdout, "DogeCash server starting\n");
+            fprintf(stdout, "Deviant server starting\n");
 
             // Daemonize
             pid_t pid = fork();
@@ -173,7 +173,7 @@ int main(int argc, char* argv[])
 {
     SetupEnvironment();
 
-    // Connect dogecashd signal handlers
+    // Connect deviantd signal handlers
     noui_connect();
 
     return (AppInit(argc, argv) ? 0 : 1);

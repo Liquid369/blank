@@ -1,15 +1,15 @@
 // Copyright (c) 2019 The PIVX Developers
 // Copyright (c) 2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/settings/settingsnetworkwidget.h"
-#include "qt/dogecash/settings/forms/ui_settingsnetworkwidget.h"
+#include "qt/deviant/settings/settingsnetworkwidget.h"
+#include "qt/deviant/settings/forms/ui_settingsnetworkwidget.h"
 #include "optionsmodel.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/qtutils.h"
 
 SettingsNetworkWidget::SettingsNetworkWidget(DOGECGUI* _window, QWidget *parent) :
     PWidget(_window, parent),

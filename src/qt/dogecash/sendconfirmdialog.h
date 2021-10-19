@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -8,8 +8,8 @@
 #define SENDCONFIRMDIALOG_H
 
 #include "walletmodeltransaction.h"
-#include "qt/dogecash/focuseddialog.h"
-#include "qt/dogecash/snackbar.h"
+#include "qt/deviant/focuseddialog.h"
+#include "qt/deviant/snackbar.h"
 
 class WalletModelTransaction;
 class WalletModel;

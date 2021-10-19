@@ -21,12 +21,12 @@ from test_framework.mininode import (
     network_thread_start,
     wait_until,
 )
-from test_framework.test_framework import DogeCashTestFramework
+from test_framework.test_framework import DeviantTestFramework
 from test_framework.util import (
     assert_equal,
 )
 
-class P2PFingerprintTest(DogeCashTestFramework):
+class P2PFingerprintTest(DeviantTestFramework):
     def set_test_params(self):
         self.setup_clean_chain = True
         self.num_nodes = 1

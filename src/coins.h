@@ -1,7 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -379,7 +379,7 @@ public:
     size_t DynamicMemoryUsage() const;
 
     /**
-     * Amount of dogecash coming in to a transaction
+     * Amount of deviant coming in to a transaction
      * Note that lightweight clients may not know anything besides the hash of previous transactions,
      * so may not be able to calculate this.
      *
@@ -447,7 +447,7 @@ private:
 };
 
 //! Utility function to add all of a transaction's outputs to a cache.
-// DOGEC: When check is false, this assumes that overwrites are never possible due to BIP34 always in effect
+// DEV: When check is false, this assumes that overwrites are never possible due to BIP34 always in effect
 // When check is true, the underlying view may be queried to determine whether an addition is
 // an overwrite.
 // When fSkipInvalid is true, the invalid_out list is checked before adding the coin.

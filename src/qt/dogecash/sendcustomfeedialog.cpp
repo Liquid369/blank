@@ -1,12 +1,12 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/sendcustomfeedialog.h"
-#include "qt/dogecash/forms/ui_sendcustomfeedialog.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/sendcustomfeedialog.h"
+#include "qt/deviant/forms/ui_sendcustomfeedialog.h"
+#include "qt/deviant/qtutils.h"
 #include "walletmodel.h"
 #include "optionsmodel.h"
 #include "guiutil.h"

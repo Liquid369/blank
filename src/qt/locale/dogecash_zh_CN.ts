@@ -95,11 +95,11 @@
     </message>
     <message>
         <source>Choose the address to send coins to</source>
-        <translation>选择发送DogeCash coin的地址</translation>
+        <translation>选择发送Deviant coin的地址</translation>
     </message>
     <message>
         <source>Choose the address to receive coins with</source>
-        <translation>选择接收DogeCash coin的地址</translation>
+        <translation>选择接收Deviant coin的地址</translation>
     </message>
     <message>
         <source>C&amp;hoose</source>
@@ -114,11 +114,11 @@
         <translation>接收地址</translation>
     </message>
     <message>
-        <source>These are your DogeCash addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your Deviant addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation>这是用于发送DOGEC的地址。在发送DOGEC之前，请认真核查发送金额和接收地址。</translation>
     </message>
     <message>
-        <source>These are your DogeCash addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
+        <source>These are your Deviant addresses for receiving payments. It is recommended to use a new receiving address for each transaction.</source>
         <translation>这是用于接收DOGEC的钱包地址。建议每一笔交易都使用一个新的钱包地址。</translation>
     </message>
     <message>
@@ -348,7 +348,7 @@ for staking</source>
         <translation>删除</translation>
     </message>
     <message>
-        <source>DogeCash will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
+        <source>Deviant will close now to finish the encryption process. Remember that encrypting your wallet cannot fully protect your DOGECs from being stolen by malware infecting your computer.</source>
         <translation>DOGEC将关闭以完成加密过程。但是，仅仅加密您的钱包是不够的，因为它并不能阻止恶意软件从您的电脑里面偷取DOGECs。</translation>
     </message>
     <message>
@@ -425,8 +425,8 @@ for staking</source>
         <translation>存款</translation>
     </message>
     <message>
-        <source>0,00 DOGEC</source>
-        <translation>0,00 DOGEC</translation>
+        <source>0,00 DEV</source>
+        <translation>0,00 DEV</translation>
     </message>
     <message>
         <source>address</source>
@@ -467,7 +467,7 @@ for staking</source>
         <translation>币选择</translation>
     </message>
     <message>
-        <source>Select DOGEC Outputs to Spend</source>
+        <source>Select DEV Outputs to Spend</source>
         <translation>选择DOGEC支出花费</translation>
     </message>
     <message>
@@ -495,8 +495,8 @@ for staking</source>
         <translation>金额</translation>
     </message>
     <message>
-        <source>0.00 DOGEC</source>
-        <translation>0.00 DOGEC</translation>
+        <source>0.00 DEV</source>
+        <translation>0.00 DEV</translation>
     </message>
     <message>
         <source>0</source>
@@ -700,7 +700,7 @@ stake on your behalf, while you keep the keys securely offline.</source>
         <translation>输入所有者地址</translation>
     </message>
     <message>
-        <source>Accept DOGEC delegation / Delegate DOGEC</source>
+        <source>Accept DEV delegation / Delegate DEV</source>
         <translation>接受DOGEC委托／委托DOGEC </translation>
     </message>
     <message>
@@ -988,7 +988,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>编辑发送地址</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid DogeCash address.</source>
+        <source>The entered address "%1" is not a valid Deviant address.</source>
         <translation>所输入的地址“%1”不是有效的DOGEC地址。</translation>
     </message>
     <message>
@@ -1041,16 +1041,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>版本</translation>
     </message>
     <message>
-        <source>DogeCash Core</source>
-        <translation>DogeCash Core</translation>
+        <source>Deviant Core</source>
+        <translation>Deviant Core</translation>
     </message>
     <message>
         <source>(%1-bit)</source>
         <translation>(%1-位)</translation>
     </message>
     <message>
-        <source>About DogeCash Core</source>
-        <translation>关于DogeCash Core</translation>
+        <source>About Deviant Core</source>
+        <translation>关于Deviant Core</translation>
     </message>
     <message>
         <source>Command-line options</source>
@@ -1104,16 +1104,16 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>欢迎</translation>
     </message>
     <message>
-        <source>Welcome to DogeCash Core.</source>
-        <translation>欢迎使用 DogeCash Core</translation>
+        <source>Welcome to Deviant Core.</source>
+        <translation>欢迎使用 Deviant Core</translation>
     </message>
     <message>
-        <source>As this is the first time the program is launched, you can choose where DogeCash Core will store its data.</source>
-        <translation>由于这是该程序第一次启动，您可以选择存储DogeCash Core 数据的位置。</translation>
+        <source>As this is the first time the program is launched, you can choose where Deviant Core will store its data.</source>
+        <translation>由于这是该程序第一次启动，您可以选择存储Deviant Core 数据的位置。</translation>
     </message>
     <message>
-        <source>DogeCash Core will download and store a copy of the DogeCash block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
-        <translation>DogeCash Core将下载并存储DOGEC区块链副本。 至少 %1 GB的数据将存储在此目录中，并且会随着时间的推移而增长。 钱包也将存储在此目录中。</translation>
+        <source>Deviant Core will download and store a copy of the Deviant block chain. At least %1GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <translation>Deviant Core将下载并存储DOGEC区块链副本。 至少 %1 GB的数据将存储在此目录中，并且会随着时间的推移而增长。 钱包也将存储在此目录中。</translation>
     </message>
     <message>
         <source>Use the default data directory</source>
@@ -1132,8 +1132,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>好的</translation>
     </message>
     <message>
-        <source>DogeCash Core</source>
-        <translation>DogeCash Core</translation>
+        <source>Deviant Core</source>
+        <translation>Deviant Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" cannot be created.</source>
@@ -1232,8 +1232,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>创建新的主节点控制器</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a DogeCash Masternode you must dedicate 15,000 DOGEC (the unit of DOGEC) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;要去创建一个DOGEC主节点，你必须奉献15,000 DOGEC（DOGEC的单位）到网络（但是这些币还是属于你的，一直为你所有）。&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;你可以在任何时候关闭该节点并解锁币。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Deviant Masternode you must dedicate 15,000 DEV (the unit of DEV) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;要去创建一个DOGEC主节点，你必须奉献15,000 DEV（DOGEC的单位）到网络（但是这些币还是属于你的，一直为你所有）。&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;你可以在任何时候关闭该节点并解锁币。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1252,7 +1252,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>确保你有这么多币</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DOGEC will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;将进行15,000 DOGEC的交易&lt;/p&gt;&lt;p&gt;到您的钱包空地址&lt;/p&gt;&lt;p&gt;地址被标记在主节点的名称之下&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
@@ -1435,7 +1435,7 @@ Please wait few more minutes (masternode collaterals require %1 confirmations).<
 on a remote server to your clipboard.
 
 
-You will only have to paste the data in the dogecash.conf file
+You will only have to paste the data in the deviant.conf file
 of your remote server and start it, then start the Masternode using
 this controller wallet (select the Masternode in the list and press "start").
 </source>
@@ -1443,7 +1443,7 @@ this controller wallet (select the Masternode in the list and press "start").
 到剪贴板的远程服务器上。
 
 
-您只需将数据粘贴到dogecash.conf文件中
+您只需将数据粘贴到deviant.conf文件中
 ，然后使用主节点启动它
 这个控制器钱包(在列表中选择主节点并按“开始”)。
 </translation>
@@ -1583,8 +1583,8 @@ Are you sure?</source>
         <translation>解析的数据太大</translation>
     </message>
     <message>
-        <source>Invalid URI, not starting with "dogecash" prefix</source>
-        <translation>无效的URI，不是以“ dogecash”前缀开头</translation>
+        <source>Invalid URI, not starting with "deviant" prefix</source>
+        <translation>无效的URI，不是以“ deviant”前缀开头</translation>
     </message>
 </context>
 <context>
@@ -1629,7 +1629,7 @@ Are you sure?</source>
         <translation>如果您要禁用未经确认发送，在至少有一个确认之前&lt;br/&gt;不能更改。&lt;br/&gt;这也将影响您的余额计算。</translation>
     </message>
     <message>
-        <source>Automatically open the DogeCash client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <source>Automatically open the Deviant client port on the router. This only works when your router supports UPnP and it is enabled.</source>
         <translation>自动打开路由器上的DOGEC钱包使用的端口。 这只有当您的路由器支持UPnP并且该享生效时才有用。</translation>
     </message>
     <message>
@@ -1649,11 +1649,11 @@ Are you sure?</source>
         <translation>专家</translation>
     </message>
     <message>
-        <source>Automatically start DogeCash after logging in to the system.</source>
+        <source>Automatically start Deviant after logging in to the system.</source>
         <translation>登录系统后自动启动DOGEC。</translation>
     </message>
     <message>
-        <source>&amp;Start DogeCash on system login</source>
+        <source>&amp;Start Deviant on system login</source>
         <translation>&amp;开机启动DOGEC</translation>
     </message>
     <message>
@@ -1681,21 +1681,21 @@ Are you sure?</source>
         <translation>&amp;网络</translation>
     </message>
     <message>
-        <source>The user interface language can be set here. This setting will take effect after restarting DOGEC.</source>
+        <source>The user interface language can be set here. This setting will take effect after restarting DEV.</source>
         <translation>可以在这里设置用户界面语言。此设置将在重新启动DOGEC后生效。</translation>
     </message>
     <message>
         <source>Language missing or translation incomplete? Help contributing translations here:
-https://www.transifex.com/DogeCash/DogeCash-project-translations</source>
+https://www.transifex.com/Deviant/Deviant-project-translations</source>
         <translation>语言缺失或翻译不完整?帮助贡献翻译在这里:
-https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
+https://www.transifex.com/Deviant/Deviant-project-translations</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
         <translation>端口使用&amp;UPnP</translation>
     </message>
     <message>
-        <source>Enable automatic minting of DOGEC units to zDOGEC</source>
+        <source>Enable automatic minting of DEV units to zDOGEC</source>
         <translation>启动自动铸造DOGEC到zDOGEC</translation>
     </message>
     <message>
@@ -1711,7 +1711,7 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
         <translation>启动自动铸造地址</translation>
     </message>
     <message>
-        <source>Percentage of incoming DOGEC which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
+        <source>Percentage of incoming DEV which get automatically converted to zDOGEC via Zerocoin Protocol (min: 10%)</source>
         <translation>通过零币协议自动转换为zDOGEC的传入DOGEC的百分比(最小:10%)</translation>
     </message>
     <message>
@@ -1719,7 +1719,7 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
         <translation>自动铸造的zDOGEC百分比</translation>
     </message>
     <message>
-        <source>Wait with automatic conversion to Zerocoin until enough DOGEC for this denomination is available</source>
+        <source>Wait with automatic conversion to Zerocoin until enough DEV for this denomination is available</source>
         <translation>等待自动转换为零币，直到足够的DOGEC为这种面额可用</translation>
     </message>
     <message>
@@ -1731,7 +1731,7 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
         <translation>股权分割阈值:</translation>
     </message>
     <message>
-        <source>Connect to the DogeCash network through a SOCKS5 proxy.</source>
+        <source>Connect to the Deviant network through a SOCKS5 proxy.</source>
         <translation>通过SOCKS5代理连接到DOGEC网络。</translation>
     </message>
     <message>
@@ -1878,8 +1878,8 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
 <context>
     <name>DOGECGUI</name>
     <message>
-        <source>DogeCash Core</source>
-        <translation>DogeCash Core</translation>
+        <source>Deviant Core</source>
+        <translation>Deviant Core</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -1906,8 +1906,8 @@ https://www.transifex.com/DogeCash/DogeCash-project-translations</translation>
         <translation>关闭应用</translation>
     </message>
     <message>
-        <source>DogeCash Core client</source>
-        <translation>DogeCash Core 客户端</translation>
+        <source>Deviant Core client</source>
+        <translation>Deviant Core 客户端</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1973,11 +1973,11 @@ Address: %4
         <translation>无效支付地址%1</translation>
     </message>
     <message>
-        <source>Cannot start dogecash: click-to-pay handler</source>
-        <translation>无法启动dogecash:点击支付处理程序</translation>
+        <source>Cannot start deviant: click-to-pay handler</source>
+        <translation>无法启动deviant:点击支付处理程序</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid DogeCash address or malformed URI parameters.</source>
+        <source>URI cannot be parsed! This can be caused by an invalid Deviant address or malformed URI parameters.</source>
         <translation>URI不能被解析!这可能是由无效的DOGEC地址或格式错误的URI参数造成的。</translation>
     </message>
     <message>
@@ -2063,8 +2063,8 @@ Address: %4
         <translation>金额</translation>
     </message>
     <message>
-        <source>Enter DogeCash address (e.g. %1)</source>
-        <translation>输入DogeCash a地址(e.g. %1)</translation>
+        <source>Enter Deviant address (e.g. %1)</source>
+        <translation>输入Deviant a地址(e.g. %1)</translation>
     </message>
     <message>
         <source>%1 d</source>
@@ -2107,12 +2107,12 @@ Address: %4
         <translation>%1 毫秒</translation>
     </message>
     <message>
-        <source>A fatal error occurred. DogeCash can no longer continue safely and will quit.</source>
+        <source>A fatal error occurred. Deviant can no longer continue safely and will quit.</source>
         <translation>发生了一个致命的错误。DOGEC不能继续安全，将退出。</translation>
     </message>
     <message>
-        <source>DogeCash Core</source>
-        <translation>DogeCash Core</translation>
+        <source>Deviant Core</source>
+        <translation>Deviant Core</translation>
     </message>
     <message>
         <source>Error: Specified data directory "%1" does not exist.</source>
@@ -2306,7 +2306,7 @@ Address: %4
         <translation>区块链</translation>
     </message>
     <message>
-        <source>Open the DogeCash debug log file from the current data directory. This can take a few seconds for large log files.</source>
+        <source>Open the Deviant debug log file from the current data directory. This can take a few seconds for large log files.</source>
         <translation>从当前数据目录打开DOGEC调试日志文件。对于大型日志文件，这可能需要几秒钟。</translation>
     </message>
     <message>
@@ -2530,8 +2530,8 @@ Address: %4
         <translation>出：</translation>
     </message>
     <message>
-        <source>Welcome to the DogeCash RPC console.</source>
-        <translation>欢迎访问DogeCash RPC控制台</translation>
+        <source>Welcome to the Deviant RPC console.</source>
+        <translation>欢迎访问Deviant RPC控制台</translation>
     </message>
     <message>
         <source>&amp;Disconnect Node</source>
@@ -2770,8 +2770,8 @@ Address: %4
         <translation>金额</translation>
     </message>
     <message>
-        <source>DOGEC</source>
-        <translation>DOGEC</translation>
+        <source>DEV</source>
+        <translation>DEV</translation>
     </message>
     <message>
         <source>D7VFR83SQbiezrW72hjcWJtcfip5krte2Z </source>
@@ -2849,7 +2849,7 @@ Address: %4
         <translation>自定义更改地址</translation>
     </message>
     <message>
-        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" DogeCash address</source>
+        <source>The remainder of the value resultant from the inputs minus the outputs value goes to the "change" Deviant address</source>
         <translation>输入值减去输出值所得的值的其余部分归为“更改”DOGEC地址</translation>
     </message>
     <message>
@@ -2876,8 +2876,8 @@ Address: %4
         <translation>已推荐</translation>
     </message>
     <message>
-        <source>DOGEC/kilobyte</source>
-        <translation>DOGEC/k字节</translation>
+        <source>DEV/kilobyte</source>
+        <translation>DEV/k字节</translation>
     </message>
     <message>
         <source>0.00 KB</source>
@@ -3155,7 +3155,7 @@ These coins will no longer be cold-staked.</source>
         <translation>解密钥匙</translation>
     </message>
     <message>
-        <source>DogeCash address</source>
+        <source>Deviant address</source>
         <translation>DOGEC地址</translation>
     </message>
     <message>
@@ -3280,8 +3280,8 @@ Verify that you have installed a predetermined text editor.</source>
 确认您已经安装了预定的文本编辑器</translation>
     </message>
     <message>
-        <source>Welcome to the DogeCash RPC console.</source>
-        <translation>欢迎访问DogeCash RPC控制台</translation>
+        <source>Welcome to the Deviant RPC console.</source>
+        <translation>欢迎访问Deviant RPC控制台</translation>
     </message>
     <message>
         <source>Use up and down arrows to navigate history, and %1 to clear screen.</source>
@@ -3465,11 +3465,11 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>来自</translation>
     </message>
     <message>
-        <source>1) What is DOGEC?</source>
+        <source>1) What is DEV?</source>
         <translation>1）什么是DOGEC?</translation>
     </message>
     <message>
-        <source>2) Why are my DOGEC unspendable?</source>
+        <source>2) Why are my DEV unspendable?</source>
         <translation>2) 我的DOGEC为什么不能用？</translation>
     </message>
     <message>
@@ -3477,7 +3477,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>1</translation>
     </message>
     <message>
-        <source>What is DOGEC?</source>
+        <source>What is DEV?</source>
         <translation>DOGEC是什么?</translation>
     </message>
     <message>
@@ -3485,16 +3485,16 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>2</translation>
     </message>
     <message>
-        <source>Why are my DOGEC unspendable?</source>
+        <source>Why are my DEV unspendable?</source>
         <translation>我的DOGEC为什么不能用？</translation>
     </message>
     <message>
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
-                           Newly received DogeCash requires 6 confirmations on the network
+                           Newly received Deviant requires 6 confirmations on the network
                            to become eligible for spending which can take ~6 minutes.
                            &lt;/p&gt;&lt;p align="justify"&gt;
-                           Your DogeCash wallet also needs to be completely synchronized
+                           Your Deviant wallet also needs to be completely synchronized
                            to see and spend balances on the network.
                            &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
                          </source>
@@ -3537,7 +3537,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>什么是主节点控制器？</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 15,000 DOGEC collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 15,000 DEV collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;主节点控制器钱包是控制器-远程主节点建立期间15,000 DOGEC抵押可以驻留的地方。这是一个可以激活远程主节点钱包(s)的钱包，可以让你的抵押币离线但远程主节点保持在线。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
@@ -3648,8 +3648,8 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>无法打开备份文件夹</translation>
     </message>
     <message>
-        <source>Unable to open dogecash.conf with default application</source>
-        <translation>无法使用默认应用程序打开dogecash.conf</translation>
+        <source>Unable to open deviant.conf with default application</source>
+        <translation>无法使用默认应用程序打开deviant.conf</translation>
     </message>
     <message>
         <source>In:</source>
@@ -3699,7 +3699,7 @@ There was an error trying to save the address list to %1. Please try again.</sou
         <translation>脚本&amp;验证线程数</translation>
     </message>
     <message>
-        <source>Start DogeCash on system login</source>
+        <source>Start Deviant on system login</source>
         <translation>开机启动DOGEC</translation>
     </message>
     <message>
@@ -3787,7 +3787,7 @@ Are you sure?
         <translation>查看列表</translation>
     </message>
     <message>
-        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other DogeCash addresses after it matures.</source>
+        <source>MultiSend allows you to automatically send up to 100% of your stake or masternode reward to a list of other Deviant addresses after it matures.</source>
         <translation>成熟以后，多重花费允许您自动发送高达 100% 的股权或主节点奖励到其他DOGEC地址列表</translation>
     </message>
     <message>
@@ -3906,8 +3906,8 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation>消息 </translation>
     </message>
     <message>
-        <source>DogeCash address or contact label</source>
-        <translation>DogeCash 地址或者联系人标签</translation>
+        <source>Deviant address or contact label</source>
+        <translation>Deviant 地址或者联系人标签</translation>
     </message>
     <message>
         <source>Enter address</source>
@@ -4183,8 +4183,8 @@ Check one or both of the check boxes to send on stake and/or masternode rewards<
         <translation>常见问题</translation>
     </message>
     <message>
-        <source>About DOGEC</source>
-        <translation>关于DogeCash </translation>
+        <source>About DEV</source>
+        <translation>关于Deviant </translation>
     </message>
     <message>
         <source>Settings</source>
@@ -4250,8 +4250,8 @@ Are you sure?
 <context>
     <name>ShutdownWindow</name>
     <message>
-        <source>DogeCash Core is shutting down...</source>
-        <translation>DogeCash 核心正在关闭...</translation>
+        <source>Deviant Core is shutting down...</source>
+        <translation>Deviant 核心正在关闭...</translation>
     </message>
     <message>
         <source>Do not shut down the computer until this window disappears.</source>
@@ -4280,8 +4280,8 @@ Are you sure?
         <translation>正在下载…</translation>
     </message>
     <message>
-        <source>DogeCash Core</source>
-        <translation>DogeCash Core</translation>
+        <source>Deviant Core</source>
+        <translation>Deviant Core</translation>
     </message>
 </context>
 <context>
@@ -4677,8 +4677,8 @@ backup will be created.
         <translation>来自</translation>
     </message>
     <message>
-        <source>+0.000585 DOGEC</source>
-        <translation>+0.000585 DOGEC</translation>
+        <source>+0.000585 DEV</source>
+        <translation>+0.000585 DEV</translation>
     </message>
     </context>
 <context>
@@ -4728,25 +4728,25 @@ backup will be created.
     </message>
     <message>
         <source>Welcome to
-DogeCash Core Wallet</source>
+Deviant Core Wallet</source>
         <translation>欢迎
 DOGEC核心钱包</translation>
     </message>
     <message>
-        <source>DogeCash is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
+        <source>Deviant is the world’s most innovative Proof of Stake blockchain based technology. Developed by a team of highly experienced developers and cryptographers.</source>
         <translation>DOGEC是世界上最先进的隐私保护技术，由经验丰富的开发人员和密码专家开发。</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - DogeCash believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;As our manifesto says: Privacy is a non-negotiable basic human right; it grants users the freedom to share their data whenever and with whomever they want - Deviant believes in self sovereignty.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;正如我们的宣言所说:隐私是一项不容协商的基本人权;它赋予用户随时随地与任何人共享数据的自由——DOGEC相信自我主权&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>The masternode network is DOGEC's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
+        <source>The masternode network is DEV's second layer network on top of the blockchain that enables our DAO to provide decentralized governance and a treasury.</source>
         <translation>主节点网络是DOGEC在区块链之上的第二层网络，它使我们的DAO能够提供去中心的治理。</translation>
     </message>
     <message>
-        <source>How DogeCash respects your privacy?</source>
-        <translation>DogeCash 到底是怎么尊重你的隐私的？</translation>
+        <source>How Deviant respects your privacy?</source>
+        <translation>Deviant 到底是怎么尊重你的隐私的？</translation>
     </message>
     <message>
         <source>What is a Masternode?</source>
@@ -4758,7 +4758,7 @@ DOGEC核心钱包</translation>
     </message>
 </context>
 <context>
-    <name>dogecash-core</name>
+    <name>deviant-core</name>
     <message>
         <source>Allow JSON-RPC connections from specified source. Valid for &lt;ip&gt; are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) or a network/CIDR (e.g. 1.2.3.4/24). This option can be specified multiple times</source>
         <translation>允许来自指定源的JSON-RPC连接。适用于&lt;ip&gt;单一IP(如1.2.3.4)、网络/网掩码(如1.2.3.4/255.255.255.0)或网络/CIDR(如1.2.3.4/24)。可以多次指定此选项</translation>
@@ -4912,7 +4912,7 @@ DOGEC核心钱包</translation>
         <translation>网络版本字符串的总长度(%i)超过最大长度(%i)。减少任务的数量或大小。</translation>
     </message>
     <message>
-        <source>Unable to bind to %s on this computer. DogeCash Core is probably already running.</source>
+        <source>Unable to bind to %s on this computer. Deviant Core is probably already running.</source>
         <translation>无法绑定到此计算机上的%s。DOGEC核心可能已经在运行了。</translation>
     </message>
     <message>
@@ -4928,8 +4928,8 @@ DOGEC核心钱包</translation>
         <translation>警告:-支付tx费用设置的非常高!这是您发送交易时要支付的交易费。</translation>
     </message>
     <message>
-        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong DogeCash Core will not work properly.</source>
-        <translation>注意：请检查您的电脑的日期和时间是否正确！ 如果您的时间设置不正确，DogeCash Core将无法正常工作。</translation>
+        <source>Warning: Please check that your computer's date and time are correct! If your clock is wrong Deviant Core will not work properly.</source>
+        <translation>注意：请检查您的电脑的日期和时间是否正确！ 如果您的时间设置不正确，Deviant Core将无法正常工作。</translation>
     </message>
     <message>
         <source>Warning: The network does not appear to fully agree! Some miners appear to be experiencing issues.</source>
@@ -5000,7 +5000,7 @@ DOGEC核心钱包</translation>
         <translation>版权所有(C) 2014-%i的达世核心开发者</translation>
     </message>
     <message>
-        <source>Copyright (C) 2015-%i The DogeCash Core Developers</source>
+        <source>Copyright (C) 2015-%i The Deviant Core Developers</source>
         <translation>版权所有(C) 2015-%i DOGEC核心开发者</translation>
     </message>
     <message>
@@ -5324,8 +5324,8 @@ DOGEC核心钱包</translation>
         <translation>准备重新同步……</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong DogeCash Core will not work properly.</source>
-        <translation>请检查您的电脑的日期和时间是否正确!如果你的时间错误，DogeCash Core将无法正常工作。</translation>
+        <source>Please check that your computer's date and time are correct! If your clock is wrong Deviant Core will not work properly.</source>
+        <translation>请检查您的电脑的日期和时间是否正确!如果你的时间错误，Deviant Core将无法正常工作。</translation>
     </message>
     <message>
         <source>Specify location of debug log file: this can be an absolute path or a path relative to the data directory (default: %s)</source>
@@ -5576,7 +5576,7 @@ DOGEC核心钱包</translation>
         <translation>正在验证钱包……</translation>
     </message>
     <message>
-        <source>Wallet needed to be rewritten: restart DogeCash Core to complete</source>
+        <source>Wallet needed to be rewritten: restart Deviant Core to complete</source>
         <translation>钱包需要重写:重新启动DOGEC核心完成</translation>
     </message>
     <message>
@@ -5631,8 +5631,8 @@ DOGEC核心钱包</translation>
         <translation>发送</translation>
     </message>
     <message>
-        <source>DogeCash address or contact label</source>
-        <translation>DogeCash 地址或者联系人标签</translation>
+        <source>Deviant address or contact label</source>
+        <translation>Deviant 地址或者联系人标签</translation>
     </message>
     <message>
         <source>Amount</source>

@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2014 The Bitcoin developers
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -46,10 +46,10 @@ static bool AppInitRawTx(int argc, char* argv[])
 
     if (argc < 2 || gArgs.IsArgSet("-?") || gArgs.IsArgSet("-h") || gArgs.IsArgSet("-help")) {
         // First part of help message is specific to this utility
-        std::string strUsage = _("DogeCash Core dogecash-tx utility version") + " " + FormatFullVersion() + "\n\n" +
+        std::string strUsage = _("Deviant Core deviant-tx utility version") + " " + FormatFullVersion() + "\n\n" +
                                _("Usage:") + "\n" +
-                               "  dogecash-tx [options] <hex-tx> [commands]  " + _("Update hex-encoded dogecash transaction") + "\n" +
-                               "  dogecash-tx [options] -create [commands]   " + _("Create hex-encoded dogecash transaction") + "\n" +
+                               "  deviant-tx [options] <hex-tx> [commands]  " + _("Update hex-encoded deviant transaction") + "\n" +
+                               "  deviant-tx [options] -create [commands]   " + _("Create hex-encoded deviant transaction") + "\n" +
                                "\n";
 
         fprintf(stdout, "%s", strUsage.c_str());
@@ -602,7 +602,7 @@ static int CommandLineRawTx(int argc, char* argv[])
             if (argc < 2)
                 throw std::runtime_error("too few parameters");
 
-            // param: hex-encoded dogecash transaction
+            // param: hex-encoded deviant transaction
             std::string strHexTx(argv[1]);
             if (strHexTx == "-") // "-" implies standard input
                 strHexTx = readStdin();

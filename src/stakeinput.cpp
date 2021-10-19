@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or https://www.opensource.org/licenses/mit-license.php.
@@ -10,10 +10,10 @@
 #include "txdb.h"
 #include "wallet/wallet.h"
 
-CDogeCashStake* CDogeCashStake::NewDogeCashStake(const CTxIn& txin)
+CDeviantStake* CDeviantStake::NewDeviantStake(const CTxIn& txin)
 {
     if (txin.IsZerocoinSpend()) {
-        error("%s: unable to initialize CDogeCashStake from zerocoin spend", __func__);
+        error("%s: unable to initialize CDeviantStake from zerocoin spend", __func__);
         return nullptr;
     }
 
@@ -37,29 +37,29 @@ CDogeCashStake* CDogeCashStake::NewDogeCashStake(const CTxIn& txin)
         return nullptr;
     }
 
-    return new CDogeCashStake(txPrev->vout[txin.prevout.n],
+    return new CDeviantStake(txPrev->vout[txin.prevout.n],
                          txin.prevout,
                          pindexFrom);
 }
 
-bool CDogeCashStake::GetTxOutFrom(CTxOut& out) const
+bool CDeviantStake::GetTxOutFrom(CTxOut& out) const
 {
     out = outputFrom;
     return true;
 }
 
-bool CDogeCashStake::CreateTxIn(CWallet* pwallet, CTxIn& txIn, uint256 hashTxOut)
+bool CDeviantStake::CreateTxIn(CWallet* pwallet, CTxIn& txIn, uint256 hashTxOut)
 {
     txIn = CTxIn(outpointFrom.hash, outpointFrom.n);
     return true;
 }
 
-CAmount CDogeCashStake::GetValue() const
+CAmount CDeviantStake::GetValue() const
 {
     return outputFrom.nValue;
 }
 
-bool CDogeCashStake::CreateTxOuts(CWallet* pwallet, std::vector<CTxOut>& vout, CAmount nTotal, const bool onlyP2PK)
+bool CDeviantStake::CreateTxOuts(CWallet* pwallet, std::vector<CTxOut>& vout, CAmount nTotal, const bool onlyP2PK)
 {
     std::vector<valtype> vSolutions;
     txnouttype whichType;
@@ -108,24 +108,24 @@ bool CDogeCashStake::CreateTxOuts(CWallet* pwallet, std::vector<CTxOut>& vout, C
     return true;
 }
 
-CDataStream CDogeCashStake::GetUniqueness() const
+CDataStream CDeviantStake::GetUniqueness() const
 {
-    //The unique identifier for a DOGEC stake is the outpoint
+    //The unique identifier for a DEV stake is the outpoint
     CDataStream ss(SER_NETWORK, 0);
     ss << outpointFrom.n << outpointFrom.hash;
     return ss;
 }
 
 //The block that the UTXO was added to the chain
-const CBlockIndex* CDogeCashStake::GetIndexFrom() const
+const CBlockIndex* CDeviantStake::GetIndexFrom() const
 {
     // Sanity check, pindexFrom is set on the constructor.
-    if (!pindexFrom) throw std::runtime_error("CDogeCashStake: uninitialized pindexFrom");
+    if (!pindexFrom) throw std::runtime_error("CDeviantStake: uninitialized pindexFrom");
     return pindexFrom;
 }
 
 // Verify stake contextual checks
-bool CDogeCashStake::ContextCheck(int nHeight, uint32_t nTime)
+bool CDeviantStake::ContextCheck(int nHeight, uint32_t nTime)
 {
     const Consensus::Params& consensus = Params().GetConsensus();
     // Get Stake input block time/height

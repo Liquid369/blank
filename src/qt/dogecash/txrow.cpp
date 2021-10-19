@@ -1,14 +1,14 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "qt/dogecash/txrow.h"
-#include "qt/dogecash/forms/ui_txrow.h"
+#include "qt/deviant/txrow.h"
+#include "qt/deviant/forms/ui_txrow.h"
 
 #include "guiutil.h"
-#include "qt/dogecash/qtutils.h"
+#include "qt/deviant/qtutils.h"
 
 TxRow::TxRow(QWidget *parent) :
     QWidget(parent),
@@ -91,7 +91,7 @@ void TxRow::setType(bool isLightTheme, int type, bool isConfirmed)
         case TransactionRecord::SendToAddress:
         case TransactionRecord::SendToOther:
         case TransactionRecord::ZerocoinSpend:
-        case TransactionRecord::ZerocoinSpend_Change_zdogec:
+        case TransactionRecord::ZerocoinSpend_Change_zdev:
         case TransactionRecord::ZerocoinSpend_FromMe:
         case TransactionRecord::SendToShielded:
         case TransactionRecord::SendToNobody:

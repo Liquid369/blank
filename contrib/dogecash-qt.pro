@@ -78,7 +78,7 @@ HEADERS += src/activemasternode.h \
            src/crypter.h \
            src/obfuscation-relay.h \
            src/obfuscation.h \
-           src/dogecash-config.h \
+           src/deviant-config.h \
            src/db.h \
            src/eccryptoverify.h \
            src/ecwrapper.h \
@@ -131,7 +131,7 @@ HEADERS += src/activemasternode.h \
            src/wallet_ismine.h \
            src/walletdb.h \
            src/compat/sanity.h \
-           src/config/dogecash-config.h \
+           src/config/deviant-config.h \
            src/crypto/common.h \
            src/crypto/hmac_sha256.h \
            src/crypto/hmac_sha512.h \
@@ -332,7 +332,7 @@ HEADERS += src/activemasternode.h \
            src/secp256k1/src/java/org_bitcoin_NativeSecp256k1.h \
            src/crypto/aes_helper.c \
            src/qt/bitcoinamountfield.moc \
-           src/qt/dogecash.moc \
+           src/qt/deviant.moc \
            src/qt/intro.moc \
            src/qt/overviewpage.moc \
            src/qt/rpcconsole.moc \
@@ -373,9 +373,9 @@ SOURCES += src/activemasternode.cpp \
            src/crypter.cpp \
            src/obfuscation-relay.cpp \
            src/obfuscation.cpp \
-           src/dogecash-cli.cpp \
-           src/dogecash-tx.cpp \
-           src/dogecash.cpp \
+           src/deviant-cli.cpp \
+           src/deviant-tx.cpp \
+           src/deviant.cpp \
            src/db.cpp \
            src/eccryptoverify.cpp \
            src/ecwrapper.cpp \
@@ -470,8 +470,8 @@ SOURCES += src/activemasternode.cpp \
            src/qt/coincontroltreewidget.cpp \
            src/qt/csvmodelwriter.cpp \
            src/qt/obfuscationconfig.cpp \
-           src/qt/dogecash.cpp \
-           src/qt/dogecashstrings.cpp \
+           src/qt/deviant.cpp \
+           src/qt/deviantstrings.cpp \
            src/qt/editaddressdialog.cpp \
            src/qt/guiutil.cpp \
            src/qt/intro.cpp \
@@ -549,7 +549,7 @@ SOURCES += src/activemasternode.cpp \
            src/test/sighash_tests.cpp \
            src/test/sigopcount_tests.cpp \
            src/test/skiplist_tests.cpp \
-           src/test/test_dogecash.cpp \
+           src/test/test_deviant.cpp \
            src/test/timedata_tests.cpp \
            src/test/transaction_tests.cpp \
            src/test/uint256_tests.cpp \
@@ -640,24 +640,24 @@ SOURCES += src/activemasternode.cpp \
            src/leveldb/helpers/memenv/memenv.cc \
            src/leveldb/helpers/memenv/memenv_test.cc \
            src/secp256k1/src/java/org_bitcoin_NativeSecp256k1.c
-RESOURCES += src/qt/dogecash.qrc src/qt/dogecash_locale.qrc
+RESOURCES += src/qt/deviant.qrc src/qt/deviant_locale.qrc
 
-TRANSLATIONS += src/qt/locale/dogecash_bg.ts \
-                src/qt/locale/dogecash_de.ts \
-                src/qt/locale/dogecash_en.ts \
-                src/qt/locale/dogecash_es.ts \
-                src/qt/locale/dogecash_fi.ts \
-                src/qt/locale/dogecash_fr.ts \
-                src/qt/locale/dogecash_it.ts \
-                src/qt/locale/dogecash_ja.ts \
-                src/qt/locale/dogecash_pl.ts \
-                src/qt/locale/dogecash_pt.ts \
-                src/qt/locale/dogecash_ru.ts \
-                src/qt/locale/dogecash_sk.ts \
-                src/qt/locale/dogecash_sv.ts \
-                src/qt/locale/dogecash_vi.ts \
-                src/qt/locale/dogecash_zh_CN.ts \
-                src/qt/locale/dogecash_zh_TW.ts
+TRANSLATIONS += src/qt/locale/deviant_bg.ts \
+                src/qt/locale/deviant_de.ts \
+                src/qt/locale/deviant_en.ts \
+                src/qt/locale/deviant_es.ts \
+                src/qt/locale/deviant_fi.ts \
+                src/qt/locale/deviant_fr.ts \
+                src/qt/locale/deviant_it.ts \
+                src/qt/locale/deviant_ja.ts \
+                src/qt/locale/deviant_pl.ts \
+                src/qt/locale/deviant_pt.ts \
+                src/qt/locale/deviant_ru.ts \
+                src/qt/locale/deviant_sk.ts \
+                src/qt/locale/deviant_sv.ts \
+                src/qt/locale/deviant_vi.ts \
+                src/qt/locale/deviant_zh_CN.ts \
+                src/qt/locale/deviant_zh_TW.ts
 
 DISTFILES += \
     README.md

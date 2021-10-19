@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2020 The PIVX Developers
-// Copyright (c) 2020 The DogeCash Developers
+// Copyright (c) 2020 The Deviant Developers
 
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
@@ -8,8 +8,8 @@
 #define TOPBAR_H
 
 #include <QWidget>
-#include "qt/dogecash/pwidget.h"
-#include "qt/dogecash/lockunlock.h"
+#include "qt/deviant/pwidget.h"
+#include "qt/deviant/lockunlock.h"
 #include "amount.h"
 #include <QTimer>
 #include <QProgressBar>
