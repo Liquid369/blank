@@ -129,11 +129,11 @@ std::vector<CWalletTx> CWallet::getWalletTxs()
     return result;
 }
 
-PairResult CWallet::getNewAddress(CTxDestination& ret, std::stringlabel){
+PairResult CWallet::getNewAddress(CTxDestination& ret, std::string label){
     return getNewAddress(ret,label, AddressBook::AddressBookPurpose::RECEIVE);
 }
 
-PairResult CWallet::getNewStakingAddress(CTxDestination& ret, std::stringlabel){
+PairResult CWallet::getNewStakingAddress(CTxDestination& ret, std::string label){
     return getNewAddress(ret,label, AddressBook::AddressBookPurpose::COLD_STAKING, CChainParams::Base58Type::STAKING_ADDRESS);
 }
 
@@ -187,7 +187,7 @@ int64_t CWallet::GetKeyCreationTime(const CTxDestination& address)
     return 0;
 }
 
-int64_t CWallet::GetKeyCreationTime(constlibzcash::SaplingPaymentAddress& address)
+int64_t CWallet::GetKeyCreationTime(const libzcash::SaplingPaymentAddress& address)
 {
    libzcash::SaplingIncomingViewingKey ivk;
     return GetSaplingIncomingViewingKey(address, ivk) ?
@@ -2831,7 +2831,7 @@ bool CWallet::CreateBudgetFeeTX(CTransactionRef& tx, const uint256& hash, CReser
     return true;
 }
 
-bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool overrideEstimatedFeeRate, const CFeeRate& specificFeeRate, int& nChangePosInOut, std::string& strFailReason, bool includeWatching, boollockUnspents, const CTxDestination& destChange)
+bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool overrideEstimatedFeeRate, const CFeeRate& specificFeeRate, int& nChangePosInOut, std::string& strFailReason, bool includeWatching, bool lockUnspents, const CTxDestination& destChange)
 {
     std::vector<CRecipient> vecSend;
 
@@ -3235,7 +3235,7 @@ bool CWallet::CreateCoinStake(
 
         break;
     }
-   logPrint(BCLog::STAKING, "%s: attempted staking %d times\n", __func__, nAttempts);
+   LogPrint(BCLog::STAKING, "%s: attempted staking %d times\n", __func__, nAttempts);
 
     if (!fKernelFound)
         return false;
@@ -4280,7 +4280,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
     CBlockIndex* pindexRescan = chainActive.Genesis();
     if (!gArgs.GetBoolArg("-rescan", false)) {
         CWalletDB walletdb(*walletInstance->dbw);
-        CBlockLocatorlocator;
+        CBlockLocator locator;
         if (walletdb.ReadBestBlock(locator))
             pindexRescan = FindForkInGlobalIndex(chainActive,locator);
     }
@@ -4630,7 +4630,7 @@ int CWallet::GetVersion()
 ///////////////// Sapling Methods //////////////////////////
 ////////////////////////////////////////////////////////////
 
-libzcash::SaplingPaymentAddress CWallet::GenerateNewSaplingZKey(std::stringlabel) {
+libzcash::SaplingPaymentAddress CWallet::GenerateNewSaplingZKey(std::string label) {
     if (!m_sspk_man->IsEnabled()) {
         throw std::runtime_error("Cannot generate shielded addresses. Start with -upgradewallet in order to upgrade a non-HD wallet to HD and Sapling features");
     }
@@ -4646,25 +4646,25 @@ void CWallet::IncrementNoteWitnesses(const CBlockIndex* pindex,
 
 void CWallet::DecrementNoteWitnesses(const CBlockIndex* pindex) { m_sspk_man->DecrementNoteWitnesses(pindex->nHeight); }
 
-bool CWallet::AddSaplingZKey(constlibzcash::SaplingExtendedSpendingKey &key) { return m_sspk_man->AddSaplingZKey(key); }
+bool CWallet::AddSaplingZKey(const libzcash::SaplingExtendedSpendingKey &key) { return m_sspk_man->AddSaplingZKey(key); }
 
 bool CWallet::AddSaplingIncomingViewingKeyW(
-        constlibzcash::SaplingIncomingViewingKey &ivk,
-        constlibzcash::SaplingPaymentAddress &addr) { return m_sspk_man->AddSaplingIncomingViewingKey(ivk, addr); }
+        const libzcash::SaplingIncomingViewingKey &ivk,
+        const libzcash::SaplingPaymentAddress &addr) { return m_sspk_man->AddSaplingIncomingViewingKey(ivk, addr); }
 
 bool CWallet::AddCryptedSaplingSpendingKeyW(
-        constlibzcash::SaplingExtendedFullViewingKey &extfvk,
+        const libzcash::SaplingExtendedFullViewingKey &extfvk,
         const std::vector<unsigned char> &vchCryptedSecret) { return m_sspk_man->AddCryptedSaplingSpendingKeyDB(extfvk, vchCryptedSecret); }
 
-bool CWallet::HaveSpendingKeyForPaymentAddress(constlibzcash::SaplingPaymentAddress &zaddr) const { return m_sspk_man->HaveSpendingKeyForPaymentAddress(zaddr); }
-bool CWallet::LoadSaplingZKey(constlibzcash::SaplingExtendedSpendingKey &key) { return m_sspk_man->LoadSaplingZKey(key); }
-bool CWallet::LoadSaplingZKeyMetadata(constlibzcash::SaplingIncomingViewingKey &ivk, const CKeyMetadata &meta) { return m_sspk_man->LoadSaplingZKeyMetadata(ivk, meta); }
-bool CWallet::LoadCryptedSaplingZKey(constlibzcash::SaplingExtendedFullViewingKey &extfvk,
+bool CWallet::HaveSpendingKeyForPaymentAddress(const libzcash::SaplingPaymentAddress &zaddr) const { return m_sspk_man->HaveSpendingKeyForPaymentAddress(zaddr); }
+bool CWallet::LoadSaplingZKey(const libzcash::SaplingExtendedSpendingKey &key) { return m_sspk_man->LoadSaplingZKey(key); }
+bool CWallet::LoadSaplingZKeyMetadata(const libzcash::SaplingIncomingViewingKey &ivk, const CKeyMetadata &meta) { return m_sspk_man->LoadSaplingZKeyMetadata(ivk, meta); }
+bool CWallet::LoadCryptedSaplingZKey(const libzcash::SaplingExtendedFullViewingKey &extfvk,
                             const std::vector<unsigned char> &vchCryptedSecret) { return m_sspk_man->LoadCryptedSaplingZKey(extfvk, vchCryptedSecret); }
 
 bool CWallet::LoadSaplingPaymentAddress(
-        constlibzcash::SaplingPaymentAddress &addr,
-        constlibzcash::SaplingIncomingViewingKey &ivk) { return m_sspk_man->LoadSaplingPaymentAddress(addr, ivk); }
+        const libzcash::SaplingPaymentAddress &addr,
+        const libzcash::SaplingIncomingViewingKey &ivk) { return m_sspk_man->LoadSaplingPaymentAddress(addr, ivk); }
 
 ///////////////// End Sapling Methods //////////////////////
 ////////////////////////////////////////////////////////////
@@ -4882,7 +4882,7 @@ const CTxDestination* CAddressBookIterator::GetCTxDestKey()
     return boost::get<CTxDestination>(&it->first);
 }
 
-constlibzcash::SaplingPaymentAddress* CAddressBookIterator::GetShieldedDestKey()
+const libzcash::SaplingPaymentAddress* CAddressBookIterator::GetShieldedDestKey()
 {
     return boost::get<libzcash::SaplingPaymentAddress>(&it->first);
 }
