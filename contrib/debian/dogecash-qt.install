@@ -1,6 +1,0 @@
-usr/local/bin/deviant-qt usr/bin
-share/pixmaps/deviant32.xpm usr/share/pixmaps
-share/pixmaps/deviant16.xpm usr/share/pixmaps
-share/pixmaps/deviant128.png usr/share/pixmaps
-debian/deviant-qt.desktop usr/share/applications
-debian/deviant-qt.protocol usr/share/kde4/services/

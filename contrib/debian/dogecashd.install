@@ -1,3 +1,0 @@
-usr/local/bin/deviantd usr/bin
-usr/local/bin/deviant-cli usr/bin
-debian/examples/deviant.conf etc/deviant
