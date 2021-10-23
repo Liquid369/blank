@@ -853,20 +853,36 @@ double ConvertBitsToDouble(unsigned int nBits)
 CAmount GetBlockValue(int nHeight)
 {
     int64_t nSubsidy = 0;
-    if (nHeight < 2) {
-        nSubsidy = 0 * COIN;
-    } else if (nHeight == 2) {
-         nSubsidy = 7000000 * COIN;
-    } else if (nHeight <= 200 && nHeight > 2) {
-         nSubsidy = 10.8 * COIN;
-    } else if (nHeight <= 238621 && nHeight >= 201) {
-         nSubsidy = 10.8 * COIN;
-    } else if (nHeight <= 788621 && nHeight > 238621) {
-         nSubsidy = 9 * COIN;
-    } else if (nHeight <= 1122000 && nHeight > 788621) {
-         nSubsidy = 5.4 * COIN;
+    if (nHeight > 0 && nHeight < 200) {
+        nSubsidy = 21400 * COIN;
+    } else if (nHeight >= 200 && nHeight < 225650) {
+         nSubsidy = 20 * COIN;
+    } else if (nHeight < 751300 && nHeight >= 225650) {
+         nSubsidy = 20 * 0.82 * COIN;
+    } else if (nHeight < 1276950 && nHeight >= 751300) {
+         nSubsidy = 20 * 0.6724 * COIN;
+    } else if (nHeight < 1802600 && nHeight >= 1276950) {
+         nSubsidy = 20 * 0.5514 * COIN;
+    } else if (nHeight < 2328250 && nHeight >= 1802600) {
+         nSubsidy = 20 * 0.4522 * COIN;
+    } else if (nHeight < 2853900 && nHeight >= 2328250) {
+        nSubsidy = 20 * 0.3708 * COIN;
+    } else if (nHeight < 3379550 && nHeight >= 2853900) {
+        nSubsidy = 20 * 0.3040 * COIN;
+    } else if (nHeight < 3905200 && nHeight >= 3379550) {
+        nSubsidy = 20 * 0.2493 * COIN;
+    } else if (nHeight < 4430850 && nHeight >= 3905200) {
+        nSubsidy = 20 * 0.2045 * COIN;
+    } else if (nHeight < 4956500 && nHeight >= 4430850) {
+        nSubsidy = 20 * 0.1677 * COIN;
+    } else if (nHeight < 5482150 && nHeight >= 4956500) {
+        nSubsidy = 20 * 0.1375 * COIN;
+    } else if (nHeight < 6007800 && nHeight >= 5482150) {
+        nSubsidy = 20 * 0.1127 * COIN;
+    } else if (nHeight < 6533450 && nHeight >= 6007800) {
+        nSubsidy = 20 * 0.0924 * COIN;
     } else {
-         nSubsidy = 6.2 * COIN;
+        nSubsidy = 1 * COIN;
     }
 
     CAmount nMoneySupply = MoneySupply.Get();
@@ -885,12 +901,12 @@ int64_t GetMasternodePayment(int nHeight)
     int64_t ret = 0;
     int64_t nSubsidy = GetBlockValue(nHeight);
 
-    if (nHeight <= 1122000) {
-        nSubsidy = 5.4 * COIN;
-        ret = nSubsidy * 0.8;
+    if (nHeight < 200){
+        ret = 0;
+    } else if (nHeight < 100000 && nHeight >= 200) {
+        ret = nSubsidy * 4 / 5;
     } else {
-        nSubsidy = 5 * COIN;
-        ret = nSubsidy * 0.7;
+        ret = nSubsidy * 9 / 10;
     }
     CAmount nMoneySupply = MoneySupply.Get();
      if (nMoneySupply + nSubsidy >= Params().GetConsensus().nMaxMoneyOut) {

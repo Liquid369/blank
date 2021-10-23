@@ -130,11 +130,11 @@ std::vector<CWalletTx> CWallet::getWalletTxs()
 }
 
 PairResult CWallet::getNewAddress(CTxDestination& ret, std::string label){
-    return getNewAddress(ret,label, AddressBook::AddressBookPurpose::RECEIVE);
+    return getNewAddress(ret, label, AddressBook::AddressBookPurpose::RECEIVE);
 }
 
 PairResult CWallet::getNewStakingAddress(CTxDestination& ret, std::string label){
-    return getNewAddress(ret,label, AddressBook::AddressBookPurpose::COLD_STAKING, CChainParams::Base58Type::STAKING_ADDRESS);
+    return getNewAddress(ret, label, AddressBook::AddressBookPurpose::COLD_STAKING, CChainParams::Base58Type::STAKING_ADDRESS);
 }
 
 PairResult CWallet::getNewAddress(CTxDestination& ret, const std::string addressLabel, const std::string purpose,
@@ -380,7 +380,7 @@ bool CWallet::Unlock(const CKeyingMaterial& vMasterKeyIn)
 
         // Sapling
         if (!UnlockSaplingKeys(vMasterKeyIn, fDecryptionThoroughlyChecked)) {
-            // If Sapling key encryption fail,let's unencrypt the rest of the keys
+            // If Sapling key encryption fail, let's unencrypt the rest of the keys
            LogPrintf("Sapling wallet unlock keys failed\n");
             throw std::runtime_error("Error unlocking wallet: some Sapling keys decrypt but not all. Your wallet file may be corrupt.");
         }
@@ -447,13 +447,13 @@ void CWallet::ChainTipAdded(const CBlockIndex *pindex,
     m_sspk_man->UpdateSaplingNullifierNoteMapForBlock(pblock);
 }
 
-void CWallet::SetBestChain(const CBlockLocator&loc)
+void CWallet::SetBestChain(const CBlockLocator& loc)
 {
     CWalletDB walletdb(*dbw);
-    SetBestChainInternal(walletdb,loc);
+    SetBestChainInternal(walletdb, loc);
 }
 
-void CWallet::SetBestChainInternal(CWalletDB& walletdb, const CBlockLocator&loc)
+void CWallet::SetBestChainInternal(CWalletDB& walletdb, const CBlockLocator& loc)
 {
     if (!walletdb.TxnBegin()) {
         // This needs to be done atomically, so don't do it at all
@@ -1709,8 +1709,8 @@ CAmount CWalletTx::GetAvailableWatchOnlyCredit(const bool& fUseCache) const
     return GetAvailableCredit(fUseCache, ISMINE_WATCH_ONLY);
 }
 
-void CWalletTx::GetAmounts(std::list<COutputEntry>&listReceived,
-    std::list<COutputEntry>&listSent,
+void CWalletTx::GetAmounts(std::list<COutputEntry>& listReceived,
+    std::list<COutputEntry>& listSent,
     CAmount& nFee,
     const isminefilter& filter) const
 {
@@ -2133,7 +2133,7 @@ CAmount CWallet::GetColdStakingBalance() const
 
 CAmount CWallet::GetStakingBalance(const bool fIncludeColdStaking) const
 {
-    return std::max(CAmount(0),loopTxsBalance(
+    return std::max(CAmount(0), loopTxsBalance(
             [fIncludeColdStaking](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
         if (pcoin.IsTrusted() && pcoin.GetDepthInMainChain() >= Params().GetConsensus().nStakeMinDepth) {
             nTotal += pcoin.GetAvailableCredit();       // available coins
@@ -3671,7 +3671,7 @@ std::set<std::set<CTxDestination> > CWallet::GetAddressGroupings()
     return ret;
 }
 
-std::set<CTxDestination> CWallet::GetLabelAddresses(const std::string&label) const
+std::set<CTxDestination> CWallet::GetLabelAddresses(const std::string& label) const
 {
    LOCK(cs_wallet);
     std::set<CTxDestination> result;
@@ -4282,7 +4282,7 @@ CWallet* CWallet::CreateWalletFromFile(const std::string walletFile)
         CWalletDB walletdb(*walletInstance->dbw);
         CBlockLocator locator;
         if (walletdb.ReadBestBlock(locator))
-            pindexRescan = FindForkInGlobalIndex(chainActive,locator);
+            pindexRescan = FindForkInGlobalIndex(chainActive, locator);
     }
 
     {
@@ -4636,7 +4636,7 @@ libzcash::SaplingPaymentAddress CWallet::GenerateNewSaplingZKey(std::string labe
     }
 
     auto address = m_sspk_man->GenerateNewSaplingZKey();
-    SetAddressBook(address,label, AddressBook::AddressBookPurpose::SHIELDED_RECEIVE);
+    SetAddressBook(address, label, AddressBook::AddressBookPurpose::SHIELDED_RECEIVE);
     return address;
 }
 
@@ -4827,7 +4827,7 @@ Optional<std::pair<
             continue;
         }
 
-        auto maybe_pt =libzcash::SaplingNotePlaintext::decrypt(
+        auto maybe_pt = libzcash::SaplingNotePlaintext::decrypt(
                 output.encCiphertext,
                 output.ephemeralKey,
                 outPt->esk,
@@ -4836,7 +4836,7 @@ Optional<std::pair<
         assert(static_cast<bool>(maybe_pt));
         auto notePt = maybe_pt.get();
 
-        return std::make_pair(notePt,libzcash::SaplingPaymentAddress(notePt.d, outPt->pk_d));
+        return std::make_pair(notePt, libzcash::SaplingPaymentAddress(notePt.d, outPt->pk_d));
     }
 
     // Couldn't recover with any of the provided OutgoingViewingKeys
