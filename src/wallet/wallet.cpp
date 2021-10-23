@@ -2866,7 +2866,7 @@ bool CWallet::FundTransaction(CMutableTransaction& tx, CAmount& nFeeRet, bool ov
 
             if (lockUnspents) {
              LOCK(cs_wallet);
-             lockCoin(txin.prevout);
+             LockCoin(txin.prevout);
             }
         }
     }
