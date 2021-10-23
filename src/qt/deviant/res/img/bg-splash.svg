@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1536px" height="1066px" viewBox="0 0 1536 1066" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Rectangle Copy 36</title>
+    <defs>
+        <linearGradient x1="55.92748%" y1="67.3030609%" x2="128.144519%" y2="-111.545875%" id="linearGradient-1">
+            <stop stop-color="#18171D" offset="0%"></stop>
+            <stop stop-color="#CC8E58" offset="100%"></stop>
+            <stop stop-color="#CC8E58" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-Copy-36" fill="url(#linearGradient-1)" x="0" y="0" width="1536" height="1066"></rect>
+    </g>
+</svg>
