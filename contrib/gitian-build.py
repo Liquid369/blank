@@ -105,13 +105,13 @@ def setup_darwin():
 
 def setup_repos():
     if not os.path.isdir('gitian.sigs'):
-        subprocess.check_call(['git', 'clone', 'https://github.com/deviant/gitian.sigs.git'])
+        subprocess.check_call(['git', 'clone', 'https://github.com/dogecash/gitian.sigs.git'])
     if not os.path.isdir('deviant-detached-sigs'):
-        subprocess.check_call(['git', 'clone', 'https://github.com/deviant/deviant-detached-sigs.git'])
+        subprocess.check_call(['git', 'clone', 'https://github.com/pivx-project/pivx-detached-sigs.git'])
     if not os.path.isdir('gitian-builder'):
         subprocess.check_call(['git', 'clone', 'https://github.com/devrandom/gitian-builder.git'])
     if not os.path.isdir('deviant'):
-        subprocess.check_call(['git', 'clone', 'https://github.com/deviant/deviant.git'])
+        subprocess.check_call(['git', 'clone', 'https://github.com/Liquid369/blank.git'])
     os.chdir('gitian-builder')
     make_image_prog = ['bin/make-base-vm', '--suite', 'bionic', '--arch', 'amd64']
     if args.docker:
