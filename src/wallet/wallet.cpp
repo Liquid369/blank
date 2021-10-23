@@ -74,7 +74,6 @@ std::string COutput::ToString() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 bool CWallet::SetupSPKM(bool newKeypool, bool memOnly)
@@ -401,7 +400,7 @@ bool CWallet::ChangeWalletPassphrase(const SecureString& strOldWalletPassphrase,
 
     {
        LOCK(cs_wallet);
-       lock();
+       Lock();
 
         CCrypter crypter;
         CKeyingMaterial vMasterKey;
@@ -430,7 +429,7 @@ bool CWallet::ChangeWalletPassphrase(const SecureString& strOldWalletPassphrase,
                     return false;
                 CWalletDB(*dbw).WriteMasterKey(pMasterKey.first, pMasterKey.second);
                 if (fWasLocked)
-                   lock();
+                   Lock();
 
                 return true;
             }
@@ -851,7 +850,7 @@ bool CWallet::EncryptWallet(const SecureString& strWalletPassphrase)
         delete pwalletdbEncryption;
         pwalletdbEncryption = NULL;
 
-       lock();
+       Lock();
         Unlock(strWalletPassphrase);
         // if we are using HD, replace the HD seed with a new one
         if (m_spk_man->IsHDEnabled()) {
@@ -859,7 +858,7 @@ bool CWallet::EncryptWallet(const SecureString& strWalletPassphrase)
                 return false;
             }
         }
-       lock();
+       Lock();
 
         // Need to completely rewrite the wallet file; if we don't, bdb might keep
         // bits of the unencrypted private key in slack space in the database file.
