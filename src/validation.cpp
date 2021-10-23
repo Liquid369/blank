@@ -852,7 +852,6 @@ double ConvertBitsToDouble(unsigned int nBits)
 
 CAmount GetBlockValue(int nHeight)
 {
-    int64_t nSubsidy = 0;
     if (nHeight < 2) {
         nSubsidy = 0 * COIN;
     } else if (nHeight == 2) {
@@ -882,11 +881,7 @@ CAmount GetBlockValue(int nHeight)
 
 int64_t GetMasternodePayment(int nHeight)
 {
-
-    int64_t nSubsidy;
     int64_t ret = 0;
-
-    if (nSubsidy == 0) return 0;
 
     if (nHeight <= 1122000) {
         nSubsidy = 5.4 * COIN;
@@ -895,6 +890,11 @@ int64_t GetMasternodePayment(int nHeight)
         nSubsidy = 5 * COIN;
         ret = nSubsidy * 0.7;
     }
+    CAmount nMoneySupply = MoneySupply.Get();
+     int64_t nSubsidy = GetBlockValue(nHeight);
+     if (nMoneySupply + nSubsidy >= Params().GetConsensus().nMaxMoneyOut) {
+         ret = 0;
+     }
     return ret;
 
 }
