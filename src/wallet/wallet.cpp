@@ -1366,7 +1366,7 @@ void CWallet::BlockUntilSyncedToCurrentChain() {
         // We could also take cs_wallet here, and call m_last_block_processed
         // protected by cs_wallet instead of cs_main, but aslong as we need
         // cs_main here anyway, its easier to just call it cs_main-protected.
-        uint256last_block_hash = WITH_LOCK(cs_wallet, return m_last_block_processed);
+        uint256 last_block_hash = WITH_LOCK(cs_wallet, return m_last_block_processed);
        LOCK(cs_main);
         const CBlockIndex* initialChainTip = chainActive.Tip();
         if (!last_block_hash.IsNull() && initialChainTip &&
@@ -2114,7 +2114,7 @@ CAmount CWallet::GetAvailableBalance(bool fIncludeDelegated, bool fIncludeShield
 
 CAmount CWallet::GetAvailableBalance(isminefilter& filter, bool useCache, int minDepth) const
 {
-    returnloopTxsBalance([filter, useCache, minDepth](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal){
+    return loopTxsBalance([filter, useCache, minDepth](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal){
         bool fConflicted;
         int depth;
         if (pcoin.IsTrusted(depth, fConflicted) && depth >= minDepth) {
@@ -2125,7 +2125,7 @@ CAmount CWallet::GetAvailableBalance(isminefilter& filter, bool useCache, int mi
 
 CAmount CWallet::GetColdStakingBalance() const
 {
-    returnloopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
+    return loopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
         if (pcoin.tx->HasP2CSOutputs() && pcoin.IsTrusted())
             nTotal += pcoin.GetColdStakingCredit();
     });
@@ -2147,7 +2147,7 @@ CAmount CWallet::GetStakingBalance(const bool fIncludeColdStaking) const
 
 CAmount CWallet::GetDelegatedBalance() const
 {
-    returnloopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
+    return loopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
             if (pcoin.tx->HasP2CSOutputs() && pcoin.IsTrusted())
                 nTotal += pcoin.GetStakeDelegationCredit();
     });
@@ -2175,7 +2175,7 @@ CAmount CWallet::GetLockedCoins() const
 
 CAmount CWallet::GetUnconfirmedBalance(isminetype filter) const
 {
-    returnloopTxsBalance([filter](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
+    return loopTxsBalance([filter](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
             if (!pcoin.IsTrusted() && pcoin.GetDepthInMainChain() == 0 && pcoin.InMempool())
                 nTotal += pcoin.GetCredit(filter);
     });
@@ -2183,28 +2183,28 @@ CAmount CWallet::GetUnconfirmedBalance(isminetype filter) const
 
 CAmount CWallet::GetImmatureBalance() const
 {
-    returnloopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
+    return loopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
             nTotal += pcoin.GetImmatureCredit(false);
     });
 }
 
 CAmount CWallet::GetImmatureColdStakingBalance() const
 {
-    returnloopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
+    return loopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
             nTotal += pcoin.GetImmatureCredit(false, ISMINE_COLD);
     });
 }
 
 CAmount CWallet::GetImmatureDelegatedBalance() const
 {
-    returnloopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
+    return loopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
             nTotal += pcoin.GetImmatureCredit(false, ISMINE_SPENDABLE_DELEGATED);
     });
 }
 
 CAmount CWallet::GetWatchOnlyBalance() const
 {
-    returnloopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
+    return loopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
             if (pcoin.IsTrusted())
                 nTotal += pcoin.GetAvailableWatchOnlyCredit();
     });
@@ -2212,7 +2212,7 @@ CAmount CWallet::GetWatchOnlyBalance() const
 
 CAmount CWallet::GetUnconfirmedWatchOnlyBalance() const
 {
-    returnloopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
+    return loopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
             if (!pcoin.IsTrusted() && pcoin.GetDepthInMainChain() == 0 && pcoin.InMempool())
                 nTotal += pcoin.GetAvailableWatchOnlyCredit();
     });
@@ -2220,7 +2220,7 @@ CAmount CWallet::GetUnconfirmedWatchOnlyBalance() const
 
 CAmount CWallet::GetImmatureWatchOnlyBalance() const
 {
-    returnloopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
+    return loopTxsBalance([](const uint256& id, const CWalletTx& pcoin, CAmount& nTotal) {
             nTotal += pcoin.GetImmatureWatchOnlyCredit();
     });
 }
