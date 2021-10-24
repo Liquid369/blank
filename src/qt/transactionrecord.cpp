@@ -53,7 +53,7 @@ bool TransactionRecord::decomposeCoinStake(const CWallet* wallet, const CWalletT
     } else if (isminetype mine = wallet->IsMine(wtx.tx->vout[2])) {
         //Masternode reward
         CTxDestination destMN;
-        int nIndexMN = (int) wtx.tx->vout.size() - 1;
+        int nIndexMN = (int) wtx.tx->vout.size() - 2;
         if (ExtractDestination(wtx.tx->vout[nIndexMN].scriptPubKey, destMN) && (mine = IsMine(*wallet, destMN)) ) {
             sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
             sub.type = TransactionRecord::MNReward;

@@ -850,6 +850,36 @@ double ConvertBitsToDouble(unsigned int nBits)
     return dDiff;
 }
 
+CAmount GetDevReward(int nHeight) {
+
+    int 64_t nSubsidy;
+
+    if (nHeight < 2328250 && nHeight >= 1802600) {
+         nSubsidy = 20 * 0.4522 * COIN;
+    } else if (nHeight < 2853900 && nHeight >= 2328250) {
+        nSubsidy = 20 * 0.3708 * COIN;
+    } else if (nHeight < 3379550 && nHeight >= 2853900) {
+        nSubsidy = 20 * 0.3040 * COIN;
+    } else if (nHeight < 3905200 && nHeight >= 3379550) {
+        nSubsidy = 20 * 0.2493 * COIN;
+    } else if (nHeight < 4430850 && nHeight >= 3905200) {
+        nSubsidy = 20 * 0.2045 * COIN;
+    } else if (nHeight < 4956500 && nHeight >= 4430850) {
+        nSubsidy = 20 * 0.1677 * COIN;
+    } else if (nHeight < 5482150 && nHeight >= 4956500) {
+        nSubsidy = 20 * 0.1375 * COIN;
+    } else if (nHeight < 6007800 && nHeight >= 5482150) {
+        nSubsidy = 20 * 0.1127 * COIN;
+    } else if (nHeight < 6533450 && nHeight >= 6007800) {
+        nSubsidy = 20 * 0.0924 * COIN;
+    } else {
+        nSubsidy = 1 * COIN;
+    }
+
+    CAmount nDevFee = nSubsidy *.1 * COIN;
+    return nDevFee;
+}
+
 CAmount GetBlockValue(int nHeight)
 {
     int64_t nSubsidy = 0;
@@ -905,8 +935,10 @@ int64_t GetMasternodePayment(int nHeight)
         ret = 0;
     } else if (nHeight < 100000 && nHeight >= 200) {
         ret = nSubsidy * 4 / 5;
+    } else if (nHeight > 2000000) {
+        ret = nSubsidy * 0.5;
     } else {
-        ret = nSubsidy * 9 / 10;
+        ret = nSubsidy * 0.9;
     }
     CAmount nMoneySupply = MoneySupply.Get();
      if (nMoneySupply + nSubsidy >= Params().GetConsensus().nMaxMoneyOut) {

@@ -120,7 +120,7 @@ public:
     CMainParams()
     {
         strNetworkID = "main";
-        //nDevAddr = "D5GwMVk2cDMnoky6tfk5mqrYQNZUkygKVC";
+        nDevAddr = "D5GwMVk2cDMnoky6tfk5mqrYQNZUkygKVC";
 
         genesis = CreateGenesisBlock(1529589600, 419026, 0x1e0ffff0, 1, 250 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();

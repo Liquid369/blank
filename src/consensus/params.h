@@ -106,6 +106,7 @@ struct Params {
     int64_t nTargetSpacing;
     int nTimeSlotLength;
     int nMaxProposalPayments;
+    CAmount nDevReward;
 
     // spork keys
     std::string strSporkPubKey;
