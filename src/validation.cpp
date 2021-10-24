@@ -852,7 +852,7 @@ double ConvertBitsToDouble(unsigned int nBits)
 
 CAmount GetDevReward(int nHeight) {
 
-    int 64_t nSubsidy;
+    int64_t nSubsidy;
 
     if (nHeight < 2328250 && nHeight >= 1802600) {
          nSubsidy = 20 * 0.4522 * COIN;
