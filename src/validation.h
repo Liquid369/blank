@@ -58,11 +58,7 @@ struct PrecomputedTransactionData;
 
 //Setup MN Collateral Change
 inline int64_t GetMNCollateral(int nHeight) {
-    if (nHeight >= 1122000) {
-        return 15000 * COIN;
-    } else {
         return 5000 * COIN;
-    }
 }
 
 /** Default for -limitancestorcount, max number of in-mempool ancestors */
