@@ -315,6 +315,8 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int n
     bool hasPayment = true;
     CScript payee;
 
+    CAmount nDevFee = GetDevReward(nHeight);
+
     //spork
     if (!masternodePayments.GetBlockPayee(nHeight, payee)) {
         //no masternode detected
@@ -340,7 +342,6 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int n
 
             txNew.vout[i].scriptPubKey = payee;
             txNew.vout[i].nValue = masternodePayment;
-            CAmount nDevFee = GetDevReward(nHeight);
 
             //subtract mn payment from the stake reward
             if (!txNew.vout[1].IsZerocoinMint()) {
