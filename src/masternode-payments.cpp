@@ -351,7 +351,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int n
                     if (nHeight >= 2000000) {
                         txNew.vout[i - 1].nValue -= nDevFee;
                     }
-                } else if (i > 3) {
+                } else if (i >= 3) {
                     // special case, stake is split between (i-1) outputs
                     unsigned int outputs = i-1;
                     CAmount mnPaymentSplit = masternodePayment / outputs;
@@ -369,24 +369,25 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, const int n
                             txNew.vout[j].nValue -= devFeeSplit;
                         }
                         txNew.vout[outputs].nValue -= devFeeRemainder;
+                    }
+
                 }
-
             }
         } else {
-            txNew.vout.resize(2);
-            txNew.vout[1].scriptPubKey = payee;
-            txNew.vout[1].nValue = masternodePayment;
-            txNew.vout[0].nValue = GetBlockValue(nHeight) - masternodePayment;
+                txNew.vout.resize(2);
+                txNew.vout[1].scriptPubKey = payee;
+                txNew.vout[1].nValue = masternodePayment;
+                txNew.vout[0].nValue = GetBlockValue(nHeight) - masternodePayment;
             }
 
-        CTxDestination address1;
-        ExtractDestination(payee, address1);
+            CTxDestination address1;
+            ExtractDestination(payee, address1);
 
-        LogPrint(BCLog::MASTERNODE,"Masternode payment of %s to %s\n", FormatMoney(masternodePayment).c_str(), EncodeDestination(address1).c_str());
-        } else {
-            unsigned int i = txNew.vout.size();
-            PushDevFee(txNew, nHeight);
-            txNew.vout[i].nValue -= nDevFee;
+            LogPrint(BCLog::MASTERNODE,"Masternode payment of %s to %s\n", FormatMoney(masternodePayment).c_str(), EncodeDestination(address1).c_str());
+    } else {
+        unsigned int i = txNew.vout.size();
+        PushDevFee(txNew, nHeight);
+        txNew.vout[i].nValue -= nDevFee;
     }
 }
 
