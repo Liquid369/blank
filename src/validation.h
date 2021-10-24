@@ -212,6 +212,8 @@ void UnloadBlockIndex();
 int ActiveProtocol();
 /** Run an instance of the script checking thread */
 void ThreadScriptCheck();
+/** Calculates DevFee based on block reward **/
+CAmount GetDevReward();
 
 /** Check whether we are doing an initial block download (synchronizing from disk or network) */
 bool IsInitialBlockDownload();
