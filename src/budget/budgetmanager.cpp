@@ -758,7 +758,9 @@ std::string CBudgetManager::GetRequiredPaymentsString(int nBlockHeight)
 CAmount CBudgetManager::GetTotalBudget(int nHeight)
 {
     //Static budget
-    return 25000 * COIN;
+    int64_t nBlockValue = GetBlockValue(nHeight);
+    int64_t ret = ((nBlockValue * ( 30 * 1440 )) * 0.1) * COIN;
+    return ret * COIN;
 }
 
 void CBudgetManager::AddSeenProposalVote(const CBudgetVote& vote)
