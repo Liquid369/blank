@@ -83,7 +83,7 @@ OperationResult initMasternode(const std::string& _strMasterNodePrivKey, const s
 }
 
 //
-// Bootup the Masternode, look for a 15000 DEV input and register on the network
+// Bootup the Masternode, look for a 5000 DEV input and register on the network
 //
 void CActiveMasternode::ManageStatus()
 {

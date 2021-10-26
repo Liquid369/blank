@@ -819,7 +819,7 @@ public:
 
     std::map<CTxDestination, std::vector<COutput> > AvailableCoinsByAddress(bool fConfirmed, CAmount maxCoinValue, bool fIncludeColdStaking);
 
-    /// Get 15000 DEV output and keys which can be used for the Masternode
+    /// Get 5000 DEV output and keys which can be used for the Masternode
     bool GetMasternodeVinAndKeys(CTxIn& txinRet, CPubKey& pubKeyRet,
             CKey& keyRet, std::string strTxHash, std::string strOutputIndex, std::string& strError);
     /// Extract txin information and keys from output
