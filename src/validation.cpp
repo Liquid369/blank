@@ -931,7 +931,7 @@ int64_t GetMasternodePayment(int nHeight)
     } else if (nHeight > 2000000) {
         ret = nSubsidy * 0.7;
     } else {
-        ret = nSubsidy * 0.9;
+        ret = nSubsidy * 0.8;
     }
     CAmount nMoneySupply = MoneySupply.Get();
      if (nMoneySupply + nSubsidy >= Params().GetConsensus().nMaxMoneyOut) {

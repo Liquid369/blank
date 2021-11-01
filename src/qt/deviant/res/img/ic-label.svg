@@ -1,14 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
-    <title>Artboard</title>
-    <desc>Created with Sketch.</desc>
-    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="ic-label" transform="translate(2.000000, 2.000000)">
-            <g id="Group_8996" transform="translate(5.000000, 2.000000)" fill="#7d644b" fill-rule="nonzero">
-                <path d="M10,16.414 L5,11.414 L0,16.414 L0,0 L10,0 L10,16.414 Z M5,8.586 L8,11.586 L8,2 L2,2 L2,11.586 L5,8.586 Z" id="Path_18961"></path>
-            </g>
-            <polygon id="Rectangle_4641" points="0 0 20 0 20 20 0 20"></polygon>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFC038;}
+	.st1{fill:none;}
+</style>
+<title>Artboard</title>
+<desc>Created with Sketch.</desc>
+<g id="Artboard">
+	<g id="ic-label" transform="translate(2.000000, 2.000000)">
+		<g id="Group_8996" transform="translate(5.000000, 2.000000)">
+			<path id="Path_18961" class="st0" d="M6.58012,14.28245l-0.00537-1.04881c-0.00203-0.39611-0.32314-0.71646-0.71925-0.71755
+				l-1.70228-0.00468c-0.39539-0.00109-0.71795,0.31637-0.72316,0.71173l-0.01406,1.06514C3.41078,14.68286,3.08942,15,2.6948,15
+				H0.72125C0.32291,15,0,14.67709,0,14.27875V1.32125C0,0.59456,0.59456,0,1.32125,0h7.35751C9.40544,0,10,0.59456,10,1.32124
+				v12.95751C10,14.67709,9.67709,15,9.27875,15h-1.9774C6.90446,15,6.58215,14.67933,6.58012,14.28245z M8,9.46663V2.72125
+				C8,2.32291,7.67709,2,7.27875,2H2.72125C2.32291,2,2,2.32291,2,2.72125v6.66943c0,0.39365,0.31563,0.71459,0.70923,0.72115
+				l4.55751,0.07596C7.66971,10.1945,8,9.86967,8,9.46663z"/>
+		</g>
+		<polygon id="Rectangle_4641" class="st1" points="0,0 20,0 20,20 0,20 		"/>
+	</g>
+</g>
 </svg>

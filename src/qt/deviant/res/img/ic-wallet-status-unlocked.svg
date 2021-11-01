@@ -1,9 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="ic_unlocked" width="24" height="24" viewBox="0 0 24 24">
-    <defs>
-        <style type="text/css">
-            .cls-1{fill:#878076}.cls-2{fill:none}
-        </style>
-    </defs>
-    <path id="Path_18909" d="M8 10V8a4 4 0 0 1 6.827-2.83l1.412-1.416A6 6 0 0 0 6 8v2H4v12h16V10zm10 10H6v-8h12z" class="cls-1" data-name="Path 18909"/>
-    <path id="Rectangle_4444" d="M0 0h24v24H0z" class="cls-2" data-name="Rectangle 4444"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="ic_unlocked" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;}
+	.st1{fill:#00D888;}
+</style>
+<path id="Rectangle_4444" class="st0" d="M0,0h24v24H0V0z"/>
+<path id="Rectangle_4444_1_" class="st0" d="M0,0h24v24H0V0z"/>
+<g>
+	<path class="st1" d="M9.93787,4.83433c2.71598-1.71573,5.53254,0.20185,5.53254,2.82591h2.71598
+		c0-4.44072-4.72781-7.77125-9.35503-5.34905C7.02071,3.32045,5.9142,5.23803,5.9142,7.25654V9.8806H4.7071
+		c-0.60355,0-1.2071,0.50463-1.2071,1.2111v9.28514h17v-9.28514c0-0.60555-0.50296-1.2111-1.2071-1.2111h-1.2071h-2.71597H8.63018
+		V7.25654C8.63018,6.24729,9.13314,5.33896,9.93787,4.83433z M10.8432,14.11947c0.10059-0.10093,0.10059-0.20185,0.20118-0.20185
+		c1.2071-0.8074,2.4142,0.10093,2.4142,1.2111c0,0.50463-0.30178,1.00925-0.70414,1.31203v1.51388h-1.60947v-1.51388
+		C10.64201,15.93612,10.23965,15.0278,10.8432,14.11947z"/>
+	<path class="st1" d="M5.41124,22.49627h13.27811c0.90532,0,1.60947-0.60555,1.81065-1.41295H3.60059
+		C3.80178,21.89072,4.60651,22.49627,5.41124,22.49627z"/>
+</g>
 </svg>

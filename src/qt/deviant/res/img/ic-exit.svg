@@ -1,16 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-    <defs>
-        <style type="text/css">
-            .cls-1{opacity:.7}.cls-2{fill:none}.cls-3{fill:#fff}
-        </style>
-    </defs>
-    <g id="ic_exit" class="cls-1">
-        <g id="Group_9069" data-name="Group 9069">
-            <path id="Path_19023" d="M0 0h24v24H0z" class="cls-2" data-name="Path 19023"/>
-        </g>
-        <g id="Group_9070" data-name="Group 9070">
-            <path id="Path_19024" d="M17 8.544V2H2v17.819l12 2.4V20h3v-6.456h-2V18h-1V4.181L13.1 4H15v4.544zM12 19.78l-8-1.6V4.22l8 1.6z" class="cls-3" data-name="Path 19024"/>
-            <path id="Path_19025" d="M18.707 7.337l-1.414 1.414 1.293 1.293H15v2h3.586l-1.293 1.293 1.414 1.414 3.707-3.707z" class="cls-3" data-name="Path 19025"/>
-        </g>
-    </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+<style type="text/css">
+	.st0{opacity:0.7;}
+	.st1{fill:none;}
+	.st2{fill:#FFC038;}
+</style>
+<g id="ic_exit" class="st0">
+	<g id="Group_9069">
+		<path id="Path_19023" class="st1" d="M0,0h24v24H0V0z"/>
+	</g>
+	<g id="Group_9070">
+		<path id="Path_19024" class="st2" d="M17,7.9V2.6C17,2.3,16.7,2,16.4,2H2.6C2.3,2,2,2.3,2,2.6v16.7c0,0.3,0.2,0.5,0.5,0.6
+			l10.8,2.2c0.4,0.1,0.7-0.2,0.7-0.6v-0.9c0-0.3,0.3-0.6,0.6-0.6h1.8c0.3,0,0.6-0.3,0.6-0.6v-5.3c0-0.3-0.3-0.6-0.6-0.6h-0.8
+			c-0.3,0-0.6,0.3-0.6,0.6V18h-1V4.2L13.1,4h1.3C14.7,4,15,4.3,15,4.6v3.3c0,0.3,0.3,0.6,0.6,0.6h0.8C16.7,8.5,17,8.3,17,7.9z
+			 M11.3,19.6l-6.8-1.4C4.2,18.2,4,18,4,17.7V5c0-0.4,0.3-0.7,0.7-0.6l6.8,1.4C11.8,5.8,12,6,12,6.3V19C12,19.4,11.7,19.7,11.3,19.6
+			z"/>
+		<path id="Path_19025" class="st2" d="M18.3,7.8l-0.6,0.6c-0.2,0.2-0.2,0.6,0,0.8l0.9,0.9h-3c-0.3,0-0.6,0.3-0.6,0.6v0.8
+			c0,0.3,0.3,0.6,0.6,0.6h3L17.7,13c-0.2,0.2-0.2,0.6,0,0.8l0.6,0.6c0.2,0.2,0.6,0.2,0.8,0l2.9-2.9c0.2-0.2,0.2-0.6,0-0.8l-2.9-2.9
+			C18.9,7.5,18.5,7.5,18.3,7.8z"/>
+	</g>
+</g>
 </svg>

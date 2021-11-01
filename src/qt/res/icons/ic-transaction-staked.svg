@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="ic-transaction-staked" width="24" height="24" viewBox="0 0 24 24">
-    <defs>
-        <style type="text/css">
-            .cls-1{fill:#707070}.cls-2{fill:none}
-        </style>
-    </defs>
-    <path id="Path_18914" d="M18 6V4.854a3 3 0 0 0-5.964-.3L12 4.586l-.033-.033A3 3 0 0 0 6 5v1H2v6h2v10h16V12h2V6zm-4-.586V5a1 1 0 0 1 2 0v1h-2.586zM13 8v8h-2V8zM8 5a1 1 0 0 1 2 0v.414l.586.586H8zM4 8h5v2H4zm14 12H6v-8h3v6h6v-6h3zm2-10h-5V8h5z" class="cls-1" data-name="Path 18914"/>
-    <path id="Rectangle_4527" d="M0 0h24v24H0z" class="cls-2" data-name="Rectangle 4527"/>
-</svg>
+<svg id="ic-transaction-staked" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{fill:none;}.cls-2{fill:#fff;}</style></defs><title>ic-transaction-staked</title><path id="Rectangle_4527" data-name="Rectangle 4527" class="cls-1" d="M0,0H24V24H0Z"/><g id="Path18914"><path class="cls-2" d="M19.26,12.27H13.44v9.79h5.82a.77.77,0,0,0,.77-.77V13A.77.77,0,0,0,19.26,12.27Z"/><path class="cls-2" d="M4,13v8.25a.77.77,0,0,0,.77.77h5.82V12.27H4.74A.77.77,0,0,0,4,13Z"/><path class="cls-2" d="M2.92,8.17v2.41a.77.77,0,0,0,.77.76h6.87V7.4H3.69A.77.77,0,0,0,2.92,8.17Z"/><path class="cls-2" d="M20.31,7.4H13.43v3.94h6.87a.77.77,0,0,0,.77-.76V8.17A.77.77,0,0,0,20.31,7.4Z"/><path class="cls-2" d="M6.11,6.53a1.13,1.13,0,0,0,.64.13H17.14a1.45,1.45,0,0,0,.73-.14A2.62,2.62,0,0,0,19,4.17,3.8,3.8,0,0,0,18.29,2,2.8,2.8,0,0,0,16,.82h-.23c-2.43.17-3.41,2.47-3.8,4C11.6,3.3,10.61,1,8.19.83H8A2.8,2.8,0,0,0,5.67,2,3.8,3.8,0,0,0,5,4.17,2.61,2.61,0,0,0,6.11,6.53Zm9.76-4.32H16a1.38,1.38,0,0,1,1.17.58,2.35,2.35,0,0,1,.42,1.38c0,.42-.14,1.22-.7,1.22H13.26C13.51,4.28,14.19,2.33,15.87,2.21Zm-9.09.58A1.38,1.38,0,0,1,8,2.21h.14c1.68.12,2.36,2.07,2.61,3.18H7.06c-.55,0-.7-.8-.7-1.22A2.35,2.35,0,0,1,6.78,2.79Z"/></g></svg>
