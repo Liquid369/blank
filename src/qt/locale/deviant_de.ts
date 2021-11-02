@@ -1330,7 +1330,7 @@ Das Staking wird automatisch gestartet, sobald die Wallet genügend Bestätigung
         <translation>Erzeuge neuen Masternode Controller</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Deviant Masternode you must dedicate 15,000 DEV (the unit of DEV) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Deviant Masternode you must dedicate 5,000 DEV (the unit of DEV) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Um einen Deviant Masternode zu erzeugen, müssen Sie 10.000 DEV (die Einheit von DEV) dem Netzwerk zuweisen (diese Coins sind weiterhin Ihre und Sie werden Ihren Besitz nicht verlassen)&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;
 Sie können den Node jederzeit deaktivieren und die Coins entriegeln.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1351,7 +1351,7 @@ Sie können den Node jederzeit deaktivieren und die Coins entriegeln.&lt;/p&gt;&
         <translation>Stellen Sie sicher, dass Sie die Anzahl Coins besitzen.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 5,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Eine Transaktion von 10'000 DEV wird erzugt&lt;/p&gt;&lt;p&gt; und an eine leere Adresse in Ihrer Wallet gesendet.&lt;/p&gt;&lt;p&gt;Die Adresse wird beschriftet mit dem Namen des Masternodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
@@ -4032,7 +4032,7 @@ Es gab ein Problem bei dem Versuch die Adressen unter %1 zu speichern. Bitte ver
         <source>
                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;
                            A masternode is a computer running a full node Deviant Core wallet with a
-                           requirement of 15,000 DEV secured collateral to provide extra services
+                           requirement of 5,000 DEV secured collateral to provide extra services
                            to the network and in return, receive a portion of the block reward
                            regularly.  These services include:
                            &lt;/p&gt;&lt;p align="justify"&gt;
@@ -4063,7 +4063,7 @@ Es gab ein Problem bei dem Versuch die Adressen unter %1 zu speichern. Bitte ver
                            Requirements:
                            &lt;/p&gt;&lt;p align="justify"&gt;
                            &lt;ul&gt;
-                           &lt;li&gt;15,000 DEV per single Masternode instance&lt;/li&gt;
+                           &lt;li&gt;5,000 DEV per single Masternode instance&lt;/li&gt;
                            &lt;li&gt;Must be stored in a core wallet&lt;/li&gt;
                            &lt;li&gt;Need dedicated IP address&lt;/li&gt;
                            &lt;li&gt;Masternode wallet to remain online&lt;/li&gt;
@@ -4153,7 +4153,7 @@ Deviant nutzt einen Proof of Stake (PoS) Konsensalgorithmus, der es den Besitzer
         <translation>Was ist ein Masternode Controller?</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 15,000 DEV collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 5,000 DEV collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Ein Masternode Controller Wallet ist, wo die 10.000 DEV Kollateral verweilen können, während ein Controller-Remote Masternode Setup erfolgt. Es ist ein Wallet, das remote Masternode Wallet(s) aktiviert und Ihnen erlaubt, ihre Kollateral-Münzen offline zu halten, während der remote Masternode online bleibt.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; </translation>
     </message>
     <message>

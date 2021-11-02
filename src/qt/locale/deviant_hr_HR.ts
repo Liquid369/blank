@@ -1329,8 +1329,8 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>Stvori novi Masternode Controller</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Deviant Masternode you must dedicate 15,000 DEV (the unit of DEV) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Da biste stvoriti Deviant Masternode, morate odvojiti 15,000 DEV (jedinica DEV-a) prema mreži (međjutim, ti novčići su i dalje vaši i nikad neće napustiti vaše vlasništvo). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt; Možete isključiti node i otključati novčiće u bilo kojem trenutku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Deviant Masternode you must dedicate 5,000 DEV (the unit of DEV) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Da biste stvoriti Deviant Masternode, morate odvojiti 5,000 DEV (jedinica DEV-a) prema mreži (međjutim, ti novčići su i dalje vaši i nikad neće napustiti vaše vlasništvo). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt; Možete isključiti node i otključati novčiće u bilo kojem trenutku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Set Masternode Name</source>
@@ -1349,8 +1349,8 @@ Staking će se automatski pokrenuti čim novčanik dobije dovoljno potvrda o nep
         <translation>Obavezno imajte tu količinu novčića.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transakcija od 15,000 DEV će biti napravljena&lt;/p&gt;&lt;p&gt;u novu praznu adresu u Vašem novčaniku.&lt;/p&gt;&lt;p&gt;Adresa je označena pod imenom Masternode-a.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 5,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transakcija od 5,000 DEV će biti napravljena&lt;/p&gt;&lt;p&gt;u novu praznu adresu u Vašem novčaniku.&lt;/p&gt;&lt;p&gt;Adresa je označena pod imenom Masternode-a.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -4067,8 +4067,8 @@ vodjenje Masternode-ova za stvaranje i glasanje o prijedlozima.
         <translation>Što je Masternode Controller?</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 15,000 DEV collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Masternode Controller novčanik je mjesto gdje zalog od 15,000 DEV može stajati tijekom Controller-Remote podešavanja masternode-a. To je novčanik koji može aktivirati Remote masternode novčanik(e) i omogućiti Vam držanje zaloga novčića offline dok Remote masternode novčanik ostaje online.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 5,000 DEV collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Masternode Controller novčanik je mjesto gdje zalog od 5,000 DEV može stajati tijekom Controller-Remote podešavanja masternode-a. To je novčanik koji može aktivirati Remote masternode novčanik(e) i omogućiti Vam držanje zaloga novčića offline dok Remote masternode novčanik ostaje online.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>

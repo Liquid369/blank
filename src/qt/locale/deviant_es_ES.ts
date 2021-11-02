@@ -1275,7 +1275,7 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>Crear Nuevo Controlador de Masternode</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Deviant Masternode you must dedicate 15,000 DEV (the unit of DEV) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;To create a Deviant Masternode you must dedicate 5,000 DEV (the unit of DEV) to the network (however, these coins are still yours and will never leave your possession). &lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;You can deactivate the node and unlock the coins at any time.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Para crear un Masternode de Deviant debes desponer 10.000 DEV (la unidad de DEV) a la red (sin embargo, estas monedas siguen siendo tuyas y nunca saldrán de tu posesión). Puedes desactivar el nodo y desbloquear las monedas en cualquier momento.</translation>
     </message>
     <message>
@@ -1295,8 +1295,8 @@ It will start automatically as soon as the wallet has enough confirmations on an
         <translation>Asegúrate de tener esta cantidad de monedas.</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 15,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Una transacción de 15,000 DEV se hará a una nueva dirección vacía en tu wallet.  La dirección está etiquetada bajo el nombre de masternode. </translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A transaction of 5,000 DEV will be made&lt;/p&gt;&lt;p&gt;to a new empty address in your wallet.&lt;/p&gt;&lt;p&gt;The Address is labeled under the master node's name.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>Una transacción de 5,000 DEV se hará a una nueva dirección vacía en tu wallet.  La dirección está etiquetada bajo el nombre de masternode. </translation>
     </message>
     <message>
         <source>Address of the node that must always be online running the actual master node.</source>
@@ -3675,8 +3675,8 @@ Tu wallet Deviant también necesita estar completamente sincronizada para que pu
         <translation>¿Qué es un Controlador de Masternode?</translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 15,000 DEV collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Una wallet del controlador Masternode es donde la garantía de 15,000 DEV puede almacenarse durante la configuración de un masternode controlador-remoto. Esta es una wallet que puede activar la wallet (s) del masternode remoto y te permite mantener tus monedas colaterales fuera de línea mientras el masternode remoto permanece en línea. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;A Masternode Controller wallet is where the 5,000 DEV collateral can reside during a Controller-Remote masternode setup. It is a wallet that can activate the remote masternode wallet(s) and allows you to keep your collateral coins offline while the remote masternode remains online. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align="justify"&gt;Una wallet del controlador Masternode es donde la garantía de 5,000 DEV puede almacenarse durante la configuración de un masternode controlador-remoto. Esta es una wallet que puede activar la wallet (s) del masternode remoto y te permite mantener tus monedas colaterales fuera de línea mientras el masternode remoto permanece en línea. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
