@@ -23,8 +23,8 @@
         <file alias="splash_regtest">res/images/splash_regtest.png</file>
     </qresource>
     <qresource prefix="/">
-        <file alias="bg-splash">deviant/res/img/bg-splash.svg</file>
-        <file alias="bg-splash-png">deviant/res/img/bg-splash.png</file>
+        <file alias="bg-splash">deviant/res/img/bg-splash.gif</file>
+        <file alias="bg-splash-png">deviant/res/img/bg-splash.gif</file>
         <file alias="img-logo-deviant-png">deviant/res/img/img-logo-deviant.png</file>
         <file alias="img-logo-deviant-2x">deviant/res/img/img-logo-deviant@2x.png</file>
         <file alias="img-logo-deviant-3x">deviant/res/img/img-logo-deviant@3x.png</file>
