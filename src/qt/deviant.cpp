@@ -382,15 +382,11 @@ void BitcoinApplication::createWindow(const NetworkStyle* networkStyle)
 
 void BitcoinApplication::createSplashScreen(const NetworkStyle* networkStyle)
 {
-    //Splash* splash = new Splash(networkStyle);
+    Splash* splash = new Splash(networkStyle);
     // We don't hold a direct pointer to the splash screen after creation, so use
     // Qt::WA_DeleteOnClose to make sure that the window will be deleted eventually.
-    //splash->setAttribute(Qt::WA_DeleteOnClose);
-    //splash->show();
-    QMovie *movie = new QMovie("://bg-splash");
-    movie->setAttribute(Qt::WA_DeleteOnClose);
-    movie->setMovie(movie);
-    movie->start();
+    splash->setAttribute(Qt::WA_DeleteOnClose);
+    splash->show();
 
     connect(this, &BitcoinApplication::splashFinished, splash, &Splash::slotFinish);
     connect(this, &BitcoinApplication::requestedShutdown, splash, &QWidget::close);
