@@ -25,7 +25,7 @@
     <qresource prefix="/">
         <file alias="bg-splash">deviant/res/img/bg-splash.gif</file>
         <file alias="bg-splash-png">deviant/res/img/bg-splash.gif</file>
-        <file alias="img-logo-deviant-png">deviant/res/img/img-logo-deviant.png</file>
+        <file alias="img-logo-deviant-png">deviant/res/img/img-nav-logo.png</file>
         <file alias="img-logo-deviant-2x">deviant/res/img/img-logo-deviant@2x.png</file>
         <file alias="img-logo-deviant-3x">deviant/res/img/img-logo-deviant@3x.png</file>
         <file alias="img-nav-logo-deviant">deviant/res/img/img-nav-logo-deviant.png</file>
@@ -181,7 +181,7 @@
         <file alias="img-empty-staking-off">deviant/res/img/img-empty-staking-off.svg</file>
         <file alias="img-empty-staking-on">deviant/res/img/img-empty-staking-on.svg</file>
         <file alias="img-empty-transactions">deviant/res/img/img-empty-transactions.svg</file>
-        <file alias="img-nav-logo">deviant/res/img/img-nav-logo.svg</file>
+        <file alias="img-nav-logo">deviant/res/img/img-nav-logo.png</file>
         <file alias="img-qr">deviant/res/img/img-qr.svg</file>
         <file alias="ic-contact-arrow-down">deviant/res/img/ic-contact-arrow-down.svg</file>
         <file alias="ic-contact-arrow-down-white">deviant/res/img/ic-contact-arrow-down-white.svg</file>
