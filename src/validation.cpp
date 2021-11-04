@@ -928,7 +928,7 @@ int64_t GetMasternodePayment(int nHeight)
         ret = 0;
     } else if (nHeight < 100000 && nHeight >= 200) {
         ret = nSubsidy * 4 / 5;
-    } else if (nHeight > 2000000) {
+    } else if (nHeight > 1760000) {
         ret = nSubsidy * 0.7;
     } else {
         ret = nSubsidy * 0.8;
