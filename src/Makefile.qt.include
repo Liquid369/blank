@@ -302,8 +302,8 @@ RES_ICONS = \
   qt/deviant/res/img/ic-nav-cold-staking-active.svg \
   qt/deviant/res/img/ic-nav-dashboard-active.svg \
   qt/deviant/res/img/ic-wallet-status-locked.svg \
-  qt/deviant/res/img/bg-splash.gif \
-  qt/deviant/res/img/bg-splash.gif \
+  qt/deviant/res/img/bg-splash.png \
+  qt/deviant/res/img/bg-splash.png \
   qt/deviant/res/img/ic-check-mint.svg \
   qt/deviant/res/img/ic-nav-dashboard-hover.svg \
   qt/deviant/res/img/ic-wallet-status-staking.svg \
