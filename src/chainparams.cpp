@@ -184,14 +184,14 @@ public:
         consensus.vUpgrades[Consensus::UPGRADE_TESTDUMMY].nActivationHeight =
                 Consensus::NetworkUpgrade::NO_ACTIVATION_HEIGHT;
         consensus.vUpgrades[Consensus::UPGRADE_POS].nActivationHeight           = 501;  
-        consensus.vUpgrades[Consensus::UPGRADE_POS_V2].nActivationHeight        = 1765000; 
+        consensus.vUpgrades[Consensus::UPGRADE_POS_V2].nActivationHeight        = 1774000; 
         consensus.vUpgrades[Consensus::UPGRADE_ZC].nActivationHeight            = 1;
         consensus.vUpgrades[Consensus::UPGRADE_ZC_V2].nActivationHeight         = INT_MAX;
-        consensus.vUpgrades[Consensus::UPGRADE_BIP65].nActivationHeight         = 1760000;
+        consensus.vUpgrades[Consensus::UPGRADE_BIP65].nActivationHeight         = 1774000;
         consensus.vUpgrades[Consensus::UPGRADE_ZC_PUBLIC].nActivationHeight     = INT_MAX;
-        consensus.vUpgrades[Consensus::UPGRADE_V3_4].nActivationHeight          = 1765000;
-        consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight          = 1765500;
-        consensus.vUpgrades[Consensus::UPGRADE_V5_0].nActivationHeight          = 1766000;
+        consensus.vUpgrades[Consensus::UPGRADE_V3_4].nActivationHeight          = 1775000;
+        consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight          = 1779500;
+        consensus.vUpgrades[Consensus::UPGRADE_V5_0].nActivationHeight          = 1780000;
 
         consensus.vUpgrades[Consensus::UPGRADE_ZC].hashActivationBlock =
                 uint256S("0x000006673841efc8525afb74a6855871bf71c1d1ab6d93cc9d6a45f43bac87b7");
