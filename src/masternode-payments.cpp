@@ -235,7 +235,7 @@ bool IsBlockValueValid(int nHeight, CAmount& nExpectedValue, CAmount nMinted)
             }
         }
     }
-    if ((nHeight == 609500) || (nHeight >= 1760000)) {
+    if ((nHeight == 609500) || (nHeight <= 1760000)) {
         return true;
     }
     return nMinted <= nExpectedValue;
