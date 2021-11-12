@@ -223,8 +223,10 @@ public:
         vSeeds.emplace_back("seed3.deviantcoin.io", "seed3.deviantcoin.io", true);
         vSeeds.emplace_back("seed4.deviantcoin.io", "seed4.deviantcoin.io", true);
         vSeeds.emplace_back("seed5.deviantcoin.io", "seed5.deviantcoin.io", true);
-        vSeeds.emplace_back("138.197.146.236", "138.197.146.236", true);
-        vSeeds.emplace_back("209.97.131.20", "209.97.131.20", true);
+        vSeeds.emplace_back("207.244.234.185", "207.244.234.185", true);
+        vSeeds.emplace_back("66.94.126.40", "66.94.126.40", true);
+        vSeeds.emplace_back("66.94.107.46", "66.94.107.46", true);
+        vSeeds.emplace_back("185.252.235.98", "185.252.235.98", true);
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1, 90);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1, 10);

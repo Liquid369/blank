@@ -3188,7 +3188,7 @@ bool CWallet::CreateCoinStake(
         nCredit += stakeInput.GetValue();
 
         // Add block reward to the credit
-        nCredit += GetBlockValue(pindexPrev->nHeight + 2);
+        nCredit += GetBlockValue(pindexPrev->nHeight + 1);
 
         // Create the output transaction(s)
         std::vector<CTxOut> vout;
