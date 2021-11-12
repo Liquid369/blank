@@ -215,7 +215,7 @@ public:
         pchMessageStart[1] = 0xb4;
         pchMessageStart[2] = 0xad;
         pchMessageStart[3] = 0xb8;
-        nDefaultPort = 22617;
+        nDefaultPort = 22618;
 
         // Note that of those with the service bits flag, most only support a subset of possible options
         vSeeds.emplace_back("seed1.deviantcoin.io", "seed1.deviantcoin.io", true);     // Primary DNS Seeder from Liquid369
