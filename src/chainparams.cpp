@@ -187,10 +187,10 @@ public:
         consensus.vUpgrades[Consensus::UPGRADE_POS_V2].nActivationHeight        = 1774000; 
         consensus.vUpgrades[Consensus::UPGRADE_ZC].nActivationHeight            = 1;
         consensus.vUpgrades[Consensus::UPGRADE_ZC_V2].nActivationHeight         = INT_MAX;
-        consensus.vUpgrades[Consensus::UPGRADE_BIP65].nActivationHeight         = 1774000;
+        consensus.vUpgrades[Consensus::UPGRADE_BIP65].nActivationHeight         = INT_MAX;
         consensus.vUpgrades[Consensus::UPGRADE_ZC_PUBLIC].nActivationHeight     = INT_MAX;
-        consensus.vUpgrades[Consensus::UPGRADE_V3_4].nActivationHeight          = 1775000;
-        consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight          = 1779500;
+        consensus.vUpgrades[Consensus::UPGRADE_V3_4].nActivationHeight          = INT_MAX;
+        consensus.vUpgrades[Consensus::UPGRADE_V4_0].nActivationHeight          = INT_MAX;
         consensus.vUpgrades[Consensus::UPGRADE_V5_0].nActivationHeight          = 1780000;
 
         consensus.vUpgrades[Consensus::UPGRADE_ZC].hashActivationBlock =
